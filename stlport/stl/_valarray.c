@@ -72,8 +72,7 @@ bool _Gslice_Iter_tmpl<_Size>::_M_incr() {
     if (++_M_indices[__dim] != _M_gslice._M_lengths[__dim])
       return true;
     else if (__dim != 0) {
-      _M_1d_idx -=
-	_M_gslice._M_strides[__dim] * _M_gslice._M_lengths[__dim];
+      _M_1d_idx -= _M_gslice._M_strides[__dim] * _M_gslice._M_lengths[__dim];
       _M_indices[__dim] = 0;
       --__dim;
     }

@@ -114,7 +114,7 @@ __iso_week_days (int yday, int wday)
           + __ISO_WEEK1_WDAY - __ISO_WEEK_START_WDAY);
 }
 
-#  define	__is_leap(year)\
+#  define __is_leap(year)\
   ((year) % 4 == 0 && ((year) % 100 != 0 || (year) % 400 == 0))
 
 #endif
@@ -350,7 +350,7 @@ char * __write_formatted_time(char* buf, char format, char modifier,
         diff = t->tm_gmtoff;
 #else
         diff = t->__tm_gmtoff;
-#endif	
+#endif
         if (diff < 0) {
           *buf++ = '-';
           diff = -diff;

@@ -46,7 +46,7 @@ private:
 
 template<class _Tp>
 class auto_ptr :  public __ptr_base {
-public:	
+public:
   typedef _Tp element_type;
   typedef auto_ptr<_Tp>           _Self;
   
@@ -86,7 +86,7 @@ public:
     _Tp* __conversionCheck = __r.release();
     this->__set(__conversionCheck);
   }
-# endif	
+# endif
   template<class _Tp1> auto_ptr<_Tp>& operator=(auto_ptr<_Tp1>& __r) {
     _Tp* __conversionCheck = __r.release();
     reset(__conversionCheck);

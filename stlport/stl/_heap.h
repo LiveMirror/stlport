@@ -60,7 +60,7 @@ __pop_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
 
 template <class _RandomAccessIterator>
 void pop_heap(_RandomAccessIterator __first, 
-	      _RandomAccessIterator __last);
+        _RandomAccessIterator __last);
 
 template <class _RandomAccessIterator, class _Distance,
           class _Tp, class _Compare>

@@ -232,11 +232,11 @@ public:
   }
 
   _OutputIter put(iter_type __s, ios_base& __f, _Ch __fill,
-		  const tm* __tmb,
-		  const _Ch* __pat, const _Ch* __pat_end) const;
+      const tm* __tmb,
+      const _Ch* __pat, const _Ch* __pat_end) const;
   
   _OutputIter put(iter_type __s, ios_base& __f, _Ch  __fill,
-		  const tm* __tmb, char __format, char __modifier = 0) const { 
+      const tm* __tmb, char __format, char __modifier = 0) const { 
     return do_put(__s, __f,  __fill, __tmb, __format, __modifier); 
   }
   

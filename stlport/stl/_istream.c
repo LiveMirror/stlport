@@ -863,10 +863,10 @@ void basic_istream<_CharT, _Traits>::_M_formatted_get(_CharT* __s)
       ? _M_read_buffered(this,  __buf, __nmax, __s,
                          _Is_wspace_null<_Traits>((const ctype<_CharT>*)this->_M_ctype_facet()),
                          _Scan_wspace_null<_Traits>((const ctype<_CharT>*)this->_M_ctype_facet()),
-			 false, true, false)
+       false, true, false)
       : _M_read_unbuffered(this,  __buf, __nmax, __s,
                            _Is_wspace_null<_Traits>((const ctype<_CharT>*)this->_M_ctype_facet()),
-			   false, true, false);
+         false, true, false);
     if (__n == 0)
       this->setstate(ios_base::failbit);
   }
@@ -881,9 +881,9 @@ void basic_istream<_CharT, _Traits>::_M_formatted_get(_CharT* __s)
 template < class _CharT, class _Traits, class _Is_Delim>
 void _STLP_CALL 
 _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that, 
-		                 basic_streambuf<_CharT, _Traits>* __buf,
-		                 _Is_Delim __is_delim,
-		                 bool __extract_delim, bool __set_failbit) {
+                     basic_streambuf<_CharT, _Traits>* __buf,
+                     _Is_Delim __is_delim,
+                     bool __extract_delim, bool __set_failbit) {
   bool __done = false;
   ios_base::iostate __status = 0;
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
@@ -921,9 +921,9 @@ _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
 template < class _CharT, class _Traits, class _Is_Delim, class _Scan_Delim>
 void _STLP_CALL 
 _M_ignore_buffered(basic_istream<_CharT, _Traits>* __that, 
-		               basic_streambuf<_CharT, _Traits>* __buf,
-		               _Is_Delim __is_delim, _Scan_Delim __scan_delim,
-		               bool __extract_delim, bool __set_failbit) {
+                   basic_streambuf<_CharT, _Traits>* __buf,
+                   _Is_Delim __is_delim, _Scan_Delim __scan_delim,
+                   bool __extract_delim, bool __set_failbit) {
   bool __at_eof      = false;
   bool __found_delim = false;
 
@@ -976,10 +976,10 @@ _M_ignore_buffered(basic_istream<_CharT, _Traits>* __that,
 template < class _CharT, class _Traits, class _Max_Chars, class _Is_Delim>
 streamsize _STLP_CALL 
 _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
-		                 basic_streambuf<_CharT, _Traits>* __buf,
-		                 streamsize _Num, _Max_Chars __max_chars,
-		                 _Is_Delim __is_delim,
-		                 bool __extract_delim, bool __set_failbit) {
+                     basic_streambuf<_CharT, _Traits>* __buf,
+                     streamsize _Num, _Max_Chars __max_chars,
+                     _Is_Delim __is_delim,
+                     bool __extract_delim, bool __set_failbit) {
   streamsize __n = 0;
   ios_base::iostate __status = 0;
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
@@ -1018,11 +1018,11 @@ _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
 template < class _CharT, class _Traits, class _Max_Chars, class _Is_Delim, class _Scan_Delim>
 streamsize _STLP_CALL 
 _M_ignore_buffered(basic_istream<_CharT, _Traits>* __that,
-		               basic_streambuf<_CharT, _Traits>* __buf,
-		               streamsize _Num,
-		               _Max_Chars __max_chars,
-		               _Is_Delim __is_delim, _Scan_Delim __scan_delim,
-		               bool __extract_delim, bool __set_failbit) {
+                   basic_streambuf<_CharT, _Traits>* __buf,
+                   streamsize _Num,
+                   _Max_Chars __max_chars,
+                   _Is_Delim __is_delim, _Scan_Delim __scan_delim,
+                   bool __extract_delim, bool __set_failbit) {
   streamsize __n = 0;
   bool __at_eof = false;
   bool __done   = false;
@@ -1211,9 +1211,9 @@ void basic_istream<_CharT, _Traits>::_M_skip_whitespace(bool __set_failbit)
 template < class _CharT, class _Traits, class _Is_Delim>
 streamsize _STLP_CALL 
 _M_copy_unbuffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT, _Traits>* __src,
-		               basic_streambuf<_CharT, _Traits>* __dest,
-		               _Is_Delim __is_delim,
-		               bool __extract_delim, bool __rethrow) {
+                   basic_streambuf<_CharT, _Traits>* __dest,
+                   _Is_Delim __is_delim,
+                   bool __extract_delim, bool __rethrow) {
   streamsize __extracted = 0;
   ios_base::iostate __status = 0;
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
@@ -1319,7 +1319,7 @@ _M_copy_buffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT,
       __avail = __src->_M_egptr() - __first;
       
       if (__avail > 0)
-        {}	// dwa 1/16/00 -- suppress a Metrowerks warning
+        {}  // dwa 1/16/00 -- suppress a Metrowerks warning
       else if (__that->_S_eof(__c)) {
         __status |= ios_base::eofbit;
         break;

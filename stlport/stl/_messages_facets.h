@@ -63,7 +63,7 @@ public:
   catalog open(const string& __fn, const locale& __loc) const
     { return do_open(__fn, __loc); }
   string_type get(catalog __c, int __set, int __msgid,
-		  const string_type& __dfault) const
+                  const string_type& __dfault) const
     { return do_get(__c, __set, __msgid, __dfault); }
   inline void close(catalog __c) const
     { do_close(__c); }

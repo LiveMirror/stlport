@@ -69,8 +69,8 @@
 #endif // (__FreeBSD__ && _THREAD_SAFE) || (__OpenBSD__ && _POSIX_THREADS) || (__MINGW32__ && _MT)
 
 #if defined(__DJGPP)
-#  define _STLP_RAND48		1
-#  define _NOTHREADS		1
+#  define _STLP_RAND48    1
+#  define _NOTHREADS    1
 #  undef  _PTHREADS
 #  define _STLP_LITTLE_ENDIAN
 #endif 
@@ -94,6 +94,10 @@
 #    endif
 #  endif /* _STLP_USE_DYNAMIC_LIB */
 
+#  if defined (_STLP_NEW_PLATFORM_SDK)
+//For the moment the SDK coming with Mingw still mimik the old platform SDK.
+#    undef _STLP_NEW_PLATFORM_SDK
+#  endif
 #endif /* __MINGW32__ */
 
 #if defined (__CYGWIN__) && defined (_STLP_USE_DYNAMIC_LIB)

@@ -64,11 +64,11 @@
 // # endif
 #  if (_STLP_MSVC <= 1400)
 #    define _STLP_STATIC_CONST_INIT_BUG   1
-#  endif	//	(_STLP_MSVC <= 1400)
+#  endif  //  (_STLP_MSVC <= 1400)
 
 #  if (_STLP_MSVC >= 1310)
 #    define _STLP_FULL_ADL_IMPLEMENTED 1
-#  endif	//	(_STLP_MSVC >= 1310)
+#  endif  //  (_STLP_MSVC >= 1310)
 
 #  if (_STLP_MSVC >= 1300)
 //Starting with MSVC 7.0 we assume that the new SDK is granted:
@@ -77,7 +77,7 @@
 #    if !defined (_STLP_DONT_USE_EXCEPTIONS)
 #      define _STLP_NOTHROW throw()
 #    endif
-#  endif	//	(_STLP_MSVC >= 1300)
+#  endif  //  (_STLP_MSVC >= 1300)
 
 #  if (_STLP_MSVC <= 1300) 
 #    define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1

@@ -72,8 +72,8 @@
 
 // Comeau C++ under LINUX/INTEL/ELF
 // Preprocess away "long long" routines for now, even in relaxed mode
-# define __wcstoull_internal_defined	1
-# define __wcstoll_internal_defined	1
+# define __wcstoull_internal_defined  1
+# define __wcstoll_internal_defined  1
 
 #endif /* __COMO__ under __linux__ */
 

@@ -297,7 +297,7 @@ inline bool _STLP_CALL
 operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.begin(), __x.end(), 
-		 		                                                  __y.begin(), __y.end()) < 0;
+                                                          __y.begin(), __y.end()) < 0;
 }
 
 #if defined (_STLP_USE_TEMPLATE_EXPRESSION)
@@ -306,7 +306,7 @@ inline bool _STLP_CALL
 operator<(const __bstr_sum<_CharT,_Traits,_Alloc,_Lhs,_Rhs,_StoreDir>& __x,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.begin(), __x.end(), 
-		 		                                                  __y.begin(), __y.end()) < 0;
+                                                          __y.begin(), __y.end()) < 0;
 }
 
 template <class _CharT, class _Traits, class _Alloc, class _Lhs, class _Rhs, class _StoreDir> 
@@ -314,7 +314,7 @@ inline bool _STLP_CALL
 operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const __bstr_sum<_CharT,_Traits,_Alloc,_Lhs,_Rhs,_StoreDir>& __y) {
   return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.begin(), __x.end(), 
-		 		                                                  __y.begin(), __y.end()) < 0;
+                                                          __y.begin(), __y.end()) < 0;
 }
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 

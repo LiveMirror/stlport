@@ -191,7 +191,7 @@ struct _IsRef {
   enum { _Ret = 0 };
 };
 
-#  ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
+#  if defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS)
 /* 
  * Boris : simulation technique is used here according to Adobe Open Source License Version 1.0.
  * Copyright 2000 Adobe Systems Incorporated and others. All rights reserved.
@@ -543,11 +543,12 @@ inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*) {
   return _DefaultZeroValue<_Tp>();
 }
 
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
 /*
- * Base class used for internal purpose to simulate partial template specialization
- * and partial function ordering
+ * Base class used: 
+ * - to simulate partial template specialization
+ * - to simulate partial function ordering
  */
-#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
 template <class _Tp>
 struct __stlport_class {
   typedef _Tp _Type;

@@ -76,15 +76,15 @@ typedef long double max_double_type;
 # include <float.h>
 #endif
 
-#if defined(__MRC__) || defined(__SC__)	|| defined(_CRAY)	//*TY 02/24/2000 - added support for MPW
+#if defined(__MRC__) || defined(__SC__)  || defined(_CRAY)  //*TY 02/24/2000 - added support for MPW
 # include <fp.h>
 #endif
 
 #include <cmath>
 
 #if defined( __MSL__ )
-# include <cstdlib>	// for atoi
-# include <cstdio>	// for snprintf
+# include <cstdlib>  // for atoi
+# include <cstdio>  // for snprintf
 # include <algorithm>
 # include <cassert>
 #endif
@@ -251,7 +251,7 @@ inline bool _Stl_is_inf(double x)        {
 }
 inline bool _Stl_is_neg_inf(double x)    { return _fpclass(x) == _FPCLASS_NINF; }
 inline bool _Stl_is_neg_nan(double x)    { return _isnan(x) && _copysign(1., x) < 0 ; } 
-#elif defined(__MRC__) || defined(__SC__)		//*TY 02/24/2000 - added support for MPW
+#elif defined(__MRC__) || defined(__SC__)    //*TY 02/24/2000 - added support for MPW
 bool _Stl_is_nan_or_inf(double x) { return isnan(x) || !isfinite(x); }
 bool _Stl_is_inf(double x)        { return !isfinite(x); }
 bool _Stl_is_neg_inf(double x)    { return !isfinite(x) && signbit(x); }
@@ -478,7 +478,7 @@ size_t __format_float_scientific(char * buf, const char * bp,
       *--suffix = (char) todigit(nn % 10);
     *--suffix = (char) todigit(nn);
   }
-  	
+
   // prepend leading zeros to exponent
   while (suffix > &expbuf[MAXESIZ - 2])
     *--suffix = '0';

@@ -57,23 +57,23 @@ template <class _Tp> inline _Tp identity_element(multiplies<_Tp>) { return _Tp(1
 template <class _Pair>
 struct __pair_aux : private _Pair
 {
-	typedef typename _Pair::first_type first_type;
-	typedef typename _Pair::second_type second_type;
+  typedef typename _Pair::first_type first_type;
+  typedef typename _Pair::second_type second_type;
 };
 
 template <class _Operation>
 struct __unary_fun_aux : private _Operation
 {
-	typedef typename _Operation::argument_type argument_type;
-	typedef typename _Operation::result_type result_type;
+  typedef typename _Operation::argument_type argument_type;
+  typedef typename _Operation::result_type result_type;
 };
 
 template <class _Operation>
 struct __binary_fun_aux  : private _Operation
 {
-	typedef typename _Operation::first_argument_type first_argument_type;
-	typedef typename _Operation::second_argument_type second_argument_type;
-	typedef typename _Operation::result_type result_type;
+  typedef typename _Operation::first_argument_type first_argument_type;
+  typedef typename _Operation::second_argument_type second_argument_type;
+  typedef typename _Operation::result_type result_type;
 };
 
 #  define __UNARY_ARG(__Operation,__type)  __unary_fun_aux<__Operation>::__type
@@ -111,10 +111,10 @@ not1(const _Predicate& __pred) {
 template <class _Predicate> 
 class binary_negate 
     : public binary_function<typename __BINARY_ARG(_Predicate,first_argument_type),
-			                       typename __BINARY_ARG(_Predicate,second_argument_type), 
+                             typename __BINARY_ARG(_Predicate,second_argument_type), 
                              bool> {
   typedef binary_function<typename __BINARY_ARG(_Predicate,first_argument_type),
-			                    typename __BINARY_ARG(_Predicate,second_argument_type), 
+                          typename __BINARY_ARG(_Predicate,second_argument_type), 
                           bool> _Base;
 public:
   typedef typename _Base::first_argument_type first_argument_type;

@@ -135,7 +135,7 @@ __pop_heap_aux(_RandomAccessIterator __first, _RandomAccessIterator __last, _Tp*
 
 template <class _RandomAccessIterator>
 void pop_heap(_RandomAccessIterator __first, 
-	      _RandomAccessIterator __last) {
+        _RandomAccessIterator __last) {
   __pop_heap_aux(__first, __last, _STLP_VALUE_TYPE(__first, _RandomAccessIterator));
 }
 
