@@ -1,5 +1,7 @@
 2005-01-31  Francois Dumont  <dums@stlport...>
 
+	* Mac OS X portage thanks Zdenek Nemec.
+
 	* stlport/stl/_hashtable.c: Fix of the _M_copy_from method thanks Jay.
 
 	* stlport/stl/_vector.c: Fix of the _M_insert_fill_aux method thanks

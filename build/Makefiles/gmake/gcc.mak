@@ -75,6 +75,16 @@ DEFS += -D_REENTRANT
 CXXFLAGS = -pthread -fexceptions -fident $(OPT)
 endif
 
+ifeq ($(OSNAME),darwin)
+CCFLAGS = $(OPT)
+CFLAGS = $(OPT)
+DEFS += -D_REENTRANT
+CXXFLAGS = -fexceptions $(OPT)
+release-shared : CXXFLAGS += -dynamic
+dbg-shared : CXXFLAGS += -dynamic
+stldbg-shared : CXXFLAGS += -dynamic
+endif
+
 ifeq ($(OSNAME),hp-ux)
 CCFLAGS = -pthread $(OPT)
 CFLAGS = -pthread $(OPT)

@@ -95,6 +95,18 @@ stldbg-static:	LDFLAGS += ${LDSEARCH}
 release-static:	LDFLAGS += ${LDSEARCH}
 endif
 
+ifeq ($(OSNAME),darwin)
+CURRENT_VERSION := ${MAJOR}.${MINOR}.${PATCH}
+COMPATIBILITY_VERSION := $(CURRENT_VERSION)
+
+dbg-shared:	LDFLAGS += -dynamiclib -compatibility_version $(COMPATIBILITY_VERSION) -current_version $(CURRENT_VERSION) -install_name $(SO_NAME_DBGxx) -Wl ${LDSEARCH}
+stldbg-shared:	LDFLAGS += -dynamiclib -compatibility_version $(COMPATIBILITY_VERSION) -current_version $(CURRENT_VERSION) -install_name $(SO_NAME_STLDBGxx) -Wl ${LDSEARCH}
+release-shared:	LDFLAGS += -dynamiclib -compatibility_version $(COMPATIBILITY_VERSION) -current_version $(CURRENT_VERSION) -install_name $(SO_NAMExx) -Wl ${LDSEARCH}
+dbg-static:	LDFLAGS += -staticlib ${LDSEARCH}
+stldbg-static:	LDFLAGS += -staticlib ${LDSEARCH}
+release-static:	LDFLAGS += -staticlib ${LDSEARCH}
+endif
+
 ifeq ($(OSNAME),openbsd)
 dbg-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAME_DBGxx) ${LDSEARCH}
 stldbg-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAME_STLDBGxx) ${LDSEARCH}
