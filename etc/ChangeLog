@@ -1,3 +1,7 @@
+2005-01-24  Francois Dumont  <dums@stlport...>
+
+	* Some more warning fixes. Mostly add of missing char_traits::to_char_type calls.
+	
 2005-01-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_workaround.h, debug/_string_workaround.h: Fix of the
@@ -8,6 +12,13 @@
 		- while (true) replaced by for(;;) which do not produce the conditional
 		expression is constant warning
 		- removal of unused parameters
+		- modification of some template function signature to keep the character type
+		information and avoid the wchar_t to char type warning which was surely an
+		important warning for the wide streams support.
+		
+	* stlport/stl/_monetary.c: removal of the call to the ctype::widen method 
+	on the result of the moneypunct<_CharT, false>::decimal_point call as this
+	method is already supposed to returned a wide character. 
 
 2005-01-19  Francois Dumont  <dums@stlport...>
 

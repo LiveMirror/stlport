@@ -3,7 +3,5 @@
 
 COMPILER_NAME=vc70
 
-INCLUDES=$(INCLUDES) /I "$(STLPORT_DIR)/src" /FI "vc_warning_disable.h"
-
 !include nmake-vc-common.mak
 

@@ -2,8 +2,8 @@
 MSVC_DIR = c:\Program Files\Microsoft Visual Studio 8\VC
 !endif
 
-CFLAGS_COMMON = /nologo /W3 /GR /EHsc
-CXXFLAGS_COMMON = /nologo /W3 /GR /EHsc
+CFLAGS_COMMON = /nologo /W4 /GR /EHsc
+CXXFLAGS_COMMON = /nologo /W4 /GR /EHsc
 
 OPT_REL = $(OPT_REL) /GL
 
