@@ -33,7 +33,7 @@
 // #endif
 
 #if !defined(_STLP_DEBUG) && ! defined (_STLP_ASSERTIONS)
-#  if !(defined(__APPLE__) && ((__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3))))
+#  if !defined(__APPLE__) || !defined(__GNUC__) || (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ < 3))
 #    define _STLP_ASSERTIONS 1
 #  endif
 #endif
