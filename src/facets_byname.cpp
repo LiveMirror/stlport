@@ -1005,7 +1005,7 @@ void _Catalog_locale_map::insert(int key, const locale& L)
   _STLP_TRY {
     typedef ctype<_Char> wctype;
     wctype& wct = (wctype &)use_facet<wctype>(L);
-    wctype* zz;
+    wctype* zz = 0;
     if (typeid(&wct) != typeid(zz)) {
       if (!M)
         M = new hash_map<int, locale, hash<int>, equal_to<int> >;
