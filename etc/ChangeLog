@@ -5,6 +5,10 @@ The following changes were made in 5.0 since 4.5.3 release:
   	classic iostreams headers moved to "classic_iostreams" subdirectory
 
 	* version numbers bumped
+
+	* iostreams ported to EMX (gcc on OS/2) (Thanks Martin Schaffoener)
+
+	* iostreams ported to CRAY Unicos C90, T90, and J90 (Thanks Geir Johansen)
 	
 	* stl_sunpro.h : fixed mbstate definition for SUN 4.2 (thanks  lengzq)
 

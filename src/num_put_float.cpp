@@ -67,11 +67,15 @@ typedef long double max_double_type;
 
 # include <cstdlib>
 
+//#if defined(_CRAY)
+//# include <stdlib.h>
+//#endif
+
 #if defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__) || defined (__DJGPP)  || defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
 # include <float.h>
 #endif
 
-#if defined(__MRC__) || defined(__SC__)		//*TY 02/24/2000 - added support for MPW
+#if defined(__MRC__) || defined(__SC__)	|| defined(_CRAY)	//*TY 02/24/2000 - added support for MPW
 # include <fp.h>
 #endif
 
@@ -220,7 +224,8 @@ inline bool _Stl_is_inf(double x)        { return isinf(x); }
 // inline bool _Stl_is_neg_inf(double x)    { return isinf(x) < 0; }  
 inline bool _Stl_is_neg_inf(double x)    { return isinf(x) && x < 0; }
 #elif defined(__unix) && !defined(__FreeBSD__)  && !defined(__NetBSD__) \
-      && !defined(__APPLE__)  && !defined(__DJGPP) && !defined(__osf__)
+      && !defined(__APPLE__)  && !defined(__DJGPP) && !defined(__osf__) \
+      && !defined(_CRAY)
 inline bool _Stl_is_nan_or_inf(double x) { return IsNANorINF(x); }
 inline bool _Stl_is_inf(double x)        { return IsNANorINF(x) && IsINF(x); }
 inline bool _Stl_is_neg_inf(double x)    { return (IsINF(x)) && (x < 0.0); }
@@ -259,6 +264,18 @@ inline bool _Stl_is_nan_or_inf  (double x) { return _fp_isINF(x) || _fp_isNAN(x)
 inline bool _Stl_is_inf         (double x) { return _fp_isINF(x); }
 inline bool _Stl_is_neg_inf     (double x) { return _fp_isINF(x) && x < 0; }
 inline bool _Stl_is_neg_nan     (double x) { return _fp_isNAN(x) && x < 0; }
+#elif defined(_CRAY)
+ #if defined(_CRAYIEEE)
+inline bool _Stl_is_nan_or_inf(double x) { return isnan(x) || isinf(x); }
+inline bool _Stl_is_inf(double x)        { return isinf(x); }
+inline bool _Stl_is_neg_inf(double x)    { return isinf(x) && signbit(x); }
+inline bool _Stl_is_neg_nan(double x)    { return isnan(x) && signbit(x); }
+ #else
+inline bool _Stl_is_nan_or_inf(double x) { return false; }
+inline bool _Stl_is_inf(double x)        { return false; }
+inline bool _Stl_is_neg_inf(double x)    { return false; }
+inline bool _Stl_is_neg_nan(double x)    { return false; }
+ #endif
 #elif ! defined (USE_SPRINTF_INSTEAD)
 # define USE_SPRINTF_INSTEAD
 #endif
@@ -355,7 +372,7 @@ inline bool _Stl_is_neg_nan     (double x) { return _fp_isNAN(x) && x < 0; }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { LOCK_CVT RETURN_CVT(fcvt, x, n, pt, sign, buf) }
 # endif
-#elif defined (__unix)  && !defined(__FreeBSD__)  && !defined(__NetBSD__) && !defined(__APPLE__)
+#elif defined (__unix)  && !defined(__FreeBSD__)  && !defined(__NetBSD__) && !defined(__APPLE__) && !defined(_CRAY)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return ecvt_r(x, n, pt, sign, buf); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
@@ -388,7 +405,7 @@ inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
 inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
 { return _fp_fcvt(x, n, pt, sign, buf); }
 # endif
-#elif defined (__MRC__) || defined(__SC__)
+#elif defined (__MRC__) || defined(__SC__) || defined(_CRAY)
 inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* )
 { return ecvt( x, n, pt, sign ); }
 inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* )

@@ -35,7 +35,9 @@
 extern "C" {
 // open/close/read/write
 #  include <sys/stat.h>           // For stat
+#if !defined (_CRAY)
 #  include <sys/mman.h>           // For mmap
+#endif
 
 //  on HP-UX 11, this one contradicts with pthread.h on pthread_atfork, unless we unset this
 #  if defined (__hpux) && defined (__GNUC__)
@@ -370,7 +372,7 @@ _Filebuf_base::_Filebuf_base()
     _M_should_close(false)
 {
   if (!_M_page_size)
-#if defined (_STLP_UNIX)  && !defined(__DJGPP)
+#if defined (_STLP_UNIX)  && !defined(__DJGPP) && !defined(_CRAY)
 #  if defined (__APPLE__)
    {
    int mib[2];
@@ -381,7 +383,7 @@ _Filebuf_base::_Filebuf_base()
    sysctl(mib, 2, &pagesize, &len, NULL, 0);
    _M_page_size = pagesize;
    }
-# elif defined(__DJGPP)
+# elif defined(__DJGPP) && defined(_CRAY)
    _M_page_size = BUFSIZ;
 #  else
   _M_page_size = sysconf(_SC_PAGESIZE);
@@ -986,7 +988,7 @@ streamoff _Filebuf_base::_M_seek(streamoff offset, ios_base::seekdir dir)
 // the memory-mapped file and the file position is set to offset.
 void* _Filebuf_base::_M_mmap(streamoff offset, streamoff len) {
   void* base;
-#if defined (_STLP_UNIX) && !defined(__DJGPP)
+#if defined (_STLP_UNIX) && !defined(__DJGPP) && !defined(_CRAY)
   base = MMAP(0, len, PROT_READ, MAP_PRIVATE, _M_file_id, offset);
   if (base != (void*)MAP_FAILED) {
     if (LSEEK(_M_file_id, offset + len, SEEK_SET) < 0) {
@@ -1029,7 +1031,7 @@ void* _Filebuf_base::_M_mmap(streamoff offset, streamoff len) {
 
 void _Filebuf_base::_M_unmap(void* base, streamoff len) {
   // precondition : there is a valid mapping at the moment
-#if defined (_STLP_UNIX)  && !defined(__DJGPP)
+#if defined (_STLP_UNIX)  && !defined(__DJGPP) && !defined(_CRAY)
   munmap((char*)base, len);
 #elif defined (_STLP_USE_WIN32_IO)
   if ( base != NULL )

@@ -9,7 +9,7 @@
 
 #   define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
 
-# if defined(__FreeBSD__) || defined (__hpux) || defined(__amigaos__)
+# if defined(__FreeBSD__) || defined (__hpux) || defined(__amigaos__) || ( defined(__OS2__) && defined(__EMX__) )
 #  define _STLP_NO_WCHAR_T
 # endif
 
@@ -290,7 +290,7 @@ typedef unsigned int wint_t;
 #   define _STLP_NATIVE_INCLUDE_PATH ../lang/cxx
 # elif (__GNUC__ >= 3) || (__GNUC_MINOR__ >= 97)
 #   define _STLP_NATIVE_INCLUDE_PATH ../include/g++-v3
-# elif ((__GNUC_MINOR__ >= 95 && __GNUC_MINOR__ < 97) && !( defined (__FreeBSD__) || defined (__NetBSD__) || defined(__sgi) ) )
+# elif ((__GNUC_MINOR__ >= 95 && __GNUC_MINOR__ < 97) && !( defined (__FreeBSD__) || defined (__NetBSD__) || defined(__sgi) || defined (__OS2__) ) )
 #   define _STLP_NATIVE_INCLUDE_PATH ../g++-3
 # elif (__GNUC_MINOR__ > 8) && (__GNUC_MINOR__ < 95) && (__GNUC__ < 3) && !defined( __Lynx__ )
 // this really sucks, as GNUpro does not really identifies itself, so we have to guess 

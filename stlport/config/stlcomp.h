@@ -103,6 +103,9 @@
 # elif defined (__FCC_VERSION)
 /* Fujutsu Compiler, v4.0 assumed */
 #  include <config/stl_fujitsu.h>
+# elif defined(_CRAY)
+/* Cray C++ 3.4 or 3.5 */
+#  include <config/stl_cray.h>
 # else
 /* Unable to identify the compiler, issue error diagnostic.
  * Edit <config/stl_mycomp.h> to set STLport up for your compiler. */
