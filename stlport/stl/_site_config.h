@@ -84,6 +84,16 @@
 
 
 /* 
+ * Uncomment _STLP_LEAKS_PEDANTIC to force deallocation of ALL allocated
+ * memory chunks. Normally not required. But if you worry about quazi-leaks
+ * (may be reported by some leaks detection tools), use
+ * _STLP_LEAKS_PEDANTIC. It should be used with _STLP_USE_NEWALLOC or
+ * _STLP_USE_MALLOC (see below).
+ */
+
+//#define _STLP_LEAKS_PEDANTIC 1
+
+/* 
  * Uncomment _STLP_USE_NEWALLOC to force allocator<T> to use plain "new"
  * instead of STLport optimized node allocator engine.
  */

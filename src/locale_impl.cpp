@@ -245,6 +245,24 @@ _Locale_impl::make_classic_locale() {
   return classic;
 }
 
+#ifdef _STLP_LEAKS_PEDANTIC
+void _Locale_impl::free_classic_locale() {
+  _Locale_impl* classic = __REINTERPRET_CAST(_Locale_impl*, &_S_classic_locale);
+  
+# ifndef _STLP_NO_WCHAR_T
+  typedef time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > _tmputw;
+  __REINTERPRET_CAST(_tmputw *, &_S_time_put_wchar)->~time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
+  typedef time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > _tmgetw;
+  __REINTERPRET_CAST(_tmgetw *, &_S_time_get_wchar)->~time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
+# endif
+
+  typedef time_put<char, ostreambuf_iterator<char, char_traits<char> > > _tmput;
+  __REINTERPRET_CAST(_tmput *, &_S_time_put_char)->~time_put<char, ostreambuf_iterator<char, char_traits<char> > >();
+  typedef time_get<char, istreambuf_iterator<char, char_traits<char> > > _tmget;
+  __REINTERPRET_CAST(_tmget *, &_S_time_get_char)->~time_get<char, istreambuf_iterator<char, char_traits<char> > >();
+  classic->~_Locale_impl();
+}
+#endif // _STLP_LEAKS_PEDANTIC
 
 //----------------------------------------------------------------------
 
@@ -362,6 +380,9 @@ locale::_S_uninitialize()
   if (ios_base::_Loc_init::_S_count == 0 )
     return;
   _Stl_loc_global_impl->decr();
+#ifdef _STLP_LEAKS_PEDANTIC
+  _Locale_impl::free_classic_locale();
+#endif // _STLP_LEAKS_PEDANTIC
   --ios_base::_Loc_init::_S_count;
 }
 
