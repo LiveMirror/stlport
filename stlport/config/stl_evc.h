@@ -90,6 +90,11 @@
 #   define _STLP_VENDOR_EXCEPT_STD std
 # endif
 
+// short string optimization bug under evc3, evc4 using ARM compiler
+# if defined (ARM) || defined(_ARM_)
+#  define _STLP_DONT_USE_SHORT_STRING_OPTIM
+# endif
+
 // Ensure _DEBUG is defined.
 # if defined(DEBUG) && !defined(_DEBUG)
 #  define _DEBUG

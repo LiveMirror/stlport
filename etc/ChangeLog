@@ -10,6 +10,9 @@
 	to check for a compiler bugs making the short string optim invalid thanks
 	Michael Fink.
 	
+	* stlport/config/stl_evc.h: Deactivation of the short string optimization
+	because of a compiler bug thanks Michael Fink.
+	
 2004-09-03  Francois Dumont  <dums@...>
 
 	* test/unit/fstream_test.cpp, sstream_test.cpp: Move of the test for the
