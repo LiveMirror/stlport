@@ -1,3 +1,13 @@
+2004-08-02  Francois Dumont <dums@...>
+
+	* stlport/stl/_string.h, _string.c, debug/_string.h: split of the basic_string
+	implementation into a class with no member templates and one with the member 
+	templates. Only the one with no member templates is exported. This is a MSVC6
+	bug workaround as this compiler try  to look for the class method symbols within
+	the dynamic library even if this symbol is the one of template method which is 
+	not exported. That also make the basic_string implementation more clean so it
+	has been adopted for all compilers.
+
 2004-07-29  Francois Dumont <dums@...>
 
 	* test/unit/locale_test.cpp: Fix bad macro _STLP_NO_EXCEPTIONS spelling 
