@@ -34,8 +34,6 @@
 #  define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)
 #endif
 
-# if defined (_STLP_USE_OWN_NAMESPACE) || !defined (_STLP_USE_NATIVE_STRING)
-
 # if defined (_STLP_NESTED_TYPE_PARAM_BUG)
 #  define __size_type__ size_t
 #  define size_type size_t
@@ -579,13 +577,13 @@ void _STLP_CALL _S_string_copy(const basic_string<_CharT,_Traits,_Alloc>& __s,
 }
 _STLP_END_NAMESPACE
 
-#undef basic_string // _string_fwd has to see clean basic_string
+//#undef basic_string // _string_fwd has to see clean basic_string
 
-#include <stl/_string_fwd.c>
+// #include <stl/_string_fwd.c>
 
-#if defined(_STLP_DEBUG) || defined(_STLP_MEMBER_TEMPLATES)
-#  define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)
-#endif
+//#if defined(_STLP_DEBUG) || defined(_STLP_MEMBER_TEMPLATES)
+//#  define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)
+//#endif
 
 # include <stl/_range_errors.h>
 
@@ -660,8 +658,6 @@ _STLP_END_NAMESPACE
 #  undef size_type
 #  undef iterator
 #endif
-
-#endif /* _STLP_USE_OWN_NAMESPACE || !_STLP_USE_NATIVE_STRING */
 
 #endif /*  _STLP_STRING_C */
 

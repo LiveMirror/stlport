@@ -22,8 +22,6 @@
 #  include <stl/_fstream.h>
 # endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 _STLP_BEGIN_NAMESPACE
 
 # if defined ( _STLP_NESTED_TYPE_PARAM_BUG )
@@ -743,7 +741,8 @@ _STLP_END_NAMESPACE
 # undef __BF_pos_type__
 # undef __BF_off_type__
 
-# endif /* defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) */
-
 #endif /* _STLP_FSTREAM_C */
 
+// Local Variables:
+// mode:C++
+// End:

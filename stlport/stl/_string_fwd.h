@@ -43,13 +43,17 @@ typedef basic_string<char, char_traits<char>, allocator<char> > string;
 typedef basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> > wstring;
 #  endif
 
-# ifdef _STLP_OWN_IOSTREAMS
+# ifndef _STLP_USE_NO_IOSTREAMS
 _STLP_DECLSPEC const char*  _STLP_CALL
 __get_c_string(const string& __str);
 # else
+
 template <class _CharT, class _Traits, class _Alloc>
 const char* _STLP_CALL
-__get_c_string(const basic_string<_CharT, _Traits, _Alloc>& __str);
+__get_c_string(const basic_string<_CharT,_Traits,_Alloc>& __str) {
+  return __str.c_str();
+}
+
 # endif
 
 _STLP_END_NAMESPACE

@@ -164,7 +164,7 @@ _Base_bitset<_Nw>::_M_do_find_next(size_t __prev,
 
 #if !defined (_STLP_NON_TYPE_TMPL_PARAM_BUG)
 
-#  if defined ( _STLP_USE_NEW_IOSTREAMS)
+#  if !defined ( _STLP_USE_NO_IOSTREAMS)
 
 template <class _CharT, class _Traits, size_t _Nb>
 basic_istream<_CharT, _Traits>& _STLP_CALL
@@ -215,48 +215,7 @@ operator<<(basic_ostream<_CharT, _Traits>& __os,
   return __os << __tmp;
 }
 
-#  elif !defined ( _STLP_USE_NO_IOSTREAMS )
-
-// (reg) For Watcom IO, this tells if ostream class is in .exe or in .dll
-template <size_t _Nb>
-_ISTREAM_DLL& _STLP_CALL
-operator>>(_ISTREAM_DLL& __is, bitset<_Nb>& __x) {
-  string __tmp;
-  __tmp.reserve(_Nb);
-
-  // In new templatized iostreams, use istream::sentry
-  if (__is.flags() & ios::skipws) {
-    char __c;
-    do 
-      __is.get(__c);
-    while (__is && isspace(__c));
-    if (__is)
-      __is.putback(__c);
-  }
-
-  for (size_t __i = 0; __i < _Nb; ++__i) {
-    char __c;
-    __is.get(__c);
-
-    if (!__is)
-      break;
-    else if (__c != '0' && __c != '1') {
-      __is.putback(__c);
-      break;
-    }
-    else
-      __tmp.push_back(__c);
-  }
-
-  if (__tmp.empty()) 
-    __is.clear(__is.rdstate() | ios::failbit);
-  else
-    __x._M_copy_from_string(__tmp, __STATIC_CAST(size_t,0), _Nb);
-
-  return __is;
-}
-
-#  endif /* _STLP_USE_NEW_IOSTREAMS */
+#  endif /* !_STLP_USE_NO_IOSTREAMS */
 
 #endif /* _STLP_NON_TYPE_TMPL_PARAM_BUG */
 

@@ -21,8 +21,6 @@
 
 // Define char_traits
 
-# if defined (_STLP_OWN_IOSTREAMS) || ! defined (_STLP_USE_NEW_IOSTREAMS)
-
 # if ! defined (_STLP_CSTDDEF)
 #  include <cstddef>
 # endif
@@ -31,7 +29,7 @@
 #  include <cstring>
 #endif
 
-#if defined (_STLP_UNIX) && defined (_STLP_HAS_NO_NEW_C_HEADERS)
+#ifdef __unix // defined (_STLP_UNIX) && defined (_STLP_HAS_NO_NEW_C_HEADERS)
 #include <sys/types.h>          // For off_t
 #endif /* __unix */
 
@@ -56,8 +54,6 @@
 
 _STLP_BEGIN_NAMESPACE
 
-# ifdef _STLP_OWN_IOSTREAMS
-
 template <class _Tp> class allocator;
 
 #define _STLP_NULL_CHAR_INIT(_ChT) _STLP_DEFAULT_CONSTRUCTED(_ChT)
@@ -65,10 +61,11 @@ template <class _Tp> class allocator;
 #if defined (__sgi) && defined (_STLP_HAS_NO_NEW_C_HEADERS) /* IRIX */
 typedef off64_t   streamoff;
 // #elif defined (__unix) && defined (_STLP_HAS_NO_NEW_C_HEADERS) /* Other version of UNIX */
-// typedef off_t     streamoff;
-#else /* __unix */
+# else
+typedef off_t     streamoff;
+//#else /* __unix */
 // boris : here, it's not ptrdiff_t as some Solaris systems have confusing definitions of these.
-typedef long streamoff;
+//typedef long streamoff;
 #endif /* _STLP_HAS_NO_NEW_C_HEADERS */
 
 typedef ptrdiff_t streamsize;
@@ -127,7 +124,6 @@ template <class _CharT, class _IntT> class __char_traits_base {
 public:
   typedef _CharT char_type;
   typedef _IntT int_type;
-#ifdef _STLP_USE_NEW_IOSTREAMS
   typedef streamoff off_type;
   typedef streampos pos_type;
 # ifdef _STLP_NO_MBSTATE_T
@@ -135,7 +131,6 @@ public:
 # else
   typedef mbstate_t state_type;
 # endif
-#endif /* _STLP_USE_NEW_IOSTREAMS */
 
   static void _STLP_CALL assign(char_type& __c1, const char_type& __c2) { __c1 = __c2; }
   static bool _STLP_CALL eq(const _CharT& __c1, const _CharT& __c2) 
@@ -219,13 +214,11 @@ class _STLP_CLASS_DECLSPEC char_traits<char>
 public:
   typedef char char_type;
   typedef int int_type;
-#ifdef _STLP_USE_NEW_IOSTREAMS
   typedef streamoff off_type;
 # ifndef _STLP_NO_MBSTATE_T
   typedef streampos pos_type;
   typedef mbstate_t state_type;
 # endif
-#endif /* _STLP_USE_NEW_IOSTREAMS */
 
   static char _STLP_CALL to_char_type(const int& __c) {
     return (char)(unsigned char)__c;
@@ -292,15 +285,8 @@ public:
   }
 # endif
 };
-# endif
 
 _STLP_END_NAMESPACE
-
-# else /* OWN_IOSTREAMS */
-
-#  include <wrap_std/iosfwd>
-
-# endif /* OWN_IOSTREAMS */
 
 #endif /* _STLP_CHAR_TRAITS_H */
 

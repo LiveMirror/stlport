@@ -43,11 +43,6 @@ public:
   typedef typename _DbgBase::traits_type traits_type;
   typedef typename _DbgBase::_Reserve_t _Reserve_t;
 
-#  ifdef _STLP_USE_NATIVE_STRING
-  // this typedef is being used for conversions
-  typedef typename _DbgBase::__std_string __std_string;
-#  endif
-
 public:                         // Constructor, destructor, assignment.
   basic_string() :
     _STLP_NON_DBG_STRING_BASE() {}
@@ -95,14 +90,6 @@ public:                         // Constructor, destructor, assignment.
     _STLP_NON_DBG_STRING_BASE(__f, __l) {
   }
 #  endif
-#endif
-
-#if defined (_STLP_USE_NATIVE_STRING)
-  // these conversion operations still needed for
-  // strstream, etc.
-  basic_string (const __std_string& __x)
-    : _STLP_NON_DBG_STRING_BASE(__x.begin(), __x.end()) {}
-  operator __std_string() const { return __std_string(this->data(), this->size()); }
 #endif
 
   // constructor from non-debug version

@@ -195,7 +195,7 @@ namespace std {
 #   define _STLP_NO_BAD_ALLOC 1
 #   define _STLP_NO_EXCEPTION_HEADER 1
 #   define _STLP_NO_NEW_NEW_HEADER 1
-#   define _STLP_NO_NEW_IOSTREAMS 1
+#   define _STLP_USE_NO_IOSTREAMS 1
 #  endif
 # endif
 

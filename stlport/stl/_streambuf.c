@@ -22,8 +22,6 @@
 # include <stl/_streambuf.h>
 #endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 _STLP_BEGIN_NAMESPACE
 //----------------------------------------------------------------------
 // Non-inline basic_streambuf<> member functions.
@@ -213,6 +211,8 @@ _STLP_EXPORT_TEMPLATE_CLASS basic_streambuf<wchar_t, char_traits<wchar_t> >;
 
 _STLP_END_NAMESPACE
 
-# endif /* EXPOSE */
-
 #endif
+
+// Local Variables:
+// mode:C++
+// End:

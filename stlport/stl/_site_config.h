@@ -15,14 +15,6 @@
 
 // compatibility section
 
-# if (defined (_STLP_NO_IOSTREAMS) || defined (_STLP_NO_NEW_IOSTREAMS)) && ! defined ( _STLP_NO_OWN_IOSTREAMS )
-#  define _STLP_NO_OWN_IOSTREAMS
-# endif
-
-# if !defined (_STLP_NO_OWN_IOSTREAMS) &&  ! defined (_STLP_OWN_IOSTREAMS)
-#  define _STLP_OWN_IOSTREAMS
-# endif
-
 # if (defined (_STLP_NOTHREADS) || defined (_STLP_NO_THREADS) || defined (NOTHREADS))
 #  if ! defined (_NOTHREADS)
 #   define _NOTHREADS
@@ -219,3 +211,7 @@
 
 # define _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 # define _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
+
+// Local Variables:
+// mode:C++
+// End:

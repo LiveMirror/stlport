@@ -22,8 +22,6 @@
 # include <stl/_num_get.h>
 #endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 #ifndef _STLP_LIMITS_H
 # include <stl/_limits.h>
 #endif
@@ -680,8 +678,6 @@ num_get<_CharT, _InputIter>::do_get(_InputIter __in, _InputIter __end, ios_base&
 #endif /* _STLP_LONG_LONG */
 
 _STLP_END_NAMESPACE
-
-# endif /* _STLP_EXPOSE_STREAM_IMPLEMENTATION */
 
 #endif /* _STLP_NUMERIC_FACETS_C */
 

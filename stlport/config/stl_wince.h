@@ -18,7 +18,6 @@
 #define _STLP_NO_TYPEINFO
 #define _STLP_NO_BAD_ALLOC
 #define _STLP_NO_NEW_NEW_HEADER
-#define _STLP_OWN_IOSTREAMS
 
 // tell other parts no threads are there
 #   define _STLP_NO_THREADS 1

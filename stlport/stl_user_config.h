@@ -31,36 +31,12 @@
 //              Features selection
 //==========================================================
 
-/* _STLP_NO_OWN_IOSTREAMS: 
- * __STL_NO_SGI_IOSTREAMS (in older versions)
- *  This is major configuration switch.
- *  Turn it on to disable use of SGI iostreams and use wrappers 
- *  around your compiler's iostreams, like before.
- *  Keep it off if you want to use  SGI iostreams 
- *  (Note that in this case you have to compile library in ../src
- *  and supply resulting library at link time).
- *
- */
-
-// # define   _STLP_NO_OWN_IOSTREAMS	1
-
-
-/* 
- * This macro only works in non-SGI iostreams mode.
- *
- * Uncomment to suppress using new-style streams even if they are
- * available.
- * Beware - _STLP_USE_OWN_NAMESPACE depends on this macro, too.
- * Do that only if you are absolutely sure backwards-compatible 
- * <iostream.h> is not actually a wrapper with <iostream>
- * Hint : In VC++ 6.x, they are not.
- */
-
-// #define   _STLP_NO_NEW_IOSTREAMS	1
-
 /*
  * Use this switch for embedded systems where no iostreams are available
  * at all. STLport own iostreams will also get disabled automatically then.
+ * You can either use STLport iostreams, or no iostreams.
+ * If you want iostreams, you have to compile library in ../src and supply resulting
+ * library at link time.
  */
 // # define _STLP_NO_IOSTREAMS 1
 

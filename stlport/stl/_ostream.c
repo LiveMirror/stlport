@@ -23,8 +23,6 @@
 # include <stl/_ostream.h>
 #endif
 
-#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 #if !defined (_STLP_INTERNAL_NUM_PUT_H)
 # include <stl/_num_put.h>            // For basic_streambuf and iterators
 #endif
@@ -448,6 +446,8 @@ basic_ostream<_CharT, _Traits>::write(const char_type* __s, streamsize __n) {
 
 _STLP_END_NAMESPACE
 
-#endif /* defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) */
-
 #endif /* _STLP_OSTREAM_C */
+
+// Local Variables:
+// mode:C++
+// End:

@@ -705,7 +705,7 @@ operator^(const bitset<_Nb>& __x,
   return __result;
 }
 
-#if defined ( _STLP_USE_NEW_IOSTREAMS )
+#ifndef  _STLP_USE_NO_IOSTREAMS
 
 #if ! (defined(_STLP_MSVC) || (_STLP_MSVC < 1300)) && ! (defined(__SUNPRO_CC) || (__SUNPRO_CC < 0x500))
 
@@ -823,20 +823,6 @@ operator<<(wostream& __os, const bitset<_Nb>& __x) {
 #endif /* _STLP_NO_WCHAR_T */
 
 #endif
-
-#elif ! defined ( _STLP_USE_NO_IOSTREAMS )
-
-// (reg) For Watcom IO, this tells if ostream class is in .exe or in .dll
-template <size_t _Nb>
-_ISTREAM_DLL& _STLP_CALL
-operator>>(_ISTREAM_DLL& __is, bitset<_Nb>& __x);
-
-template <size_t _Nb>
-inline _OSTREAM_DLL&  _STLP_CALL operator<<(_OSTREAM_DLL& __os, const bitset<_Nb>& __x) {
-  string __tmp;
-  __x._M_copy_to_string(__tmp);
-  return __os << __tmp;
-}
 
 #endif
 

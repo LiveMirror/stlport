@@ -22,8 +22,6 @@
 # include <stl/_ios.h>
 #endif
 
-#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 #ifndef _STLP_INTERNAL_STREAMBUF
 # include <stl/_streambuf.h>
 #endif
@@ -122,6 +120,8 @@ void basic_ios<_CharT, _Traits>::_M_handle_exception(ios_base::iostate __flag)
 
 _STLP_END_NAMESPACE
 
-#endif /* defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) */
-
 #endif /* _STLP_IOS_C */
+
+// Local Variables:
+// mode:C++
+// End:

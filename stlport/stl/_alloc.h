@@ -77,7 +77,7 @@
 #  define __RESTRICT
 # endif
 
-#if defined (_STLP_THREADS) || (defined(_STLP_OWN_IOSTREAMS) && ! defined (_STLP_NO_THREADS) && ! defined (_NOTHREADS) )
+#if defined (_STLP_THREADS)
 # define _STLP_NODE_ALLOCATOR_THREADS true
 #else
 # define _STLP_NODE_ALLOCATOR_THREADS false

@@ -343,7 +343,7 @@ _STLP_END_NAMESPACE
 
 #  undef _STLP_MANIP_INLINE
 
-#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_ostream.c>
 # endif
 

@@ -24,7 +24,7 @@
 
 #include <istream>
 
-#ifdef _STLP_USE_NEW_IOSTREAMS
+#ifndef _STLP_USE_NO_IOSTREAMS
 # include <sstream>
 #endif
 
@@ -76,7 +76,7 @@ void complex<_Tp>::_div(const _Tp& __z1_r,
 
 // I/O.
 
-#ifdef _STLP_USE_NEW_IOSTREAMS
+#ifndef _STLP_USE_NO_IOSTREAMS
 
 // Complex output, in the form (re,im).  We use a two-step process 
 // involving stringstream so that we get the padding right.  
@@ -131,8 +131,9 @@ operator>>(basic_istream<_CharT, _Traits>& __is, complex<_Tp>& __z) {
 }
 
 
-#else /* _STLP_USE_NEW_IOSTREAMS */
+#else /* _STLP_USE_NO_IOSTREAMS */
 
+/*
 template <class _Tp>
 ostream& _STLP_CALL operator<<(ostream& s, const complex<_Tp>& __z) {
   return s << "( " << __z._M_re <<", " << __z._M_im <<")";
@@ -157,9 +158,14 @@ istream& _STLP_CALL operator>>(istream& s, complex<_Tp>& a) {
   if (s) a = complex<_Tp>(re, im);
   return s;
 }
+*/
 
 #endif /* _STLP_USE_NEW_IOSTREAMS */
 
 _STLP_END_NAMESPACE
 
 #endif /* _STLP_COMPLEX_C */
+
+// Local Variables:
+// mode:C++
+// End:

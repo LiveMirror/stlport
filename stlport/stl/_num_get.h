@@ -202,8 +202,6 @@ _STLP_EXPORT_TEMPLATE_CLASS num_get<wchar_t, istreambuf_iterator<wchar_t, char_t
 #  endif /* _STLP_NO_WCHAR_T */
 # endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 extern bool  _STLP_CALL __valid_grouping(const char*, const char*, const char*, const char*);
 
 template <class _InputIter, class _Integer>
@@ -236,23 +234,22 @@ void  _STLP_CALL __string_to_float(const __iostring&, double&);
 # ifndef _STLP_NO_LONG_DOUBLE
 void  _STLP_CALL __string_to_float(const __iostring&, long double&);
 # endif
-# endif
 
 # if defined (__BORLANDC__) && defined (_RTLDLL)
 inline void _Stl_loc_init_num_get() {  
   num_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index = 12;
   num_get<char, const char*>::id._M_index = 13;
   
-# ifndef _STLP_NO_WCHAR_T
+#  ifndef _STLP_NO_WCHAR_T
   num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index = 31;
   num_get<wchar_t, const wchar_t*>::id._M_index = 32;
-# endif
+#  endif
 } 
-# endif
+# endif /*  __BORLANDC__ && _RTLDLL */
 
 _STLP_END_NAMESPACE
 
-#  if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && ! defined (_STLP_LINK_TIME_INSTANTIATION)
+#  if !defined (_STLP_LINK_TIME_INSTANTIATION)
 #   include <stl/_num_get.c>
 #  endif
 

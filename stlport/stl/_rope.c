@@ -769,22 +769,10 @@ class _Rope_find_char_char_consumer : public _Rope_char_consumer<_CharT> {
 };
 
 #if !defined (_STLP_USE_NO_IOSTREAMS)      
-#if defined (_STLP_USE_NEW_IOSTREAMS)
-  template<class _CharT, class _Traits>
-  // Here _CharT is both the stream and rope character type.
-#else
- template<class _CharT>
-  // Here _CharT is the rope character type.  Unlike in the
-  // above case, we somewhat handle the case in which it doesn't
-  // match the stream character type, i.e. char.
-#endif
+template<class _CharT, class _Traits>
 class _Rope_insert_char_consumer : public _Rope_char_consumer<_CharT> {
     private:
-#       if defined (_STLP_USE_NEW_IOSTREAMS)
     typedef basic_ostream<_CharT,_Traits> _Insert_ostream;
-#  else
-   typedef ostream _Insert_ostream;
-#  endif
   _Insert_ostream& _M_o;
     public:
   // _CharT* buffer;    // XXX not used
@@ -800,7 +788,6 @@ class _Rope_insert_char_consumer : public _Rope_char_consumer<_CharT> {
     // Returns true to continue traversal.
 };
       
-# if defined ( _STLP_USE_NEW_IOSTREAMS )
 #  if defined(__MRC__)||(defined(__SC__) && !defined(__DMC__))    //*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
   template<class _CharT, class _Traits>
   _Rope_insert_char_consumer<_CharT, _Traits>::  ~_Rope_insert_char_consumer() {}
@@ -815,35 +802,7 @@ class _Rope_insert_char_consumer : public _Rope_char_consumer<_CharT> {
     for (__i = 0; __i < __n; __i++) _M_o.put(__leaf[__i]);
     return true;
 }
-# else
-#  if defined(__MRC__)||(defined(__SC__) && !defined(__DMC__))    //*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
-  template<class _CharT>
-  _Rope_insert_char_consumer<_CharT>::  ~_Rope_insert_char_consumer() {}
-#  endif    //*TY 05/23/2000 - 
 
-  template<class _CharT>
-  bool _Rope_insert_char_consumer<_CharT>::operator()
-          (const _CharT* __leaf, size_t __n)
-  {
-    size_t __i;
-    //  We assume that formatting is set up correctly for each element.
-    for (__i = 0; __i < __n; __i++) _M_o << __leaf[__i];
-    return true;
-  }
-
-# if !defined (_STLP_NO_METHOD_SPECIALIZATION)
-_STLP_TEMPLATE_NULL
-inline bool 
-_Rope_insert_char_consumer<char>::operator()
-          (const char* __leaf, size_t __n)
-{
-    size_t __i;
-    for (__i = 0; __i < __n; __i++) _M_o.put(__leaf[__i]);
-    return true;
-}
-
-#endif /* _STLP_METHOD_SPECIALIZATION */
-#endif /* _STLP_USE_NEW_IOSTREAM */
 #endif /* if !defined (_STLP_USE_NO_IOSTREAMS) */
 
 template <class _CharT, class _Alloc>
@@ -911,12 +870,8 @@ inline bool _Rope_is_simple(wchar_t*) { return true; }
 # endif
 
 #if !defined (_STLP_USE_NO_IOSTREAMS)
-#if defined (_STLP_USE_NEW_IOSTREAMS)
   template<class _CharT, class _Traits>
   inline void _Rope_fill(basic_ostream<_CharT, _Traits>& __o, size_t __n)
-#else
-inline void _Rope_fill(ostream& __o, size_t __n)
-#endif
 {
     char __f = __o.fill();
     size_t __i;
@@ -924,25 +879,16 @@ inline void _Rope_fill(ostream& __o, size_t __n)
     for (__i = 0; __i < __n; __i++) __o.put(__f);
 }
     
-#if defined (_STLP_USE_NEW_IOSTREAMS)
   template<class _CharT, class _Traits, class _Alloc>
   basic_ostream<_CharT, _Traits>& operator<<
           (basic_ostream<_CharT, _Traits>& __o,
            const rope<_CharT, _Alloc>& __r)
-# else
-template<class _CharT, class _Alloc>
-ostream& operator<< (ostream& __o, const rope<_CharT, _Alloc>& __r)
-#endif
 {
     size_t __w = __o.width();
     bool __left = bool(__o.flags() & ios::left);
     size_t __pad_len;
     size_t __rope_len = __r.size();
-#   if defined (_STLP_USE_NEW_IOSTREAMS)
-      _Rope_insert_char_consumer<_CharT, _Traits> __c(__o);
-#   else
-    _Rope_insert_char_consumer<_CharT> __c(__o);
-#   endif
+    _Rope_insert_char_consumer<_CharT, _Traits> __c(__o);
     bool __is_simple = _Rope_is_simple((_CharT*)0);
     
     if (__rope_len < __w) {

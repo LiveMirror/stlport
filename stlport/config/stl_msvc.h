@@ -167,7 +167,7 @@
 # elif (_MSC_VER < 1100)
 // VC++ 4.2 and higher
 #  define _STLP_YVALS_H 1
-#  define _STLP_HAS_NO_NEW_IOSTREAMS 1
+#  define _STLP_USE_NO_IOSTREAMS 1
 # endif /* 1010 */
 
 # if defined (_STLP_MSVC) && ( _STLP_MSVC < 1200 ) /* before VC++ 6.0 */
@@ -180,9 +180,8 @@
 # endif
 
 # if defined (_STLP_MSVC) && ( _STLP_MSVC < 1100 )
-#  ifndef _STLP_NO_OWN_IOSTREAMS
-#   define _STLP_NO_OWN_IOSTREAMS
-#   undef  _STLP_OWN_IOSTREAMS
+#  ifndef _STLP_USE_NO_IOSTREAMS
+#   define _STLP_USE_NO_IOSTREAMS
 #  endif
 // #  define _STLP_NESTED_TYPE_PARAM_BUG 1
 // Debug mode does not work for 4.2

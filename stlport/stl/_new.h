@@ -8,17 +8,13 @@
 
 _STLP_BEGIN_NAMESPACE
 
-#  if defined (_STLP_NO_BAD_ALLOC)
+# if defined (_STLP_NO_BAD_ALLOC)
 
 struct nothrow_t {};
 
-# ifdef _STLP_OWN_IOSTREAMS
-extern _STLP_DECLSPEC const nothrow_t nothrow;
-# else
 #  define nothrow nothrow_t()
-# endif
 
-#  endif /* _STLP_NO_BAD_ALLOC */
+# endif /* _STLP_NO_BAD_ALLOC */
 
 /*
  * STLport own bad_alloc exception to be used if the native C++ library

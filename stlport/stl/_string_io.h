@@ -31,8 +31,6 @@
 // I/O.  
 _STLP_BEGIN_NAMESPACE
 
-#if defined (_STLP_USE_NEW_IOSTREAMS)
-
 template <class _CharT, class _Traits, class _Alloc>
 basic_ostream<_CharT, _Traits>& _STLP_CALL
 operator<<(basic_ostream<_CharT, _Traits>& __os, 
@@ -77,47 +75,6 @@ bool _STLP_CALL
 __stlp_string_fill(basic_ostream<_CharT, _Traits>& __os,
                   basic_streambuf<_CharT, _Traits>* __buf,
                   size_t __n);
-#elif ! defined ( _STLP_USE_NO_IOSTREAMS )
-
-// (reg) For Watcom IO, this tells if ostream class is in .exe or in .dll
-# ifdef _WPRTLINK
-typedef _WPRTLINK ostream _OSTREAM_DLL;
-typedef _WPRTLINK istream _ISTREAM_DLL;
-#else
-typedef           ostream _OSTREAM_DLL;
-typedef           istream _ISTREAM_DLL;
-#endif
-
-template <class _CharT, class _Traits, class _Alloc>
-_OSTREAM_DLL& _STLP_CALL operator<<(_OSTREAM_DLL& __os, 
-                    const basic_string<_CharT,_Traits,_Alloc>& __s);
-
-template <class _CharT, class _Traits, class _Alloc>
-_ISTREAM_DLL& _STLP_CALL operator>>(_ISTREAM_DLL& __is, basic_string<_CharT,_Traits,_Alloc>& __s);
-
-template <class _CharT, class _Traits, class _Alloc>    
-_ISTREAM_DLL& _STLP_CALL getline(_ISTREAM_DLL& __is,
-                 basic_string<_CharT,_Traits,_Alloc>& __s,
-                 _CharT __delim);
-
-
-template <class _CharT, class _Traits, class _Alloc>    
-inline _ISTREAM_DLL& _STLP_CALL 
-getline(_ISTREAM_DLL& __is, basic_string<_CharT,_Traits,_Alloc>& __s)
-{
-  return getline(__is, __s, '\n');
-}
-
-inline void  _STLP_CALL
-__stlp_string_fill(_OSTREAM_DLL& __os, streambuf* __buf, size_t __n)
-{
-  char __f = __os.fill();
-  size_t __i;
-
-  for (__i = 0; __i < __n; ++__i) __buf->sputc(__f);
-}
-
-#endif /* _STLP_USE_NEW_IOSTREAMS */
 
 _STLP_END_NAMESPACE
 

@@ -23,8 +23,6 @@
 # include <stl/_sstream.h>
 #endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 # if defined ( _STLP_NESTED_TYPE_PARAM_BUG )
 // no wint_t is supported for this mode
 # define __BSB_int_type__ int
@@ -541,8 +539,6 @@ _STLP_END_NAMESPACE
 
 # undef __BSB_int_type__
 # undef __BSB_pos_type__
-
-# endif /* EXPOSE */
 
 #endif /* _STLP_SSTREAM_C */
 

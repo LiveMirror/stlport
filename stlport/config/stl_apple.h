@@ -80,7 +80,6 @@ typedef int wint_t;
 
 # define _STLD _DBG	// to keep the length of generated symbols within the compiler limitation
 
-#define _STLP_OWN_IOSTREAMS
 #define _STLP_USE_STDIO_IO 1						//*TY 02/24/2000 - see also ; ref.[ file _fstream.h; line 36 ]
 #define _STLP_NO_THREADS							//*TY 12/17/2000 - multi-thread capability not explored, yet.
 #undef _REENTRANT									//*ty 11/24/2001 - to make sure no thread facility is activated
@@ -91,7 +90,6 @@ typedef int wint_t;
 #define _STLP_NO_BAD_ALLOC							// known limitation
 #define _STLP_HAS_NO_NEW_C_HEADERS					// known limitation
 #define _STLP_NO_NEW_NEW_HEADER						// known limitation
-#define _STLP_HAS_NO_NEW_IOSTREAMS					// known limitation
 #define _STLP_NO_NATIVE_MBSTATE_T					// known limitation
 #define _STLP_NO_NATIVE_WIDE_FUNCTIONS				// known limitation
 #define _STLP_NO_NATIVE_WIDE_STREAMS				// known limitation

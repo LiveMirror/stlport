@@ -65,11 +65,6 @@ public:
   typedef _DBG_iter<_Base, _Const_traits<value_type> > const_iterator;
   _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS;
 
-#  ifdef _STLP_USE_NATIVE_STRING
-  // this typedef is being used for conversions
-  typedef _STLP_VENDOR_STD::basic_string<_CharT,_Traits, 
-    _STLP_VENDOR_STD::allocator<_CharT> >  __std_string;
-#  endif
 public:                         // Constructor, destructor, assignment.
   typedef typename _Base::_Reserve_t _Reserve_t;
 
@@ -142,14 +137,6 @@ public:
     _ConstructCheck(__f, __l),
     _STLP_NON_DBG_STRING_BASE(__f._M_iterator, __l._M_iterator, __a), _M_iter_list(_Get_base()) {
   }
-#endif
-
-#if defined(_STLP_USE_NATIVE_STRING) && !defined(_STLP_MEMBER_TEMPLATES)
-  // these conversion operations still needed for
-  // strstream, etc.
-  basic_string (const __std_string& __x)
-    : _STLP_NON_DBG_STRING_BASE(__x.begin(), __x.end()), _M_iter_list(_Get_base()) {}
-  operator __std_string() const { return __std_string(this->data(), this->size()); }
 #endif
 
   // constructor from non-debug version

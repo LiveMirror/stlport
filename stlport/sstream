@@ -32,15 +32,8 @@
 #  pragma once
 # endif
 
-# if defined (_STLP_OWN_IOSTREAMS)
-
+# include <stl/_ioserr.h>
 # include <stl/_sstream.h>
-
-# elif !defined (_STLP_USE_NO_IOSTREAMS)
-
-# include <wrap_std/sstream>
-
-# endif
 
 # if (_STLP_OUTERMOST_HEADER_ID == 0x1059)
 #  include <stl/_epilog.h>

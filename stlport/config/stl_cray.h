@@ -26,9 +26,6 @@
 // Uncomment this if your compiler can't inline while(), for()
 #  define _STLP_LOOP_INLINE_PROBLEMS 1
 
-// Uncomment if native new-style iostreams are not available
-#define    _STLP_HAS_NO_NEW_IOSTREAMS	1
-
 // Uncomment this if your compiler does not support exceptions
 // Cray C++ supports exceptions when '-h exceptions' option is user;
 // therefore '-D_STLP_HAS_NO_EXCEPTIONS' must be used when '-h exceptions'

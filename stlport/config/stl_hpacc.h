@@ -54,7 +54,6 @@ static void _STLP_dummy_literal_3() { const char *p = "123456700000000000000089"
 #     define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
 #     define _STLP_VENDOR_GLOBAL_STD         1
 #     define _STLP_VENDOR_GLOBAL_CSTD        1
-#     define _STLP_HAS_NO_NEW_IOSTREAMS      1
 #     define _STLP_DONT_THROW_RANGE_ERRORS   1
 #     define _STLP_STATIC_CONST_INIT_BUG 1
 #if (__HP_aCC  < 12700)
@@ -99,7 +98,6 @@ static void _STLP_dummy_literal_3() { const char *p = "123456700000000000000089"
 #     define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
 #     define _STLP_VENDOR_GLOBAL_STD         1
 #     define _STLP_VENDOR_GLOBAL_CSTD        1
-#     define _STLP_HAS_NO_NEW_IOSTREAMS      1
 // Add the following in _site_config.h if "-Wc,-koenig_lookup,on" not used
 //#     define _STLP_NO_KOENIG_LOOKUP          1
 #     define _STLP_DONT_THROW_RANGE_ERRORS   1
@@ -126,7 +124,6 @@ typedef typename _STLP_dummy_type1:: _STLP_TEMPLATE rebind<t>::other _STLP_dummy
 #     define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
 #     define _STLP_VENDOR_GLOBAL_STD         1
 #     define _STLP_VENDOR_GLOBAL_CSTD        1
-#     define _STLP_HAS_NO_NEW_IOSTREAMS      1
 // comment if  "-Wc,-koenig_lookup,on" id used
 #     define _STLP_NO_KOENIG_LOOKUP          1
 #     define _STLP_DONT_THROW_RANGE_ERRORS   1
@@ -140,7 +137,6 @@ typedef typename _STLP_dummy_type1:: _STLP_TEMPLATE rebind<t>::other _STLP_dummy
 #   define _STLP_HAS_NO_NEW_C_HEADERS 1
 #endif
 
-#   define _STLP_HAS_NO_NEW_IOSTREAMS
 #   define _STLP_NO_QUALIFIED_FRIENDS       1
 // aCC bug ? need explicit args on constructors of partial specialized
 // classes
@@ -175,7 +171,6 @@ typedef typename _STLP_dummy_type1:: _STLP_TEMPLATE rebind<t>::other _STLP_dummy
 #  define _STLP_NO_BOOL 1
 // #  define _STLP_DONT_USE_BOOL_TYPEDEF 1
 #  define _STLP_NO_NEW_NEW_HEADER 1 
-#  define _STLP_HAS_NO_NEW_IOSTREAMS 1
 #  define _STLP_LIMITED_DEFAULT_TEMPLATES 1
 #  define _STLP_NO_SIGNED_BUILTINS
 #  define _STLP_HAS_NO_NAMESPACES 1

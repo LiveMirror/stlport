@@ -172,20 +172,6 @@
 #  define _STLP_USE_NO_IOSTREAMS
 # endif
 
-# if defined (_STLP_USE_NO_IOSTREAMS)
-#  undef _STLP_USE_NEW_IOSTREAMS
-# endif
-
-# if ( defined (_STLP_OWN_IOSTREAMS) || ! defined (_STLP_HAS_NO_NEW_IOSTREAMS)) \
-   && ! defined (_STLP_USE_NO_IOSTREAMS) && !defined (_STLP_USE_NEW_IOSTREAMS)
-#  define _STLP_USE_NEW_IOSTREAMS
-# endif
-
-# if defined (_STLP_NO_NEW_IOSTREAMS)
-#  undef _STLP_USE_NEW_IOSTREAMS
-#  undef _STLP_OWN_IOSTREAMS
-# endif
-
 /* Operating system recognition (basic) */
 # if defined (__unix) || defined (__linux__) || defined (__QNX__) || defined (_AIX)  || defined (__NetBSD__) || defined(__OpenBSD__) || defined (__Lynx__)
 #  define _STLP_UNIX 1
@@ -251,14 +237,6 @@
 # define _STLP_NATIVE_CPP_C_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_CPP_C_INCLUDE_PATH,header)
 #endif
 
-/* Some compilers have weird placement of old-style iostream headers */
-#if !defined ( _STLP_NATIVE_OLD_STREAMS_HEADER )
-# if !defined (_STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH)
-#  define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
-# endif
-# define _STLP_NATIVE_OLD_STREAMS_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH,header)
-#endif
-
 /* Some compilers locate basic C++ runtime support headers (<new>, <typeinfo>, <exception>) in separate directory */
 #if !defined ( _STLP_NATIVE_CPP_RUNTIME_HEADER )
 # if !defined (_STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH)
@@ -277,7 +255,7 @@
 
 /* Use own namespace always if possible and not explicitly instructed otherwise */
 # if defined (_STLP_USE_NAMESPACES) && !defined (_STLP_BROKEN_USING_DIRECTIVE) && \
-     /* !defined (_STLP_OWN_IOSTREAMS) && */ !defined(_STLP_NO_OWN_NAMESPACE)
+     !defined(_STLP_NO_OWN_NAMESPACE)
 #  undef  _STLP_USE_OWN_NAMESPACE
 #  define _STLP_USE_OWN_NAMESPACE  1
 # else
@@ -549,16 +527,12 @@
 #  if defined (_STLP_WHOLE_NATIVE_STD)
 #    define  _STLP_IMPORT_VENDOR_STD 1
 #    undef   _STLP_MINIMUM_IMPORT_STD
-#  elif (defined (_STLP_USE_OWN_NAMESPACE) || ( defined (_STLP_DEBUG) && defined (_STLP_USE_NAMESPACES))) \
-       && defined (_STLP_USE_NEW_IOSTREAMS) && ! defined (_STLP_OWN_IOSTREAMS)
-#    define  _STLP_IMPORT_VENDOR_STD 1
 #  endif
 
 /* if using stlport:: namespace or if C library stuff is not in vendor's std::,
  * try importing 'em.
  * MSVC has ambiguity problem when we try to import C-style std:: stuff back into global namespace */
-#  if defined (_STLP_USE_NAMESPACES) && /* ! defined (_STLP_OWN_IOSTREAMS) && */ \
-   ( defined(_STLP_USE_OWN_NAMESPACE) || defined (_STLP_VENDOR_GLOBAL_CSTD))
+#  if defined (_STLP_USE_NAMESPACES) && (defined(_STLP_USE_OWN_NAMESPACE) || defined(_STLP_VENDOR_GLOBAL_CSTD))
 #    define  _STLP_IMPORT_VENDOR_CSTD 1
 #  endif
 
@@ -689,12 +663,6 @@ namespace _STL = _STLP_STD;
 #else
 #  define _STLP_SIMPLE_TYPE(T) T
 #endif
-
-/* if we are going to use native new iostreams, use native <string> and <stdexcept> */
-#  if defined (_STLP_USE_NEW_IOSTREAMS) && !defined (_STLP_OWN_IOSTREAMS)
-#   define _STLP_USE_NATIVE_STRING      1
-#   define _STLP_USE_NATIVE_STDEXCEPT   1
-# endif
 
 # ifndef _STLP_RAND48
 # define _STLP_NO_DRAND48
@@ -1017,7 +985,7 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define _STLP_IMPORT_TEMPLATE_KEYWORD
 # endif
 
-#ifdef _STLP_NO_OWN_IOSTREAMS
+#ifdef __STLP_USE_NO_IOSTREAMS
 /*
  * If we do not use own iostream there is no reason to use the export/import
  * techniques as there is no library to link with.
@@ -1090,16 +1058,10 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define _STLP_CALL
 #endif
 
-#ifdef _STLP_OWN_IOSTREAMS
+#ifndef _STLP_USE_NO_IOSTREAMS
 
 #  if defined (__DECCXX) && ! defined (__USE_STD_IOSTREAM)
 #    define __USE_STD_IOSTREAM
-#  endif
-
-/* We only need to expose details of streams implementation 
-   if we use non-standard i/o or are building STLport*/
-#  if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE) || !defined(_STLP_NO_CUSTOM_IO)
-#    define _STLP_EXPOSE_STREAM_IMPLEMENTATION 1
 #  endif
 
 /* We only need to expose details of global implementation if we are building STLport 
@@ -1109,10 +1071,10 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #    define _STLP_EXPOSE_GLOBALS_IMPLEMENTATION 1
 #  endif
 
-#else /* _STLP_OWN_IOSTREAMS */
+#else /* _STLP_USE_NO_IOSTREAMS */
 /* when we are not using SGI iostreams, we must expose globals, but not streams implementation */
 #  define _STLP_EXPOSE_GLOBALS_IMPLEMENTATION
-#endif /* _STLP_OWN_IOSTREAMS */
+#endif /* _STLP_USE_NO_IOSTREAMS */
 
 #ifdef _STLP_PARTIAL_SPEC_NEEDS_TEMPLATE_ARGS
 #  define _STLP_PSPEC2(t1,t2) < t1,t2 >
@@ -1128,19 +1090,9 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define _STLP_USE_PARTIAL_SPEC_WORKAROUND
 #endif
 
-#if defined (_STLP_OWN_IOSTREAMS)
+#ifndef _STLP_USE_NO_IOSTREAMS
 #  define _STLP_NEW_IO_NAMESPACE _STLP_STD
 #  define _STLP_NO_WIDE_STREAMS  _STLP_NO_WCHAR_T
-#else
-#  ifdef _STLP_USE_NEW_IOSTREAMS
-#    define _STLP_NEW_IO_NAMESPACE _STLP_VENDOR_STD
-#    ifdef _STLP_NO_NATIVE_WIDE_STREAMS
-#      define _STLP_NO_WIDE_STREAMS _STLP_NO_NATIVE_WIDE_STREAMS
-#    endif /* _STLP_NO_NATIVE_WIDE_STREAMS */
-#  else
-#    define _STLP_NO_WIDE_STREAMS
-#    define _STLP_NEW_IO_NAMESPACE
-#  endif
 #endif
 
 #ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
@@ -1153,21 +1105,10 @@ _TMPL inline bool _STLP_CALL operator>=(const _TP& __x, const _TP& __y) { return
 #  define _STLP_RELOPS_OPERATORS(_TMPL, _TP)
 # endif
 
-#if defined (_STLP_FULL_ADL_IMPLEMENTED) && defined (_STLP_NO_OWN_IOSTREAMS) && !defined (_STLP_USE_NO_IOSTREAMS)
-#  error Invalid configuration, STLport wrapper iostream mode can not be used with compiler \
-implementing full Argument Dependent Lookup. Please turn off _STLP_NO_OWN_IOSTREAMS switch \
-or turn on _STLP_USE_NO_IOSTREAMS if you are not using any component of the iostream library.
-#endif /* _STLP_FULL_ADL_IMPLEMENTED && _STLP_NO_OWN_IOSTREAMS */
-
 #if defined (_STLP_USE_TEMPLATE_EXPRESSION) && defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES)
 #  error Your compiler is not able to handle template expressions. \
 Please turn off _STLP_USE_TEMPLATE_EXPRESSION switch.
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION && _STLP_NO_MEMBER_TEMPLATE_CLASSES */
-
-#if defined (_STLP_DEBUG) && defined (_STLP_NO_OWN_IOSTREAMS) && !defined (_STLP_USE_NO_IOSTREAMS)
-#  error The STLport debug mode can only be used with own STLport iostream.
-#endif /* _STLP_DEBUG && _STLP_NO_OWN_IOSTREAMS */
-
 
 # if defined ( _STLP_USE_ABBREVS )
 #  include <stl/_abbrevs.h>

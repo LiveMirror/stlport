@@ -27,7 +27,7 @@
 
 # if !defined(_STLP_WINCE) && !defined(_STLP_WCE_EVC3)
 
-# if defined (__BORLANDC__) &&  (__BORLANDC__ >= 0x530 ) && ! defined (_STLP_OWN_IOSTREAMS)
+# if defined (__BORLANDC__) &&  (__BORLANDC__ >= 0x530 )
 /*  Borland defines this stuff here */
 #   include <iosfwd>
 # endif
@@ -90,7 +90,7 @@ namespace std
 }
 #  define _STLP_NO_MBSTATE_T 1
 #elif defined (__BORLANDC__)
-#  ifdef _STLP_OWN_IOSTREAMS
+#  ifndef _STLP_USE_NO_IOSTREAMS
 #   define _STLP_NO_NATIVE_MBSTATE_T
 #  endif
 #  define _STLP_WCHAR_BORLAND_EXCLUDE 1
@@ -106,7 +106,7 @@ namespace std
 
 # ifdef _STLP_IMPORT_VENDOR_CSTD
 
-#if defined (__SUNPRO_CC) && defined (_STLP_NO_OWN_IOSTREAMS) && !defined (_STLP_HAS_NO_NEW_C_HEADERS)
+#if defined (__SUNPRO_CC) && !defined (_STLP_HAS_NO_NEW_C_HEADERS)
 using _STLP_VENDOR_CSTD::wint_t; 
 #endif
 
@@ -254,3 +254,7 @@ _STLP_END_NAMESPACE
 
 #endif /* _STLP_CWCHAR */
 
+
+// Local Variables:
+// mode:C++
+// End:

@@ -22,8 +22,6 @@
 #  include <stl/_monetary.h>
 # endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 #ifndef _STLP_INTERNAL_IOS_H
 # include <stl/_ios.h>
 #endif
@@ -577,6 +575,8 @@ money_put<_CharT, _OutputIter>
 
 _STLP_END_NAMESPACE
 
-# endif /* EXPOSE */
-
 #endif /* _STLP_MONETARY_C */
+
+// Local Variables:
+// mode:C++
+// End:

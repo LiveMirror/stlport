@@ -22,8 +22,6 @@
 # include <stl/_istream.h>
 #endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 #ifndef _STLP_LIMITS_H
 # include <stl/_limits.h>
 #endif
@@ -1436,6 +1434,8 @@ _STLP_END_NAMESPACE
 # undef __BIS_pos_type__
 # undef __BIS_off_type__
 
-# endif /* defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) */
-
 #endif /* _STLP_ISTREAM_C */
+
+// Local Variables:
+// mode:C++
+// End:

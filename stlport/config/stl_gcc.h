@@ -188,7 +188,7 @@ typedef unsigned int wint_t;
 #if (__GNUC__ < 3)
 #  define _STLP_HAS_NO_NEW_C_HEADERS     1
 #  define _STLP_VENDOR_GLOBAL_CSTD       1
-#  define _STLP_HAS_NO_NEW_IOSTREAMS     1
+//#  define _STLP_HAS_NO_NEW_IOSTREAMS     1
 #  ifndef __HONOR_STD
 #    define _STLP_VENDOR_GLOBAL_EXCEPT_STD 1
 #  endif
@@ -313,8 +313,8 @@ __GIVE_UP_WITH_STL(GCC_272);
 
 #elif (__GNUC_MINOR__ < 8)
 
-#  define _STLP_NO_OWN_IOSTREAMS 1
-#  undef  _STLP_OWN_IOSTREAMS
+//#  define _STLP_NO_OWN_IOSTREAMS 1
+//#  undef  _STLP_OWN_IOSTREAMS
 #  define _STLP_NATIVE_INCLUDE_PATH ../g++-include
 
 /* tuning of static template data members workaround */

@@ -230,9 +230,6 @@
 // Uncomment this to disble at() member functions for containers
 // #  define   _STLP_NO_AT_MEMBER_FUNCTION 1
 
-// Uncomment if native new-style iostreams are not available
-// #define    _STLP_HAS_NO_NEW_IOSTREAMS	1
-
 // Define this if compiler lacks <exception> header
 // #  define _STLP_NO_EXCEPTION_HEADER 1
 

@@ -153,17 +153,6 @@ public:
 #endif
 
   typedef _String_reserve_t _Reserve_t;
-#if defined (_STLP_USE_NATIVE_STRING) && ! defined (_STLP_DEBUG)
-#  if (defined(__IBMCPP__) && (500 <= __IBMCPP__) && (__IBMCPP__ < 600) )
-  // this typedef is being used for conversions
-  typedef typename _STLP_VENDOR_STD::basic_string<_CharT,_Traits, 
-  typename _STLP_VENDOR_STD::allocator<_CharT> > __std_string;
-#  else
-  // this typedef is being used for conversions
-  typedef _STLP_VENDOR_STD::basic_string<_CharT,_Traits, 
-  _STLP_VENDOR_STD::allocator<_CharT> > __std_string;
-#  endif
-#endif
   
 public:                         // Constructor, destructor, assignment.
   typedef typename _String_base<_CharT,_Alloc>::allocator_type allocator_type;
@@ -233,18 +222,6 @@ public:                         // Constructor, destructor, assignment.
     _M_range_initialize(__f, __l);
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
-
-#if defined (_STLP_USE_NATIVE_STRING) && ! defined (_STLP_DEBUG)
-  // these conversion operations still needed for
-  // strstream, etc.
-  basic_string (const __std_string& __x)
-    : _String_base<_CharT,_Alloc>(allocator_type()) {
-    const _CharT* __s = __x.data();
-    _M_range_initialize(__s, __s + __x.size()); 
-  }
-  
-  operator __std_string() const { return __std_string(this->data(), this->size()); }
-#endif
 
   ~basic_string() {
     this->_M_destroy_range();
@@ -934,10 +911,6 @@ public:
   typedef typename _NonDbgBase::traits_type traits_type;
   typedef typename _NonDbgBase::_Reserve_t _Reserve_t;
 
-#  if defined (_STLP_USE_NATIVE_STRING) && !defined (_STLP_DEBUG)
-  typedef typename _NonDbgBase::__std_string __std_string;
-#  endif
-  
 public:                         // Constructor, destructor, assignment.
   basic_string()
     : _STLP_STRING_BASE_NAME() {}
@@ -990,18 +963,6 @@ public:                         // Constructor, destructor, assignment.
   }
 #  endif
 #endif /* !__MRC__ || (__SC__ && !__DMC__) */
-
-# if defined (_STLP_USE_NATIVE_STRING) && ! defined (_STLP_DEBUG)
-  // these conversion operations still needed for
-  // strstream, etc.
-  basic_string (const __std_string& __x)
-    : _STLP_STRING_BASE_NAME(allocator_type()) {
-    const _CharT* __s = __x.data();
-    _Base::_M_range_initialize(__s, __s + __x.size()); 
-  }
-  
-  operator __std_string() const { return __std_string(this->data(), this->size()); }
-# endif
 
   _Self& operator=(const _Self& __s) {
     _Base::operator=(__s);
@@ -1788,8 +1749,7 @@ _STLP_END_NAMESPACE
 
 #include <stl/_string_operators.h>
 
-#if (defined(_STLP_NO_OWN_IOSTREAMS) || defined (_STLP_USE_NO_IOSTREAMS) || defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)) && \
-    !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if /* (defined(_STLP_NO_OWN_IOSTREAMS) || defined(_STLP_USE_NO_IOSTREAMS)) && */ !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_string.c>
 #endif
 

@@ -22,8 +22,6 @@
 # include <stl/_num_put.h>
 #endif
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 #ifndef _STLP_LIMITS_H
 # include <stl/_limits.h>
 #endif
@@ -557,8 +555,6 @@ num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT /*__
 }
 
 _STLP_END_NAMESPACE
-
-# endif /* _STLP_EXPOSE_STREAM_IMPLEMENTATION */
 
 #endif /* _STLP_NUM_PUT_C */
 

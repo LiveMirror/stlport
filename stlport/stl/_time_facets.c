@@ -22,8 +22,6 @@
 # include <stl/_time_facets.h>
 #endif
 
-#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
-
 #ifndef _STLP_INTERNAL_NUM_PUT_H
 # include <stl/_num_put.h>
 #endif
@@ -518,7 +516,6 @@ time_put<_Ch,_OutputIter>::do_put(_OutputIter __s, ios_base& __f, _Ch     /* __f
 
 _STLP_END_NAMESPACE
 
-# endif /* defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) */
 #endif /* _STLP_TIME_FACETS_C */
 
 // Local Variables:
