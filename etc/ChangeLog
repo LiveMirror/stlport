@@ -5,6 +5,12 @@
 	all in stlp_std with 'using' directive. This is better than
 	solution from 2005-03-04 below.
 
+	* stlport/cmath: include cstdlib, due to declarations of abs
+	with integer types required in overload and then 'using'.
+
+	* src/complex.cpp, src/complex_exp.cpp, src/complex_trig.cpp: replace
+	macros that possible will be removed
+
 2005-03-05  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_construct.h: Simplification of the _Copy_Construct
