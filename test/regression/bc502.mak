@@ -136,6 +136,7 @@ OBJFILES = \
    ostmit.obj\
    iterswp1.obj\
    min1.obj\
+   memfunptr.obj \
    merge2.obj\
    merge1.obj\
    merge0.obj\

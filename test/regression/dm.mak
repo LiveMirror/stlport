@@ -26,7 +26,7 @@ SRCS = accum1.cpp accum2.cpp adjdiff0.cpp adjdiff1.cpp adjdiff2.cpp \
 	less.cpp lesseq.cpp lexcmp1.cpp lexcmp2.cpp list1.cpp \
 	list2.cpp list3.cpp list4.cpp logicand.cpp logicnot.cpp \
 	logicor.cpp lwrbnd1.cpp lwrbnd2.cpp map1.cpp max1.cpp max2.cpp \
-	maxelem1.cpp maxelem2.cpp merge0.cpp merge1.cpp merge2.cpp \
+	maxelem1.cpp maxelem2.cpp memfunptr.cpp merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp minelem1.cpp minelem2.cpp minus.cpp \
 	mismtch0.cpp mismtch1.cpp mismtch2.cpp mkheap0.cpp mkheap1.cpp \
 	mmap1.cpp mmap2.cpp modulus.cpp mset1.cpp mset3.cpp mset4.cpp \

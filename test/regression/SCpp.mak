@@ -126,6 +126,7 @@ Regression_Objects_68K  = ¶
 	"{ObjDir}max2.cpp.o" ¶
 	"{ObjDir}maxelem1.cpp.o" ¶
 	"{ObjDir}maxelem2.cpp.o" ¶
+	"{ObjDir}memfunptr.cpp.o" ¶
 	"{ObjDir}merge0.cpp.o" ¶
 	"{ObjDir}merge1.cpp.o" ¶
 	"{ObjDir}merge2.cpp.o" ¶

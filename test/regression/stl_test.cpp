@@ -215,6 +215,8 @@ int main(int argc, char** argv) {
         cout.flush();
         maxelem2_test(argc, argv);
         cout.flush();
+        mem_ptr_fun_test(argc, argv);
+        cout.flush();
         merge0_test(argc, argv);
         cout.flush();
         merge1_test(argc, argv);

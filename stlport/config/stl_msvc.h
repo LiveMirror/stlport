@@ -1,6 +1,6 @@
 // STLport configuration file
 // It is internal STLport header - DO NOT include it directly
-// Microsoft Visual C++ 4.0, 4.1, 4.2, 5.0, ICL
+// Microsoft Visual C++ 4.0, 4.1, 4.2, 5.0, 6.0, 7.0, 7.1, ICL
 
 
 // Common features for VC++ 4.0 and higher
@@ -90,7 +90,7 @@
 // #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
 #  define _STLP_NO_QUALIFIED_FRIENDS    1
 #  define _STLP_DONT_USE_BOOL_TYPEDEF 1
-# endif
+# endif /* _STLP_MSVC <= 1300 */
 
 # endif /* _STLP_MSVC */
 
