@@ -205,7 +205,6 @@ void VectorTest::vec_test_7()
   
   vit = v.insert(v.end(), 36);  // Insert after last element.
   CPPUNIT_ASSERT( *vit == 36 );
-  
 
   CPPUNIT_ASSERT( v.size() == 5 );
   CPPUNIT_ASSERT( v[0] == 0 );
@@ -227,6 +226,16 @@ void VectorTest::vec_test_7()
   CPPUNIT_ASSERT( v[5] == 25 );
   CPPUNIT_ASSERT( v[6] == 36 );
 
+  v.clear();
+  CPPUNIT_ASSERT( v.empty() );
+
+  v.insert(v.begin(), 5, 10);
+  CPPUNIT_ASSERT( v.size() == 5 );
+  CPPUNIT_ASSERT( v[0] == 10 );
+  CPPUNIT_ASSERT( v[1] == 10 );
+  CPPUNIT_ASSERT( v[2] == 10 );
+  CPPUNIT_ASSERT( v[3] == 10 );
+  CPPUNIT_ASSERT( v[4] == 10 );
 }
 
 void VectorTest::capacity()

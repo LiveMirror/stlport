@@ -301,6 +301,33 @@ void StringTest::insert()
   //Just a compile time test:
   str.insert(str.end(), int_vect.begin(), int_vect.end());
 #endif
+
+  string str0;
+  str0.insert(str0.begin(), 5, '0');
+  CPPUNIT_ASSERT( str0 == "00000" );
+
+  string str1;
+  str1.insert(0u, 2, '1');
+  CPPUNIT_ASSERT( str1 == "11" );
+
+  str0.insert(0, str1);
+  CPPUNIT_ASSERT( str0 == "1100000" );
+
+  string str2("2345");
+  str0.insert(str0.size(), str2, 1, 2);
+  CPPUNIT_ASSERT( str0 == "110000034" );
+
+  str1.insert(str1.begin() + 1, 2, '2');
+  CPPUNIT_ASSERT( str1 == "1221" );
+
+  str1.insert(2, "333333", 3);
+  CPPUNIT_ASSERT( str1 == "1233321" );
+
+  str1.insert(4, "4444");
+  CPPUNIT_ASSERT( str1 == "12334444321" );
+
+  str1.insert(str1.begin() + 6, '5');
+  CPPUNIT_ASSERT( str1 == "123344544321" );
 }
 
 void StringTest::replace()
