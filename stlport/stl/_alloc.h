@@ -218,8 +218,19 @@ enum {_ALIGN = 8, _ALIGN_SHIFT=3, _MAX_BYTES = 128};
 
 class _STLP_CLASS_DECLSPEC _Node_alloc_obj {
 public:
-    _Node_alloc_obj * _M_free_list_link;
+    _Node_alloc_obj * _M_next;
 };
+
+#if defined(_STLP_LEAKS_PEDANTIC) && defined(_STLP_USE_DYNAMIC_LIB)
+/*
+ * We can only do cleanup of the node allocator memory pool if we are
+ * sure that the STLport library is used as a shared one as it guaranties
+ * the unicity of the node allocator. Without that guaranty node allocator
+ * instances might exchange memory blocks making the implementation of
+ * a cleaning process much more complicated.
+ */
+#  define _STLP_DO_CLEAN_NODE_ALLOC
+#endif
 
 template <bool __threads, int __inst>
 class __node_alloc {
@@ -229,14 +240,29 @@ class __node_alloc {
 private:
   // Returns an object of size __n, and optionally adds to size __n free list.
   static void*  _STLP_CALL _S_refill(size_t __n);
-  // Allocates a chunk for nobjs of size size.  nobjs may be reduced
+  // Allocates a chunk for nobjs of size __p_size.  nobjs may be reduced
   // if it is inconvenient to allocate the requested number.
   static char*  _STLP_CALL _S_chunk_alloc(size_t __p_size, int& __nobjs);
   // Chunk allocation state.
-  static _Node_alloc_obj * _STLP_VOLATILE _S_free_list[_STLP_NFREELISTS]; 
+  static _Obj * _STLP_VOLATILE _S_free_list[_STLP_NFREELISTS]; 
+  // Start of the current free memory buffer
   static char* _S_start_free;
+  // End of the current free memory buffer
   static char* _S_end_free;
+  // Amount of total allocated memory
   static size_t _S_heap_size;
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+  // Methods to report alloc/dealloc calls to the counter system.
+  static size_t& _STLP_CALL _S_alloc_call(size_t incr = 1);
+  static void _STLP_CALL _S_dealloc_call();
+  // Free all the allocated chuncks of memory
+  static void _STLP_CALL _S_chunk_dealloc();
+  // Beginning of the linked list of allocated chunks of memory
+  static _Obj *_S_chunks;
+
+  //A helper class to guaranty the memory pool management:
+  friend struct _Node_alloc_helper;
+#endif
   static void * _STLP_CALL _M_allocate(size_t __n);
   /* __p may not be 0 */
   static void _STLP_CALL _M_deallocate(void *__p, size_t __n);
@@ -552,6 +578,8 @@ _STLP_END_NAMESPACE
 # if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_alloc.c>
 # endif
+
+#undef _STLP_DO_CLEAN_NODE_ALLOC
 
 #endif /* _STLP_INTERNAL_ALLOC_H */
 

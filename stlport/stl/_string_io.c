@@ -78,23 +78,14 @@ operator>>(basic_istream<_CharT, _Traits>& __is,
     basic_streambuf<_CharT, _Traits>* __buf = __is.rdbuf();
     typedef ctype<_CharT> _C_type;
 
-# if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200 ) || defined (__ICL)
-    const locale& __loc = __is.getloc();
-    const _C_type& _Ctype = use_facet(__loc , ( _C_type * ) 0, true);
-# elif defined (__SUNPRO_CC)
-    const locale& __loc = __is.getloc();
-    const _C_type& _Ctype = use_facet(__loc , ( _C_type * ) 0);
-# else
     const locale& __loc = __is.getloc();
     const _C_type& _Ctype = use_facet<_C_type>(__loc);
-# endif
     __s.clear();
     size_t __n = __is.width(0);
     if (__n == 0)
       __n = __STATIC_CAST(size_t,-1);
     else
-      __s.reserve(__n);
-    
+      __s.reserve(__n);    
 
     while (__n-- > 0) {
       typename _Traits::int_type __c1 = __buf->sbumpc();

@@ -1,4 +1,20 @@
-004-09-29  Petr Ovtchenkov  <ptr@island...>
+2004-09-29  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_io.c: Removal of the native library specific calls of 
+	use_facet, only the	STLport standard one is used.
+	
+	* stlport/stl/_alloc.h, _alloc.c, src/dll_main.cpp: Implementation of a clean
+	process for the node_alloc allocator. This clean is active only when 
+	_STLP_LEAKS_PEDANTIC is defined and you are using STLport as a dynamic
+	library under Win32.
+	
+	* src/explore: Updates of several makefiles to conform to the new library
+	and binary naming convention.
+
+	* src/c_locale_win32/c_locale_win32.c: fix of the message facet name management
+	that was generating a memory leak.
+
+2004-09-29  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/char_traits.h: WinCE seems don't declare off_t; thanks Michael Fink.
 

@@ -4,7 +4,7 @@
 SRCROOT := ../../src/explore
 COMPILER_NAME := gcc
 
-ALL_TAGS := release-shared stldbg-shared
+ALL_TAGS := release-shared dbg-shared stldbg-shared
 STLPORT_DIR := ../..
 include Makefile.inc
 include ${SRCROOT}/Makefiles/top.mak

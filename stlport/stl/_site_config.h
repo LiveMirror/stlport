@@ -84,7 +84,7 @@
  * _STLP_USE_MALLOC (see below).
  */
 
-//#define _STLP_LEAKS_PEDANTIC 1
+#define _STLP_LEAKS_PEDANTIC 1
 
 /* 
  * Uncomment _STLP_USE_NEWALLOC to force allocator<T> to use plain "new"

@@ -533,7 +533,7 @@ public:
 protected:
 
   void _M_clear() {
-    _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish);
+    _STLP_STD::_Destroy_Range(rbegin(), rend());
     this->_M_end_of_storage.deallocate(this->_M_start, this->_M_end_of_storage._M_data - this->_M_start);
   }
 

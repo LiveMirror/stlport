@@ -147,12 +147,12 @@ Operational environment:        Windows XP Professionnal 2002 SP1
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 6 SP5
 -----------------------------------------------------------------------
-Date:                           2004-09-17
+Date:                           2004-09-29
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (285 tests)
+Status (release-shared):        All pass (288 tests)
 Notes:                          
-Status (stldbg-shared):         All pass (285 tests)
+Status (stldbg-shared):         All pass (288 tests)
 Notes:
 
 -----------------------------------------------------------------------

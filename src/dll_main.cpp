@@ -211,6 +211,24 @@ template class _STLP_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char>
 
 _STLP_END_NAMESPACE
 
+#if defined(_STLP_LEAKS_PEDANTIC) && defined(_STLP_USE_DYNAMIC_LIB)
+/*
+ * This small helper class purpose is to guaranty that the node
+ * allocator memory pool will only be returned to the system
+ * once the STLport library will have been unloaded.
+ */
+static struct _Node_alloc_helper {
+  _Node_alloc_helper() {
+    _STLP_STD::__node_alloc<false,0>::_S_alloc_call();
+    _STLP_STD::__node_alloc<true,0>::_S_alloc_call();
+  }
+  ~_Node_alloc_helper() {
+    _STLP_STD::__node_alloc<false,0>::_S_dealloc_call();
+    _STLP_STD::__node_alloc<true,0>::_S_dealloc_call();
+  }
+} _Node_alloc_helper_inst;
+#endif
+
 #define FORCE_SYMBOL extern
 
 # if defined (_WIN32) && defined (_STLP_USE_DECLSPEC) && !defined (_STLP_USE_STATIC_LIB)

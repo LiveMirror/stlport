@@ -44,18 +44,20 @@
     }
 # endif
 
-
 // Specialised debug form of malloc which does not provide "false"
 // memory leaks when run with debug CRT libraries.
 #if defined(_STLP_MSVC) && (_STLP_MSVC>=1020 && defined(_STLP_DEBUG_ALLOC)) && !defined (_STLP_WINCE) && !defined (_STLP_WCE)
 #  include <crtdbg.h>
 inline void* __stlp_chunk_malloc(size_t __bytes) { _STLP_CHECK_NULL_ALLOC(_malloc_dbg(__bytes, _CRT_BLOCK, __FILE__, __LINE__)); }
+inline void __stlp_chunck_free(void* __p) { _free_dbg(__p, _CRT_BLOCK); }
 #else	// !_DEBUG
 # ifdef _STLP_NODE_ALLOC_USE_MALLOC
 #  include <cstdlib>
 inline void* __stlp_chunk_malloc(size_t __bytes) { _STLP_CHECK_NULL_ALLOC(_STLP_VENDOR_CSTD::malloc(__bytes)); }
+inline void __stlp_chunck_free(void* __p) { _STLP_VENDOR_CSTD::free(__p); }
 # else
 inline void* __stlp_chunk_malloc(size_t __bytes) { return _STLP_STD::__stl_new(__bytes); }
+inline void __stlp_chunck_free(void* __p) { _STLP_STD::__stl_delete(__p); }
 # endif
 #endif	// !_DEBUG
 
@@ -190,16 +192,19 @@ __node_alloc<__threads, __inst>::_M_allocate(size_t __n) {
   /*REFERENCED*/
   _Node_Alloc_Lock<__threads, __inst> __lock_instance;
   // #       endif
-  void*  __r;
+  void *__r;
   _Obj * _STLP_VOLATILE * __my_free_list = _S_free_list + _S_FREELIST_INDEX(__n);
   // Acquire the lock here with a constructor call.
   // This ensures that it is released in exit or during stack
   // unwinding.
   if ( (__r  = *__my_free_list) != 0 ) {
-    *__my_free_list = ((_Obj*)__r) -> _M_free_list_link;
+    *__my_free_list = ((_Obj*)__r) -> _M_next;
   } else {
     __r = _S_refill(__n);
   }
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+  _S_alloc_call();
+#endif
   // lock is released here
   return __r;
 }
@@ -213,8 +218,12 @@ __node_alloc<__threads, __inst>::_M_deallocate(void *__p, size_t __n) {
   // #       endif /* _STLP_THREADS */
   // acquire lock
   _Obj * _STLP_VOLATILE * __my_free_list = _S_free_list + _S_FREELIST_INDEX(__n);
-  ((_Obj *)__p) -> _M_free_list_link = *__my_free_list;
+  ((_Obj *)__p) -> _M_next = *__my_free_list;
   *__my_free_list = (_Obj *)__p;
+
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+  _S_dealloc_call();
+#endif
   // lock is released here
 }
 
@@ -225,8 +234,7 @@ __node_alloc<__threads, __inst>::_M_deallocate(void *__p, size_t __n) {
 template <bool __threads, int __inst>
 char* _STLP_CALL
 __node_alloc<__threads, __inst>::_S_chunk_alloc(size_t _p_size, 
-						int& __nobjs)
-{
+						                                    int& __nobjs) {
   char* __result;
   size_t __total_bytes = _p_size * __nobjs;
   size_t __bytes_left = _S_end_free - _S_start_free;
@@ -234,68 +242,115 @@ __node_alloc<__threads, __inst>::_S_chunk_alloc(size_t _p_size,
   if (__bytes_left >= __total_bytes) {
     __result = _S_start_free;
     _S_start_free += __total_bytes;
-    return(__result);
-  } else if (__bytes_left >= _p_size) {
+    return __result;
+  }
+  
+  if (__bytes_left >= _p_size) {
     __nobjs = (int)(__bytes_left/_p_size);
     __total_bytes = _p_size * __nobjs;
     __result = _S_start_free;
     _S_start_free += __total_bytes;
-    return(__result);
-  } else {
-    size_t __bytes_to_get = 
-      2 * __total_bytes + _S_round_up(_S_heap_size >> 4);
-    // Try to make use of the left-over piece.
-    if (__bytes_left > 0) {
-      _Obj* _STLP_VOLATILE* __my_free_list =
-	_S_free_list + _S_FREELIST_INDEX(__bytes_left);
+    return __result;
+  }
 
-      ((_Obj*)_S_start_free) -> _M_free_list_link = *__my_free_list;
-      *__my_free_list = (_Obj*)_S_start_free;
+  // Try to make use of the left-over piece.
+  if (__bytes_left > 0) {
+    _Obj* _STLP_VOLATILE* __my_free_list =
+	    _S_free_list + _S_FREELIST_INDEX(__bytes_left);
+
+    ((_Obj*)_S_start_free) -> _M_next = *__my_free_list;
+    *__my_free_list = (_Obj*)_S_start_free;
+  }
+
+  size_t __bytes_to_get = 
+    2 * __total_bytes + _S_round_up(_S_heap_size >> 4)
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+    + sizeof(_Node_alloc_obj)
+#endif
+    ;
+
+  _S_start_free = (char*)__stlp_chunk_malloc(__bytes_to_get);
+  if (0 == _S_start_free) {
+    size_t __i;
+    _Obj* _STLP_VOLATILE* __my_free_list;
+    _Obj* __p;
+    // Try to do with what we have.  That can't hurt.
+    // We do not try smaller requests, since that tends
+    // to result in disaster on multi-process machines.
+    for (__i = _p_size; __i <= (size_t)_MAX_BYTES; __i += (size_t)_ALIGN) {
+	    __my_free_list = _S_free_list + _S_FREELIST_INDEX(__i);
+	    __p = *__my_free_list;
+	    if (0 != __p) {
+	      *__my_free_list = __p -> _M_next;
+	      _S_start_free = (char*)__p;
+	      _S_end_free = _S_start_free + __i;
+	      return _S_chunk_alloc(_p_size, __nobjs);
+	      // Any leftover piece will eventually make it to the
+	      // right free list.
+	    }
     }
+    _S_end_free = 0;	// In case of exception.
     _S_start_free = (char*)__stlp_chunk_malloc(__bytes_to_get);
-    if (0 == _S_start_free) {
-      size_t __i;
-      _Obj* _STLP_VOLATILE* __my_free_list;
-      _Obj* __p;
-      // Try to make do with what we have.  That can't
-      // hurt.  We do not try smaller requests, since that tends
-      // to result in disaster on multi-process machines.
-      for (__i = _p_size; __i <= (size_t)_MAX_BYTES; __i += (size_t)_ALIGN) {
-	__my_free_list = _S_free_list + _S_FREELIST_INDEX(__i);
-	__p = *__my_free_list;
-	if (0 != __p) {
-	  *__my_free_list = __p -> _M_free_list_link;
-	  _S_start_free = (char*)__p;
-	  _S_end_free = _S_start_free + __i;
-	  return(_S_chunk_alloc(_p_size, __nobjs));
-	  // Any leftover piece will eventually make it to the
-	  // right free list.
-	}
-      }
-      _S_end_free = 0;	// In case of exception.
-      _S_start_free = (char*)__stlp_chunk_malloc(__bytes_to_get);
     /*
-      (char*)malloc_alloc::allocate(__bytes_to_get);
-      */
+    (char*)malloc_alloc::allocate(__bytes_to_get);
+    */
 
-      // This should either throw an
-      // exception or remedy the situation.  Thus we assume it
-      // succeeded.
-    }
-    _S_heap_size += __bytes_to_get;
-    _S_end_free = _S_start_free + __bytes_to_get;
-    return(_S_chunk_alloc(_p_size, __nobjs));
+    // This should either throw an
+    // exception or remedy the situation.  Thus we assume it
+    // succeeded.
+  }
+
+  _S_heap_size += __bytes_to_get;
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+  ((_Obj*)_S_start_free)->_M_next = _S_chunks;
+  _S_chunks = ((_Obj*)_S_start_free);
+#endif
+  _S_end_free = _S_start_free + __bytes_to_get;
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+  _S_start_free += sizeof(_Node_alloc_obj);
+#endif
+  return _S_chunk_alloc(_p_size, __nobjs);
+}
+
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+template <bool __threads, int __inst>
+size_t& _STLP_CALL
+__node_alloc<__threads, __inst>::_S_alloc_call(size_t incr) {
+  static size_t _S_counter = 0;
+  _S_counter += incr;
+  return _S_counter;
+}
+
+template <bool __threads, int __inst>
+void _STLP_CALL
+__node_alloc<__threads, __inst>::_S_dealloc_call() {
+  size_t &counter = _S_alloc_call(0);
+  if (--counter == 0) {
+    _S_chunk_dealloc();
   }
 }
 
+/* We deallocate all the memory chunks      */
+/* We hold the allocation lock.             */
+template <bool __threads, int __inst>
+void _STLP_CALL
+__node_alloc<__threads, __inst>::_S_chunk_dealloc() {
+  _Obj *__pcur = _S_chunks, *__pnext;
+  while (__pcur != 0) {
+    __pnext = __pcur->_M_next;
+    __stlp_chunck_free(__pcur);
+    __pcur = __pnext;
+  }
+  _S_chunks = 0;
+}
+#endif
 
 /* Returns an object of size __n, and optionally adds to size __n free list.*/
-/* We assume that __n is properly aligned.                                */
-/* We hold the allocation lock.                                         */
+/* We assume that __n is properly aligned.                                  */
+/* We hold the allocation lock.                                             */
 template <bool __threads, int __inst>
 void* _STLP_CALL
-__node_alloc<__threads, __inst>::_S_refill(size_t __n)
-{
+__node_alloc<__threads, __inst>::_S_refill(size_t __n) {
   int __nobjs = 20;
   __n = _S_round_up(__n);
   char* __chunk = _S_chunk_alloc(__n, __nobjs);
@@ -311,18 +366,19 @@ __node_alloc<__threads, __inst>::_S_refill(size_t __n)
   /* Build free list in chunk */
   __result = (_Obj*)__chunk;
   *__my_free_list = __next_obj = (_Obj*)(__chunk + __n);
-  for (__i = 1; ; __i++) {
+  for (__i = 1; ; ++__i) {
     __current_obj = __next_obj;
     __next_obj = (_Obj*)((char*)__next_obj + __n);
     if (__nobjs - 1 == __i) {
-      __current_obj -> _M_free_list_link = 0;
+      __current_obj -> _M_next = 0;
       break;
     } else {
-      __current_obj -> _M_free_list_link = __next_obj;
+      __current_obj -> _M_next = __next_obj;
     }
   }
   return(__result);
 }
+
 
 # if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
 // malloc_alloc out-of-memory handling
@@ -357,6 +413,10 @@ char *__node_alloc<__threads, __inst>::_S_end_free = 0;
 template <bool __threads, int __inst>
 size_t __node_alloc<__threads, __inst>::_S_heap_size = 0;
 
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+template <bool __threads, int __inst>
+_Node_alloc_obj *__node_alloc<__threads, __inst>::_S_chunks = 0;
+#endif
 
 # else /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
 
@@ -370,12 +430,18 @@ __DECLARE_INSTANCE(__oom_handler_type, __malloc_alloc<0>::__oom_handler, =0);
 __DECLARE_INSTANCE(char *, _STLP_ALLOC_NOTHREADS::_S_start_free,=0);
 __DECLARE_INSTANCE(char *, _STLP_ALLOC_NOTHREADS::_S_end_free,=0);
 __DECLARE_INSTANCE(size_t, _STLP_ALLOC_NOTHREADS::_S_heap_size,=0);
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+__DECLARE_INSTANCE(_Node_alloc_obj *, _STLP_ALLOC_NOTHREADS::_S_chunks,=0);
+#endif
 __DECLARE_INSTANCE(_Node_alloc_obj * _STLP_VOLATILE,
                    _STLP_ALLOC_NOTHREADS::_S_free_list[_STLP_NFREELISTS],
                    ={0});
 __DECLARE_INSTANCE(char *, _STLP_ALLOC_THREADS::_S_start_free,=0);
 __DECLARE_INSTANCE(char *, _STLP_ALLOC_THREADS::_S_end_free,=0);
 __DECLARE_INSTANCE(size_t, _STLP_ALLOC_THREADS::_S_heap_size,=0);
+#ifdef _STLP_DO_CLEAN_NODE_ALLOC
+__DECLARE_INSTANCE(_Node_alloc_obj *, _STLP_ALLOC_THREADS::_S_chunks,=0);
+#endif
 __DECLARE_INSTANCE(_Node_alloc_obj * _STLP_VOLATILE,
                    _STLP_ALLOC_THREADS::_S_free_list[_STLP_NFREELISTS],
                    ={0});

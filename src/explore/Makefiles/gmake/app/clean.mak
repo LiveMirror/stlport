@@ -7,6 +7,6 @@ clobber::
 	@-rm -f ${PRG_STLDBG}
 
 distclean::
-	@-rm -f $(INSTALL_BIN_DIR)/$(PRGNAME)
-	@-rm -f $(INSTALL_BIN_DIR_DBG)/$(PRGNAME)
-	@-rm -f $(INSTALL_BIN_DIR_STLDBG)/$(PRGNAME)
+	@-rm -f $(INSTALL_BIN_DIR)/$(PRG)
+	@-rm -f $(INSTALL_BIN_DIR)/$(PRG_DBG)
+	@-rm -f $(INSTALL_BIN_DIR)/$(PRG_STLDBG)

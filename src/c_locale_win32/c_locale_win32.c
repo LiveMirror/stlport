@@ -494,9 +494,14 @@ extern "C" {
   }
 
   void* _Locale_messages_create(const char *name) {
+    char cname[_Locale_MAX_SIMPLE_NAME];
     _Locale_messages_t *lmes=(_Locale_messages_t*)malloc(sizeof(_Locale_messages_t));
     if(!lmes) return lmes;
     memset(lmes, 0, sizeof(_Locale_messages_t));
+
+    _Locale_extract_messages_name(name, cname);
+    if(__GetLCIDFromName(cname, &lmes->lcid, lmes->cp)==-1)
+      { free(lmes); return NULL; }
 
     return lmes;
   }
@@ -658,7 +663,8 @@ extern "C" {
   char* _Locale_extract_messages_name(const char* cname, char* buf) {
     if(cname[0] == 'L' && cname[1] == 'C' && cname[2] == '_')
       return strcpy(buf, "C");
-    return strcpy(buf, cname);
+    if(cname[0] == 'C' && cname[1] == 0) return strcpy(buf, cname);
+    return __TranslateToSystem(cname, buf);
   }
 
   char* _Locale_compose_name(char* buf,
@@ -1493,9 +1499,9 @@ char* __Extract_locale_name(const char* loc, int category, char* buf) {
     if(expr==NULL) return NULL;
     ++expr;
     len_name=strcspn(expr, ";");
-    len_name=len_name>_Locale_MAX_SIMPLE_NAME?\
-	  _Locale_MAX_SIMPLE_NAME:len_name;
-    strncpy(buf, expr, len_name);		buf[len_name]=0;
+    len_name=len_name>_Locale_MAX_SIMPLE_NAME?_Locale_MAX_SIMPLE_NAME
+                                             :len_name;
+    strncpy(buf, expr, len_name); buf[len_name]=0;
     return buf;
   }
   else
