@@ -1,3 +1,11 @@
+2005-03-28  Petr Ovtchenkov  <ptr@island...>
+
+	* src/num_put_float.cpp: in FreeBSD no *cvt* functions now, use sprintf;
+
+	* stlport/config/stl_gcc.h: in FreeBSD no math *l functions and llabs.
+
+	* test/unit/string_test.cpp: more test with assinment.
+
 2005-03-25  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stddef.h: fix typo in header id---this mistake prevent
