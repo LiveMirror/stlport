@@ -1,3 +1,13 @@
+2005-04-01  Francois Dumont  <dums@stlport...>
+
+	* stlport/errno.h: Add comments to explain the file code.
+	
+	* stlport/stl/_string_io.h: Yet an other fix to the i/o basic_string
+	operators that was not right under cygwin/mingwin.
+
+	* build/Makefiles/gmake/gcc.mak: Merge the 2 distinct cygmin blocks
+	in one and add -Wall and -Wsign-promo warnings.
+	
 2005-04-01  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/test_errno.cpp: fix test, errno may be non-zero without

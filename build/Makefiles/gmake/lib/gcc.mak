@@ -122,7 +122,7 @@ endif
 
 ifeq ($(OSNAME),cygming)
 OPT := 
-dbg-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT_DBG},--export-all-symbols,--disable-auto-import
+dbg-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT_DBG},--export-all-symbols
 stldbg-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT_STLDBG},--export-all-symbols
 release-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT},--export-all-symbols
 dbg-static:	LDFLAGS += -static ${LDSEARCH}

@@ -21,6 +21,10 @@
 #endif
 
 #if defined (errno)
+/* We are forced to undef errno otherwise the include of the native
+ * errno.h file would fail with a message like:
+ * unable to find file ../include/(errno_macro_replacement).h
+ */
 #  define _STLP_ERRNO_ALREADY_DEFINED
 #  undef errno
 #endif
@@ -29,6 +33,12 @@
 
 #if defined (errno) || defined (_STLP_ERRNO_ALREADY_DEFINED)
 #  if !defined (_STLP_ERRNO_ALREADY_DEFINED)
+/* If errno was already defined it means that STLport errno.h
+ * has already been included and __stlp_errno define. We do not 
+ * redefine it as the errno macro might not have been redefine
+ * in the case of a non reentrant native errno.h file (a common 
+ * case).
+ */
 inline int* __stlp_errno() {
   return &(errno);
 }
