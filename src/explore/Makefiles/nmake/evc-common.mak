@@ -67,9 +67,9 @@ COMPILE_rc_DBG = $(RC) $(RC_FLAGS_DBG)
 COMPILE_rc_STATIC_DBG = $(RC) $(RC_FLAGS_DBG)
 COMPILE_rc_STLDBG = $(RC) $(RC_FLAGS_STLDBG)
 COMPILE_rc_STATIC_STLDBG = $(RC) $(RC_FLAGS_STLDBG)
-LINK_cc_REL = $(LINK) /nologo $(LDFLAGS_REL)
-LINK_cc_DBG = $(LINK) /nologo /debug /pdb:"$(OUTPUT_DIR_DBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_DBG)
-LINK_cc_STLDBG = $(LINK) /nologo /debug /pdb:"$(OUTPUT_DIR_STLDBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_STLDBG)
+LINK_cc_REL = $(LINK) /nologo /incremental:no $(LDFLAGS_REL)
+LINK_cc_DBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(OUTPUT_DIR_DBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_DBG)
+LINK_cc_STLDBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(OUTPUT_DIR_STLDBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_STLDBG)
 
 CDEPFLAGS = /FD /E
 CCDEPFLAGS = /FD /E

@@ -15,16 +15,10 @@ OUTPUT_DIR_STLDBG      := $(PRE_OUTPUT_DIR)/shared-stlg$(EXTRA_DIRS)
 # file to store generated dependencies for make:
 DEPENDS_COLLECTION     := obj/$(TARGET_NAME)$(COMPILER_NAME)/.make.depend
 
-ifeq ($(COMPILER_NAME), vc6)
-OUTPUT_DIR_A           := $(PRE_OUTPUT_DIR)/static$(EXTRA_DIRS)
-OUTPUT_DIR_A_DBG       := $(PRE_OUTPUT_DIR)/static-g$(EXTRA_DIRS)
-OUTPUT_DIR_A_STLDBG    := $(PRE_OUTPUT_DIR)/static-stlg$(EXTRA_DIRS)
-else
 # I use the same catalog, as for shared:
 OUTPUT_DIR_A           := $(OUTPUT_DIR)
 OUTPUT_DIR_A_DBG       := $(OUTPUT_DIR_DBG)
 OUTPUT_DIR_A_STLDBG    := $(OUTPUT_DIR_STLDBG)
-endif
 
 INSTALL_LIB_DIR        ?= ${SRCROOT}/../../$(TARGET_NAME)lib
 INSTALL_LIB_DIR_DBG    ?= ${SRCROOT}/../../$(TARGET_NAME)lib

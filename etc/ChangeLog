@@ -1,3 +1,11 @@
+2004-09-21  Francois Dumont  <dums@...>
+
+	* stlport/stl/debug: Modification of the __check_range class in the more general
+	__check_construct. Now it also checks for null pointers in the string interface.
+	
+	* src/explore: Adoption of the new library naming convention for all Microsoft
+	compilers thanks Michael Fink
+	
 2004-09-20  Francois Dumont  <dums@...>
 
 	* src/explore/Makefiles/gmake/cygwin, mingw: Build configuration files merges

@@ -27,9 +27,10 @@ dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 
 ifeq ($(OSNAME),cygming)
-release-shared : LDLIBS = -lstlport_r50
-dbg-shared     : LDLIBS = -lstlport_d50
-stldbg-shared  : LDLIBS = -lstlport_stld50
+LIB_VERSION = ${LIBMAJOR}${LIBMINOR}
+release-shared : LDLIBS = -lstlport_r${LIB_VERSION}
+dbg-shared     : LDLIBS = -lstlport_d${LIB_VERSION}
+stldbg-shared  : LDLIBS = -lstlport_stld${LIB_VERSION}
 else
 release-shared : LDLIBS = -lstlport_gcc
 dbg-shared     : LDLIBS = -lstlport_gcc_debug

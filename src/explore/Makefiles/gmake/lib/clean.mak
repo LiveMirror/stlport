@@ -17,6 +17,14 @@ clobber::
 	@-rm -f ${A_NAME_OUT}
 	@-rm -f ${A_NAME_OUT_DBG}
 	@-rm -f ${A_NAME_OUT_STLDBG}
+ifeq ($(OSNAME), cygming)
+	@-rm -f ${LIB_NAME_OUT}
+	@-rm -f ${LIB_NAME_OUT_DBG}
+	@-rm -f ${LIB_NAME_OUT_STLDBG}
+	@-rm -f ${RES}
+	@-rm -f ${RES_DBG}
+	@-rm -f ${RES_STLDBG}
+endif
 
 distclean::
 	@-rm -f $(INSTALL_LIB_DIR)/$(SO_NAME)
