@@ -267,52 +267,63 @@ public:
   }
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM)
-  iterator insert(iterator __position, const _Tp& __x = _Tp()) {
+  iterator insert(iterator __pos, const _Tp& __x = _Tp()) {
 #else
-  iterator insert(iterator __position, const _Tp& __x) {
+  iterator insert(iterator __pos, const _Tp& __x) {
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _Check_Overflow(1);
-    return iterator(&_M_iter_list, _Base::insert(__position._M_iterator, __x));
+    return iterator(&_M_iter_list, _Base::insert(__pos._M_iterator, __x));
   }
 
 #if defined(_STLP_DONT_SUP_DFLT_PARAM)
-  iterator insert(iterator __position) {
-    return insert(__position, _STLP_DEFAULT_CONSTRUCTED(_Tp));
+  iterator insert(iterator __pos) {
+    return insert(__pos, _STLP_DEFAULT_CONSTRUCTED(_Tp));
   }
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
 #ifdef _STLP_MEMBER_TEMPLATES
   // Check whether it's an integral type.  If so, it's not an iterator.
   template <class _InputIterator>
-  void insert(iterator __position, 
+  void insert(iterator __pos, 
               _InputIterator __first, _InputIterator __last) {
+    typedef typename _AreSameUnCVTypes<_InputIterator, iterator>::_Ret _IsNonConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIterator, const_iterator>::_Ret _IsConstIterator;
+    typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _DoCheck;
     _STLP_DEBUG_CHECK(__check_range(__first,__last))
-#else /* _STLP_MEMBER_TEMPLATES */
-  void insert(iterator __position,
-              const_iterator __first, const_iterator __last) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
+    //Sequence requirements 23.1.1 Table 67:
+    _STLP_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()));
     size_type __old_capacity = this->capacity();
-    _Base::insert(__position._M_iterator,
-                  __first._M_iterator, __last._M_iterator);        
+    _Base::insert(__pos._M_iterator, __first, __last);  
+    _Compare_Capacity(__old_capacity);
+}
+#else /* _STLP_MEMBER_TEMPLATES */
+  void insert (iterator __pos, 
+               const value_type *__first, const value_type *__last) {
+    _STLP_DEBUG_CHECK(__check_ptr_range(__first,__last))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
+    size_type __old_capacity = this->capacity();
+    _Base::insert(__pos._M_iterator, __first, __last);        
     _Compare_Capacity(__old_capacity);
   }
 
-  void insert (iterator __position, 
-               const value_type *__first, const value_type *__last) {
-    _STLP_DEBUG_CHECK(__check_ptr_range(__first,__last))
-#endif /* _STLP_MEMBER_TEMPLATES */
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
+  void insert(iterator __pos,
+              const_iterator __first, const_iterator __last) {
+    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
+    //Sequence requirements 23.1.1 Table 67:
+    _STLP_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, __true_type()));
     size_type __old_capacity = this->capacity();
-    _Base::insert(__position._M_iterator, __first, __last);  
+    _Base::insert(__pos._M_iterator, __first._M_iterator, __last._M_iterator);  
     _Compare_Capacity(__old_capacity);
 }
+#endif /* _STLP_MEMBER_TEMPLATES */
 
-  void insert (iterator __position, size_type __n, const _Tp& __x){
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
+  void insert (iterator __pos, size_type __n, const _Tp& __x){
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _Check_Overflow(__n);
-    _Base::insert(__position._M_iterator, __n, __x);
+    _Base::insert(__pos._M_iterator, __n, __x);
   }
   
   void pop_back() {
@@ -320,11 +331,11 @@ public:
     _Invalidate_iterator(this->end());
     _Base::pop_back();
   }
-  iterator erase(iterator __position) {
-    _STLP_DEBUG_CHECK(_Dereferenceable(__position))
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _Invalidate_iterators(__position, end());
-    return iterator(&_M_iter_list,_Base::erase(__position._M_iterator));
+  iterator erase(iterator __pos) {
+    _STLP_DEBUG_CHECK(_Dereferenceable(__pos))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
+    _Invalidate_iterators(__pos, end());
+    return iterator(&_M_iter_list,_Base::erase(__pos._M_iterator));
   }
   iterator erase(iterator __first, iterator __last) {
     _STLP_DEBUG_CHECK(__check_range(__first,__last, this->begin(), this->end()))

@@ -33,6 +33,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(assign);
   CPPUNIT_TEST(mt);
   CPPUNIT_TEST(short_string_optim_bug);
+  CPPUNIT_TEST(compare);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -47,6 +48,7 @@ protected:
   void assign();
   void mt();
   void short_string_optim_bug();
+  void compare();
 
   static string func( const string& par )
   {
@@ -486,3 +488,36 @@ bool short_string_optim_bug_helper(std::string teststr)
    size_t ss = teststr.size();
    return (ss == 8);
 } 
+
+void StringTest::compare()
+{
+  string str1("abcdef");
+  string str2;
+
+  str2 = "abcdef";
+  CPPUNIT_ASSERT( str1.compare(str2) == 0 );
+  str2 = "abcde";
+  CPPUNIT_ASSERT( str1.compare(str2) > 0 );
+  str2 = "abcdefg";
+  CPPUNIT_ASSERT( str1.compare(str2) < 0 );
+
+  CPPUNIT_ASSERT( str1.compare("abcdef") == 0 );
+  CPPUNIT_ASSERT( str1.compare("abcde") > 0 );
+  CPPUNIT_ASSERT( str1.compare("abcdefg") < 0 );
+
+  str2 = "cde";
+  CPPUNIT_ASSERT( str1.compare(2, 3, str2) == 0 );
+  str2 = "cd";
+  CPPUNIT_ASSERT( str1.compare(2, 3, str2) > 0 );
+  str2 = "cdef";
+  CPPUNIT_ASSERT( str1.compare(2, 3, str2) < 0 );
+
+  str2 = "abcdef";
+  CPPUNIT_ASSERT( str1.compare(2, 3, str2, 2, 3) == 0 );
+  CPPUNIT_ASSERT( str1.compare(2, 3, str2, 2, 2) > 0 );
+  CPPUNIT_ASSERT( str1.compare(2, 3, str2, 2, 4) < 0 );
+
+  CPPUNIT_ASSERT( str1.compare(2, 3, "cdefgh", 3) == 0 );
+  CPPUNIT_ASSERT( str1.compare(2, 3, "cdefgh", 2) > 0 );
+  CPPUNIT_ASSERT( str1.compare(2, 3, "cdefgh", 4) < 0 );
+}

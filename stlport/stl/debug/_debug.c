@@ -73,13 +73,15 @@ __in_range_aux(const _Iterator1& __it, const _Iterator& __first,
 # endif
 
 template <class _Iterator>
-bool _STLP_CALL __check_range_aux(const _Iterator& __first, const _Iterator& __last, const __false_type& /*_IsIntegral*/) {
+bool _STLP_CALL __check_range_aux(const _Iterator& __first, const _Iterator& __last, 
+                                  const __false_type& /*_IsIntegral*/) {
   _STLP_VERBOSE_RETURN(__valid_range(__first,__last), _StlMsg_INVALID_RANGE )
   return true;
 }
 
 template <class _Integral>
-bool _STLP_CALL __check_range_aux(_Integral __first, _Integral __last, const __true_type& /*_IsIntegral*/) {
+bool _STLP_CALL __check_range_aux(_Integral __first, _Integral __last, 
+                                  const __true_type& /*_IsIntegral*/) {
   return true;
 }
 
@@ -108,7 +110,8 @@ bool _STLP_CALL  __check_range(const _Iterator& __first, const _Iterator& __last
 template <class _Tp>
 bool _STLP_CALL __check_ptr_range(const _Tp* __first, const _Tp* __last) {
   _STLP_VERBOSE_RETURN((__first != 0 || __last == 0), _StlMsg_INVALID_ARGUMENT)
-  _STLP_VERBOSE_RETURN(__valid_range(__first,__last,random_access_iterator_tag()), _StlMsg_INVALID_RANGE)
+  _STLP_VERBOSE_RETURN(__valid_range(__first, __last, random_access_iterator_tag()), 
+                       _StlMsg_INVALID_RANGE)
   return true;
 }
 

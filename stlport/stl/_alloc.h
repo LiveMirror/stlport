@@ -561,13 +561,14 @@ _STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<wchar_t*, wchar_t,allocator<wchar_
 # undef _STLP_NODE_ALLOCATOR_THREADS
 
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
-/*
-  * The allocator granted by STLport can all be fully moved without any specific
-  * move constructor as it is stateless:
-  */
 template <class _Tp>
-struct __move_traits<allocator<_Tp> > : __move_traits_POD
-{};
+struct __type_traits<allocator<_Tp> > {
+  typedef __true_type   has_trivial_default_constructor;
+  typedef __true_type   has_trivial_copy_constructor;
+  typedef __true_type   has_trivial_assignment_operator;
+  typedef __true_type   has_trivial_destructor;
+  typedef __false_type  is_POD_type;
+};
 
 template <class _Value, class _Tp, class _Alloc>
 struct __move_traits<_STLP_alloc_proxy<_Value, _Tp, _Alloc> > :

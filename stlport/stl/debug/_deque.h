@@ -270,51 +270,63 @@ public:                         // push_* and pop_*
 public:                         // Insert
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined (_STLP_NO_ANACHRONISMS)
-  iterator insert(iterator __position, const value_type& __x = _Tp()) {
+  iterator insert(iterator __pos, const value_type& __x = _Tp()) {
 #else
-  iterator insert(iterator __position, const value_type& __x) {
+  iterator insert(iterator __pos, const value_type& __x) {
 #endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _Invalidate_all();
-    return iterator(&_M_iter_list, _Base::insert(__position._M_iterator, __x));
+    return iterator(&_M_iter_list, _Base::insert(__pos._M_iterator, __x));
   }
 
 #if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined (_STLP_NO_ANACHRONISMS)
-  iterator insert(iterator __position) { 
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
+  iterator insert(iterator __pos) { 
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _Invalidate_all();
-    return iterator(&_M_iter_list, _Base::insert(__position._M_iterator));
+    return iterator(&_M_iter_list, _Base::insert(__pos._M_iterator));
   }
 #endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
-  void insert(iterator __position, size_type __n, const value_type& __x) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
+  void insert(iterator __pos, size_type __n, const value_type& __x) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     if (__n != 0) _Invalidate_all();
-    _Base::insert(__position._M_iterator, __n, __x);
+    _Base::insert(__pos._M_iterator, __n, __x);
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES  
   template <class _InputIterator>
-  void insert(iterator __position, _InputIterator __first, _InputIterator __last) {
+  void insert(iterator __pos, _InputIterator __first, _InputIterator __last) {
+    typedef typename _AreSameUnCVTypes<_InputIterator, iterator>::_Ret _IsNonConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIterator, const_iterator>::_Ret _IsConstIterator;
+    typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _DoCheck;
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    //Sequence requirements 23.1.1 Table 67:
+    _STLP_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()));
+    _Base::insert(__pos._M_iterator, __first, __last);
+    //dums: because of self insertion iterators must be invalidated after insertion.
+    if (__first != __last) _Invalidate_all();
+  }
 #else /* _STLP_MEMBER_TEMPLATES */
-  void insert(iterator __position,
-              const_iterator __first, const_iterator __last) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _STLP_DEBUG_CHECK(__check_range(__first, __last))
-    _Base::insert(__position._M_iterator, __first._M_iterator, __last._M_iterator);
-    //dums: because of self insertion iterators must be invalidated after insertion.
-    if (__first != __last) _Invalidate_all();
-  }
-  void insert(iterator __position,
+  void insert(iterator __pos,
               const value_type* __first, const value_type* __last) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _STLP_DEBUG_CHECK(__check_ptr_range(__first, __last))
-#endif /* _STLP_MEMBER_TEMPLATES */
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _Base::insert(__position._M_iterator, __first, __last);
+    _Base::insert(__pos._M_iterator, __first._M_iterator, __last._M_iterator);
     //dums: because of self insertion iterators must be invalidated after insertion.
     if (__first != __last) _Invalidate_all();
   }
+  void insert(iterator __pos,
+              const_iterator __first, const_iterator __last) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    //Sequence requirements 23.1.1 Table 67:
+    _STLP_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, __true_type()));
+    _Base::insert(__pos._M_iterator, __first._M_iterator, __last._M_iterator);
+    //dums: because of self insertion iterators must be invalidated after insertion.
+    if (__first != __last) _Invalidate_all();
+  }
+#endif /* _STLP_MEMBER_TEMPLATES */
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM)
   void resize(size_type __new_size, const value_type& __x = _Tp()) {

@@ -1695,6 +1695,22 @@ public:                         // Compare
               size_type __pos2, size_type __n2) const 
   { return _Base::compare(__pos1, __n1, __s, __pos2, __n2); }
 
+  int compare(const _CharT* __s) const {
+    _STLP_FIX_LITERAL_BUG(__s) 
+    return _Base::compare(__s);
+  }
+
+  int compare(size_type __pos1, size_type __n1, const _CharT* __s) const {
+    _STLP_FIX_LITERAL_BUG(__s)
+    return _Base::compare(__pos1, __n1, __s);
+  }
+
+  int compare(size_type __pos1, size_type __n1, const _CharT* __s,
+              size_type __n2) const {
+    _STLP_FIX_LITERAL_BUG(__s)
+    return _Base::compare(__pos1, __n1, __s, __n2);
+  }
+
 #  if defined(_STLP_USE_TEMPLATE_EXPRESSION)
 #    include <stl/_string_sum_methods.h>
 #  endif /* _STLP_USE_TEMPLATE_EXPRESSION */

@@ -18,7 +18,7 @@
  */
 
 #ifndef _STLP_DBG_ITERATOR_H
-# define _STLP_DBG_ITERATOR_H
+#define _STLP_DBG_ITERATOR_H
 
 # include <stl/_pair.h>
 # include <stl/_alloc.h>
@@ -153,24 +153,31 @@ public:
     return (_Container*)__stl_debugger::_Get_container_ptr(this); 
   }
 
-  void __increment() {
-    _STLP_DEBUG_CHECK(_Incrementable(*this,1,_Iterator_category()))
-    ++_M_iterator;
-  }
-  
-  void __decrement() {
-    _STLP_DEBUG_CHECK(_Incrementable(*this,-1,_Iterator_category()))
-    _Decrement(_M_iterator, _Iterator_category());
-  }
-
-  void __advance(difference_type __n) {
-    _STLP_DEBUG_CHECK(_Incrementable(*this,__n, _Iterator_category()))
-    _Advance(_M_iterator,__n, _Iterator_category());
-  }
+  void __increment();
+  void __decrement();
+  void __advance(ptrdiff_t __n);
 
 // protected:
   _Nonconst_iterator _M_iterator;
 };
+
+template <class _Container>
+inline void _DBG_iter_base<_Container>::__increment() {
+  _STLP_DEBUG_CHECK(_Incrementable(*this, 1, _Iterator_category()))
+  ++_M_iterator;
+}
+
+template <class _Container>
+inline void _DBG_iter_base<_Container>::__decrement() {
+  _STLP_DEBUG_CHECK(_Incrementable(*this, -1, _Iterator_category()))
+  _Decrement(_M_iterator, _Iterator_category());
+}
+
+template <class _Container>
+inline void _DBG_iter_base<_Container>::__advance(ptrdiff_t __n) {
+  _STLP_DEBUG_CHECK(_Incrementable(*this, __n, _Iterator_category()))
+  _Advance(_M_iterator, __n, _Iterator_category());
+}
 
 template <class _Container>
 ptrdiff_t operator-(const _DBG_iter_base<_Container>& __x,
@@ -181,8 +188,7 @@ ptrdiff_t operator-(const _DBG_iter_base<_Container>& __x,
 }
 
 template <class _Container, class _Traits>
-struct _DBG_iter_mid : public _DBG_iter_base<_Container>
-{
+struct _DBG_iter_mid : public _DBG_iter_base<_Container> {
   typedef _DBG_iter_mid<_Container, typename _Traits::_NonConstTraits> _Nonconst_self;
   typedef typename _Container::iterator        _Nonconst_iterator;
   typedef typename _Container::const_iterator  _Const_iterator;
@@ -205,10 +211,10 @@ public:
   typedef typename _Traits::reference  reference;
   typedef typename _Traits::pointer    pointer;
 
-private:
   typedef typename _Base::_Nonconst_iterator _Nonconst_iterator;
   typedef typename _Base::_Const_iterator _Const_iterator;
 
+private:
   typedef _DBG_iter<_Container, _Traits>     _Self;
   typedef _DBG_iter_mid<_Container, typename _Traits::_NonConstTraits> _Nonconst_mid;
 
@@ -235,22 +241,17 @@ public:
   
   // This allows conversions from iterator to const_iterator without being
   // redundant with the copy assignment operator below.
-  _Self& operator=(const _Nonconst_mid& __rhs)  
-  {
+  _Self& operator=(const _Nonconst_mid& __rhs) {
     (_Base&)*this = __rhs;
     return *this;
   }
 
-  _Self& operator=(const  _Self& __rhs) 
-  {
+  _Self& operator=(const  _Self& __rhs) {
     (_Base&)*this = __rhs;
     return *this;
   }
   
-  reference operator*() const {
-    _STLP_DEBUG_CHECK(_Dereferenceable(*this))
-    return *this->_M_iterator;
-  }
+  reference operator*() const;
 
   _STLP_DEFINE_ARROW_OPERATOR
   
@@ -294,6 +295,18 @@ public:
   }
   reference operator[](difference_type __n) const { return *(*this + __n); }
 };
+
+template <class _Container, class _Traits>
+inline
+#if defined (_STLP_NESTED_TYPE_PARAM_BUG)
+_STLP_TYPENAME_ON_RETURN_TYPE _Traits::reference
+#else
+_STLP_TYPENAME_ON_RETURN_TYPE _DBG_iter<_Container, _Traits>::reference
+#endif
+_DBG_iter<_Container, _Traits>::operator*() const {
+  _STLP_DEBUG_CHECK(_Dereferenceable(*this))
+  return *this->_M_iterator;
+}
 
 template <class _Container>
 inline bool 
@@ -347,10 +360,9 @@ operator!=(const _DBG_iter_base<_Container>& __x,
 template <class _Container, class _Traits>
 inline _DBG_iter<_Container, _Traits> 
 operator+(ptrdiff_t __n, const _DBG_iter<_Container, _Traits>& __it) {
-    _DBG_iter<_Container, _Traits> __tmp(__it);
-    return __tmp += __n;
+  _DBG_iter<_Container, _Traits> __tmp(__it);
+  return __tmp += __n;
 }
-
 
 /*
  * Helper classes to check iterator range validity at construction time.

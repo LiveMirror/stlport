@@ -196,56 +196,50 @@ public:
   }
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
-  iterator insert(iterator __position, const _Tp& __x = _Tp()) {
+  iterator insert(iterator __pos, const _Tp& __x = _Tp()) {
 #else
-  iterator insert(iterator __position, const _Tp& __x) {
+  iterator insert(iterator __pos, const _Tp& __x) {
 #endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
-    return iterator(&_M_iter_list,_Base::insert(__position._M_iterator, __x) );
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
+    return iterator(&_M_iter_list,_Base::insert(__pos._M_iterator, __x) );
   }
 
 #if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
-  iterator insert(iterator __position) { return insert(__position, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+  iterator insert(iterator __pos) { return insert(__pos, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
 #endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
-#ifdef _STLP_MEMBER_TEMPLATES
-
+#if defined (_STLP_MEMBER_TEMPLATES)
   template <class _InputIterator>
-  void insert(iterator __position, _InputIterator __first, _InputIterator __last) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _STLP_DEBUG_CHECK(__check_range(__first, __last))
-    
-# if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
+  void insert(iterator __pos, _InputIterator __first, _InputIterator __last) {
+#  if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     typedef typename _AreSameUnCVTypes<_InputIterator, iterator>::_Ret _IsListIterator;
     typedef typename _AreSameUnCVTypes<_InputIterator, const_iterator>::_Ret _IsListConstIterator;
     typedef typename _Lor2<_IsListIterator, _IsListConstIterator>::_Ret _DoCheck;
-    _STLP_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()))
-# endif
-    
-    _Base::insert(__position._M_iterator, __first, __last);
-  }
-
-#else
-
-  void insert(iterator __position, const _Tp* __first, const _Tp* __last) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
-    _STLP_DEBUG_CHECK(__check_ptr_range(__first, __last))
-    _Base::insert(__position._M_iterator, __first, __last);
-  }
-
-  void insert(iterator __position,
-              const_iterator __first, const_iterator __last) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
+#  endif 
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _STLP_DEBUG_CHECK(__check_range(__first, __last))
-    _STLP_STD_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, __true_type()))
-    _Base::insert(__position._M_iterator, __first._M_iterator, __last._M_iterator);
+    _STLP_STD_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()))
+    _Base::insert(__pos._M_iterator, __first, __last);
   }
-  
+#else
+  void insert(iterator __pos, const _Tp* __first, const _Tp* __last) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__first, __last))
+    _Base::insert(__pos._M_iterator, __first, __last);
+  }
+
+  void insert(iterator __pos,
+              const_iterator __first, const_iterator __last) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    _STLP_STD_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()))
+    _Base::insert(__pos._M_iterator, __first._M_iterator, __last._M_iterator);
+  }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
-  void insert(iterator __position, size_type __n, const _Tp& __x) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
-    _Base::insert(__position._M_iterator, __n, __x);    
+  void insert(iterator __pos, size_type __n, const _Tp& __x) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
+    _Base::insert(__pos._M_iterator, __n, __x);    
   }
 
   void pop_back() {
@@ -260,11 +254,11 @@ public:
     _Base::pop_front();
   }
 
-  iterator erase(iterator __position) {
-    _STLP_DEBUG_CHECK(_Dereferenceable(__position))
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
-    _Invalidate_iterator(__position);
-    return iterator(&_M_iter_list,_Base::erase(__position._M_iterator));
+  iterator erase(iterator __pos) {
+    _STLP_DEBUG_CHECK(_Dereferenceable(__pos))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
+    _Invalidate_iterator(__pos);
+    return iterator(&_M_iter_list,_Base::erase(__pos._M_iterator));
   }
   iterator erase(iterator __first, iterator __last) {
     _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
@@ -310,31 +304,31 @@ public:
   }
 
 public:
-  void splice(iterator __position, _Self& __x) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
-    _Base::splice(__position._M_iterator, __x);
+  void splice(iterator __pos, _Self& __x) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
+    _Base::splice(__pos._M_iterator, __x);
 # if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     // Std: 23.2.2.4:4
     __x._Invalidate_all();
 # endif
   }
 
-  void splice(iterator __position, _Self& __x, iterator __i) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
+  void splice(iterator __pos, _Self& __x, iterator __i) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_DEBUG_CHECK(_Dereferenceable(__i))
     _STLP_DEBUG_CHECK(__check_if_owner(&(__x._M_iter_list),__i))
-    _Base::splice(__position._M_iterator, __x, __i._M_iterator);
+    _Base::splice(__pos._M_iterator, __x, __i._M_iterator);
 # if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     // Std: 23.2.2.4:7
     __x._Invalidate_iterator(__i);
 # endif
   }
 
-  void splice(iterator __position, _Self& __x, iterator __first, iterator __last) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
+  void splice(iterator __pos, _Self& __x, iterator __first, iterator __last) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _STLP_DEBUG_CHECK(__check_range(__first, __last, __x.begin(), __x.end()))
-    _STLP_DEBUG_CHECK(this == &__x ? !__check_range(__position, __first, __last) : true)
-    _Base::splice(__position._M_iterator, __x, __first._M_iterator, __last._M_iterator);
+    _STLP_DEBUG_CHECK(this == &__x ? !__check_range(__pos, __first, __last) : true)
+    _Base::splice(__pos._M_iterator, __x, __first._M_iterator, __last._M_iterator);
 # if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     // Std: 23.2.2.4:12
     __x._Invalidate_iterators(__first, __last);

@@ -265,6 +265,7 @@ void SstreamTest::streambuf_output()
     CPPUNIT_ASSERT( ostr.str() == "0123456789" );
   }
 
+#if !defined (_STLP_NO_EXCEPTIONS)
   {
     //If the output stream buffer throws:
     istringstream in("01234567890123456789");
@@ -291,4 +292,5 @@ void SstreamTest::streambuf_output()
     CPPUNIT_ASSERT( in );
     CPPUNIT_ASSERT( ostr.str() == "01234567890123456789" );
   }
+#endif
 }

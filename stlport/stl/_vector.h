@@ -245,14 +245,14 @@ public:
     _M_initialize_aux(__first, __last, _Integral());
   }
   
-# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
+#  ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   _VECTOR_IMPL(_InputIterator __first, _InputIterator __last) :
     _Vector_base<_Tp, _Alloc>(allocator_type()) {
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_aux(__first, __last, _Integral());
   }
-# endif /* _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS */
+#  endif /* _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS */
 
 #else /* _STLP_MEMBER_TEMPLATES */
   _VECTOR_IMPL(const _Tp* __first, const _Tp* __last,
@@ -365,10 +365,89 @@ public:
   }
 
 private:
+  void _M_fill_insert_aux (iterator __pos, size_type __n, const _Tp& __x, const __true_type& /*_Movable*/);
+  void _M_fill_insert_aux (iterator __pos, size_type __n, const _Tp& __x, const __false_type& /*_Movable*/);
   void _M_fill_insert (iterator __pos, size_type __n, const _Tp& __x);
 
-#if defined ( _STLP_MEMBER_TEMPLATES)
+#if defined (_STLP_MEMBER_TEMPLATES)
+  template <class _ForwardIterator>
+  void _M_range_insert_realloc(iterator __pos,
+                               _ForwardIterator __first, _ForwardIterator __last,
+                               size_type __n) {
+#else
+  void _M_range_insert_realloc(iterator __pos,
+                               const_iterator __first, const_iterator __last,
+                               size_type __n) {
+#endif /* _STLP_MEMBER_TEMPLATES */
+    const size_type __old_size = size();
+    const size_type __len = __old_size + (max)(__old_size, __n);
+    pointer __new_start = this->_M_end_of_storage.allocate(__len);
+    pointer __new_finish = __new_start;
+    _STLP_TRY {
+      __new_finish = __uninitialized_move(this->_M_start, __pos, __new_start, _TrivialUCpy(), _Movable());
+      __new_finish = __uninitialized_copy(__first, __last, __new_finish, _TrivialUCpy());
+      __new_finish = __uninitialized_move(__pos, this->_M_finish, __new_finish, _TrivialUCpy(), _Movable());
+    }
+    _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish), 
+                  this->_M_end_of_storage.deallocate(__new_start,__len)))
+    _M_clear_after_move();
+    _M_set(__new_start, __new_finish, __new_start + __len);
+  }
 
+#if defined (_STLP_MEMBER_TEMPLATES)
+  template <class _ForwardIterator>
+  void _M_range_insert_aux(iterator __pos,
+                           _ForwardIterator __first, _ForwardIterator __last,
+                           size_type __n, const __true_type& /*_Movable*/) {
+#else
+  void _M_range_insert_aux(iterator __pos,
+                           const_iterator __first, const_iterator __last,
+                           size_type __n, const __true_type& /*_Movable*/) {
+#endif /* _STLP_MEMBER_TEMPLATES */
+    iterator __src = this->_M_finish;
+    iterator __dst = __src + __n;
+    for (; __src != __pos; --__dst, --__src) {
+      _STLP_STD::_Move_Construct(__dst, *__src);
+      _STLP_STD::_Destroy_Moved(__src);
+    }
+    __uninitialized_copy(__first, __last, __pos, _TrivialUCpy());
+    this->_M_finish += __n;
+  }
+
+#if defined (_STLP_MEMBER_TEMPLATES)
+  template <class _ForwardIterator>
+  void _M_range_insert_aux(iterator __pos,
+                           _ForwardIterator __first, _ForwardIterator __last,
+#else
+  void _M_range_insert_aux(iterator __pos,
+                           const_iterator __first, const_iterator __last,
+#endif /* _STLP_MEMBER_TEMPLATES */
+                           size_type __n, const __false_type& /*_Movable*/) {
+    const size_type __elems_after = this->_M_finish - __pos;
+    pointer __old_finish = this->_M_finish;
+    if (__elems_after > __n) {
+      __uninitialized_copy(this->_M_finish - __n, this->_M_finish, this->_M_finish, _TrivialUCpy());
+      this->_M_finish += __n;
+      __copy_backward_ptrs(__pos, __old_finish - __n, __old_finish, _TrivialAss());
+      copy(__first, __last, __pos);
+    }
+    else {
+# if defined ( _STLP_MEMBER_TEMPLATES )
+      _ForwardIterator __mid = __first;
+      advance(__mid, __elems_after);
+# else
+      const_pointer __mid = __first + __elems_after;
+# endif
+      __uninitialized_copy(__mid, __last, this->_M_finish, _TrivialUCpy());
+      this->_M_finish += __n - __elems_after;
+      __uninitialized_copy(__pos, __old_finish, this->_M_finish, _TrivialUCpy());
+      this->_M_finish += __elems_after;
+      copy(__first, __mid, __pos);
+    } /* elems_after */
+  }
+
+
+#if defined ( _STLP_MEMBER_TEMPLATES)
   template <class _Integer>
   void _M_insert_dispatch(iterator __pos, _Integer __n, _Integer __val,
                           const __true_type&) {
@@ -414,42 +493,10 @@ public:
       size_type __n = distance(__first, __last);
 
       if (size_type(this->_M_end_of_storage._M_data - this->_M_finish) >= __n) {
-        const size_type __elems_after = this->_M_finish - __pos;
-        pointer __old_finish = this->_M_finish;
-        if (__elems_after > __n) {
-          __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _TrivialUCpy(), _Movable());
-          this->_M_finish += __n;
-          __copy_backward_ptrs(__pos, __old_finish - __n, __old_finish, _TrivialAss());
-          copy(__first, __last, __pos);
-        }
-        else {
-# if defined ( _STLP_MEMBER_TEMPLATES )
-          _ForwardIterator __mid = __first;
-          advance(__mid, __elems_after);
-# else
-          const_pointer __mid = __first + __elems_after;
-# endif
-          __uninitialized_copy(__mid, __last, this->_M_finish, _TrivialUCpy());
-          this->_M_finish += __n - __elems_after;
-          __uninitialized_move(__pos, __old_finish, this->_M_finish, _TrivialUCpy(), _Movable());
-          this->_M_finish += __elems_after;
-          copy(__first, __mid, __pos);
-        } /* elems_after */
+        _M_range_insert_aux(__pos, __first, __last, __n, _Movable());
       }
       else {
-        const size_type __old_size = size();
-        const size_type __len = __old_size + (max)(__old_size, __n);
-        pointer __new_start = this->_M_end_of_storage.allocate(__len);
-        pointer __new_finish = __new_start;
-        _STLP_TRY {
-          __new_finish = __uninitialized_move(this->_M_start, __pos, __new_start, _TrivialUCpy(), _Movable());
-          __new_finish = __uninitialized_copy(__first, __last, __new_finish, _TrivialUCpy());
-          __new_finish = __uninitialized_move(__pos, this->_M_finish, __new_finish, _TrivialUCpy(), _Movable());
-        }
-        _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish), 
-                      this->_M_end_of_storage.deallocate(__new_start,__len)))
-        _M_clear_after_move();
-        _M_set(__new_start, __new_finish, __new_start + __len);
+        _M_range_insert_realloc(__pos, __first, __last, __n);
       }
     }
   }
@@ -604,14 +651,11 @@ protected:
 
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 template <class _Tp, class _Alloc>
-struct __move_traits<_Vector_base<_Tp, _Alloc> > :
-  __move_traits_help<typename _Vector_base<_Tp, _Alloc>::_AllocProxy>
-{};
-
-template <class _Tp, class _Alloc>
-struct __move_traits<vector<_Tp, _Alloc> > :
-  __move_traits_aux<_Vector_base<_Tp, _Alloc> >
-{};
+struct __move_traits<vector<_Tp, _Alloc> > {
+  typedef __true_type implemented;
+  //Completness depends on the allocator:
+  typedef typename __move_traits<_Alloc>::complete complete;
+};
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 
