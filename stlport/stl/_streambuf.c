@@ -19,7 +19,7 @@
 #define _STLP_STREAMBUF_C
 
 #ifndef _STLP_INTERNAL_STREAMBUF
-# include <stl/_streambuf.h>
+#  include <stl/_streambuf.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -31,8 +31,7 @@ template <class _CharT, class _Traits>
 basic_streambuf<_CharT, _Traits>::basic_streambuf()
   : _M_gbegin(0), _M_gnext(0), _M_gend(0),
     _M_pbegin(0), _M_pnext(0), _M_pend(0),
-    _M_locale()
-{
+    _M_locale() {
   //  _M_lock._M_initialize();
 }
 #endif
@@ -40,7 +39,6 @@ basic_streambuf<_CharT, _Traits>::basic_streambuf()
 template <class _CharT, class _Traits>
 basic_streambuf<_CharT, _Traits>::~basic_streambuf() 
 {}
-
 
 template <class _CharT, class _Traits>
 locale 
@@ -53,8 +51,7 @@ basic_streambuf<_CharT, _Traits>::pubimbue(const locale& __loc) {
 
 template <class _CharT, class _Traits>
 streamsize
-basic_streambuf<_CharT, _Traits>::xsgetn(_CharT* __s, streamsize __n)
-{
+basic_streambuf<_CharT, _Traits>::xsgetn(_CharT* __s, streamsize __n) {
   streamsize __result = 0;
   const int_type __eof = _Traits::eof();
 
@@ -72,7 +69,7 @@ basic_streambuf<_CharT, _Traits>::xsgetn(_CharT* __s, streamsize __n)
       if (!_Traits::eq_int_type(__c, __eof)) {
         *__s = _Traits::to_char_type(__c);
         ++__result;
-	++__s;
+      ++__s;
       }
       else
         break; 
@@ -194,20 +191,13 @@ basic_streambuf<_CharT, _Traits>::seekpos(pos_type, ios_base::openmode)
 template <class _CharT, class _Traits>
 _STLP_TYPENAME_ON_RETURN_TYPE basic_streambuf<_CharT, _Traits>::pos_type 
 basic_streambuf<_CharT, _Traits>::seekoff(off_type, ios_base::seekdir,
-					  ios_base::openmode)
+                                          ios_base::openmode)
 { return pos_type(-1); }
 
 template <class _CharT, class _Traits>
 basic_streambuf<_CharT, _Traits>* 
 basic_streambuf<_CharT, _Traits>:: setbuf(char_type*, streamsize)
 { return this; }
-
-
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
-#  if !defined (_STLP_NO_WCHAR_T)
-_STLP_EXPORT_TEMPLATE_CLASS basic_streambuf<wchar_t, char_traits<wchar_t> >;
-#  endif
-# endif /* _STLP_USE_TEMPLATE_EXPORT */
 
 _STLP_END_NAMESPACE
 

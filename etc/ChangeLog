@@ -11,6 +11,10 @@
 
 	* src/c_locale_win32/c_locale_win32.c: Fixing 64 bits warnings.
 
+	* stlport/stl/_streambuf.c: Explicit instanciation of basic_streambuf
+	for wchar_t removed, already exists in _streambuf.h thanks
+	Charlemagne report.
+
 2005-03-04  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_cmath.h: removed recursive include of cmath header
