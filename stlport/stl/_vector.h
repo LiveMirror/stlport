@@ -465,16 +465,13 @@ public:
 protected:
   iterator _M_erase(iterator __pos, const __true_type& /*_Movable*/) {
     _STLP_STD::_Destroy(__pos);
-    iterator __ite = __pos, __next = __ite + 1;
+    iterator __dst = __pos, __src = __dst + 1;
     iterator __end = end();
-    for (; __next != __end; ++__ite, ++__next) {
-      _STLP_STD::_Move_Construct(__ite, *__next);
-      _STLP_STD::_Destroy_Moved(__next);
+    for (; __src != __end; ++__dst, ++__src) {
+      _STLP_STD::_Move_Construct(__dst, *__src);
+      _STLP_STD::_Destroy_Moved(__src);
     }
-    --this->_M_finish;
-    if (__pos == this->_M_finish) {
-      --__pos;
-    }
+    this->_M_finish = __dst;
     return __pos;
   }
   iterator _M_erase(iterator __pos, const __false_type& /*_Movable*/) {
