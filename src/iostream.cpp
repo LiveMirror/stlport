@@ -161,11 +161,9 @@ ios_base::Init::~Init()
 
 
 filebuf*
-_Stl_create_filebuf(FILE* f, ios_base::openmode mode )
-{
-  basic_filebuf<char, char_traits<char> >* result;
-  
-  result = new basic_filebuf<char, char_traits<char> >();
+_Stl_create_filebuf(FILE* f, ios_base::openmode mode ) {
+  basic_filebuf<char, char_traits<char> >* result = 
+    new basic_filebuf<char, char_traits<char> >();
 
   _STLP_TRY {
     result->_M_open(_FILE_fd(f), mode);
@@ -179,14 +177,11 @@ _Stl_create_filebuf(FILE* f, ios_base::openmode mode )
   return result;
 }
 
-# ifndef _STLP_NO_WCHAR_T
-
+#if !defined (_STLP_NO_WCHAR_T)
 wfilebuf*
-_Stl_create_wfilebuf(FILE* f, ios_base::openmode mode )
-{
-  basic_filebuf<wchar_t, char_traits<wchar_t> >* result;
-  
-  result = new basic_filebuf<wchar_t, char_traits<wchar_t> >();
+_Stl_create_wfilebuf(FILE* f, ios_base::openmode mode) {
+  basic_filebuf<wchar_t, char_traits<wchar_t> >* result =  
+    new basic_filebuf<wchar_t, char_traits<wchar_t> >();
 
   _STLP_TRY {
     result->_M_open(_FILE_fd(f), mode);
@@ -199,8 +194,7 @@ _Stl_create_wfilebuf(FILE* f, ios_base::openmode mode )
   }
   return result;
 }
-
-# endif
+#endif
 
 void  _STLP_CALL ios_base::_S_initialize()
 {

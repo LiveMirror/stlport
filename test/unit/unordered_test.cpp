@@ -159,7 +159,7 @@ void UnorderedTest::umap()
     }
   }
 
-  CPPUNIT_ASSERT( us.size() == NB_ELEMS );
+  CPPUNIT_ASSERT( us.size() == (size_t)NB_ELEMS );
   vector<pair<int, int> > us_val;
 
   umaptype::local_iterator lit, litEnd;
