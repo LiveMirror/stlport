@@ -395,8 +395,7 @@ protected:
                            const forward_iterator_tag &) {
     size_type __n = distance(__first, __last);
     _M_initialize(__n);
-    //    copy(__first, __last, _M_start);
-    copy(__first, __last, this->_M_start); // dwa 12/22/99 -- resolving ambiguous reference.
+    copy(__first, __last, this->_M_start);
   }
 
   template <class _InputIterator>

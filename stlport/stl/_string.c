@@ -577,12 +577,12 @@ void _String_base<_Tp, _Alloc>::_M_throw_out_of_range() const {
 template <class _Tp, class _Alloc> 
 void _String_base<_Tp, _Alloc>::_M_allocate_block(size_t __n) {  
   if ((__n <= (max_size()+1)) && (__n>0)){ 
-    _M_start  = _M_end_of_storage.allocate(__n); 
-    _M_finish = _M_start; 
-    _M_end_of_storage._M_data = _M_start + __n; 
+    this->_M_start  = _M_end_of_storage.allocate(__n); 
+    this->_M_finish = this->_M_start; 
+    this->_M_end_of_storage._M_data = this->_M_start + __n; 
   } 
     else 
-      _M_throw_length_error(); 
+      this->_M_throw_length_error(); 
 } 
  
 template <class _CharT, class _Traits, class _Alloc> 

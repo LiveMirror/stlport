@@ -171,7 +171,7 @@ protected:
  
   void _M_range_check(size_type __n) const {
     if (__n >= size_type(this->_M_finish-this->_M_start))
-      _M_throw_out_of_range();
+      this->_M_throw_out_of_range();
   }
 
 public:

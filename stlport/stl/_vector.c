@@ -57,7 +57,7 @@ void
 __vector__<_Tp, _Alloc>::reserve(size_type __n) {
   if (capacity() < __n) {
     if (max_size() < __n) {
-      _M_throw_length_error();
+      this->_M_throw_length_error();
     }
 
     const size_type __old_size = size();
