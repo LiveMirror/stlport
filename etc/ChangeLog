@@ -1,5 +1,8 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * _function.h : integration of a new workaround for mem_fun_* family 
+                  for compiler having return void bug (Thanks Pavel Kuznetsov).
+
   * stl_solaris.h : v8plus compilation fix (Thanks Mukesh Kapoor)
 
   * num_put_float.cpp : FreeBSD fix 

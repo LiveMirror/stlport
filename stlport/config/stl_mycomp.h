@@ -109,6 +109,9 @@
 // Define this if your compiler requires return statement after throw()
 // # define _STLP_THROW_RETURN_BUG 1
 
+// Define this if your compiler do not support return of void
+// # define _STLP_DONT_RETURN_VOID 1
+
 // Header <new> that comes with the compiler 
 // does not define bad_alloc exception
 // #  define _STLP_NO_BAD_ALLOC  1
@@ -121,6 +124,9 @@
 
 // Uncomment if member template classes are not available
 // #  define _STLP_NO_MEMBER_TEMPLATE_CLASSES   1
+
+// Uncomment if you cannot access member template classe throught a class template parameter
+// # define _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
 
 // Uncomment if no "template" keyword should be used with member template classes
 // #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD   1

@@ -75,7 +75,7 @@
 #    include <mutex.h>
 # endif
 
-#ifdef _STLP_MEMBER_TEMPLATE_CLASSES 
+#ifdef _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM 
 #  define _STLP_CREATE_ALLOCATOR(__atype,__a, _Tp) (_Alloc_traits<_Tp,__atype>::create_allocator(__a)) 
 #elif defined(__MRC__)||defined(__SC__) 
 #  define _STLP_CREATE_ALLOCATOR(__atype,__a, _Tp) __stl_alloc_create<_Tp,__atype>(__a,(_Tp*)0) 
@@ -442,7 +442,7 @@ public:
       _STLP_STD::_Destroy(__s, __s + __len);
     }
     //  This has to be a static member, so this gets a bit messy
-#   ifdef _STLP_MEMBER_TEMPLATE_CLASSES
+#   ifdef _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM
     __a.deallocate(__s, _S_rounded_up_size(__len));		//*ty 03/24/2001 - restored not to use __stl_alloc_rebind() since it is not defined under _STLP_MEMBER_TEMPLATE_CLASSES
 #   else
     __stl_alloc_rebind (__a, (_CharT*)0).deallocate(__s, _S_rounded_up_size(__len));

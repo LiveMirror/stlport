@@ -109,8 +109,9 @@
 //  these work, as long they are inline
 #  define _STLP_INLINE_MEMBER_TEMPLATES 1
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
-#  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 #  define _STLP_GLOBAL_NEW_HANDLER
+#  define _STLP_DONT_RETURN_VOID 1
+#  define _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
 # endif /* (_MSC_VER <= 1200) */
 
 # if ( _MSC_VER<=1010 )
@@ -130,6 +131,7 @@
 // #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
 #  define _STLP_NON_TYPE_TMPL_PARAM_BUG 1 
 #  define _STLP_THROW_RETURN_BUG 1
+#  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 # endif
 
 # if defined (_STLP_MSVC) && ( _STLP_MSVC < 1100 )

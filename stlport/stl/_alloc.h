@@ -412,7 +412,7 @@ template <class _Tp, class _Allocator>
 struct _Alloc_traits
 {
   typedef _Allocator _Orig;
-# if defined (_STLP_MEMBER_TEMPLATE_CLASSES) 
+# if defined (_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM) 
   typedef typename _Allocator::_STLP_TEMPLATE rebind<_Tp> _Rebind_type;
   typedef typename _Rebind_type::other  allocator_type;
   static allocator_type create_allocator(const _Orig& __a) { return allocator_type(__a); }
@@ -420,7 +420,7 @@ struct _Alloc_traits
   // this is not actually true, used only to pass this type through
   // to dynamic overload selection in _STLP_alloc_proxy methods
   typedef _Allocator allocator_type;
-# endif
+# endif /* _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM */
 };
 
 #ifndef _STLP_FORCE_ALLOCATORS
@@ -453,7 +453,7 @@ struct _Alloc_traits<_Tp, allocator<_Tp1> > {
 #  define _STLP_CONVERT_ALLOCATOR(__a, _Tp) __stl_alloc_create(__a,(_Tp*)0)
 #endif
 
-# if defined (_STLP_MEMBER_TEMPLATE_CLASSES) 
+# if defined (_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM) 
 template <class _Tp, class _Alloc>
 inline _STLP_TYPENAME_ON_RETURN_TYPE _Alloc_traits<_Tp, _Alloc>::allocator_type  _STLP_CALL
 __stl_alloc_create(const _Alloc& __a, const _Tp*) {
@@ -469,7 +469,7 @@ __stl_alloc_rebind(allocator<_Tp1>& __a, const _Tp2*) {  return (allocator<_Tp2>
 template <class _Tp1, class _Tp2>
 inline allocator<_Tp2> _STLP_CALL
 __stl_alloc_create(const allocator<_Tp1>&, const _Tp2*) { return allocator<_Tp2>(); }
-#endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
+#endif /* _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM */
 
 # ifdef _STLP_USE_RAW_SGI_ALLOCATORS
 // move obsolete stuff out of the way
@@ -497,7 +497,7 @@ public:
 # endif
   // Unified interface to perform allocate()/deallocate() with limited
   // language support
-#if ! defined (_STLP_MEMBER_TEMPLATE_CLASSES)
+#if ! defined (_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM)
   // else it is rebound already, and allocate() member is accessible
   inline _Tp* allocate(size_t __n) { 
     return __stl_alloc_rebind(__STATIC_CAST(_Base&,*this),(_Tp*)0).allocate(__n,0); 
@@ -505,7 +505,7 @@ public:
   inline void deallocate(_Tp* __p, size_t __n) { 
     __stl_alloc_rebind(__STATIC_CAST(_Base&, *this),(_Tp*)0).deallocate(__p, __n); 
   }
-#endif
+#endif /* !_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM */
 };
 
 # if defined (_STLP_USE_TEMPLATE_EXPORT)
