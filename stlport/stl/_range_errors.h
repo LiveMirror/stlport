@@ -32,7 +32,6 @@
 #  define _STLP_EXTERN_RANGE_ERRORS
 # endif
 
-#if defined (_STLP_EXTERN_RANGE_ERRORS)
 _STLP_BEGIN_NAMESPACE
 void  _STLP_DECLSPEC _STLP_CALL __stl_throw_range_error(const char* __msg);
 void  _STLP_DECLSPEC _STLP_CALL __stl_throw_out_of_range(const char* __msg);
@@ -40,27 +39,28 @@ void  _STLP_DECLSPEC _STLP_CALL __stl_throw_length_error(const char* __msg);
 void  _STLP_DECLSPEC _STLP_CALL __stl_throw_invalid_argument(const char* __msg);
 void  _STLP_DECLSPEC _STLP_CALL __stl_throw_overflow_error(const char* __msg);
 _STLP_END_NAMESPACE
-#else
 
-#if defined(_STLP_THROW_RANGE_ERRORS)
-# ifndef _STLP_STDEXCEPT
-#  include <stdexcept>
-# endif
-# ifndef _STLP_STRING
-#  include <string>
-# endif
-# define _STLP_THROW_MSG(ex,msg)  throw ex(string(msg))
-#else
-# if defined (_STLP_WINCE)
-#  define _STLP_THROW_MSG(ex,msg)  TerminateProcess(GetCurrentProcess(), 0)
+#if !defined (_STLP_EXTERN_RANGE_ERRORS)
+
+# if defined(_STLP_THROW_RANGE_ERRORS)
+#  ifndef _STLP_STDEXCEPT
+#   include <stdexcept>
+#  endif
+#  ifndef _STLP_STRING
+#   include <string>
+#  endif
+#  define _STLP_THROW_MSG(ex,msg)  throw ex(string(msg))
 # else
-#  include <cstdlib>
-#  include <cstdio>
-#  define _STLP_THROW_MSG(ex,msg)  puts(msg),_STLP_ABORT()
+#  if defined (_STLP_WINCE)
+#   define _STLP_THROW_MSG(ex,msg)  TerminateProcess(GetCurrentProcess(), 0)
+#  else
+#   include <cstdlib>
+#   include <cstdio>
+#   define _STLP_THROW_MSG(ex,msg)  puts(msg),_STLP_ABORT()
+#  endif
 # endif
-#endif
 
-// For wrapper mode and throwing range errors, include the
+// For mode without library and throwing range errors, include the
 // stdexcept header and throw the appropriate exceptions directly.
 
 _STLP_BEGIN_NAMESPACE
