@@ -58,7 +58,7 @@ protected:
     return tmp;
   }
 
-#if defined (_STLP_PTHREAD) || defined (_STLP_WIN32THREADS)
+#if defined (_STLP_PTHREADS) || defined (_STLP_WIN32THREADS)
 #  if defined (_STLP_PTHREADS)
   static void *f( void * )
 #  elif defined (_STLP_WIN32THREADS)
