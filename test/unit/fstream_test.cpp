@@ -207,7 +207,7 @@ void FstreamTest::rdbuf()
 void FstreamTest::streambuf_output()
 {
   {
-    ofstream ofstr("bin_datas.txt", ios_base::binary);
+    ofstream ofstr("test_file.txt", ios_base::binary);
     if (!ofstr)
       //No test if we cannot create the file
       return;
@@ -216,7 +216,7 @@ void FstreamTest::streambuf_output()
   }
 
   {
-    ifstream in("bin_datas.txt", ios_base::binary);
+    ifstream in("test_file.txt", ios_base::binary);
     CPPUNIT_ASSERT( in );
 
     auto_ptr<full_streambuf> pfull_buf(new full_streambuf(10));
@@ -241,7 +241,7 @@ void FstreamTest::streambuf_output()
 
   {
     //If the output stream buffer throws:
-    ifstream in("bin_datas.txt", ios_base::binary);
+    ifstream in("test_file.txt", ios_base::binary);
     CPPUNIT_ASSERT( in );
 
     auto_ptr<full_streambuf> pfull_buf(new full_streambuf(10, true));
