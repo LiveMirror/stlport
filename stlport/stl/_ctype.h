@@ -59,7 +59,7 @@ template <class charT> class ctype_byname {};
 //ctype specializations
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC ctype<char> :   public locale::facet, public ctype_base 
+class _STLP_CLASS_DECLSPEC ctype<char> : public locale::facet, public ctype_base 
 {
 
 # ifndef _STLP_NO_WCHAR_T
@@ -121,7 +121,7 @@ public:
 
 protected:
   const mask* table() const _STLP_NOTHROW {return _M_ctype_table;}
-  static const mask* _STLP_CALL classic_table() _STLP_NOTHROW { return & _S_classic_table [1]; }
+  static const mask* _STLP_CALL classic_table() _STLP_NOTHROW { return _S_classic_table; }
 
   ~ctype();
 
@@ -142,12 +142,14 @@ private:
    bool operator()(char __c) {return (__m & (unsigned char) __c) != 0;}
   };
 
-  static const mask _S_classic_table[257 /* table_size + 1 */];
+    static const mask _S_classic_table[table_size];
+protected:
   const mask* _M_ctype_table;
+private:
   bool _M_delete;
 
-  static const unsigned char _S_upper[256 /* table_size */];
-  static const unsigned char _S_lower[256 /* table_size */];
+  static const unsigned char _S_upper[table_size];
+  static const unsigned char _S_lower[table_size];
 };
 
 _STLP_TEMPLATE_NULL
@@ -163,8 +165,8 @@ public:
   virtual const char* do_tolower(char*, const char*) const;
 
 private:
-  mask _M_byname_table[table_size + 1];
-  _Locale_ctype* _M_ctype;
+    mask _M_byname_table[table_size];
+    _Locale_ctype* _M_ctype;
 };
 
 

@@ -47,10 +47,11 @@ void __release_ctype(_Locale_ctype* cat);
 //----------------------------------------------------------------------
 // ctype_byname<char>
 
-ctype_byname<char>::ctype_byname(const char* name, size_t refs)
-  : ctype<char>(_M_byname_table+1, false, refs),
-  _M_ctype(__acquire_ctype(name)) {
-  
+ctype_byname<char>::ctype_byname(const char* name, size_t refs) :
+    ctype<char>( 0, false, refs),
+    _M_ctype(__acquire_ctype(name))
+{
+  ctype<char>::_M_ctype_table = _M_byname_table;
   if (!_M_ctype)
     locale::_M_throw_runtime_error();
   
@@ -59,10 +60,10 @@ ctype_byname<char>::ctype_byname(const char* name, size_t refs)
 
   const _Locale_mask_t* p = _Locale_ctype_table(_M_ctype);
 
-   if (!p)
-     locale::_M_throw_runtime_error(); 
+  if (!p)
+    locale::_M_throw_runtime_error(); 
 
-  for (size_t i = 0; i < table_size + 1; ++i) {
+  for (size_t i = 0; i < table_size; ++i) {
     _Locale_mask_t __m = p[i];
     if (__m & (upper | lower))
       __m |= alpha;

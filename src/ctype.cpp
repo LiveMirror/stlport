@@ -45,9 +45,8 @@ const size_t ctype<char>::table_size;
 // That is, the "table" seen by ctype<char> member functions is
 // _S_classic_table + 1.
 const ctype_base::mask 
-ctype<char>::_S_classic_table[257] = 
+ctype<char>::_S_classic_table[ctype<char>::table_size] = 
 {
-  ctype_base::mask(0) /* EOF */,
   cntrl /* null */,
   cntrl /* ^A */,
   cntrl /* ^B */,
@@ -200,7 +199,7 @@ ctype_base::mask(0),  ctype_base::mask(0),  ctype_base::mask(0),  ctype_base::ma
 // version.  As before, these two tables assume the ASCII character
 // set.
 
-const unsigned char ctype<char>::_S_upper[256] =
+const unsigned char ctype<char>::_S_upper[ctype<char>::table_size] =
 {
   0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
   0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
@@ -236,7 +235,7 @@ const unsigned char ctype<char>::_S_upper[256] =
   0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 };
 
-const unsigned char ctype<char>::_S_lower[256] =
+const unsigned char ctype<char>::_S_lower[ctype<char>::table_size] =
 {
   0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
   0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,

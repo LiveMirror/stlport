@@ -170,7 +170,7 @@ static LOCALECONV __rg_country[] =
 typedef struct _Locale_ctype {
   LCID lcid;
   UINT cp;
-  unsigned int ctable[257];
+  unsigned int ctable[256];
 } _Locale_ctype_t;
 
 typedef struct _Locale_numeric	{
@@ -300,11 +300,11 @@ extern "C" {
 	      GetStringTypeW(CT_CTYPE1, wbuffer, 256, ctable);
 
 	      for(i = 0; i < 256; ++i)
-	        ltype->ctable[i+1]=(unsigned int)ctable[i];
+	        ltype->ctable[i]=(unsigned int)ctable[i];
 
         if(CPInfo.MaxCharSize > 1) {
 	        for(ptr=(unsigned char*)CPInfo.LeadByte; *ptr && *(ptr+1); ptr+=2)
-		        for(i=*ptr; i <= *(ptr+1); i++) ltype->ctable[i+1] = _LEADBYTE;
+		        for(i=*ptr; i <= *(ptr+1); i++) ltype->ctable[i] = _LEADBYTE;
         }
 
 	      free(wbuffer);
@@ -326,30 +326,28 @@ extern "C" {
 	      // Translate ctype table.
 	      for(i = 0; i < 256; ++i) {
 		      if(!TargetBuffer[i]) continue;
-		      ltype->ctable[TargetBuffer[i]+1] = ctable[i];
+		      ltype->ctable[TargetBuffer[i]] = ctable[i];
 	      }
-	      ltype->ctable[0] = 0; // EOF
 
 	      // Mark lead byte.
 	      if(!GetCPInfo(ltype->cp, &CPInfo)) { free(ltype); return NULL; }
 
         if(CPInfo.MaxCharSize > 1) {
 	        for(ptr=(unsigned char*)CPInfo.LeadByte; *ptr && *(ptr+1); ptr+=2)
-		        for(i=*ptr; i <= *(ptr+1); ++i) ltype->ctable[i+1] = _LEADBYTE;
+		        for(i=*ptr; i <= *(ptr+1); ++i) ltype->ctable[i] = _LEADBYTE;
         }
 	    }
     }
     else {
 	    GetStringTypeA(ltype->lcid, CT_CTYPE1, (const char*)Buffer, 256, ctable);
 	    for(i = 0; i < 256; ++i)
-	      ltype->ctable[i+1]=(unsigned int)ctable[i];
+	      ltype->ctable[i]=(unsigned int)ctable[i];
 
       if(CPInfo.MaxCharSize > 1) {
 	      for(ptr=(unsigned char*)CPInfo.LeadByte; *ptr && *(ptr+1); ptr+=2)
-	        for(i=*ptr; i <= *(ptr+1); ++i) ltype->ctable[i+1] = _LEADBYTE;
+	        for(i=*ptr; i <= *(ptr+1); ++i) ltype->ctable[i] = _LEADBYTE;
       }
     }
-    ltype->ctable[0] = 0; // EOF
     return ltype;
   }
 
