@@ -337,22 +337,22 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::seekoff(off_type __off,
             ios_base::seekdir __dir,
             ios_base::openmode __mode)
 {
-  bool __in  = false;
-  bool __out = false;
+  bool __stl_in  = false;
+  bool __stl_out = false;
   
   if ((__mode & (ios_base::in | ios_base::out)) == (ios_base::in | ios_base::out) ) {
     if (__dir == ios_base::beg || __dir == ios_base::end)
-      __in = __out = true;
+      __stl_in = __stl_out = true;
   }
   else if (__mode & ios_base::in)
-    __in = true;
+    __stl_in = true;
   else if (__mode & ios_base::out)
-    __out = true;
+    __stl_out = true;
 
-  if (!__in && !__out)
+  if (!__stl_in && !__stl_out)
     return pos_type(off_type(-1));
-  else if ((__in  && (!(_M_mode & ios_base::in) || this->gptr() == 0)) ||
-           (__out && (!(_M_mode & ios_base::out) || this->pptr() == 0)))
+  else if ((__stl_in  && (!(_M_mode & ios_base::in) || this->gptr() == 0)) ||
+           (__stl_out && (!(_M_mode & ios_base::out) || this->pptr() == 0)))
     return pos_type(off_type(-1));
 
   if ((_M_mode & ios_base::out) && !(_M_mode & ios_base::in))
@@ -367,7 +367,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::seekoff(off_type __off,
     __newoff = _M_str.size();
     break;
   case ios_base::cur:
-    __newoff = __in ? this->gptr() - this->eback() 
+    __newoff = __stl_in ? this->gptr() - this->eback() 
                     : this->pptr() - this->pbase();
     break;
   default:
@@ -376,7 +376,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::seekoff(off_type __off,
 
   __off += __newoff;
 
-  if (__in) {
+  if (__stl_in) {
     ptrdiff_t __n = this->egptr() - this->eback();
 
     if (__off < 0 || __off > __n)
@@ -385,7 +385,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::seekoff(off_type __off,
       this->setg(this->eback(), this->eback() + __off, this->eback() + __n);
   }
 
-  if (__out) {
+  if (__stl_out) {
     ptrdiff_t __n = this->epptr() - this->pbase();
 
     if (__off < 0 || __off > __n)
@@ -404,24 +404,24 @@ __BSB_pos_type__
 basic_stringbuf<_CharT, _Traits, _Alloc>
   ::seekpos(pos_type __pos, ios_base::openmode __mode)
 {
-  bool __in  = (__mode & ios_base::in) != 0;
-  bool __out = (__mode & ios_base::out) != 0;
+  bool __stl_in  = (__mode & ios_base::in) != 0;
+  bool __stl_out = (__mode & ios_base::out) != 0;
 
-  if ((__in  && (!(_M_mode & ios_base::in) || this->gptr() == 0)) ||
-      (__out && (!(_M_mode & ios_base::out) || this->pptr() == 0)))
+  if ((__stl_in  && (!(_M_mode & ios_base::in) || this->gptr() == 0)) ||
+      (__stl_out && (!(_M_mode & ios_base::out) || this->pptr() == 0)))
     return pos_type(off_type(-1));
 
   const off_type __n = __pos - pos_type(off_type(0));
   if ((_M_mode & ios_base::out) && !(_M_mode & ios_base::in))
     _M_append_buffer();
 
-  if (__in) {
+  if (__stl_in) {
     if (__n < 0 || __n > this->egptr() - this->eback())
       return pos_type(off_type(-1));
     this->setg(this->eback(), this->eback() + __n, this->egptr());
   }
 
-  if (__out) {
+  if (__stl_out) {
     if (__n < 0 || size_t(__n) > _M_str.size())
       return pos_type(off_type(-1));
 

@@ -58,79 +58,79 @@ public:
   explicit num_get(size_t __refs = 0): locale::facet(__refs) {}
     
 # ifndef _STLP_NO_BOOL
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, bool& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 # endif
 
 # ifdef _STLP_FIX_LIBRARY_ISSUES
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, short& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, int& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 # endif
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, long& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, unsigned short& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, unsigned int& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, unsigned long& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
 #ifdef _STLP_LONG_LONG
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, _STLP_LONG_LONG& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, unsigned _STLP_LONG_LONG& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
 #endif /* _STLP_LONG_LONG */
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                  ios_base::iostate& __err, float& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, double& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
 # ifndef _STLP_NO_LONG_DOUBLE
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, long double& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 # endif
 
-  _InputIter get(_InputIter __in, _InputIter __end, ios_base& __str,
+  _InputIter get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                 ios_base::iostate& __err, void*& __val) const {
-    return do_get(__in, __end, __str, __err, __val);
+    return do_get(__stl_in, __end, __str, __err, __val);
   }
 
   _STLP_STATIC_MEMBER_DECLSPEC static locale::id id;
@@ -143,43 +143,43 @@ protected:
   typedef numpunct<_CharT>     _Numpunct;
 
 # ifndef _STLP_NO_BOOL
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end,
                            ios_base& __str, ios_base::iostate& __err, bool& __val) const;
 # endif
 
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, long& __val) const;
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, unsigned short& __val) const;
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, unsigned int& __val) const;
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, unsigned long& __val) const;
 # ifdef _STLP_FIX_LIBRARY_ISSUES
   // issue 118 : those are actually not supposed to be here
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, short& __val) const;
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, int& __val) const;
 # endif
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                           ios_base::iostate& __err, float& __val) const;
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, double& __val) const;
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err,
                            void*& __p) const;
 
 #ifndef _STLP_NO_LONG_DOUBLE
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, long double& __val) const;
 #endif /* _STLP_NO_LONG_DOUBLE */
 
 #ifdef _STLP_LONG_LONG
 
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                             ios_base::iostate& __err, _STLP_LONG_LONG& __val) const;
-  virtual _InputIter do_get(_InputIter __in, _InputIter __end, ios_base& __str,
+  virtual _InputIter do_get(_InputIter __stl_in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, unsigned _STLP_LONG_LONG& __val) const;
 #endif /* _STLP_LONG_LONG */
 

@@ -1,4 +1,11 @@
 The following changes were made in 4.6.2 since 4.6.1 release:
+   
+  * stl_gcc.h : gcc3.4 configuration added (_STLP_NO_MEMBER_TEMPLATE macru undefined)
+	
+  * (many files) : __in changed to __stl_in, __out to __stl_out to prevent conflict with new 
+    Microsoft Server SDK
+	
+The following changes were made in 4.6.2 since 4.6.1 release:
 
   * threads.h:447 - fixed _NOTHREADS compilation error (thanks Wu Yongwei)
   

@@ -257,44 +257,44 @@ _STLP_EXPORT_TEMPLATE_CLASS basic_istream<wchar_t, char_traits<wchar_t> >;
 
 template <class _CharT, class _Traits>
 inline basic_istream<_CharT, _Traits>& _STLP_CALL  
-operator>>(basic_istream<_CharT, _Traits>& __in, _CharT& __c) {
-  __in._M_formatted_get(__c);
-  return __in;
+operator>>(basic_istream<_CharT, _Traits>& __stl_in, _CharT& __c) {
+  __stl_in._M_formatted_get(__c);
+  return __stl_in;
 }
 
 template <class _Traits>
 inline basic_istream<char, _Traits>& _STLP_CALL  
-operator>>(basic_istream<char, _Traits>& __in, unsigned char& __c) {
-  __in._M_formatted_get(__REINTERPRET_CAST(char&,__c));
-  return __in;
+operator>>(basic_istream<char, _Traits>& __stl_in, unsigned char& __c) {
+  __stl_in._M_formatted_get(__REINTERPRET_CAST(char&,__c));
+  return __stl_in;
 }
 
 template <class _Traits>
 inline basic_istream<char, _Traits>& _STLP_CALL 
-operator>>(basic_istream<char, _Traits>& __in, signed char& __c) {
-  __in._M_formatted_get(__REINTERPRET_CAST(char&,__c));
-  return __in;
+operator>>(basic_istream<char, _Traits>& __stl_in, signed char& __c) {
+  __stl_in._M_formatted_get(__REINTERPRET_CAST(char&,__c));
+  return __stl_in;
 }
 
 template <class _CharT, class _Traits>
 inline basic_istream<_CharT, _Traits>& _STLP_CALL 
-operator>>(basic_istream<_CharT, _Traits>& __in, _CharT* __s) {
-  __in._M_formatted_get(__s);
-  return __in;
+operator>>(basic_istream<_CharT, _Traits>& __stl_in, _CharT* __s) {
+  __stl_in._M_formatted_get(__s);
+  return __stl_in;
 }
 
 template <class _Traits>
 inline basic_istream<char, _Traits>& _STLP_CALL 
-operator>>(basic_istream<char, _Traits>& __in, unsigned char* __s) {
-  __in._M_formatted_get(__REINTERPRET_CAST(char*,__s));
-  return __in;
+operator>>(basic_istream<char, _Traits>& __stl_in, unsigned char* __s) {
+  __stl_in._M_formatted_get(__REINTERPRET_CAST(char*,__s));
+  return __stl_in;
 }
 
 template <class _Traits>
 inline basic_istream<char, _Traits>& _STLP_CALL 
-operator>>(basic_istream<char, _Traits>& __in, signed char* __s) {
-  __in._M_formatted_get(__REINTERPRET_CAST(char*,__s));
-  return __in;
+operator>>(basic_istream<char, _Traits>& __stl_in, signed char* __s) {
+  __stl_in._M_formatted_get(__REINTERPRET_CAST(char*,__s));
+  return __stl_in;
 }
 
 //----------------------------------------------------------------------

@@ -86,7 +86,7 @@ pair<_InIt1, bool> __get_string(_InIt1 __first,     _InIt1 __last,
 
 template <class _InIt, class _OuIt, class _CharT>
 bool
-__get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
+__get_monetary_value(_InIt& __first, _InIt __last, _OuIt __stl_out,
                      const ctype<_CharT>& _c_type,
                      _CharT   __point,
                      int      __frac_digits,
@@ -104,7 +104,7 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
   while (__first != __last) {
     if (_c_type.is(ctype_base::digit, *__first)) {
       ++__current_group_size;
-      *__out++ = *__first++;
+      *__stl_out++ = *__first++;
     }
     else if (__group_sizes_end) {
       if (*__first == __sep) {
@@ -129,7 +129,7 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
     
     if (__first == __last || *__first != __point) {
       for (int __digits = 0; __digits != __frac_digits; ++__digits)
-        *__out++ = _CharT('0');
+        *__stl_out++ = _CharT('0');
       return true; // OK not to have decimal point
     }
   }
@@ -139,7 +139,7 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
   size_t __digits = 0;
 
   while (__first != __last && _c_type.is(ctype_base::digit, *__first)) {
-      *__out++ = *__first++;
+      *__stl_out++ = *__first++;
      ++__digits;
   }
 
@@ -202,7 +202,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
   bool __is_positive = true;
   bool __symbol_required = (__str.flags() & ios_base::showbase) !=0;
   string_type __buf;
-  back_insert_iterator<string_type> __out(__buf);
+  back_insert_iterator<string_type> __stl_out(__buf);
 //  pair<iter_type, bool> __result;
 
   for (__i = 0; __i < 4; ++__i) {
@@ -293,7 +293,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
       _CharT __sep = __grouping.size() == 0 ? _CharT() : 
 	__intl ? __punct_intl.thousands_sep() : __punct.thousands_sep();
 
-      __result = __get_monetary_value(__s, __end, __out, __c_type,
+      __result = __get_monetary_value(__s, __end, __stl_out, __c_type,
                                       __point, __frac_digits,
                                       __sep,
                                       __grouping, __syntax_ok);      
