@@ -165,7 +165,7 @@ public:                         // Buffer positioning and manipulation.
       
       ~sentry() {
         if (_M_str.flags() & ios_base::unitbuf)
-# ifndef _STLP_INCOMPLETE_EXCEPTION_HEADER 
+# ifndef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
           if (!_STLP_VENDOR_EXCEPT_STD::uncaught_exception())
 # endif
             _M_str.flush();

@@ -39,7 +39,7 @@
 #if !defined(_STLP_NO_EXCEPTION_HEADER)
 
 # if defined ( _UNCAUGHT_EXCEPTION )
-#  undef _STLP_INCOMPLETE_EXCEPTION_HEADER
+#  undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 # endif
 
 # if defined(_STLP_BROKEN_EXCEPTION_CLASS)
@@ -92,7 +92,7 @@ using _STLP_VENDOR_UNEXPECTED_STD::terminate_handler;
 using _STLP_VENDOR_UNEXPECTED_STD::set_terminate;
 #   endif
 
-#   if !defined (_STLP_INCOMPLETE_EXCEPTION_HEADER) 
+#   if !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT) 
 using _STLP_VENDOR_UNEXPECTED_STD::uncaught_exception;
 #   endif
 #  endif
