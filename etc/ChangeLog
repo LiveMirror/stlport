@@ -1,5 +1,10 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * _[i,o]streambuf_iterator.h: correction of the missing iterator base class (Thanks Tanaka)
+  
+  ----
+  
+
   * _string.h: correction of the replace implementation badling form for self referencing 
                (thanks Francois Dumont)
 

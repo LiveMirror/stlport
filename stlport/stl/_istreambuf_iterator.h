@@ -42,7 +42,8 @@ extern basic_streambuf<_CharT, _Traits>* _STLP_CALL _M_get_istreambuf(basic_istr
 // used. Calls to operator++ use sbumpc.
 
 template<class _CharT, class _Traits>
-class istreambuf_iterator
+class istreambuf_iterator : 
+  public iterator<input_iterator_tag, _CharT, typename _Traits::off_type, _CharT*, _CharT&>
 {
 public:
   typedef _CharT                           char_type;
