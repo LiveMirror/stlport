@@ -85,10 +85,7 @@ inline void swap(_Bit_reference& __x, _Bit_reference& __y) {
   __y = __tmp;
 }
 
-struct _Bit_iterator_base;
-
-struct _Bit_iterator_base
-{
+struct _Bit_iterator_base {
   typedef ptrdiff_t difference_type;
 
   unsigned int* _M_p;
@@ -151,8 +148,7 @@ inline bool _STLP_CALL operator>=(const _Bit_iterator_base& __x, const _Bit_iter
 }
 
 template <class _Ref, class _Ptr>
-struct _Bit_iter : public _Bit_iterator_base
-{
+struct _Bit_iter : public _Bit_iterator_base {
   typedef _Ref  reference;
   typedef _Ptr  pointer;
   typedef _Bit_iter<_Ref, _Ptr> _Self;
@@ -234,8 +230,8 @@ typedef _Bit_iter<_Bit_reference, _Bit_reference*> _Bit_iterator;
 
 
 template <class _Alloc>
-class _Bvector_base
-{
+class _Bvector_base {
+  typedef _Bvector_base<_Alloc> _Self;
 public:
   _STLP_FORCE_ALLOCATORS(bool, _Alloc)
   typedef typename _Alloc_traits<bool, _Alloc>::allocator_type allocator_type;
@@ -249,16 +245,24 @@ public:
    
   _Bvector_base(const allocator_type& __a)
     : _M_start(), _M_finish(), _M_end_of_storage(_STLP_CONVERT_ALLOCATOR(__a, __chunk_type),
-                                                 (__chunk_type*)0) {
+                                                 (__chunk_type*)0) 
+  {}
+  _Bvector_base(__move_source<_Self> src) 
+    : _M_start(src.get()._M_start), _M_finish(src.get()._M_finish), 
+      _M_end_of_storage(src.get()._M_end_of_storage) {
+    //Make the source destroyable
+    src.get()._M_start._M_p = 0;
   }
+
   ~_Bvector_base() { 
     _M_deallocate();
   }
 
 protected:
 
-  unsigned int* _M_bit_alloc(size_t __n) 
-    { return _M_end_of_storage.allocate((__n + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT); }
+  unsigned int* _M_bit_alloc(size_t __n) {
+    return _M_end_of_storage.allocate((__n + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT); 
+  }
   void _M_deallocate() {
     if (_M_start._M_p)
       _M_end_of_storage.deallocate(_M_start._M_p,
@@ -311,7 +315,10 @@ protected:
 
 
 __BVEC_TMPL_HEADER
-class __BVECTOR_QUALIFIED : public _Bvector_base<_Alloc >
+class __BVECTOR_QUALIFIED : public _Bvector_base<_Alloc > 
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                          , public __stlport_class<__BVECTOR_QUALIFIED >
+#endif
 {
   typedef _Bvector_base<_Alloc > _Base;
   typedef __BVECTOR_QUALIFIED _Self;
@@ -535,6 +542,10 @@ public:
     copy(__first, __last, this->_M_start);
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
+
+  __BVECTOR(__move_source<_Self> src)
+    : _Bvector_base<_Alloc >(__move_source<_Base>(src.get())) {
+  }
 
   ~__BVECTOR() { }
 

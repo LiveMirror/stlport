@@ -1,3 +1,11 @@
+2004-10-06  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_rope.h, _rope.c: Code review, use of general STLport tools rather
+	than specific rope ones. Use of compile time checks rather than runtime.
+	
+	* stlport/stl/_bvector.h: fix to make the vector<bool> specialization movable
+	thanks a Kelly Thompson report.
+	
 2004-10-05  Francois Dumont  <dums@stlport...>
 
 	* src/explore/Makefiles/nmake: Application of a patch from Mickeal Fink to simplify
