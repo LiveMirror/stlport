@@ -1,10 +1,6 @@
 # Time-stamp: <03/09/28 13:44:57 ptr>
 # $Id$
 
-!ifndef MSVC_DIR
-MSVC_DIR = c:\Program Files\Microsoft Visual Studio\VC98
-!endif
-
 !ifndef MSVC_LIB_DIR
 MSVC_LIB_DIR = $(MSVC_DIR)\Lib
 !endif

@@ -85,6 +85,8 @@ OBJ=$(OBJ:.o@=.o obj\x86-evc3\shared\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 OBJ=$(OBJ:.o@=.o obj\vc6\shared\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+OBJ=$(OBJ:.o@=.o obj\vc71\shared\)
 !endif
 #!if [echo OBJ 3 -$(OBJ)-]
 #!endif
@@ -111,6 +113,8 @@ OBJ_DBG=$(OBJ_DBG:.o@=.o obj\x86-evc3\shared-g\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 OBJ_DBG=$(OBJ_DBG:.o@=.o obj\vc6\shared-g\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+OBJ_DBG=$(OBJ_DBG:.o@=.o obj\vc71\shared-g\)
 !endif
 # add prefix to first element:
 OBJ_DBG=$(OUTPUT_DIR_DBG)\$(OBJ_DBG)
@@ -133,6 +137,8 @@ OBJ_STLDBG=$(OBJ_STLDBG:.o@=.o obj\x86-evc3\shared-stlg\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 OBJ_STLDBG=$(OBJ_STLDBG:.o@=.o obj\vc6\shared-stlg\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+OBJ_STLDBG=$(OBJ_STLDBG:.o@=.o obj\vc71\shared-stlg\)
 !endif
 # add prefix to first element:
 OBJ_STLDBG=$(OUTPUT_DIR_STLDBG)\$(OBJ_STLDBG)
@@ -151,6 +157,8 @@ OBJ_A=$(OBJ_A:.o@=.o obj\x86-evc3\static\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 OBJ_A=$(OBJ_A:.o@=.o obj\vc6\static\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+OBJ_A=$(OBJ_A:.o@=.o obj\vc71\static\)
 !endif
 OBJ_A=$(OUTPUT_DIR_A)\$(OBJ_A)
 
@@ -168,6 +176,8 @@ OBJ_A_DBG=$(OBJ_A_DBG:.o@=.o obj\x86-evc3\static-g\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 OBJ_A_DBG=$(OBJ_A_DBG:.o@=.o obj\vc6\static-g\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+OBJ_A_DBG=$(OBJ_A_DBG:.o@=.o obj\vc71\static-g\)
 !endif
 OBJ_A_DBG=$(OUTPUT_DIR_A_DBG)\$(OBJ_A_DBG)
 
@@ -185,6 +195,8 @@ OBJ_A_STLDBG=$(OBJ_A_STLDBG:.o@=.o obj\x86-evc3\static-stlg\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 OBJ_A_STLDBG=$(OBJ_A_STLDBG:.o@=.o obj\vc6\static-stlg\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+OBJ_A_STLDBG=$(OBJ_A_STLDBG:.o@=.o obj\vc71\static-stlg\)
 !endif
 OBJ_A_STLDBG=$(OUTPUT_DIR_A_STLDBG)\$(OBJ_A_STLDBG)
 
@@ -203,6 +215,8 @@ RES=$(RES:.res@=.res obj\x86-evc3\shared\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 RES=$(RES:.res@=.res obj\vc6\shared\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+RES=$(RES:.res@=.res obj\vc71\shared\)
 !endif
 RES=$(OUTPUT_DIR)\$(RES)
 
@@ -220,6 +234,8 @@ RES_DBG=$(RES_DBG:.res@=.res obj\x86-evc3\shared-g\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 RES_DBG=$(RES_DBG:.res@=.res obj\vc6\shared-g\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+RES_DBG=$(RES_DBG:.res@=.res obj\vc71\shared-g\)
 !endif
 RES_DBG=$(OUTPUT_DIR_DBG)\$(RES_DBG)
 
@@ -237,6 +253,8 @@ RES_STLDBG=$(RES_STLDBG:.res@=.res obj\x86-evc3\shared-stlg\)
 !endif
 !elseif "$(COMPILER_NAME)" == "vc6"
 RES_STLDBG=$(RES_STLDBG:.res@=.res obj\vc6\shared-stlg\)
+!elseif "$(COMPILER_NAME)" == "vc71"
+RES_STLDBG=$(RES_STLDBG:.res@=.res obj\vc71\shared-stlg\)
 !endif
 RES_STLDBG=$(OUTPUT_DIR_STLDBG)\$(RES_STLDBG)
 !endif
