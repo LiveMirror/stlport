@@ -23,10 +23,6 @@
 /*
  * Implementation dependent definitions
  */
-#ifdef __cplusplus
-#  include <stl/_config.h>
-#endif
-
 #if defined(__sgi) 
 # if defined(ROOT_65) /* IRIX 6.5.x */
 #  include <sgidefs.h>

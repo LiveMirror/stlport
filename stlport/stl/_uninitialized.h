@@ -30,17 +30,17 @@
 #ifndef _STLP_INTERNAL_UNINITIALIZED_H
 #define _STLP_INTERNAL_UNINITIALIZED_H
 
-# ifndef _STLP_CSTRING
+#ifndef _STLP_CSTRING
 #  include <cstring>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ALGOBASE_H
+#ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_CONSTRUCT_H
+#ifndef _STLP_INTERNAL_CONSTRUCT_H
 #  include <stl/_construct.h>
-# endif
+#endif
 
 _STLP_BEGIN_NAMESPACE
 
@@ -98,8 +98,7 @@ template <class _InputIter, class _ForwardIter>
 _STLP_INLINE_LOOP
 _ForwardIter 
 __uninitialized_copy(_InputIter __first, _InputIter __last, _ForwardIter __result,
-                     const __false_type& /*IsPOD*/)
-{
+                     const __false_type& /*IsPOD*/) {
   _ForwardIter __cur = __result;
   _STLP_TRY {
     for ( ; __first != __last; ++__first, ++__cur)
@@ -136,8 +135,7 @@ _STLP_INLINE_LOOP
 pair<_InputIter, _ForwardIter>
 __uninitialized_copy_n(_InputIter __first, _Size __count,
                        _ForwardIter __result,
-                       const input_iterator_tag &)
-{
+                       const input_iterator_tag &) {
   _ForwardIter __cur = __result;
   _STLP_TRY {
     for ( ; __count > 0 ; --__count, ++__first, ++__cur) 
@@ -196,8 +194,7 @@ __uninitialized_fill(_ForwardIter __first, _ForwardIter __last,
 template <class _ForwardIter, class _Tp>
 _STLP_INLINE_LOOP void
 __uninitialized_fill(_ForwardIter __first, _ForwardIter __last, 
-                     const _Tp& __x, const __false_type& /*IsPOD*/)
-{
+                     const _Tp& __x, const __false_type& /*IsPOD*/) {
   _ForwardIter __cur = __first;
   _STLP_TRY {
     for ( ; __cur != __last; ++__cur)
@@ -223,8 +220,7 @@ __uninitialized_fill_n(_ForwardIter __first, _Size __n,
 template <class _ForwardIter, class _Size, class _Tp>
 _STLP_INLINE_LOOP _ForwardIter
 __uninitialized_fill_n(_ForwardIter __first, _Size __n,
-                       const _Tp& __x, const __false_type& /*IsPOD*/)
-{
+                       const _Tp& __x, const __false_type& /*IsPOD*/) {
   _ForwardIter __cur = __first;
   _STLP_TRY {
     for ( ; __n > 0; --__n, ++__cur)
@@ -253,8 +249,7 @@ template <class _InputIter1, class _InputIter2, class _ForwardIter>
 inline _ForwardIter
 __uninitialized_copy_copy(_InputIter1 __first1, _InputIter1 __last1,
                           _InputIter2 __first2, _InputIter2 __last2,
-                          _ForwardIter __result, const __true_type& /*IsPOD*/)
-{
+                          _ForwardIter __result, const __true_type& /*IsPOD*/) {
   return __uninitialized_copy(__first2, __last2, 
                               __uninitialized_copy(__first1, __last1, __result, __true_type()), __true_type());
 }
@@ -263,8 +258,7 @@ template <class _InputIter1, class _InputIter2, class _ForwardIter>
 inline _ForwardIter
 __uninitialized_copy_copy(_InputIter1 __first1, _InputIter1 __last1,
                           _InputIter2 __first2, _InputIter2 __last2,
-                          _ForwardIter __result, const __false_type& /*IsPOD*/)
-{
+                          _ForwardIter __result, const __false_type& /*IsPOD*/) {
   _ForwardIter __mid = __uninitialized_copy(__first1, __last1, __result, _IS_POD_ITER(__result, _ForwardIter));
   _STLP_TRY {
     return __uninitialized_copy(__first2, __last2, __mid , _IS_POD_ITER(__result, _ForwardIter));
@@ -279,8 +273,7 @@ __uninitialized_copy_copy(_InputIter1 __first1, _InputIter1 __last1,
 template <class _ForwardIter, class _Tp, class _InputIter>
 inline _ForwardIter 
 __uninitialized_fill_copy(_ForwardIter __result, _ForwardIter __mid, const _Tp& __x,
-                          _InputIter __first, _InputIter __last)
-{
+                          _InputIter __first, _InputIter __last) {
   typedef typename __type_traits<_Tp>::is_POD_type _I_POD;
   __uninitialized_fill(__result, __mid, __x, _I_POD());
   _STLP_TRY {
@@ -297,8 +290,7 @@ template <class _InputIter, class _ForwardIter, class _Tp>
 inline void
 __uninitialized_copy_fill(_InputIter __first1, _InputIter __last1,
                           _ForwardIter __first2, _ForwardIter __last2,
-                          const _Tp& __x)
-{
+                          const _Tp& __x) {
   typedef typename __type_traits<_Tp>::is_POD_type _I_POD;
   _ForwardIter __mid2 = __uninitialized_copy(__first1, __last1, __first2, _I_POD());
   _STLP_TRY {
@@ -319,8 +311,7 @@ template <class _InputIter, class _ForwardIter>
 _STLP_INLINE_LOOP
 _ForwardIter 
 __uninitialized_move(_InputIter __first, _InputIter __last, _ForwardIter __result,
-                     const __false_type& /*IsPOD*/)
-{
+                     const __false_type& /*IsPOD*/) {
   _ForwardIter __cur = __result;
   _STLP_TRY {
     for ( ; __first != __last; ++__first, ++__cur)

@@ -1,3 +1,36 @@
+2004-07-07  Francois Dumont  <dums@...>
+
+	* stlport/stl/_hashtable.h, stlport/stl/_hashtable.c, 
+	stlport/stl/_hash_set.h, stlport/stl/_hash_map.h: generalization
+	of the iterator traits adopted on the tree class. Now iterator and
+	const_iterator on hash_set and hash_multiset are different types
+	even if iterator is still immutable.
+
+	* stlport/stl/_deque.h, stlport/stl/_list.h, stlport/stl/_slist.h:
+	Modification of the iterator classes to only use the template
+	parameter _Traits rather than using an external type traits. It is
+	the way hash containers and sorted containers have their iterator
+	struct working.
+
+	* stlport/stl/_iterator_base.h: Addition of the immutable traits 
+	struct _Const_Const_traits and _Nonconst_Const_traits for 
+	implementation of the set, multiset, hash_set, hash_multiset 
+	iterators.
+
+	* stlport/stl/c_locale.h, stlport/stl/debug/_debug.h: removal of 
+	unjustified _config.h inclusions
+
+	* stlport/stl/_iterator_base.h: inclusion of type_traits.h only
+	for compilers that need it.
+
+	* stlport/stl/_algobase.h, stlport/stl/debug/_debug.h: add inclusion 
+	of type_traits.h.
+
+	* stlport/stl/_algo.h, stlport/stl/_algo.c: move of the _tempbuf.h
+	inclusion from the .h to the .c that is the only one to need it.
+
+	* stlport/stl/_config.h: addition of the boost support section.
+
 2004-07-07  Petr Ovtchenkov  <ptr@Island...>
 
 	* stlport/stl/_monetary.c: iterator __str_first out of range,

@@ -65,11 +65,6 @@ template <class T> inline void copy(T* source,T* destination,int n) {
 
 #ifdef _STLP_USE_BOOST_SUPPORT
 #  include <stl/boost_type_traits.h>
-
-#  ifndef BOOST_STDLIB_CONFIG
-#    define BOOST_STDLIB_CONFIG <boost/config/stdlib/stlport.hpp>
-#  endif
-
 #  include <boost/call_traits.hpp>
 #endif /* _STLP_USE_BOOST_SUPPORT */
 
