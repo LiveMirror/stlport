@@ -243,31 +243,11 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 _STLP_BEGIN_NAMESPACE
 
 void FORCE_SYMBOL
-force_link()
-{
-  float f;
-  f = numeric_limits<float>::infinity();
-  f = numeric_limits<float>::quiet_NaN();
-  f = numeric_limits<float>::signaling_NaN();
-  double d;
-  d = numeric_limits<double>::infinity();
-  d = numeric_limits<double>::quiet_NaN();
-  d = numeric_limits<double>::signaling_NaN();
-#ifndef _STLP_NO_LONG_DOUBLE
-  long double ld;
-  ld = numeric_limits<long double>::infinity();
-  ld = numeric_limits<long double>::quiet_NaN();
-  ld = numeric_limits<long double>::signaling_NaN();
-#endif
-  
+force_link() {
   set<int>::iterator iter;
   // _M_increment; _M_decrement instantiation
   ++iter;
   --iter;
-  
-  // force bitset globals to be instantiated
-  unsigned char uc = _Bs_G<bool>::_S_bit_count[0];
-  uc += _Bs_G<bool>::_S_first_one[0];
 }
 
 _STLP_END_NAMESPACE

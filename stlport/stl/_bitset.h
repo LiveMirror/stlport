@@ -72,10 +72,10 @@ _STLP_BEGIN_NAMESPACE
 template<class _Dummy> 
 class _Bs_G {
 public:
-  static unsigned char _S_bit_count[256];
-  // Mapping from 8 bit unsigned integers to the index of the first one
-  // bit:
-  static unsigned char _S_first_one[256];
+  //returns the number of bit set within the buffer between __beg and __end.
+  static size_t _S_count(const unsigned char *__beg, const unsigned char *__end);
+  // Mapping from 8 bit unsigned integers to the index of the first one bit:
+  static unsigned char _S_first_one(unsigned char);
 };
 
 # if defined (_STLP_USE_TEMPLATE_EXPORT) 
@@ -92,7 +92,7 @@ struct _Base_bitset {
 
   _WordT _M_w[_Nw];                // 0 is the least significant word.
 
-  _Base_bitset( void ) { _M_do_reset(); }
+  _Base_bitset() { _M_do_reset(); }
 
   _Base_bitset(unsigned long __val) {
     _M_do_reset();
@@ -172,18 +172,13 @@ struct _Base_bitset {
   }
 
   size_t _M_do_count() const {
-    size_t __result = 0;
     const unsigned char* __byte_ptr = (const unsigned char*)_M_w;
     const unsigned char* __end_ptr = (const unsigned char*)(_M_w+_Nw);
 
-    while ( __byte_ptr < __end_ptr ) {
-      __result += _Bs_G<bool>::_S_bit_count[*__byte_ptr];
-      __byte_ptr++;
-    }
-    return __result;
+    return _Bs_G<bool>::_S_count(__byte_ptr, __end_ptr);
   }
 
-  unsigned long _M_do_to_ulong() const; 
+  unsigned long _M_do_to_ulong() const;
 
   // find first "on" bit
   size_t _M_do_find_first(size_t __not_found) const;
@@ -243,14 +238,9 @@ struct _Base_bitset<1UL> {
   }
 
   size_t _M_do_count() const {
-    size_t __result = 0;
     const unsigned char* __byte_ptr = (const unsigned char*)&_M_w;
     const unsigned char* __end_ptr = ((const unsigned char*)&_M_w)+sizeof(_M_w);
-    while ( __byte_ptr < __end_ptr ) {
-      __result += _Bs_G<bool>::_S_bit_count[*__byte_ptr];
-      __byte_ptr++;
-    }
-    return __result;
+    return _Bs_G<bool>::_S_count(__byte_ptr, __end_ptr);
   }
 
   unsigned long _M_do_to_ulong() const { return _M_w; }
@@ -279,7 +269,7 @@ _Base_bitset<1UL>::_M_do_find_first(size_t __not_found) const {
       unsigned char __this_byte
         = __STATIC_CAST(unsigned char,(__thisword & (~(unsigned char)0)));
       if ( __this_byte )
-        return __j*CHAR_BIT + _Bs_G<bool>::_S_first_one[__this_byte];
+        return __j*CHAR_BIT + _Bs_G<bool>::_S_first_one(__this_byte);
 
       __thisword >>= CHAR_BIT;
     }
@@ -312,7 +302,7 @@ _Base_bitset<1UL>::_M_do_find_next(size_t __prev,
       unsigned char __this_byte
         = __STATIC_CAST(unsigned char,(__thisword & (~(unsigned char)0)));
       if ( __this_byte )
-        return __j*CHAR_BIT + _Bs_G<bool>::_S_first_one[__this_byte];
+        return __j*CHAR_BIT + _Bs_G<bool>::_S_first_one(__this_byte);
 
       __thisword >>= CHAR_BIT;
     }

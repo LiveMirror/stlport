@@ -186,11 +186,14 @@ inline ptrdiff_t* distance_type(const _Ht_iterator<_Val,_Traits,_Key,_HF,_ExK,_E
 { return (ptrdiff_t*) 0; }
 #endif
 
-#define __stl_num_primes  28
-template <class _Tp>
+template <class _Dummy>
 class _Stl_prime {
 public:
-  static const size_t _M_list[__stl_num_primes];
+  //Returns the maximum number of buckets handled by the hashtable implementation
+  static size_t _S_max_nb_buckets();
+
+  //Returns the bucket size next to a required size
+  static size_t _S_next_size(size_t);
 };
 
 # if defined (_STLP_USE_TEMPLATE_EXPORT) 
@@ -356,7 +359,7 @@ public:
   size_type bucket_count() const { return _M_buckets.size(); }
 
   size_type max_bucket_count() const
-    { return _Stl_prime_type::_M_list[(int)__stl_num_primes - 1]; } 
+    { return _Stl_prime_type::_S_max_nb_buckets(); } 
 
   size_type elems_in_bucket(size_type __bucket) const {
     size_type __result = 0;
@@ -524,10 +527,8 @@ public:
 
 private:
 
-  size_type _M_next_size(size_type __n) const;
-
   void _M_initialize_buckets(size_type __n) {
-    const size_type __n_buckets = _M_next_size(__n);
+    const size_type __n_buckets = _Stl_prime_type::_S_next_size(__n);
     _M_buckets.reserve(__n_buckets);
     _M_buckets.insert(_M_buckets.end(), __n_buckets, __STATIC_CAST(void*, 0));
     _M_num_elements._M_data = 0;

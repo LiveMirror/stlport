@@ -10,7 +10,7 @@ include Makefile.inc
 include ${SRCROOT}/Makefiles/top.mak
 
 INCLUDES += -I${STLPORT_INCLUDE_DIR}
-DEFS += -DCPPUNIT_MINI=1
+DEFS += -D_STLP_NO_CUSTOM_IO -DCPPUNIT_MINI=1
 
 ifeq ($(OSNAME), cygwin)
 release-shared:	DEFS += -D_STLP_USE_DYNAMIC_LIB

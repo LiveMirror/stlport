@@ -431,41 +431,21 @@ public:
 #endif /* _STLP_LONG_LONG */
 
 // Specializations for all built-in floating-point types.
-
-union _F_rep
-{
-  unsigned short rep[2];
-  float val;
-};
-union _D_rep
-{
-  unsigned short rep[4];
-  double val;
-};
-
-# ifndef _STLP_NO_LONG_DOUBLE
-union _L_rep
-{
-  unsigned short rep[8];
-  long double val;
-};
-# endif
-
 template <class __dummy>
 class _LimG 
 {
 public:  
-  static const _F_rep _F_inf;
-  static const _F_rep _F_qNaN;
-  static const _F_rep _F_sNaN;
-  static const _D_rep _D_inf;
-  static const _D_rep _D_qNaN;
-  static const _D_rep _D_sNaN;
+  static float get_F_inf();
+  static float get_F_qNaN();
+  static float get_F_sNaN();
+  static double get_D_inf();
+  static double get_D_qNaN();
+  static double get_D_sNaN();
   
 # ifndef _STLP_NO_LONG_DOUBLE
-  static const _L_rep _L_inf;
-  static const _L_rep _L_qNaN;
-  static const _L_rep _L_sNaN;
+  static long double get_LD_inf();
+  static long double get_LD_qNaN();
+  static long double get_LD_sNaN();
 # endif
 };
 
@@ -494,9 +474,9 @@ public:
   static float (_STLP_CALL max) () _STLP_NOTHROW { _STLP_USING_VENDOR_CSTD return FLT_MAX; }
   static float _STLP_CALL epsilon() _STLP_NOTHROW { return FLT_EPSILON; }
   static float _STLP_CALL round_error() _STLP_NOTHROW { return 0.5f; } // Units: ulps.
-  static  float _STLP_CALL infinity() _STLP_NOTHROW { return _LimG<bool>::_F_inf.val; }
-  static  float _STLP_CALL quiet_NaN() _STLP_NOTHROW { return _LimG<bool>::_F_qNaN.val; }
-  static  float _STLP_CALL signaling_NaN() _STLP_NOTHROW { return _LimG<bool>::_F_sNaN.val; }
+  static  float _STLP_CALL infinity() _STLP_NOTHROW { return _LimG<bool>::get_F_inf(); }
+  static  float _STLP_CALL quiet_NaN() _STLP_NOTHROW { return _LimG<bool>::get_F_qNaN(); }
+  static  float _STLP_CALL signaling_NaN() _STLP_NOTHROW { return _LimG<bool>::get_F_sNaN(); }
 };
 
 _STLP_TEMPLATE_NULL class   numeric_limits<double>
@@ -520,9 +500,9 @@ public:
   static double (_STLP_CALL max)() _STLP_NOTHROW { _STLP_USING_VENDOR_CSTD return DBL_MAX; }
   static double _STLP_CALL epsilon() _STLP_NOTHROW { return DBL_EPSILON; }
   static double _STLP_CALL round_error() _STLP_NOTHROW { return 0.5; } // Units: ulps.
-  static  double _STLP_CALL infinity() _STLP_NOTHROW { return _LimG<bool>::_D_inf.val; }
-  static  double _STLP_CALL quiet_NaN() _STLP_NOTHROW { return _LimG<bool>::_D_qNaN.val; }
-  static  double _STLP_CALL signaling_NaN() _STLP_NOTHROW { return _LimG<bool>::_D_sNaN.val; }
+  static  double _STLP_CALL infinity() _STLP_NOTHROW { return _LimG<bool>::get_D_inf(); }
+  static  double _STLP_CALL quiet_NaN() _STLP_NOTHROW { return _LimG<bool>::get_D_qNaN(); }
+  static  double _STLP_CALL signaling_NaN() _STLP_NOTHROW { return _LimG<bool>::get_D_sNaN(); }
 };
 
 # ifndef _STLP_NO_LONG_DOUBLE
@@ -545,9 +525,9 @@ public:
   static long double (_STLP_CALL max) () _STLP_NOTHROW { _STLP_USING_VENDOR_CSTD return LDBL_MAX; }
   static long double _STLP_CALL epsilon() _STLP_NOTHROW { return LDBL_EPSILON; }
   static long double _STLP_CALL round_error() _STLP_NOTHROW { return 4; } // Units: ulps.
-  static long double _STLP_CALL infinity() _STLP_NOTHROW { return _LimG<bool>::_L_inf.val; } 
-  static long double _STLP_CALL quiet_NaN() _STLP_NOTHROW { return _LimG<bool>::_L_qNaN.val; }
-  static long double _STLP_CALL signaling_NaN() _STLP_NOTHROW { return _LimG<bool>::_L_sNaN.val; }
+  static long double _STLP_CALL infinity() _STLP_NOTHROW { return _LimG<bool>::get_LD_inf(); } 
+  static long double _STLP_CALL quiet_NaN() _STLP_NOTHROW { return _LimG<bool>::get_LD_qNaN(); }
+  static long double _STLP_CALL signaling_NaN() _STLP_NOTHROW { return _LimG<bool>::get_LD_sNaN(); }
 };
 
 # endif
