@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+//#include <sstream>
 
 #ifdef _STLP_PTHREADS
 # include <pthread.h>
@@ -57,11 +58,12 @@ protected:
     return tmp;
   }
 
-#if defined (_STLP_PTHREADS)
+#if defined (_STLP_PTHREAD) || defined (_STLP_WIN32THREADS)
+#  if defined (_STLP_PTHREADS)
   static void *f( void * )
-#elif defined (_STLP_WIN32THREADS)
+#  elif defined (_STLP_WIN32THREADS)
   static DWORD __stdcall f (void *)
-#endif
+#  endif
   {
     string s( "qyweyuewunfkHBUKGYUGL,wehbYGUW^(@T@H!BALWD:h^&@#*@(#:JKHWJ:CND" );
 
@@ -71,6 +73,7 @@ protected:
 
     return 0;
   }
+#endif
 
 };
 
@@ -95,6 +98,8 @@ void StringTest::mt()
 #endif // _STLP_PTHREADS
 
 #if defined (_STLP_WIN32THREADS)
+  //DWORD start = GetTickCount();
+
   HANDLE t[nth];
 
   int i; // VC6 not support in-loop scope of cycle var
@@ -102,9 +107,14 @@ void StringTest::mt()
     t[i] = CreateThread(NULL, 0, f, 0, 0, NULL);
   }
 
-  for ( i = 0; i < nth; ++i ) {
-    WaitForSingleObject(t[i], INFINITE);
-  }
+  WaitForMultipleObjects(nth, t, TRUE, INFINITE);
+
+  /*
+  DWORD duration = GetTickCount() - start;
+  ostringstream ostr;
+  ostr << "Duration: " << duration << endl;
+  CPPUNIT_MESSAGE(ostr.str().c_str());
+  */
 #endif
 
 #if !defined(_STLP_PTHREADS) && !defined(_STLP_WIN32THREADS)

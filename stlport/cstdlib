@@ -95,9 +95,12 @@ inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y)
 #  endif
 
 #  if defined(_STLP_MSVC) && (_STLP_MSVC <= 1200)
-inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); } 
+inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); }
+#    if defined (_MSC_EXTENSIONS)
+inline long abs(long __x) {return (labs(__x)); }
+#    endif
 #  endif
-#endif
+#endif /* __cplusplus */
 
 #  if defined ( _STLP_LLABS )
 _STLP_LONG_LONG   abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::_STLP_LLABS(__x); }

@@ -210,6 +210,67 @@ _STLP_END_NAMESPACE
 
 #  endif /* _STLP_USE_NEW_C_HEADERS */
 
+#  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200) && defined (_MSC_EXTENSIONS)
+/*
+ * dums: VC6 has all the required C++ functions but only define them if
+ * _MSC_EXTENSIONS is not defined (a bug?). STLport just do the same
+ * thing also when _MSC_EXTENSIONS is defined.
+ */
+_STLP_BEGIN_NAMESPACE
+inline double abs(double __x) {return (fabs(__x)); }
+inline double pow(double __x, int __y) {return (_Pow_int(__x, __y)); }
+inline double pow(int __x, int __y) {return (_Pow_int(__x, __y)); }
+inline float abs(float __x) {return (fabsf(__x)); }
+inline float acos(float __x) {return (acosf(__x)); }
+inline float asin(float __x) {return (asinf(__x)); }
+inline float atan(float __x) {return (atanf(__x)); }
+inline float atan2(float __y, float __x) {return (atan2f(__y, __x)); }
+inline float ceil(float __x) {return (ceilf(__x)); }
+inline float cos(float __x) {return (cosf(__x)); }
+inline float cosh(float __x) {return (coshf(__x)); }
+inline float exp(float __x) {return (expf(__x)); }
+inline float fabs(float __x) {return (fabsf(__x)); }
+inline float floor(float __x) {return (floorf(__x)); }
+inline float fmod(float __x, float __y) {return (fmodf(__x, __y)); }
+inline float frexp(float __x, int * __y) {return (frexpf(__x, __y)); }
+inline float ldexp(float __x, int __y) {return (ldexpf(__x, __y)); }
+inline float log(float __x) {return (logf(__x)); }
+inline float log10(float __x) {return (log10f(__x)); }
+inline float modf(float __x, float * __y) {return (modff(__x, __y)); }
+inline float pow(float __x, float __y) {return (powf(__x, __y)); }
+inline float pow(float __x, int __y) {return (_Pow_int(__x, __y)); }
+inline float sin(float __x) {return (sinf(__x)); }
+inline float sinh(float __x) {return (sinhf(__x)); }
+inline float sqrt(float __x) {return (sqrtf(__x)); }
+inline float tan(float __x) {return (tanf(__x)); }
+inline float tanh(float __x) {return (tanhf(__x)); }
+inline long double abs(long double __x) {return (fabsl(__x)); }
+inline long double acos(long double __x) {return (acosl(__x)); }
+inline long double asin(long double __x) {return (asinl(__x)); }
+inline long double atan(long double __x) {return (atanl(__x)); }
+inline long double atan2(long double __y, long double __x) {return (atan2l(__y, __x)); }
+inline long double ceil(long double __x) {return (ceill(__x)); }
+inline long double cos(long double __x) {return (cosl(__x)); }
+inline long double cosh(long double __x) {return (coshl(__x)); }
+inline long double exp(long double __x) {return (expl(__x)); }
+inline long double fabs(long double __x) {return (fabsl(__x)); }
+inline long double floor(long double __x) {return (floorl(__x)); }
+inline long double fmod(long double __x, long double __y) {return (fmodl(__x, __y)); }
+inline long double frexp(long double __x, int * __y) {return (frexpl(__x, __y)); }
+inline long double ldexp(long double __x, int __y) {return (ldexpl(__x, __y)); }
+inline long double log(long double __x) {return (logl(__x)); }
+inline long double log10(long double __x) {return (log10l(__x)); }
+inline long double modf(long double __x, long double * __y) {return (modfl(__x, __y)); }
+inline long double pow(long double __x, long double __y) {return (powl(__x, __y)); }
+inline long double pow(long double __x, int __y) {return (_Pow_int(__x, __y)); }
+inline long double sin(long double __x) {return (sinl(__x)); }
+inline long double sinh(long double __x) {return (sinhl(__x)); }
+inline long double sqrt(long double __x) {return (sqrtl(__x)); }
+inline long double tan(long double __x) {return (tanl(__x)); }
+inline long double tanh(long double __x) {return (tanhl(__x)); }
+_STLP_END_NAMESPACE
+#  endif
+
 #endif /* (_STLP_HAS_NO_NEW_C_HEADERS || _STLP_MSVC || __ICL) && ! _STLP_HAS_NO_NAMESPACES */
 
 #endif /* CMATH_H */

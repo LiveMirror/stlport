@@ -1,5 +1,6 @@
 #define _STLP_DO_IMPORT_CSTD_FUNCTIONS
 
+#include <limits>
 #include <cmath>
 //We also test math functions imported from stdlib.h or 
 //defined in cstdlib
@@ -26,6 +27,21 @@ class CMathTest : public CPPUNIT_NS::TestCase
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CMathTest);
 
+
+/*
+ * This function is not only usefull to compare floating point values,
+ * it also leads to ambiguity problems if the functions do not have the
+ * right prototype.
+ */
+template <class _Tp>
+bool are_equals(_Tp val, _Tp ref) {
+  if (val < ref) {
+    return (ref - val) <= std::numeric_limits<_Tp>::epsilon();
+  }
+  else {
+    return (val - ref) <= std::numeric_limits<_Tp>::epsilon();
+  }
+}
 //
 // tests implementation
 //
@@ -39,19 +55,19 @@ void CMathTest::test()
   long double long_double_val = -1.0l;
 #endif
 
-  CPPUNIT_ASSERT( std::abs(int_val) == -int_val );
-  CPPUNIT_ASSERT( std::abs(long_val) == -long_val );
-  CPPUNIT_ASSERT( std::labs(long_val) == -long_val );
-  CPPUNIT_ASSERT( std::abs(float_val) == -float_val );
-  CPPUNIT_ASSERT( std::abs(double_val) == -double_val );
+  CPPUNIT_ASSERT( are_equals(std::abs(int_val), -int_val) );
+  CPPUNIT_ASSERT( are_equals(std::abs(long_val), -long_val) );
+  CPPUNIT_ASSERT( are_equals(std::labs(long_val), -long_val) );
+  CPPUNIT_ASSERT( are_equals(std::abs(float_val), -float_val) );
+  CPPUNIT_ASSERT( are_equals(std::abs(double_val), -double_val) );
 #if !defined (_STLP_NO_LONG_DOUBLE)
-  CPPUNIT_ASSERT( std::abs(long_double_val) == -long_double_val );
+  CPPUNIT_ASSERT( are_equals(std::abs(long_double_val), -long_double_val) );
 #endif
 
-  CPPUNIT_ASSERT( std::fabs(float_val) == -float_val );
-  CPPUNIT_ASSERT( std::fabs(double_val) == -double_val );
+  CPPUNIT_ASSERT( are_equals(std::fabs(float_val), -float_val) );
+  CPPUNIT_ASSERT( are_equals(std::fabs(double_val), -double_val) );
 #if !defined (_STLP_NO_LONG_DOUBLE)
-  CPPUNIT_ASSERT( std::fabs(long_double_val) == -long_double_val );
+  CPPUNIT_ASSERT( are_equals(std::fabs(long_double_val), -long_double_val) );
 #endif
 
   std::div_t div_res = std::div(3, 2);
@@ -68,15 +84,68 @@ void CMathTest::test()
   int rand_val = std::rand();
   CPPUNIT_ASSERT( rand_val >= 0 && rand_val <= RAND_MAX );
 
-  CPPUNIT_ASSERT( std::floor(1.5f) == 1.0f );
-  CPPUNIT_ASSERT( std::ceil(1.5f) == 2.0f );
-  CPPUNIT_ASSERT( std::fmod(1.5f, 1.0f) == 0.5f );
-  CPPUNIT_ASSERT( std::floor(1.5) == 1.0 );
-  CPPUNIT_ASSERT( std::ceil(1.5) == 2.0 );
-  CPPUNIT_ASSERT( std::fmod(1.5, 1.0) == 0.5 );
+  CPPUNIT_ASSERT( are_equals(std::floor(1.5), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::ceil(1.5), 2.0) );
+  CPPUNIT_ASSERT( are_equals(std::fmod(1.5, 1.0), 0.5) );
+  CPPUNIT_ASSERT( are_equals(std::sqrt(4.0), 2.0) );
+  CPPUNIT_ASSERT( are_equals(std::pow(2.0, 2), 4.0) );
+  CPPUNIT_ASSERT( are_equals(std::exp(0.0), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::log(std::exp(1.0)), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::log10(100.0), 2.0) );
+  CPPUNIT_ASSERT( are_equals(std::modf(100.5, &double_val), 0.5) );
+  CPPUNIT_ASSERT( are_equals(double_val, 100.0) );
+  double_val = std::frexp(8.0, &int_val);
+  CPPUNIT_ASSERT( are_equals(double_val * std::pow(2.0, int_val), 8.0) );
+  CPPUNIT_ASSERT( are_equals(std::ldexp(1.0, 2), 4.0) );
+  CPPUNIT_ASSERT( are_equals(std::cos(std::acos(1.0)), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::sin(std::asin(1.0)), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::tan(std::atan(1.0)), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::tan(std::atan2(1.0, 1.0)), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::cosh(0.0), 1.0) );
+  CPPUNIT_ASSERT( are_equals(std::sinh(0.0), 0.0) );
+  CPPUNIT_ASSERT( are_equals(std::tanh(0.0), 0.0) );
+
+  CPPUNIT_ASSERT( are_equals(std::floor(1.5f), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::ceil(1.5f), 2.0f) );
+  CPPUNIT_ASSERT( are_equals(std::fmod(1.5f, 1.0f), 0.5f) );
+  CPPUNIT_ASSERT( are_equals(std::sqrt(4.0f), 2.0f) );
+  CPPUNIT_ASSERT( are_equals(std::pow(2.0f, 2), 4.0f) );
+  CPPUNIT_ASSERT( are_equals(std::exp(0.0f), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::log(std::exp(1.0f)), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::log10(100.0f), 2.0f) );
+  CPPUNIT_ASSERT( are_equals(std::modf(100.5f, &float_val), 0.5f) );
+  CPPUNIT_ASSERT( are_equals(float_val, 100.0f) );
+  float_val = std::frexp(8.0f, &int_val);
+  CPPUNIT_ASSERT( are_equals(float_val * std::pow(2.0f, int_val), 8.0f) );
+  CPPUNIT_ASSERT( are_equals(std::ldexp(1.0f, 2), 4.0f) );
+  CPPUNIT_ASSERT( are_equals(std::cos(std::acos(1.0f)), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::sin(std::asin(1.0f)), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::tan(std::atan(1.0f)), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::tan(std::atan2(1.0f, 1.0f)), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::cosh(0.0f), 1.0f) );
+  CPPUNIT_ASSERT( are_equals(std::sinh(0.0f), 0.0f) );
+  CPPUNIT_ASSERT( are_equals(std::tanh(0.0f), 0.0f) );
+
 #if !defined (_STLP_NO_LONG_DOUBLE)
-  CPPUNIT_ASSERT( std::floor(1.5l) == 1.0l );
-  CPPUNIT_ASSERT( std::ceil(1.5l) == 2.0l );
-  CPPUNIT_ASSERT( std::fmod(1.5l, 1.0l) == 0.5l );
+  CPPUNIT_ASSERT( are_equals(std::floor(1.5l), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::ceil(1.5l), 2.0l) );
+  CPPUNIT_ASSERT( are_equals(std::fmod(1.5l, 1.0l), 0.5l) );
+  CPPUNIT_ASSERT( are_equals(std::sqrt(4.0l), 2.0l) );
+  CPPUNIT_ASSERT( are_equals(std::pow(2.0l, 2), 4.0l) );
+  CPPUNIT_ASSERT( are_equals(std::exp(0.0l), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::log(std::exp(1.0l)), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::log10(100.0l), 2.0l) );
+  CPPUNIT_ASSERT( are_equals(std::modf(100.5l, &long_double_val), 0.5l) );
+  CPPUNIT_ASSERT( are_equals(long_double_val, 100.0l) );
+  long_double_val = std::frexp(8.0l, &int_val);
+  CPPUNIT_ASSERT( are_equals(long_double_val * std::pow(2.0l, int_val), 8.0l) );
+  CPPUNIT_ASSERT( are_equals(std::ldexp(1.0l, 2), 4.0l) );
+  CPPUNIT_ASSERT( are_equals(std::cos(std::acos(1.0l)), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::sin(std::asin(1.0l)), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::tan(std::atan(1.0l)), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::tan(std::atan2(1.0l, 1.0l)), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::cosh(0.0l), 1.0l) );
+  CPPUNIT_ASSERT( are_equals(std::sinh(0.0l), 0.0l) );
+  CPPUNIT_ASSERT( are_equals(std::tanh(0.0l), 0.0l) );
 #endif
 }

@@ -21,6 +21,7 @@ SRC_CPP = cppunit/test_main.cpp \
 	bsearch_test.cpp \
 	bvector_test.cpp \
 	cmath_test.cpp \
+	config_test.cpp \
 	copy_test.cpp \
 	count_test.cpp \
 	deque_test.cpp \
