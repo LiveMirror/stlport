@@ -10,7 +10,7 @@ Introduction
 ============
 This document should provide step-by-step guidance for installing, testing and using the STLport library under Windows CE .NET 4.x
 (aka Windows Mobile 2003 aka Pocket PC 2003).
-For any further comments or questsion visit the STLport forum http://www.stlport.com/cgi-bin/forum/dcboard.cgi.
+For any further comments or questions visit the STLport forum http://www.stlport.com/cgi-bin/forum/dcboard.cgi.
 
 =============
 Prerequisites
@@ -23,7 +23,7 @@ To build and use the STLport you will need following tools and libraries:
 ================
 Building STLport
 ================
-First, make sure that the RTTI patch is properly installed.
+First, make sure that the RTTI patch is properly installed if required for your SDK - not all SDKs come without builtin support for C++ RTTI.
 
 Second, open command line and set proper system variables.
 This can be done by using batch files under your 'eMbedded Visual C++' directory(use either WCEemulator.BAT if you want to build STLport for the emulator or WCEARMV4.BAT if you intend to aim an ARM device).
@@ -62,6 +62,13 @@ For every platform you want to use STLport add STLport/stlport directory to the 
 and STLport/lib directory in 'Library files' section.
 When using STLport together with MFC, you have to define _STLP_USE_MFC to properly include and use STLport.
 Now you should be ready to use STLport.
+
+By default, exception support is not activated. You can detect this via _CPPUNWIND and activate this via /GX.
+Without exception support, e.g. std::bad_alloc is not available, causing compile errors for some code.
+
+Also, there is only one runtime available but the IDE doesn't add the corresponding switch to the command line.
+The right switch (selecting a dynamically linked runtime) is IMHO /MD or /MDd. This then also switches STLport to dynamic linking.
+Alternatively, you can #define _DLL for your project, which achieves the same but, again IMHO, is a less clean solution.
 
 ============
 Known issues
