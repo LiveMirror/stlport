@@ -22,7 +22,7 @@ int equal2_test(int, char**)
 
   vector <int> v1(10);
   vector <int> v2(10);
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
   {
     v1[i] = i;
     v2[i] = i * i;

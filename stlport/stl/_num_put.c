@@ -78,21 +78,16 @@ template <class _OutputIter>
 _OutputIter  _STLP_CALL
 __put_float(string &__str, _OutputIter __out,
             ios_base& __f, wchar_t __fill,
-            wchar_t __decimal_point,
-            wchar_t __sep, const string& __grouping)
-{
+            wchar_t __decimal_point, wchar_t __sep, 
+            size_t __group_pos, const string& __grouping) {
   const ctype<wchar_t>& __ct = *(ctype<wchar_t>*)__f._M_ctype_facet() ;
 
   __iowstring __wbuf;
   __convert_float_buffer(__str, __wbuf, __ct, __decimal_point);
 
   if (!__grouping.empty()) {
-    // In order to do separator-insertion only to the left of the
-    // decimal point, we pass this position to the __insert_grouping function.
-    size_t __dec_pos = __wbuf.find(__decimal_point);
-
-    __insert_grouping(__wbuf, (__dec_pos == string::npos)?__wbuf.size():__dec_pos, 
-                      __grouping, __sep, __ct.widen('+'), __ct.widen('-'), 0);
+    __insert_grouping(__wbuf, __group_pos, __grouping, 
+                      __sep, __ct.widen('+'), __ct.widen('-'), 0);
   }
 
   return __copy_float_and_fill(__CONST_CAST(wchar_t*, __wbuf.data()), 
@@ -101,18 +96,20 @@ __put_float(string &__str, _OutputIter __out,
 }
 # endif /* WCHAR_T */
 
+
 // Helper routine for char
 template <class _OutputIter, class Str>
 _OutputIter  _STLP_CALL
 __put_float( /* __iostring */ Str& __str, _OutputIter __out,
             ios_base& __f, char __fill,
-            char __decimal_point,
-            char __sep, const string& __grouping)
-{
-  __adjust_float_buffer(__str, __decimal_point);
+            char __decimal_point, char __sep, 
+            size_t __group_pos, const string& __grouping) {
+  if ((__group_pos < __str.size()) && (__str[__group_pos] == '.')) {
+    __str[__group_pos] = __decimal_point;
+  }
+
   if (!__grouping.empty()) {
-    size_t __dec_pos = __str.find(__decimal_point);
-    __insert_grouping(__str, (__dec_pos == string::npos)?__str.size():__dec_pos,
+    __insert_grouping(__str, __group_pos,
                       __grouping, __sep, '+', '-', 0);
   }
 
@@ -124,16 +121,16 @@ __put_float( /* __iostring */ Str& __str, _OutputIter __out,
 template <class _CharT, class _OutputIter, class _Float>
 _OutputIter _STLP_CALL
 _M_do_put_float(_OutputIter __s, ios_base& __f,
-                _CharT __fill, _Float __x)
-{
+                _CharT __fill, _Float __x) {
   __iostring __buf;
-  __write_float(__buf, __f.flags(), (int)__f.precision(), __x);
 
-  const numpunct<_CharT>& __np = *(const numpunct<_CharT>*)__f._M_numpunct_facet();
+  size_t __group_pos = __write_float(__buf, __f.flags(), (int)__f.precision(), __x);
   
+  const numpunct<_CharT>& __np = *(const numpunct<_CharT>*)__f._M_numpunct_facet();
+
   return __put_float(__buf, __s, __f, __fill,
-                     __np.decimal_point(),
-                     __np.thousands_sep(), __f._M_grouping());
+                     __np.decimal_point(), __np.thousands_sep(), 
+                     __group_pos, __f._M_grouping());
 }
 
 // _M_do_put_integer and its helper functions.
@@ -226,8 +223,7 @@ __put_integer(char* __buf, char* __iend, _OutputIter __s,
 template <class _OutputIter>
 _OutputIter _STLP_CALL
 __put_integer(char* __buf, char* __iend, _OutputIter __s,
-              ios_base& __f, ios_base::fmtflags __flags, char __fill)
-{
+              ios_base& __f, ios_base::fmtflags __flags, char __fill) {
   char __grpbuf[64];
   ptrdiff_t __len = __iend - __buf;
 

@@ -22,7 +22,7 @@ int adjdiff2_test(int, char**)
   cout<<"Results of adjdiff2_test:"<<endl;
 
   vector <int> v(10);
-  for(int i = 0; i < v.size(); i++)
+  for(size_t i = 0; i < v.size(); i++)
     v[i] = i + 1;
   vector <int> rslt(v.size());
   adjacent_difference(v.begin(), v.end(), rslt.begin(), mult);

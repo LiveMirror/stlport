@@ -18,10 +18,10 @@ int ucompos2_test(int, char**)
 
 int input [3] = { -1, -4, -16 };
 
-  int output [3];
-  transform((int*)input, (int*)input + 3, (int*)output, 
+  double output [3];
+  transform((int*)input, (int*)input + 3, output, 
     compose1(square_root(), negate<int>()));
   for(int i = 0; i < 3; i++)
-   cout << output[i] << endl;
+   cout << (int)output[i] << endl;
   return 0;
 }

@@ -54,7 +54,7 @@ public:
     __IMPORT_WITH_REVERSE_ITERATORS(_Super)
     __IMPORT_SUPER_COPY_ASSIGNMENT(list, list<_Tp>, __LIST_SUPER)
     list() { }
-    explicit list(size_type __n, const _Tp& __value) : __LIST_SUPER(__n, __value) { }
+    explicit list(size_type __n, const _Tp& __val) : __LIST_SUPER(__n, __val) { }
     explicit list(size_type __n) :  __LIST_SUPER(__n) { } 
     list(const _Tp* __first, const _Tp* __last) : __LIST_SUPER(__first, __last) { } 
     list(const_iterator __first, const_iterator __last) : __LIST_SUPER(__first, __last) { }

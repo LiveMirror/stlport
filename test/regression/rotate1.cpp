@@ -24,7 +24,7 @@ int rotate1_test(int, char**)
   ostream_iterator <int> iter(cout, " ");
   copy(v1.begin(), v1.end(), iter);
   cout << endl;
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
   {
     rotate(v1.begin(), v1.begin() + i, v1.end());
     ostream_iterator <int> iter(cout, " ");

@@ -17,7 +17,7 @@ int incl1_test(int, char**)
   cout<<"Results of incl1_test:"<<endl;
   vector<int> v1(10);
   vector<int> v2(3);
-  int i;
+  size_t i;
   for(i = 0; i < v1.size(); i++)
   {
     v1[i] = i;

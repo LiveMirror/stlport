@@ -19,7 +19,7 @@ int merge2_test(int, char**)
   cout<<"Results of merge2_test:"<<endl;
   vector <int> v1(5);
   vector <int> v2(v1.size());
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
   {
     v1[i] = 10 - i;
     v2[i] =  7 - i;

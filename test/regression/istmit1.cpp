@@ -17,7 +17,7 @@ int istmit1_test(int, char**)
 {
   cout<<"Results of istmit1_test:"<<endl;
   char buffer [100];
-  int i = 0;
+  size_t i = 0;
   cin.unsetf(ios::skipws); // Disable white-space skipping.
   cout << "Please enter a string: ";
 #ifndef _STLP_LIMITED_DEFAULT_TEMPLATES

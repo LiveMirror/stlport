@@ -31,6 +31,11 @@
 #include "nc_alloc.h"
 #include "ThrowCompare.h"
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID TEST_INSERT_H
+_STLP_INSTRUMENT_FILE();
+# endif
+
 // A classification system for containers, for verification
 struct container_tag {};
 struct sequence_container_tag  {};
@@ -406,7 +411,7 @@ struct test_insert_value
         : original( orig )
     {
         MakeRandomValue( fInsVal );
-        gTestController.SetCurrentTestName("insertion or random value");
+        gTestController.SetCurrentTestName("insertion of random value");
     }
 	
     void operator()( C& c ) const
@@ -548,4 +553,9 @@ test_insert_range<C, Iter> insert_range_at_end_tester( const C& orig, const Iter
 {
 	return test_insert_range<C, Iter>( orig, first, last , (int)orig.size());
 }
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
+
 #endif // test_insert_H_

@@ -100,7 +100,7 @@ public:
     _STLP_DBG_TREE_SUPER(__comp), _M_iter_list(_Get_base()) {}
   _DBG_Rb_tree(const _Compare& __comp, const allocator_type& __a): 
     _STLP_DBG_TREE_SUPER(__comp, __a), _M_iter_list(_Get_base()) {}
-  _DBG_Rb_tree(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x):
+  _DBG_Rb_tree(const _Self& __x):
     _STLP_DBG_TREE_SUPER(__x), _M_iter_list(_Get_base()) {}
 
   _DBG_Rb_tree(__move_source<_Self> src):
@@ -247,8 +247,8 @@ public:
   }      
 };
 
-#define _STLP_TEMPLATE_HEADER template <class _Key, class _Value, class _KeyOfValue, class _Compare, class _Alloc>
-#define _STLP_TEMPLATE_CONTAINER _DBG_Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>
+#define _STLP_TEMPLATE_HEADER template <class _Key, class _Compare, class _Value, class _KeyOfValue, class _ConstIteTraits, class _Alloc>
+#define _STLP_TEMPLATE_CONTAINER _DBG_Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstIteTraits,_Alloc>
 #define _STLP_TEMPLATE_CONTAINER_BASE _STLP_DBG_TREE_SUPER
 #include <stl/debug/_relops_cont.h>
 #undef _STLP_TEMPLATE_CONTAINER_BASE

@@ -14,8 +14,8 @@ using namespace std;
 int mmap2_test(int, char**)
 {
   cout<<"Results of mmap2_test:"<<endl;
-static int hook=0;
-int bb=0;
+//static int hook=0;
+//int bb=0;
 
 
 typedef pair<const int, char> pair_type;

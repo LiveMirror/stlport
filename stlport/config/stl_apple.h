@@ -83,6 +83,8 @@ typedef int wint_t;
 #define _STLP_OWN_IOSTREAMS
 #define _STLP_USE_STDIO_IO 1						//*TY 02/24/2000 - see also ; ref.[ file _fstream.h; line 36 ]
 #define _STLP_NO_THREADS							//*TY 12/17/2000 - multi-thread capability not explored, yet.
+#undef _REENTRANT									//*ty 11/24/2001 - to make sure no thread facility is activated
+#define _NOTHREADS									//*ty 12/07/2001 - 
 
 // native library limitations
 #define _STLP_VENDOR_GLOBAL_STD						// mpw's c++ libs do not utilize namespace std yet

@@ -17,7 +17,7 @@ int adjfind1_test(int, char**)
   cout<<"Results of adjfind1_test:"<<endl;
   typedef vector<int> IntVector;
   IntVector v(10);
-  for(int i = 0; i < v.size(); i++)
+  for(size_t i = 0; i < v.size(); i++)
     v[i] = i;
   IntVector::iterator location;
   location = adjacent_find(v.begin(), v.end());

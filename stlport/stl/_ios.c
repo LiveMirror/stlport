@@ -18,6 +18,10 @@
 #ifndef _STLP_IOS_C
 #define _STLP_IOS_C
 
+#ifndef _STLP_INTERNAL_IOS_H
+# include <stl/_ios.h>
+#endif
+
 #if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_INTERNAL_STREAMBUF

@@ -65,6 +65,7 @@ typedef long double max_double_type;
 
 # endif
 
+# include <cstdio>
 # include <cstdlib>
 
 //#if defined(_CRAY)
@@ -251,7 +252,7 @@ bool _Stl_is_nan_or_inf(double x) { return isnan(x) || !isfinite(x); }
 bool _Stl_is_inf(double x)        { return !isfinite(x); }
 bool _Stl_is_neg_inf(double x)    { return !isfinite(x) && signbit(x); }
 bool _Stl_is_neg_nan(double x)    { return isnan(x) && signbit(x); }
-#elif /* defined (__FreeBSD__) */ ( defined (__GNUC__) && defined (__APPLE__) )
+#elif /* defined (__FreeBSD__) || */ ( defined (__GNUC__) && defined (__APPLE__) )
 inline bool _Stl_is_nan_or_inf(double x) { return !finite(x); }
 inline bool _Stl_is_inf(double x)        {   return _Stl_is_nan_or_inf(x) && ! isnan(x); }
 inline bool _Stl_is_neg_inf(double x)    {   return _Stl_is_inf(x) && x < 0 ; }
@@ -284,142 +285,142 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
 #endif
 
 
-# ifndef  USE_SPRINTF_INSTEAD
+#ifndef USE_SPRINTF_INSTEAD
 // Reentrant versions of floating-point conversion functions.  The argument
 // lists look slightly different on different operating systems, so we're
 // encapsulating the differences here.
 
-#if defined (__CYGWIN__) || defined(__DJGPP)
+#  if defined (__CYGWIN__) || defined(__DJGPP)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return ecvtbuf(x, n, pt, sign, buf); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
     { return fcvtbuf(x, n, pt, sign, buf); }
-# ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return ecvtbuf(x, n, pt, sign, buf); }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return fcvtbuf(x, n, pt, sign, buf); }
-# endif
-#elif defined (_STLP_USE_GLIBC)
+#    endif
+#  elif defined (_STLP_USE_GLIBC)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return buf + ecvt_r(x, n, pt, sign, buf, NDIG+2); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
     { return buf + fcvt_r(x, n, pt, sign, buf, NDIG+2); }
-#  ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return buf + qecvt_r(x, n, pt, sign, buf, NDIG+2); }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return buf + qfcvt_r(x, n, pt, sign, buf, NDIG+2); }
-#  endif
-#elif defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
+#    endif
+#  elif defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return ecvt(x, n, pt, sign); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
     { return fcvt(x, n, pt, sign); }
-#  ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return ecvtl(x, n, pt, sign); }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return fcvtl(x, n, pt, sign); }
-#  endif
-#elif defined (__sun)
+#    endif
+#  elif defined (__sun)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return econvert(x, n, pt, sign, buf); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
     { return fconvert(x, n, pt, sign, buf); }
-#  ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return qeconvert(&x, n, pt, sign, buf); }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return qfconvert(&x, n, pt, sign, buf); }
-#  endif
-#elif defined (__DECCXX) 
+#    endif
+#  elif defined (__DECCXX) 
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return (ecvt_r(x, n, pt, sign, buf, NDIG)==0 ? buf : 0); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
     { return (fcvt_r(x, n, pt, sign, buf, NDIG)==0 ? buf : 0); }
-#  ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
 // fbp : no "long double" conversions !
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return (ecvt_r((double)x, n, pt, sign, buf, NDIG)==0 ? buf : 0) ; }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return (fcvt_r((double)x, n, pt, sign, buf, NDIG)==0 ? buf : 0); }
-#  endif
-#elif defined (__hpux)
+#    endif
+#  elif defined (__hpux)
    inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
      { return ecvt(x, n, pt, sign); }
    inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
      { return fcvt(x, n, pt, sign); }
-# ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
 
-#  if defined( _REENTRANT ) && (defined(_PTHREADS_DRAFT4) || defined(PTHREAD_THREADS_MAX))
+#      if defined( _REENTRANT ) && (defined(_PTHREADS_DRAFT4) || defined(PTHREAD_THREADS_MAX))
    inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
      { return (_ldecvt_r(*(long_double*)&x, n, pt, sign, buf, NDIG+2)==0 ? buf : 0); }
    inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
      { return (_ldfcvt_r(*(long_double*)&x, n, pt, sign, buf, NDIG+2)==0 ? buf : 0); }
-#  else
+#      else
    inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
      { return _ldecvt(*(long_double*)&x, n, pt, sign); }
    inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
      { return _ldfcvt(*(long_double*)&x, n, pt, sign); }
-#  endif
-# endif
-#elif defined (_AIX)
+#      endif
+#    endif
+#  elif defined (_AIX)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { LOCK_CVT RETURN_CVT(ecvt, x, n, pt, sign, buf) }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
     { LOCK_CVT RETURN_CVT(fcvt, x, n, pt, sign, buf) }
-# ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
     { LOCK_CVT RETURN_CVT(ecvt, x, n, pt, sign, buf) }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { LOCK_CVT RETURN_CVT(fcvt, x, n, pt, sign, buf) }
-# endif
-#elif defined (__unix)  && !defined(__FreeBSD__)  && !defined(__NetBSD__) && !defined(__APPLE__) && !defined(_CRAY)
+#    endif
+#  elif defined (__unix)  && !defined(__FreeBSD__)  && !defined(__NetBSD__) && !defined(__APPLE__) && !defined(_CRAY)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return ecvt_r(x, n, pt, sign, buf); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
     { return fcvt_r(x, n, pt, sign, buf); }
-# ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return qecvt_r(x, n, pt, sign, buf); }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return qfcvt_r(x, n, pt, sign, buf); }
-#  endif
-#elif defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__)
+#    endif
+#  elif defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__)
 // those guys claim _cvt functions being reentrant.
 inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf) {  return _ecvt(x, n, pt, sign); }
 inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf) { return _fcvt(x, n, pt, sign); }
-# ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
 inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf) { return _ecvt((double)x, n, pt, sign); }
 inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf) { return _fcvt((double)x, n, pt, sign); }
-# endif
-#elif defined (__ISCPP__)
+#    endif
+#  elif defined (__ISCPP__)
 inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
 { return _fp_ecvt( x, n, pt, sign, buf); }
 
 inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
 { return _fp_fcvt(x, n, pt, sign, buf); }
 
-# ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
 inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
 { return _fp_ecvt( x, n, pt, sign, buf); }
 
 inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
 { return _fp_fcvt(x, n, pt, sign, buf); }
-# endif
-#elif defined (__MRC__) || defined(__SC__) || defined(_CRAY)
+#    endif
+#  elif defined (__MRC__) || defined(__SC__) || defined(_CRAY)
 inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* )
 { return ecvt( x, n, pt, sign ); }
 inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* )
 { return fcvt(x, n, pt, sign); }
-#ifndef _STLP_NO_LONG_DOUBLE
+#    ifndef _STLP_NO_LONG_DOUBLE
 inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* )
 { return ecvt( x, n, pt, sign ); }
 inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* )
 { return fcvt(x, n, pt, sign); }
-#endif
-#endif
+#    endif
+#  endif
 
 
 //----------------------------------------------------------------------
@@ -435,11 +436,12 @@ inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* )
 // also does not deal with blank padding, which is handled by
 // __copy_float_and_fill. 
 
-void __format_float_scientific(char * buf, const char * bp, 
-                               int decpt, int sign, bool is_zero,
-                               ios_base::fmtflags flags,
-                               int precision, bool /* islong */)
-{
+size_t __format_float_scientific(char * buf, const char * bp,
+                                 int decpt, int sign, bool is_zero,
+                                 ios_base::fmtflags flags,
+                                 int precision, bool /* islong */) {
+  size_t __group_pos;
+  char *__start_buf = buf;
   char * suffix;
   char expbuf[MAXESIZ + 2];
   // sign if required
@@ -451,9 +453,12 @@ void __format_float_scientific(char * buf, const char * bp,
   // first digit of mantissa
   *buf++ = *bp++;
 
+  __group_pos = buf - __start_buf - 1;
   // decimal point if required
-  if (precision != 0 || flags & ios_base::showpoint)
+  if (precision != 0 || flags & ios_base::showpoint) {
     *buf++ = '.';
+    ++__group_pos;
+  }
   // rest of mantissa
   int rz = precision;
   while (rz-- > 0 && *bp != 0)
@@ -482,13 +487,14 @@ void __format_float_scientific(char * buf, const char * bp,
 
   // copy the suffix
   strcpy(buf, suffix);
+  return __group_pos;
 }
 
-void __format_float_fixed(__iostring &buf, const char * bp,
-                          int decpt, int sign, bool /* x */,
-                          ios_base::fmtflags flags,
-                          int precision, bool islong )
-{
+size_t __format_float_fixed(__iostring &buf, const char * bp,
+                            int decpt, int sign, bool /* x */,
+                            ios_base::fmtflags flags,
+                            int precision, bool islong ) {
+  size_t __group_pos;
   char static_buf[128];
   int const BUF_SIZE = sizeof(static_buf) - 1;
   char *sbuf = static_buf;
@@ -516,9 +522,11 @@ void __format_float_fixed(__iostring &buf, const char * bp,
   } while (nn != 0);
 
   // decimal point if needed
+  __group_pos = buf.size() - 1;
   if (flags & ios_base::showpoint || precision > 0) {
     *sbuf++ = '.';
-  }
+    ++__group_pos;
+  } 
 
   // digits after decimal point if any
   nn = (min) (precision, MAXFCVT);
@@ -545,12 +553,12 @@ void __format_float_fixed(__iostring &buf, const char * bp,
     buf.append(static_buf, sbuf);
     sbuf = static_buf;
   }
+  return __group_pos;
 }
 
 
 void __format_nan_or_inf(char * buf, double x,
-                         ios_base::fmtflags flags)
-{
+                         ios_base::fmtflags flags) {
   static const char* inf[2] = { "inf", "Inf" };
   static const char* nan[2] = { "nan", "NaN" };
   const char** inf_or_nan = 0;
@@ -573,11 +581,11 @@ void __format_nan_or_inf(char * buf, double x,
 
 template <class max_double_type>
 static inline 
-void __format_float(__iostring &buf, const char * bp,
-                    int decpt, int sign, max_double_type x,
-                    ios_base::fmtflags flags,
-                    int precision, bool islong)
-{
+size_t __format_float(__iostring &buf, const char * bp,
+                      int decpt, int sign, max_double_type x,
+                      ios_base::fmtflags flags,
+                      int precision, bool islong) {
+  size_t __group_pos = 0;
   char static_buf[128];
   // Output of infinities and NANs does not depend on the format flags
   if (_Stl_is_nan_or_inf((double)x)) {       // Infinity or NaN
@@ -587,14 +595,14 @@ void __format_float(__iostring &buf, const char * bp,
   else {                        // representable number
     switch (flags & ios_base::floatfield) {
     case ios_base::scientific:
-      __format_float_scientific(static_buf, bp, decpt, sign, x == 0.0, flags,
-                                precision, islong);
+      __group_pos = __format_float_scientific(static_buf, bp, decpt, sign, x == 0.0, 
+                                              flags, precision, islong);
       buf = static_buf;
       break;
       
     case ios_base::fixed:
-      __format_float_fixed(buf, bp, decpt, sign, true, flags,
-                           precision, islong);
+      __group_pos = __format_float_fixed(buf, bp, decpt, sign, true, 
+                                         flags, precision, islong);
       break;
       
     default: // g format
@@ -620,21 +628,30 @@ void __format_float(__iostring &buf, const char * bp,
       
       if (decpt < -3 || decpt > precision) {
         precision = kk - 1;
-        __format_float_scientific(static_buf, bp, decpt, sign, x == 0,
-                                  flags, precision, islong);
+        __group_pos = __format_float_scientific(static_buf, bp, decpt, sign, x == 0,
+                                                flags, precision, islong);
         buf = static_buf;
       }
       else {
         precision = kk - decpt;
-        __format_float_fixed(buf, bp, decpt, sign, true,
-                             flags, precision, islong);
+        __group_pos = __format_float_fixed(buf, bp, decpt, sign, true,
+                                           flags, precision, islong);
       }
       break;
     } /* switch */
-  } /* else */
+  } /* else is_nan_or_inf */
+  return __group_pos;
 }
 
-# else
+#else /* USE_SPRINTF_INSTEAD */
+
+struct GroupPos {
+  bool operator () (char __c) const {
+    return __c == '.' ||
+           __c == 'e' || __c == 'E';
+  }
+};
+
 // Creates a format string for sprintf()
 static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifier) {
   fmtbuf[0] = '%';
@@ -658,11 +675,11 @@ static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifie
       fmtbuf[i++] = (flags & ios_base::uppercase) ?  'E' : 'e';      
       break;
     case ios_base::fixed:
-#if defined (__FreeBSD__)
+#  if defined (__FreeBSD__)
       fmtbuf[i++] = 'f';
-#else
+#  else
       fmtbuf[i++] = (flags & ios_base::uppercase) ? 'F' : 'f'; 
-#endif
+#  endif
       break;
     default:
       fmtbuf[i++] = (flags & ios_base::uppercase) ?  'G' : 'g';      
@@ -672,19 +689,21 @@ static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifie
   fmtbuf[i] = 0;
   return i;
 }
-# endif  /* USE_SPRINTF_INSTEAD */
+
+#endif  /* USE_SPRINTF_INSTEAD */
 
 
-void  _STLP_CALL
+size_t  _STLP_CALL
 __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
               double x) {
-# ifdef USE_SPRINTF_INSTEAD
+#ifdef USE_SPRINTF_INSTEAD
   char static_buf[128];
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
   snprintf(static_buf, 128, fmtbuf, precision, x);
   buf = static_buf;
-# else
+  return find_if(buf.begin(), buf.end(), GroupPos()) - buf.begin();
+#else
   char cvtbuf[NDIG+2];
   char * bp;
   int decpt, sign;
@@ -700,23 +719,23 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
     bp = _Stl_ecvtR(x, (min) (precision, MAXECVT), &decpt, &sign, cvtbuf);
     break;
   }
-  __format_float(buf, bp, decpt, sign, x, flags, precision, false);
-# endif
-
+  return __format_float(buf, bp, decpt, sign, x, flags, precision, false);
+#endif
 }
 
-# ifndef _STLP_NO_LONG_DOUBLE
-void _STLP_CALL
+#ifndef _STLP_NO_LONG_DOUBLE
+size_t _STLP_CALL
 __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
               long double x) {
-# ifdef USE_SPRINTF_INSTEAD
+#  ifdef USE_SPRINTF_INSTEAD
   char static_buf[128];
   char fmtbuf[64];
   int i = fill_fmtbuf(fmtbuf, flags, 'L');
   snprintf(static_buf, 128, fmtbuf, precision, x);    
   // we should be able to return buf + sprintf(), but we do not trust'em...
   buf = static_buf;
-# else
+  return find_if(buf.begin(), buf.end(), GroupPos()) - buf.begin();
+#  else
   char cvtbuf[NDIG+2];
   char * bp;
   int decpt, sign;
@@ -732,10 +751,10 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
     bp = _Stl_qecvtR(x, (min) (precision, MAXECVT), &decpt, &sign, cvtbuf);
     break;
   }
-  __format_float(buf, bp, decpt, sign, x, flags, precision, true);
-# endif
+  return __format_float(buf, bp, decpt, sign, x, flags, precision, true);
+#  endif /* USE_SPRINTF_INSTEAD */
 }
-# endif
+#endif /* _STLP_NO_LONG_DOUBLE */
 
 
 # ifndef _STLP_NO_WCHAR_T
@@ -779,8 +798,7 @@ __convert_float_buffer(string const& str, wstring &out,
 # endif
 
 void _STLP_CALL
-__adjust_float_buffer(__iostring &str, char dot)
-{
+__adjust_float_buffer(__iostring &str, char dot) {
   if ('.' != dot) {
     size_t __dot_pos = str.find('.');
     if (__dot_pos != string::npos) {

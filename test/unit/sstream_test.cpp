@@ -20,6 +20,8 @@ class SstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(err);
   CPPUNIT_TEST(err_long);
   CPPUNIT_TEST(maxint);
+  CPPUNIT_TEST(init_in);
+  CPPUNIT_TEST(init_out);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -29,6 +31,8 @@ class SstreamTest : public CPPUNIT_NS::TestCase
     void err();
     void err_long();
     void maxint();
+    void init_in();
+    void init_out();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SstreamTest);
@@ -147,3 +151,33 @@ void SstreamTest::maxint()
   CPPUNIT_ASSERT( i == INT_MIN );
   CPPUNIT_ASSERT( l == LONG_MIN );
 }
+
+void SstreamTest::init_in()
+{
+  istringstream is( "12345" );
+  int n;
+
+  is >> n;
+
+  CPPUNIT_ASSERT( n == 12345 );
+}
+
+void SstreamTest::init_out()
+{
+  ostringstream os( "12345" );
+
+  CPPUNIT_ASSERT( os.str() == "12345" );
+
+  os << 67;
+
+  // This satisfy to the Standard:
+  CPPUNIT_ASSERT( os.str() == "67345" );
+  // But we don't know the reason, why standard state that.
+
+  os.str( "89ab" );
+  CPPUNIT_ASSERT( os.str() == "89ab" );
+
+  os << 10;
+  CPPUNIT_ASSERT( os.str() == "10ab" );
+}
+

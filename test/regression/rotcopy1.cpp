@@ -25,7 +25,7 @@ int rotcopy1_test(int, char**)
   copy(v1.begin(), v1.end(), iter);
   cout << endl;
   vector <int> v2(v1.size());
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
   {
     rotate_copy(v1.begin(),
                  v1.begin() + i,
