@@ -12,27 +12,11 @@
 #  define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../crt/##header>
 #  define _STLP_GLOBAL_NEW_HANDLER
 #else
-#  if defined(UNDER_CE) && UNDER_CE >= 400
-#    if defined(_X86_)
-#      define _STLP_NATIVE_HEADER(x) <../Emulator/##x>
-#      define _STLP_NATIVE_C_HEADER(x) <../Emulator/##x>
-#      define _STLP_NATIVE_CPP_C_HEADER(x) <../Emulator/##x>
-#      define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../Emulator/##x>
-#      define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../Emulator/##header>
-#    elif defined(_ARM_)
-#      define _STLP_NATIVE_HEADER(x) <../Armv4/##x>
-#      define _STLP_NATIVE_C_HEADER(x) <../Armv4/##x>
-#      define _STLP_NATIVE_CPP_C_HEADER(x) <../Armv4/##x>
-#      define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../Armv4/##x>
-#      define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../Armv4/##header>
-#    endif
-#  else
-#    define _STLP_NATIVE_HEADER(x) <../include/##x>
-#    define _STLP_NATIVE_C_HEADER(x) <../include/##x>
-#    define _STLP_NATIVE_CPP_C_HEADER(x) <../include/##x>
-#    define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../include/##x>
-#    define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../include/##header>
-#  endif
+#  define _STLP_NATIVE_HEADER(x) <../include/##x>
+#  define _STLP_NATIVE_C_HEADER(x) <../include/##x>
+#  define _STLP_NATIVE_CPP_C_HEADER(x) <../include/##x>
+#  define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../include/##x>
+#  define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../include/##header>
 #endif
 
 #define _STLP_CALL __cdecl
@@ -225,19 +209,14 @@ typedef char __stl_char;
 
 // If we are under Windows CE, include appropriate config
 
-#if defined(UNDER_CE)
-#  if _MSC_VER < 1200
+#if defined(UNDER_CE) && (_MSC_VER < 1200)
     // Microsoft Visual C++ 5 with Windows CE Toolkit;
     // could also be Visual C++ 6 with toolkit, but we can't detect that.
     // the Windows CE Toolkit is obsolete, anyway
 #    include <config/stl_wince.h>
-#  else
-    // common header for eMbedded Visual C++ 3 and .NET
-#    include <config/stl_evc.h>
-#  endif
 #endif /* UNDER_CE */
 
-#if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
+#if (_MSC_VER <= 1200) // including MSVC 6.0
 // defined for DEBUG and NDEBUG too, to allow user mix own debug build with STLP release library
 #  define _STLP_USE_ABBREVS
 #endif
@@ -274,12 +253,6 @@ typedef char __stl_char;
  */
 #    define _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
 #  endif
-#endif
-
-// on evc3/evc4 we don't have a static native runtime library
-// note: move this into stl_evc.h later and let stl_evc.h include stl_msvc.h
-#if defined (_STLP_WCE)
-#  undef _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
 #endif
 
 #if defined(_STLP_USE_DYNAMIC_LIB)

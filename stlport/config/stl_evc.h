@@ -35,10 +35,23 @@
 # define _STLP_WCE
 
 
+// When compiling on evc4 / ARM, _MSC_VER is 1201; change that
+# if defined(_STLP_WCE_NET) && defined(_ARM_)
+// pretend i am _MSC_VER 1200 not 1201
+#  undef _STLP_MSVC
+#  define _STLP_MSVC 1200
+# endif
+
+// inherit all msvc6 options
+# include <config/stl_msvc.h>
+
 // Always threaded in eMbedded Visual C++ 3.0 and .NET
 # ifndef _MT
 #  define _MT
 # endif
+
+// we don't have a static native runtime library
+# undef _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
 
 /*
  * Workaround Pocket PC 2003 missing RTTI support in OS image:
@@ -130,37 +143,26 @@
  * eMbedded Visual C++ .NET specific settings
  */
 # ifdef _STLP_WCE_NET
-
-// Struct for Windows CE FILE implementation.
-// This is ugly and could be dangerous in future Windows CE .NET SDKs.
-#  ifndef _FILECE_DEFINED
-typedef struct  {
-        char *_ptr;
-        int   _cnt;
-        char *_base;
-        int   _flag;
-
-        int   _charbuf;
-        int   _bufsiz;
-        unsigned    _res1;
-        unsigned    _res2;
-
-        unsigned    _res3;
-        unsigned    _res4;
-        unsigned    _res5;
-        void*       _file;
-
-        unsigned    _res6;
-        unsigned    _res7;
-        unsigned    _res8;
-        unsigned    _res9;
-} _iobufce;
-typedef _iobufce FILECE;
-#  define _FILECE_DEFINED
-# endif /* _FILECE_DEFINED */
-
+// include headers for ARM and emulator
+#  undef _STLP_NATIVE_HEADER
+#  undef _STLP_NATIVE_C_HEADER
+#  undef _STLP_NATIVE_CPP_C_HEADER
+#  undef _STLP_NATIVE_OLD_STREAMS_HEADER
+#  undef _STLP_NATIVE_CPP_RUNTIME_HEADER
+#  if defined(_X86_)
+#   define _STLP_NATIVE_HEADER(x) <../Emulator/##x>
+#   define _STLP_NATIVE_C_HEADER(x) <../Emulator/##x>
+#   define _STLP_NATIVE_CPP_C_HEADER(x) <../Emulator/##x>
+#   define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../Emulator/##x>
+#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../Emulator/##header>
+#  elif defined(_ARM_)
+#   define _STLP_NATIVE_HEADER(x) <../Armv4/##x>
+#   define _STLP_NATIVE_C_HEADER(x) <../Armv4/##x>
+#   define _STLP_NATIVE_CPP_C_HEADER(x) <../Armv4/##x>
+#   define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../Armv4/##x>
+#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../Armv4/##header>
+#  endif
 # endif /* _STLP_WCE_NET */
-
 
 /*
  * eMbedded Visual C++ 3.0 specific settings
