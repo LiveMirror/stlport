@@ -1,3 +1,7 @@
+2005-02-28  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.c: hashtable::erase fix thanks Patrick Bergeron.
+
 2005-02-27  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_algobase.h, _algobase.c: Fix find algo overload for

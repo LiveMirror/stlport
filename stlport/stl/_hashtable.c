@@ -277,7 +277,7 @@ hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
           __cur = _M_elems.erase_after(__prev);
           ++__erased;
         } while ((__cur != __last) && _M_equals(_M_get_key(*__cur), __key));
-        return __erased;
+        break;
       }
     }
   }
