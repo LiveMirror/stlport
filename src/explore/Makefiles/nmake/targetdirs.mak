@@ -45,6 +45,17 @@ OUTPUT_DIRS = $(OUTPUT_DIRS) $(OUTPUT_DIR_A_STLDBG)
 
 dirs:	$(OUTPUT_DIRS)
 
+INSTALL_LIB_DIRS = $(INSTALL_LIB_DIR)
+
+INSTALL_BIN_DIRS = $(INSTALL_BIN_DIR) $(INSTALL_BIN_DIR_DBG) $(INSTALL_BIN_DIR_STLDBG)
+
+INSTALL_DIRS = $(INSTALL_LIB_DIRS) $(INSTALL_BIN_DIRS)
+
+# replace slashes with backslashes; mkdir and copy doesn't like them.
+INSTALL_DIRS = $(INSTALL_DIRS:/=\)
+
 $(OUTPUT_DIRS):
 	@if not exist $@ mkdir $@
 
+$(INSTALL_DIRS):
+	@if not exist $@ mkdir $@

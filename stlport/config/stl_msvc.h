@@ -251,11 +251,7 @@
 #  ifdef __ICL
 #   define _STLP_LIB_BASENAME "stlport_icl"
 #  elif defined(_STLP_WCE_EVC3)
-#   if defined(_X86_)
-#    define _STLP_LIB_BASENAME "stlport_evc3-x86"
-#   elif defined(_ARM_)
-#    define _STLP_LIB_BASENAME "stlport_evc3-arm"
-#   endif /* _STLP_WCE_EVC3 */
+#   define _STLP_LIB_BASENAME "stlport_evc3"
 #  elif defined(_STLP_WCE_NET)
 #   if defined(_X86_)
 #    define _STLP_LIB_BASENAME "stlport_evc4-x86"
