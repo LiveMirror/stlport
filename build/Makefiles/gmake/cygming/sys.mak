@@ -35,7 +35,7 @@ AR_EXTR := -x
 AR_OUT = $@
 #endif
 
-INSTALL := /usr/bin/install
+INSTALL := install
 
 INSTALL_SO := ${INSTALL} -m 0755
 INSTALL_A := ${INSTALL} -m 0644

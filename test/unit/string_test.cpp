@@ -71,11 +71,13 @@ protected:
     return tmp;
   }
 
-#if defined (_STLP_PTHREADS) || defined (_STLP_WIN32THREADS)
+#if defined (_STLP_THREADS)
 #  if defined (_STLP_PTHREADS)
-  static void *f( void * )
+  static void* f(void*)
 #  elif defined (_STLP_WIN32THREADS)
-  static DWORD __stdcall f (void *)
+  static DWORD __stdcall f(void*)
+#  else
+#    error Unknown thread model.
 #  endif
   {
     string s( "qyweyuewunfkHBUKGYUGL,wehbYGUW^(@T@H!BALWD:h^&@#*@(#:JKHWJ:CND" );
