@@ -101,7 +101,7 @@ inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y)
 
 #  if defined(_STLP_MSVC) && (_STLP_MSVC <= 1310)
 inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); }
-#    if defined (_MSC_EXTENSIONS) && (_STLP_MSVC <= 1200)
+#    if defined (_MSC_EXTENSIONS) && (_STLP_MSVC <= 1300)
 #      pragma warning (push)
 #      pragma warning (disable: 4162)
 #      pragma function (abs)

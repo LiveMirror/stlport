@@ -221,7 +221,7 @@ _STLP_END_NAMESPACE
 
 #  endif /* _STLP_USE_NEW_C_HEADERS */
 
-#  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200) && !defined(_STLP_WCE)
+#  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1300) && !defined(_STLP_WCE)
 _STLP_BEGIN_NAMESPACE
 
 #    if defined (_MSC_EXTENSIONS) /* && !defined(_STLP_WCE_NET) */

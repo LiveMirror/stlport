@@ -116,7 +116,7 @@ using _STLP_VENDOR_CSTD::ldexp;
 using _STLP_VENDOR_CSTD::log10;
 using _STLP_VENDOR_CSTD::log;
 using _STLP_VENDOR_CSTD::modf;
-#if !defined(_STLP_MSVC) || (_STLP_MSVC > 1200)
+#if !defined(_STLP_MSVC) || (_STLP_MSVC > 1300)
 //The native pow has a bugged overload (double pow(int, int)):
 using _STLP_VENDOR_CSTD::pow;
 #endif
