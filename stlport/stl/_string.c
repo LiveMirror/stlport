@@ -251,9 +251,9 @@ void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position, size_t __n
 #ifndef _STLP_MEMBER_TEMPLATES
 
 template <class _CharT, class _Traits, class _Alloc>
-void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
-                                                 const _CharT* __first, 
-                                                 const _CharT* __last)
+void basic_string<_CharT,_Traits,_Alloc>::_M_insert(iterator __position,
+                                                    const_iterator __first, const_iterator __last,
+                                                    const random_access_iterator_tag&)
 {
   if (__first != __last) {
     const ptrdiff_t __n = __last - __first;
@@ -274,7 +274,7 @@ void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
             _M_copy(__first, __last, __position);
           }
           else {
-            const _CharT* __mid = __move_dest_end;
+            const_iterator __mid = __move_dest_end;
             difference_type __mid_pos = __mid - __first;
             _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
             _M_copy(__mid, __last, __position + __mid_pos);
@@ -284,7 +284,7 @@ void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
           }
         }
         else if ((__last > __move_dest) && (__last <= __move_dest_end)) {
-          const _CharT* __mid = __move_dest;
+          const_iterator __mid = __move_dest;
           difference_type __mid_pos = __mid - __first;
           _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
           _M_copy(__first, __mid, __position);
@@ -298,7 +298,7 @@ void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
         }
       }
       else {
-        const _CharT* __mid = __first;
+        const_iterator __mid = __first;
         advance(__mid, __elems_after + 1);
         uninitialized_copy(__mid, __last, this->_M_finish + 1);
         this->_M_finish += __n - __elems_after;

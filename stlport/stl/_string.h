@@ -695,19 +695,21 @@ public:                         // Insert
       this->_M_throw_out_of_range();
     if (size() > max_size() - __s.size())
       this->_M_throw_length_error();
-    insert(begin() + __pos, __s._M_start, __s._M_finish);
+    _M_insert(begin() + __pos, __s._M_start, __s._M_finish, 
+              random_access_iterator_tag());
     return *this;
   }
 
   _Self& insert(size_type __pos, const _Self& __s,
-                       size_type __beg, size_type __n) {
+                size_type __beg, size_type __n) {
     if (__pos > size() || __beg > __s.size())
       this->_M_throw_out_of_range();
     size_type __len = (min) (__n, __s.size() - __beg);
     if (size() > max_size() - __len)
       this->_M_throw_length_error();
-    insert(begin() + __pos,
-           __s._M_start + __beg, __s._M_start + __beg + __len);
+    _M_insert(begin() + __pos, 
+              __s._M_start + __beg, __s._M_start + __beg + __len,
+              random_access_iterator_tag());
     return *this;
   }
   _Self& insert(size_type __pos, const _CharT* __s, size_type __n) {
@@ -716,7 +718,7 @@ public:                         // Insert
       this->_M_throw_out_of_range();
     if (size() > max_size() - __n)
       this->_M_throw_length_error();
-    insert(begin() + __pos, __s, __s + __n);
+    _M_insert(begin() + __pos, __s, __s + __n, random_access_iterator_tag());
     return *this;
   }
 
@@ -727,7 +729,7 @@ public:                         // Insert
     size_type __len = _Traits::length(__s);
     if (size() > max_size() - __len)
       this->_M_throw_length_error();
-    insert(this->_M_start + __pos, __s, __s + __len);
+    _M_insert(this->_M_start + __pos, __s, __s + __len, random_access_iterator_tag());
     return *this;
   }
     
@@ -764,22 +766,18 @@ public:                         // Insert
 
 #else /* _STLP_MEMBER_TEMPLATES */
 
-  void insert(iterator __p, const _CharT* __first, const _CharT* __last);
+  void insert(iterator __p, const_iterator __first, const_iterator __last) {
+    _M_insert(__p, __first, __last, random_access_iterator_tag());
+  }
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
 private:  // Helper functions for insert.
 
-#ifdef _STLP_MEMBER_TEMPLATES
-
-  template <class _InputIter> 
-  void insert(iterator __p, _InputIter __first, _InputIter __last,
-              const input_iterator_tag &) {
-    for ( ; __first != __last; ++__first) {
-      __p = insert(__p, *__first);
-      ++__p;
-    }
-  }
+#ifndef _STLP_MEMBER_TEMPLATES
+  void _M_insert(iterator __p, const_iterator __first, const_iterator __last, 
+                 const random_access_iterator_tag&);
+#else
 
   template <class _ForwardIter>
   void _M_insert_overflow(iterator __position, _ForwardIter __first, _ForwardIter __last,
@@ -803,8 +801,17 @@ private:  // Helper functions for insert.
     this->_M_end_of_storage._M_data = __new_start + __len; 
   }
 
+  template <class _InputIter> 
+  void _M_insert(iterator __p, _InputIter __first, _InputIter __last,
+                 const input_iterator_tag &) {
+    for ( ; __first != __last; ++__first) {
+      __p = insert(__p, *__first);
+      ++__p;
+    }
+  }
+
   template <class _ForwardIter>
-  void insert(iterator __position, _ForwardIter __first, _ForwardIter __last, 
+  void _M_insert(iterator __position, _ForwardIter __first, _ForwardIter __last, 
 		             const random_access_iterator_tag &) {
     //This version has to take care about self referencing
     if (__first != __last) {
@@ -872,7 +879,7 @@ private:  // Helper functions for insert.
   }
 
   template <class _ForwardIter>
-  void insert(iterator __position, _ForwardIter __first, _ForwardIter __last, 
+  void _M_insert(iterator __position, _ForwardIter __first, _ForwardIter __last, 
 		             const forward_iterator_tag &) {
     //This version can't have self referencing
     if (__first != __last) {
@@ -914,7 +921,7 @@ private:  // Helper functions for insert.
   template <class _InputIter>
   void _M_insert_dispatch(iterator __p, _InputIter __first, _InputIter __last,
                           const __false_type& /*Integral*/) {
-    insert(__p, __first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIter));
+    _M_insert(__p, __first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIter));
   }
 
   template <class _InputIterator>
@@ -1083,20 +1090,20 @@ private:                        // Helper functions for replace.
 
   template <class _InputIter>
   _Self& replace(iterator __first, iterator __last,
-                 _InputIter __f, _InputIter __l, const input_iterator_tag &) {
+                 _InputIter __f, _InputIter __l, const input_iterator_tag &__ite_tag) {
     //no overlapping issue in this method
 		for ( ; __first != __last && __f != __l; ++__first, ++__f)
 	    _Traits::assign(*__first, *__f);
 	  if (__f == __l)
 	    erase(__first, __last);
 	  else
-	    insert(__last, __f, __l);
+	    _M_insert(__last, __f, __l, __ite_tag);
 	  return *this;
   }
 
   template <class _InputIter>
   _Self& replace(iterator __first, iterator __last,
-                 _InputIter __f, _InputIter __l, const random_access_iterator_tag &) {
+                 _InputIter __f, _InputIter __l, const random_access_iterator_tag &__ite_tag) {
     //might be overlapping
     if (_M_inside(__f)) {
       difference_type __n = __l - __f;
@@ -1110,13 +1117,13 @@ private:                        // Helper functions for replace.
         if ((__l <= __first) || (__f >= __last)) {
 				  //no overlap:
           _M_copy(__f, __m, __first);
-          insert(__last, __m, __l);
+          _M_insert(__last, __m, __l, __ite_tag);
         }
         else {
 				  //we have to take care of reallocation:
 				  const difference_type __off_dest = __first - this->begin();
 				  const difference_type __off_src = __f - this->begin();
-				  insert(__last, __m, __l);
+				  _M_insert(__last, __m, __l, __ite_tag);
 				  _Traits::move(begin() + __off_dest, begin() + __off_src, __n);
         }
       }
@@ -1129,7 +1136,7 @@ private:                        // Helper functions for replace.
 
   template <class _ForwardIter> 
   _Self& replace(iterator __first, iterator __last,
-                 _ForwardIter __f, _ForwardIter __l, const forward_iterator_tag &) {
+                 _ForwardIter __f, _ForwardIter __l, const forward_iterator_tag &__ite_tag) {
     difference_type __n = distance(__f, __l);
     const difference_type __len = __last - __first;
     if (__len >= __n) {
@@ -1139,7 +1146,7 @@ private:                        // Helper functions for replace.
     else {
 		  _ForwardIter __m = __f;
 		  advance(__m, __len);
-      insert(__last, __m, __l);
+      _M_insert(__last, __m, __l, __ite_tag);
       _M_copy(__f, __m, __first);
     }
     return *this;
