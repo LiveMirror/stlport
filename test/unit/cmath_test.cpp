@@ -151,8 +151,9 @@ void CMathTest::test()
   CPPUNIT_CHECK( are_equals(std::ldexp(1.0l, 2), 4.0l) );
   CPPUNIT_CHECK( are_equals(std::cos(std::acos(1.0l)), 1.0l) );
   CPPUNIT_CHECK( are_equals(std::sin(std::asin(1.0l)), 1.0l) );
-  CPPUNIT_CHECK( are_equals(std::tan(std::atan(1.0l)), 1.0l) );
-  CPPUNIT_CHECK( are_equals(std::tan(std::atan2(1.0l, 1.0l)), 1.0l) );
+  CPPUNIT_CHECK( are_equals(std::tan(0.0l), 0.0l) );
+  CPPUNIT_CHECK( are_equals(std::atan(0.0l), 0.0l) );
+  CPPUNIT_CHECK( are_equals(std::atan2(0.0l, 1.0l), 0.0l) );
   CPPUNIT_CHECK( are_equals(std::cosh(0.0l), 1.0l) );
   CPPUNIT_CHECK( are_equals(std::sinh(0.0l), 0.0l) );
   CPPUNIT_CHECK( are_equals(std::tanh(0.0l), 0.0l) );

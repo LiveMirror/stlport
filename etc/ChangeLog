@@ -1,3 +1,24 @@
+2005-01-27  Francois Dumont  <dums@stlport...>
+
+	* stlport/deque, list, map, set, slist, stack, valarray: _STLP_WHOLE_VENDOR_STD
+	replaced by the official _STLP_IMPORT_VENDOR_STD macro.
+	
+	* stlport/stl/_algobase.h: Add find algo overload for char* and const char* 
+	forwarding the call to the memchr C function thanks Jim Xochellis report.
+	
+	* test/unit/find_test.cpp: Add check for the new find overload.
+	
+	* test/unit/cmath_test.cpp: Fix of the atan and atan2 tests to avoid precision
+	problems.
+	
+	* test/unit/ptrspec_test.cpp: Add check for containers of function pointers and
+	member function pointers.
+
+	* test/unit/set_test.cpp: Add check for equal_range method when the search value
+	is not in the set.
+
+	* stlport/stl/_tree.h: Fix equal_range implementation thanks Grisha Spivak report.
+	
 2005-01-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl_user_config.h: Pointer specialization feature is now off 
@@ -5,8 +26,8 @@
 	methods correctly yet. Feature documentation has been updated to report
 	this limitation.
 	
-	* src/ctype.h: removal of the '>= 0' for wchar_t variables reported as a 
-	always true test by gcc.
+	* src/ctype.h: removal of the '>= 0' check for wchar_t variables reported 
+	as a always true condition by gcc.
 	
 	* stlport/stl/_hashtable.c: Removal of an unused variable in hashtable::resize
 	method thanks Jeff Grills report.

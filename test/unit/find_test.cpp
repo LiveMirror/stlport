@@ -17,6 +17,7 @@ class FindTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(find1);
   CPPUNIT_TEST(findif0);
   CPPUNIT_TEST(findif1);
+  CPPUNIT_TEST(find_char);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -24,6 +25,7 @@ protected:
   void find1();
   void findif0();
   void findif1();
+  void find_char();
   static bool odd(int a_);
   static bool div_3(int a_);
 };
@@ -75,4 +77,13 @@ bool FindTest::odd(int a_)
 bool FindTest::div_3(int a_)
 {
   return a_ % 3 ? 0 : 1;
+}
+void FindTest::find_char()
+{
+  char str[] = "abcdefghij";
+  char *d = find((char*)str, (char*)str + sizeof(str) / sizeof(char), 'd');
+  CPPUNIT_ASSERT( *d == 'd' );
+
+  const char *e = find((const char*)str, (const char*)str + sizeof(str) / sizeof(char), 'e');
+  CPPUNIT_ASSERT( *e == 'e' );
 }

@@ -618,9 +618,6 @@ struct _IsStlportClassCondNot {
 };
 #  endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
 
-#else
-#  define _STLP_STLPORT_CLASS_1
-#  define _STLP_STLPORT_CLASS_N
 #endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
 
 #if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER)

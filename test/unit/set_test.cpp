@@ -134,6 +134,13 @@ void SetTest::bounds()
   CPPUNIT_ASSERT( pit.second != s.end() );
   CPPUNIT_ASSERT( *pit.second == 7 );
 
+  pit = s.equal_range(4);
+  CPPUNIT_ASSERT( pit.first == pit.second );
+  CPPUNIT_ASSERT( pit.first != s.end() );
+  CPPUNIT_ASSERT( *pit.first == 6 );
+  CPPUNIT_ASSERT( pit.second != s.end() );
+  CPPUNIT_ASSERT( *pit.second == 6 );
+
   //Check const_iterator on mutable set
   scit = s.lower_bound(2);
   CPPUNIT_ASSERT( scit != s.end() );

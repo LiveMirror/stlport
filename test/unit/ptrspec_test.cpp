@@ -53,7 +53,15 @@ TEST_INSTANCIATE_CONTAINER(slist);
 TEST_INSTANCIATE_CONTAINER(deque);
 #endif
 
+//Function to test pointer to function support:
 void FTypeInstance() {}
+
+//Class to test pointer to member method support:
+class AClass {
+public:
+  void func() {}
+};
+
 //
 // tests implementation
 //
@@ -73,6 +81,12 @@ void PtrSpecTest::ptr_specialization_test()
     typedef void (*FType)();
     vector<FType> func_vector;
     func_vector.push_back(&FTypeInstance);
+  }
+
+  {
+    typedef void (AClass::*MFType)();
+    vector<MFType> mem_func_vector;
+    mem_func_vector.push_back(&AClass::func);
   }
 
   vector<int*> pint_vect;
