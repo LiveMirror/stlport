@@ -298,10 +298,10 @@ bool locale::operator()(const wstring& __x,
 #  endif
 # endif
 
-
-_Locale_impl*   _Stl_loc_global_impl    = 0;
-locale          _Stl_loc_classic_locale(__REINTERPRET_CAST(_Locale_impl*, &_S_classic_locale));
-_STLP_STATIC_MUTEX _Stl_loc_global_locale_lock _STLP_MUTEX_INITIALIZER;
+_Locale_impl*   _Locale_impl::_S_global_impl    = 0;
+static _Stl_aligned_buffer<locale> _S_b_classic;
+// locale          _Locale_impl::_S_classic(__REINTERPRET_CAST(_Locale_impl*, &_S_classic_locale));
+_STLP_STATIC_MUTEX _Locale_impl::_S_global_locale_lock _STLP_MUTEX_INITIALIZER;
   
 //----------------------------------------------------------------------
 // class locale
@@ -328,12 +328,12 @@ locale::_M_throw_runtime_error(const char* name)
 long ios_base::_Loc_init::_S_count = 0;
 
 ios_base::_Loc_init::_Loc_init() {
-  if (_S_count == 0)
+  //  if (_S_count++ == 0)
       locale::_S_initialize();
 }
 
 ios_base::_Loc_init::~_Loc_init() {
-    if (_S_count > 0)
+  //    if (--_S_count == 0)
       locale::_S_uninitialize();
 }
 
@@ -346,11 +346,10 @@ void _STLP_CALL
 locale::_S_initialize()
 {
   // additional check for singleton count : linker may choose to alter the order of function calls on initialization
-  if (ios_base::_Loc_init::_S_count > 0 )
+  if (ios_base::_Loc_init::_S_count++ > 0 )
     return;
   _Stl_loc_assign_ids();
-  _Stl_loc_global_impl = _Locale_impl::make_classic_locale();
-  ++ios_base::_Loc_init::_S_count;
+  _Locale_impl::_S_global_impl = _Locale_impl::make_classic_locale();
 }
 
 
@@ -359,16 +358,15 @@ void _STLP_CALL
 locale::_S_uninitialize()
 {
   // additional check for singleton count : linker may choose to alter the order of function calls on initialization
-  if (ios_base::_Loc_init::_S_count == 0 )
+  if (--ios_base::_Loc_init::_S_count != 0 )
     return;
-  _Stl_loc_global_impl->decr();
-  --ios_base::_Loc_init::_S_count;
+  _Locale_impl::_S_global_impl->decr();
 }
 
 
 // Default constructor: create a copy of the global locale.
 locale::locale() : _M_impl(0) {
-  _M_impl = _S_copy_impl(_Stl_loc_global_impl);
+  _M_impl = _S_copy_impl(_Locale_impl::_S_global_impl);
 }
 
 locale::locale(_Locale_impl* impl) : _M_impl(impl)
@@ -384,8 +382,10 @@ locale::locale(const locale& L) _STLP_NOTHROW
 // Destructor.
 locale::~locale() _STLP_NOTHROW
 {
-  if (_M_impl)
+  if (_M_impl) {
   _M_impl->decr();
+  _M_impl = 0;
+  }
 }
 
 // Assignment operator.  Much like the copy constructor: just a bit of
@@ -436,7 +436,8 @@ bool locale::operator!=(const locale& L) const {
 // Static member functions.
 const locale&  _STLP_CALL
 locale::classic() {
-  return _Stl_loc_classic_locale;
+  //  return _Locale_impl::_S_classic;
+  return *__REINTERPRET_CAST(const locale*, &_S_b_classic);
 }
 
 locale  _STLP_CALL
@@ -446,9 +447,9 @@ locale::global(const locale& L)
 
   L._M_impl->incr();
   {
-    _STLP_auto_lock lock(_Stl_loc_global_locale_lock);
-    _Stl_loc_global_impl->decr();     // We made a copy, so it can't be zero.
-    _Stl_loc_global_impl = L._M_impl;
+    _STLP_auto_lock lock(_Locale_impl::_S_global_locale_lock);
+    _Locale_impl::_S_global_impl->decr();     // We made a copy, so it can't be zero.
+    _Locale_impl::_S_global_impl = L._M_impl;
   }
 
                                 // Set the global C locale, if appropriate.

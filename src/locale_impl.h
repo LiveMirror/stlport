@@ -52,6 +52,11 @@ public:
 
   static void _STLP_CALL _M_throw_bad_cast();
 
+ public:
+  static _Locale_impl*   _S_global_impl;
+  //  static locale          _S_classic;
+  static _STLP_STATIC_MUTEX _S_global_locale_lock;
+
 private:
   void operator=(const _Locale_impl&);
 };
@@ -61,10 +66,6 @@ inline _Locale_impl*  _STLP_CALL _S_copy_impl(_Locale_impl* I) {
     I->incr();
     return I;
 }
-
-extern _Locale_impl*   _Stl_loc_global_impl;
-// extern locale*         _Stl_loc_classic_locale;
-extern _STLP_STATIC_MUTEX _Stl_loc_global_locale_lock;
 
 _STLP_END_NAMESPACE
 

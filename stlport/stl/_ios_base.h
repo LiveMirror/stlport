@@ -291,12 +291,6 @@ public:
 # endif  
 };
 
-template <class Facet>
-locale::facet* _M_get_facet(ios_base& __i, Facet*)
-{
-
-}
-
 // ----------------------------------------------------------------------
 // ios_base manipulator functions, from section 27.4.5 of the C++ standard.
 // All of them are trivial one-line wrapper functions.
