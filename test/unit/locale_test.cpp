@@ -82,7 +82,9 @@ struct ref_locale {
   const char *money_thousands_sep;
 };
 
-#if defined (_STLP_REAL_LOCALE_IMPLEMENTED)
+
+// Pls, don't write #ifdef _STLP_REAL_LOCALE_IMPLEMENTED here!
+// It undefined in any case!!!!!
 
 static ref_locale tested_locales[] = {
 //{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point,  money_thousands_sep},
@@ -92,8 +94,8 @@ static ref_locale tested_locales[] = {
   { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",                   "",           ".",                  "," }
 };
 
-#else
 
+#if 0
 // std::locale must at least support the C locale
 static ref_locale tested_locales[] = {
 //{  name,         decimal_point, thousands_sep, money_prefix, money_suffix},
@@ -115,6 +117,7 @@ class LocaleTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(money_put_get);
   CPPUNIT_TEST(time_put_get);
   CPPUNIT_TEST(collate_facet);
+  CPPUNIT_TEST(locale_init_problem);
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -124,12 +127,14 @@ public:
   void money_put_get();
   void time_put_get();
   void collate_facet();
+  void locale_init_problem();
 private:
   void _loc_has_facet( const locale&, const ref_locale& );
   void _num_put_get( const locale&, const ref_locale& );
   void _money_put_get( const locale&, const ref_locale& );
   void _time_put_get( const locale&, const ref_locale& );
   void _collate_facet( const locale&, const ref_locale& );
+  void _locale_init_problem( const locale&, const ref_locale& );
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LocaleTest);
@@ -296,6 +301,7 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
   for ( int i = 0; i < n; ++i ) {
     if ( loc_ent[string( tested_locales[i].name )] ) {
       // cout << '\t' << tested_locales[i].name << endl;
+      CPPUNIT_MESSAGE( tested_locales[i].name );
       locale loc( tested_locales[i].name );
       (inst.*__test)(loc, tested_locales[i] );
     }
@@ -356,3 +362,43 @@ void LocaleTest::time_put_get() {
 void LocaleTest::collate_facet() {
   test_supported_locale(*this, &LocaleTest::_collate_facet);
 }
+
+void LocaleTest::locale_init_problem()
+{
+  test_supported_locale(*this, &LocaleTest::_locale_init_problem);
+}
+
+void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale& rl )
+{
+  typedef codecvt<char,char,mbstate_t> my_facet;
+
+  locale loc_ref;
+  std::locale gloc( loc_ref, new my_facet );
+  CPPUNIT_ASSERT( has_facet<my_facet>( gloc ) );
+  locale::global( gloc );
+
+  try {
+    ostringstream os("test") ;
+    locale loc2( loc, new my_facet() );
+    CPPUNIT_ASSERT( has_facet<my_facet>( loc2 ) );
+    os.imbue( loc2 );
+  }
+  catch ( runtime_error& err ) {
+    CPPUNIT_ASSERT( false );
+    // cerr << "-- " << err.what() << endl;
+  }
+  catch ( ... ) {
+   CPPUNIT_ASSERT( false );
+  }
+ 
+  try {
+    ostringstream os("test2");
+  }
+  catch ( runtime_error& err ) {
+    CPPUNIT_ASSERT( false );
+  }
+  catch ( ... ) {
+    CPPUNIT_ASSERT( false );
+  }
+}
+
