@@ -1,0 +1,76 @@
+
+========================================
+STLport README for eMbedded Visual C++ 3
+========================================
+
+by: Michael Fink, vividos@users.sourceforge.net, last edited 6/1/2004
+
+============
+Introduction
+============
+This document describes how STLport can be compiled and used with Microsoft
+eMbedded Visual C++ 3.
+
+For any further comments or questsion visit STLport forum
+http://www.stlport.com/cgi-bin/forum/dcboard.cgi.
+
+=============
+Prerequisites
+=============
+To build and use STLport you will need following tools and libraries:
+ - eMbedded Visual C++ 3.0
+ - latest CVS version of STLport, use
+   'cvs -d :pserver:cvs@cvs.stlport.com:/stlport checkout STLport' to get it.
+
+================
+Building STLport
+================
+Open a command line prompt and execute the batch file that sets up compiling
+for ARM or x86 processors. These files usually are in a folder like
+'C:\Program Files\Windows CE eMbedded Tools\EVC\WCE300\BIN\' and are called
+WCEARM.bat and WCEx86.bat. Check if the environment variables are set up
+properly after that call.
+
+Go into STLport's 'src\explore' folder and type:
+
+  nmake TARGET_PROC=arm -f nmake-evc3.mak install
+
+All libraries (debug, stldebug, release) should be built, static and shared
+ones. Replace 'arm' with 'x86' to build for the emulator.
+
+Note: The TARGET_PROC strings must be case-sensitive, only "arm" and "x86"
+work.
+
+===============
+Testing STLport
+===============
+You can use the unit tests to verify STLport behaves correctly. Change into
+STLports 'test\unit' folder and type:
+
+  nmake TARGET_PROC=arm -f nmake-evc3.mak
+
+Again, replace 'arm' with 'x86' to build for the emulator.
+
+Once the unit test is built, upload the binary (found in the
+'obj\arm-evc3\shared*' subfolders) to your device or emulator and start it (it
+runs for about 2 minutes). The file stlp_test.txt is created then, which
+contains the unit test results. It should report no errors.
+
+=============
+Using STLport
+=============
+Adjust your include and link paths in eVC3 in 'Tools -> Options -> Directories'
+and add the paths for all platform and CPUs you want to use STLport. In the
+include files add the path to STLport's 'stlport' folder. Make sure it is the
+first directory listed there. Add STLport's 'lib' dir for the library files
+(order of paths doesn't matter here).
+
+Now you should be ready to use STLport.
+
+============
+Known issues
+============
+ - Warning in Pocket PC 2000 Platform SDK, file math.h:
+   warning C4005: 'exception' : macro redefinition
+   ../../stlport\math.h(26) : see previous definition of 'exception'
+   This warning can be ignored.
