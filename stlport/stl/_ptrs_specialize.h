@@ -1,6 +1,10 @@
 #ifndef _STLP_PTRS_SPECIALIZE_H
 #define _STLP_PTRS_SPECIALIZE_H
 
+#ifndef __TYPE_TRAITS_H
+#  include <stl/type_traits.h>
+#endif
+
 // the following is a workaround for arrow operator problems
 #if defined  ( _STLP_NO_ARROW_OPERATOR ) 
 // User wants to disable proxy -> operators
@@ -24,7 +28,7 @@
 #  define _STLP_TYPE_TRAITS_POD_SPECIALIZE_V(_Type)
 #  define _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type)
 #else
-#  define _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type) _STLP_TEMPLATE_NULL struct __type_traits<_Type> : __type_traits_aux<true> {};
+#  define _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type) _STLP_TEMPLATE_NULL struct __type_traits<_Type> : __type_traits_aux<1> {};
 #  define _STLP_TYPE_TRAITS_POD_SPECIALIZE_V(_Type) \
 _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type*) \
 _STLP_TYPE_TRAITS_POD_SPECIALIZE(const _Type*) \
@@ -36,6 +40,8 @@ _STLP_TYPE_TRAITS_POD_SPECIALIZE(const _Type***)
 #endif
 
 # define _STLP_POINTERS_SPECIALIZE(_Type) _STLP_TYPE_TRAITS_POD_SPECIALIZE_V(_Type) _STLP_ARROW_SPECIALIZE_WITH_PTRS(_Type)
+
+_STLP_BEGIN_NAMESPACE
 
 #  if !defined ( _STLP_NO_BOOL )
 _STLP_POINTERS_SPECIALIZE( bool )
@@ -64,6 +70,8 @@ _STLP_TYPE_TRAITS_POD_SPECIALIZE_V(void)
 #if defined ( _STLP_HAS_WCHAR_T ) && ! defined (_STLP_WCHAR_T_IS_USHORT)
   _STLP_POINTERS_SPECIALIZE( wchar_t )
 #  endif
+
+_STLP_END_NAMESPACE
 
 # undef _STLP_ARROW_SPECIALIZE
 # undef _STLP_ARROW_SPECIALIZE_WITH_PTRS
