@@ -27,7 +27,7 @@ START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} -print-file-na
 END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
 endif
 LDFLAGS += -nostdlib
-STDLIBS := -lsupc++ -lgcc_s -lpthread -lc -lm
+STDLIBS := -lgcc_s -lpthread -lc -lm
 endif
 endif
 endif
