@@ -9,29 +9,3 @@ build different version of the STLport libraries.
   libraries you have to define the _STLP_USE_DYNAMIC_LIB
   macro in order to have your executable linked correctly.
 
-- vc6:
-
-  Makefile : cygwin-vc6.mak
-
-  Build steps:
-
-    1.  Open a cygwin shell
-
-    2.  Add the VC paths to the global PATH variable
-        export PATH=$VC_DIR/VC98/Bin:$PATH
-        export PATH=$VC_DIR/Common/MSDev98/Bin:$PATH 
-        
-        where $VC_DIR is the VC installment directory, for instance
-        VC_DIR="/cygdrive/c/Program Files/Microsoft Visual Studio"
-        for a default VC6 install. 
-
-    3.  Define the INCLUDE env variable, beware this is an env variable
-        used by VC, you have to respect the VC convention. This is an example
-        of INCLUDE setup: 
- 
-
-        export INCLUDE="C:\PROGRA~1\MICROS~4\VC98\INCLUDE"
-
-    4.  Type make -f cygwin-vc6.mak install
-
-
