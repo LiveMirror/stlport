@@ -4,6 +4,9 @@
 	/DPLATFORM macro definition thanks Ulrich Eckhardt report and Michael Fink
 	patch.
 
+	* stlport/cstdlib: extension of the div overload for long input up to MSVC7.1
+	thanks Micheal Fink report.
+
 2004-11-16  Francois Dumont  <dums@stlport...>
 
 	* src/explore/configure.bat: Add of the --rtl-static and --rtl-dynamic
