@@ -1,3 +1,39 @@
+2004-12-17  Francois Dumont  <dums@stlport...>
+
+	* src/explore/Makefiles/nmake/app/rules-install-a.mak, rules-install-so.mak
+	lib/rules-install-so.mak: Creation of the install-shared and install-static
+	from Michael Fink.
+
+2004-12-16  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/debug/_debug.h, _debug.c: Creation of functions to change iterators
+	list owner.
+	
+	* stlport/stl/debug/_list.h, _slist.h: Modification of the iterator owners in the
+	splice, splice_after and merge method which do not invalidate iterators but only
+	move them from a [s]list to an other.
+	
+	* stlport/stl/_relops_hash_cont.h: removal of the == operator on hashed containers
+	This operator is just impossible, or at least very complicated, to implement 
+	for this container which do not require any ordering operation on the type used
+	to instanciate the container.
+	
+	* test/unit/hash_test.cpp: Addition of a commented test showing why the == operator
+	is invalid on hashed constainers.
+	
+	* stlport/stl/_hashtable.h: Modification of the hashtable implementation based
+	on a slist and a vector. Compared to the previous one the advantages are:
+		- lighter hashtable::iterator
+		- iterator increment operation do no require call to the hash function.
+		- no more special implementation for the debug mode, once validate debug/_hashtable.h
+			will be removed.
+	The drawback is a small overhead on the insert/erase methods.
+	
+	* stlport/unordered_set, unordered_map: Introduction of the almost Standard hash containers.
+	The marjor difference with hash_set or hash_map containers from SGI is the load factor
+	that gives the user the ability to change the container ratio of the number of elements per
+	bucket.
+	
 2004-12-13  Francois Dumont  <dums@stlport...>
 
 	* stlport/stdio.h: patch from Michael Fink to avoid warning on the EVC platform.
