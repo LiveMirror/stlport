@@ -1,11 +1,8 @@
-2004-05-19  Petr Ovtchenkov  <ptr@Island...>
+2004-05-22  Francois Dumont  <dums@...>
 
-	* stlport/stl/_tree.h, stlport/stl/debug/_tree.h: fix template parameters, see rec
-	2004-05-14 below.
-
-2004-05-16  Petr Ovtchenkov  <ptr@Island...>
-
-	* Repository: STLport 5.0 RC1
+  * src/num_put_float.cpp, stlport/stl/_num_put.h, stlport/stl/_num_put.c:
+  Correction of the locale grouping schema application in case of the scientific
+  output when there is no decimal point.
 
 2004-05-14  Francois Dumont  <dums@...>
 
