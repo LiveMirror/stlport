@@ -8,12 +8,14 @@
 #  include <stdexcept>
 #endif
 
-#ifdef _STLP_PTHREADS
+#ifdef _STLP_THREADS
+# ifdef _STLP_PTHREADS
 #  include <pthread.h>
-#endif
+# endif
 
-#ifdef _STLP_WIN32THREADS
+# ifdef _STLP_WIN32THREADS
 #  include <windows.h>
+# endif
 #endif
 
 #include "cppunit/cppunit_proxy.h"
@@ -37,7 +39,9 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(short_string);
   CPPUNIT_TEST(find);
   CPPUNIT_TEST(assign);
+#ifdef _STLP_THREADS
   CPPUNIT_TEST(mt);
+#endif
   CPPUNIT_TEST(short_string_optim_bug);
   CPPUNIT_TEST(compare);
   CPPUNIT_TEST(template_expresion);
@@ -53,7 +57,9 @@ protected:
   void short_string();
   void find();
   void assign();
+#ifdef _STLP_THREADS
   void mt();
+#endif
   void short_string_optim_bug();
   void compare();
   void template_expresion();
@@ -89,6 +95,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(StringTest);
 //
 // tests implementation
 //
+#ifdef _STLP_THREADS
 void StringTest::mt()
 {
   const int nth = 2;
@@ -136,6 +143,8 @@ void StringTest::mt()
   CPPUNIT_ASSERT(false);
 #endif
 }
+#endif
+
 void StringTest::short_string()
 {
   string const ref_short_str1("str1"), ref_short_str2("str2");
