@@ -11,9 +11,9 @@ RULESBASE = $(SRCROOT)/Makefiles
 ALL_TAGS = release-shared dbg-shared stldbg-shared release-static dbg-static stldbg-static
 !endif
 
-all_dynamic: release-shared dbg-shared stldbg-shared
+all-dynamic: release-shared dbg-shared stldbg-shared
 
-all_static:	release-static dbg-static stldbg-static
+all-static:	release-static dbg-static stldbg-static
 
 #!if [echo $(ALL_TAGS)]
 #!endif

@@ -7,6 +7,8 @@ INSTALL_TAGS= install-release-shared install-dbg-shared install-stldbg-shared in
 
 install:	$(INSTALL_TAGS)
 
+install-shared: install-release-shared install-dbg-shared install-stldbg-shared
+
 install-release-shared: release-shared $(INSTALL_LIB_DIR)
 	$(INSTALL_SO) $(SO_NAME_OUT) $(INSTALL_LIB_DIR)
 	$(INSTALL_SO) $(LIB_NAME_OUT) $(INSTALL_LIB_DIR)
