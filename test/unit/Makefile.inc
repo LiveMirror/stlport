@@ -20,6 +20,7 @@ SRC_CPP = cppunit/test_main.cpp \
 	deque_test.cpp \
 	divides_test.cpp \
 	equal_test.cpp \
+	exception_test.cpp \
 	fill_test.cpp \
 	find_test.cpp \
 	finsert_test.cpp \
