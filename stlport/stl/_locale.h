@@ -69,7 +69,7 @@ public:
     friend void _STLP_CALL _release_facet( facet *& );
     
   private:                        // Invalidate assignment and copying.
-    facet(const facet& __f) : _Refcount_Base(1), _M_delete(false) {};
+    facet(const facet& ) /* : _Refcount_Base(1), _M_delete(false) {} */;
     void operator=(const facet&); 
     
   private:                        // Data members.
