@@ -635,7 +635,7 @@ num_get<_CharT, _InputIter>::do_get(_InputIter __stl_in, _InputIter __end, ios_b
 # endif
     iter_type __tmp = _M_do_get_integer(__stl_in, __end, __str, __err, __val, (_CharT*)0 );
     if (!(__err & ios_base::failbit))
-      __p = __REINTERPRET_CAST(void*,__val);
+      __p = __REINTERPRET_CAST(void*,(long)__val);
     return __tmp;
   }
 

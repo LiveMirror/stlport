@@ -798,16 +798,18 @@ complex<_Tp> _STLP_CALL polar(const _Tp& __rho, const _Tp& __phi) {
 
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC float  _STLP_CALL abs(const complex<float>&);
+#ifndef _STLP_COMPLEX_SPECIALIZATION_BUG
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC double  _STLP_CALL abs(const complex<double>&);
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC float  _STLP_CALL arg(const complex<float>&);
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC double  _STLP_CALL arg(const complex<double>&);
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC complex<float> _STLP_CALL polar(const float& __rho, const float& __phi);
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC complex<double> _STLP_CALL polar(const double& __rho, const double& __phi);
+#endif
+_STLP_TEMPLATE_NULL
+_STLP_DECLSPEC float  _STLP_CALL arg(const complex<float>&);
+_STLP_TEMPLATE_NULL
+_STLP_DECLSPEC complex<float> _STLP_CALL polar(const float& __rho, const float& __phi);
 
 
 # ifndef _STLP_NO_LONG_DOUBLE
