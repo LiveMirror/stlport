@@ -1,3 +1,15 @@
+2004-10-08  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_deque.h, _hashtable.h, _tree.h, _bvector.h: Specialization of the
+	__type_traits struct for the iterator types.
+	
+	* stlport/stl/_uninitialized.h, _vector.h: Relax of the rules to perform some 
+	optimizations, no more POD check, rather use of the trivial copy constructor, 
+	trivial assignment operator	informations.
+	
+	* stlport/stl/_config.h, _epilog.h: Adoption of stlport as the official STLport
+	namespace when users cannot use the std namespace.
+	
 2004-10-07  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_list.h: Specialization of the __type_traits struct for list iterators.

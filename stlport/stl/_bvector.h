@@ -215,6 +215,17 @@ operator+(ptrdiff_t __n, const _Bit_iter<_Ref, _Ptr>& __x) {
    return __x + __n;
 }
 
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Ref, class _Ptr>
+struct __type_traits<_Bit_iter<_Ref, _Ptr> > {
+  typedef __false_type   has_trivial_default_constructor;
+  typedef __true_type    has_trivial_copy_constructor;
+  typedef __true_type    has_trivial_assignment_operator;
+  typedef __true_type    has_trivial_destructor;
+  typedef __false_type   is_POD_type;
+};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+
 # ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 inline random_access_iterator_tag  iterator_category(const _Bit_iterator_base&) {return random_access_iterator_tag();}
 inline ptrdiff_t* distance_type(const _Bit_iterator_base&) {return (ptrdiff_t*)0;}

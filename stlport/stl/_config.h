@@ -638,7 +638,6 @@ namespace _STLP_PRIV {
 // _STLP_BEGIN_NAMESPACE _STLP_END_NAMESPACE
 
 //Backward compatibility:
-namespace stlport = _STLP_STD;
 namespace _STL = _STLP_STD;
 // backward compatibility 
 # undef __STLPORT_NAMESPACE

@@ -7,9 +7,9 @@
 #include "cppunit/cppunit_proxy.h"
 
 #if defined (__MVS__)
-  #define star   92 
+#  define star   92 
 #else
-  #define star   42
+#  define star   42
 #endif
 
 #if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)

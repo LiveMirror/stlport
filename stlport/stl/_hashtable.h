@@ -115,7 +115,7 @@ struct _Ht_iterator
 
   _Ht_iterator(const _Node* __n, const _Hashtable* __tab) :
     _Hashtable_iterator<_Val,_Key,_HF,_NonConstTraits,_ExK,_EqK,_All>(__CONST_CAST(_Node*,__n), 
-                                                                   __CONST_CAST(_Hashtable*, __tab)) {}
+                                                                      __CONST_CAST(_Hashtable*, __tab)) {}
   _Ht_iterator() {}
   //copy constructor for iterator and constructor from iterator for const_iterator
   _Ht_iterator(const iterator& __it) : 
@@ -144,6 +144,18 @@ struct _Ht_iterator
     return this->_M_cur != __rhs._M_cur;
   }
 };
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Val, class _Traits, class _Key, class _HF,
+          class _ExK, class _EqK, class _All>
+struct __type_traits<_Ht_iterator<_Val, _Traits, _Key, _HF, _ExK, _EqK, _All> > {
+  typedef __false_type   has_trivial_default_constructor;
+  typedef __true_type    has_trivial_copy_constructor;
+  typedef __true_type    has_trivial_assignment_operator;
+  typedef __true_type    has_trivial_destructor;
+  typedef __false_type   is_POD_type;
+};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 # ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 template <class _Val, class _Traits, class _Key, class _HF, class _ExK, class _EqK, class _All>

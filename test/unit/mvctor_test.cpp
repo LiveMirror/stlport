@@ -116,7 +116,11 @@ void MoveConstructorTest::move_construct_test()
      * STL implementation it is only a compile check.
      */
 #ifdef STLPORT
+#  if defined (_STLP_DEBUG)
+    unsigned int *punit = v_v_bits.front().begin()._M_iterator._M_p;
+#  else
     unsigned int *punit = v_v_bits.front().begin()._M_p;
+#  endif
 #endif
 
     size_t cur_capacity = v_v_bits.capacity();
@@ -126,7 +130,11 @@ void MoveConstructorTest::move_construct_test()
 
 #ifdef STLPORT
     //v_v_bits has been resized
+#  if defined (_STLP_DEBUG)
+    CPPUNIT_ASSERT( punit == v_v_bits.front().begin()._M_iterator._M_p );
+#  else
     CPPUNIT_ASSERT( punit == v_v_bits.front().begin()._M_p );
+#  endif
 #endif
   }
 
@@ -245,22 +253,33 @@ void MoveConstructorTest::move_traits()
       vect.push_back(MovableStruct());
       vect.push_back(MovableStruct());
 
+      // vect contains 4 elements
       CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
       CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
       CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 3 );
       CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 7 );
 
+      vect.insert(vect.begin() + 2, vect.begin(), vect.end());
+
+      // vect contains 8 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 8 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 7 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 11 );
+
       vect.erase(vect.begin(), vect.begin() + 2 );
 
-      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 5 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call ==11 );
+      // vect contains 6 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 13 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 19 );
 
       vect.erase(vect.begin());
 
-      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 6 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 13 );
+      // vect contains 5 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 18 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 25 );
     }
-    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 14);
+    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 30 );
   }
 
   {
@@ -271,20 +290,33 @@ void MoveConstructorTest::move_traits()
       vect.push_back(CompleteMovableStruct());
       vect.push_back(CompleteMovableStruct());
 
+      // vect contains 4 elements
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 4 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 3 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4);
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
+
+      vect.insert(vect.begin() + 2, vect.begin(), vect.end());
+
+      // vect contains 8 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 8 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 7 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
 
       vect.erase(vect.begin(), vect.begin() + 2);
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 5 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 6);
+
+      // vect contains 6 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 13 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 6 );
 
       vect.erase(vect.begin());
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 6 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 7);
+
+      // vect contains 5 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 18 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 7 );
     }
-    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 8);
+    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 12 );
   }
 #endif //STLPORT
 }

@@ -221,7 +221,7 @@ inline _OutputIter __copy_ptrs(_InputIter __first, _InputIter __last, _OutputIte
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __copy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
                                const __true_type& /*IsOKToMemCpy*/) {
-// we know they all pointers, so this cast is OK 
+  // we know they all pointers, so this cast is OK 
   //  return (_OutputIter)__copy_trivial(&(*__first), &(*__last), &(*__result));
   return (_OutputIter)__copy_trivial(__first, __last, __result);
 }

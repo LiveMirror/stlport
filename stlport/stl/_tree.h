@@ -190,15 +190,6 @@ struct _Rb_tree_iterator : public _Rb_tree_base_iterator {
     return __tmp;
   }
 
-  /*
-  bool operator == (const iterator &__rhs) const {
-    return _M_node == __rhs._M_node;
-  }
-  bool operator != (const iterator &__rhs) const {
-    return _M_node != __rhs._M_node;
-  }
-  */
-
   bool operator == (const_iterator __rhs) const {
     return _M_node == __rhs._M_node;
   }
@@ -206,6 +197,17 @@ struct _Rb_tree_iterator : public _Rb_tree_base_iterator {
     return _M_node != __rhs._M_node;
   }
 };
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Value, class _Traits>
+struct __type_traits<_Rb_tree_iterator<_Value, _Traits> > {
+  typedef __false_type   has_trivial_default_constructor;
+  typedef __true_type    has_trivial_copy_constructor;
+  typedef __true_type    has_trivial_assignment_operator;
+  typedef __true_type    has_trivial_destructor;
+  typedef __false_type   is_POD_type;
+};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 # ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 template <class _Value, class _Traits>

@@ -465,7 +465,7 @@ void _DEQUE_IMPL<_Tp,_Alloc>::_M_insert_aux(iterator __pos,
       else {
         const value_type* __mid = __first + (difference_type(__n) - __elemsbefore);
         __uninitialized_copy_copy(this->_M_start, __pos, __first, __mid,
-                                  __new_start, _IsPODType());
+                                  __new_start, _TrivialUCpy());
         this->_M_start = __new_start;
         copy(__mid, __last, __old_start);
       }
@@ -489,7 +489,7 @@ void _DEQUE_IMPL<_Tp,_Alloc>::_M_insert_aux(iterator __pos,
       }
       else {
         const value_type* __mid = __first + __elemsafter;
-        __uninitialized_copy_copy(__mid, __last, __pos, this->_M_finish, this->_M_finish, _IsPODType());
+        __uninitialized_copy_copy(__mid, __last, __pos, this->_M_finish, this->_M_finish, _TrivialUCpy());
         this->_M_finish = __new_finish;
         copy(__first, __mid, __pos);
       }
@@ -520,7 +520,7 @@ void _DEQUE_IMPL<_Tp,_Alloc>::_M_insert_aux(iterator __pos,
       else {
         const_iterator __mid = __first + (__n - __elemsbefore);
         __uninitialized_copy_copy(this->_M_start, __pos, __first, __mid,
-                                  __new_start, _IsPODType());
+                                  __new_start, _TrivialUCpy());
         this->_M_start = __new_start;
         copy(__mid, __last, __old_start);
       }
@@ -542,7 +542,7 @@ void _DEQUE_IMPL<_Tp,_Alloc>::_M_insert_aux(iterator __pos,
       }
       else {
         const_iterator __mid = __first + __elemsafter;
-        __uninitialized_copy_copy(__mid, __last, __pos, this->_M_finish, this->_M_finish, _IsPODType());
+        __uninitialized_copy_copy(__mid, __last, __pos, this->_M_finish, this->_M_finish, _TrivialUCpy());
         this->_M_finish = __new_finish;
         copy(__first, __mid, __pos);
       }

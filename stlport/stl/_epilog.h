@@ -19,21 +19,24 @@
 #  include <stl/_config_compat_post.h>
 #endif
 
-#if defined (_STLP_USE_OWN_NAMESPACE) && !defined (_STLP_DONT_REDEFINE_STD)
+#if defined (_STLP_USE_OWN_NAMESPACE)
+
+#  if !defined (_STLP_DONT_REDEFINE_STD)
 /*  We redefine "std" to STLPORT, so that user code may use std:: transparently 
  *  The STLPORT macro contains the STLport namespace name containing all the std
  *  stuff.
  */
-#  ifdef std
+#    ifdef std
 /*
  * Looks like the compiler native library on which STLport rely defined the std macro.
  * This might introduce major incompatibility so report the problem to the STLport
  * forum or comment the following #error at your own risk.
  */
-#    error Incompatible native Std library.
-#  endif /* std */
-
-#  define std STLPORT
+#      error Incompatible native Std library.
+#    endif /* std */
+#    define std STLPORT
+#  endif /* _STLP_DONT_REDEFINE_STD */
+#  define stlport STLPORT
 #endif
 
 #undef _STLP_PROLOG_HEADER_INCLUDED /* defined in _prolog.h */

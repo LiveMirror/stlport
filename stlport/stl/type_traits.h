@@ -179,11 +179,11 @@ struct __type_traits_aux<0> {
 
 _STLP_TEMPLATE_NULL
 struct __type_traits_aux<1> { 
-   typedef __true_type    has_trivial_default_constructor;
-   typedef __true_type    has_trivial_copy_constructor;
-   typedef __true_type    has_trivial_assignment_operator;
-   typedef __true_type    has_trivial_destructor;
-   typedef __true_type    is_POD_type;
+  typedef __true_type    has_trivial_default_constructor;
+  typedef __true_type    has_trivial_copy_constructor;
+  typedef __true_type    has_trivial_assignment_operator;
+  typedef __true_type    has_trivial_destructor;
+  typedef __true_type    is_POD_type;
 };
 
 #  ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
@@ -433,6 +433,21 @@ struct _OKToMemCpy {
 };
 
 template <class _Tp>
+struct _TrivialUCopy {
+  typedef typename __type_traits<_Tp>::has_trivial_copy_constructor _Tr1;
+  typedef typename __type_traits<_Tp>::has_trivial_assignment_operator _Tr2;
+  typedef typename _Land2<_Tr1, _Tr2>::_Ret _Ret;
+};
+
+template <class _Tp1, class _Tp2>
+struct _TrivialUCopyAux {
+  typedef typename _TrivialUCopy<_Tp1>::_Ret _Tr1;
+  typedef typename _AreSameUnCVTypes<_Tp1, _Tp2>::_Ret _Tr2;
+  typedef typename _Land2<_Tr1, _Tr2>::_Ret _Type;
+  static _Type _Answer() { return _Type(); }
+};
+
+template <class _Tp>
 struct _DefaultZeroValue {
   typedef typename _Is_integer<_Tp>::_Integral _Tr1;
   typedef typename _Is_rational<_Tp>::_Rational _Tr2;
@@ -474,6 +489,11 @@ inline _OKToMemCpy<_Tp1, _Tp2> _IsOKToMemCpy(_Tp1*, _Tp2*)  {
   return _OKToMemCpy<_Tp1, _Tp2>();
 }
 
+template <class _Tp1, class _Tp2>
+inline _TrivialUCopyAux<_Tp1, _Tp2> _UseTrivialUCopy(_Tp1*, _Tp2*)  {
+  return _TrivialUCopyAux<_Tp1, _Tp2>();
+}
+
 template <class _Tp>
 struct _IsPOD {
   typedef typename __type_traits<_Tp>::is_POD_type _Type;
@@ -500,7 +520,7 @@ struct __stlport_class {
 
 #  if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
 template <class _CondT>
-struct _IsConvertibleCondNotAux /*<__true_type>*/ {
+struct _IsConvertibleIfNotAux /*<__true_type>*/ {
   template <class _Derived, class _Base>
   struct _In {
     typedef __false_type _Ret;
@@ -508,7 +528,7 @@ struct _IsConvertibleCondNotAux /*<__true_type>*/ {
 };
 
 _STLP_TEMPLATE_NULL
-struct _IsConvertibleCondNotAux<__false_type> {
+struct _IsConvertibleIfNotAux<__false_type> {
   template <class _Derived, class _Base>
   struct _In {
     typedef typename _IsConvertibleType<_Derived, _Base>::_Type _Ret;
@@ -516,8 +536,8 @@ struct _IsConvertibleCondNotAux<__false_type> {
 };
 
 template <class _CondT, class _Derived, class _Base>
-struct _IsConvertibleCondNot {
-  typedef typename _IsConvertibleCondNotAux<_CondT>::_STLP_TEMPLATE _In<_Derived, _Base>::_Ret _Ret;
+struct _IsConvertibleIfNot {
+  typedef typename _IsConvertibleIfNotAux<_CondT>::_STLP_TEMPLATE _In<_Derived, _Base>::_Ret _Ret;
 };
 #  endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
 
@@ -528,7 +548,7 @@ struct _IsStlportClass {
   typedef typename _Is_rational<_Tp>::_Rational _Tr2;
   typedef typename _Lor2<_Tr1, _Tr2>::_Ret _Tr3;
 
-  typedef typename _IsConvertibleCondNot<_Tr3, _Tp, __stlport_class<_Tp> >::_Ret _Ret;
+  typedef typename _IsConvertibleIfNot<_Tr3, _Tp, __stlport_class<_Tp> >::_Ret _Ret;
 #  else
   typedef typename _IsConvertible<_Tp, __stlport_class<_Tp> >::_Type _Ret;
 #  endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
@@ -583,12 +603,12 @@ _STLP_END_NAMESPACE
      (defined (__MWERKS__) && (__MWERKS__ <= 0x2303)) || \
      (defined (__sgi) && defined (_COMPILER_VERSION)) || \
       defined (__DMC__)
-#    define _IS_POD_ITER(_It, _Tp) __type_traits< typename iterator_traits< _Tp >::value_type >::is_POD_type()
+#    define _STLP_IS_POD_ITER(_It, _Tp) __type_traits< typename iterator_traits< _Tp >::value_type >::is_POD_type()
 #  else
-#    define _IS_POD_ITER(_It, _Tp) typename __type_traits< typename iterator_traits< _Tp >::value_type >::is_POD_type()
+#    define _STLP_IS_POD_ITER(_It, _Tp) typename __type_traits< typename iterator_traits< _Tp >::value_type >::is_POD_type()
 #  endif
 #else
-#  define _IS_POD_ITER(_It, _Tp) _Is_POD( _STLP_VALUE_TYPE( _It, _Tp ) )._Answer()
+#  define _STLP_IS_POD_ITER(_It, _Tp) _Is_POD( _STLP_VALUE_TYPE( _It, _Tp ) )._Answer()
 #endif
 
 #endif /* __TYPE_TRAITS_H */

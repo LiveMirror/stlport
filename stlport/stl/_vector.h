@@ -144,13 +144,14 @@ public:
   }
 protected:
   typedef typename __type_traits<_Tp>::has_trivial_assignment_operator _TrivialAss;
-  typedef typename __type_traits<_Tp>::has_trivial_assignment_operator _IsPODType;
+  typedef typename _TrivialUCopy<_Tp>::_Ret _TrivialUCpy;
+  typedef typename __type_traits<_Tp>::has_trivial_copy_constructor _TrivialCpy;
   typedef typename __move_traits<_Tp>::implemented _Movable;
 
   // handles insertions on overflow
-  void _M_insert_overflow(pointer __pos, const _Tp& __x, const __false_type& /*IsPOD*/, 
+  void _M_insert_overflow(pointer __pos, const _Tp& __x, const __false_type& /*_TrivialCpy*/, 
                           size_type __fill_len, bool __atend = false);
-  void _M_insert_overflow(pointer __pos, const _Tp& __x, const __true_type& /*IsPOD*/, 
+  void _M_insert_overflow(pointer __pos, const _Tp& __x, const __true_type& /*_TrivialCpy*/, 
                           size_type __fill_len, bool __atend = false);
   void _M_range_check(size_type __n) const {
     if (__n >= size_type(this->_M_finish-this->_M_start))
@@ -212,7 +213,7 @@ public:
   _VECTOR_IMPL(const _Self& __x) 
     : _Vector_base<_Tp, _Alloc>(__x.size(), __x.get_allocator()) { 
     this->_M_finish = __uninitialized_copy(__x.begin(), __x.end(),
-                                           this->_M_start, _IsPODType());
+                                           this->_M_start, _TrivialUCpy());
   }
 
   _VECTOR_IMPL(__move_source<_Self> src)
@@ -257,7 +258,7 @@ public:
   _VECTOR_IMPL(const _Tp* __first, const _Tp* __last,
          const allocator_type& __a = allocator_type())
     : _Vector_base<_Tp, _Alloc>(__last - __first, __a) { 
-      this->_M_finish = __uninitialized_copy(__first, __last, this->_M_start, _IsPODType()); 
+      this->_M_finish = __uninitialized_copy(__first, __last, this->_M_start, _TrivialUCpy()); 
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
@@ -299,7 +300,7 @@ public:
       _ForwardIter __mid = __first;
       advance(__mid, size());
       copy(__first, __mid, this->_M_start);
-      this->_M_finish = __uninitialized_copy(__mid, __last, this->_M_finish, _IsPODType());
+      this->_M_finish = __uninitialized_copy(__mid, __last, this->_M_finish, _TrivialUCpy());
     }
   }
 
@@ -343,7 +344,7 @@ public:
       ++this->_M_finish;
     }
     else
-      _M_insert_overflow(this->_M_finish, __x, _IsPODType(), 1UL, true);
+      _M_insert_overflow(this->_M_finish, __x, _TrivialCpy(), 1UL, true);
   }
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
@@ -416,7 +417,7 @@ public:
         const size_type __elems_after = this->_M_finish - __pos;
         pointer __old_finish = this->_M_finish;
         if (__elems_after > __n) {
-          __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
+          __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _TrivialUCpy(), _Movable());
           this->_M_finish += __n;
           __copy_backward_ptrs(__pos, __old_finish - __n, __old_finish, _TrivialAss());
           copy(__first, __last, __pos);
@@ -428,9 +429,9 @@ public:
 # else
           const_pointer __mid = __first + __elems_after;
 # endif
-          __uninitialized_copy(__mid, __last, this->_M_finish, _IsPODType());
+          __uninitialized_copy(__mid, __last, this->_M_finish, _TrivialUCpy());
           this->_M_finish += __n - __elems_after;
-          __uninitialized_move(__pos, __old_finish, this->_M_finish, _IsPODType());
+          __uninitialized_move(__pos, __old_finish, this->_M_finish, _TrivialUCpy(), _Movable());
           this->_M_finish += __elems_after;
           copy(__first, __mid, __pos);
         } /* elems_after */
@@ -441,13 +442,13 @@ public:
         pointer __new_start = this->_M_end_of_storage.allocate(__len);
         pointer __new_finish = __new_start;
         _STLP_TRY {
-          __new_finish = __uninitialized_move(this->_M_start, __pos, __new_start, _IsPODType());
-          __new_finish = __uninitialized_copy(__first, __last, __new_finish, _IsPODType());
-          __new_finish = __uninitialized_move(__pos, this->_M_finish, __new_finish, _IsPODType());
+          __new_finish = __uninitialized_move(this->_M_start, __pos, __new_start, _TrivialUCpy(), _Movable());
+          __new_finish = __uninitialized_copy(__first, __last, __new_finish, _TrivialUCpy());
+          __new_finish = __uninitialized_move(__pos, this->_M_finish, __new_finish, _TrivialUCpy(), _Movable());
         }
         _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish), 
                       this->_M_end_of_storage.deallocate(__new_start,__len)))
-        _M_clear();
+        _M_clear_after_move();
         _M_set(__new_start, __new_finish, __new_start + __len);
       }
     }
@@ -537,6 +538,11 @@ protected:
     this->_M_end_of_storage.deallocate(this->_M_start, this->_M_end_of_storage._M_data - this->_M_start);
   }
 
+  void _M_clear_after_move() {
+    _STLP_STD::_Destroy_Moved_Range(rbegin(), rend());
+    this->_M_end_of_storage.deallocate(this->_M_start, this->_M_end_of_storage._M_data - this->_M_start);
+  }
+
   void _M_set(pointer __s, pointer __f, pointer __e) {
     this->_M_start = __s;
     this->_M_finish = __f;
@@ -555,7 +561,7 @@ protected:
     pointer __result = this->_M_end_of_storage.allocate(__n);
     _STLP_TRY {
 #if !defined(__MRC__)  //*TY 12/17/2000 - added workaround for MrCpp. it confuses on nested try/catch block
-      __uninitialized_copy(__first, __last, __result, _IsPODType());
+      __uninitialized_copy(__first, __last, __result, _TrivialUCpy());
 #else
       uninitialized_copy(__first, __last, __result);
 #endif
@@ -580,7 +586,7 @@ protected:
     size_type __n = distance(__first, __last);
     this->_M_start = this->_M_end_of_storage.allocate(__n);
     this->_M_end_of_storage._M_data = this->_M_start + __n;
-    this->_M_finish = __uninitialized_copy(__first, __last, this->_M_start, _IsPODType());
+    this->_M_finish = __uninitialized_copy(__first, __last, this->_M_start, _TrivialUCpy());
   }
   
 #endif /* _STLP_MEMBER_TEMPLATES */

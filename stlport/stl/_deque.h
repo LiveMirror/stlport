@@ -155,7 +155,6 @@ struct _Deque_iterator_base {
 
 template <class _Tp, class _Traits>
 struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
-
   typedef random_access_iterator_tag iterator_category;
   typedef _Tp value_type;
   typedef typename _Traits::reference  reference;
@@ -166,10 +165,10 @@ struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 
   typedef _Deque_iterator_base< _Tp > _Base;
   typedef _Deque_iterator<_Tp, _Traits> _Self;
-  typedef typename _Traits::_NonConstTraits _NonConstTraits;
+  typedef typename _Traits::_NonConstTraits     _NonConstTraits;
   typedef _Deque_iterator<_Tp, _NonConstTraits> iterator;
-  typedef typename _Traits::_ConstTraits _ConstTraits;
-  typedef _Deque_iterator<_Tp, _ConstTraits> const_iterator;
+  typedef typename _Traits::_ConstTraits        _ConstTraits;
+  typedef _Deque_iterator<_Tp, _ConstTraits>    const_iterator;
 
   _Deque_iterator(value_type* __x, _Map_pointer __y) :
     _Deque_iterator_base<value_type>(__x,__y) {}
@@ -217,7 +216,6 @@ struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 };
 
 
-
 template <class _Tp, class _Traits>
 inline _Deque_iterator<_Tp, _Traits> _STLP_CALL
 operator+(ptrdiff_t __n, const _Deque_iterator<_Tp, _Traits>& __x) {
@@ -226,7 +224,6 @@ operator+(ptrdiff_t __n, const _Deque_iterator<_Tp, _Traits>& __x) {
 
 
 #ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
-
 template <class _Tp>
 inline bool _STLP_CALL 
 operator==(const _Deque_iterator_base<_Tp >& __x,
@@ -265,7 +262,7 @@ inline bool  _STLP_CALL operator<=(const _Deque_iterator_base<_Tp >& __x,
   return !(__y < __x);
 }
 
-# else
+# else /* _STLP_USE_SEPARATE_RELOPS_NAMESPACE */
 
 template <class _Tp, class _Traits1, class _Traits2>
 inline bool  _STLP_CALL
@@ -306,7 +303,18 @@ operator<=(const _Deque_iterator<_Tp, _Nonconst_traits<_Tp> >& __x,
            const _Deque_iterator<_Tp, _Const_traits<_Tp> >& __y) { 
   return !(__y < __x);
 }
-# endif
+# endif /* _STLP_USE_SEPARATE_RELOPS_NAMESPACE */
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Tp, class _Traits>
+struct __type_traits<_Deque_iterator<_Tp, _Traits> > {
+  typedef __false_type   has_trivial_default_constructor;
+  typedef __true_type    has_trivial_copy_constructor;
+  typedef __true_type    has_trivial_assignment_operator;
+  typedef __true_type    has_trivial_destructor;
+  typedef __false_type   is_POD_type;
+};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 # ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 template <class _Tp, class _Traits> inline _Tp*  _STLP_CALL value_type(const _Deque_iterator<_Tp, _Traits  >&) { return (_Tp*)0; }
@@ -406,8 +414,9 @@ public:                         // Iterators
 
 protected:                      // Internal typedefs
   typedef pointer* _Map_pointer;
-  typedef typename  __type_traits<_Tp>::has_trivial_assignment_operator _TrivialAss;
-  typedef typename  __type_traits<_Tp>::has_trivial_assignment_operator _IsPODType;
+  typedef typename __type_traits<_Tp>::has_trivial_assignment_operator _TrivialAss;
+  typedef typename __type_traits<_Tp>::has_trivial_copy_constructor _TrivialCpy;
+  typedef typename _Land2<_TrivialAss, _TrivialCpy>::_Ret _TrivialUCpy;
 
 public:                         // Basic accessors
   iterator begin() { return this->_M_start; }
@@ -460,7 +469,7 @@ public:                         // Constructor, destructor.
 
   _DEQUE_IMPL(const _Self& __x) : 
     _Deque_base<_Tp, _Alloc>(__x.get_allocator(), __x.size()) { 
-      __uninitialized_copy(__x.begin(), __x.end(), this->_M_start, _IsPODType()); 
+      __uninitialized_copy(__x.begin(), __x.end(), this->_M_start, _TrivialUCpy()); 
   }
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM)
@@ -516,13 +525,13 @@ public:
   _DEQUE_IMPL(const value_type* __first, const value_type* __last,
         const allocator_type& __a = allocator_type() ) 
     : _Deque_base<_Tp, _Alloc>(__a, __last - __first) { 
-    __uninitialized_copy(__first, __last, this->_M_start, _IsPODType()); 
+    __uninitialized_copy(__first, __last, this->_M_start, _TrivialUCpy()); 
   }
 
   _DEQUE_IMPL(const_iterator __first, const_iterator __last,
         const allocator_type& __a = allocator_type() ) 
     : _Deque_base<_Tp, _Alloc>(__a, __last - __first) { 
-    __uninitialized_copy(__first, __last, this->_M_start, _IsPODType()); 
+    __uninitialized_copy(__first, __last, this->_M_start, _TrivialUCpy()); 
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
@@ -917,7 +926,7 @@ void  insert(iterator __pos,
           _ForwardIterator __mid = __first;
           advance(__mid, difference_type(__n) - __elemsbefore);
           __uninitialized_copy_copy(this->_M_start, __pos, __first, __mid,
-          __new_start, _IsPODType());
+                                    __new_start, _TrivialUCpy());
           this->_M_start = __new_start;
           copy(__mid, __last, __old_start);
         }
@@ -941,7 +950,7 @@ void  insert(iterator __pos,
         else {
           _ForwardIterator __mid = __first;
           advance(__mid, __elemsafter);
-          __uninitialized_copy_copy(__mid, __last, __pos, this->_M_finish, this->_M_finish, _IsPODType());
+          __uninitialized_copy_copy(__mid, __last, __pos, this->_M_finish, this->_M_finish, _TrivialUCpy());
           this->_M_finish = __new_finish;
           copy(__first, __mid, __pos);
         }
