@@ -19,6 +19,7 @@
 
 // #include <locale>
 #include <hash_map>
+#include <string>
 #include "locale_impl.h"
 #include "c_locale.h"
 
@@ -84,40 +85,23 @@ typedef void* (*loc_create_func_t)(const char *);
 typedef char* (*loc_name_func_t)(const void* l, char* s);
 typedef void (*loc_destroy_func_t)(void* l);
 typedef const char* (*loc_default_name_func_t)(char* s);
+typedef char* (*loc_extract_name_func_t)(const char*, char*);
 
 //----------------------------------------------------------------------
 // Acquire and release low-level category objects.  The whole point of
 // this is so that we don't allocate (say) four different _Locale_ctype
 // objects for a single locale.
 
-struct __eqstr {
-  bool operator()(const char* s1, const char* s2) const
-    { return strcmp(s1, s2) == 0; }
-};
-
-struct __ptr_hash {
-  size_t operator()(const void* p) const
-    { return __REINTERPRET_CAST(size_t,p); }
-};
-
-template <class _Category_ptr>
-struct __destroy_fun {
-  typedef void (*_fun_type)(_Category_ptr);
-  _fun_type _M_fun;
-  __destroy_fun(_fun_type __f) : _M_fun(__f) {}
-  void operator()(_Category_ptr __c) { _M_fun(__c); }  
-};
-
 // Global hash tables for category objects.
-typedef hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr> Category_Map;
+typedef hash_map<string, pair<void*, size_t>, hash<string>, equal_to<string> > Category_Map;
 
 // Look up a category by name
-static hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr>* ctype_hash;
-static hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr>* numeric_hash;
-static hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr>* time_hash;
-static hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr>* collate_hash;
-static hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr>* monetary_hash;
-static hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr>* messages_hash;
+static Category_Map* ctype_hash;
+static Category_Map* numeric_hash;
+static Category_Map* time_hash;
+static Category_Map* collate_hash;
+static Category_Map* monetary_hash;
+static Category_Map* messages_hash;
 
 // We have a single lock for all of the hash tables.  We may wish to 
 // replace it with six different locks.
@@ -125,15 +109,12 @@ static hash_map<const char*, pair<void*, size_t>, hash<const char*>, __eqstr>* m
 _STLP_STATIC_MUTEX __category_hash_lock _STLP_MUTEX_INITIALIZER;
 
 static void*
-__acquire_category(const char* name, loc_create_func_t create_obj,
-                   loc_default_name_func_t default_obj, Category_Map ** M)
-{
+__acquire_category(const char* name, loc_extract_name_func_t extract_name,
+                   loc_create_func_t create_obj, loc_default_name_func_t default_obj, 
+                   Category_Map ** M) {
   typedef Category_Map::iterator Category_iterator;
   pair<Category_iterator, bool> result;
   _STLP_auto_lock sentry(__category_hash_lock);
-
-  typedef const char* key_type; 
-  pair<const key_type, pair<void*,size_t> > __e(name, pair<void*,size_t>((void*)0,size_t(0)));
 
   if (!*M)
     *M = new Category_Map();
@@ -143,20 +124,28 @@ __acquire_category(const char* name, loc_create_func_t create_obj,
 #endif					//*TY 06/01/2000 - 
 
   // Find what name to look for.  Be careful if user requests the default.
+  const char *cname;
   char buf[_Locale_MAX_SIMPLE_NAME];
   if (name == 0 || name[0] == 0) {
-    name = default_obj(buf);
-    if (name == 0 || name[0] == 0)
-      name = "C";
+    cname = default_obj(buf);
+    if (cname == 0 || cname[0] == 0)
+      cname = "C";
+  }
+  else {
+    cname = extract_name(name, buf);
+    if (cname == 0) {
+      return 0;
+    }
   }
 
-  // Look for an existing entry with that name.
+  Category_Map::value_type __e(cname, pair<void*,size_t>((void*)0,size_t(0)));
 
+  // Look for an existing entry with that name.
   result = (*M)->insert_noresize(__e);
 
   // There was no entry in the map already.  Create the category.
   if (result.second) 
-    (*result.first).second.first = create_obj(name);
+    (*result.first).second.first = create_obj(cname);
 
   // Increment the reference count.
   ++((*result.first).second.second);
@@ -167,68 +156,91 @@ __acquire_category(const char* name, loc_create_func_t create_obj,
 
 static void 
 __release_category(void* cat,
-                 loc_destroy_func_t destroy_fun,
-                 loc_name_func_t get_name,
-                 Category_Map* M)
-{
+                   loc_destroy_func_t destroy_fun,
+                   loc_name_func_t get_name,
+                   Category_Map** M) {
   _STLP_auto_lock sentry(__category_hash_lock);
 
-  if (cat && M) {
+  Category_Map *pM = *M;
+
+  if (cat && pM) {
     // Find the name of the category object.
     char buf[_Locale_MAX_SIMPLE_NAME + 1];
     char* name = get_name(cat, buf);
 
     if (name != 0) {
-      Category_Map::iterator it = M->find(name);
-      if (it != M->end()) {
+      Category_Map::iterator it = pM->find(name);
+      if (it != pM->end()) {
         // Decrement the ref count.  If it goes to zero, delete this category
         // from the map.
         if (--((*it).second.second) == 0) {
           void* cat1 = (*it).second.first;
           destroy_fun(cat1);
-          M->erase(it);
+          pM->erase(it);
+          if (pM->empty()) {
+            delete pM;
+            *M = 0;
+          }
         }
       }
     }
   }
 }
 
-_Locale_ctype* _STLP_CALL __acquire_ctype(const char* name)
-{ return __REINTERPRET_CAST(_Locale_ctype*,
-                            __acquire_category(name, _Loc_ctype_create, _Loc_ctype_default, &ctype_hash)); }
-_Locale_numeric* _STLP_CALL __acquire_numeric(const char* name)
-{ return __REINTERPRET_CAST(_Locale_numeric*,
-                            __acquire_category(name, _Loc_numeric_create, _Loc_numeric_default, &numeric_hash)); }
-_Locale_time* _STLP_CALL __acquire_time(const char* name)
-{ return __REINTERPRET_CAST(_Locale_time*,
-                            __acquire_category(name, _Loc_time_create, _Loc_time_default, &time_hash)); }
-_Locale_collate* _STLP_CALL __acquire_collate(const char* name)
-{ return __REINTERPRET_CAST(_Locale_collate*,
-                            __acquire_category(name, _Loc_collate_create, _Loc_collate_default, &collate_hash)); }
-_Locale_monetary* _STLP_CALL __acquire_monetary(const char* name)
-{ return __REINTERPRET_CAST(_Locale_monetary*,
-                            __acquire_category(name, _Loc_monetary_create, _Loc_monetary_default, &monetary_hash)); }
-_Locale_messages* _STLP_CALL __acquire_messages(const char* name)
-{ return __REINTERPRET_CAST(_Locale_messages*,
-                            __acquire_category(name, _Loc_messages_create, _Loc_messages_default, &messages_hash)); }
+_Locale_ctype* _STLP_CALL __acquire_ctype(const char* name) {
+  return __REINTERPRET_CAST(_Locale_ctype*, __acquire_category(name, _Locale_extract_ctype_name, 
+                                                                     _Loc_ctype_create, 
+                                                                     _Loc_ctype_default, 
+                                                               &ctype_hash));
+}
+_Locale_numeric* _STLP_CALL __acquire_numeric(const char* name) {
+  return __REINTERPRET_CAST(_Locale_numeric*, __acquire_category(name, _Locale_extract_numeric_name, 
+                                                                       _Loc_numeric_create, 
+                                                                       _Loc_numeric_default, 
+                                                                 &numeric_hash)); 
+}
+_Locale_time* _STLP_CALL __acquire_time(const char* name) {
+  return __REINTERPRET_CAST(_Locale_time*, __acquire_category(name, _Locale_extract_time_name, 
+                                                                    _Loc_time_create, 
+                                                                    _Loc_time_default, 
+                                                              &time_hash)); 
+}
+_Locale_collate* _STLP_CALL __acquire_collate(const char* name) {
+  return __REINTERPRET_CAST(_Locale_collate*, __acquire_category(name, _Locale_extract_collate_name,
+                                                                       _Loc_collate_create, 
+                                                                       _Loc_collate_default, 
+                                                                 &collate_hash)); 
+}
+_Locale_monetary* _STLP_CALL __acquire_monetary(const char* name) {
+  return __REINTERPRET_CAST(_Locale_monetary*, __acquire_category(name, _Locale_extract_monetary_name, 
+                                                                        _Loc_monetary_create, 
+                                                                        _Loc_monetary_default, 
+                                                                  &monetary_hash)); 
+}
+_Locale_messages* _STLP_CALL __acquire_messages(const char* name) {
+  return __REINTERPRET_CAST(_Locale_messages*, __acquire_category(name, _Locale_extract_messages_name, 
+                                                                        _Loc_messages_create, 
+                                                                        _Loc_messages_default, 
+                                                                  &messages_hash)); 
+}
 
-void  _STLP_CALL __release_ctype(_Locale_ctype* cat) {
-  __release_category(cat, _Loc_ctype_destroy, _Loc_ctype_name, ctype_hash);
+void _STLP_CALL __release_ctype(_Locale_ctype* cat) {
+  __release_category(cat, _Loc_ctype_destroy, _Loc_ctype_name, &ctype_hash);
 }
 void _STLP_CALL __release_numeric(_Locale_numeric* cat) {
-  __release_category(cat, _Loc_numeric_destroy, _Loc_numeric_name, numeric_hash);
+  __release_category(cat, _Loc_numeric_destroy, _Loc_numeric_name, &numeric_hash);
 }
 void _STLP_CALL __release_time(_Locale_time* cat) {
-  __release_category(cat, _Loc_time_destroy, _Loc_time_name, time_hash);
+  __release_category(cat, _Loc_time_destroy, _Loc_time_name, &time_hash);
 }
 void _STLP_CALL __release_collate(_Locale_collate* cat) {
-  __release_category(cat, _Loc_collate_destroy, _Loc_collate_name, collate_hash);
+  __release_category(cat, _Loc_collate_destroy, _Loc_collate_name, &collate_hash);
 }
 void _STLP_CALL __release_monetary(_Locale_monetary* cat) {
-  __release_category(cat, _Loc_monetary_destroy, _Loc_monetary_name, monetary_hash);
+  __release_category(cat, _Loc_monetary_destroy, _Loc_monetary_name, &monetary_hash);
 }
 void _STLP_CALL __release_messages(_Locale_messages* cat) {
-  __release_category(cat, _Loc_messages_destroy, _Loc_messages_name, messages_hash);
+  __release_category(cat, _Loc_messages_destroy, _Loc_messages_name, &messages_hash);
 }
 
 
@@ -245,9 +257,8 @@ _Locale_insert(_Locale* __that, Facet* f) {
 // Give L a name where all facets except those in category c
 // are taken from name1, and those in category c are taken from name2.
 void _Stl_loc_combine_names(_Locale* L,
-                   const char* name1, const char* name2,
-                   locale::category c)
-{
+                            const char* name1, const char* name2,
+                            locale::category c) {
   if ((c & locale::all) == 0 || strcmp(name1, name2) == 0)
     L->name = name1;
   else if ((c & locale::all) == locale::all)
@@ -287,8 +298,7 @@ void _Stl_loc_combine_names(_Locale* L,
 
 // Create a locale from a name.
 locale::locale(const char* name)
-  : _M_impl(0)
-{
+  : _M_impl(0) {
   if (!name)
     _M_throw_runtime_error(0);
 
@@ -313,8 +323,7 @@ locale::locale(const char* name)
 // Create a locale that's a copy of L, except that all of the facets
 // in category c are instead constructed by name.
 locale::locale(const locale& L, const char* name, locale::category c)
-  : _M_impl(0)
-{
+  : _M_impl(0) {
   if (name == 0 || strcmp(name, "*") == 0)
     _M_throw_runtime_error(name);
 
@@ -345,8 +354,7 @@ locale::locale(const locale& L, const char* name, locale::category c)
 // Contruct a new locale where all facets that aren't in category c
 // come from L1, and all those that are in category c come from L2.
 locale::locale(const locale& L1, const locale& L2, category c)
-  : _M_impl(0)
-{
+  : _M_impl(0) {
   _Locale* impl = new _Locale(*L1._M_impl);
   
   _Locale_impl* i2 = L2._M_impl;
@@ -413,12 +421,12 @@ locale::locale(const locale& L1, const locale& L2, category c)
   _M_impl = impl;
 }
 
-// Six functions, one for each category.  Each of them takes a 
-// _Locale* and a name, constructs that appropriate category
-// facets by name, and inserts them into the locale.  
-
-void _Locale::insert_ctype_facets(const char* pname)
-{
+/*
+ * Six functions, one for each category.  Each of them takes a 
+ * _Locale* and a name, constructs that appropriate category
+ * facets by name, and inserts them into the locale.
+ */
+void _Locale::insert_ctype_facets(const char* pname) {
   char buf[_Locale_MAX_SIMPLE_NAME];
   _Locale_impl* i2 = locale::classic()._M_impl;
 
@@ -481,8 +489,7 @@ void _Locale::insert_ctype_facets(const char* pname)
   }
 }
 
-void _Locale::insert_numeric_facets(const char* pname)
-{
+void _Locale::insert_numeric_facets(const char* pname) {
   _Locale_impl* i2 = locale::classic()._M_impl;
 
   numpunct<char>*    punct  = 0;
@@ -542,8 +549,7 @@ void _Locale::insert_numeric_facets(const char* pname)
   }
 }
 
-void _Locale::insert_time_facets(const char* pname)
-{
+void _Locale::insert_time_facets(const char* pname) {
   _Locale_impl* i2 = locale::classic()._M_impl;
   time_get<char, istreambuf_iterator<char, char_traits<char> > >*    get  = 0;
   time_put<char, ostreambuf_iterator<char, char_traits<char> > >*    put  = 0;
@@ -592,8 +598,7 @@ void _Locale::insert_time_facets(const char* pname)
   }
 }
 
-void _Locale::insert_collate_facets(const char* nam)
-{
+void _Locale::insert_collate_facets(const char* nam) {
   _Locale_impl* i2 = locale::classic()._M_impl;
 
   collate<char>*    col  = 0;
@@ -630,8 +635,7 @@ void _Locale::insert_collate_facets(const char* nam)
   }
 }
 
-void _Locale::insert_monetary_facets(const char* pname)
-{
+void _Locale::insert_monetary_facets(const char* pname) {
   _Locale_impl* i2 = locale::classic()._M_impl;
 
   moneypunct<char,    false>* punct   = 0;
@@ -695,8 +699,7 @@ void _Locale::insert_monetary_facets(const char* pname)
 }
 
 
-void _Locale::insert_messages_facets(const char* pname)
-{
+void _Locale::insert_messages_facets(const char* pname) {
   _Locale_impl* i2 = locale::classic()._M_impl;
   messages<char>*    msg  = 0;
 # ifndef _STLP_NO_WCHAR_T
@@ -733,6 +736,3 @@ void _Locale::insert_messages_facets(const char* pname)
 }
 
 _STLP_END_NAMESPACE
-
-
-
