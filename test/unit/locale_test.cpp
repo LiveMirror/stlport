@@ -82,6 +82,8 @@ struct ref_locale {
   const char *money_thousands_sep;
 };
 
+#if defined (_STLP_REAL_LOCALE_IMPLEMENTED)
+
 static ref_locale tested_locales[] = {
 //{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point,  money_thousands_sep},
   { "french",      ",",           "\xa0",        "",               "",           " EUR",           " FRF",               "",           ",",                  "\xa0" },
@@ -89,6 +91,17 @@ static ref_locale tested_locales[] = {
   { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",               "",                   "",           ".",                  "," },
   { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",                   "",           ".",                  "," }
 };
+
+#else
+
+// std::locale must at least support the C locale
+static ref_locale tested_locales[] = {
+//{  name,         decimal_point, thousands_sep, money_prefix, money_suffix},
+  { "C",           ".",           ",",           "",           "" }
+};
+
+#endif // _STLP_REAL_LOCALE_IMPLEMENTED
+
 
 //
 // TestCase class
@@ -134,7 +147,6 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
 
   CPPUNIT_ASSERT( npct.decimal_point() == *rl.decimal_point );
   CPPUNIT_ASSERT( npct.thousands_sep() == *rl.thousands_sep );
-
 
   ostringstream fostr;
   fostr.imbue(loc);
@@ -291,7 +303,7 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
 }
 
 void LocaleTest::locale_by_name() {
-#ifndef _STLP_NO_EXCEPTION
+#ifndef _STLP_NO_EXCEPTIONS
   /*
    * Check of the 22.1.1.2.7 standard point. Construction of a locale
    * instance from a null pointer or an unknown name should result in 
