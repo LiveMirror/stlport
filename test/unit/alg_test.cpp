@@ -45,8 +45,13 @@ void AlgTest::alg2()
 {
   int n = 0;
   int i [] = { 1, 4, 2, 8, 2, 2 };
+  n = count(i, i + 6, 2);
+  CPPUNIT_ASSERT(n==3);
+#ifndef _STLP_NO_ANACHRONISMS
+  n = 0;
   count(i, i + 6, 2, n);
   CPPUNIT_ASSERT(n==3);
+#endif
 }
 void AlgTest::alg3()
 {
@@ -58,8 +63,13 @@ void AlgTest::alg3()
   i.push_back(8);
   i.push_back(2);
   i.push_back(2);
+  n = count(i.begin(), i.end(), 2);
+  CPPUNIT_ASSERT(n==3);
+#ifndef _STLP_NO_ANACHRONISMS
+  n = 0;
   count(i.begin(), i.end(), 2, n);
   CPPUNIT_ASSERT(n==3);
+#endif
 }
 void AlgTest::alg4()
 {

@@ -86,6 +86,7 @@ SRC_CPP = cppunit/test_main.cpp \
 	swap_test.cpp \
 	times_test.cpp \
 	transform_test.cpp \
+	type_traits_test.cpp \
 	unary_test.cpp \
 	unique_test.cpp \
 	vector_test.cpp \

@@ -150,7 +150,7 @@ void FstreamTest::tellg()
   char buf[64];
 
   // CPPUNIT_ASSERT( is.tellg() == 0 );
-  ifstream::streampos p = 0;
+  streampos p = 0;
   for ( i = 0; i < 50; ++i ) {
     CPPUNIT_ASSERT( is.tellg() == p );
     // getline( is, line, '\n' );
