@@ -917,7 +917,6 @@ private:  // Helper functions for insert.
 
   template <class _InputIterator>
   void _M_copy(_InputIterator __first, _InputIterator __last, pointer __result) {
-    //call _M_copy as being here means that __result is not within [__first, __last)
     for ( ; __first != __last; ++__first, ++__result)
       _Traits::assign(*__result, *__first);
   }
