@@ -138,8 +138,6 @@
 #   define _STLP_NO_NATIVE_WIDE_STREAMS 1
 #  endif
 
-# define _STLP_LIB_BASENAME stlport_mwerks_x86
-
 # if defined(__MACH__)
 #  define _STLP_MAC
 #  define O_BINARY 0
@@ -147,5 +145,3 @@
 #  define _NOTHREADS
 # endif
 # define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
-
-// # include <config/vc_select_lib.h>

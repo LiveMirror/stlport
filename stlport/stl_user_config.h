@@ -262,13 +262,6 @@
  */
 // #define _STLP_USE_BOOST_SUPPORT 1
 
-/*
- * MS VC compilers has ability to define required library at compile time
- * via #pragma comment(lib,libname)
- * uncomment this, if you want turn off this mechanism:
- */
-// #define _STLP_DONT_FORCE_MSVC_LIB_NAME
-
 //==========================================================
 
 // Local Variables:

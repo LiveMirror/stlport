@@ -198,19 +198,19 @@
 #   define _STLP_LIMITED_DEFAULT_TEMPLATES 1
 
 // up to 4.2, library is in global namespace
-#   define _STLP_VENDOR_GLOBAL_STD
-#   define _STLP_NONTEMPL_BASE_MATCH_BUG 1
-#   define _STLP_BROKEN_USING_DIRECTIVE  1
-#   define _STLP_NO_ARROW_OPERATOR
-#   define _STLP_NO_SIGNED_BUILTINS 1
-#   define _STLP_NO_EXCEPTION_SPEC 1
-#   undef  _STLP_DEFAULT_TYPE_PARAM
-#   undef  _STLP_HAS_NO_NAMESPACES
-#   undef  _STLP_NO_AT_MEMBER_FUNCTION
-#   undef  _STLP_NO_MEMBER_TEMPLATES
-#   undef  _STLP_NO_MEMBER_TEMPLATE_CLASSES
-#   define  _STLP_HAS_NO_NAMESPACES 1
-#   define  _STLP_NO_AT_MEMBER_FUNCTION 1
+#  define _STLP_VENDOR_GLOBAL_STD
+#  define _STLP_NONTEMPL_BASE_MATCH_BUG 1
+#  define _STLP_BROKEN_USING_DIRECTIVE  1
+#  define _STLP_NO_ARROW_OPERATOR
+#  define _STLP_NO_SIGNED_BUILTINS 1
+#  define _STLP_NO_EXCEPTION_SPEC 1
+#  undef  _STLP_DEFAULT_TYPE_PARAM
+#  undef  _STLP_HAS_NO_NAMESPACES
+#  undef  _STLP_NO_AT_MEMBER_FUNCTION
+#  undef  _STLP_NO_MEMBER_TEMPLATES
+#  undef  _STLP_NO_MEMBER_TEMPLATE_CLASSES
+#  define  _STLP_HAS_NO_NAMESPACES 1
+#  define  _STLP_NO_AT_MEMBER_FUNCTION 1
 #  define  _STLP_NO_MEMBER_TEMPLATES
 #  define  _STLP_NO_MEMBER_TEMPLATE_CLASSES
 # endif /* 1100 */
@@ -246,9 +246,9 @@
 #  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 # endif
 
-#if ( defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
-      defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB) ) && \
-      !(defined(_STLP_USE_STATIC_LIB) || defined(_STLP_USE_STATICX_LIB))
+#if (defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
+     defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB)) && \
+    !defined(_STLP_USE_STATIC_LIB)
 #  undef  _STLP_USE_DECLSPEC
 #  define _STLP_USE_DECLSPEC 1
 #  if !defined (_STLP_USE_DYNAMIC_LIB)
@@ -269,35 +269,6 @@
 # endif
 # define _STLP_EXPORT_TEMPLATE_KEYWORD
 
-
-# if !defined(_STLP_DONT_FORCE_MSVC_LIB_NAME) && !defined(_STLP_NO_OWN_IOSTREAMS)
-#  ifdef __ICL
-#   define _STLP_LIB_BASENAME "stlport_icl"
-#  elif defined(_STLP_WCE_EVC3)
-#   define _STLP_LIB_BASENAME "stlport_evc3"
-#  elif defined(_STLP_WCE_NET)
-#   if defined(_X86_)
-#    define _STLP_LIB_BASENAME "stlport_evc4-x86"
-#   elif defined(_ARM_)
-#    define _STLP_LIB_BASENAME "stlport_evc4-arm"
-#   else
-#    define _STLP_LIB_BASENAME "stlport_wce4"
-#   endif
-#  else
-#   if (_MSC_VER >= 1400)
-#    define _STLP_LIB_BASENAME "stlport_vc8"
-#   elif (_MSC_VER >= 1310) 
-#    define _STLP_LIB_BASENAME "stlport_vc71"
-#   elif (_MSC_VER >= 1300) 
-#    define _STLP_LIB_BASENAME "stlport_vc70"
-#   elif (_MSC_VER >= 1200)
-#    define _STLP_LIB_BASENAME "stlport_vc6"
-#   elif (_MSC_VER >= 1100)
-#    define _STLP_LIB_BASENAME "stlport_vc5"
-#   endif /* (_MSC_VER >= 1200) */
-#  endif /* __ICL */
-
-
 #  if (defined (__ICL) && (__ICL < 450)) || (_MSC_VER < 1200)
 //    only static STLport lib now works for ICL and VC 5.0
 #   undef  _STLP_USE_STATIC_LIB
@@ -305,47 +276,6 @@
 //    disable hook which makes template symbols to be searched for in the library
 #   undef _STLP_NO_CUSTOM_IO
 #  endif
-
-#  if (defined(_RTLDLL) && defined(_STLP_USE_STATIC_LIB)) || defined(_STLP_USE_STATICX_LIB)
-#   define _STLP_LIB_STATIC_SUFFIX "_staticx"
-#  else
-#   define _STLP_LIB_STATIC_SUFFIX "_static"
-#  endif
-
-#  if !defined (_STLP_LIB_STATIC_SUFFIX)
-#   define _STLP_LIB_STATIC_SUFFIX ""
-#  endif
-
-// Note : the code below is intended to make use of compiled
-// STLport iostreams easier. If you are with to change names used for
-// STLport libraries , please also change RELEASE_NAME and DEBUG_NAME
-// macros in makefile ../../src/vc6.mak (or whatever .mak you are using to build
-// STLport). If you are using binaries, you may just rename the binaries.
-#  if !defined (__BUILDING_STLPORT)
-#   if defined (_STLP_USE_DECLSPEC)
-#    ifdef _STLP_DEBUG
-#     pragma comment(lib, _STLP_LIB_BASENAME"_stldebug.lib")
-#    elif (defined (_DEBUG) || defined (__DEBUG)) && defined (_STLP_USE_DEBUG_LIB)
-#     pragma comment(lib, _STLP_LIB_BASENAME"_debug.lib")
-#    else
-#     pragma comment(lib, _STLP_LIB_BASENAME".lib")
-#    endif
-#   else /* _STLP_USE_DECLSPEC */
-// fbp : for static linking, debug setting _MUST_ correspond to what
-// has been compiled into binary lib
-#    ifdef _STLP_DEBUG
-#     if (! defined (_DEBUG))
-#      error "For static link with STLport library, _DEBUG setting MUST be on when _STLP_DEBUG is on. (/MTd forces _DEBUG)"
-#     endif
-#     pragma comment(lib, _STLP_LIB_BASENAME"_stldebug"_STLP_LIB_STATIC_SUFFIX".lib")
-#    elif (defined (_DEBUG) || defined (__DEBUG)) && defined (_STLP_USE_DEBUG_LIB)
-#     pragma comment(lib, _STLP_LIB_BASENAME"_debug"_STLP_LIB_STATIC_SUFFIX".lib")
-#    else
-#     pragma comment(lib, _STLP_LIB_BASENAME""_STLP_LIB_STATIC_SUFFIX".lib")
-#    endif
-#   endif /* _STLP_USE_DECLSPEC */
-#  endif /* __BUILDING_STLPORT */
-# endif // !_STLP_DONT_FORCE_MSVC_LIB_NAME) && !_STLP_NO_OWN_IOSTREAMS
 
 // Local Variables:
 // mode:C++

@@ -141,6 +141,8 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   float val = 1234.56f;
   ostringstream ostr;
   ostr << val;
+  CPPUNIT_ASSERT( ostr );
+  //CPPUNIT_TEST( ostr.str() == "1234.56" );
   CPPUNIT_ASSERT( ostr.str() == "1234.56" );
 
   numpunct<char> const& npct = use_facet<numpunct<char> >(loc);
@@ -385,9 +387,13 @@ void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale& rl )
   typedef codecvt<char,char,mbstate_t> my_facet;
 
   locale loc_ref;
-  std::locale gloc( loc_ref, new my_facet );
-  CPPUNIT_ASSERT( has_facet<my_facet>( gloc ) );
-  locale::global( gloc );
+  {
+    locale gloc( loc_ref, new my_facet );
+    CPPUNIT_ASSERT( has_facet<my_facet>( gloc ) );
+    //The following code is just here to try to confuse the reference counting underlying mecanism:
+    locale::global( locale::classic() );
+    locale::global( gloc );
+  }
 
 #ifndef _STLP_NO_EXCEPTIONS
   try {

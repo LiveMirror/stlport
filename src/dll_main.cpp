@@ -213,7 +213,7 @@ _STLP_END_NAMESPACE
 
 #define FORCE_SYMBOL extern
 
-# if defined (_WIN32) && defined (_STLP_USE_DECLSPEC) && ! defined (_STLP_USE_STATIC_LIB) && ! defined (_STLP_USE_STATICX_LIB)
+# if defined (_WIN32) && defined (_STLP_USE_DECLSPEC) && !defined (_STLP_USE_STATIC_LIB)
 // stlportmt.cpp : Defines the entry point for the DLL application.
 //
 #define WIN32_LEAN_AND_MEAN
