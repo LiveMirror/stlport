@@ -2,7 +2,7 @@
 
 	* build/Makefiles/gmake/app/gcc.mak, build/Makefiles/gmake/lib/gcc.mak:
 	incorporate gcc language support library into libstlport.so
-	[add ~100k to library],	but libsup++ don't required more in link stage
+	[add ~100k to library],	but libsupc++ don't required more in link stage
 	for applications and libraries that use stlport, as in case with
 	libstd++.
 
