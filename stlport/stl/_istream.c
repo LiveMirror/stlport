@@ -18,6 +18,10 @@
 #ifndef _STLP_ISTREAM_C
 #define _STLP_ISTREAM_C
 
+#ifndef _STLP_INTERNAL_ISTREAM_H
+# include <stl/_istream.h>
+#endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_LIMITS_H
@@ -130,7 +134,7 @@ struct _Scan_for_char_val
 
   char_type _M_val;
 
-  _Scan_for_char_val(char_type __value) : _M_val(__value) {}
+  _Scan_for_char_val(char_type __val) : _M_val(__val) {}
 
   const char_type*
   operator()(const char_type* __first, const char_type* __last) const {
@@ -149,7 +153,7 @@ struct _Scan_for_int_val
 
   int_type _M_val;
 
-  _Scan_for_int_val(int_type __value) : _M_val(__value) {}
+  _Scan_for_int_val(int_type __val) : _M_val(__val) {}
 
   const char_type*
   operator()(const char_type* __first, const char_type* __last) const {

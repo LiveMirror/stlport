@@ -35,18 +35,18 @@ _STLP_BEGIN_NAMESPACE
 
 #ifdef __sgi
   static const union { unsigned int i; float f; } float_ulimit = { 0x42b2d4fc };
-  static const float float_limit = ulimit.f;
+  static const float float_limit = float_ulimit.f;
   static union {
     struct { unsigned int h; unsigned int l; } w;
     double d;
   } double_ulimit = { 0x408633ce, 0x8fb9f87d };
-  static const double double_limit = ulimit.d;
+  static const double double_limit = double_ulimit.d;
   static union {
     struct { unsigned int h[2]; unsigned int l[2]; } w;
     long double ld;
   } ldouble_ulimit = {0x408633ce, 0x8fb9f87e, 0xbd23b659, 0x4e9bd8b1};
 # ifndef _STLP_NO_LONG_DOUBLE
-  static const long double ldouble_limit = ulimit.ld;
+  static const long double ldouble_limit = ldouble_ulimit.ld;
 # endif
 #else
   static const float float_limit = _STLP_LOGF(FLT_MAX);

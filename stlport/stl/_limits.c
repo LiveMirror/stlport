@@ -16,10 +16,12 @@
  *
  */
 
-# if !defined (_STLP_LIMITS_C) /***  || !defined (_STLP_LINK_TIME_INSTANTIATION) */
-#  undef  _STLP_LIMITS_C
+# if !defined (_STLP_LIMITS_C)
 #  define _STLP_LIMITS_C
 
+#ifndef _STLP_INTERNAL_LIMITS_H
+# include <stl/_limits.h>
+#endif
 
 //==========================================================
 //  numeric_limits static members

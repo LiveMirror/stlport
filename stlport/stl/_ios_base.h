@@ -194,8 +194,10 @@ protected:                      // The functional protected interface.
   void _M_clear_nothrow(iostate __state) { _M_iostate = __state; }
   iostate _M_get_exception_mask() const { return _M_exception_mask; }
   void _M_set_exception_mask(iostate __mask) { _M_exception_mask = __mask; }
-  void _M_check_exception_mask() 
-    { if (_M_iostate & _M_exception_mask) _M_throw_failure(); }
+  void _M_check_exception_mask() { 
+    if (_M_iostate & _M_exception_mask)
+      _M_throw_failure(); 
+  }
 
   void _M_invoke_callbacks(event);
   void _M_throw_failure();

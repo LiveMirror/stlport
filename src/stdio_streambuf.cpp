@@ -26,7 +26,7 @@
 #include <stl/_fstream.h>
 #include "fstream_impl.h"
 
-# if defined (_STLP_USE_WIN32_IO)
+# if defined (_STLP_USE_WIN32_IO) && !defined(_STLP_WINCE)
 # if defined (__BORLANDC__)
 // #  include <cio.h>
 #  include <cfcntl.h>
@@ -133,7 +133,7 @@ streamsize stdio_istreambuf::showmanyc()
   if (feof(_M_file)) 
     return -1;
   else {
-    int fd = _FILE_fd(*_M_file);
+    int fd = _FILE_fd(_M_file);
 # ifdef _STLP_USE_WIN32_IO
     // in this case, __file_size works with Win32 fh , not libc one
     streamoff size;

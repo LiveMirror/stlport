@@ -49,17 +49,13 @@ void __release_ctype(_Locale_ctype* cat);
 // ctype_byname<char>
 
 ctype_byname<char>::ctype_byname(const char* name, size_t refs)
-#ifdef __GNUC__
-   : ctype<char>(_M_byname_table, false, refs), // JGS, the +1 not needed 
-#else
-  : ctype<char>(_M_byname_table + 1, false, refs),
-#endif
-    _M_ctype(__acquire_ctype(name))
+  : ctype<char>(_M_byname_table+1, false, refs),
+  _M_ctype(__acquire_ctype(name))
 {
-
+  
   if (!_M_ctype)
     locale::_M_throw_runtime_error();
-
+  
   // We have to do this, instead of just pointer twiddling, because
   // ctype_base::mask isn't the same type as _Locale_mask_t.  
 

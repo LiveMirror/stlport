@@ -21,7 +21,6 @@
 # include <stdlib.h>
 
 # ifdef _STLP_REAL_LOCALE_IMPLEMENTED
-
 #  include <limits.h>
 #  include "c_locale.h"
 #  if defined (WIN32) || defined (_WIN32)

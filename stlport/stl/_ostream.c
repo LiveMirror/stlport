@@ -18,6 +18,11 @@
 #ifndef _STLP_OSTREAM_C
 #define _STLP_OSTREAM_C
 
+
+#ifndef _STLP_INTERNAL_OSTREAM_H
+# include <stl/_ostream.h>
+#endif
+
 #if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #if !defined (_STLP_INTERNAL_NUM_PUT_H)

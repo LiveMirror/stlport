@@ -526,6 +526,10 @@ public:
   void resize(size_type __num_elements_hint);
   void clear();
 
+public:
+  // this is for hash_map::operator[]
+  reference _M_insert(const value_type& __obj);
+
 private:
 
   size_type _M_next_size(size_type __n) const;

@@ -18,6 +18,10 @@
 #ifndef _STLP_NUM_GET_C
 #define _STLP_NUM_GET_C
 
+#ifndef _STLP_INTERNAL_NUM_GET_H
+# include <stl/_num_get.h>
+#endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_LIMITS_H
@@ -622,7 +626,7 @@ _InputIter
 num_get<_CharT, _InputIter>::do_get(_InputIter __in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err,
                            void*& __p) const {
-# ifdef _STLP_LONG_LONG
+# if defined(_STLP_LONG_LONG)&&!defined(__MRC__)		//*ty 12/07/2001 - MrCpp can not cast from long long to void*
   unsigned _STLP_LONG_LONG __val;
 # else
   unsigned long __val;

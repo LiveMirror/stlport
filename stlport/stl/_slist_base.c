@@ -26,6 +26,10 @@
 #ifndef _STLP_SLIST_BASE_C
 #define _STLP_SLIST_BASE_C
 
+#ifndef _STLP_INTERNAL_SLIST_BASE_H
+# include <stl/_slist_base.h>
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 # if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)

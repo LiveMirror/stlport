@@ -1,6 +1,10 @@
 #ifndef _STLP_STRING_IO_C
 #define _STLP_STRING_IO_C
 
+#ifndef _STLP_STRING_IO_H
+# include <stl/_string_io.h>
+#endif
+
 # ifdef _STLP_DEBUG
 #  define basic_string _Nondebug_string
 # endif

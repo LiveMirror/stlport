@@ -278,6 +278,12 @@ class   numeric_limits<unsigned short>
   : public _Integer_limits<unsigned short, 0, USHRT_MAX, -1, true>
 {};
 
+# if defined (__xlC__) && (__xlC__ == 0x500)
+#  undef INT_MIN
+#  define INT_MIN -2147483648
+# endif
+
+
 _STLP_TEMPLATE_NULL
 class   numeric_limits<int>
   : public _Integer_limits<int, INT_MIN, INT_MAX, -1, true>
