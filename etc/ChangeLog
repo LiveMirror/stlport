@@ -1,3 +1,15 @@
+2004-06-02  Petr Ovtchenkov  <ptr@island...>
+
+	* src/num_put_float.cpp: some fixes for systems that use snprintf for
+	output, i.e. for FreeBSD and OpenBSD
+
+	* test/unit/floatio_test.cpp: less precise request, this should work
+	with static buffer for systems that use snprintf
+
+	* stlport/stl/_config.h: detect MT for OpenBSD
+
+	* stlport/stl/_threads.h: use original spinlock for OpenBSD
+
 2004-05-28  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_gcc.h: fix for the gcc3.4.0 compiler. Modification
