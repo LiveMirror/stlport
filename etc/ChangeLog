@@ -1,3 +1,16 @@
+2004-09-28  Petr Ovtchenkov  <ptr@island...>
+
+	* Repository: iostreams and string wrapper mode removed, due to ones has
+	a lot of restrictions in usage and frequently lead to hard recognized problems.
+	Tonns of *_STREAMS macro replaced by _STLP_USE_NO_IOSTREAMS or _STLP_NO_IOSTREAMS
+	as configuration macro; *NATIVE_STRING macro removed by the same reasons.
+
+2004-09-27  Petr Ovtchenkov  <ptr@island...>
+
+	* test/unit/gcc.mak: fix stlport library name for STLP_DEBUG mode for Solaris,
+	thanks for separate namespaces in normal and STLP_DEBUG mode, see record
+	2004-09-10 below.
+
 2004-09-24  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_gcc.h: Fix of the relative include path used to access the
