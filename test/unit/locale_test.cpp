@@ -398,7 +398,14 @@ void LocaleTest::locale_init_problem()
 
 void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale&)
 {
+#  if defined(__GNUC__) && (__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__> 3))
   typedef codecvt<char,char,mbstate_t> my_facet;
+#  else
+// std::mbstate_t required for gcc 3.3.2 on FreeBSD...
+// I am not sure what key here---FreeBSD or 3.3.2...
+//      - ptr 2005-04-04
+  typedef codecvt<char,char,std::mbstate_t> my_facet;
+#  endif
 
   locale loc_ref;
   {
