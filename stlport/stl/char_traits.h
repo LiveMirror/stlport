@@ -28,7 +28,7 @@
 # endif
 
 # if !defined (_STLP_CWCHAR)
-#  include <cwchar>
+#  include <stl/_cwchar.h>
 # endif			
 
 #if ! defined (_STLP_CSTRING)

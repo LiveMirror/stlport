@@ -86,8 +86,8 @@ typedef __int32_t wchar_t;
 # ifndef _STLP_CSTDDEF
 #  include <cstddef>
 # endif
-# ifndef _STLP_CWCHAR
-#  include <cwchar>
+# ifndef _STLP_CWCHAR_H
+#  include <stl/_cwchar.h>
 # endif
 # ifndef _STLP_CCTYPE
 #  include <cctype>

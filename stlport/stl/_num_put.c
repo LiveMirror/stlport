@@ -522,7 +522,6 @@ template <class _CharT, class _OutputIter>
 _OutputIter
 num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT /*__fill*/,
 				     const void* __val) const {
-  locale __loc = __f.getloc();
   const ctype<_CharT>& __c_type = *(const ctype<_CharT>*)__f._M_ctype_facet();
   ios_base::fmtflags __save_flags = __f.flags();
 

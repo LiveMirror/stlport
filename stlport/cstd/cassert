@@ -13,9 +13,6 @@
  *
  */
 
-#ifndef _STLP_CASSERT
-# define _STLP_CASSERT
-
 # ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID 0x103
 #  include <stl/_prolog.h>
@@ -31,8 +28,6 @@
 #  include <stl/_epilog.h>
 #  undef _STLP_OUTERMOST_HEADER_ID
 # endif
-
-#endif /* _STLP_CASSERT */
 
 // Local Variables:
 // mode:C++

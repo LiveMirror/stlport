@@ -56,7 +56,7 @@ template <class T> inline void copy(T* source,T* destination,int n) {
 */
 
 #ifdef __WATCOMC__
-# include <cwchar>
+# include <stl/_cwchar.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE

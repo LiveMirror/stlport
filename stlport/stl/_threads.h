@@ -162,7 +162,7 @@ using _STLP_VENDOR_CSTD::time_t;
 # endif
 #  include <synch.h>
 #  include <cstdio>
-#  include <cwchar>
+#  include <stl/_cwchar.h>
 # elif defined (_STLP_BETHREADS)
 #  include <OS.h>
 #include <cassert>

@@ -13,6 +13,10 @@
 #  define _STLP_NO_WCHAR_T
 # endif
 
+#ifdef __USLC__
+# include <config/stl_sco.h>
+#endif
+
 # if defined (__sun)
 
 // gcc does not support ELF64 yet ; however; it supports ultrasparc + v8plus.

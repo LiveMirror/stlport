@@ -409,7 +409,7 @@ template <class _Key, class _Value, class _KeyOfValue,
   iterator __j = iterator(__y);   
   if (__comp)
     if (__j == begin())     
-      return pair<iterator,bool>(_M_insert(__x, __y, __v), true);
+      return pair<iterator,bool>(_M_insert(/* __x*/ __y, __y, __v), true);
     else
       --__j;
   if (_M_key_compare(_S_key(__j._M_node), _KeyOfValue()(__v)))

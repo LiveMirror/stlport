@@ -100,7 +100,7 @@ struct hash_void
   size_t operator()(void* x) const { return (size_t)x; }
 };
 
-typedef std::hash_set<void*, ::hash_void, std::equal_to<void*> > allocation_set;
+typedef EH_STD::hash_set<void*, ::hash_void, EH_STD::equal_to<void*> > allocation_set;
 # endif
 
 static allocation_set& alloc_set()

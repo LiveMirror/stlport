@@ -33,8 +33,6 @@ The following changes were made in 5.0 since 4.5.3 release:
 	* cpp_runtime/typeinfo : made adjustments for .NET (Thanks Daniel)
 
 	* cstd/cassert : guard removed (thanks Evan Cheng)
-
-	* test 
 	
 The following changes were made in 4.5.3 since 4.5.1 release:
 
