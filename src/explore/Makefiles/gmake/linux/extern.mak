@@ -20,7 +20,7 @@ CoMT_INCLUDE_DIR ?= ${CoMT_DIR}/include
 #STLPORT_LIB_DIR ?= /usr/local/lib
 #STLPORT_INCLUDE_DIR ?= /usr/local/include/stlport
 #STLPORT_VER ?= 4.5
-STLPORT_LIB_DIR ?= $(STLPORT_DIR)/lib
+STLPORT_LIB_DIR ?= $(STLPORT_DIR)/${TARGET_NAME}lib
 STLPORT_INCLUDE_DIR ?= $(STLPORT_DIR)/stlport
 STLPORT_VER ?= 4.5.5
 
