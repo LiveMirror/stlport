@@ -2,7 +2,7 @@
 
 #include <string>
 
-#ifdef _PTHREADS
+#ifdef _STLP_PTHREADS
 # include <pthread.h>
 #endif
 
@@ -25,7 +25,7 @@ string func( const string& par )
   return tmp;
 }
 
-#if defined (_PTHREAD)
+#if defined (_STLP_PTHREADS)
 void *f( void * )
 #elif defined (_STLP_WIN32THREADS)
 DWORD __stdcall f (void *)
@@ -43,7 +43,7 @@ DWORD __stdcall f (void *)
 int string_mt_test( int, char *const* )
 {
   const int nth = 2;
-#if defined(_PTHREADS)
+#if defined(_STLP_PTHREADS)
   pthread_t t[nth];
 
   for ( int i = 0; i < nth; ++i ) {
@@ -53,16 +53,17 @@ int string_mt_test( int, char *const* )
   for ( int i = 0; i < nth; ++i ) {
     pthread_join( t[i], 0 );
   }
-#endif // _PTHREADS
+#endif // _STLP_PTHREADS
 
 #if defined (_STLP_WIN32THREADS)
   HANDLE t[nth];
 
-  for ( int i = 0; i < nth; ++i ) {
+  int i; // VC6 not support in-loop scope of cycle var
+  for ( i = 0; i < nth; ++i ) {
     t[i] = CreateThread(NULL, 0, f, 0, 0, NULL);
   }
 
-  for ( int i = 0; i < nth; ++i ) {
+  for ( i = 0; i < nth; ++i ) {
     WaitForSingleObject(t[i], INFINITE);
   }
 #endif
