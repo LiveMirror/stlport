@@ -51,11 +51,11 @@ public:
   typedef _Compare value_compare;
   
 protected:
-  typedef _Const_Const_traits<value_type> _ConstIteTraits;
+  typedef _Const_Const_traits<value_type> _ConstTraits;
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
-                   value_type, _Identity<value_type>, _ConstIteTraits, _Alloc> _Rep_type;
+                   value_type, _Identity<value_type>, _ConstTraits, _Alloc> _Rep_type;
 
 public:
   typedef typename _Rep_type::pointer pointer;
@@ -213,11 +213,11 @@ public:
   typedef _Compare value_compare;
   
 protected:
-  typedef _Const_Const_traits<value_type> _ConstIteTraits;
+  typedef _Const_Const_traits<value_type> _ConstTraits;
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
-                   value_type, _Identity<value_type>, _ConstIteTraits, _Alloc> _Rep_type;
+                   value_type, _Identity<value_type>, _ConstTraits, _Alloc> _Rep_type;
                   
 public:                  
   typedef typename _Rep_type::pointer pointer;

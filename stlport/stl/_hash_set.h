@@ -42,12 +42,11 @@ _STLP_BEGIN_NAMESPACE
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
-class hash_set _STLP_STLPORT_CLASS_1
-{
-  typedef _Const_Const_traits<_Value> _ConstIteTraits;
+class hash_set _STLP_STLPORT_CLASS_1 {
+  typedef _Const_Const_traits<_Value> _ConstTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
-                    _ConstIteTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
+                    _ConstTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
 private:
   typedef hash_set<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
 public:
@@ -224,12 +223,11 @@ public:
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
-class hash_multiset _STLP_STLPORT_CLASS_1
-{
-  typedef _Const_Const_traits<_Value> _ConstIteTraits;
+class hash_multiset _STLP_STLPORT_CLASS_1 {
+  typedef _Const_Const_traits<_Value> _ConstTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
-                    _ConstIteTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
+                    _ConstTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
 private:
   typedef hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
 

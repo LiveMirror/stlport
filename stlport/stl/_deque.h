@@ -269,7 +269,6 @@ inline bool  _STLP_CALL operator<=(const _Deque_iterator_base<_Tp >& __x,
 
 template <class _Tp, class _Traits1, class _Traits2>
 inline bool  _STLP_CALL
-
 operator==(const _Deque_iterator<_Tp, _Traits1 >& __x,
            const _Deque_iterator<_Tp, _Traits2 >& __y) { 
   return __x._M_cur == __y._M_cur; 

@@ -157,7 +157,7 @@
  * Comment this out to enable throwing exceptions from default __stl_debug_terminate()
  * instead of calling _STLP_ABORT().
  */
-#define   _STLP_NO_DEBUG_EXCEPTIONS 1
+ #define   _STLP_NO_DEBUG_EXCEPTIONS 1
 
 /* 
  * Uncomment that to disable exception handling code 
@@ -202,7 +202,7 @@
  * Use obsolete overloaded template functions iterator_category(), value_type(), distance_type()
  * for querying iterator properties. Please note those names are non-standard and are not guaranteed
  * to be used by every implementation. However, this setting is on by default when partial specialization
- * is not implemented in the compiler and cannot be sumulated (only if _STLP_NO_ANACHRONISMS is not set). 
+ * is not implemented in the compiler and cannot be simulated (only if _STLP_NO_ANACHRONISMS is not set). 
  * Use of those interfaces for user-defined iterators is strongly discouraged: 
  * please use public inheritance from iterator<> template to achieve desired effect. 
  * Second form is to disable old-style queries in any case.

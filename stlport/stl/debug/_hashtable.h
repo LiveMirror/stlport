@@ -40,7 +40,7 @@
 #  define _DBG_hashtable  hashtable
 
 #  define _STLP_DBG_HT_SUPER \
-__WORKAROUND_DBG_RENAME(hashtable) <_Val, _Key, _HF, _ConstIteTraits, _ExK, _EqK, _All>
+__WORKAROUND_DBG_RENAME(hashtable) <_Val, _Key, _HF, _ConstTraits, _ExK, _EqK, _All>
 
 _STLP_BEGIN_NAMESPACE
 
@@ -61,10 +61,10 @@ iterator_category(const  _DBG_iter_base< _STLP_DBG_HT_SUPER >&) {
 # endif
 
 template <class _Val, class _Key, class _HF,
-          class _ConstIteTraits, class _ExK, class _EqK, class _All>
+          class _ConstTraits, class _ExK, class _EqK, class _All>
 class _DBG_hashtable : public _STLP_DBG_HT_SUPER
 {
-  typedef _DBG_hashtable<_Val, _Key, _HF, _ConstIteTraits, _ExK, _EqK, _All> _Self;
+  typedef _DBG_hashtable<_Val, _Key, _HF, _ConstTraits, _ExK, _EqK, _All> _Self;
   typedef _STLP_DBG_HT_SUPER _Base;
 
 public:
@@ -75,9 +75,9 @@ public:
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
 
 public:
-  typedef typename _ConstIteTraits::_NonConstTraits _NonConstIteTraits;
+  typedef typename _ConstTraits::_NonConstTraits _NonConstIteTraits;
   typedef _DBG_iter<_Base, _NonConstIteTraits> iterator;
-  typedef _DBG_iter<_Base, _ConstIteTraits> const_iterator;
+  typedef _DBG_iter<_Base, _ConstTraits> const_iterator;
   typedef typename _Base::iterator _Base_iterator;
   typedef typename _Base::const_iterator _Base_const_iterator;
 
@@ -251,17 +251,17 @@ private:
   __owned_list _M_iter_list;
 };
 
-#define _STLP_TEMPLATE_HEADER template <class _Val, class _Key, class _HF, class _ConstIteTraits, class _ExK, class _EqK, class _All>
-#define _STLP_TEMPLATE_CONTAINER _DBG_hashtable<_Val,_Key,_HF,_ConstIteTraits,_ExK,_EqK,_All>
-#define _STLP_TEMPLATE_CONTAINER_BASE hashtable<_Val,_Key,_HF,_ConstIteTraits,_ExK,_EqK,_All>
+#define _STLP_TEMPLATE_HEADER template <class _Val, class _Key, class _HF, class _ConstTraits, class _ExK, class _EqK, class _All>
+#define _STLP_TEMPLATE_CONTAINER _DBG_hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
+#define _STLP_TEMPLATE_CONTAINER_BASE hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
 #include <stl/debug/_relops_hash_cont.h>
 #undef _STLP_TEMPLATE_CONTAINER_BASE
 #undef _STLP_TEMPLATE_CONTAINER
 #undef _STLP_TEMPLATE_HEADER
 
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
-template <class _Val, class _Key, class _HF, class _ConstIteTraits, class _ExK, class _EqK, class _All>
-struct __move_traits<_DBG_hashtable<_Val,_Key,_HF,_ConstIteTraits, _ExK,_EqK,_All> > :
+template <class _Val, class _Key, class _HF, class _ConstTraits, class _ExK, class _EqK, class _All>
+struct __move_traits<_DBG_hashtable<_Val,_Key,_HF,_ConstTraits, _ExK,_EqK,_All> > :
   __move_traits_aux<_STLP_DBG_HT_SUPER >
 {};
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */

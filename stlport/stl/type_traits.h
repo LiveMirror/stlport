@@ -65,7 +65,7 @@ template <class T> inline void copy(T* source,T* destination,int n) {
 
 #ifdef _STLP_USE_BOOST_SUPPORT
 #  include <stl/boost_type_traits.h>
-#  include <boost/call_traits.hpp>
+#  include <boost/type_traits/add_reference.hpp>
 #endif /* _STLP_USE_BOOST_SUPPORT */
 
 _STLP_BEGIN_NAMESPACE
@@ -186,17 +186,21 @@ struct __type_traits_aux<1> {
 };
 
 #  ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
-// Boris : simulation technique is used here according to Adobe Open Source License Version 1.0.
-// Copyright 2000 Adobe Systems Incorporated and others. All rights reserved.
-// Authors: Mat Marcus and Jesse Jones
-// The original version of this source code may be found at
-// http://opensource.adobe.com.
+/* 
+ * Boris : simulation technique is used here according to Adobe Open Source License Version 1.0.
+ * Copyright 2000 Adobe Systems Incorporated and others. All rights reserved.
+ * Authors: Mat Marcus and Jesse Jones
+ * The original version of this source code may be found at
+ * http://opensource.adobe.com.
+ */
 
 struct _PointerShim {
-  // Since the compiler only allows at most one non-trivial
-  // implicit conversion we can make use of a shim class to
-  // be sure that IsPtr below doesn't accept classes with
-  // implicit pointer conversion operators
+  /*
+   * Since the compiler only allows at most one non-trivial
+   * implicit conversion we can make use of a shim class to
+   * be sure that IsPtr below doesn't accept classes with
+   * implicit pointer conversion operators
+   */
   _PointerShim(const volatile void*); // no implementation
 };
 
@@ -206,11 +210,12 @@ char* _STLP_CALL _IsP(bool, ...);          // no implementation is required
 
 template <class _Tp>
 struct _IsPtr {
-  
-  // This template meta function takes a type T
-  // and returns true exactly when T is a pointer.
-  // One can imagine meta-functions discriminating on
-  // other criteria.
+  /*
+   * This template meta function takes a type T
+   * and returns true exactly when T is a pointer.
+   * One can imagine meta-functions discriminating on
+   * other criteria.
+   */
   static _Tp& __null_rep();
   enum { _Ret = (sizeof(_IsP(false,__null_rep())) == sizeof(char)) };
 };
@@ -218,7 +223,7 @@ struct _IsPtr {
 #    if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
 //This class avoid instanciation of the more complex class _IsPtr when _BoolType is __false_type
 template <class _CondT>
-struct _IsPtrCondAux { /*__false_type*/
+struct _IsPtrCondAux/*<__false_type>*/ {
   template <class _Tp>
   struct _In {
     enum { _Ret = 0 };
@@ -226,7 +231,7 @@ struct _IsPtrCondAux { /*__false_type*/
 };
 
 _STLP_TEMPLATE_NULL
-struct _IsPtrCondAux <__true_type> {
+struct _IsPtrCondAux<__true_type> {
   template <class _Tp>
   struct _In {
     enum { _Ret = _IsPtr<_Tp>::_Ret };
@@ -240,7 +245,7 @@ struct _IsPtrCond {
 
 //Idem _IsPtrAux but won't instanciate _IsPtr if _BoolType is __true_type
 template <typename _CondT>
-struct _IsPtrCondNotAux { /*__true_type*/
+struct _IsPtrCondNotAux/*<__true_type>*/ {
   template <class _Tp>
   struct _In {
     enum { _Ret = 1 };
@@ -248,7 +253,7 @@ struct _IsPtrCondNotAux { /*__true_type*/
 };
 
 _STLP_TEMPLATE_NULL
-struct _IsPtrCondNotAux <__false_type> {
+struct _IsPtrCondNotAux<__false_type> {
   template <class _Tp>
   struct _In {
     enum { _Ret = _IsPtr<_Tp>::_Ret };
@@ -442,7 +447,7 @@ struct _DefaultZeroValue {
 template <class _Tp> 
 struct __call_traits {
 #if defined(_STLP_USE_BOOST_SUPPORT) && !defined(_STLP_NO_EXTENSIONS)
-  typedef typename ::boost::call_traits<_Tp>::param_type param_type;
+  typedef typename ::boost::add_reference<_Tp>::type param_type;
 #else
   typedef const _Tp& param_type;
 #endif /* _STLP_USE_BOOST_SUPPORT */

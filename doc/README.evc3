@@ -31,6 +31,14 @@ for ARM or x86 processors. These files usually are in a folder like
 WCEARM.bat and WCEx86.bat. Check if the environment variables are set up
 properly after that call.
 
+If you want to compile for the Pocket PC 2002 SDK (which in most cases you want)
+be sure to set the PLATFORM environment variable to "Pocket PC 2002", e.g. with
+this command:
+
+  set PLATFORM=Pocket PC 2002
+
+You can also adjust the batch files to have the PLATFORM variable set.
+
 Go into STLport's 'src\explore' folder and type:
 
   nmake TARGET_PROC=arm -f nmake-evc3.mak install
@@ -62,8 +70,9 @@ Using STLport
 Adjust your include and link paths in eVC3 in 'Tools -> Options -> Directories'
 and add the paths for all platform and CPUs you want to use STLport. In the
 include files add the path to STLport's 'stlport' folder. Make sure it is the
-first directory listed there. Add STLport's 'lib' dir for the library files
-(order of paths doesn't matter here).
+first directory listed there. Add STLport's 'arm-lib' or 'x86-lib' (depending on
+what target you want to build) folder for the library files (order of paths
+doesn't matter here).
 
 Now you should be ready to use STLport.
 
@@ -74,3 +83,7 @@ Known issues
    warning C4005: 'exception' : macro redefinition
    ../../stlport\math.h(26) : see previous definition of 'exception'
    This warning can be ignored.
+
+ - Unit Tests in _STLP_DEBUG mode (target 'stldbg-shared') fails in
+   __stl_debug_engine::_M_detach() for several tests due to unknown reasons.
+   There is currently no workaround for this bug.

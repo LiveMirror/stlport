@@ -51,9 +51,9 @@ public:
   typedef _Tp mapped_type;
   typedef pair<const key_type, data_type> value_type;
 private:
-  typedef _Const_traits<value_type> _ConstIteTraits;
+  typedef _Const_traits<value_type> _ConstTraits;
 public:
-  typedef hashtable<value_type, key_type, _HashFcn, _ConstIteTraits,
+  typedef hashtable<value_type, key_type, _HashFcn, _ConstTraits,
                     _STLP_SELECT1ST(value_type,  _Key), _EqualKey, _Alloc > _Ht;
 
   typedef typename _Ht::hasher hasher;
@@ -225,9 +225,9 @@ public:
   typedef _Key key_type;
   typedef pair<const key_type, data_type> value_type;
 private:
-  typedef _Const_traits<value_type> _ConstIteTraits;
+  typedef _Const_traits<value_type> _ConstTraits;
 public:
-  typedef hashtable<value_type, key_type, _HashFcn, _ConstIteTraits,
+  typedef hashtable<value_type, key_type, _HashFcn, _ConstTraits,
                     _STLP_SELECT1ST(value_type,  _Key), _EqualKey, _Alloc > _Ht;
   typedef typename _Ht::hasher hasher;
   typedef typename _Ht::key_equal key_equal;

@@ -1,3 +1,7 @@
+2004-07-08  Francois Dumont  <dums@...>
+
+  * doc/README.evc3: additionnal doc thanks Michael Fink
+
 2004-07-08  Petr Ovtchenkov  <ptr@Island...>
 
 	* test/unit/sstream_test.cpp: added two test for unformatted extraction

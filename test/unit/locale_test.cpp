@@ -289,6 +289,7 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
 }
 
 void LocaleTest::locale_by_name() {
+#ifndef _STLP_NO_EXCEPTION
   /*
    * Check of the 22.1.1.2.7 standard point. Construction of a locale
    * instance from a null pointer or an unknown name should result in 
@@ -313,6 +314,7 @@ void LocaleTest::locale_by_name() {
   catch (...) {
     CPPUNIT_ASSERT( false );
   }
+#endif
 }
 
 void LocaleTest::loc_has_facet() {

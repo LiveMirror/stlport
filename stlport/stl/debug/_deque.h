@@ -66,8 +66,8 @@ public:                         // Basic types
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
 
 public:                         // Iterators
-  typedef _DBG_iter< _STLP_DEQUE_SUPER, _Nonconst_traits<value_type> > iterator;
-  typedef _DBG_iter< _STLP_DEQUE_SUPER, _Const_traits<value_type> >    const_iterator;
+  typedef _DBG_iter<_Base, _Nonconst_traits<value_type> > iterator;
+  typedef _DBG_iter<_Base, _Const_traits<value_type> >    const_iterator;
 
   _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS;
 
@@ -77,7 +77,7 @@ protected:
     __invalidate_iterator(&_M_iter_list,__it);
   }
   void _Invalidate_all() {
-      _M_iter_list._Invalidate_all();
+    _M_iter_list._Invalidate_all();
   }
 
 public:                         // Basic accessors
