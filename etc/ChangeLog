@@ -1,3 +1,10 @@
+2004-12-13  Francois Dumont  <dums@stlport...>
+
+	* stlport/stdio.h: patch from Michael Fink to avoid warning on the EVC platform.
+
+	* doc/evc_workaround.txt: Documentation file from Ulrich Eckhardt about the EVC 
+	workaround to avoid annoying warnings.
+
 2004-12-10  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_collate.h, _locale.h: fix of the __locale_do_operator_call internal

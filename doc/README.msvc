@@ -29,15 +29,15 @@ the STLport library built:
 1. Open a console window. You can get it executing cmd or command depending
 on your Windows OS.
 
-2. Got to MSVC++ Bin directory with a default MSVC6 install it is
+2. Go to MSVC++ Bin directory with a default MSVC6 install it is
 	cd "C:\Program Files\Microsoft Visual Studio\VC98\Bin"
 
-3. Run the vcvars32.bat script. This sets you the environment variables
-required to have the MSVC++ compiler run during the build process. The most
-important one being the PATH variable so that you can call the cl.exe command
-begin the MSVC command line compiler.
+3. Run the vcvars32.bat script. This sets the environment variables required
+to have the MSVC++ compiler run during the build process. The most important
+one is the PATH variable so that you can call the cl.exe command which is the
+MSVC++ command line compiler.
 
-4. Got to the STLport src folder:
+4. Go to the STLport src folder:
 	cd C:\STLport\src
 
 5. Run the following command:
@@ -45,12 +45,12 @@ begin the MSVC command line compiler.
 
 	nmake is the makefile system from microsoft. /f is an nmake option
 telling it which make file script to use. You have of course to grant the 
-most closer to your compiler make file.
+closer make file to your effective compiler.
 
 	Once the command return you will have all the necessary libraries within
 the STLport lib folder. For a description of the generated libraries check the README
 file within the src folder. You can also set special make process options, you will 
-find a list of those in the README.options file still in the src folder.
+find a list of those in the README.options file once again in the src folder.
 
 ===============
 Testing STLport
@@ -61,7 +61,7 @@ STLports 'test\unit' folder and type:
   nmake /fnmake-vc6.mak
 
 Once the unit test is built you just need to run it. They can be found
-within the 'obj\vc6\shared*' subfolders)
+within the STLport bin folder.
 
 =============
 Using STLport
@@ -76,3 +76,16 @@ Now you should be ready to use STLport.
 ============
 Known issues
 ============
+
+	If you experiment trouble with the InterlockedIncrement Win32 API function
+like the following message:
+
+C:\Program Files\Microsoft SDK\Include\.\winbase.h(1392) : error C2733: second C
+linkage of overloaded function 'InterlockedIncrement' not allowed
+C:\Program Files\Microsoft SDK\Include\.\winbase.h(1390) : see declarati
+on of 'InterlockedIncrement'
+
+	It means that you are using the new Microsoft platform SDK. There is no
+way to known it from STLport so you have to signal it in the 
+stlport/stl_user_config.h file.
+
