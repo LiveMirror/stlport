@@ -90,7 +90,7 @@ using namespace _STLP_VENDOR_CSTD;
 #   endif
 #  endif // !_STLP_USE_PTHREAD_SPINLOCK 
 
-# elif defined(_STLP_WIN32)
+# elif defined(_STLP_WIN32THREADS)
 #  if !defined (_STLP_WINDOWS_H_INCLUDED) && ! defined (_WINDOWS_H)
 #   if ! (defined ( _STLP_MSVC ) || defined (__BORLANDC__) || defined (__ICL) || defined (__WATCOMC__) || defined (__MINGW32__) || defined (__DMC__))
 #    ifdef _STLP_USE_MFC
@@ -98,6 +98,7 @@ using namespace _STLP_VENDOR_CSTD;
 #    else
 #     include <windows.h>
 #    endif
+#    define _STLP_WINDOWS_H_INCLUDED
 #   else 
 // This section serves as a replacement for windows.h header for Visual C++
 extern "C" {
@@ -129,6 +130,11 @@ _STLP_IMPORT_DECLSPEC long _STLP_STDCALL InterlockedExchange(long*, long);
 
 _STLP_IMPORT_DECLSPEC void _STLP_STDCALL Sleep(unsigned long);
 _STLP_IMPORT_DECLSPEC void _STLP_STDCALL OutputDebugStringA( const char* lpOutputString );
+
+#ifdef _STLP_DEBUG
+typedef unsigned long DWORD;
+_STLP_IMPORT_DECLSPEC DWORD _STLP_STDCALL GetCurrentThreadId();
+#endif /* _STLP_DEBUG */
 
 #    if defined (InterlockedIncrement)
 #     pragma intrinsic(_InterlockedIncrement)
@@ -371,91 +377,93 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
     void operator=(const _STLP_mutex&);
 };
 
-// Recursive Safe locking class.
+#ifdef _STLP_DEBUG
+/*
+ * Recursive Safe locking class.
+*/
+# ifndef _STLP_THREADS
+#pragma message ("Using empty definition")
+class _STLP_mutex_RS
+{};
+# else
 class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 {
   public:
     _STLP_mutex_RS()
-#ifdef _STLP_THREADS
       : _count( 0 )
-#ifdef _STLP_UITHREADS
+#  ifdef _STLP_UITHREADS
         ,_id( __STATIC_CAST(thread_t,-1) )
-#endif
-#ifdef _STLP_PTHREADS
+#  elif _STLP_PTHREADS
         ,_id( __STATIC_CAST(pthread_t,-1) )
-#endif
-#ifdef __FIT_NOVELL_THREADS
+#  elif __FIT_NOVELL_THREADS
         ,_id( -1 )
-#endif
-#endif //_STLP_THREADS
-      { }
+#  elif _STLP_WIN32THREADS
+        ,_id( -1 )
+#  endif
+    {}
 
     ~_STLP_mutex_RS()
-      { }
+    {}
 
-    void _M_acquire_lock()
-      {
-#ifdef _STLP_THREADS
-# ifdef _STLP_PTHREADS
-        pthread_t _c_id = pthread_self();
-# endif
-# ifdef _STLP_UITHREADS
-        thread_t _c_id = thr_self();
-# endif
-# ifdef __FIT_NOVELL_THREADS
-        int _c_id = GetThreadID();
-# endif
-        if ( _c_id == _id ) {
-          ++_count;
-          return;
-        }
-        _STLP_mutex::_M_acquire_lock();
-        _id = _c_id;
-        _count = 0;
-#endif // _STLP_THREADS
+    void _M_acquire_lock() {
+#  ifdef _STLP_PTHREADS
+      pthread_t _c_id = pthread_self();
+#  elif _STLP_UITHREADS
+      thread_t _c_id = thr_self();
+#  elif __FIT_NOVELL_THREADS
+      int _c_id = GetThreadID();
+#  elif _STLP_WIN32THREADS
+      DWORD _c_id = GetCurrentThreadId();
+#  endif
+      if ( _c_id == _id ) {
+        ++_count;
+        return;
       }
+      _STLP_mutex::_M_acquire_lock();
+      _id = _c_id;
+      _count = 0;
+    }
 
-    void _M_release_lock()
-      {
-#  ifdef _STLP_THREADS
-        if ( --_count == 0 ) {
-          
-#    ifdef _STLP_UITHREADS
-          _id = __STATIC_CAST(thread_t,-1);
-#    endif
-#    ifdef _STLP_PTHREADS
-          _id =  __STATIC_CAST(pthread_t,-1);
-#    endif
-#    ifdef __FIT_NOVELL_THREADS
-          _id = -1;
-#    endif
-          _STLP_mutex::_M_release_lock();
-        }
-#  endif // _STLP_THREADS
+    void _M_release_lock() {
+      if ( --_count == 0 ) {
+#  ifdef _STLP_UITHREADS
+        _id = __STATIC_CAST(thread_t,-1);
+#  elif _STLP_PTHREADS
+        _id =  __STATIC_CAST(pthread_t,-1);
+#  elif __FIT_NOVELL_THREADS
+        _id = -1;
+#  elif _STLP_WIN32THREADS
+        _id = -1;
+#  endif
+        _STLP_mutex::_M_release_lock();
       }
+    }
 
   protected:
-#ifdef _STLP_THREADS
-    unsigned _count;
+    unsigned int _count;
 
-#ifdef _STLP_PTHREADS
+#  ifdef _STLP_PTHREADS
     pthread_t _id;
-#endif
-#ifdef _STLP_UITHREADS
+#  elif _STLP_UITHREADS
     thread_t  _id;
-#endif
-#ifdef __FIT_NOVELL_THREADS
+#  elif __FIT_NOVELL_THREADS
     int _id;
-#endif
-
-#endif // _STLP_THREADS
+#  elif _STLP_WIN32THREADS
+    DWORD _id;
+#  endif
 };
 
+# endif /* _STLP_THREADS */
 
-// Class _Refcount_Base provides a type, __stl_atomic_t, a data member,
-// _M_ref_count, and member functions _M_incr and _M_decr, which perform
-// atomic preincrement/predecrement.  The constructor initializes 
-// _M_ref_count.
+#endif /* _STLP_DEBUG */
+
+
+/*
+ * Class _Refcount_Base provides a type, __stl_atomic_t, a data member,
+ * _M_ref_count, and member functions _M_incr and _M_decr, which perform
+ * atomic preincrement/predecrement.  The constructor initializes 
+ * _M_ref_count.
+ */
 struct _STLP_CLASS_DECLSPEC _Refcount_Base
 {
   // The data member _M_ref_count
