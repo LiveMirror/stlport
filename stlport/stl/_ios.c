@@ -43,7 +43,7 @@ basic_ios<_CharT, _Traits>
     : ios_base(),
       _M_fill(_STLP_NULL_CHAR_INIT(_CharT)), _M_streambuf(0), _M_tied_ostream(0)
 {
-  init(__streambuf);
+  basic_ios<_CharT, _Traits>::init(__streambuf);
 }
 
 template <class _CharT, class _Traits>
