@@ -552,7 +552,7 @@ static void _Init_monetary_formats(money_base::pattern& pos_format,
         }
       }
       else {
-        pos_format.field[2] = (char) money_base::value;
+        pos_format.field[1] = (char) money_base::value;
         if (_Locale_p_sep_by_space(monetary)) {
           pos_format.field[2] = (char) money_base::space;
           pos_format.field[3] = (char) money_base::symbol;
@@ -578,7 +578,7 @@ static void _Init_monetary_formats(money_base::pattern& pos_format,
         }
       }
       else {
-        pos_format.field[1] = (char) money_base::value;
+        pos_format.field[0] = (char) money_base::value;
         if (_Locale_p_sep_by_space(monetary)) {
           pos_format.field[1] = (char) money_base::space;
           pos_format.field[2] = (char) money_base::symbol;
@@ -649,7 +649,7 @@ static void _Init_monetary_formats(money_base::pattern& pos_format,
         }
       }
       else {
-        neg_format.field[2] = (char) money_base::value;
+        neg_format.field[1] = (char) money_base::value;
         if (_Locale_n_sep_by_space(monetary)) {
           neg_format.field[2] = (char) money_base::space;
           neg_format.field[3] = (char) money_base::symbol;
@@ -675,7 +675,7 @@ static void _Init_monetary_formats(money_base::pattern& pos_format,
         }
       }
       else {
-        neg_format.field[1] = (char) money_base::value;
+        neg_format.field[0] = (char) money_base::value;
         if (_Locale_n_sep_by_space(monetary)) {
           neg_format.field[1] = (char) money_base::space;
           neg_format.field[2] = (char) money_base::symbol;

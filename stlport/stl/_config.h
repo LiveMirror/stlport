@@ -208,6 +208,12 @@
 #   define _STLP_LDOUBLE_128
 # endif /*_STLP_LDOUBLE_??*/
 
+# if !defined (_STLP_NO_LONG_DOUBLE)
+#   define _STLP_LONG_DOUBLE long double
+# else
+#   define _STLP_LONG_DOUBLE double
+# endif
+
 # if !defined(_STLP_MAKE_HEADER)
 #  define _STLP_MAKE_HEADER(path, header) <path/header>
 # endif

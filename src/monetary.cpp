@@ -36,9 +36,9 @@ static void _Init_monetary_formats(money_base::pattern& pos_format,
 }
 
 // This is being used throughout the library
-string _S_empty_string("");
+string _S_empty_string;
 # ifndef _STLP_NO_WCHAR_T
-wstring _S_empty_wstring(L"");
+wstring _S_empty_wstring;
 # endif
 
 //

@@ -92,13 +92,12 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
                      int      __frac_digits,
                      _CharT __sep,
                      const string& __grouping,
-                     bool&         __syntax_ok)
-{
+                     bool&         __syntax_ok) {
   if (__first == __last || !_c_type.is(ctype_base::digit, *__first))
     return false;
 
   char __group_sizes[128];
-  char* __group_sizes_end = __grouping.size() == 0 ? 0 : __group_sizes;
+  char* __group_sizes_end = __grouping.empty()? 0 : __group_sizes;
   char   __current_group_size = 0;
 
   while (__first != __last) {
@@ -148,14 +147,12 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
   return true;
 }
 
-# ifndef _STLP_NO_LONG_DOUBLE
-
 //===== methods ======
 template <class _CharT, class _InputIter>
 _InputIter 
 money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  __intl,
                                       ios_base&  __str, ios_base::iostate& __err,
-                                      long double& __units) const {
+                                      _STLP_LONG_DOUBLE& __units) const {
   string_type __buf;
   __s = do_get(__s, __end, __intl, __str, __err, __buf);
 
@@ -170,7 +167,6 @@ money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  _
     __err |= ios_base::eofbit;
   return __s;
 }
-# endif
 
 template <class _CharT, class _InputIter>
 _InputIter 
@@ -183,14 +179,14 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
     return __s;
   }
 
-  typedef moneypunct<_CharT, false> _Punct;
-  typedef moneypunct<_CharT, true>  _Punct_intl;
-  typedef ctype<_CharT>             _Ctype;
+  typedef moneypunct<char_type, false> _Punct;
+  typedef moneypunct<char_type, true>  _Punct_intl;
+  typedef ctype<char_type>             _Ctype;
 
   locale __loc = __str.getloc();
   const _Punct&      __punct      = use_facet<_Punct>(__loc) ;
   const _Punct_intl& __punct_intl = use_facet<_Punct_intl>(__loc) ;
-  const _Ctype&      __c_type      = use_facet<_Ctype>(__loc) ;
+  const _Ctype&      __c_type     = use_facet<_Ctype>(__loc) ;
                    
   money_base::pattern __format = __intl ? __punct_intl.neg_format()
                                         : __punct.neg_format();
@@ -200,14 +196,13 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
                             : __punct.positive_sign();
   int __i;
   bool __is_positive = true;
-  bool __symbol_required = (__str.flags() & ios_base::showbase) !=0;
+  bool __symbol_required = (__str.flags() & ios_base::showbase) != 0;
   string_type __buf;
   back_insert_iterator<string_type> __out(__buf);
-//  pair<iter_type, bool> __result;
 
   for (__i = 0; __i < 4; ++__i) {
     switch (__format.field[__i]) {
-    case (char) money_base::none:
+    case money_base::none:
       if (__i == 3) {
         if (__c_type.is(ctype_base::space, *__s)) {
           __err = ios_base::failbit;
@@ -218,7 +213,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
       while (__s != __end && __c_type.is(ctype_base::space, *__s))
         ++__s;
       break;
-    case (char) money_base::space:
+    case money_base::space:
       if (!__c_type.is(ctype_base::space, *__s)) {
         __err = ios_base::failbit;
         return __s;
@@ -229,7 +224,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
       break;
     case money_base::symbol: {
       string_type __curs = __intl ? __punct_intl.curr_symbol()
-                                : __punct.curr_symbol();
+                                  : __punct.curr_symbol();
       pair<iter_type, bool>
       __result  = __get_string(__s, __end, __curs.begin(), __curs.end());
       if (!__result.second && __symbol_required)
@@ -239,9 +234,9 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
     }
     case money_base::sign: {
       if (__s == __end) {
-        if (__ps.size() == 0)
+        if (__ps.empty())
           break;
-        if (__ns.size() == 0) {
+        if (__ns.empty()) {
           __is_positive = false;
           break;
         }
@@ -249,8 +244,8 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
         return __s;
       }
       else {
-        if (__ps.size() == 0) {
-          if (__ns.size() == 0)
+        if (__ps.empty()) {
+          if (__ns.empty())
             break;
           if (*__s == ++__ns[0]) {
             ++__s;
@@ -265,7 +260,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
             ++__s;
             break;
           }
-          if (__ns.size() == 0)
+          if (__ns.empty())
             break;
           if (*__s == __ns[0]) {
             ++__s;
@@ -280,8 +275,8 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
       //      break;
     }
     case money_base::value: {
-      _CharT __point = __intl ? __punct_intl.decimal_point()
-                              : __punct.decimal_point();
+      char_type __point = __intl ? __punct_intl.decimal_point()
+                                 : __punct.decimal_point();
       int __frac_digits = __intl ? __punct_intl.frac_digits()
                                  : __punct.frac_digits();
       string __grouping = __intl ? __punct_intl.grouping()
@@ -290,7 +285,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
 
       bool __result;
 
-      _CharT __sep = __grouping.size() == 0 ? _CharT() : 
+      char_type __sep = __grouping.empty() ? char_type() : 
       __intl ? __punct_intl.thousands_sep() : __punct.thousands_sep();
 
       __result = __get_monetary_value(__s, __end, __out, __c_type,
@@ -307,8 +302,6 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
       break;
       
     }                           // Close money_base::value case
-
-
     }                           // Close switch statement
   }                             // Close for loop
 
@@ -344,15 +337,15 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
 
 // money_put facets
 
-template <class _CharT, class _OutputIter>
-_OutputIter
-money_put<_CharT, _OutputIter>
- ::do_put(_OutputIter __s, bool __intl, ios_base& __str,
-          char_type __fill,
-          const string_type& __digits) const { 
-  typedef ctype<_CharT>             _Ctype;
-  typedef moneypunct<_CharT, false> _Punct;
-  typedef moneypunct<_CharT, true>  _Punct_intl;
+template <class _CharT, class _OutputIter, class _Str_Type, class _Str>
+_OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
+                      _CharT __fill, const _Str& __digits, bool __check_digits,
+                      _Str_Type const& /*__dummy*/) {
+  typedef _CharT char_type;
+  typedef _Str_Type string_type;
+  typedef ctype<char_type>             _Ctype;
+  typedef moneypunct<char_type, false> _Punct;
+  typedef moneypunct<char_type, true>  _Punct_intl;
 
   locale __loc = __str.getloc();
   const _Ctype&      __c_type     = use_facet<_Ctype>(__loc) ;
@@ -397,25 +390,23 @@ money_put<_CharT, _OutputIter>
                                               : __punct_intl.positive_sign()
                               : __is_negative ? __punct.negative_sign()
                                               : __punct.positive_sign();
-  typename string_type::const_iterator __cp = __digits_first;
-  while (__cp != __digits_last && __c_type.is(ctype_base::digit, *__cp))
-    ++__cp;
-  if (__cp == __digits_first)
-    return __s;
-  __digits_last = __cp;
+  if (__check_digits) {
+    typename string_type::const_iterator __cp = __digits_first;
+    while (__cp != __digits_last && __c_type.is(ctype_base::digit, *__cp))
+      ++__cp;
+    if (__cp == __digits_first)
+      return __s;
+    __digits_last = __cp;
+  }
 
   // If grouping is required, we make a copy of __digits and
   // insert the grouping.
 
-  // To handle the fractional digits, we augment the first group
-  // by frac_digits.  If there is only one group, we need first
-  // to duplicate it.
-
-  _STLP_BASIC_IOSTRING(_CharT) __new_digits;
+  _STLP_BASIC_IOSTRING(char_type) __new_digits;
   if (!__grouping.empty()) {
     __new_digits.assign(__digits_first, __digits_last);
     __insert_grouping(__new_digits,
-                      (__frac_digits == 0)?__new_digits.size():__frac_digits,
+                      __new_digits.size() - __frac_digits,
                       __grouping,
                       __sep, __plus, __minus, 0);
     __digits_first = __new_digits.begin(); // <<--
@@ -445,6 +436,12 @@ money_put<_CharT, _OutputIter>
                                         : (__is_negative ? __punct.neg_format()
                                                          : __punct.pos_format());
   {
+    //No reason to add a space last if the money symbol do not have to be display
+    //if (__format.field[3] == (char) money_base::symbol && !__generate_curr) {
+    //  if (__format.field[2] == (char) money_base::space) {
+    //    __format.field[2] = (char) money_base::none;
+    //  }
+    //}
     //space can only be second or third (22.2.6.3-1):
     if (__format.field[1] == (char) money_base::space)
       ++__length;
@@ -462,24 +459,25 @@ money_put<_CharT, _OutputIter>
     
   for (int __i = 0; __i < 4; ++__i) {
     char __ffield = __format.field[__i];
-    if (__ffield == money_base::none) {
+    switch (__ffield) {
+    case money_base::none:
       if (__fill_amt != 0 && __fill_pos == ios_base::internal)
         __s = fill_n(__s, __fill_amt, __fill);
-    }
-    else if (__ffield == money_base::space) {
+      break;
+    case money_base::space:
       *__s++ = __space;
       if (__fill_amt != 0 && __fill_pos == ios_base::internal)
         __s = fill_n(__s, __fill_amt, __fill);
-    }
-    else if (__ffield == money_base::symbol) {
+      break;
+    case money_base::symbol:
       if (__generate_curr)
         __s = copy(__curr_sym.begin(), __curr_sym.end(), __s);
-    }
-    else if (__ffield == money_base::sign) {
+      break;
+    case money_base::sign:
       if (!__sign.empty())
         *__s++ = __sign[0];
-    }
-    else if (__ffield == money_base::value) {
+      break;
+    case money_base::value:
       if (__frac_digits == 0)
         __s = copy(__digits_first, __digits_last, __s);
       else {
@@ -496,17 +494,39 @@ money_put<_CharT, _OutputIter>
           }
         }
       }
-    }
+    } //Close for switch
   } // Close for loop
 
   // Ouput rest of sign if necessary.
-
   if (__sign.size() > 1)
     __s = copy(__sign.begin() + 1, __sign.end(), __s);
-  if (!(__fill_pos & (ios_base::right | ios_base::internal)))
+  if (__fill_amt != 0 &&
+      !(__fill_pos & (ios_base::right | ios_base::internal)))
     __s = fill_n(__s, __fill_amt, __fill);
   
   return __s;
+}
+
+template <class _CharT, class _OutputIter>
+_OutputIter
+money_put<_CharT, _OutputIter>
+ ::do_put(_OutputIter __s, bool __intl, ios_base& __str,
+          char_type __fill,
+          _STLP_LONG_DOUBLE __units) const {
+  
+  _STLP_BASIC_IOSTRING(char_type) __digits;
+  __get_money_digits(__digits, __str, __units);
+
+  return _S_do_put(__s, __intl, __str, __fill, __digits, false, string_type());
+}
+
+template <class _CharT, class _OutputIter>
+_OutputIter
+money_put<_CharT, _OutputIter>
+ ::do_put(_OutputIter __s, bool __intl, ios_base& __str,
+          char_type __fill,
+          const string_type& __digits) const { 
+  return _S_do_put(__s, __intl, __str, __fill, __digits, true, string_type());
 }
 
 _STLP_END_NAMESPACE

@@ -756,42 +756,74 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
 }
 #endif /* _STLP_NO_LONG_DOUBLE */
 
+void _STLP_CALL __get_floor_digits(__iostring &out, _STLP_LONG_DOUBLE __x) {
+  char cvtbuf[NDIG+2];
+  char * bp;
+  int decpt, sign;
+#ifndef _STLP_NO_LONG_DOUBLE
+  bp = _Stl_qfcvtR(__x, 0, &decpt, &sign, cvtbuf);
+#else
+  bp = _Stl_fcvtR(__x, 0, &decpt, &sign, cvtbuf);
+#endif
 
-# ifndef _STLP_NO_WCHAR_T
-inline void _STLP_CALL
-__replace_dot (wchar_t *first, wchar_t *last, wchar_t old_dot, wchar_t new_dot, bool &found) {
-  if (!found && (old_dot != new_dot)) {
-    wchar_t *dot_pos = _STLP_STD::find(first, last, old_dot);
-    if (dot_pos != last) {
-      found = true;
-      *dot_pos = new_dot;
-    }
+  if (sign) {
+    out += '-';
   }
+  out.append(bp, bp + decpt);
 }
 
+
+# ifndef _STLP_NO_WCHAR_T
 void _STLP_CALL
-__convert_float_buffer(string const& str, wstring &out,
-                       const ctype<wchar_t>& ct, wchar_t dot)
-{
-  const wchar_t __wdot = ct.widen('.');
-  bool __dot_found(false);
+__convert_float_buffer(__iostring const& str, __iowstring &out,
+                       const ctype<wchar_t>& ct, wchar_t dot, bool __check_dot) {
   wchar_t __static_buf[128];
   wchar_t *__beg = __static_buf;
   wchar_t *__end = __static_buf + (sizeof(__static_buf) / sizeof(wchar_t));
   string::const_iterator str_ite(str.begin()), str_end(str.end());
 
   wchar_t *__cur = __beg;
-  while (str_ite != str_end) {
-    *__cur = ct.widen(*str_ite);
-    ++__cur;
+  //First loop, check the dot char
+  if (__check_dot) {
+    while (str_ite != str_end) {
+      if (*str_ite != '.') {
+        *__cur = ct.widen(*str_ite);
+      } else {
+        *__cur = dot;
+        break;
+      }
+      ++__cur;
+      if (__cur == __end) {
+        out.append(__beg, __cur);
+        __cur = __beg;
+      }
+      ++str_ite;
+    }
+  } else {
+    if (str_ite != str_end) {
+      *__cur = ct.widen(*str_ite);
+    }
+  }
+
+  if (str_ite != str_end) {
+    ++__cur;++str_ite;
     if (__cur == __end) {
-      __replace_dot(__beg, __cur, __wdot, dot, __dot_found);
       out.append(__beg, __cur);
       __cur = __beg;
     }
-    ++str_ite;
+
+    //Second loop, dot has been found, no check anymore
+    while (str_ite != str_end) {
+      *__cur = ct.widen(*str_ite);
+      ++__cur;
+      if (__cur == __end) {
+        out.append(__beg, __cur);
+        __cur = __beg;
+      }
+      ++str_ite;
+    }
   }
-  __replace_dot(__beg, __cur, __wdot, dot, __dot_found);
+
   out.append(__beg, __cur);
 }
 

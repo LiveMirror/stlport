@@ -76,7 +76,7 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
 // Helper routine for wchar_t
 template <class _OutputIter>
 _OutputIter  _STLP_CALL
-__put_float(string &__str, _OutputIter __out,
+__put_float(__iostring &__str, _OutputIter __out,
             ios_base& __f, wchar_t __fill,
             wchar_t __decimal_point, wchar_t __sep, 
             size_t __group_pos, const string& __grouping) {
@@ -98,9 +98,9 @@ __put_float(string &__str, _OutputIter __out,
 
 
 // Helper routine for char
-template <class _OutputIter, class Str>
+template <class _OutputIter>
 _OutputIter  _STLP_CALL
-__put_float( /* __iostring */ Str& __str, _OutputIter __out,
+__put_float(__iostring &__str, _OutputIter __out,
             ios_base& __f, char __fill,
             char __decimal_point, char __sep, 
             size_t __group_pos, const string& __grouping) {
@@ -131,6 +131,23 @@ _M_do_put_float(_OutputIter __s, ios_base& __f,
   return __put_float(__buf, __s, __f, __fill,
                      __np.decimal_point(), __np.thousands_sep(), 
                      __group_pos, __f._M_grouping());
+}
+
+inline void __get_money_digits_aux (__iostring &__buf, ios_base &__f, _STLP_LONG_DOUBLE __x) {
+  __get_floor_digits(__buf, __x);
+}
+
+inline void __get_money_digits_aux (__iowstring &__wbuf, ios_base &__f, _STLP_LONG_DOUBLE __x) {
+  __iostring __buf;
+  __get_floor_digits(__buf, __x);
+
+  const ctype<wchar_t>& __ct = *(ctype<wchar_t>*)__f._M_ctype_facet() ;
+  __convert_float_buffer(__buf, __wbuf, __ct, wchar_t(0), false);
+}
+
+template <class _CharT>
+void _STLP_CALL __get_money_digits(_STLP_BASIC_IOSTRING(_CharT) &__buf, ios_base& __f, _STLP_LONG_DOUBLE __x) {
+  __get_money_digits_aux(__buf, __f, __x);
 }
 
 // _M_do_put_integer and its helper functions.
