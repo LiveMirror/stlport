@@ -1,26 +1,33 @@
 2004-05-28  Francois Dumont  <dums@...>
 
-  * stlport/config/stl_gcc.h: fix for the gcc3.4.0 compiler. Modification
-  of the include path macro to generate 3.4.0 rather than 3.4 . No more
-  template keyword to reveal use of a nested template class.
+	* stlport/config/stl_gcc.h: fix for the gcc3.4.0 compiler. Modification
+	of the include path macro to generate 3.4.0 rather than 3.4 . No more
+	template keyword to reveal use of a nested template class.
 
-  * stlport/stl/_config.h: creation of the _STLP_LONG_DOUBLE macro that 
-  extend to long double on compiler supporting it and double on the other
-  as a workaround.
+	* stlport/stl/_config.h: creation of the _STLP_LONG_DOUBLE macro that 
+	extend to long double on compiler supporting it and double on the other
+	as a workaround.
 
-  * stlport/stl/_num_put.h, stlport/stl/_num_put.c, src/num_put_float.cpp:
-  Addition of functions to get the digits from a long double for the monetary
-  facet.
+	* stlport/stl/_num_put.h, stlport/stl/_num_put.c, src/num_put_float.cpp:
+	Addition of functions to get the digits from a long double for the monetary
+	facet.
 
-  * stlport/stl/_monetary.h, stlport/stl/_monetary.c, src/monetary.cpp:
-  Implementation of the missing money_put::put method taking a long double.
-  Fixing of the grouping application.
+	* stlport/stl/_monetary.h, stlport/stl/_monetary.c, src/monetary.cpp:
+	Implementation of the missing money_put::put method taking a long double.
+	Fixing of the grouping application.
 
-  * test/unit/Makefile.inc, test/unit/locale_test.cpp: Creation of a unit test for the locale support.
-  At creation it tests the num_put, num_get, money_put, money_get facets.
+	* test/unit/Makefile.inc, test/unit/locale_test.cpp: Creation of a unit test
+	for the locale support. At creation it tests the num_put, num_get, money_put,
+	money_get facets.
 
-  * src/facets_byname.cpp: fix of the monetary format determination from
-  the locale platform API informations.
+	* src/facets_byname.cpp: fix of the monetary format determination from
+	the locale platform API informations.
+
+2004-05-28  Petr Ovtchenkov  <ptr@Island...>
+
+	* src/explore/Makefiles/gmake/sysid.mak: correctly detect Mingw
+
+	* src/explore/Makefiles/gmake/mingw: compilation under Mingw
 
 2004-05-27  Petr Ovtchenkov  <ptr@Island...>
 
