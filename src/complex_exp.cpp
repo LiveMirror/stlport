@@ -163,7 +163,7 @@ _STLP_DECLSPEC complex<double> _STLP_CALL pow(const complex<double>& z_in, int n
 #if !defined(__SC__)      //*TY 04/15/2000 - 
     return 1. / z;
 #else                     //*TY 04/15/2000 - added workaround for SCpp compiler
-	return double(1.0) / z; //*TY 04/15/2000 - it incorrectly assign long double attribute to floating point literals
+  return double(1.0) / z; //*TY 04/15/2000 - it incorrectly assign long double attribute to floating point literals
 #endif                    //*TY 04/15/2000 - 
   else
     return z;

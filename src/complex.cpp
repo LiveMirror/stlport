@@ -88,8 +88,8 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL polar(const long double& __rho, c
 
 void  _STLP_CALL
 complex<float>::_div(const float& __z1_r, const float& __z1_i,
-		     const float& __z2_r, const float& __z2_i,
-		     float& __res_r, float& __res_i) {
+         const float& __z2_r, const float& __z2_i,
+         float& __res_r, float& __res_i) {
   float __ar = __z2_r >= 0 ? __z2_r : -__z2_r;
   float __ai = __z2_i >= 0 ? __z2_i : -__z2_i;
 

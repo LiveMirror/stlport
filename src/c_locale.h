@@ -176,7 +176,7 @@ int _Locale_tolower(struct _Locale_ctype *, int);
  * Wide character functions:
  */
 _Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype *, wint_t, 
-	_Locale_mask_t);
+  _Locale_mask_t);
 wint_t _Locale_wchar_tolower(struct _Locale_ctype *, wint_t);
 wint_t _Locale_wchar_toupper(struct _Locale_ctype *, wint_t);
 # endif
