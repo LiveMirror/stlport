@@ -277,7 +277,8 @@ void _Stl_loc_combine_names(_Locale* L,
     char composite_buf[_Locale_MAX_COMPOSITE_NAME];
     _Locale_compose_name(composite_buf,
                          ctype_buf, numeric_buf, time_buf,
-                         collate_buf, monetary_buf, messages_buf);
+                         collate_buf, monetary_buf, messages_buf,
+                         name1);
     L->name = composite_buf;
   }
 }

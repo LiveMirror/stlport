@@ -59,7 +59,7 @@ ctype_byname<char>::ctype_byname(const char* name, size_t refs)
   // We have to do this, instead of just pointer twiddling, because
   // ctype_base::mask isn't the same type as _Locale_mask_t.  
 
-  _Locale_mask_t* p = _Locale_ctype_table(_M_ctype);
+  const _Locale_mask_t* p = _Locale_ctype_table(_M_ctype);
 
    if (!p)
      locale::_M_throw_runtime_error(); 
@@ -119,7 +119,7 @@ ctype_byname<char>::do_tolower(char* first, const char* last) const
 
     _Ctype_byname_w_is_mask(/* ctype_base::mask */ int m, _Locale_ctype* c) : M((int)m), M_ctp(c) {}
     bool operator()(wchar_t c) const
-      { return (M & _Locale_wchar_ctype(M_ctp, c)) != 0; }
+      { return (M & _Locale_wchar_ctype(M_ctp, c, M)) != 0; }
   };
 
 ctype_byname<wchar_t>::ctype_byname(const char* name, size_t refs)
@@ -137,15 +137,26 @@ ctype_byname<wchar_t>::~ctype_byname()
 
 bool ctype_byname<wchar_t>::do_is(ctype_base::mask  m, wchar_t c) const
 {
-  return (m & _Locale_wchar_ctype(_M_ctype, c)) != 0;
+  return (m & _Locale_wchar_ctype(_M_ctype, c, m)) != 0;
 }
 
 const wchar_t*
 ctype_byname<wchar_t>::do_is(const wchar_t* low, const wchar_t* high,
                              ctype_base::mask * m) const
 {
+  ctype_base::mask all_bits = ctype_base::mask(
+    ctype_base::space |
+    ctype_base::print |
+    ctype_base::cntrl |
+    ctype_base::upper |
+    ctype_base::lower |
+    ctype_base::alpha |
+    ctype_base::digit |
+    ctype_base::punct |
+    ctype_base::xdigit);
+
   for ( ; low < high; ++low, ++m)
-    *m = ctype_base::mask (_Locale_wchar_ctype(_M_ctype, *low));
+    *m = ctype_base::mask (_Locale_wchar_ctype(_M_ctype, *low, all_bits));
   return high;
 }
 

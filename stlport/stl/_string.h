@@ -187,8 +187,11 @@ public:
 
   _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS;
 
-# ifdef _STLP_STATIC_CONST_INIT_BUG
+# if defined(_STLP_STATIC_CONST_INIT_BUG)
   enum { npos = -1 };
+# elif __GNUC__ == 2 && __GNUC_MINOR__ == 96
+  // inline initializer conflicts with 'extern template' 
+  static const size_t npos ;
 # else
   static const size_t npos = ~(size_t)0;
 # endif
@@ -1014,7 +1017,11 @@ public:                         // find.
     { _STLP_FIX_LITERAL_BUG(__s) return find(__s, __pos, _Traits::length(__s)); }
 
   size_type find(const _CharT* __s, size_type __pos, size_type __n) const;
-  size_type find(_CharT __c, size_type __pos = 0) const;
+
+  // WIE: Versant schema compiler 5.2.2 ICE workaround
+  size_type find(_CharT __c) const
+    { return find(__c, 0) ; }
+  size_type find(_CharT __c, size_type __pos /* = 0 */) const;
 
 public:                         // rfind.
 
@@ -1154,6 +1161,11 @@ public:                        // Helper functions for compare.
   }
 };
 
+#if ! defined (__STLP_STATIC_CONST_INIT_BUG) && \
+  __GNUC__ == 2 && __GNUC_MINOR__ == 96
+template <class _CharT, class _Traits, class _Alloc>
+const size_t basic_string<_CharT, _Traits, _Alloc>::npos = ~(size_t) 0;
+#endif
 
 # if defined (_STLP_USE_TEMPLATE_EXPORT)
 _STLP_EXPORT_TEMPLATE_CLASS basic_string<char, char_traits<char>, allocator<char> >;

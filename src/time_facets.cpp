@@ -69,16 +69,16 @@ void _STLP_CALL _Init_timeinfo(_Time_Info& table) {
 void _STLP_CALL _Init_timeinfo(_Time_Info& table, _Locale_time * time) {
   int i;
   for (i = 0; i < 7; ++i)
-    copy_cstring(_Locale_abbrev_dayofweek(time)[i],
+    copy_cstring(_Locale_abbrev_dayofweek(time, i),
 		 table._M_dayname[i]);
   for (i = 0; i < 7; ++i)
-    copy_cstring(_Locale_full_dayofweek(time)[i],
+    copy_cstring(_Locale_full_dayofweek(time, i),
 		 table._M_dayname[i+7]); 
   for (i = 0; i < 12; ++i)
-    copy_cstring(_Locale_abbrev_monthname(time)[i],
+    copy_cstring(_Locale_abbrev_monthname(time, i),
 		 table._M_monthname[i]);
   for (i = 0; i < 12; ++i)
-    copy_cstring(_Locale_full_monthname(time)[i],
+    copy_cstring(_Locale_full_monthname(time, i),
 		 table._M_monthname[i+12]);
   copy_cstring(_Locale_am_str(time),
 		 table._M_am_pm[0]);

@@ -350,17 +350,21 @@ void _Locale_time_destroy(void* ltime) {
   _Remove_locale(LC_TIME, (struct locale_data *)((struct _Locale_time*)ltime)->gcc_data);
   free(ltime);
 }
-const char ** _Locale_full_monthname(struct _Locale_time *ltime) {
-  return (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(MON_1)]); 
+const char * _Locale_full_monthname(struct _Locale_time *ltime, int month) {
+	const char **names = (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(MON_1)]);
+	return names[month]; 
 }
-const char ** _Locale_abbrev_monthname(struct _Locale_time *ltime) {
-  return (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(ABMON_1)]); 
+const char * _Locale_abbrev_monthname(struct _Locale_time *ltime, int month) {
+	const char **names = (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(ABMON_1)]);
+	return names[month]; 
 }
-const char ** _Locale_full_dayofweek(struct _Locale_time *ltime) {
-  return (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(DAY_1)]); 
+const char * _Locale_full_dayofweek(struct _Locale_time *ltime, int day) {
+	const char **names = (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(DAY_1)]);
+	return names[day]; 
 }
-const char ** _Locale_abbrev_dayofweek(struct _Locale_time *ltime) {
-  return (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(ABDAY_1)]); 
+const char * _Locale_abbrev_dayofweek(struct _Locale_time *ltime, int day) {
+	const char **names = (const char **)&(ltime->gcc_data->values[_NL_ITEM_INDEX(ABDAY_1)]);
+	return names[day]; 
 }
 const char* _Locale_d_t_fmt(struct _Locale_time* ltime) {
   return ltime->gcc_data->values[_NL_ITEM_INDEX(D_T_FMT)].string; 
@@ -497,7 +501,7 @@ void _Locale_ctype_destroy(void* lctype) {
 char* _Locale_extract_ctype_name(const char* cname, char* buf) {
   return _Locale_extract_name(cname, buf, LC_CTYPE);
 }
-_Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* lctype) {
+const _Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* lctype) {
   return lctype->__class; 
 }
 int _Locale_toupper(struct _Locale_ctype* lctype, int c) { 
@@ -539,7 +543,8 @@ cname_lookup (wint_t wc, const struct locale_data* loc)
 
 
 
-_Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype* loc, wint_t wc) {
+_Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype* loc, wint_t wc,
+  _Locale_mask_t which_bits) {
   const struct locale_data* locale = loc->gcc_data;
   const unsigned int *class32_b;
   size_t idx;
@@ -551,7 +556,7 @@ _Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype* loc, wint_t wc) {
   class32_b = (u_int32_t *)
     locale->values[_NL_ITEM_INDEX (_NL_CTYPE_CLASS32)].string;
 
-  return _Map_wchar_mask_to_char_mask( class32_b[idx] );
+  return _Map_wchar_mask_to_char_mask( class32_b[idx] ) & which_bits;
 }
 
 
@@ -672,8 +677,11 @@ char* _Locale_extract_collate_name(const char* cname, char* buf) {
 char* _Locale_compose_name(char* buf,
 			   const char* ctype, const char* numeric,
 			   const char* time, const char* collate,
-			   const char* monetary, const char* messages)
+			   const char* monetary, const char* messages,
+			   const char *default_name)
 {
+   (void) default_name;
+
     if ( !strcmp ( ctype, numeric ) &&
 	 !strcmp ( ctype, time ) &&
 	 !strcmp ( ctype, collate ) &&

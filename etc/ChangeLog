@@ -27,10 +27,6 @@ The following changes were made in 4.5.5 since 4.5.3 release:
 
 	* Added OpenWatcom support
 	
-	* reorganize header structure; C library headers moved to subdirectories "cstd" and "cstd_h";
-	C++ runtime support headers moved to "cpp_runtime" subdirectory; 
-  	classic iostreams headers moved to "classic_iostreams" subdirectory
-
 	* version numbers bumped
 
 	* iostreams ported to EMX (gcc on OS/2) (Thanks Martin Schaffoener)
