@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
 #include "cppunit/cppunit_proxy.h"
 
@@ -20,6 +21,8 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(io);
   CPPUNIT_TEST(err);
   CPPUNIT_TEST(tellg);
+  CPPUNIT_TEST(buf);
+  CPPUNIT_TEST(rdbuf);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -28,6 +31,8 @@ class FstreamTest : public CPPUNIT_NS::TestCase
     void io();
     void err();
     void tellg();
+    void buf();
+    void rdbuf();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FstreamTest);
@@ -150,4 +155,48 @@ void FstreamTest::tellg()
     CPPUNIT_ASSERT( !is.fail() );
     p += 8;
   }
+}
+
+void FstreamTest::buf()
+{
+  fstream ss( "test_file.txt", ios_base::in | ios_base::out | ios_base::binary | ios_base::trunc );
+
+  ss << "1234567\n89\n";
+  ss.seekg( 0, ios_base::beg );
+  char buf[10];
+  buf[7] = 'x';
+  ss.get( buf, 10 );
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( buf[0] == '1' );
+  CPPUNIT_ASSERT( buf[1] == '2' );
+  CPPUNIT_ASSERT( buf[2] == '3' );
+  CPPUNIT_ASSERT( buf[3] == '4' );
+  CPPUNIT_ASSERT( buf[4] == '5' );
+  CPPUNIT_ASSERT( buf[5] == '6' );
+  CPPUNIT_ASSERT( buf[6] == '7' ); // 27.6.1.3 paragraph 10, paragraph 7
+  CPPUNIT_ASSERT( buf[7] == 0 ); // 27.6.1.3 paragraph 8
+  char c;
+  c = ss.get();
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 10, paragraph 7
+  c = ss.get();
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( c == '8' );
+}
+
+void FstreamTest::rdbuf()
+{
+  fstream ss( "test_file.txt", ios_base::in | ios_base::out | ios_base::binary | ios_base::trunc );
+
+  ss << "1234567\n89\n";
+  ss.seekg( 0, ios_base::beg );
+
+  ostringstream os;
+  ss.get( *os.rdbuf(), '\n' );
+  CPPUNIT_ASSERT( !ss.fail() );
+  char c;
+  c = ss.get();
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 12
+  CPPUNIT_ASSERT( os.str() == "1234567" );
 }
