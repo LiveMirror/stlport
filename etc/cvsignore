@@ -4,9 +4,19 @@ fix
 lib
 *.o
 *.obj
+obj
+bin
+bin-g
+bin-stlg
 *~
+.#*
 *.exe
 *.dll
+*.idb
+*.pdb
+*.so*
+*.a
+*.exe
 *.core
 *.bak
 *.out
@@ -14,6 +24,7 @@ lib
 *.pch
 .*
 core
+core.*
 CVS
 SunWS_cache
 Templates.DB
