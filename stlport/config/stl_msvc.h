@@ -246,12 +246,19 @@
 #  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 # endif
 
-# if ( defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
-       defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB) ) && \
-       !(defined(_STLP_USE_STATIC_LIB) || defined(_STLP_USE_STATICX_LIB))
+#if ( defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
+      defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB) ) && \
+      !(defined(_STLP_USE_STATIC_LIB) || defined(_STLP_USE_STATICX_LIB))
 #  undef  _STLP_USE_DECLSPEC
 #  define _STLP_USE_DECLSPEC 1
-# endif
+#  if !defined (_STLP_USE_DYNAMIC_LIB)
+#    define _STLP_USE_DYNAMIC_LIB
+#  endif
+#else
+#  if !defined (_STLP_USE_STATIC_LIB)
+#    define _STLP_USE_STATIC_LIB
+#  endif
+#endif
 
 # ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
 #  if defined(_STLP_MSVC) && _STLP_MSVC > 1300
