@@ -420,14 +420,14 @@ public:
 
   static inline int_type _STLP_CALL
   _M_doit(basic_filebuf<char_type, _Traits>*) 
-  { return 0; }
+  { return _Traits::eof(); }
 };
 
 _STLP_TEMPLATE_NULL
 class _Noconv_input<char_traits<char> > {
 public:
   static inline int _STLP_CALL
-  _M_doit(basic_filebuf<char, char_traits<char> >* __buf)  {
+  _M_doit(basic_filebuf<char, char_traits<char> >* __buf) {
     return __buf->_M_do_noconv_input();
   }
 };
