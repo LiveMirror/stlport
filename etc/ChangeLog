@@ -1,4 +1,9 @@
 	The following changes were made in 4.5.5 since 4.5.3 release:
+	
+2003-10-26  Francois Dumont
+
+  * _monetary.c: fix an other memory overrun on monetary display 
+  (thanks Tanaka)
 
 2003-10-26  Petr Ovchenkov
 
@@ -13,7 +18,6 @@
 	ISO/IEC 14882:1998(E), 24.1.1, p.511, i.e.
 	*r++ equivalent to { T tmp = *r; ++r; return tmp; }.
 	Thanks Tanaka for the report.
-
 
 2003-10-23  Francois Dumont
 	
@@ -43,7 +47,9 @@
 	was taking a copy of gslice
 	
 	* _codecvt.h: correction of the default codecvt class definition and
-	correction of the out method (all thanks Richard Peng)
+	correction of the out method 
+	
+	(all thanks Richard Peng)
     
 2003-10-16  Francois Dumont
 

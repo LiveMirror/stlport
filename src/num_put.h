@@ -85,17 +85,18 @@ __insert_grouping_aux(basic_string<Char> &iostr, size_t __dec_pos,
   if (iostr.empty())
     return;
 
-  typename basic_string<Char>::iterator first(iostr.begin());
+  size_t __first_pos = 0;
+  Char __first = *iostr.begin();
   int sign = 0;
 
-  if (*first == Plus || *first == Minus) {
+  if (__first == Plus || __first == Minus) {
     sign = 1;
-    ++first;
+    ++__first_pos;
   }
  
-  first += basechars;
+  __first_pos += basechars;
   str_size n = 0;                                                   // Index of the current group.
-  typename basic_string<Char>::iterator cur_group(iostr.begin()+__dec_pos);  // Points immediately beyond the rightmost
+  typename basic_string<Char>::iterator cur_group(iostr.begin() + __dec_pos);  // Points immediately beyond the rightmost
                                                                     // digit of the current group.
   int groupsize = 0;                                                // Size of the current group.
   
@@ -103,7 +104,7 @@ __insert_grouping_aux(basic_string<Char> &iostr, size_t __dec_pos,
     groupsize = n < grouping.size() ? grouping[n] : groupsize;
     ++n;
 
-    if (groupsize <= 0 || groupsize >= cur_group - first)
+    if (groupsize <= 0 || groupsize >= ((cur_group - iostr.begin()) + __first_pos))
       break;
 
     // Insert a separator character just before position cur_group - groupsize

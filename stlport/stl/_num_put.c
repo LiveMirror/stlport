@@ -91,8 +91,6 @@ __put_float(string &__str, _OutputIter __out,
     // decimal point, we pass this position to the __insert_grouping function.
     size_t __dec_pos = __wbuf.find(__decimal_point);
 
-	  // dwa 1/24/00 - try as I might, there doesn't seem to be a way
-    // to suppress the warning
     __insert_grouping(__wbuf, (__dec_pos == string::npos)?__wbuf.size():__dec_pos, 
                       __grouping, __sep, __ct.widen('+'), __ct.widen('-'), 0);
   }

@@ -444,9 +444,9 @@ public:                         // Insert
     _STLP_FIX_LITERAL_BUG(__p)
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__p))
     size_type __old_capacity = this->capacity();
-    iterator __ret(&_M_iter_list,_Base::insert(__p._M_iterator, __c));
+    _Base::iterator __ret = _Base::insert(__p._M_iterator, __c);
     _Compare_Capacity(__old_capacity);
-    return __ret;
+    return iterator(&_M_iter_list, __ret);
   }
 
   void insert(iterator __p, size_t __n, _CharT __c) {
