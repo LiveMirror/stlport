@@ -1,3 +1,18 @@
+2004-10-27  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config.h, _fstream.h, _ios.h, _istream.h, _monetary.h, _num_get.h,
+	_num_put.h, _ostream.h, _sstream.h, _streambuf.h, _string.h, _time_facets.h:
+	Restoration of the _STLP_NO_CUSTOM_IO feature removed after cleanup reported
+	in 2004-09-28 post from Petr.
+
+	* stlport/stl/stl_user_config.h, _config.h, stl_msvc.h: reactivation of the 
+	auto link feature for MSVC but only if activated by the client. Moreover the
+	new implementation of this feature is more maintenable, stl_msvc.h won't have
+	to be edited at each STLport release.
+
+	* test/unit/nmake-vc-common.mak, nmake-evc-common.mak: Adoption of the auto link
+	process.
+
 2004-10-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config.h: Introduction of the _STLP_DONT_USE_EXCEPTIONS which 

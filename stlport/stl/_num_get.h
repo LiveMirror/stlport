@@ -202,6 +202,8 @@ _STLP_EXPORT_TEMPLATE_CLASS num_get<wchar_t, istreambuf_iterator<wchar_t, char_t
 #  endif /* _STLP_NO_WCHAR_T */
 # endif
 
+#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
+
 extern bool  _STLP_CALL __valid_grouping(const char*, const char*, const char*, const char*);
 
 template <class _InputIter, class _Integer>
@@ -217,8 +219,7 @@ inline void  _STLP_CALL
 _Initialize_get_float(const ctype<char>&,
                        char& Plus, char& Minus,
                        char& pow_e, char& pow_E,
-                       char*)
-{
+                       char*) {
   Plus = '+';
   Minus = '-';
   pow_e = 'e';
@@ -235,6 +236,8 @@ void  _STLP_CALL __string_to_float(const __iostring&, double&);
 void  _STLP_CALL __string_to_float(const __iostring&, long double&);
 # endif
 
+#endif /* _STLP_EXPOSE_STREAM_IMPLEMENTATION */
+
 # if defined (__BORLANDC__) && defined (_RTLDLL)
 inline void _Stl_loc_init_num_get() {  
   num_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index = 12;
@@ -249,9 +252,9 @@ inline void _Stl_loc_init_num_get() {
 
 _STLP_END_NAMESPACE
 
-#  if !defined (_STLP_LINK_TIME_INSTANTIATION)
-#   include <stl/_num_get.c>
-#  endif
+#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
+#  include <stl/_num_get.c>
+#endif
 
 #endif /* _STLP_INTERNAL_NUM_GET_H */
 

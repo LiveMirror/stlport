@@ -163,6 +163,14 @@
 // #define _STLP_NEW_PLATFORM_SDK 1
 
 /*
+ * Some compilers support the automatic linking feature. 
+ * Uncomment the following and you won't have to specify the STLport library
+ * to link with anymore.
+ * For the moment this feature is supported by the Microsoft compilers.
+ */
+// #define _STLP_USE_AUTO_LINK 1
+
+/*
  * Use minimum set of default arguments on template classes that have more
  * than one - for example map<>, set<>.
  * This has effect only if _STLP_LIMITED_DEFAULT_TEMPLATES is on.
@@ -185,7 +193,7 @@
  * directly to the destination string to set its size correctly and only make
  * a single call to the allocator. This technique can be extended to addition of 
  * N elements where elements being basic_string, C string or character type.
- * The drawback can be longer compilation time.
+ * The drawback can be longer compilation time and bigger executable size.
  * STLport rebuild: Yes
  */
 // #define _STLP_USE_TEMPLATE_EXPRESSION 1
@@ -207,7 +215,8 @@
  * or data method and the special c_str method. If you are not sure that there is
  * no such confusion in your code you should define the following macro.
  * Note 1: This macro has no effect on basic_string instanciated with no POD types
- *         (this is to avoid complicated instance management within the basic_string).
+ *         (this is to avoid complicated instance management within the basic_string
+            implementation).
  * Note 2: This feature goes against the C++ standard because we are forced to use a
  *         const_cast to assign the null terminated char in the c_str const method.
  * STLport rebuild: Yes

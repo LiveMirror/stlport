@@ -307,9 +307,9 @@ inline void _Stl_loc_init_time_facets() {
 
 _STLP_END_NAMESPACE
 
-# if !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_time_facets.c>
-# endif
+#endif
 
 #endif /* _STLP_INTERNAL_TIME_FACETS_H */
 

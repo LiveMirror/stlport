@@ -743,9 +743,9 @@ private:
 
 _STLP_END_NAMESPACE
 
-# if !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_fstream.c>
-# endif
+#endif
 
 _STLP_BEGIN_NAMESPACE
 

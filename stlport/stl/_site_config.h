@@ -158,7 +158,7 @@
 /* 
  * Uncomment that to disable exception handling code 
  */
-// #define   _STLP_NO_EXCEPTIONS 1
+// #define   _STLP_DONT_USE_EXCEPTIONS 1
 
 /*
  * _STLP_NO_NAMESPACES: if defined, don't put the library in namespace

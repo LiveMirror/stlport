@@ -128,14 +128,16 @@ protected:
   virtual _OutputIter do_put(_OutputIter __s, ios_base& __f, _CharT __fill, const void* __val) const;
 };
 
-# ifdef _STLP_USE_TEMPLATE_EXPORT
+#ifdef _STLP_USE_TEMPLATE_EXPORT
 _STLP_EXPORT_TEMPLATE_CLASS num_put<char, ostreambuf_iterator<char, char_traits<char> > >;
 // _STLP_EXPORT_TEMPLATE_CLASS num_put<char, char*>;
 #  ifndef _STLP_NO_WCHAR_T
 _STLP_EXPORT_TEMPLATE_CLASS num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >;
 // _STLP_EXPORT_TEMPLATE_CLASS num_put<wchar_t, wchar_t*>;
 #  endif /* _STLP_NO_WCHAR_T */
-# endif
+#endif
+
+#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 template <class _Integer>
 char* _STLP_CALL
@@ -176,6 +178,8 @@ extern ptrdiff_t _STLP_CALL __insert_grouping(wchar_t*, wchar_t*, const string&,
 extern void _STLP_CALL __insert_grouping(__iowstring&, size_t, const string&, wchar_t, wchar_t, wchar_t, int);
 # endif
 
+#endif /* _STLP_EXPOSE_STREAM_IMPLEMENTATION */
+
 # if defined (__BORLANDC__) && defined (_RTLDLL)
 inline void _Stl_loc_init_num_put() {
   
@@ -193,9 +197,9 @@ inline void _Stl_loc_init_num_put() {
 
 _STLP_END_NAMESPACE
 
-# if !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_num_put.c>
-# endif
+#endif
 
 #endif /* _STLP_INTERNAL_NUMERIC_FACETS_H */
 
