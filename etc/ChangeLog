@@ -6,6 +6,10 @@
 	* stlport/stl_user_config.h, config/stl_msvc.h: addition of the _STLP_VERBOSE_AUTO_LINK 
 	config macro to make the automatic linking feature more verbose thanks Ulrich Eckhardt
 	patch.
+	
+	* stlport/exception: Add check of the _STLP_HAS_SPECIFIC_PROLOG_EPILOG macro before
+	including _msvc_warning_off.h to avoid bad resulting warning status when the _epilog.h
+	header is not included thanks Gail (baker88) report.
 
 2004-12-01  Petr Ovtchenkov  <ptr@island...>
 
