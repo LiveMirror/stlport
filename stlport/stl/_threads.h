@@ -382,7 +382,7 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 #    if defined (__hpux) && !defined (PTHREAD_MUTEX_INITIALIZER)
       if (!_M_lock.field1)  _M_initialize();
 #    endif
-      // pthread_mutex_lock(&_M_lock);
+     pthread_mutex_lock(&_M_lock);
   }
   inline void _M_release_lock() { pthread_mutex_unlock(&_M_lock); }
 #  endif // !_STLP_USE_PTHREAD_SPINLOCK
