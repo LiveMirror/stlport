@@ -38,12 +38,28 @@
 #  undef  vector
 #  define vector __WORKAROUND_DBG_RENAME(vector)
 
+#include <stl/_range_errors.h>
+
 _STLP_BEGIN_NAMESPACE
+
+template <class _Tp, class _Alloc> 
+void _Vector_base<_Tp,_Alloc>::_M_throw_length_error() const {
+    __stl_throw_length_error("vector");
+}
+
+template <class _Tp, class _Alloc> 
+void _Vector_base<_Tp, _Alloc>::_M_throw_out_of_range() const {
+    __stl_throw_out_of_range("vector");
+}
 
 template <class _Tp, class _Alloc>
 void 
 __vector__<_Tp, _Alloc>::reserve(size_type __n) {
   if (capacity() < __n) {
+    if (max_size() < __n) {
+      _M_throw_length_error();
+    }
+
     const size_type __old_size = size();
     pointer __tmp;
     if (this->_M_start) {

@@ -35,7 +35,7 @@ template <class Char>
 ptrdiff_t 
 __insert_grouping_aux(Char* first, Char* last, const string& grouping,
                       Char separator, Char Plus, Char Minus,
-		      int basechars)
+		                  int basechars)
 {
   typedef string::size_type str_size;
 
@@ -70,6 +70,46 @@ __insert_grouping_aux(Char* first, Char* last, const string& grouping,
   }
 
   return (last - first) + sign + basechars;
+}
+
+//Dynamic output buffer version.
+template <class Char>
+void 
+__insert_grouping_aux(basic_string<Char> &iostr, size_t __dec_pos,
+                      const string& grouping,
+                      Char separator, Char Plus, Char Minus,
+		                  int basechars)
+{
+  typedef string::size_type str_size;
+
+  if (iostr.empty())
+    return;
+
+  basic_string<Char>::iterator first(iostr.begin());
+  int sign = 0;
+
+  if (*first == Plus || *first == Minus) {
+    sign = 1;
+    ++first;
+  }
+ 
+  first += basechars;
+  str_size n = 0;                                                   // Index of the current group.
+  basic_string<Char>::iterator cur_group(iostr.begin()+__dec_pos);  // Points immediately beyond the rightmost
+                                                                    // digit of the current group.
+  int groupsize = 0;                                                // Size of the current group.
+  
+  while (true) {
+    groupsize = n < grouping.size() ? grouping[n] : groupsize;
+    ++n;
+
+    if (groupsize <= 0 || groupsize >= cur_group - first)
+      break;
+
+    // Insert a separator character just before position cur_group - groupsize
+    cur_group -= groupsize;
+    cur_group = iostr.insert(cur_group, separator);
+  }
 }
 
 _STLP_END_NAMESPACE

@@ -620,6 +620,8 @@ public:
 
   void reserve(size_type __n) {
     if (capacity() < __n) {
+      if (max_size() < __n)
+        __stl_throw_length_error("vector<bool>");
       unsigned int* __q = this->_M_bit_alloc(__n);
       _Bit_iterator __z(__q, 0);
       this->_M_finish = copy(begin(), end(), __z);

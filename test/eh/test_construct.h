@@ -28,6 +28,11 @@
 # endif
 
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID TEST_CONSTRUCT_H
+_STLP_DEFINE_THIS_FILE();
+# endif
+
 USING_CSTD_NAME(size_t)
 
 template <class T>
@@ -140,6 +145,11 @@ struct test_construct_iter_range
 	
 	const T& fItems;
 };
+
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
 
 #endif // test_construct_H_
 

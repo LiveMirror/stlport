@@ -678,8 +678,7 @@ __write_float(string &buf, ios_base::fmtflags flags, int precision,
   char static_buf[128];
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
-  sprintf(static_buf, fmtbuf, precision, x);    
-  // we should be able to return static_buf + sprintf(), but we do not trust'em...
+  snprintf(static_buf, fmtbuf, precision, x);    
   buf = static_buf;
 # else
   char cvtbuf[NDIG+2];
@@ -738,23 +737,40 @@ __write_float(string &buf, ios_base::fmtflags flags, int precision,
 
 # ifndef _STLP_NO_WCHAR_T
 
-wchar_t* _STLP_CALL
-__convert_float_buffer(const char* first, const char* last, wchar_t* out,
+void _STLP_CALL
+__convert_float_buffer(string const& str, wstring &out,
                        const ctype<wchar_t>& ct, wchar_t dot)
 {
-  ct.widen(first, last, out);
-  if (ct.widen('.') != dot)
-    replace(out, out + (last - first), ct.widen('.'), dot);
-  return out + (last - first);
+  const wchar_t __wdot = ct.widen('.');
+  wchar_t __static_buf[128];
+  wchar_t *__beg = __static_buf;
+  wchar_t *__end = __static_buf + (sizeof(__static_buf) / sizeof(wchar_t));
+  string::const_iterator str_ite(str.begin()), str_end(str.end());
+
+  wchar_t *__cur = __beg;
+  while (str_ite != str_end) {
+    *__cur = ct.widen(*str_ite);
+    ++__cur;
+    if (__cur == __end) {
+      if (__wdot != dot)
+        replace(__beg, __cur, __wdot, dot);
+      out.append(__beg, __cur);
+      __cur = __beg;
+    }
+    ++str_ite;
+  }
+  if (__wdot != dot)
+    replace(__beg, __cur, __wdot, dot);
+  out.append(__beg, __cur);
 }
 
 # endif
 
 void _STLP_CALL
-__adjust_float_buffer(char* first, char* last, char dot)
+__adjust_float_buffer(string &str, char dot)
 {
   if ('.' != dot)
-    replace(first, last, '.', dot);
+    replace(str.begin(), str.end(), '.', dot);
 }
 
 _STLP_END_NAMESPACE

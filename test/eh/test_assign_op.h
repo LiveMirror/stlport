@@ -26,6 +26,11 @@
 # endif
 #include "nc_alloc.h"
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID TEST_ASSIGN_OP_H
+_STLP_DEFINE_THIS_FILE();
+# endif
+
 template <class T>
 struct test_assign_op
 {
@@ -46,5 +51,10 @@ struct test_assign_op
 private:
 	const T& source;
 };
+
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
 
 #endif // test_assign_op_H_

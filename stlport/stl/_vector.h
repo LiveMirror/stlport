@@ -86,6 +86,9 @@ public:
   }
 
 protected:
+  void _M_throw_length_error() const;
+  void _M_throw_out_of_range() const;
+
   _Tp* _M_start;
   _Tp* _M_finish;
   _STLP_alloc_proxy<_Tp*, _Tp, allocator_type> _M_end_of_storage;
@@ -168,7 +171,7 @@ protected:
  
   void _M_range_check(size_type __n) const {
     if (__n >= size_type(this->_M_finish-this->_M_start))
-      __stl_throw_out_of_range("vector");
+      _M_throw_out_of_range();
   }
 
 public:
@@ -183,7 +186,12 @@ public:
   const_reverse_iterator rend() const    { return const_reverse_iterator(begin()); }
 
   size_type size() const        { return size_type(this->_M_finish - this->_M_start); }
-  size_type max_size() const    { return size_type(-1) / sizeof(_Tp); }
+  size_type max_size() const {
+    size_type __vector_max_size = size_type(-1) / sizeof(_Tp);
+    typename allocator_type::size_type __alloc_max_size = this->_M_end_of_storage.max_size();
+    return (__alloc_max_size < __vector_max_size)?__alloc_max_size:__vector_max_size;
+  }
+
   size_type capacity() const    { return size_type(this->_M_end_of_storage._M_data - this->_M_start); }
   bool empty() const            { return this->_M_start == this->_M_finish; }
 

@@ -55,6 +55,11 @@
 # include <stl/_iterator_base.h>
 #endif
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID ALGOBASE_H
+_STLP_DEFINE_THIS_FILE();
+# endif /* _STLP_DEBUG */
+
 _STLP_BEGIN_NAMESPACE
 
 #ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
@@ -658,6 +663,10 @@ _ForwardIter __lower_bound(_ForwardIter __first, _ForwardIter __last,
                               const _Tp& __val, _Compare __comp, _Distance*);
 
 _STLP_END_NAMESPACE
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
 
 # if !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_algobase.c>

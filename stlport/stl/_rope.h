@@ -75,6 +75,12 @@
 #    include <mutex.h>
 # endif
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID ROPE_H
+_STLP_DEFINE_THIS_FILE();
+# endif
+
+
 #ifdef _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM 
 #  define _STLP_CREATE_ALLOCATOR(__atype,__a, _Tp) (_Alloc_traits<_Tp,__atype>::create_allocator(__a)) 
 #elif defined(__MRC__)||defined(__SC__) 
@@ -2503,6 +2509,10 @@ inline _Rope_char_ref_proxy<_CharT, _Alloc>::operator _CharT () const
   }
 }
 _STLP_END_NAMESPACE
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
 
 # if !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_rope.c>

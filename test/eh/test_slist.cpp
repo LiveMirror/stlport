@@ -28,6 +28,11 @@
 #include "test_insert.h"
 #include "test_push_front.h"
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID TEST_SLIST_CPP
+_STLP_DEFINE_THIS_FILE();
+# endif
+
 typedef EH_STD::__slist__<TestClass, eh_allocator(TestClass) > TestSList;
 
 inline sequence_container_tag
@@ -88,4 +93,9 @@ void test_slist()
 	WeakCheck( testSList, test_assign_op<TestSList>( testSList2 ) );
 
 }
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
+
 #endif // EH_SLIST_IMPLEMENTED

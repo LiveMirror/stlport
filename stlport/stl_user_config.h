@@ -87,7 +87,7 @@
  *  on per-project basis.
  *
  */
-//#define _STLP_NO_CUSTOM_IO
+// #define _STLP_NO_CUSTOM_IO
 
 
 /* 

@@ -115,11 +115,16 @@
 # define stl_destroy EH_STD::destroy
 # include <memory>
 
-template <class _Tp>
-class _STLP_CLASS_DECLSPEC EH_allocator;
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID PREFIX_H
+_STLP_DEFINE_THIS_FILE();
+# endif
 
 template <class _Tp>
-class _STLP_CLASS_DECLSPEC EH_allocator {
+class /*_STLP_CLASS_DECLSPEC*/ EH_allocator;
+
+template <class _Tp>
+class /*_STLP_CLASS_DECLSPEC*/ EH_allocator {
 public:
 
   typedef _Tp        value_type;
@@ -311,6 +316,10 @@ struct eh_select1st_hint : public unary_function<Pair, U> {
 #else
 # define USING_CSTD_NAME(name)
 #endif
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
 
 #endif // INCLUDED_MOTU_Prefix
 

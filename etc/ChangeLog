@@ -1,5 +1,32 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * _vector.h: implementation of the max_size method based on the allocator::max_size method 
+               (thanks Gennaro Prota from the boost forum).
+
+  ----
+
+  * _vector.c: add of the standard length_error exception to the reserve method (thanks Steven Youngs).
+
+  ----
+
+  * _alloc.h: add of a check of the number of element require to allocator::allocate to avoid a possible
+              size_type overflow (thanks Steven Youngs).
+
+  ----
+
+  * _istream.h: move of the ws implementation within the header to avoid undefined symbol
+                under NO_CUSTOM_IO mode (thanks Ulrich Eckhardt)
+
+  ----
+
+  * ctype.cpp : charcode correction (thanks Markus Stier reports and Alberto Barbati correction)
+
+  ----
+
+  * _function.h : all function can now be used in a non-const world (thanks Alexey Kirjushkin)
+
+  ----
+
   * move constructor framework integration (thanks Francois Dumont)
 
   ----
@@ -27,15 +54,22 @@ The following changes were made in 4.5.5 since 4.5.3 release:
   ---
 	
   * fstream.cpp : text file stream position bug correction (thanks Christopher Kohlert)
+
   ---
+
   * _num_put.c : Correction of the display of the min 64 bits signed integer values
                  like numeric_limits<__int64>::min() on WIN32 for instance (thanks Anders Dalvander)
+
   ---
   * _num_put.c : Add of the '+' sign when requested for the unsigned integer display 
                  (thanks Francois Dumont)
+
   ---
+
   * debug : many missing iterator invalidation corrected (thanks Detlev V.Davidson and Francois Dumont)
+
   ---
+
   * _new.h : introduction of a new config compiler switch for those which do define
              bad_alloc but that do not throw it! (thanks ?)
   ---

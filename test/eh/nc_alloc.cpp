@@ -112,6 +112,11 @@ static allocation_set& alloc_set()
 // Prevents infinite recursion during allocation
 static bool using_alloc_set = false;
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID NC_ALLOC_CPP
+_STLP_DEFINE_THIS_FILE();
+# endif
+
 # if !defined (NO_FAST_ALLOCATOR)
 //
 //	FastAllocator -- speeds up construction of TestClass objects when
@@ -289,6 +294,10 @@ void _STLP_CALL operator delete(void* s)
 				EH_ASSERT( p != alloc_set().end() );
 				alloc_set().erase( p );
 				using_alloc_set = false;
+				if (alloc_set().size() == 1) {
+					allocation_set::iterator it(alloc_set().begin());
+					void *ptr = *it;
+				}
 			}
 		}
 # if ! defined (NO_FAST_ALLOCATOR)	
@@ -372,3 +381,6 @@ long& TestController::Failure_threshold()
 	return failure_threshold;
 }
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif

@@ -1,3 +1,7 @@
+// Local Variables:
+// mode:C++
+// End:
+
 /*
  *
  * Copyright (c) 1997
@@ -34,6 +38,9 @@
 #  define _STLP_ACQUIRE_LOCK(_Lock)
 #  define _STLP_RELEASE_LOCK(_Lock)
 # endif /* _STLP_THREADS */
+
+#define _STLP_FILE_UNIQUE_ID DEBUG_C
+_STLP_DEFINE_THIS_FILE();
 
 _STLP_BEGIN_NAMESPACE
 
@@ -109,20 +116,20 @@ void  _STLP_CALL __invalidate_range(const __owned_list* __base,
     _L_type* __prev;
 
     for (__prev = (_L_type*)&__base->_M_node, __pos= (_L_type*)__prev->_M_next; 
-         __pos!=0;) {	    
+         __pos!=0;) {		     
         if ((!(&__first == (_Iterator*)__pos || &__last == (_Iterator*)__pos))
             &&  __in_range_aux(
-			       *(_Iterator*)__pos,
-			       __first,
-			       __last,
-			       _STLP_ITERATOR_CATEGORY(__first, _Iterator))) {
-	  __pos->_M_owner = 0;
-	  __pos = (_L_type*) (__prev->_M_next = __pos->_M_next);
-	}
-	else {
-	  __prev = __pos;
-	  __pos=(_L_type*)__pos->_M_next;
-	}
+		 		 		        *(_Iterator*)__pos,
+		 		 		        __first,
+		 		 		        __last,
+		 		 		        _STLP_ITERATOR_CATEGORY(__first, _Iterator))) {
+		   __pos->_M_owner = 0;
+		   __pos = (_L_type*) (__prev->_M_next = __pos->_M_next);
+		 }
+		 else {
+		   __prev = __pos;
+		   __pos=(_L_type*)__pos->_M_next;
+		 }
     }
     _STLP_RELEASE_LOCK(__base->_M_lock)    
 }
@@ -138,18 +145,20 @@ void  _STLP_CALL __invalidate_iterator(const __owned_list* __base,
          __position!= 0;) {
       // this requires safe iterators to be derived from __owned_link
        if ((__position != (_L_type*)&__it) && *((_Iterator*)__position)==__it) {
-	    __position->_M_owner = 0;
-	    __position = (_L_type*) (__prev->_M_next = __position->_M_next);
+		     __position->_M_owner = 0;
+		     __position = (_L_type*) (__prev->_M_next = __position->_M_next);
         }
        else {
-	 __prev = __position;
-	 __position=(_L_type*)__position->_M_next;
+		  __prev = __position;
+		  __position=(_L_type*)__position->_M_next;
        }
     }
     _STLP_RELEASE_LOCK(__base->_M_lock)
 }
 
 _STLP_END_NAMESPACE
+
+#undef _STLP_FILE_UNIQUE_ID
 
 # endif /* _STLP_DEBUG */
 
@@ -160,11 +169,11 @@ _STLP_END_NAMESPACE
 #   include <cstdlib>
 #  else
 #   include <stdlib.h>
-#  endif
+#  endif /* _STLP_USE_NEW_C_HEADERS */
 
 # if defined (_STLP_WIN32)
 #  include <stl/_threads.h>
-# endif
+# endif /* _STLP_WIN32 */
 
 //==========================================================
 // .c section
@@ -183,7 +192,7 @@ _STLP_BEGIN_NAMESPACE
 #  define _STLP_PERCENT_S "%hs" 
 # else
 #  define _STLP_PERCENT_S "%s" 
-# endif
+# endif /* _STLP_WINCE */
 
 # define _STLP_MESSAGE_TABLE_BODY = { \
 _STLP_STRING_LITERAL("\n" _STLP_PERCENT_S "(%d): STL error: %s\n"), \
@@ -221,7 +230,7 @@ const char* __stl_debug_engine<_Dummy>::_Message_table[_StlMsg_MAX]  _STLP_MESSA
 
 # else
 __DECLARE_INSTANCE(const char*, __stl_debug_engine<bool>::_Message_table[_StlMsg_MAX],
-		   _STLP_MESSAGE_TABLE_BODY);
+		 		    _STLP_MESSAGE_TABLE_BODY);
 
 # endif
 
@@ -237,24 +246,26 @@ _STLP_END_NAMESPACE
 #    include <cstdarg>
 #    include <cstdio>
 
+#define _STLP_FILE_UNIQUE_ID DEBUG_C
+
 _STLP_BEGIN_NAMESPACE
 
 template <class _Dummy>
 void _STLP_CALL  
 __stl_debug_engine<_Dummy>::_Message(const char * __format_str, ...)
 {
-	STLPORT_CSTD::va_list __args;
-	va_start( __args, __format_str );
+		 STLPORT_CSTD::va_list __args;
+		 va_start( __args, __format_str );
 
 # if defined (_STLP_WINCE)
-	TCHAR __buffer[512];
-	int _convert = strlen(__format_str) + 1;
-	LPWSTR _lpw = (LPWSTR)alloca(_convert*sizeof(wchar_t));
-	_lpw[0] = '\0';
-	MultiByteToWideChar(GetACP(), 0, __format_str, -1, _lpw, _convert);
-	wvsprintf(__buffer, _lpw, __args);
-	//	wvsprintf(__buffer, __format_str, __args);
-	_STLP_WINCE_TRACE(__buffer);
+		 TCHAR __buffer[512];
+		 int _convert = strlen(__format_str) + 1;
+		 LPWSTR _lpw = (LPWSTR)alloca(_convert*sizeof(wchar_t));
+		 _lpw[0] = '\0';
+		 MultiByteToWideChar(GetACP(), 0, __format_str, -1, _lpw, _convert);
+		 wvsprintf(__buffer, _lpw, __args);
+		 //		 wvsprintf(__buffer, __format_str, __args);
+		 _STLP_WINCE_TRACE(__buffer);
 # elif defined (_STLP_WIN32) && ( defined(_STLP_MSVC) || defined (__ICL) || defined (__BORLANDC__))
     char __buffer [4096];
     _vsnprintf(__buffer, sizeof(__buffer) / sizeof(char),
@@ -267,7 +278,7 @@ __stl_debug_engine<_Dummy>::_Message(const char * __format_str, ...)
 # endif /* WINCE */
 
 # ifdef _STLP_DEBUG_MESSAGE_POST
-	_STLP_DEBUG_MESSAGE_POST
+		 _STLP_DEBUG_MESSAGE_POST
 # endif
 
     va_end(__args);
@@ -275,6 +286,8 @@ __stl_debug_engine<_Dummy>::_Message(const char * __format_str, ...)
 }
 
 _STLP_END_NAMESPACE
+
+#undef _STLP_FILE_UNIQUE_ID
 
 #  endif /* _STLP_DEBUG_MESSAGE */
 
@@ -287,7 +300,7 @@ void _STLP_CALL
 __stl_debug_engine<_Dummy>::_IndexedError(int __error_ind, const char* __f, int __l)
 {
   __stl_debug_message(_Message_table[_StlFormat_ERROR_RETURN], 
-		      __f, __l, _Message_table[__error_ind]);
+		 		       __f, __l, _Message_table[__error_ind]);
 }
 
 template <class _Dummy>
@@ -295,7 +308,7 @@ void _STLP_CALL
 __stl_debug_engine<_Dummy>::_VerboseAssert(const char* __expr, int __error_ind, const char* __f, int __l)
 {
   __stl_debug_message(_Message_table[_StlFormat_VERBOSE_ASSERTION_FAILURE],
-		      __f, __l, _Message_table[__error_ind], __f, __l, __expr);
+		 		       __f, __l, _Message_table[__error_ind], __f, __l, __expr);
   __stl_debug_terminate();
 }
 
@@ -329,6 +342,8 @@ _STLP_END_NAMESPACE
 
 #ifdef _STLP_DEBUG
 
+#define _STLP_FILE_UNIQUE_ID DEBUG_C
+
 _STLP_BEGIN_NAMESPACE
 
 //==========================================================
@@ -351,7 +366,7 @@ __stl_debug_engine<_Dummy>::_Stamp_all(__owned_list* __l, __owned_list* __o) {
   // crucial
   if (__l->_M_node._M_owner) {
     for (__owned_link*  __position = (__owned_link*)__l->_M_node._M_next; 
-	 __position != 0; __position= (__owned_link*)__position->_M_next) {
+		  __position != 0; __position= (__owned_link*)__position->_M_next) {
       _STLP_ASSERT(__position->_Owner()== __l)
       __position->_M_owner=__o;
     }
@@ -459,7 +474,7 @@ __stl_debug_engine<_Dummy>::_Check_same_owner( const __owned_link& __i1,
 template <class _Dummy>
 bool  _STLP_CALL
 __stl_debug_engine<_Dummy>::_Check_same_owner_or_null( const __owned_link& __i1, 
-						       const __owned_link& __i2)
+		 		 		 		 		 		        const __owned_link& __i2)
 {
   _STLP_VERBOSE_RETURN(__i1._Owner()==__i2._Owner(), _StlMsg_DIFFERENT_OWNERS)
   return true;
@@ -477,6 +492,8 @@ __stl_debug_engine<_Dummy>::_Check_if_owner( const __owned_list * __l, const __o
 
 
 _STLP_END_NAMESPACE
+
+#undef _STLP_FILE_UNIQUE_ID
 
 #endif /* _STLP_DEBUG */
 

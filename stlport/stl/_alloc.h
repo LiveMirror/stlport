@@ -68,6 +68,12 @@
 # include <stl/_construct.h>
 #endif
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID ALLOC_H
+_STLP_DEFINE_THIS_FILE();
+# endif
+
+
 #ifndef __ALLOC
 #   define __ALLOC __sgi_alloc
 #endif
@@ -351,7 +357,9 @@ public:
   pointer address(reference __x) { return &__x; }
   const_pointer address(const_reference __x) const { return &__x; }
   // __n is permitted to be 0.  The C++ standard says nothing about what the return value is when __n == 0.
-  _Tp* allocate(size_type __n, const void* = 0) const { 
+  _Tp* allocate(size_type __n, const void* = 0) const {
+    if (__n > max_size())
+      __THROW_BAD_ALLOC;
     return __n != 0 ? __REINTERPRET_CAST(value_type*,__sgi_alloc::allocate(__n * sizeof(value_type))) : 0;
   }
   // __p is permitted to be a null pointer, only if n==0.
@@ -518,6 +526,10 @@ _STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<wchar_t *,wchar_t,allocator<wchar_
 # undef _STLP_NODE_ALLOCATOR_THREADS
 
 _STLP_END_NAMESPACE
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
 
 # if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_alloc.c>

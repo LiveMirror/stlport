@@ -417,7 +417,7 @@ money_put<_CharT, _OutputIter>
 
   string_type __new_digits(__digits_first, __digits_last);
 
-  if (__grouping.size() != 0) {
+  if (!__grouping.empty()) {
     if (__grouping.size() == 1)
       __grouping.push_back(__grouping[0]);
     __grouping[0] += __frac_digits;

@@ -1,3 +1,6 @@
+// Local Variables:
+// mode:C++
+// End:
 /*
  * Copyright (c) 1997-1999
  * Silicon Graphics Computer Systems, Inc.
@@ -20,6 +23,9 @@
 #define _STLP_DBG_STRING_H
 
 #include <stl/debug/_iterator.h>
+
+#define _STLP_FILE_UNIQUE_ID STRING_H
+_STLP_DEFINE_THIS_FILE();
 
 # define _STLP_DBG_STRING_BASE _Nondebug_string <_CharT, _Traits, _Alloc>
 
@@ -64,12 +70,13 @@ protected:
   _Base* _Get_base() { return (_Base*)this; }
 
   mutable __owned_list _M_iter_list;
-  void _Invalidate_all_iterators() {
+  void _Invalidate_all() {
     _M_iter_list._Invalidate_all();
   }
-  void _Check_Overflow(size_type __nb) {
-    if (this->size()+__nb > this->capacity())
-      _Invalidate_all_iterators();  
+  void _Compare_Capacity (size_type __old_capacity) {
+    if (this->capacity() > __old_capacity) {
+      _Invalidate_all();
+    }
   }
   void _Invalidate_iterator(const iterator& __it) {
     __invalidate_iterator(&_M_iter_list, __it); 
@@ -96,46 +103,53 @@ public:
     _STLP_DBG_STRING_BASE(__s, __pos, __n, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(const _CharT* __s, size_type __n,
-		    const allocator_type& __a = allocator_type()):
+		 		     const allocator_type& __a = allocator_type()):
     _STLP_DBG_STRING_BASE(__s, __n, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(const _CharT* __s,
-		    const allocator_type& __a = allocator_type()):
+		 		     const allocator_type& __a = allocator_type()):
     _STLP_DBG_STRING_BASE(__s, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(size_type __n, _CharT __c,
-		    const allocator_type& __a = allocator_type()):
+		 		     const allocator_type& __a = allocator_type()):
     _STLP_DBG_STRING_BASE(__n, __c, __a), _M_iter_list(_Get_base()) {}
 
   explicit basic_string(__partial_move_source<_Self> src):
     _STLP_DBG_STRING_BASE(_AsPartialMoveSource<_STLP_DBG_STRING_BASE >(src.get())), _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all_iterators();
+    src.get()._Invalidate_all();
   }
 
   /*explicit basic_string(__full_move_source<_Self> src):
     _STLP_DBG_STRING_BASE(_FullMoveSource<_STLP_DBG_STRING_BASE >(src.get())), _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all_iterators();
+    src.get()._Invalidate_all();
   }*/
 
 #if defined (_STLP_MEMBER_TEMPLATES) && !(defined(__MRC__)||defined(__SC__))
-# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
-  template <class _InputIterator>
-  basic_string(_InputIterator __f, _InputIterator __l):
-    _STLP_DBG_STRING_BASE(__f, __l), _M_iter_list(_Get_base()) {}
-#  endif
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l,
-		    const allocator_type & __a _STLP_ALLOCATOR_TYPE_DFL):
-    _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {}
+		 		     const allocator_type & __a _STLP_ALLOCATOR_TYPE_DFL)
+    : _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {
+    //insert(this->begin(), __f, __l);
+  }
+# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
+  template <class _InputIterator>
+  basic_string(_InputIterator __f, _InputIterator __l)
+    : _STLP_DBG_STRING_BASE(__f, __l), _M_iter_list(_Get_base()) {
+    //insert(this->begin(), __f, __l);
+  }
+#  endif
 #else /* _STLP_MEMBER_TEMPLATES */
   basic_string(const_iterator __f, const_iterator __l, 
-		    const allocator_type & __a = allocator_type()):
-    _STLP_DBG_STRING_BASE(__f._M_iterator, __l._M_iterator, __a), 
-     _M_iter_list(_Get_base()) {}
+		 		     const allocator_type & __a = allocator_type())
+    : _STLP_DBG_STRING_BASE(__f._M_iterator, __l._M_iterator, __a), _M_iter_list(_Get_base()) {
+    //insert(this->begin(), __f, __l);
+  }
 
   basic_string(const _CharT* __f, const _CharT* __l,
-               const allocator_type& __a = allocator_type()):
-   _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {}
+               const allocator_type& __a = allocator_type())
+    : _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {
+    //insert(this->begin(), __f, __l);
+  }
 #endif
 
 # ifdef _STLP_USE_NATIVE_STRING
@@ -151,20 +165,22 @@ public:
     : _STLP_DBG_STRING_BASE(__x), _M_iter_list(_Get_base()) {}
 
   _Self& operator=(const _Self& __s) {
-    _Invalidate_all_iterators();
-    _Base::operator=(__s);
+    if (this != &__s) {
+      _Invalidate_all();
+      _Base::operator=((const _Base&)__s);
+    }
     return *this;
   }
 
   _Self& operator=(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Invalidate_all_iterators();
+    _Invalidate_all();
     _Base::operator=(__s);
     return *this;
   }
 
   _Self& operator=(_CharT __c) {
-    _Invalidate_all_iterators();
+    _Invalidate_all();
     _Base::operator=(__c);
     return *this;
   }
@@ -176,7 +192,7 @@ public:                         // Iterators.
   iterator end() { return iterator(&_M_iter_list,this->_M_finish); }
   const_iterator end() const { return const_iterator(&_M_iter_list,this->_M_finish); }
   void _M_deallocate_block() {
-    _Invalidate_all_iterators();
+    _Invalidate_all();
     _Base::_M_deallocate_block();
   }
 
@@ -192,18 +208,21 @@ public:                         // Iterators.
 public:                         // Size, capacity, etc.
 
   void resize(size_type __n, _CharT __c) {
-    if (__n > this->size()) _Invalidate_all_iterators();
+    if (__n > this->capacity())
+      _Invalidate_all();
+    else
+      _Invalidate_iterators(this->begin() + __n, this->end());
     _Base::resize(__n, __c);
   }
   void resize(size_type __n) { resize(__n, this->_M_null()); }
 
   void reserve(size_type __s= 0) {
-    if (__s > this->size()) _Invalidate_all_iterators();
+    if (__s > this->capacity()) _Invalidate_all();
     _Base::reserve(__s);
   }
 
   void clear() {
-    _Invalidate_all_iterators();
+    _Invalidate_all();
     _Base::clear();
   } 
 
@@ -240,8 +259,9 @@ public:                         // Append, operator+=, push_back.
 
   _Self& append(const _Self& __s,
                        size_type __pos, size_type __n) {
-    _Check_Overflow((min) (__s.size() - __pos, __n));
+    size_type __old_capacity = this->capacity();
     _Base::append(__s, __pos, __n);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
@@ -256,9 +276,10 @@ public:                         // Append, operator+=, push_back.
   }
 
   _Self& append(size_type __n, _CharT __c) {
-    _Check_Overflow(__n);
-	  _Base::append(__n, __c);
-	  return *this;
+    size_type __old_capacity = this->capacity();
+    _Base::append(__n, __c);
+    _Compare_Capacity(__old_capacity);
+    return *this;
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES
@@ -267,8 +288,10 @@ public:                         // Append, operator+=, push_back.
   // it can't be an iterator.
   template <class _InputIter>
   _Self& append(_InputIter __first, _InputIter __last) {
-    _Check_Overflow(_STLP_STD::distance(__first, __last));
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    size_type __old_capacity = this->capacity();
     _Base::append(__first, __last);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
@@ -276,62 +299,72 @@ public:                         // Append, operator+=, push_back.
 // specialization for append
  template <>
  inline _Self& append(iterator __f, iterator __l) {
- _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-  __check_range(__f, __l);
-  _Check_Overflow(_STLP_STD::distance(__f._M_iterator, __l._M_iterator));
-  _Base::append(__f._M_iterator, __l._M_iterator);
-  return *this;
+   _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
+   _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    size_type __old_capacity = this->capacity();
+   _Base::append(__f._M_iterator, __l._M_iterator);
+    _Compare_Capacity(__old_capacity);
+   return *this;
  }
 #endif
 
 #else /* _STLP_MEMBER_TEMPLATES */
 
   _Self& append(const _CharT* __first, const _CharT* __last) {
-    _Check_Overflow(_STLP_STD::distance(__first, __last));
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    size_type __old_capacity = this->capacity();
     _Base::append(__first, __last);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& append(const_iterator __first, const_iterator __last) {
-    _Check_Overflow(_STLP_STD::distance(__first._M_iterator, __last._M_iterator));
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    size_type __old_capacity = this->capacity();
     _Base::append(__first._M_iterator, __last._M_iterator);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   void push_back(_CharT __c) {
-    _Check_Overflow(1);
+    size_type __old_capacity = this->capacity();
     _Base::push_back(__c);
+    _Compare_Capacity(__old_capacity);
   }
 
   void pop_back() {
-    _Invalidate_iterator(end());
+    _Invalidate_iterator(this->end());
     _Base::pop_back();
   }
 
 public:                         // Assign
   
   _Self& assign(const _Self& __s) {
-    if (__s.size() > this->capacity()) _Invalidate_all_iterators();
+    _Invalidate_all();
     _Base::assign(__s); 
     return *this; 
   }
 
   _Self& assign(const _Self& __s, 
                        size_type __pos, size_type __n) {
-    if (((min)(__s.size()-__pos, __n)) > this->capacity()) _Invalidate_all_iterators();
+    if (__n != 0) _Invalidate_all();
     _Base::assign(__s, __pos, __n);
     return *this;
   }
 
-  _Self& assign(const _CharT* __s, size_type __n)
-    { _STLP_FIX_LITERAL_BUG(__s) return assign(__s, __s + __n); }
+  _Self& assign(const _CharT* __s, size_type __n) {
+    _STLP_FIX_LITERAL_BUG(__s)
+    return assign(__s, __s + __n);
+  }
 
-  _Self& assign(const _CharT* __s)
-    { _STLP_FIX_LITERAL_BUG(__s) return assign(__s, __s + _Traits::length(__s)); }
+  _Self& assign(const _CharT* __s) {
+    _STLP_FIX_LITERAL_BUG(__s)
+    return assign(__s, __s + _Traits::length(__s));
+  }
 
   _Self& assign(size_type __n, _CharT __c) {
-    if (__n > this->capacity()) _Invalidate_all_iterators();
+    _Invalidate_all();
     _Base::assign(__n, __c);
     return *this;    
   }
@@ -340,7 +373,7 @@ public:                         // Assign
   template <class _InputIter>
   inline _Self& assign(_InputIter __first, _InputIter __last) {
     _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
-    __check_range(__first, __last);
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
     _Base::assign(__first, __last);
     return *this;    
   }
@@ -350,7 +383,7 @@ public:                         // Assign
 template <>
 inline _Self& assign(iterator __f, iterator __l) {
   _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-    __check_range(__f, __l);
+  _STLP_DEBUG_CHECK(__check_range(__f, __l))
   _Base::assign(__f._M_iterator, __l._M_iterator);
   return *this;
   }
@@ -359,13 +392,13 @@ inline _Self& assign(iterator __f, iterator __l) {
 #else
   _Self& assign(const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-      __check_range(__f, __l);
-      _Base::assign(__f, __l);
+    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    _Base::assign(__f, __l);
     return *this;
   }
   _Self& assign(const_iterator __f, const_iterator __l) {
-
-      _Base::assign(__f._M_iterator, __l._M_iterator);
+    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    _Base::assign(__f._M_iterator, __l._M_iterator);
     return *this;
   }
 #endif  /* _STLP_MEMBER_TEMPLATES */
@@ -373,79 +406,100 @@ inline _Self& assign(iterator __f, iterator __l) {
 public:                         // Insert
 
   _Self& insert(size_type __pos, const _Self& __s) {
+    size_type __old_capacity = this->capacity();
     _Base::insert(__pos, __s);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& insert(size_type __pos, const _Self& __s,
                        size_type __beg, size_type __n) {
+    size_type __old_capacity = this->capacity();
     _Base::insert(__pos, __s, __beg, __n);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& insert(size_type __pos, const _CharT* __s, size_type __n) {
     _STLP_FIX_LITERAL_BUG(__s)
+    size_type __old_capacity = this->capacity();
     _Base::insert(__pos, __s, __n);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& insert(size_type __pos, const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Base::insert(__pos, __s);      
-    return *this;
+    return insert(__pos, __s, _Traits::length(__s));
   }
     
   _Self& insert(size_type __pos, size_type __n, _CharT __c) {
+    size_type __old_capacity = this->capacity();
     _Base::insert(__pos, __n, __c);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   iterator insert(iterator __p, _CharT __c) {
     _STLP_FIX_LITERAL_BUG(__p)
-    __check_if_owner(&_M_iter_list,__p);
-    return iterator(&_M_iter_list,_Base::insert(__p._M_iterator, __c));
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__p))
+    size_type __old_capacity = this->capacity();
+    iterator __ret(&_M_iter_list,_Base::insert(__p._M_iterator, __c));
+    _Compare_Capacity(__old_capacity);
+    return __ret;
   }
 
   void insert(iterator __p, size_t __n, _CharT __c) {
-    __check_if_owner(&_M_iter_list,__p);
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__p))
+    size_type __old_capacity = this->capacity();
     _Base::insert(__p._M_iterator, __n, __c);
+    _Compare_Capacity(__old_capacity);
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIter>
   void insert(iterator __p, _InputIter __first, _InputIter __last) {
-    __check_if_owner(&_M_iter_list,__p);
-    __check_range(__first,__last);
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__p))
+    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    size_type __old_capacity = this->capacity();
     _Base::insert(__p._M_iterator, __first, __last);
+    _Compare_Capacity(__old_capacity);
   }
 #else /* _STLP_MEMBER_TEMPLATES */
   void insert(iterator __p, const _CharT* __first, const _CharT* __last) {
     _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
-    __check_if_owner(&_M_iter_list,__p);
-    __check_range(__first,__last);
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__p))
+    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    size_type __old_capacity = this->capacity();
     _Base::insert(__p._M_iterator, __first, __last);
+    _Compare_Capacity(__old_capacity);
   }
   void insert(iterator __p, const_iterator __first, const_iterator __last) {
-    __check_range(__first,__last);
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__p))
+    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    size_type __old_capacity = this->capacity();
     _Base::insert(__p._M_iterator, __first._M_iterator, __last._M_iterator); 
+    _Compare_Capacity(__old_capacity);
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
 public:                         // Erase.
   _Self& erase(size_type __pos = 0, size_type __n = _Base::npos) {
+    if (__pos < this->size()) {
+      _Invalidate_iterators(begin() + __pos, end());
+    }
     _Base::erase(__pos, __n);
     return *this;
-  }  
+  }
   iterator erase(iterator __position) {
-    __check_if_owner(&_M_iter_list, __position);
-    __invalidate_iterator(&_M_iter_list, __position);
+    _STLP_DEBUG_CHECK(_Dereferenceable(__position))
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
+    _Invalidate_iterators(__position, end());
     return iterator(&_M_iter_list, _Base::erase(__position._M_iterator));
   }
   iterator erase(iterator __first, iterator __last) {
-    __check_range(__first, __last)&&__check_if_owner(&_M_iter_list,__first);
-    if (__first != __last) {
-      __invalidate_range(&_M_iter_list, __last, end());
-    }
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    _Invalidate_iterators(__first, end());
     return iterator(&_M_iter_list, _Base::erase(__first._M_iterator, __last._M_iterator));   
   }
 
@@ -454,75 +508,90 @@ public:                         // Substring.
     if (__pos > this->size())
       this->_M_throw_out_of_range();
     return _Self(this->begin() + __pos, 
-                 this->begin() + __pos + min(__n, this->size() - __pos),
+                 this->begin() + __pos + (min)(__n, this->size() - __pos),
                  allocator_type());
   }
+
 public:                         // Replace.  (Conceptually equivalent
                                 // to erase followed by insert.)
   _Self& replace(size_type __pos, size_type __n, 
                         const _Self& __s) {
+    size_type __old_capacity = this->capacity();
     _Base::replace(__pos, __n, __s);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(size_type __pos1, size_type __n1,
                         const _Self& __s,
                         size_type __pos2, size_type __n2) {
+    size_type __old_capacity = this->capacity();
     _Base::replace(__pos1, __n1, (const _Base&)__s, __pos2, __n2);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(size_type __pos, size_type __n1,
                         const _CharT* __s, size_type __n2) {    
     _STLP_FIX_LITERAL_BUG(__s)
+    size_type __old_capacity = this->capacity();
     _Base::replace(__pos, __n1, __s, __n2);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(size_type __pos, size_type __n1,
                         const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
+    size_type __old_capacity = this->capacity();
     _Base::replace(__pos, __n1, __s);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(size_type __pos, size_type __n1,
                         size_type __n2, _CharT __c) {
+    size_type __old_capacity = this->capacity();
     _Base::replace(__pos, __n1, __n2, __c);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(iterator __first, iterator __last, 
                         const _Self& __s) { 
-    __check_if_owner(&_M_iter_list,__first);
-    __check_range(__first, __last);
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator,__s);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(iterator __first, iterator __last,
                         const _CharT* __s, size_type __n) { 
     _STLP_FIX_LITERAL_BUG(__s)
-    __check_if_owner(&_M_iter_list,__first);
-    __check_range(__first, __last);
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator,__s, __n);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(iterator __first, iterator __last,
                         const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
-    __check_if_owner(&_M_iter_list,__first);
-    __check_range(__first, __last);
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator,__s);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
   _Self& replace(iterator __first, iterator __last, 
-		 size_type __n, _CharT __c) {
-    __check_if_owner(&_M_iter_list,__first);
-    __check_range(__first, __last);
+		 		  size_type __n, _CharT __c) {
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator, __n, __c);
+    _Compare_Capacity(__old_capacity);
     return *this;
   }
 
@@ -530,29 +599,32 @@ public:                         // Replace.  (Conceptually equivalent
   template <class _InputIter>
   _Self& replace(iterator __first, iterator __last,
                         _InputIter __f, _InputIter __l) {
-    __check_if_owner(&_M_iter_list, __first);
-    __check_range(__first, __last);
-    __check_range(__f, __l);
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator, __f, __l);
+    _Compare_Capacity(__old_capacity);
     return *this;    
   }
 #else /* _STLP_MEMBER_TEMPLATES */
   _Self& replace(iterator __first, iterator __last,
-		 const _CharT* __f, const _CharT* __l) {
-    __check_if_owner(&_M_iter_list, __first);
-    __check_range(__first, __last);
-    __check_range(__f, __l);
+		 		  const _CharT* __f, const _CharT* __l) {
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator, __f, __l);
+    _Compare_Capacity(__old_capacity);
     return *this;    
   }
  
   _Self& replace(iterator __first, iterator __last,
-		 const_iterator __f, const_iterator __l) {
-    __check_if_owner(&_M_iter_list, __first);
-    __check_range(__first, __last);
-    __check_range(__f, __l);
+		 		  const_iterator __f, const_iterator __l) {
+    _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
+    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator, 
-		   __f._M_iterator, __l._M_iterator);
+		 		    __f._M_iterator, __l._M_iterator);
+    _Compare_Capacity(__old_capacity);
     return *this; 
   } 
 #endif /* _STLP_MEMBER_TEMPLATES */
@@ -812,10 +884,7 @@ istream& _STLP_CALL operator>>(istream& __is, basic_string<_CharT,_Traits,_Alloc
 
 _STLP_END_NAMESPACE
 
+#undef _STLP_FILE_UNIQUE_ID
+
 #endif /* _STLP_DBG_STRING */
-
-
-// Local Variables:
-// mode:C++
-// End:
 

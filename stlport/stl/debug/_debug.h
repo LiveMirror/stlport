@@ -34,7 +34,16 @@
 # if !defined(_STLP_FILE__)
 #   define _STLP_FILE__ __FILE__
 # endif
+
+# if !defined(_STLP_DEFINE_THIS_FILE)
+#  define _STLP_FILE_NAME _STLP_FILE_UNIQUE_ID
+#  define _STLP_DEFINE_THIS_FILE() static char const*const _STLP_FILE_UNIQUE_ID = _STLP_FILE__
+#  define _STLP_DEFINE_THIS_FILE2 static char const*const _STLP_FILE_NAME = _STLP_FILE__;
+# endif
  
+# define _STLP_FILE_UNIQUE_ID DEBUG_H
+_STLP_DEFINE_THIS_FILE();
+
 enum {
   _StlFormat_ERROR_RETURN,
   _StlFormat_ASSERTION_FAILURE,
@@ -146,7 +155,8 @@ _STLP_END_NAMESPACE
 
 #  ifndef _STLP_ASSERT
 #   define _STLP_ASSERT(expr) \
-     if (!(expr)) {STLPORT::__stl_debugger::_Assert( # expr, _STLP_FILE__, __LINE__);}
+     if (!(expr)) {STLPORT::__stl_debugger::_Assert( # expr, _STLP_FILE_NAME, __LINE__);}
+     //if (!(expr)) {STLPORT::__stl_debugger::_Assert( # expr, _STLP_FILE__, __LINE__);}
 #  endif
 
 # endif /* _STLP_ASSERTIONS || _STLP_DEBUG */
@@ -159,8 +169,9 @@ _STLP_END_NAMESPACE
 // fbp : new form not requiring ";"
 #  define _STLP_VERBOSE_ASSERT(expr,__diag_num) \
     if (!(expr)) { STLPORT::__stl_debugger::_VerboseAssert\
-                                 ( # expr,  __diag_num, _STLP_FILE__, __LINE__ ); \
+                               ( # expr,  __diag_num, _STLP_FILE_NAME, __LINE__ ); \
          }
+                               //( # expr,  __diag_num, _STLP_FILE__, __LINE__ );
 # endif
 
 #  define _STLP_DEBUG_CHECK(expr) _STLP_ASSERT(expr)
@@ -168,15 +179,19 @@ _STLP_END_NAMESPACE
 
 # ifndef _STLP_VERBOSE_RETURN
 #  define _STLP_VERBOSE_RETURN(__expr,__diag_num) if (!(__expr)) { \
-       __stl_debugger::_IndexedError(__diag_num, __FILE__ , __LINE__); \
+       __stl_debugger::_IndexedError(__diag_num, _STLP_FILE_NAME , __LINE__); \
        return false; }
+       //__stl_debugger::_IndexedError(__diag_num, _STLP_FILE__ , __LINE__);
 # endif
 
 # ifndef _STLP_VERBOSE_RETURN_0
 #  define _STLP_VERBOSE_RETURN_0(__expr,__diag_num) if (!(__expr)) { \
-       __stl_debugger::_IndexedError(__diag_num, __FILE__ , __LINE__); \
+       __stl_debugger::_IndexedError(__diag_num, _STLP_FILE_NAME , __LINE__); \
        return 0; }
+       //__stl_debugger::_IndexedError(__diag_num, _STLP_FILE__ , __LINE__);
 # endif
+
+#undef _STLP_FILE_UNIQUE_ID
 
 #if ! defined (_STLP_INTERNAL_THREADS_H)
 # include <stl/_threads.h>
@@ -186,13 +201,15 @@ _STLP_END_NAMESPACE
 # include <stl/_iterator_base.h>
 #endif
 
+#define _STLP_FILE_UNIQUE_ID DEBUG_H
+
 _STLP_BEGIN_NAMESPACE
 
 //=============================================================
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2, 
                                       const random_access_iterator_tag&) { 
-    return (__i1< __i2) || (__i1 == __i2);
+    return (__i1 < __i2) || (__i1 == __i2);
 }
 
 template <class _Iterator>
@@ -200,14 +217,14 @@ inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __
                                       const bidirectional_iterator_tag&) { 
     // check if comparable
     bool __dummy(__i1==__i2);
-    return (__dummy==__dummy); 
+    return (__dummy==__dummy);
 }
 
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2, const forward_iterator_tag&) { 
     // check if comparable
     bool __dummy(__i1==__i2);
-    return (__dummy==__dummy); 
+    return (__dummy==__dummy);
 }
 
 template <class _Iterator>
@@ -242,8 +259,6 @@ inline bool  _STLP_CALL __in_range(const _Iterator& __first, const _Iterator& __
 }
 
 //==========================================================
-
-
 class _STLP_CLASS_DECLSPEC __owned_link {
 public:
 
@@ -409,18 +424,15 @@ _STLP_END_NAMESPACE
 # if !defined( _STLP_DEBUG_TERMINATE )
 #   define __stl_debug_terminate __stl_debugger::_Terminate
 # else
-    extern  void __stl_debug_terminate(void);
+    extern  void __stl_debug_terminate();
 # endif
 
 #endif
+
+# undef _STLP_FILE_UNIQUE_ID
 
 # if !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/debug/_debug.c>
 # endif
 
 #endif /* DEBUG_H */
-
-// Local Variables:
-// mode:C++
-// End:
-

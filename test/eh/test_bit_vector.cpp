@@ -33,6 +33,11 @@
 #include "test_insert.h"
 #include "test_push_front.h"
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID TEST_BIT_VECTOR_CPP
+_STLP_DEFINE_THIS_FILE();
+# endif
+
 typedef EH_BIT_VECTOR BitVector;
 
 inline sequence_container_tag
@@ -126,4 +131,10 @@ void test_bit_vector()
     ConstCheck( testVector, test_copy_construct<BitVector>() );
     WeakCheck( testVector, test_assign_op<BitVector>( testVector2 ) );
 }
+
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
+
 # endif /* BIT_VECTOR_IMPLEMENTED */

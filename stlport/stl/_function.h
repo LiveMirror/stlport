@@ -91,6 +91,9 @@ public:
   bool operator()(const typename _Predicate::argument_type& __x) const {
     return !_M_pred(__x);
   }
+  bool operator()(typename _Predicate::argument_type& __x) const {
+    return !_M_pred(__x);
+  }
 };
 
 template <class _Predicate>
@@ -110,8 +113,11 @@ protected:
 public:
   explicit binary_negate(const _Predicate& __x) : _M_pred(__x) {}
   bool operator()(const typename _Predicate::first_argument_type& __x, 
-                  const typename _Predicate::second_argument_type& __y) const
-  {
+                  const typename _Predicate::second_argument_type& __y) const {
+    return !_M_pred(__x, __y); 
+  }
+  bool operator()(typename _Predicate::first_argument_type& __x, 
+                  typename _Predicate::second_argument_type& __y) const {
     return !_M_pred(__x, __y); 
   }
 };

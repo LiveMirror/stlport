@@ -42,6 +42,11 @@
 #  include <iostream.h>
 # endif
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID LEAKCHECK_H
+_STLP_DEFINE_THIS_FILE();
+# endif
+
 EH_BEGIN_NAMESPACE
 
 template <class T1, class T2>
@@ -215,5 +220,9 @@ void StrongCheck( const Value& v, const Operation& op, long max_iters = 2000000 
     }
     EH_ASSERT( succeeded || failed );	// Make sure the count hasn't gone over
 }
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#undef _STLP_FILE_UNIQUE_ID
+# endif
 
 #endif // INCLUDED_MOTU_LeakCheck

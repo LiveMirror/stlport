@@ -32,6 +32,9 @@
 
 #include <stl/debug/_iterator.h>
 
+#define _STLP_FILE_UNIQUE_ID VECTOR_H
+_STLP_DEFINE_THIS_FILE();
+
 # ifndef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
 #  undef  _DBG_vector
 #  define _DBG_vector vector
@@ -57,39 +60,39 @@ iterator_category(const  _DBG_iter_base< _STLP_DBG_VECTOR_BASE >&) {
 template <class _Tp, class _NcIt>
 struct _Vector_nonconst_traits
 {
-	typedef _Nonconst_traits<_Tp> _BaseT;
-	typedef _Tp value_type;
-	typedef _Tp& reference;
-	typedef _Tp* pointer;
-	typedef _Vector_nonconst_traits<_Tp, _NcIt> _Non_const_traits;
+		 typedef _Nonconst_traits<_Tp> _BaseT;
+		 typedef _Tp value_type;
+		 typedef _Tp& reference;
+		 typedef _Tp* pointer;
+		 typedef _Vector_nonconst_traits<_Tp, _NcIt> _Non_const_traits;
 };
 
 template <class _Tp, class _NcIt>
 struct _Vector_const_traits
 {
-	typedef _Const_traits<_Tp> _BaseT;
-	typedef _Tp value_type;
-	typedef const _Tp& reference;
-	typedef const _Tp* pointer;
-	typedef _Vector_nonconst_traits<_Tp, _NcIt> _Non_const_traits;
+		 typedef _Const_traits<_Tp> _BaseT;
+		 typedef _Tp value_type;
+		 typedef const _Tp& reference;
+		 typedef const _Tp* pointer;
+		 typedef _Vector_nonconst_traits<_Tp, _NcIt> _Non_const_traits;
 };
 
 _STLP_TEMPLATE_NULL
 struct _Vector_nonconst_traits<bool, _Bit_iterator>
 {
-	typedef _Bit_iterator::value_type value_type;
-	typedef _Bit_iterator::reference reference;
-	typedef _Bit_iterator::pointer pointer;
-	typedef _Vector_nonconst_traits<bool, _Bit_iterator> _Non_const_traits;
+		 typedef _Bit_iterator::value_type value_type;
+		 typedef _Bit_iterator::reference reference;
+		 typedef _Bit_iterator::pointer pointer;
+		 typedef _Vector_nonconst_traits<bool, _Bit_iterator> _Non_const_traits;
 };
 
 _STLP_TEMPLATE_NULL
 struct _Vector_const_traits<bool, _Bit_iterator>
 {
-	typedef _Bit_const_iterator::value_type value_type;
-	typedef _Bit_const_iterator::reference reference;
-	typedef _Bit_const_iterator::pointer pointer;
-	typedef _Vector_nonconst_traits<bool, _Bit_iterator> _Non_const_traits;
+		 typedef _Bit_const_iterator::value_type value_type;
+		 typedef _Bit_const_iterator::reference reference;
+		 typedef _Bit_const_iterator::pointer pointer;
+		 typedef _Vector_nonconst_traits<bool, _Bit_iterator> _Non_const_traits;
 };
 
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
@@ -111,18 +114,23 @@ public:
       _Vector_const_traits<value_type, typename _Base::iterator> > const_iterator;
 
 protected:
-  void _Invalidate_all_iterators() {
+  void _Invalidate_all() {
     _M_iter_list._Invalidate_all();
-  }
-  void _Check_Overflow(size_type __nb) {
-    if (this->size()+__nb > this->capacity())
-      _Invalidate_all_iterators();  
   }
   void _Invalidate_iterator(const iterator& __it) {
     __invalidate_iterator(&_M_iter_list, __it); 
   }
   void _Invalidate_iterators(const iterator& __first, const iterator& __last) {
     __invalidate_range(&_M_iter_list, __first, __last);
+  }
+  void _Check_Overflow(size_type __nb) {
+    if (this->size()+__nb > this->capacity())
+      _Invalidate_all();  
+  }
+  void _Compare_Capacity (size_type __old_capacity) {
+    if (this->capacity() > __old_capacity) {
+      _Invalidate_all();
+    }
   }
 
 public:
@@ -161,12 +169,12 @@ public:
     : _STLP_DBG_VECTOR_BASE(__a), _M_iter_list(_Get_base())  {}
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM)
-  explicit _DBG_vector(size_type __n, const _Tp& __value = _Tp(),
+  explicit _DBG_vector(size_type __n, const _Tp& __x = _Tp(),
 #else
-  _DBG_vector(size_type __n, const _Tp& __value,
+  _DBG_vector(size_type __n, const _Tp& __x,
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
          const allocator_type& __a = allocator_type()) 
-    : _STLP_DBG_VECTOR_BASE(__n, __value, __a), _M_iter_list(_Get_base()) {}
+    : _STLP_DBG_VECTOR_BASE(__n, __x, __a), _M_iter_list(_Get_base()) {}
 
 #if defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit _DBG_vector(size_type __n)
@@ -177,57 +185,76 @@ public:
     : _STLP_DBG_VECTOR_BASE(__x), _M_iter_list(_Get_base()) {}
 
   explicit _DBG_vector(__partial_move_source<_Self> src)
-	  : _STLP_DBG_VECTOR_BASE(_AsPartialMoveSource<_STLP_DBG_VECTOR_BASE >(src.get())), _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all_iterators();
+		: _STLP_DBG_VECTOR_BASE(_AsPartialMoveSource<_STLP_DBG_VECTOR_BASE >(src.get())), _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all();
   }
 
   /*explicit _DBG_vector(__full_move_source<_Self> src)
-	  : _STLP_DBG_VECTOR_BASE(_FullMoveSource<_STLP_DBG_VECTOR_BASE >(src.get())), _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all_iterators();
+		   : _STLP_DBG_VECTOR_BASE(_FullMoveSource<_STLP_DBG_VECTOR_BASE >(src.get())), _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all();
   }*/
 
 #if defined (_STLP_MEMBER_TEMPLATES)
-# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
-  template <class _InputIterator>
-  _DBG_vector(_InputIterator __first, _InputIterator __last):
-    _STLP_DBG_VECTOR_BASE(__first, __last), _M_iter_list(_Get_base()) {}
-# endif
   template <class _InputIterator>
   _DBG_vector(_InputIterator __first, _InputIterator __last,
-         const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL) :
-    _STLP_DBG_VECTOR_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {}
+         const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL) 
+    : _STLP_DBG_VECTOR_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
+      //call insert in order to check range
+      //insert(this->begin(), __first, __last);
+    }
 
+# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
+  template <class _InputIterator>
+  _DBG_vector(_InputIterator __first, _InputIterator __last)
+    : _STLP_DBG_VECTOR_BASE(__first, __last), _M_iter_list(_Get_base()) {
+      //insert(this->begin(), __first, __last);
+    }
+# endif
 #else
   _DBG_vector(const _Tp* __first, const _Tp* __last,
          const allocator_type& __a = allocator_type())
-    : _STLP_DBG_VECTOR_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {}
+    : _STLP_DBG_VECTOR_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
+      //insert(this->begin(), __first, __last);
+    }
 
   // mysterious VC++ bug ?
   _DBG_vector(const_iterator __first, const_iterator __last , 
-	      const allocator_type& __a = allocator_type())
-    : _STLP_DBG_VECTOR_BASE(__first._M_iterator, __last._M_iterator, __a),
-      _M_iter_list(_Get_base()) { }
+		       const allocator_type& __a = allocator_type())
+    : _STLP_DBG_VECTOR_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
+        //insert(this->begin(), __first, __last);
+      }
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   _Self& operator=(const _Self& __x) {
-    _Invalidate_all_iterators();
-    (_Base&)*this = (const _Base&)__x;
+    if (this != &__x) {
+      _Invalidate_all();
+      _Base::operator=((const _Base&)__x);
+    }
     return *this;
   }
 
-  reference front() { return *begin(); }
-  const_reference front() const { return *begin(); }
+  void reserve(size_type __n) {
+    if (this->capacity() < __n)
+      _Invalidate_all();
+    _Base::reserve(__n);
+  }
 
+  reference front() {
+    _STLP_VERBOSE_ASSERT(!this->empty(), _StlMsg_EMPTY_CONTAINER)
+    return *begin();
+  }
+  const_reference front() const {
+    _STLP_VERBOSE_ASSERT(!this->empty(), _StlMsg_EMPTY_CONTAINER)
+    return *begin();
+  }
   reference back() {
-    iterator __tmp = end();
-    --__tmp;
-    return *__tmp;
+    _STLP_VERBOSE_ASSERT(!this->empty(), _StlMsg_EMPTY_CONTAINER)
+    return *(--end());
   }
   const_reference back() const {
-    const_iterator __tmp = end();
-    --__tmp;
-    return *__tmp;
+    _STLP_VERBOSE_ASSERT(!this->empty(), _StlMsg_EMPTY_CONTAINER)
+    return *(--end());
   }
 
   void swap(_Self& __x) {
@@ -255,26 +282,29 @@ public:
   // Check whether it's an integral type.  If so, it's not an iterator.
   template <class _InputIterator>
   void insert(iterator __position, _InputIterator __first, _InputIterator __last) {
-    _STLP_DEBUG_CHECK(__check_range(__first,__last))
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _Check_Overflow(_STLP_STD::distance(__first, __last));
+    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    size_type __old_capacity = this->capacity();
     _Base::insert(__position._M_iterator, __first, __last);    
+    _Compare_Capacity(__old_capacity);
   }
 #else /* _STLP_MEMBER_TEMPLATES */
   void insert(iterator __position,
               const_iterator __first, const_iterator __last) {
-    _STLP_DEBUG_CHECK(__check_range(__first,__last))
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _Check_Overflow(_STLP_STD::distance(__first, __last));
+    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    size_type __old_capacity = this->capacity();
     _Base::insert(__position._M_iterator,
-		  __first._M_iterator, __last._M_iterator);        
+		 		   __first._M_iterator, __last._M_iterator);        
+    _Compare_Capacity(__old_capacity);
   }
 
   void insert (iterator __position, const_pointer __first, const_pointer __last) {
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
     _STLP_DEBUG_CHECK(__check_range(__first,__last))
-    _Check_Overflow(_STLP_STD::distance(__first, __last));
+    size_type __old_capacity = this->capacity();
     _Base::insert(__position._M_iterator, __first, __last);  
+    _Compare_Capacity(__old_capacity);
 }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
@@ -290,19 +320,18 @@ public:
     _Base::pop_back();
   }
   iterator erase(iterator __position) {
+    _STLP_DEBUG_CHECK(_Dereferenceable(__position))
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _STLP_VERBOSE_ASSERT(__position._M_iterator !=this->_M_finish,_StlMsg_ERASE_PAST_THE_END)
-    _Invalidate_iterators(__position+1, end());
+    _Invalidate_iterators(__position, end());
     return iterator(&_M_iter_list,_Base::erase(__position._M_iterator));
   }
   iterator erase(iterator __first, iterator __last) {
-    _STLP_DEBUG_CHECK(__check_range(__first,__last, begin(), end()))
-    _Invalidate_iterators(__first._M_iterator == this->_M_finish ? 
-		       __first : __first+1, end());
+    _STLP_DEBUG_CHECK(__check_range(__first,__last, this->begin(), this->end()))
+    _Invalidate_iterators(__first, end());
     return iterator(&_M_iter_list, _Base::erase(__first._M_iterator, __last._M_iterator));
   }
   void clear() { 
-    _Invalidate_all_iterators();
+    _Invalidate_all();
     _Base::clear();
   }
   void push_back(const _Tp& __x) {
@@ -325,11 +354,8 @@ public:
 
 _STLP_END_NAMESPACE
 
-# undef _STLP_DBG_VECTOR_BASE
-# undef _DBG_vector
+#undef _STLP_FILE_UNIQUE_ID
+#undef _STLP_DBG_VECTOR_BASE
+#undef _DBG_vector
 
 #endif /* _STLP_DBG_VECTOR_H */
-
-// Local Variables:
-// mode:C++
-// End:
