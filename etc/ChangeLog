@@ -1,5 +1,10 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * iostream.cpp, locale_impl.cpp : static initioanlization made robust for case of 
+    dynamic loader circular depandancies (Thanks Alexey Sarytchev for the report)
+	
+  ----
+	
   * _function.h : integration of a new workaround for mem_fun_* family 
                   for compiler having return void bug (Thanks Pavel Kuznetsov).
 

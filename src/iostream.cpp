@@ -139,12 +139,12 @@ long ios_base::Init::_S_count = 0;
 bool ios_base::_S_was_synced = true;
 
 ios_base::Init::Init() {
-    if (_S_count++ == 0)
+    if (_S_count == 0)
       ios_base::_S_initialize();
 }
 
 ios_base::Init::~Init() {
-    if (--_S_count == 0)
+    if (_S_count > 0)
       ios_base::_S_uninitialize();
 }
 
@@ -193,6 +193,9 @@ _Stl_create_wfilebuf(FILE* f, ios_base::openmode mode )
 
 void  _STLP_CALL ios_base::_S_initialize()
 {
+
+  if (ios_base::Init::_S_count > 0) 
+    return ;
 # if !defined(_STLP_HAS_NO_NAMESPACES) && !defined(_STLP_WINCE)
   using _SgI::stdio_istreambuf;
   using _SgI::stdio_ostreambuf;
@@ -200,7 +203,7 @@ void  _STLP_CALL ios_base::_S_initialize()
   _STLP_TRY {
     // Run constructors for the four narrow stream objects.
     // check with locale system
-    if (_Loc_init::_S_count++ == 0) {
+    if (_Loc_init::_S_count == 0) {
       locale::_S_initialize();
     }
 #if !defined(_STLP_WINCE)
@@ -248,6 +251,7 @@ void  _STLP_CALL ios_base::_S_initialize()
 # endif /*  _STLP_NO_WCHAR_T */
 #endif /* _STLP_WINCE */
 
+    --ios_base::Init::_S_count;
   }
 
   _STLP_CATCH_ALL {}
@@ -255,6 +259,9 @@ void  _STLP_CALL ios_base::_S_initialize()
 
 void _STLP_CALL ios_base::_S_uninitialize()
 {
+  if (ios_base::Init::_S_count == 0) 
+    return ;
+
   // Note that destroying output streambufs flushes the buffers.
 
   istream* ptr_cin  = __REINTERPRET_CAST(istream*,&cin);
@@ -303,9 +310,11 @@ void _STLP_CALL ios_base::_S_uninitialize()
   _Destroy(ptr_wclog);
 
 # endif
-    if (--_Loc_init::_S_count == 0) {
+    if (_Loc_init::_S_count > 0) {
       locale::_S_uninitialize();
     }
+
+    --ios_base::Init::_S_count;
 }
 
 

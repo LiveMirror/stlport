@@ -328,12 +328,12 @@ locale::_M_throw_runtime_error(const char* name)
 long ios_base::_Loc_init::_S_count = 0;
 
 ios_base::_Loc_init::_Loc_init() {
-  if (_S_count++ == 0)
+  if (_S_count == 0)
       locale::_S_initialize();
 }
 
 ios_base::_Loc_init::~_Loc_init() {
-    if (--_S_count == 0)
+    if (_S_count > 0)
       locale::_S_uninitialize();
 }
 
@@ -345,8 +345,12 @@ ios_base::_Loc_init::~_Loc_init() {
 void _STLP_CALL
 locale::_S_initialize()
 {
+  // additional check for singleton count : linker may choose to alter the order of function calls on initialization
+  if (ios_base::_Loc_init::_S_count > 0 )
+    return;
   _Stl_loc_assign_ids();
   _Stl_loc_global_impl = _Locale_impl::make_classic_locale();
+  ++ios_base::_Loc_init::_S_count;
 }
 
 
@@ -354,7 +358,11 @@ locale::_S_initialize()
 void _STLP_CALL
 locale::_S_uninitialize()
 {
+  // additional check for singleton count : linker may choose to alter the order of function calls on initialization
+  if (ios_base::_Loc_init::_S_count == 0 )
+    return;
   _Stl_loc_global_impl->decr();
+  --ios_base::_Loc_init::_S_count;
 }
 
 
