@@ -73,7 +73,7 @@ void MoveConstructorTest::move_construct_test()
   CPPUNIT_ASSERT((pint == &v_v_ints[1].front()));
 
   //cout << "vector<string>";
-  string const ref_str("ref string, big enougth to be a dynamic one");
+  string const ref_str("ref string, big enough to be a dynamic one");
   vector<string> vec_strs(1, ref_str);
 
   char const* pstr = vec_strs.front().c_str();

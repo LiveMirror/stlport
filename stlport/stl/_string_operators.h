@@ -18,7 +18,7 @@
 
 _STLP_BEGIN_NAMESPACE
 
-#ifndef _STLP_USE_TEMPLATE_EXPRESSION
+#if !defined (_STLP_USE_TEMPLATE_EXPRESSION)
 
 template <class _CharT, class _Traits, class _Alloc> 
 inline basic_string<_CharT,_Traits,_Alloc> _STLP_CALL

@@ -24,13 +24,9 @@
 # include <string>
 # endif
 
-//#ifndef _STLP_LOCALE
-//# include <locale>
-//#endif
-
-# ifdef _STLP_DEBUG
-#  define basic_string _Nondebug_string
-# endif
+#ifdef _STLP_DEBUG
+#  define basic_string _STLP_NON_DBG_NAME(str)
+#endif
 
 // I/O.  
 _STLP_BEGIN_NAMESPACE

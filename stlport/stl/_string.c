@@ -30,9 +30,9 @@
 # include <stl/_string.h>
 #endif
 
-# ifdef _STLP_DEBUG
-#  define basic_string _Nondebug_string
-# endif
+#if defined(_STLP_DEBUG) || defined(_STLP_MEMBER_TEMPLATES)
+#  define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)
+#endif
 
 # if defined (_STLP_USE_OWN_NAMESPACE) || !defined (_STLP_USE_NATIVE_STRING)
 
@@ -122,12 +122,9 @@ basic_string<_CharT,_Traits,_Alloc>::append(size_type __n, _CharT __c) {
   return *this;
 }
 
-#ifndef _STLP_MEMBER_TEMPLATES
-
 template <class _CharT, class _Traits, class _Alloc> 
 basic_string<_CharT, _Traits, _Alloc>&
-basic_string<_CharT, _Traits, _Alloc>::_M_append(const_iterator __first, const_iterator __last,
-                                                 const random_access_iterator_tag&) {
+basic_string<_CharT, _Traits, _Alloc>::_M_append(const_iterator __first, const_iterator __last) {
   if (__first != __last) {
     const size_type __old_size = size();
     ptrdiff_t __n = __last - __first;
@@ -167,8 +164,6 @@ basic_string<_CharT, _Traits, _Alloc>::_M_append(const_iterator __first, const_i
   }
   return *this;  
 }
-
-#endif /* _STLP_MEMBER_TEMPLATES */
 
 template <class _CharT, class _Traits, class _Alloc> 
 basic_string<_CharT,_Traits,_Alloc>& 
@@ -584,30 +579,29 @@ void _STLP_CALL _S_string_copy(const basic_string<_CharT,_Traits,_Alloc>& __s,
 }
 _STLP_END_NAMESPACE
 
-# ifdef _STLP_DEBUG
+#if !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  undef basic_string // _string_fwd has to see clean basic_string
-# endif
 
-# if !defined (_STLP_LINK_TIME_INSTANTIATION)
-#  include <stl/_string_fwd.c> 
-# endif
+#  include <stl/_string_fwd.c>
 
-# ifdef _STLP_DEBUG
-#  define basic_string _Nondebug_string
-# endif
+#  if defined(_STLP_DEBUG) || defined(_STLP_MEMBER_TEMPLATES)
+#    define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)
+#  endif
+#endif
 
-# include <stl/_range_errors.h>  
+# include <stl/_range_errors.h>
+
 _STLP_BEGIN_NAMESPACE
 
 // _String_base methods
 template <class _Tp, class _Alloc>
 void _String_base<_Tp,_Alloc>::_M_throw_length_error() const {
-    __stl_throw_length_error("basic_string");
+  __stl_throw_length_error("basic_string");
 }
 
 template <class _Tp, class _Alloc> 
 void _String_base<_Tp, _Alloc>::_M_throw_out_of_range() const {
-    __stl_throw_out_of_range("basic_string");
+  __stl_throw_out_of_range("basic_string");
 }
 
 template <class _Tp, class _Alloc> 
@@ -661,15 +655,15 @@ const size_t basic_string<_CharT, _Traits, _Alloc>::npos;
 
 _STLP_END_NAMESPACE
 
-# ifdef _STLP_DEBUG
-#  undef basic_string
-# endif
-# undef __size_type__
-# if defined (_STLP_NESTED_TYPE_PARAM_BUG)
+#undef basic_string
+
+#undef __size_type__
+#if defined (_STLP_NESTED_TYPE_PARAM_BUG)
 #  undef size_type
 #  undef iterator
-# endif
-# endif /* NATIVE */
+#endif
+
+#endif /* _STLP_USE_OWN_NAMESPACE || !_STLP_USE_NATIVE_STRING */
 
 #endif /*  _STLP_STRING_C */
 

@@ -9,17 +9,17 @@
 # include <stl/_ctype.h>
 #endif
 
-# ifdef _STLP_DEBUG
-#  define basic_string _Nondebug_string
-# endif
+#ifdef _STLP_DEBUG
+#  define basic_string _STLP_NON_DBG_NAME(str)
+#endif
 
 _STLP_BEGIN_NAMESPACE
 
-# if defined (_STLP_OWN_IOSTREAMS)
+#if defined (_STLP_OWN_IOSTREAMS)
 #  define _STLP_USING_IO
-# else
+#else
 #  define _STLP_USING_IO _STLP_USING_VENDOR_STD
-# endif
+#endif
 
 #if defined (_STLP_USE_NEW_IOSTREAMS)
 

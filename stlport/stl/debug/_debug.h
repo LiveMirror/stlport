@@ -379,57 +379,13 @@ void  _STLP_CALL __invalidate_iterator(const __owned_list* __base,
                                        const _Iterator& __it);
                                        
 
-#ifndef _STLP_MEMBER_TEMPLATES
-template <class _Tp, class _InputIterator>
-class __range_checker {
-#else
-class _STLP_CLASS_DECLSPEC __range_checker {
-#endif
-protected:
-  __range_checker() {}
-
-#if defined (_STLP_MEMBER_TEMPLATES)
-  template <class _InputIter>
-  __range_checker(const _InputIter& __f, const _InputIter& __l) {
-    typedef typename _Is_integer<_InputIter>::_Integral _Integral;
-    _M_check_dispatch(__f, __l, _Integral());
-  }
-
-  template <class _Integer>
-  void _M_check_dispatch(_Integer , _Integer, const __true_type& /*IsIntegral*/) {}
-
-  template <class _InputIter>
-  void _M_check_dispatch(const _InputIter& __f, const _InputIter& __l, const __false_type& /*IsIntegral*/) {
-    _STLP_DEBUG_CHECK(__check_range(__f,__l))
-  }
-#else //_STLP_MEMBER_TEMPLATES
-  /*
-   * The __true_type and __false_type parameters are here to distinguish
-   * between the 2 constructors if _InputIterator is equal to const _Tp*.
-   */
-  __range_checker(const _Tp *__f, const _Tp *__l, const __true_type&) {
-    _STLP_DEBUG_CHECK(__check_range(__f,__l))
-  }
-  __range_checker(_InputIterator __f, _InputIterator __l, const __false_type&) {
-    _STLP_DEBUG_CHECK(__check_range(__f, __l))
-  }
-#endif //_STLP_MEMBER_TEMPLATES
-};
-
-#ifndef _STLP_MEMBER_TEMPLATES
-# define _STLP_RANGE_CHECKER(a, b) __range_checker<a, b >
-#else
-# define _STLP_RANGE_CHECKER(a, b) __range_checker
-#endif
-
 //============================================================
-
 inline bool _STLP_CALL 
-__check_same_owner( const __owned_link& __i1, const __owned_link& __i2) {
+__check_same_owner(const __owned_link& __i1, const __owned_link& __i2) {
   return __stl_debugger::_Check_same_owner(__i1,__i2);
 }
 inline bool _STLP_CALL  
-__check_same_or_null_owner( const __owned_link& __i1, const __owned_link& __i2) {
+__check_same_or_null_owner(const __owned_link& __i1, const __owned_link& __i2) {
   return __stl_debugger::_Check_same_or_null_owner(__i1,__i2);
 }
 

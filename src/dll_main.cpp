@@ -151,9 +151,9 @@ const nothrow_t nothrow /* = {} */;
 
 # ifndef _STLP_NO_FORCE_INSTANTIATE
 
-# if defined (_STLP_DEBUG) || defined (_STLP_ASSERTIONS)
+#  if defined (_STLP_DEBUG) || defined (_STLP_ASSERTIONS)
 template struct _STLP_CLASS_DECLSPEC __stl_debug_engine<bool>;
-# endif
+#  endif
 
 template class _STLP_CLASS_DECLSPEC __node_alloc<false,0>;
 template class _STLP_CLASS_DECLSPEC __node_alloc<true,0>;
@@ -162,22 +162,20 @@ template class _STLP_CLASS_DECLSPEC __debug_alloc< __node_alloc<false,0> >;
 template class _STLP_CLASS_DECLSPEC __debug_alloc<__new_alloc>;
 template class _STLP_CLASS_DECLSPEC __malloc_alloc<0>;
 
-# if defined (_STLP_THREADS) && ! defined ( _STLP_ATOMIC_EXCHANGE ) && (defined(_STLP_PTHREADS) || defined (_STLP_UITHREADS)  || defined (_STLP_OS2THREADS))
+#  if defined (_STLP_THREADS) && ! defined ( _STLP_ATOMIC_EXCHANGE ) && (defined(_STLP_PTHREADS) || defined (_STLP_UITHREADS)  || defined (_STLP_OS2THREADS))
 template class _STLP_CLASS_DECLSPEC _Swap_lock_struct<0>;
-# endif
+#  endif
 
 template class allocator<void*>;
 template class _STLP_alloc_proxy<void**, void*, allocator<void*> >;
 template class _Vector_base<void*,allocator<void*> >;
-# if defined (_STLP_DEBUG) && ! defined (__SUNPRO_CC)
+#  if defined (_STLP_DEBUG) && ! defined (__SUNPRO_CC)
 template class __WORKAROUND_DBG_RENAME(vector) <void*,allocator<void*> >;
-# ifndef _STLP_MEMBER_TEMPLATES
-template class __range_checker <void*, vector<void*, allocator<void*> >::const_iterator>;
-# endif
-# endif
+template class __range_checker<__WORKAROUND_DBG_RENAME(vector) <void*,allocator<void*> > >;
+#  endif
 template class vector<void*,allocator<void*> >;
 
-# ifndef _STLP_DONT_USE_PTR_SPECIALIZATIONS
+#  ifndef _STLP_DONT_USE_PTR_SPECIALIZATIONS
 template class _Vector_impl<void*, allocator<void*> >;
 
 template class _List_base<void*,allocator<void*> >;
@@ -190,7 +188,7 @@ template class _STLP_alloc_proxy<size_t, void*, allocator<void*> >;
 template class _STLP_alloc_proxy<void***, void**, allocator<void**> >;
 template class _Deque_base<void*,allocator<void*> >;
 template class _Deque_impl<void*,allocator<void*> >;
-# endif /* _STLP_DONT_USE_PTR_SPECIALIZATIONS */
+#  endif /* _STLP_DONT_USE_PTR_SPECIALIZATIONS */
 
 template class _Rb_global<bool>;
 template class _List_global<bool>;
@@ -199,16 +197,17 @@ template class _Stl_prime<bool>;
 template class _LimG<bool>;
 template class _Bs_G<bool>;
 
-template class _STLP_CLASS_DECLSPEC allocator<char>;
-template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<char *,char, allocator<char> >;
-template class _STLP_CLASS_DECLSPEC _String_base<char, allocator<char> >;
+template class allocator<char>;
+template class _STLP_alloc_proxy<char *,char, allocator<char> >;
+template class _String_base<char, allocator<char> >;
 
-# if defined (_STLP_DEBUG) && ! defined (__SUNPRO_CC)
-template class _STLP_CLASS_DECLSPEC _Nondebug_string<char, char_traits<char>, allocator<char> >;
-# endif
+#  if defined (_STLP_DEBUG) && ! defined (__SUNPRO_CC)
+template class _STLP_NON_DBG_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> >;
+template class __range_checker<_STLP_NON_DBG_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> > >;
+#  endif
 
-template class basic_string<char, char_traits<char>, allocator<char> >;
-# endif
+template class _STLP_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> >;
+#endif /* _STLP_NO_FORCE_INSTANTIATE */
 
 _STLP_END_NAMESPACE
 

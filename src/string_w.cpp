@@ -24,15 +24,18 @@ string __WideToASCII(const wchar_t *wide) {
 }
 #endif
 
-# ifndef _STLP_NO_FORCE_INSTANTIATE
+#ifndef _STLP_NO_FORCE_INSTANTIATE
 #  ifndef _STLP_NO_WCHAR_T
 template class _STLP_CLASS_DECLSPEC allocator<wchar_t>;
 template class _STLP_CLASS_DECLSPEC _String_base<wchar_t, allocator<wchar_t> >;
-# ifdef _STLP_DEBUG
-template class _STLP_CLASS_DECLSPEC _Nondebug_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
-# endif
-template class _STLP_CLASS_DECLSPEC basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
+
+#    ifdef _STLP_DEBUG
+template class _STLP_CLASS_DECLSPEC _STLP_NON_DBG_NO_MEM_T_NAME(str)<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
+template class _STLP_CLASS_DECLSPEC __range_checker<_STLP_NON_DBG_NO_MEM_T_NAME(str)<wchar_t, char_traits<wchar_t>, allocator<wchar_t> > >;
+#    endif
+
+template class _STLP_CLASS_DECLSPEC _STLP_NO_MEM_T_NAME(str)<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
 #  endif
-# endif
+#endif
 _STLP_END_NAMESPACE
 

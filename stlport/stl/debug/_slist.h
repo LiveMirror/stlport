@@ -53,12 +53,12 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_SLIST_BASE >&) {
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_slist : private _STLP_RANGE_CHECKER(_Tp, typename _STLP_DBG_SLIST_BASE::const_iterator),
+class _DBG_slist : private _STLP_RANGE_CHECKER(_STLP_DBG_SLIST_BASE),
                    public _STLP_DBG_SLIST_BASE {
 private:
   typedef _STLP_DBG_SLIST_BASE _Base;
   typedef _DBG_slist<_Tp,_Alloc> _Self;
-  typedef _STLP_RANGE_CHECKER(_Tp, typename _STLP_DBG_SLIST_BASE::const_iterator) _CheckRange;
+  typedef _STLP_RANGE_CHECKER(_STLP_DBG_SLIST_BASE) _CheckRange;
 
 public:
 
@@ -128,13 +128,13 @@ public:
 
   _DBG_slist(const value_type* __first, const value_type* __last,
              const allocator_type& __a =  allocator_type())
-    : _CheckRange(__first, __last, __true_type()), 
+    : _CheckRange(__first, __last), 
       _STLP_DBG_SLIST_BASE(__first, __last, __a), _M_iter_list(_Get_base())  {
     }
 
   _DBG_slist(const_iterator __first, const_iterator __last,
              const allocator_type& __a = allocator_type() )
-    : _CheckRange(__first._M_iterator, __last._M_iterator, __false_type()), 
+    : _CheckRange(__first, __last), 
       _STLP_DBG_SLIST_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
     }
   

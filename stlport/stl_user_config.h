@@ -155,7 +155,6 @@
  *  does not let gcc to implement automatic instantiation of static template data members/
  *  It is being put in this file as there is no way to check if we are using GNU ld automatically,
  *  so it becomes user's responsibility.
- * 
  */
 
 // #define _STLP_GCC_USES_GNU_LD
@@ -180,9 +179,7 @@
  * You should define this macro if compiling with MFC - STLport <stl/_config.h>
  * then include <afx.h> instead of <windows.h> to get synchronisation primitives 
  */
-
 // # define _STLP_USE_MFC 1
-
 
 /*
  * boris : this setting is here as we cannot detect precense of new Platform SDK automatically 
@@ -201,7 +198,6 @@
  * Affects : map<>, multimap<>, set<>, multiset<>, hash_*<>, 
  * queue<>, priority_queue<>, stack<>, istream_iterator<>
  */
-
 // # define _STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS 1
 
 /*
@@ -222,7 +218,7 @@
 
 /*
  * By default the STLport basic_string implementation use a little static buffer
- * (of 8 char type when writing this doc) to avoid systematically memory allocation
+ * (of 16 chars when writing this doc) to avoid systematically memory allocation
  * in case of little basic_string. The drawback of such a method is bigger 
  * basic_string size and some performance penalty for method like swap. If you
  * prefer systematical dynamic allocation turn on this macro.
@@ -236,7 +232,7 @@
  * method. This, of course, imply that there is no confusion between using &*begin()
  * or data method and the special c_str method. If you are not sure that there is
  * no such confusion in your code you should define the following macro.
- * Note 1: This macro has no effect on basic_string instanciation with no POD types
+ * Note 1: This macro has no effect on basic_string instanciated with no POD types
  *         (this is to avoid complicated instance management within the basic_string).
  * Note 2: This feature goes against the C++ standard because we are forced to use a
  *         const_cast to assign the null terminated char in the c_str const method.

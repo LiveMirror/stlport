@@ -158,15 +158,15 @@
 # define _STLP_ABORT() abort()
 #endif
 
-# if !defined (_STLP_HAS_NO_NAMESPACES)
-# if defined _STLP_NO_NAMESPACES
-#  undef _STLP_USE_NAMESPACES
-# else
+#if !defined (_STLP_HAS_NO_NAMESPACES)
+#  if defined _STLP_NO_NAMESPACES
+#    undef _STLP_USE_NAMESPACES
+#  else
 /* assume it as the default, turn it off later if NO_NAMESPACES selected */
-#  undef _STLP_USE_NAMESPACES
-#  define _STLP_USE_NAMESPACES 1
-# endif
-# endif
+#    undef _STLP_USE_NAMESPACES
+#    define _STLP_USE_NAMESPACES 1
+#  endif
+#endif
 
 # if defined (_STLP_NO_IOSTREAMS)
 #  define _STLP_USE_NO_IOSTREAMS
@@ -464,39 +464,73 @@
 # define _STLP_CAN_THROW_RANGE_ERRORS 1
 #endif
 
-# if !defined (_STLP_USE_RAW_SGI_ALLOCATORS)
-#   define _STLP_DEFAULT_ALLOCATOR(_Tp) allocator< _Tp >
-#   define _STLP_DEFAULT_ALLOCATOR_SELECT( _Tp ) __DFL_TMPL_PARAM(_Alloc, allocator< _Tp >)
-#   define _STLP_DEFAULT_PAIR_ALLOCATOR(_Key, _Tp) allocator< pair < _Key, _Tp > >
-#   if defined (_STLP_LIMITED_DEFAULT_TEMPLATES)
-#     define _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(_Key, _Tp ) class _Alloc
-#     define _STLP_USE_WRAPPER_FOR_ALLOC_PARAM 1
-#   else
-#     define _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(_Key, _Tp ) \
-             class _Alloc = allocator< pair < _Key, _Tp > >
-#   endif
-# else
-#   define _STLP_DEFAULT_ALLOCATOR( _Tp ) __sgi_alloc
-#   define _STLP_DEFAULT_ALLOCATOR_SELECT( _Tp ) __DFL_TYPE_PARAM(_Alloc,__sgi_alloc)
-#   define _STLP_DEFAULT_PAIR_ALLOCATOR( _Key, _Tp ) __sgi_alloc
-#   define _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(_Key, _Tp ) __DFL_TYPE_PARAM(_Alloc,__sgi_alloc)
-#   if defined (_STLP_LIMITED_DEFAULT_TEMPLATES) && !defined (_STLP_DEFAULT_TYPE_PARAM)
+#if !defined (_STLP_USE_RAW_SGI_ALLOCATORS)
+#  define _STLP_DEFAULT_ALLOCATOR(_Tp) allocator< _Tp >
+#  define _STLP_DEFAULT_ALLOCATOR_SELECT( _Tp ) __DFL_TMPL_PARAM(_Alloc, allocator< _Tp >)
+#  define _STLP_DEFAULT_PAIR_ALLOCATOR(_Key, _Tp) allocator< pair < _Key, _Tp > >
+#  if defined (_STLP_LIMITED_DEFAULT_TEMPLATES)
+#    define _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(_Key, _Tp ) class _Alloc
 #    define _STLP_USE_WRAPPER_FOR_ALLOC_PARAM 1
-#   endif
-# endif
+#  else
+#    define _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(_Key, _Tp ) \
+            class _Alloc = allocator< pair < _Key, _Tp > >
+#  endif
+#else
+#  define _STLP_DEFAULT_ALLOCATOR( _Tp ) __sgi_alloc
+#  define _STLP_DEFAULT_ALLOCATOR_SELECT( _Tp ) __DFL_TYPE_PARAM(_Alloc,__sgi_alloc)
+#  define _STLP_DEFAULT_PAIR_ALLOCATOR( _Key, _Tp ) __sgi_alloc
+#  define _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(_Key, _Tp ) __DFL_TYPE_PARAM(_Alloc,__sgi_alloc)
+#  if defined (_STLP_LIMITED_DEFAULT_TEMPLATES) && !defined (_STLP_DEFAULT_TYPE_PARAM)
+#    define _STLP_USE_WRAPPER_FOR_ALLOC_PARAM 1
+#  endif
+#endif
+
+/* member template support workaround */
+#if defined ( _STLP_MEMBER_TEMPLATES )
+#  define _STLP_NO_MEM_T_NAME(X) _NoMemT_##X
+#else
+#  define _STLP_NO_MEM_T_NAME(X) X
+#endif
+
+/* debug mode tool */
+#if defined ( _STLP_DEBUG )
+#  define _STLP_NON_DBG_NAME(X) _NonDbg_##X
+#else
+#  define _STLP_NON_DBG_NAME(X) X
+#endif
+
+/* The following macro could be the mix of the 2 previous one but we would
+ * be dependant on a good preprocessor behavior to handle macro call recursivity.
+ * To avoid it the following macro will be prefered
+ */
+#if defined ( _STLP_DEBUG )
+#  if defined ( _STLP_MEMBER_TEMPLATES )
+#    define _STLP_NON_DBG_NO_MEM_T_NAME(X) _NonDbg_NoMemT_##X
+#  else
+#    define _STLP_NON_DBG_NO_MEM_T_NAME(X) _NonDbg_##X
+#  endif
+#else
+#  if defined ( _STLP_MEMBER_TEMPLATES )
+#    define _STLP_NON_DBG_NO_MEM_T_NAME(X) _NoMemT_##X
+#  else
+#    define _STLP_NON_DBG_NO_MEM_T_NAME(X) X
+#  endif
+#endif
 
 /* default parameters workaround tuning */
-#  if defined ( _STLP_USE_WRAPPER_FOR_ALLOC_PARAM )
-#    define __WORKAROUND_RENAME(X) __##X
-#  else
-#    define __WORKAROUND_RENAME(X) X
-#  endif
-#  if defined ( _STLP_DEBUG )
-#    define __WORKAROUND_DBG_RENAME(X) __stlpdebug_##X
-#  else
-#    define __WORKAROUND_DBG_RENAME(X) __WORKAROUND_RENAME(X)
-#  endif
-#  define __FULL_NAME(X) __WORKAROUND_RENAME(X)
+#if defined ( _STLP_USE_WRAPPER_FOR_ALLOC_PARAM )
+#  define __WORKAROUND_RENAME(X) __WORKAROUND_RENAME_AUX(X)
+#  define __WORKAROUND_RENAME_AUX(X) __##X
+#else
+#  define __WORKAROUND_RENAME(X) X
+#endif
+#define __FULL_NAME(X) __WORKAROUND_RENAME(X)
+
+#if defined ( _STLP_DEBUG )
+#  define __WORKAROUND_DBG_RENAME(X) _STLP_NON_DBG_NAME(X)
+#else
+#  define __WORKAROUND_DBG_RENAME(X) __WORKAROUND_RENAME(X)
+#endif
 
 /* this always mean the C library is in global namespace */
 # if defined (_STLP_HAS_NO_NEW_C_HEADERS) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
@@ -532,7 +566,7 @@
 #  define _STLP_NO_CSTD_FUNCTION_IMPORTS
 # endif
 
-#  define  _STLP_USING_NAMESPACE(x) using namespace x ;
+#define  _STLP_USING_NAMESPACE(x) using namespace x ;
 
 namespace std { }
 namespace __std_alias = std;
@@ -584,9 +618,9 @@ namespace __std_alias = std;
 #   define _STLP_STD      _STL
 /* reverse namespace injection schema */
 namespace _STLP_STD { }
-namespace std {
+/*namespace std {
   using namespace _STLP_STD;
-}
+}*/
 #  else
 #   ifdef _STLP_DEBUG
 namespace stdD = std;

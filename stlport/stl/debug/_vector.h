@@ -95,14 +95,19 @@ struct _Vector_const_traits<bool, _Bit_iterator> {
   typedef _Vector_nonconst_traits<bool, _Bit_iterator> _NonConstTraits;
 };
 
+/*
+ * TODO: Split the vector implementation in 2 classes, one with no member templates
+ * that will be exported and the other with the member templates.
+ * Once done we will be able to handle the iterator range validy check on constructor
+ * correctly without problem under MSVC6.
+ */
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
-class _DBG_vector : private _STLP_RANGE_CHECKER(_Tp, typename _STLP_DBG_VECTOR_BASE::const_iterator),
-                    public _STLP_DBG_VECTOR_BASE
-{
+class _DBG_vector : private __range_checker<_STLP_DBG_VECTOR_BASE >,
+                    public _STLP_DBG_VECTOR_BASE {
 private:
   typedef _STLP_DBG_VECTOR_BASE _Base;
   typedef _DBG_vector<_Tp, _Alloc> _Self;
-  typedef _STLP_RANGE_CHECKER(_Tp, typename _STLP_DBG_VECTOR_BASE::const_iterator) _CheckRange;
+  typedef __range_checker<_STLP_DBG_VECTOR_BASE > _CheckRange;
   __owned_list _M_iter_list;
 
 public:
@@ -192,7 +197,7 @@ public:
   template <class _InputIterator>
   _DBG_vector(_InputIterator __first, _InputIterator __last,
          const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL) 
-    : _CheckRange(__first, __last), _STLP_DBG_VECTOR_BASE(__first, __last, __a),
+    : _STLP_DBG_VECTOR_BASE(__first, __last, __a),
       _M_iter_list(_Get_base()) {
     }
 
@@ -200,21 +205,21 @@ public:
 # ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   _DBG_vector(_InputIterator __first, _InputIterator __last)
-    : _CheckRange(__first, __last), _STLP_DBG_VECTOR_BASE(__first, __last), 
+    : _STLP_DBG_VECTOR_BASE(__first, __last), 
       _M_iter_list(_Get_base()) {
     }
 # endif
 #else
   _DBG_vector(const _Tp* __first, const _Tp* __last,
               const allocator_type& __a = allocator_type())
-    : _CheckRange(__first, __last, __true_type()), _STLP_DBG_VECTOR_BASE(__first, __last, __a),
+    : _CheckRange(__first, __last), _STLP_DBG_VECTOR_BASE(__first, __last, __a),
       _M_iter_list(_Get_base()) {
     }
 
   // mysterious VC++ bug ?
   _DBG_vector(const_iterator __first, const_iterator __last , 
               const allocator_type& __a = allocator_type())
-    : _CheckRange(__first._M_iterator, __last._M_iterator, __false_type()), 
+    : _CheckRange(__first, __last), 
       _STLP_DBG_VECTOR_BASE(__first._M_iterator, __last._M_iterator, __a), 
       _M_iter_list(_Get_base()) {
       }
@@ -348,10 +353,8 @@ struct __move_traits<vector<_Tp, _Alloc> > :
 
 
 # if defined (_STLP_USE_TEMPLATE_EXPORT)
-#  ifndef _STLP_MEMBER_TEMPLATES
- _STLP_EXPORT_TEMPLATE_CLASS __range_checker<void*, _DBG_vector <void*,allocator<void*> >::const_iterator >;
-#  endif
- _STLP_EXPORT_TEMPLATE_CLASS _DBG_vector <void*,allocator<void*> >;
+_STLP_EXPORT_TEMPLATE_CLASS __range_checker<__WORKAROUND_DBG_RENAME(vector) <void*, allocator<void*> > >;
+_STLP_EXPORT_TEMPLATE_CLASS _DBG_vector <void*,allocator<void*> >;
 #  endif /* _STLP_USE_TEMPLATE_EXPORT */
 
 _STLP_END_NAMESPACE

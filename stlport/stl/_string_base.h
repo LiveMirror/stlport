@@ -36,7 +36,7 @@
 _STLP_BEGIN_NAMESPACE
 
 #ifndef _STLP_SHORT_STRING_SZ
-# define _STLP_SHORT_STRING_SZ 32
+# define _STLP_SHORT_STRING_SZ 16
 #endif
 
 template <class _Tp, class _Alloc>

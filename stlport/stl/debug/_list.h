@@ -59,11 +59,11 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_LIST_BASE >&) {
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_list : private _STLP_RANGE_CHECKER(_Tp, typename _STLP_DBG_LIST_BASE::const_iterator),
+class _DBG_list : private _STLP_RANGE_CHECKER(_STLP_DBG_LIST_BASE),
                   public _STLP_DBG_LIST_BASE {
   typedef _STLP_DBG_LIST_BASE _Base;
   typedef _DBG_list<_Tp, _Alloc> _Self;
-  typedef _STLP_RANGE_CHECKER(_Tp, typename _STLP_DBG_LIST_BASE::const_iterator) _CheckRange;
+  typedef _STLP_RANGE_CHECKER(_STLP_DBG_LIST_BASE) _CheckRange;
 
 public:      
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
@@ -111,8 +111,7 @@ public:
     : _STLP_DBG_LIST_BASE(_AsMoveSource<_STLP_DBG_LIST_BASE >(src.get())), 
       _M_iter_list(_Get_base()) {}
   
-#ifdef _STLP_MEMBER_TEMPLATES
-
+#if defined (_STLP_MEMBER_TEMPLATES)
   // We don't need any dispatching tricks here, because insert does all of
   // that anyway.  
   template <class _InputIterator>
@@ -121,7 +120,7 @@ public:
     : _CheckRange(__first, __last), 
       _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
     }
-#  ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
+#  if defined (_STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS)
   template <class _InputIterator>
   _DBG_list(_InputIterator __first, _InputIterator __last)
     : _CheckRange(__first, __last), 
@@ -132,12 +131,12 @@ public:
 
   _DBG_list(const value_type* __first, const value_type* __last,
             const allocator_type& __a = allocator_type())
-    : _CheckRange(__first, __last, __true_type()), 
+    : _CheckRange(__first, __last), 
       _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
     }
   _DBG_list(const_iterator __first, const_iterator __last,
             const allocator_type& __a = allocator_type())
-    : _CheckRange(__first._M_iterator, __last._M_iterator, __false_type()), 
+    : _CheckRange(__first, __last), 
       _STLP_DBG_LIST_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
     }
 
