@@ -126,11 +126,6 @@ inline double abs(double __x)                 { return _STLP_DO_ABS(double)(__x)
 inline float abs (float __x)                  { return _STLP_DO_ABS(float)(__x); }
 #    endif
 
-#    ifdef _STLP_WCE_NET
-inline double abs(double __x) { return _STLP_DO_ABS(double)(__x); }
-inline float abs(float __x) {return (fabsf(__x)); }
-#    endif
-
 # ifdef _STLP_WCE
 inline double abs(double __x) { return _STLP_DO_ABS(double)(__x); }
 // evc3 doesn't have fabsf(), but evc4 has

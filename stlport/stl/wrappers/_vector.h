@@ -31,18 +31,16 @@
 #define _STLP_INTERNAL_WRAP_VECTOR_H
 
 #ifndef _STLP_INTERNAL_VECTOR_H
-# include <stl/_vector.h>
+#  include <stl/_vector.h>
 #endif
 
-# if defined (_STLP_DEBUG)
+#if defined (_STLP_DEBUG)
 #  define _VEC_SUPER _DBG_vector<_Tp, _STLP_DEFAULT_ALLOCATOR(_Tp) >
-# else
+#else
 #  define _VEC_SUPER __vector__<_Tp, _STLP_DEFAULT_ALLOCATOR(_Tp) >
-# endif
+#endif
 
-# ifdef _STLP_USE_NAMESPACES
-namespace STLPORT { 
-# endif
+_STLP_BEGIN_NAMESPACE
 
 template <class _Tp>
 class vector : public _VEC_SUPER

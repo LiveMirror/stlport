@@ -31,12 +31,10 @@
 #define _STLP_INTERNAL_WRAP_LIST_H
 
 #ifndef _STLP_INTERNAL_LIST_H
-# include <stl/_list.h>
+#  include <stl/_list.h>
 #endif
 
-# ifdef _STLP_USE_NAMESPACES
-namespace STLPORT { 
-# endif
+_STLP_BEGIN_NAMESPACE
 
 # if defined (_STLP_DEBUG)
 #  define __LIST_SUPER _DBG_list<_Tp, _STLP_DEFAULT_ALLOCATOR(_Tp) >
@@ -75,9 +73,7 @@ inline bool operator<(const list<_Tp>& __x, const list<_Tp>& __y) {
 }
 #  endif
 
-# ifdef _STLP_USE_NAMESPACES
-} /* namespace STLPORT */
-# endif
+_STLP_END_NAMESPACE
 
 #endif /* _STLP_INTERNAL_LIST_H */
 

@@ -38,9 +38,7 @@
 # endif
 
 
-# ifdef _STLP_USE_NAMESPACES
-namespace STLPORT { 
-# endif
+_STLP_BEGIN_NAMESPACE
  
 // provide a "default" list adaptor
 template <class _Tp>
@@ -72,9 +70,7 @@ inline bool operator<(const slist<_Tp>& __x, const slist<_Tp>& __y) {
 #  endif
 #  undef __SL_SUPER
 
-# ifdef _STLP_USE_NAMESPACES
-} /* namespace STLPORT */
-# endif
+_STLP_END_NAMESPACE
 
 #endif /* _STLP_INTERNAL_WRAP_SLIST_H */
 
