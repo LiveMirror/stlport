@@ -26,6 +26,10 @@
 #ifndef _STLP_LIST_C
 #define _STLP_LIST_C
 
+#ifndef _STLP_INTERNAL_LIST_H
+# include <stl/_list.h>
+#endif
+
 #if defined (__WATCOMC__)
 #include <vector>
 #endif

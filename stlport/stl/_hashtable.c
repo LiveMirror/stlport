@@ -26,6 +26,10 @@
 #ifndef _STLP_HASHTABLE_C
 #define _STLP_HASHTABLE_C
 
+#ifndef _STLP_INTERNAL_HASHTABLE_H
+# include <stl/_hashtable.h>
+#endif
+
 #ifdef _STLP_DEBUG
 #  define hashtable __WORKAROUND_DBG_RENAME(hashtable)
 #endif

@@ -18,6 +18,10 @@
 #ifndef _STLP_NUM_PUT_C
 #define _STLP_NUM_PUT_C
 
+#ifndef _STLP_INTERNAL_NUM_PUT_H
+# include <stl/_num_put.h>
+#endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_LIMITS_H

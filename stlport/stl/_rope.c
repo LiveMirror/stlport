@@ -27,6 +27,10 @@
 # ifndef _STLP_ROPEIMPL_H
 # define _STLP_ROPEIMPL_H
 
+#ifndef _STLP_INTERNAL_ROPE_H
+# include <stl/_rope.h>
+#endif
+
 # ifndef _STLP_CSTDIO
 #  include <cstdio>
 # endif

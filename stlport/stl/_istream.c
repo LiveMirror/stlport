@@ -18,6 +18,10 @@
 #ifndef _STLP_ISTREAM_C
 #define _STLP_ISTREAM_C
 
+#ifndef _STLP_INTERNAL_ISTREAM_H
+# include <stl/_istream.h>
+#endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_LIMITS_H

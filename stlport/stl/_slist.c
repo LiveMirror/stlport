@@ -19,6 +19,10 @@
 #ifndef _STLP_SLIST_C
 #define _STLP_SLIST_C
 
+#ifndef _STLP_INTERNAL_SLIST_H
+# include <stl/_slist.h>
+#endif
+
 # undef slist
 # define  slist  __WORKAROUND_DBG_RENAME(slist)
 # if defined (_STLP_NESTED_TYPE_PARAM_BUG) 

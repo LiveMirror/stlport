@@ -26,6 +26,10 @@
 #ifndef _STLP_HEAP_C
 #define _STLP_HEAP_C
 
+#ifndef _STLP_INTERNAL_HEAP_H
+# include <stl/_heap.h>
+#endif
+
 #ifndef _STLP_INTERNAL_ITERATOR_BASE_H
 # include <stl/_iterator_base.h>
 #endif

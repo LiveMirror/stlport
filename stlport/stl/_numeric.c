@@ -26,6 +26,10 @@
 #ifndef _STLP_NUMERIC_C
 #define _STLP_NUMERIC_C
 
+#ifndef _STLP_INTERNAL_NUMERIC_H
+# include <stl/_numeric.h>
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 template <class _InputIterator, class _OutputIterator, class _Tp,

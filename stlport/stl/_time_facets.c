@@ -18,6 +18,10 @@
 #ifndef _STLP_TIME_FACETS_C
 #define _STLP_TIME_FACETS_C
 
+#ifndef _STLP_INTERNAL_TIME_FACETS_H
+# include <stl/_time_facets.h>
+#endif
+
 #if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_INTERNAL_NUM_PUT_H

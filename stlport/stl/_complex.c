@@ -18,6 +18,10 @@
 #ifndef _STLP_COMPLEX_C
 #define _STLP_COMPLEX_C
 
+# ifndef _STLP_internal_complex_h
+#  include <stl/_complex.h>
+# endif
+
 #include <istream>
 
 #ifdef _STLP_USE_NEW_IOSTREAMS

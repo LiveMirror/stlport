@@ -26,6 +26,10 @@
 #ifndef _STLP_STRING_C
 #define _STLP_STRING_C
 
+#ifndef _STLP_STRING_H
+# include <stl/_string.h>
+#endif
+
 # ifdef _STLP_DEBUG
 #  define basic_string _Nondebug_string
 # endif

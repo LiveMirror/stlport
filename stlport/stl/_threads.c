@@ -26,6 +26,10 @@
 #ifndef _STLP_THREADS_C
 #define _STLP_THREADS_C
 
+#ifndef _STLP_INTERNAL_THREADS_H
+# include <stl/_threads.h>
+#endif
+
 # if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
 
 # if defined(_STLP_SGI_THREADS)

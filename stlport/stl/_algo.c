@@ -27,7 +27,7 @@
 # define _STLP_ALGO_C
 
 # if !defined (_STLP_INTERNAL_ALGO_H)
-#  include "stl/_algo.h"
+#  include <stl/_algo.h>
 # endif
 
 _STLP_BEGIN_NAMESPACE

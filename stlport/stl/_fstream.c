@@ -18,6 +18,10 @@
 #ifndef _STLP_FSTREAM_C
 #define _STLP_FSTREAM_C
 
+# ifndef _STLP_INTERNAL_FSTREAM_H
+#  include <stl/_fstream.h>
+# endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 _STLP_BEGIN_NAMESPACE

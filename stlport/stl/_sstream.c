@@ -15,8 +15,13 @@
  * modified is included with the above copyright notice.
  *
  */ 
+
 #ifndef _STLP_SSTREAM_C
 #define _STLP_SSTREAM_C
+
+#ifndef _STLP_SSTREAM_H
+# include <stl/_sstream.h>
+#endif
 
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 

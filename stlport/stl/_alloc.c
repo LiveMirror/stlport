@@ -28,6 +28,10 @@
 #pragma warning 368 9
 #endif
 
+#ifndef _STLP_INTERNAL_ALLOC_H
+#  include <stl/_alloc.h>
+#endif
+
 # if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
 
 # ifdef _STLP_SGI_THREADS
