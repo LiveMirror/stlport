@@ -272,6 +272,7 @@ Dep_osdexe = \
    accum2.obj\
    binsert2.obj\
    hmap1.obj hmmap1.obj hset2.obj hmset1.obj \
+   move_constructor.obj \
    os.def
 
 stl_test.exe : $(Dep_osdexe)
@@ -412,6 +413,7 @@ maxelem1.obj+
 max2.obj+
 max1.obj+
 map1.obj+
+memfunptr.obj+
 lwrbnd2.obj+
 lwrbnd1.obj+
 logicor.obj+
@@ -510,7 +512,8 @@ hmap1.obj+
 hmmap1.obj+
 hset2.obj+
 hmset1.obj+
-binsert2.obj
+binsert2.obj +
+move_constructor.obj
 $<,$*
 ${BCROOT}\LIB\import32.lib+
 ${BCROOT}\LIB\cw32i.lib
@@ -1691,6 +1694,16 @@ binsert2.obj :  binsert2.cpp
 string1.obj :  string1.cpp
   $(BCC32) -c @&&|
  $(CompOptsAt_osdexe) $(CompInheritOptsAt_osdexe) -o$@ string1.cpp
+|
+
+memfunptr.obj :  memfunptr.cpp
+  $(BCC32) -c @&&|
+ $(CompOptsAt_osdexe) $(CompInheritOptsAt_osdexe) -o$@ memfunptr.cpp
+|
+
+move_constructor.obj :  move_constructor.cpp
+  $(BCC32) -c @&&|
+ $(CompOptsAt_osdexe) $(CompInheritOptsAt_osdexe) -o$@ move_constructor.cpp
 |
 
 bitset1.obj :  bitset1.cpp

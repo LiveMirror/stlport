@@ -846,6 +846,25 @@ inline void swap(basic_string<_CharT,_Traits,_Alloc>& __x,
 }
 #endif /* _STLP_FUNCTION_TMPL_PARTIAL_ORDER */
 
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _CharT, class _Traits, class _Alloc>
+struct __partial_move_traits<basic_string<_CharT,_Traits,_Alloc> > {
+  typedef __true_type supported;
+};
+
+template <class _CharT, class _Traits, class _Alloc>
+struct __action_on_move<basic_string<_CharT,_Traits,_Alloc> > {
+  typedef __true_type swap;
+};
+
+/*
+template <class _CharT, class _Traits, class _Alloc>
+struct __full_move_traits<basic_string<_CharT,_Traits,_Alloc> > {
+  typedef __true_type supported;
+};
+*/
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+
 // I/O.  
 
 #ifdef _STLP_EXTRA_OPERATORS_FOR_DEBUG

@@ -240,21 +240,21 @@ _STLP_TEMPLATE_NULL struct _Is_integer<unsigned _STLP_LONG_LONG> {
 
 #endif /* _STLP_LONG_LONG */
 
-template <class _Tp> struct _Is_float_point {
-  typedef __false_type _FloatingPoint;
+template <class _Tp> struct _Is_rational {
+  typedef __false_type _Rational;
 };
 
-_STLP_TEMPLATE_NULL struct _Is_float_point<float> {
-  typedef __true_type _FloatingPoint;
+_STLP_TEMPLATE_NULL struct _Is_rational<float> {
+  typedef __true_type _Rational;
 };
 
-_STLP_TEMPLATE_NULL struct _Is_float_point<double> {
-  typedef __true_type _FloatingPoint;
+_STLP_TEMPLATE_NULL struct _Is_rational<double> {
+  typedef __true_type _Rational;
 };
 
 # if !defined ( _STLP_NO_LONG_DOUBLE )
-_STLP_TEMPLATE_NULL struct _Is_float_point<long double> {
-  typedef __true_type _FloatingPoint;
+_STLP_TEMPLATE_NULL struct _Is_rational<long double> {
+  typedef __true_type _Rational;
 };
 # endif
 
@@ -296,7 +296,7 @@ inline _IsPOD<_Tp>  _Is_POD (_Tp*) { return _IsPOD<_Tp>(); }
 template <class _Tp>
 struct _DefaultZeroValue {
   typedef typename _Is_integer<_Tp>::_Integral _Tr1;
-  typedef typename _Is_float_point<_Tp>::_FloatingPoint _Tr2;
+  typedef typename _Is_rational<_Tp>::_Rational _Tr2;
   typedef typename __bool2type< _IsPtr<_Tp>::_Ret>::_Ret _Tr3;
 
   typedef typename _Lor3<_Tr1, _Tr2, _Tr3>::_Ret _Type;
@@ -308,7 +308,7 @@ inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*) {
   return _DefaultZeroValue<_Tp>();
 }
 
-#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+#if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
 template <class _Tp>
 struct _SwapImplemented {
   typedef typename _IsConvertibleType<_Tp, __stlp_base_class>::_Type _Ret;
@@ -320,18 +320,15 @@ struct __action_on_move {
 	typedef __false_type swap;
 };
 
-class __enable_swap_on_move {};
-
 template <class _Tp1, class _Tp2> 
 struct _SwapOnMove {
 	typedef typename __action_on_move<_Tp1>::swap _Enabled1;
-	typedef typename _IsConvertibleType<_Tp1, __enable_swap_on_move>::_Type _Enabled2;
-#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
-  typedef typename _IsConvertibleType<_Tp1, __stlp_base_class>::_Type _Enabled3;
+#if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION)
+  typedef typename _IsConvertibleType<_Tp1, __stlp_base_class>::_Type _Enabled2;
 #else
-  typedef __false_type _Enabled3;
-#endif
-	typedef typename _Lor3<_Enabled1, _Enabled2, _Enabled3>::_Ret _Enabled;
+  typedef __false_type _Enabled2;
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
+	typedef typename _Lor2<_Enabled1, _Enabled2>::_Ret _Enabled;
 
   enum { _Same = _IsSame<_Tp1,_Tp2>::_Ret };
   typedef typename __bool2type< _Same >::_Ret _Cond;

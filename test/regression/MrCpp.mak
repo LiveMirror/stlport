@@ -260,6 +260,7 @@ Regression_Objects_PPC  = ¶
 	"{ObjDir}vec6.cpp.x" ¶
 	"{ObjDir}vec7.cpp.x" ¶
 	"{ObjDir}vec8.cpp.x" ¶
+	"{ObjDir}move_constructor.cpp.x" ¶
 	# end
 
 Regression_test ÄÄ setup

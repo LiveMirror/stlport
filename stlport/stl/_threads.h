@@ -402,6 +402,8 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
         ,_id( -1 )
 #  elif defined(_STLP_WIN32THREADS)
         ,_id( -1 )
+#  else
+#   error "New _STLP_mutex_RS class not yet ported to this platform"
 #  endif
     {}
 

@@ -251,6 +251,13 @@
 // not std::
 // #  define _STLP_VENDOR_GLOBAL_CSTD
 
+// uncomment this if your compiler consider as ambiguous a function imported within
+// the stlport namespace and called without scope (:: or std::)
+// #  define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
+
+// uncomment this if your compiler implement full ADL (Argument Dependent Lookup)
+// # define _STLP_FULL_ADL_IMPLEMENTED 1
+
 // Edit relative path below (or put full path) to get native 
 // compiler headers included. Default is "../include".
 // C headers may reside in different directory, so separate macro is provided.

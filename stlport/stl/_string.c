@@ -186,8 +186,8 @@ basic_string<_CharT,_Traits,_Alloc> ::_M_insert_aux(_CharT* __p,
   return __new_pos;
 }
 
-template <class _CharT, class _Traits, class _Alloc> void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
-           size_t __n, _CharT __c)
+template <class _CharT, class _Traits, class _Alloc> 
+void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position, size_t __n, _CharT __c)
 {
   if (__n != 0) {
     if (size_type(this->_M_end_of_storage._M_data - this->_M_finish) >= __n + 1) {
@@ -238,10 +238,10 @@ template <class _CharT, class _Traits, class _Alloc> void basic_string<_CharT,_T
 
 #ifndef _STLP_MEMBER_TEMPLATES
 
-template <class _CharT, class _Traits, class _Alloc> void 
-basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
-                                            const _CharT* __first, 
-                                            const _CharT* __last)
+template <class _CharT, class _Traits, class _Alloc>
+void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
+                                                 const _CharT* __first, 
+                                                 const _CharT* __last)
 {
   if (__first != __last) {
     const ptrdiff_t __n = __last - __first;
@@ -254,7 +254,7 @@ basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
         this->_M_finish += __n;
         _Traits::move(__position + __n,
                       __position, (__elems_after - __n) + 1);
-        _M_copy(__first, __last, __position);
+        _M_move(__first, __last, __position);
       }
       else {
         const _CharT* __mid = __first;
@@ -267,7 +267,7 @@ basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
         }
         _STLP_UNWIND((_STLP_STD::_Destroy_Range(__old_finish + 1, this->_M_finish), 
                       this->_M_finish = __old_finish));
-        _M_copy(__first, __mid, __position);
+        _M_move(__first, __mid, __position);
       }
     }
     else {
@@ -314,18 +314,20 @@ template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT,_Traits
 #ifndef _STLP_MEMBER_TEMPLATES
 
 
-template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT,_Traits,_Alloc>& basic_string<_CharT,_Traits,_Alloc> ::replace(iterator __first, iterator __last,
-            const _CharT* __f, const _CharT* __l)
+template <class _CharT, class _Traits, class _Alloc> 
+basic_string<_CharT,_Traits,_Alloc>& 
+basic_string<_CharT,_Traits,_Alloc> ::replace(iterator __first, iterator __last,
+                                              const _CharT* __f, const _CharT* __l)
 {
   const ptrdiff_t         __n = __l - __f;
   const difference_type __len = __last - __first;
   if (__len >= __n) {
-    _M_copy(__f, __l, __first);
+    _M_move(__f, __l, __first);
     erase(__first + __n, __last);
   }
   else {
     const _CharT* __m = __f + __len;
-    _M_copy(__f, __m, __first);
+    _M_move(__f, __m, __first);
     insert(__last, __m, __l);
   }
   return *this;

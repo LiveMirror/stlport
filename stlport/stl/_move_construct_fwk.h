@@ -42,19 +42,14 @@ public:
 	{return _data;}
 };
 
-class __partial_move_supported {};
-
-//prefered way of signaling partial move support: template specialization
+//Class used to signal partial move support.
 template <class _Tp>
 struct __partial_move_traits {
-  //default value based on the alternative way to signal full move support: derivation
-  typedef typename _IsConvertibleType<_Tp, __partial_move_supported>::_Type _Sup1;
-
-#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
-  typedef typename _IsConvertibleType<_Tp, __stlp_base_class>::_Type _StlpClass;
-  typedef typename _Lor2<_Sup1, _StlpClass>::_Ret supported;
+#if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION)
+  typedef typename _IsConvertibleType<_Tp, __stlp_base_class>::_Type supported;
 #else
-  typedef _Sup1 supported;
+  //By default not supported:
+  typedef __false_type supported;
 #endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
 };
 
@@ -89,13 +84,11 @@ public:
   {return _data;}
 };
 
-class __full_move_supported {};
-
-//prefered way of signaling full move support: template specialization
+//Class used to signal full move support.
 template <class _Tp>
 struct __full_move_traits {
-  //default value based on the alternative way to signal full move support: derivation
-  typedef typename _IsConvertibleType<_Tp, __full_move_supported>::_Type supported;
+  //By default not supported
+  typedef __false_type supported;
 };
 
 template <class _Tp>

@@ -241,7 +241,8 @@ OBJFILES = \
    accum2.obj\
    binsert2.obj\
    hmap1.obj hmmap1.obj hset2.obj hmset1.obj \
-   slist1.cpp string1.cpp bitset1.cpp
+   slist1.cpp string1.cpp bitset1.cpp \
+   move_constructor.cpp
 
 # ---------------------------------------------------------------------------
 PATHCPP = .;

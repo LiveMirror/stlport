@@ -232,6 +232,7 @@
 #include "vec7.cpp"
 #include "vec8.cpp"
 #include "stl_test.h"
+#include "move_constructor.cpp"
 #ifdef MAIN 
 #define single_test main
 #endif
@@ -472,4 +473,5 @@ vec5_test(argc, argv);
 vec6_test(argc, argv);
 vec7_test(argc, argv);
 vec8_test(argc, argv);
+move_construct_test(argc, argv);
 }

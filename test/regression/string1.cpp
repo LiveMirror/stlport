@@ -21,11 +21,38 @@ int string1_test(int, char**)
   v.erase(v.begin() + 1, v.end() - 1); // Erase all but first and last.
   for(i = 0; i < v.size(); i++)
     cout << "v[" << i << "] = " << v[i] << endl;
-  cout << endl;
   v.insert(1, (char*)array);
   v.erase(v.begin()); // Erase first element.
   v.erase(v.end() - 1); // Erase last element.
   cout << v << endl;
   v.clear(); // Erase all.
+
+  const char* strorg = "This is test string for insert\n";
+  string str;
+  str.reserve(50);
+  str = strorg;
+
+  //test self insertion:
+  str.insert(10, str.c_str() + 5, 15);
+  //Should be: This is teis test string st string for insert
+  cout << str;
+
+  //An other one using an other implementation
+  str = strorg;
+  str.insert(15, str.c_str() + 5, 25);
+  //Should be: This is test stis test string for insertring for insert
+  cout << str;
+
+  str = strorg;
+  str.replace(5, 15, str.c_str(), 10);
+  //Should be: This This is tefor insert
+  cout << str;
+
+  str = strorg;
+  str.replace(5, 5, str.c_str(), 10);
+  //Should be: This This is test string for insert
+  cout << str;
+  cout << endl;
+
   return 0;
 }

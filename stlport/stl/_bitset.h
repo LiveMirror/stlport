@@ -78,6 +78,10 @@ public:
   static unsigned char _S_first_one[256];
 };
 
+# if defined (_STLP_USE_TEMPLATE_EXPORT) 
+_STLP_EXPORT_TEMPLATE_CLASS _Bs_G<bool>;
+# endif
+
 //
 // Base class: general case.
 //

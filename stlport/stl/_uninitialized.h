@@ -46,13 +46,52 @@ _STLP_BEGIN_NAMESPACE
 
 // uninitialized_copy
 
+inline void*
+__ucopy_trivial(const void* __first, const void* __last, void* __result) {
+  //dums: this version can use memcpy (__copy_trivial can't)
+  return (__last == __first) ? __result : 
+    ((char*)memcpy(__result, __first, ((const char*)__last - (const char*)__first))) + 
+    ((const char*)__last - (const char*)__first);
+}
+
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __ucopy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                               const __false_type& /*IsOKToMemCpy*/) {
+  return __copy(__first, __last, __result, 
+                _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
+                _STLP_DISTANCE_TYPE(__first, _InputIter));
+}
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __ucopy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                               const __true_type& /*IsOKToMemCpy*/) {
+// we know they all pointers, so this cast is OK 
+  //  return (_OutputIter)__copy_trivial(&(*__first), &(*__last), &(*__result));
+  return (_OutputIter)__ucopy_trivial(__first, __last, __result);
+}
+
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __ucopy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                               const __true_type& /*BothPtrType*/) {
+  return __ucopy_ptrs(__first, __last, __result, 
+                      _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter), 
+                                    _STLP_VALUE_TYPE(__result, _OutputIter))._Answer());
+}
+
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __ucopy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                               const __false_type& /*BothPtrType*/) {
+  return __copy(__first, __last, __result, 
+		            _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
+                _STLP_DISTANCE_TYPE(__first, _InputIter));
+}
+
 // Valid if copy construction is equivalent to assignment, and if the
 //  destructor is trivial.
 template <class _InputIter, class _ForwardIter>
 inline _ForwardIter 
 __uninitialized_copy(_InputIter __first, _InputIter __last, _ForwardIter __result,
                      const __true_type& /*IsPOD*/) {
-  return __copy_aux(__first, __last, __result, _BothPtrType< _InputIter, _ForwardIter> :: _Ret());
+  return __ucopy_aux(__first, __last, __result, _BothPtrType< _InputIter, _ForwardIter> :: _Ret());
 }
 
 template <class _InputIter, class _ForwardIter>
@@ -79,13 +118,13 @@ uninitialized_copy(_InputIter __first, _InputIter __last, _ForwardIter __result)
 
 inline char* 
 uninitialized_copy(const char* __first, const char* __last, char* __result) {
-  return  (char*)__copy_trivial (__first, __last, __result);
+  return  (char*)__ucopy_trivial (__first, __last, __result);
 }
 
 #  ifdef _STLP_HAS_WCHAR_T // dwa 8/15/97
 inline wchar_t* 
 uninitialized_copy(const wchar_t* __first, const wchar_t* __last, wchar_t* __result) {
-  return  (wchar_t*)__copy_trivial (__first, __last, __result);
+  return  (wchar_t*)__ucopy_trivial (__first, __last, __result);
 }
 #  endif /* _STLP_HAS_WCHAR_T */
 

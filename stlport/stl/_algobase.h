@@ -62,7 +62,7 @@ _STLP_INSTRUMENT_FILE();
 
 _STLP_BEGIN_NAMESPACE
 
-#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+#if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
 template <class _Tp>
 inline void __swap_aux(_Tp& __a, _Tp& __b, const __true_type& /*SwapImplemented*/) {
   __a.swap(__b);
@@ -79,7 +79,7 @@ inline void __swap_aux(_Tp& __a, _Tp& __b, const __false_type& /*SwapImplemented
 // swap and iter_swap
 template <class _Tp>
 inline void swap(_Tp& __a, _Tp& __b) {
-#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+#if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
   typedef typename _SwapImplemented<_Tp>::_Ret _Implemented;
   __swap_aux(__a, __b, _Implemented());
 #else
@@ -210,29 +210,34 @@ __copy_trivial_backward(const void* __first, const void* __last, void* __result)
 }
 
 template <class _InputIter, class _OutputIter>
-inline _OutputIter __copy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, const __false_type&) {
+inline _OutputIter __copy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                               const __false_type& /*IsOKToMemCpy*/) {
   return __copy(__first, __last, __result, 
                 _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
                 _STLP_DISTANCE_TYPE(__first, _InputIter));
 }
 template <class _InputIter, class _OutputIter>
-inline _OutputIter __copy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, const __true_type&) {
+inline _OutputIter __copy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                               const __true_type& /*IsOKToMemCpy*/) {
 // we know they all pointers, so this cast is OK 
   //  return (_OutputIter)__copy_trivial(&(*__first), &(*__last), &(*__result));
   return (_OutputIter)__copy_trivial(__first, __last, __result);
 }
 
 template <class _InputIter, class _OutputIter>
-inline _OutputIter __copy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, const __true_type&) {
+inline _OutputIter __copy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                              const __true_type& /*BothPtrType*/) {
   return __copy_ptrs(__first, __last, __result, 
                      _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter), 
                                    _STLP_VALUE_TYPE(__result, _OutputIter))._Answer());
 }
 
 template <class _InputIter, class _OutputIter>
-inline _OutputIter __copy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, const __false_type&) {
+inline _OutputIter __copy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                              const __false_type& /*BothPtrType*/) {
   return __copy(__first, __last, __result, 
-		_STLP_ITERATOR_CATEGORY(__first, _InputIter), _STLP_DISTANCE_TYPE(__first, _InputIter));
+		            _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
+                _STLP_DISTANCE_TYPE(__first, _InputIter));
 }
 
 template <class _InputIter, class _OutputIter>

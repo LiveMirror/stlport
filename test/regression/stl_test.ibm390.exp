@@ -859,8 +859,12 @@ Results of string1_test:
 Hello, World!
 v[0] = H
 v[1] = !
-
 Hello, World!
+This is teis test string st string for insert
+This is test stis test string for insertring for insert
+This This is tefor insert
+This This is test string for insert
+
 Results of bitset1_test:
 b1 size = 13
 b1 = 1111111111111

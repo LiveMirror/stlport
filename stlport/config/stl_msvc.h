@@ -67,6 +67,7 @@
 
 # if (_STLP_MSVC <= 1310)
 # define _STLP_STATIC_CONST_INIT_BUG   1
+# define _STLP_FULL_ADL_IMPLEMENTED 1
 # endif	//	(_STLP_MSVC <= 1310)
 
 # if (_STLP_MSVC <= 1300) 

@@ -231,6 +231,7 @@ struct _IsSame<_Tp, _Tp> { enum { _Ret = 1 }; };
 
 # endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
 
+#if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND)
 
 template <class _Derived, class _Base>
 struct _ConversionHelper {
@@ -254,6 +255,8 @@ struct _IsConvertibleType {
   typedef __bool2type< exists > _BT;
   typedef typename _BT::_Ret _Type;
 };
+
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
 
 _STLP_END_NAMESPACE
 

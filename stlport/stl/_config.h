@@ -1003,7 +1003,8 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 # endif
 
 //Activation of the partial template workaround:
-# if !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) || !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
+# if !defined(_STLP_DONT_USE_PARTIAL_SPEC_WRKD) \
+    && (!defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) || !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER))
 #  define _STLP_USE_PARTIAL_SPEC_WORKAROUND
 # endif
 
@@ -1031,6 +1032,12 @@ _TMPL inline bool _STLP_CALL operator>=(const _TP& __x, const _TP& __y) { return
 # else
 #  define _STLP_RELOPS_OPERATORS(_TMPL, _TP)
 # endif
+
+# if defined (_STLP_FULL_ADL_IMPLEMENTED) && defined (_STLP_NO_OWN_IOSTREAMS)
+#  error "Invalid configuration, STLport wrapper iostream mode can't be used with compiler"\
+         "implementing full Argument Dependent Lookup. Please recomment _STLP_NO_OWN_IOSTREAMS"\
+         "and build STLport library."
+# endif /* _STLP_FULL_ADL_IMPLEMENTED && _STLP_NO_OWN_IOSTREAMS */
 
 # if defined ( _STLP_USE_ABBREVS )
 #  include <stl/_abbrevs.h>
