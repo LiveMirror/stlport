@@ -121,11 +121,7 @@ bool hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>::_M_equal(
 
 template <class _Val, class _Key, class _HF, 
           class _ConstTraits, class _ExK, class _EqK, class _All>
-pair<_Ht_iterator<_Val, 
-                  _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits,
-                  _STLP_HEADER_TYPENAME _ConstTraits::container_type, 
-                  _Key, _HF, _ExK, _EqK, _All>,
-     bool>
+pair<__iterator__, bool>
 hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
   ::insert_unique_noresize(const value_type& __obj) {
   const size_type __n = _M_bkt_num(__obj);

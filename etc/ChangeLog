@@ -1,3 +1,7 @@
+2004-08-27  Francois Dumont  <dums@...>
+
+	* .Net 2002 (VC70) portage.
+
 2004-08-27  Petr Ovtchenkov  <ptr@Island...>
 
 	* src/explore/Makefiles/gmake/gcc.mak, app/gcc.mak, lib/gcc.mak: buggy C++

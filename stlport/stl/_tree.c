@@ -384,8 +384,7 @@ _Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstTraits,_Alloc> ::insert_equal(co
 
 template <class _Key, class _Compare, 
           class _Value, class _KeyOfValue, class _ConstTraits, class _Alloc>
-pair< _Rb_tree_iterator<_Value, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, 
-                                _STLP_HEADER_TYPENAME _ConstTraits::container_type>, bool>
+pair<__iterator__, bool>
 _Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstTraits,_Alloc> ::insert_unique(const _Value& __val) {
   _Base_ptr __y = &this->_M_header._M_data;
   _Base_ptr __x = _M_root();
