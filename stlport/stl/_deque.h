@@ -426,7 +426,7 @@ public:                         // Basic accessors
   size_type size() const { return this->_M_finish - this->_M_start; }
   size_type max_size() const { return size_type(-1); }
   bool empty() const { return this->_M_finish == this->_M_start; }
-  allocator_type get_allocator() const { return _M_map_size; }
+  allocator_type get_allocator() const { return this->_M_map_size; }
 
 public:                         // Constructor, destructor.
   explicit deque(const allocator_type& __a = allocator_type()) 

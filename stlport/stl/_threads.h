@@ -51,7 +51,8 @@
   typedef long __stl_atomic_t;
 # else 
 # if defined (_STLP_USE_NAMESPACES) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
-using _STLP_VENDOR_CSTD::size_t;
+// using _STLP_VENDOR_CSTD::size_t;
+using namespace _STLP_VENDOR_CSTD;
 # endif
   typedef size_t __stl_atomic_t;
 #endif  
@@ -162,13 +163,17 @@ using _STLP_VENDOR_CSTD::time_t;
 # endif
 #  include <synch.h>
 #  include <cstdio>
-#  include <cwchar>
+#  include <stl/_cwchar.h>
 # elif defined (_STLP_BETHREADS)
 #  include <OS.h>
 #include <cassert>
 #include <stdio.h>
 #  define _STLP_MUTEX_INITIALIZER = { 0 }
 #elif defined(_STLP_OS2THREADS)
+# ifdef __GNUC__
+#  define INCL_DOSSEMAPHORES
+#  include <os2.h>
+# else
   // This section serves to replace os2.h for VisualAge C++
   typedef unsigned long ULONG;
   #ifndef __HEV__  /* INCL_SEMAPHORE may also define HEV */
@@ -187,7 +192,7 @@ flAttr, BOOL32 fState);
   APIRET _System DosReleaseMutexSem(HMTX hmtx);
   APIRET _System DosCloseMutexSem(HMTX hmtx);
 # define _STLP_MUTEX_INITIALIZER = { 0 };
-
+#  endif /* GNUC */
 # endif
 
 # ifndef _STLP_MUTEX_INITIALIZER
@@ -302,7 +307,7 @@ false); }
   inline void _M_destroy() { DosCloseMutexSem(_M_lock); }
   inline void _M_acquire_lock() {
     if(!_M_lock) _M_initialize();
-    DosRequestMutexSem(_M_lock, -1);
+    DosRequestMutexSem(_M_lock, SEM_INDEFINITE_WAIT);
   }
   inline void _M_release_lock() { DosReleaseMutexSem(_M_lock); }
 #elif defined(_STLP_BETHREADS)
@@ -380,7 +385,7 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_indirect
   }
   inline void _M_acquire_lock() {
     if(!_M_lock) _M_initialize();
-    DosRequestMutexSem(*(HMTX*)_M_lock, -1);
+    DosRequestMutexSem(*(HMTX*)_M_lock, SEM_INDEFINITE_WAIT);
   }
   inline void _M_release_lock() { DosReleaseMutexSem(*(HMTX*)_M_lock); }
 # else /* No threads */

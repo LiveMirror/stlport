@@ -86,6 +86,8 @@ stdio_streambuf_base::seekoff(off_type off, ios_base::seekdir dir,
     return pos_type((streamoff)pos.__pos);
 #elif defined(__ISCPP__) || defined(__MVS__) || (__OS400__)
      return pos_type(pos.__fpos_elem[ 0 ]);
+#elif defined (__EMX__)
+     return pos_type((streamoff)pos._pos);
 #else
     return pos_type(pos);
 #endif
@@ -108,6 +110,10 @@ stdio_streambuf_base::seekpos(pos_type pos, ios_base::openmode /* mode */)   // 
 #elif defined(__MVS__) || (__OS400__)
   fpos_t p;
   p.__fpos_elem[0] = pos;
+#elif defined(__EMX__)
+  fpos_t p;
+  p._pos = pos;
+  memset( &(p._mbstate), 0, sizeof(p._mbstate) );
 #else
   fpos_t p(pos);
 #endif

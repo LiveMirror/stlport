@@ -109,8 +109,9 @@ extern "C"
 # if defined(EH_USE_NAMESPACES)
 namespace  // dwa 1/21/00 - must use unnamed namespace here to avoid conflict under gcc using native streams
 {
-using EH_STD::cerr;
-using EH_STD::endl;
+  using namespace std;
+  // using std::cerr;
+  // using std::endl;
 }
 # endif
 

@@ -6,7 +6,6 @@
 #include <iostream>
 #include "stl_test.h"
 
-
 #if !defined (STLPORT) || defined(__STL_USE_NAMESPACES)
 using namespace std;
 #endif

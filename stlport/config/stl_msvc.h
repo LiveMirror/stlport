@@ -25,6 +25,8 @@
 #  define _STLP_LONG_LONG  __int64
 # endif
 
+# define _STLP_PRAGMA_ONCE
+
 // these switches depend on compiler flags
 # ifndef _CPPUNWIND
 #  define _STLP_HAS_NO_EXCEPTIONS 1
@@ -68,6 +70,7 @@
 //  using ::func_name results in ambiguity
 
 # if (_STLP_MSVC <= 1300) 
+
 // boris : not defining this macro for SP5 causes other problems
 // #  if !defined (_MSC_FULL_VER) || (_MSC_FULL_VER < 12008804 )
 #   define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
@@ -76,8 +79,7 @@
 #  define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1
 #  define _STLP_NO_FRIEND_TEMPLATES
 #  define _STLP_STATIC_CONST_INIT_BUG   1
-//  these work, as long they are inline
-#   define _STLP_INLINE_MEMBER_TEMPLATES 1
+
 // VC++ cannot handle default allocator argument in template constructors
 #   define _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
 // there is no partial spec, and MSVC breaks on simulating it for iterator_traits queries
@@ -85,8 +87,6 @@
 # endif
 
 // #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
-#  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
-#  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 
 #  define _STLP_NO_QUALIFIED_FRIENDS    1
 #  define _STLP_DONT_USE_BOOL_TYPEDEF 1
@@ -95,14 +95,22 @@
 
 
 # if (_MSC_VER <= 1300) 
+
 #  define _STLP_VENDOR_GLOBAL_CSTD
 // They included the necessary coding,
 // but the beta still has an issue with template classes
 // ok:    class a { static const int v = 2; };
 // error: template &lt;class _Tp> class a { static const int v = 2; };
+#  if !defined (_STLP_WHOLE_NATIVE_STD) && ! defined (_STLP_REDEFINE_STD)
+#    define _STLP_REDEFINE_STD
+#  endif
 # endif /* (_MSC_VER <= 1300) */
 
 # if (_MSC_VER <= 1200)  // including MSVC 6.0
+//  these work, as long they are inline
+#  define _STLP_INLINE_MEMBER_TEMPLATES 1
+#  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
+#  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 #  define _STLP_GLOBAL_NEW_HANDLER
 # endif /* (_MSC_VER <= 1200) */
 
