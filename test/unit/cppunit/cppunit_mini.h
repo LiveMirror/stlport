@@ -122,7 +122,11 @@ namespace CPPUNIT_NS
 }
 
 #define CPPUNIT_TEST_SUITE(X) virtual void myRun(const char *in_name) { char *className = #X;
-#define CPPUNIT_TEST(X) if(shouldRunThis(in_name, className, #X)) {setUp(); progress(className, #X); X(); tearDown();}
+#if defined CPPUNIT_MINI_USE_EXCEPTIONS
+#  define CPPUNIT_TEST(X) if(shouldRunThis(in_name, className, #X)) { try { setUp(); progress(className, #X); X(); tearDown(); } catch(...) { TestCase::error("Test Failed: An Exception was thrown.", #X, __FILE__, __LINE__); } }
+#else
+#  define CPPUNIT_TEST(X) if(shouldRunThis(in_name, className, #X)) {setUp(); progress(className, #X); X(); tearDown();}
+#endif
 #define CPPUNIT_TEST_EXCEPTION(X,Y) if(shouldRunThis(in_name, className, #X)) {progress(className, #X);}
 #define CPPUNIT_TEST_SUITE_END() }
 #define CPPUNIT_TEST_SUITE_REGISTRATION(X) static X local;

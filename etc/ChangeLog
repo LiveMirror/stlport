@@ -1,3 +1,24 @@
+2004-09-16  Francois Dumont  <dums@...>
+
+	* test/unit/cppunit/cppunit_mini.h, cppunit_proxy.h: Adaptation of the CPPUNIT
+	framework to take care of the exception as failures.
+	
+	* stlport/config/stl_msvc.h, stl_bc.h, stl_mwerks.h, stlport/stl_user_config.h:
+	Removal of the non intuitive and difficult to maintain automatic linking feature.
+	
+	* Fixing of the locale implementation mecanism. Classis locale implementation is
+	also managed by a reference counter to be sure when it is possible to release
+	the associated ressources. Fix of a missing locale impl ref counter decrement
+	in the template locale constructor taking a facet, it was a possible source of
+	memory leak . Addition of a static object within locale_impl.cpp in 
+	_STLP_LEAKS_PEDANTIC mode to decrement the global locale impl ref counter when 
+	STLport library is unloaded. Addition of all the missing classic locale facets
+	 destructor in free_classic_locale.
+	 
+	* src/locale_catalog.cpp: The locale by name constructor checks the "C" name
+	to simply copy (increment the ref counter) the classic locale implementation 
+	rather than instanciating	a new one.
+	
 2004-09-15  Francois Dumont  <dums@...>
 
 	* stlport/stl/_list.c: Modification of the _S_sort implementation, the __carry 
