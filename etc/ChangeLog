@@ -1,4 +1,4 @@
-The following changes were made in 4.5.2 since 4.5.1 release:
+The following changes were made in 4.5.3 since 4.5.1 release:
 
 	* iostreams ported to Windows CE (thanks Andrew Waters)
 
@@ -39,10 +39,14 @@ The following changes were made in 4.5.2 since 4.5.1 release:
 
 	* *.c files : added conditional inclusion of corresponding *.h file to fix xlC issues with -tempinc option (thanks Alla Bogolyubov for the report)
 
+	* _auto_ptr.h : "struct" changed to "class" (thanks Alex Pinsker for the report)
+
+	* _config.h/stl_user_config.h : handling of macro _STLP_WHOLE_VENDOR_STD rectified
+
 	* _num_put.c : do_put(const void*) changed to output pointers in hex format (thanks  Alex Rosenberg)
 
-	
-	
+	* test/eh/test_algobase.cpp : fixed alignment to work on 64-bit architectures
+
 The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
 	* _config.h, _epilog.h : new namespace inclusion schema implemented for own iostreams mode
