@@ -40,3 +40,8 @@ else
 #STDLIBS := $(shell ${CXX} -print-file-name=libgcc.a) -lpthread -lc -lm
 endif
 endif
+
+# workaround for gcc 2.95.x bug:
+ifeq ($(CXX_VERSION_MAJOR),2)
+OPT += -fPIC
+endif
