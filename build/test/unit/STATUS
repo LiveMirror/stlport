@@ -65,7 +65,7 @@ Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
-Date:                           2005-03-06
+Date:                           2005-03-11
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
 Status (release-shared):        All pass (319 tests)
@@ -163,6 +163,30 @@ Notes:                          compiler crash; was report that commercial compi
                                 free of this bug, but this was not tested
 Status (stldbg-shared):         compile-time fail
 Notes:                          see notes above
+
+=======================================================================
+Operational environment:        Windows 2000
+=======================================================================
+
+-----------------------------------------------------------------------
+Compiler:                       Visual C++ 6 SP5
+-----------------------------------------------------------------------
+Date:                           2005-03-11
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        All pass (316 tests)
+Notes:                          still some inconveniences with 'using' and
+                                math functions, see comment in test/unit/resolve_name.cpp
+Status (dbg-shared):            All pass (316 tests)
+Notes:
+Status (stldbg-shared):         All pass (316 tests)
+Notes:
+Status (release-static):        All pass (316 tests)
+Notes:                          
+Status (dbg-static):            All pass (316 tests)
+Notes:
+Status (stldbg-static):         All pass (316 tests)
+Notes:
 
 =======================================================================
 Operational environment:        Windows XP Professionnal 2002 SP1
