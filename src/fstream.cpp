@@ -840,10 +840,16 @@ ptrdiff_t _Filebuf_base::_M_read(char* buf, ptrdiff_t n) {
           DWORD NumberOfBytesPeeked;
           ReadFile(_M_file_id, (LPVOID)&peek, 
                         1, &NumberOfBytesPeeked, 0);
-          if (NumberOfBytesPeeked)
-            SetFilePointer(_M_file_id,(LONG)-1,0,SEEK_CUR);
-          if (peek != _STLP_LF)
+          if (NumberOfBytesPeeked) {
+            if (peek != _STLP_LF) { //not a <CR><LF> combination
             * to ++ = _STLP_CR;
+              SetFilePointer(_M_file_id,(LONG)-1,0,SEEK_CUR);
+			}
+            else {
+              //We ignore the complete combinaison:
+              SetFilePointer(_M_file_id,(LONG)-2,0,SEEK_CUR);
+			}
+		  }
         }
       } // found CR
     } // for
