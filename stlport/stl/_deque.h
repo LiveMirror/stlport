@@ -181,7 +181,9 @@ struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 
   _STLP_DEFINE_ARROW_OPERATOR
 
-  difference_type operator-(const _Self& __x) const { return this->_M_subtract(__x); }
+  difference_type operator-(const _Nonconst_self& __x) const { return this->_M_subtract(__x); }
+  difference_type operator-(const _Const_self& __x) const { return this->_M_subtract(__x); }
+
 
   _Self& operator++() { this->_M_increment(); return *this; }
   _Self operator++(int)  {
