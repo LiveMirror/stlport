@@ -239,4 +239,5 @@ extern int hmset1_test  ( int, char**);
 extern int slist1_test (int, char**);
 extern int string1_test (int, char**);
 extern int bitset1_test (int, char**);
+extern int string_mt_test(int, char **);
 #endif

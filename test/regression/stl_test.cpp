@@ -490,6 +490,7 @@ int main(int argc, char** argv) {
         cout.flush();
 	bitset1_test (argc, argv); 
         cout.flush();
+        string_mt_test(argc, argv);
     }
     return 0;
 }
