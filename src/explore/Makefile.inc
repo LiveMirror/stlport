@@ -26,7 +26,6 @@ SRC_CPP = ../dll_main.cpp \
           ../time_facets.cpp \
           ../messages.cpp \
           ../locale_impl.cpp \
-          ../locale.cpp \
           ../locale_catalog.cpp \
           ../facets_byname.cpp \
           ../c_locale_stub.cpp \
