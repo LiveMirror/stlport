@@ -32,26 +32,27 @@
 #  endif
 # endif
 
+# if !defined(_STLP_USE_DYNAMIC_LIB) && !defined(_STLP_USE_STATIC_LIB)
 /*
  * Turn _STLP_USE_DYNAMIC_LIB to enforce use of .dll version of STLport library.
- * NOTE : please do that only if you know what you are doing !
+ * NOTE: please do that only if you know what you are doing!
  * Changing default will require you to change makefile in "src" accordingly
- * and to rebuild STLPort library !
+ * and to rebuild STLPort library!
  * On UNIX, this has no effect. 
  *
  */
-// # define _STLP_USE_DYNAMIC_LIB
+// #  define _STLP_USE_DYNAMIC_LIB
 
 /*
  * Turn _STLP_USE_STATIC_LIB to enforce use of static version of STLport library.
- * NOTE : please do that only if you know what you are doing !
+ * NOTE: please do that only if you know what you are doing!
  * Changing default will require you to change makefile in "src" accordingly
- * and to rebuild STLPort library !
+ * and to rebuild STLPort library!
  * On UNIX, this has no effect. 
  *
  */
 // # define _STLP_USE_STATIC_LIB
-
+# endif // !_STLP_USE_DYNAMIC_LIB && !_STLP_USE_STATIC_LIB
 
 /* 
  * Edit relative path below (or put full path) to get native 
