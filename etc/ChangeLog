@@ -10,6 +10,9 @@
 	* test/unit: Fixing 64 bits warnings in many tests.
 
 	* src/c_locale_win32/c_locale_win32.c: Fixing 64 bits warnings.
+	
+	* src/fstream.cpp: Creation of the INVALID_STLP_FD constant to represent
+	a portable invalid file descriptor.
 
 	* stlport/stl/_streambuf.c: Explicit instanciation of basic_streambuf
 	for wchar_t removed, already exists in _streambuf.h thanks
