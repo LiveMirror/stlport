@@ -73,9 +73,20 @@ __in_range_aux(const _Iterator1& __it, const _Iterator& __first,
 # endif
 
 template <class _Iterator>
-bool _STLP_CALL  __check_range(const _Iterator& __first, const _Iterator& __last) {
+bool _STLP_CALL __check_range_aux(const _Iterator& __first, const _Iterator& __last, const __false_type& /*_IsIntegral*/) {
   _STLP_VERBOSE_RETURN(__valid_range(__first,__last), _StlMsg_INVALID_RANGE )
   return true;
+}
+
+template <class _Integral>
+bool _STLP_CALL __check_range_aux(_Integral __first, _Integral __last, const __true_type& /*_IsIntegral*/) {
+  return true;
+}
+
+template <class _Iterator>
+bool _STLP_CALL  __check_range(const _Iterator& __first, const _Iterator& __last) {
+  typedef typename _Is_integer<_Iterator>::_Integral _Integral;
+  return __check_range_aux(__first, __last, _Integral());
 }
 
 template <class _Iterator>

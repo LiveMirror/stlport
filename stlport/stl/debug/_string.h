@@ -13,7 +13,6 @@
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
 
 #ifndef _STLP_DBG_STRING_H
@@ -158,7 +157,7 @@ public:
   _Self& operator=(const _Self& __s) {
     if (this != &__s) {
       _Invalidate_all();
-      _Base::operator=((const _Base&)__s);
+      _Base::operator=(__s);
     }
     return *this;
   }
@@ -464,7 +463,7 @@ public:                         // Replace.  (Conceptually equivalent
   _Self& replace(size_type __pos1, size_type __n1, const _Self& __s,
                  size_type __pos2, size_type __n2) {
     size_type __old_capacity = this->capacity();
-    _Base::replace(__pos1, __n1, (const _Base&)__s, __pos2, __n2);
+    _Base::replace(__pos1, __n1, __s, __pos2, __n2);
     _Compare_Capacity(__old_capacity);
     return *this;
   }
