@@ -312,8 +312,6 @@ __GIVE_UP_WITH_STL(GCC_272);
 
 #elif (__GNUC_MINOR__ < 8)
 
-//#  define _STLP_NO_OWN_IOSTREAMS 1
-//#  undef  _STLP_OWN_IOSTREAMS
 #  define _STLP_NATIVE_INCLUDE_PATH ../g++-include
 
 /* tuning of static template data members workaround */

@@ -276,13 +276,19 @@ typedef char __stl_char;
 #  endif
 #endif
 
+// on evc3/evc4 we don't have a static native runtime library
+// note: move this into stl_evc.h later and let stl_evc.h include stl_msvc.h
+#if defined (_STLP_WCE)
+#  undef _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
+#endif
+
 #if defined(_STLP_USE_DYNAMIC_LIB)
 #  undef  _STLP_USE_DECLSPEC
 #  define _STLP_USE_DECLSPEC 1
 #endif
 
 #ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
-#  if defined(_STLP_MSVC) && _STLP_MSVC >= 1300
+#  if !defined (_MSC_EXTENSIONS) || defined(_STLP_MSVC) && _STLP_MSVC >= 1300
 #    define _STLP_IMPORT_TEMPLATE_KEYWORD
 #  else
 #    define _STLP_IMPORT_TEMPLATE_KEYWORD  extern

@@ -89,6 +89,15 @@ void CMathTest::test()
   CPPUNIT_ASSERT( are_equals(std::fmod(1.5, 1.0), 0.5) );
   CPPUNIT_ASSERT( are_equals(std::sqrt(4.0), 2.0) );
   CPPUNIT_ASSERT( are_equals(std::pow(2.0, 2), 4.0) );
+  /*
+   * Uncomment the following to check that it generates an ambiguous call
+   * as there is no Standard pow(int, int) function only pow(double, int), 
+   * pow(float, int) and some others...
+   * If it do not generate a compile time error it should at least give
+   * the good result.
+   */
+  //CPPUNIT_ASSERT( are_equals(std::pow(10, -2), 0.01) );
+  CPPUNIT_ASSERT( are_equals(std::pow(10.0, -2), 0.01) );
   CPPUNIT_ASSERT( are_equals(std::exp(0.0), 1.0) );
   CPPUNIT_ASSERT( are_equals(std::log(std::exp(1.0)), 1.0) );
   CPPUNIT_ASSERT( are_equals(std::log10(100.0), 2.0) );

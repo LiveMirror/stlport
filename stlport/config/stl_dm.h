@@ -20,16 +20,10 @@
 
 # if !defined(_WIN32)
 // it's not fully supported on non-Win32 platforms
-#  define _STLP_NO_NEW_IOSTREAMS
 #  define _STLP_NO_NATIVE_WIDE_FUNCTIONS
 # endif
 
-# if defined(_STLP_NO_NEW_IOSTREAMS) || defined(_STLP_NO_OWN_IOSTREAMS)
-#  define _STLP_OWN_NAMESPACE
-# else
 #  define _STLP_NO_OWN_NAMESPACE
-# endif
-
 
 // select threads strategy
 # if defined (_MT) && !defined (_NOTHREADS)
@@ -167,7 +161,7 @@
 #  pragma message ("Using DECLSPEC")
 # endif
 
-# if !defined (__BUILDING_STLPORT) && !defined (_STLP_NO_OWN_IOSTREAMS)
+# if !defined (__BUILDING_STLPORT)
 #  if (defined (_DLL) && !defined (_STLP_DONT_USE_DLL)) || defined (_STLP_USE_DLL)
 #   undef  _STLP_USE_DECLSPEC
 #   define _STLP_USE_DECLSPEC 1

@@ -210,16 +210,16 @@ _STLP_END_NAMESPACE
 
 #  endif /* _STLP_USE_NEW_C_HEADERS */
 
-#  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200) && defined (_MSC_EXTENSIONS)
+#  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200)
+_STLP_BEGIN_NAMESPACE
+
+#    if defined (_MSC_EXTENSIONS)
 /*
  * dums: VC6 has all the required C++ functions but only define them if
  * _MSC_EXTENSIONS is not defined (a bug?). STLport just do the same
  * thing also when _MSC_EXTENSIONS is defined.
  */
-_STLP_BEGIN_NAMESPACE
 inline double abs(double __x) {return (fabs(__x)); }
-inline double pow(double __x, int __y) {return (_Pow_int(__x, __y)); }
-inline double pow(int __x, int __y) {return (_Pow_int(__x, __y)); }
 inline float abs(float __x) {return (fabsf(__x)); }
 inline float acos(float __x) {return (acosf(__x)); }
 inline float asin(float __x) {return (asinf(__x)); }
@@ -237,8 +237,6 @@ inline float ldexp(float __x, int __y) {return (ldexpf(__x, __y)); }
 inline float log(float __x) {return (logf(__x)); }
 inline float log10(float __x) {return (log10f(__x)); }
 inline float modf(float __x, float * __y) {return (modff(__x, __y)); }
-inline float pow(float __x, float __y) {return (powf(__x, __y)); }
-inline float pow(float __x, int __y) {return (_Pow_int(__x, __y)); }
 inline float sin(float __x) {return (sinf(__x)); }
 inline float sinh(float __x) {return (sinhf(__x)); }
 inline float sqrt(float __x) {return (sqrtf(__x)); }
@@ -261,13 +259,23 @@ inline long double ldexp(long double __x, int __y) {return (ldexpl(__x, __y)); }
 inline long double log(long double __x) {return (logl(__x)); }
 inline long double log10(long double __x) {return (log10l(__x)); }
 inline long double modf(long double __x, long double * __y) {return (modfl(__x, __y)); }
-inline long double pow(long double __x, long double __y) {return (powl(__x, __y)); }
-inline long double pow(long double __x, int __y) {return (_Pow_int(__x, __y)); }
 inline long double sin(long double __x) {return (sinl(__x)); }
 inline long double sinh(long double __x) {return (sinhl(__x)); }
 inline long double sqrt(long double __x) {return (sqrtl(__x)); }
 inline long double tan(long double __x) {return (tanl(__x)); }
 inline long double tanh(long double __x) {return (tanhl(__x)); }
+#    endif
+
+//The native pow version has a bugged overload so it is not imported
+//in the STLport namespace.
+inline double pow(double __x, double __y) { return _STLP_VENDOR_CSTD::pow(__x, __y); }
+inline double pow(double __x, int __y) {return (_Pow_int(__x, __y)); }
+//Here is the bugged version:
+//inline double pow(int __x, int __y) {return (_Pow_int(__x, __y)); }
+inline float pow(float __x, float __y) {return (powf(__x, __y)); }
+inline float pow(float __x, int __y) {return (_Pow_int(__x, __y)); }
+inline long double pow(long double __x, long double __y) {return (powl(__x, __y)); }
+inline long double pow(long double __x, int __y) {return (_Pow_int(__x, __y)); }
 _STLP_END_NAMESPACE
 #  endif
 

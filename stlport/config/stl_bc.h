@@ -45,7 +45,6 @@
 // BCB 2 or less (Borland 5.02)
 #if ( __BORLANDC__ < 0x530 )
 
-#  define _STLP_NO_OWN_IOSTREAMS
 #  undef  _STLP_OWN_IOSTREAMS
 
 #  define _STLP_GLOBAL_VENDOR_CSTD 1
@@ -130,13 +129,10 @@ typedef char    mbstate_t;
 #  define _STLP_CLASS_EXPORT_DECLSPEC __declspec(dllexport)
 #  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 
-#  if !defined (_STLP_NO_OWN_IOSTREAMS)
-
-#    if (defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
-         defined (_STLP_USE_DYNAMIC_LIB)) && !defined (_STLP_USE_STATIC_LIB)
-#      undef  _STLP_USE_DECLSPEC
-#      define _STLP_USE_DECLSPEC
-#    endif
+#  if (defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
+       defined (_STLP_USE_DYNAMIC_LIB)) && !defined (_STLP_USE_STATIC_LIB)
+#    undef  _STLP_USE_DECLSPEC
+#    define _STLP_USE_DECLSPEC
 #  endif
 
 #else
@@ -147,27 +143,23 @@ typedef char    mbstate_t;
 #  define _STLP_CLASS_EXPORT_DECLSPEC __declspec(dllexport)
 #  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 
-#  if !defined (_STLP_NO_OWN_IOSTREAMS)
+#  if (defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
+       defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB))
+#    undef  _STLP_USE_DECLSPEC
+#    define _STLP_USE_DECLSPEC 1
+#  endif
 
-#    if (defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
-         defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB))
-#      undef  _STLP_USE_DECLSPEC
-#      define _STLP_USE_DECLSPEC 1
-#    endif
+#  ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
+#    define _STLP_IMPORT_TEMPLATE_KEYWORD __declspec(dllimport)
+#  endif
+#  define _STLP_EXPORT_TEMPLATE_KEYWORD __declspec(dllexport)
 
-#    ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
-#      define _STLP_IMPORT_TEMPLATE_KEYWORD __declspec(dllimport)
-#    endif
-#    define _STLP_EXPORT_TEMPLATE_KEYWORD __declspec(dllexport)
-
-#    if (__BORLANDC__ >= 0x560) && ! defined (_STLP_OWN_IOSTREAMS)
+#  if (__BORLANDC__ >= 0x560) && ! defined (_STLP_OWN_IOSTREAMS)
 // #  define _STLP_IS_NATIVE_LIB
-#      define _STLP_NATIVE_INCLUDE_PATH ../include/oldstl
-#      define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include/oldstl
-#      define _STLP_NATIVE_C_INCLUDE_PATH ../include/oldstl
-#      define _STLP_NATIVE_CPP_RUNTIME_PATH ../include/oldstl
-#    endif
-
-#  endif /* _STLP_OWN_IOSTREAMS */
+#    define _STLP_NATIVE_INCLUDE_PATH ../include/oldstl
+#    define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include/oldstl
+#    define _STLP_NATIVE_C_INCLUDE_PATH ../include/oldstl
+#    define _STLP_NATIVE_CPP_RUNTIME_PATH ../include/oldstl
+#  endif
 
 #endif

@@ -1,3 +1,16 @@
+2004-11-16  Francois Dumont  <dums@stlport...>
+
+	* src/explore/configure.bat: Add of the --rtl-static and --rtl-dynamic
+	configuration options to force use of static or dynamic C runtime thanks
+	Michael Fink.
+
+	* stlport/config/stl_msvc.h: undef of the _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
+	for the evc platform that only have the static C runtime version thanks
+	Michael Fink.
+
+	* stlport/config/stl_bc.h, stl_dmc.h, stl_solaris.h: Removal of all references
+	to the deprecated _STLP_NO_OWN_IOSTREAMS and _STLP_NO_NEW_IOSTREAMS macros.
+	 
 2004-11-09  Francois Dumont  <dums@stlport...>
 
 	* test/unit/config_test.cpp: Creation of a test case to check correct
