@@ -5,6 +5,17 @@ Operational environment:        Solaris 9, SPARC
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
+Date:                           2004-09-27
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        Fail 5 of 290 tests
+Notes:                          fail tests with locale, as expected
+Status (stldbg-shared):         Fail 5 of 290 tests
+Notes:                          fail tests with locale, as expected
+
+-----------------------------------------------------------------------
+Compiler:                       gcc 3.4.2
+-----------------------------------------------------------------------
 Date:                           2004-09-14
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
@@ -38,12 +49,12 @@ Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 -----------------------------------------------------------------------
 Compiler:			gcc 3.4.1
 -----------------------------------------------------------------------
-Date:				2004-09-24
+Date:				2004-09-28
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (289 tests)
+Status (release-shared):	All pass (290 tests)
 Notes:
-Status (stldbg-shared):         All pass (289 tests)
+Status (stldbg-shared):         All pass (290 tests)
 Notes:
 
 -----------------------------------------------------------------------
