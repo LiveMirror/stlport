@@ -220,11 +220,17 @@ template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<_List_node_base, _VoidPtr_
 template class _STLP_CLASS_DECLSPEC _List_base<void*,allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _List_impl<void*,allocator<void*> >;
 
-template class _STLP_CLASS_DECLSPEC _STLP_PRIV::_Slist_node<void*>;
+_STLP_MOVE_TO_PRIV_NAMESPACE
+template class _STLP_CLASS_DECLSPEC _Slist_node<void*>;
+_STLP_MOVE_TO_STD_NAMESPACE
+
 typedef _STLP_PRIV::_Slist_node<void*> _VoidPtrSNode;
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<_STLP_PRIV::_Slist_node_base, _VoidPtrSNode, allocator<_VoidPtrSNode> >;
-template class _STLP_CLASS_DECLSPEC _STLP_PRIV::_Slist_base<void*, allocator<void*> >;
-template class _STLP_CLASS_DECLSPEC _STLP_PRIV::_Slist_impl<void*, allocator<void*> >;
+
+_STLP_MOVE_TO_PRIV_NAMESPACE
+template class _STLP_CLASS_DECLSPEC _Slist_base<void*, allocator<void*> >;
+template class _STLP_CLASS_DECLSPEC _Slist_impl<void*, allocator<void*> >;
+_STLP_MOVE_TO_STD_NAMESPACE
 
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<size_t, void*, allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<void***, void**, allocator<void**> >;
@@ -236,8 +242,10 @@ template class _STLP_CLASS_DECLSPEC _Deque_impl<void*,allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _Rb_global<bool>;
 template class _STLP_CLASS_DECLSPEC _List_global<bool>;
 
-template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Sl_global<bool>;
-template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Stl_prime<bool>;
+_STLP_MOVE_TO_PRIV_NAMESPACE
+template class _STLP_CLASS_DECLSPEC _Sl_global<bool>;
+template class _STLP_CLASS_DECLSPEC _Stl_prime<bool>;
+_STLP_MOVE_TO_STD_NAMESPACE
 
 template class _STLP_CLASS_DECLSPEC _LimG<bool>;
 template class _STLP_CLASS_DECLSPEC _Bs_G<bool>;

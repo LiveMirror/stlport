@@ -1,3 +1,10 @@
+2005-03-12  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_tree.h: Fix equal_range_unique bug thanks Gunter.
+	
+	* test/unit/map_test.cpp: Add of the test to reproduce the bug
+	above.
+	
 2005-03-11  Petr Ovtchenkov  <ptr@island...>
 
 	* build/test/unit/gcc.mak: don't write runtime path to libstlport
@@ -40,10 +47,10 @@
 	solution from 2005-03-04 below.
 
 	* stlport/cmath: include cstdlib, due to declarations of abs
-	with integer types required in overload and then 'using'.
+	with integer types required in overload and when 'using'.
 
 	* src/complex.cpp, src/complex_exp.cpp, src/complex_trig.cpp: replace
-	macros that possible will be removed
+	macros that possibly will be removed.
 
 2005-03-05  Francois Dumont  <dums@stlport...>
 

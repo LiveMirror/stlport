@@ -41,18 +41,25 @@ void MapTest::map1()
   m['v'] = 5;
   m['i'] = 1;
 //  cout << "m['x'] = " << m['x'] << endl;
-  CPPUNIT_ASSERT( m['x']==20 );
+  CPPUNIT_ASSERT( m['x']== 20 );
   m['x'] = 10; // Correct mistake.
-  CPPUNIT_ASSERT( m['x']==10 );
-  CPPUNIT_ASSERT( m['z']==0 );
+  CPPUNIT_ASSERT( m['x']== 10 );
+  CPPUNIT_ASSERT( m['z']== 0 );
   //cout << "m['z'] = " << m['z'] << endl; // Note default value is added.
-  CPPUNIT_ASSERT( m.count('z')==1 );
+  CPPUNIT_ASSERT( m.count('z') == 1 );
   //cout << "m.count('z') = " << m.count('z') << endl;
   pair<maptype::iterator, bool> p = m.insert(pair<const char, int>('c', 100));
-  CPPUNIT_ASSERT(p.second);
+  CPPUNIT_ASSERT( p.second );
 
   p = m.insert(pair<const char, int>('c', 100));
-  CPPUNIT_ASSERT(!p.second); // already existing pair
+  CPPUNIT_ASSERT( !p.second ); // already existing pair
+
+  pair<maptype::iterator, maptype::iterator> ret;
+  ret = m.equal_range('x');
+  CPPUNIT_ASSERT( ret.first != ret.second );
+  CPPUNIT_ASSERT( (*(ret.first)).first == 'x' );
+  CPPUNIT_ASSERT( (*(ret.first)).second == 10 );
+  CPPUNIT_ASSERT( ++(ret.first) == ret.second );
 }
 void MapTest::mmap1()
 {
