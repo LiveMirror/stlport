@@ -51,7 +51,7 @@ void UnaryTest::unegate2()
 }
 
 bool test_func(const int &param) {
-  return param > 2;
+  return param < 3;
 }
 void UnaryTest::unegate3()
 {
