@@ -63,9 +63,11 @@ template <class _CharT, class _Traits>
 class basic_istream : virtual public basic_ios<_CharT, _Traits> {
   typedef basic_istream<_CharT, _Traits> _Self;
 
+#if defined (_STLP_MSVC) && (_STLP_MSVC >= 1300 && _STLP_MSVC <= 1310)
   //explicitely defined as private to avoid warnings:
   basic_istream(_Self const&);
   _Self& operator = (_Self const&);
+#endif
   
 public:
                          // Types

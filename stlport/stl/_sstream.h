@@ -106,12 +106,12 @@ private:
   _CharT _M_Buf[ 8 /* _S_BufSiz */];
 };
 
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
+#if defined (_STLP_USE_TEMPLATE_EXPORT)
 _STLP_EXPORT_TEMPLATE_CLASS basic_stringbuf<char, char_traits<char>, allocator<char> >;
 #  if !defined (_STLP_NO_WCHAR_T)
 _STLP_EXPORT_TEMPLATE_CLASS basic_stringbuf<wchar_t, char_traits<wchar_t>, allocator<wchar_t>  >;
 #  endif
-# endif /* _STLP_USE_TEMPLATE_EXPORT */
+#endif /* _STLP_USE_TEMPLATE_EXPORT */
 
 //----------------------------------------------------------------------
 // Class basic_istringstream, an input stream that uses a stringbuf.
@@ -147,10 +147,12 @@ public:                         // Member functions
 private:
   basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
 
+#if defined (_STLP_MSVC) && (_STLP_MSVC >= 1300 && _STLP_MSVC <= 1310)
   typedef basic_istringstream<_CharT, _Traits> _Self;
   //explicitely defined as private to avoid warnings:
   basic_istringstream(_Self const&);
   _Self& operator = (_Self const&);
+#endif
 };
 
 
@@ -189,10 +191,12 @@ public:                         // Member functions.
 private:
   basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
 
+#if defined (_STLP_MSVC) && (_STLP_MSVC >= 1300 && _STLP_MSVC <= 1310)
   typedef basic_ostringstream<_CharT, _Traits> _Self;
   //explicitely defined as private to avoid warnings:
   basic_ostringstream(_Self const&);
   _Self& operator = (_Self const&);
+#endif
 };
 
 
@@ -232,14 +236,16 @@ public:                         // Member functions.
 private:
   basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
 
+#if defined (_STLP_MSVC) && (_STLP_MSVC >= 1300 && _STLP_MSVC <= 1310)
   typedef basic_stringstream<_CharT, _Traits> _Self;
   //explicitely defined as private to avoid warnings:
   basic_stringstream(_Self const&);
   _Self& operator = (_Self const&);
+#endif
 };
 
 
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
+#if defined (_STLP_USE_TEMPLATE_EXPORT)
 _STLP_EXPORT_TEMPLATE_CLASS basic_istringstream<char, char_traits<char>, allocator<char> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_ostringstream<char, char_traits<char>, allocator<char> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_stringstream<char, char_traits<char>, allocator<char> >;
@@ -248,7 +254,7 @@ _STLP_EXPORT_TEMPLATE_CLASS basic_istringstream<wchar_t, char_traits<wchar_t>, a
 _STLP_EXPORT_TEMPLATE_CLASS basic_ostringstream<wchar_t, char_traits<wchar_t>, allocator<wchar_t>  >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_stringstream<wchar_t, char_traits<wchar_t>, allocator<wchar_t>  >;
 #  endif
-# endif /* _STLP_USE_TEMPLATE_EXPORT */
+#endif /* _STLP_USE_TEMPLATE_EXPORT */
 
 _STLP_END_NAMESPACE
 

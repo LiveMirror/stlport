@@ -38,26 +38,22 @@
 #include <stl/_codecvt.h>
 #endif
 
-//#ifndef _STLP_STDIO_FILE_H
-//#include <stl/_stdio_file.h>
-//#endif
+#if !defined (_STLP_USE_UNIX_IO) && !defined(_STLP_USE_WIN32_IO) && \
+    !defined (_STLP_USE_UNIX_EMULATION_IO) && !defined (_STLP_USE_STDIO_IO)
 
-#if !defined (_STLP_USE_UNIX_IO) && !defined(_STLP_USE_WIN32_IO) \
-    && ! defined (_STLP_USE_UNIX_EMULATION_IO) && !defined (_STLP_USE_STDIO_IO)
-
-# if defined (_STLP_UNIX)  || defined (__CYGWIN__) || defined (__amigaos__) || defined (__EMX__)
+#  if defined (_STLP_UNIX)  || defined (__CYGWIN__) || defined (__amigaos__) || defined (__EMX__)
 // open/close/read/write
-#  define _STLP_USE_UNIX_IO
-# elif defined (_STLP_WIN32)  && ! defined (__CYGWIN__)
+#    define _STLP_USE_UNIX_IO
+#  elif defined (_STLP_WIN32)  && ! defined (__CYGWIN__)
 // CreateFile/ReadFile/WriteFile
-#  define _STLP_USE_WIN32_IO
-# elif defined (_STLP_WIN16) || defined (_STLP_WIN32) || defined (_STLP_MAC)
+#    define _STLP_USE_WIN32_IO
+#  elif defined (_STLP_WIN16) || defined (_STLP_WIN32) || defined (_STLP_MAC)
 // _open/_read/_write
-#  define _STLP_USE_UNIX_EMULATION_IO
-# else
+#    define _STLP_USE_UNIX_EMULATION_IO
+#  else
 // fopen/fread/fwrite
-#  define _STLP_USE_STDIO_IO
-# endif /* _STLP_UNIX */
+#    define _STLP_USE_STDIO_IO
+#  endif /* _STLP_UNIX */
 
 #endif /* mode selection */
 
@@ -67,7 +63,7 @@ typedef void* _STLP_fd;
 #elif defined (_STLP_USE_UNIX_EMULATION_IO) || defined (_STLP_USE_STDIO_IO) || defined (_STLP_USE_UNIX_IO)
 typedef int _STLP_fd;
 #else
-#error "Configure i/o !"
+#  error "Configure i/o !"
 #endif
 
 
@@ -739,10 +735,12 @@ public:                         // File and buffer operations.
 private:
   basic_filebuf<_CharT, _Traits> _M_buf;
 
+#if defined (_STLP_MSVC) && (_STLP_MSVC >= 1300 && _STLP_MSVC <= 1310)
   typedef basic_fstream<_CharT, _Traits> _Self;
   //explicitely defined as private to avoid warnings:
   basic_fstream(_Self const&);
   _Self& operator = (_Self const&);
+#endif
 };
 
 _STLP_END_NAMESPACE
@@ -753,7 +751,7 @@ _STLP_END_NAMESPACE
 
 _STLP_BEGIN_NAMESPACE
 
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
+#if defined (_STLP_USE_TEMPLATE_EXPORT)
 _STLP_EXPORT_TEMPLATE_CLASS basic_ifstream<char, char_traits<char> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_ofstream<char, char_traits<char> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_fstream<char, char_traits<char> >;
@@ -762,7 +760,7 @@ _STLP_EXPORT_TEMPLATE_CLASS basic_ifstream<wchar_t, char_traits<wchar_t> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_ofstream<wchar_t, char_traits<wchar_t> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_fstream<wchar_t, char_traits<wchar_t> >;
 #  endif
-# endif /* _STLP_USE_TEMPLATE_EXPORT */
+#endif /* _STLP_USE_TEMPLATE_EXPORT */
 
 _STLP_END_NAMESPACE
 
