@@ -46,7 +46,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(PtrSpecTest);
   template class cont<int volatile*>; \
   template class cont<int const volatile*>
 
-# if !defined(_MSC_VER) || (_MSC_VER > 1200)  // including MSVC 6.0
+# if !defined(_MSC_VER) || (_MSC_VER > 1200)  // excluding MSVC 6.0
 TEST_INSTANCIATE_CONTAINER(vector);
 TEST_INSTANCIATE_CONTAINER(list);
 TEST_INSTANCIATE_CONTAINER(slist);

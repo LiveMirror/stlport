@@ -6,6 +6,9 @@
 
 	* test/unit/alg_test.cpp: Add a test case for the search_n algo.
 
+	* stlport/stl/_algo.c: Integration of the search_n algo implementation
+	for the random access iterator from Jim Xochellis.
+
 2005-02-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_slist.h: Fix _M_splice_after method.

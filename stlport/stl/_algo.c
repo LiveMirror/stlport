@@ -96,8 +96,7 @@ __median(const _Tp& __a, const _Tp& __b, const _Tp& __c, _Compare __comp) {
 
 template <class _ForwardIter1, class _ForwardIter2>
 _ForwardIter1 search(_ForwardIter1 __first1, _ForwardIter1 __last1,
-                     _ForwardIter2 __first2, _ForwardIter2 __last2) 
-{
+                     _ForwardIter2 __first2, _ForwardIter2 __last2) {
   _STLP_DEBUG_CHECK(__check_range(__first1, __last1))
   _STLP_DEBUG_CHECK(__check_range(__first2, __last2))
   // Test for empty ranges
@@ -138,33 +137,113 @@ _ForwardIter1 search(_ForwardIter1 __first1, _ForwardIter1 __last1,
   return __first1;
 }
 
-// search_n.  Search for __count consecutive copies of __val.
+template <class _RandomAccessIter, class _Integer, class _Tp,
+          class _BinaryPred, class _Distance>
+_RandomAccessIter __search_n(_RandomAccessIter __first, _RandomAccessIter __last,
+                             _Integer __count, const _Tp& __val, _BinaryPred __pred,
+                             _Distance*, const random_access_iterator_tag &) {
+  _Distance __tailSize = __last - __first;
+  _Distance __pattSize = __count;
 
+  if (__tailSize >= __pattSize) {
+    _RandomAccessIter __backTrack;
+
+    _Distance __remainder, __prevRemainder;
+    _Distance __skipOffset = __pattSize - 1;
+
+    _RandomAccessIter __lookAhead = __first + __skipOffset;
+
+    for (;; __lookAhead += __pattSize ) { // the main loop...
+      //__lookAhead here is always pointing to the last element of next possible match.
+      __tailSize -= __pattSize;
+
+      for (;;) { // the skip loop...
+        if (__pred(*__lookAhead, __val))
+          break;
+        if (__tailSize < __pattSize)
+          return __last;
+
+        __lookAhead += __pattSize;
+        __tailSize -= __pattSize;
+      }
+
+      __remainder = __skipOffset;
+
+      for (__backTrack = __lookAhead - 1; __pred(*__backTrack, __val); --__backTrack ) {
+        if (--__remainder == 0)
+          return (__lookAhead - __skipOffset); //Success
+      }
+
+      for (;;) {
+        if (__remainder > __tailSize)
+          return __last; //failure
+
+        __lookAhead += __remainder;
+        __tailSize -= __remainder;
+
+        if (__pred(*__lookAhead, __val)) {
+          __prevRemainder = __remainder;
+          __backTrack = __lookAhead;
+
+          do {
+            if (--__remainder == 0)
+              return (__lookAhead - __skipOffset); //Success
+
+          } while (__pred(*--__backTrack, __val));
+
+          //adjust remainder for next comparison
+          __remainder += __skipOffset - __prevRemainder;
+        }
+        else
+          break;
+      }
+
+      //__lookAhead here is always pointing to the element of the last mismatch.
+      if (__tailSize < __pattSize)
+        return __last;
+    }
+  }
+
+  return __last; //failure
+}
+
+template <class _ForwardIter, class _Integer, class _Tp,
+          class _Distance, class _BinaryPred>
+_ForwardIter __search_n(_ForwardIter __first, _ForwardIter __last,
+                        _Integer __count, const _Tp& __val, _BinaryPred __pred,
+                        _Distance*, const forward_iterator_tag &) {
+  for (; (__first != __last) && !__pred(*__first, __val); ++__first) {}
+  while (__first != __last) {
+    _Integer __n = __count - 1;
+    _ForwardIter __i = __first;
+    ++__i;
+    while (__i != __last && __n != 0 && __pred(*__i, __val)) {
+      ++__i;
+      --__n;
+    }
+    if (__n == 0)
+      return __first;
+    else if (__i != __last)
+      for (__first = ++__i; (__first != __last) && !__pred(*__first, __val); ++__first) {}
+    else
+      break;
+  }
+  return __last;
+}
+
+// search_n.  Search for __count consecutive copies of __val.
 template <class _ForwardIter, class _Integer, class _Tp>
 _ForwardIter search_n(_ForwardIter __first, _ForwardIter __last,
                       _Integer __count, const _Tp& __val) {
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
   if (__count <= 0)
     return __first;
-  else {
-    __first = find(__first, __last, __val);
-    while (__first != __last) {
-      _Integer __n = __count - 1;
-      _ForwardIter __i = __first;
-      ++__i;
-      while (__i != __last && __n != 0 && *__i == __val) {
-        ++__i;
-        --__n;
-      }
-      if (__n == 0)
-        return __first;
-      else if (__i != __last)
-        __first = find(++__i, __last, __val);
-      else
-        break;
-    }
-    return __last;
-  }
+  if (__count == 1)
+    //We use find when __count == 1 to use potential find overload.
+    return find(__first, __last, __val);
+  return __search_n(__first, __last, __count, __val, equal_to<_Tp>(),
+                    _STLP_DISTANCE_TYPE(__first, _ForwardIter),
+                    _STLP_ITERATOR_CATEGORY(__first, _ForwardIter));
 }
 
 template <class _ForwardIter, class _Integer, class _Tp, class _BinaryPred>
@@ -174,40 +253,15 @@ _ForwardIter search_n(_ForwardIter __first, _ForwardIter __last,
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
   if (__count <= 0)
     return __first;
-  else {
-    while (__first != __last) {
-      if (__binary_pred(*__first, __val))
-        break;
-      ++__first;
-    }
-    while (__first != __last) {
-      _Integer __n = __count - 1;
-      _ForwardIter __i = __first;
-      ++__i;
-      while (__i != __last && __n != 0 && __binary_pred(*__i, __val)) {
-        ++__i;
-        --__n;
-      }
-      if (__n == 0)
-        return __first;
-      else {
-        while (__i != __last) {
-          if (__binary_pred(*__i, __val))
-            break;
-          ++__i;
-        }
-        __first = __i;
-      }
-    }
-    return __last;
-  }
+  return __search_n(__first, __last, __count, __val, __binary_pred,
+                    _STLP_DISTANCE_TYPE(__first, _ForwardIter),
+                    _STLP_ITERATOR_CATEGORY(__first, _ForwardIter));
 } 
 
 template <class _ForwardIter1, class _ForwardIter2>
 _ForwardIter1 
 find_end(_ForwardIter1 __first1, _ForwardIter1 __last1, 
-         _ForwardIter2 __first2, _ForwardIter2 __last2)
-{
+         _ForwardIter2 __first2, _ForwardIter2 __last2) {
   _STLP_DEBUG_CHECK(__check_range(__first1, __last1))
   _STLP_DEBUG_CHECK(__check_range(__first2, __last2))
   return __find_end(__first1, __last1, __first2, __last2,
@@ -466,14 +520,11 @@ void random_shuffle(_RandomAccessIter __first, _RandomAccessIter __last,
     iter_swap(__i, __first + __rand((__i - __first) + 1));
 }
 
-#ifndef _STLP_NO_EXTENSIONS
-
+#if !defined (_STLP_NO_EXTENSIONS)
 // random_sample and random_sample_n (extensions, not part of the standard).
-
 template <class _ForwardIter, class _OutputIter, class _Distance>
 _OutputIter random_sample_n(_ForwardIter __first, _ForwardIter __last,
-                            _OutputIter __out, const _Distance __n)
-{
+                            _OutputIter __out, const _Distance __n) {
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
   _Distance __remaining = distance(__first, __last);
   _Distance __m = (min) (__n, __remaining);
@@ -800,8 +851,7 @@ _RandomAccessIter __unguarded_partition(_RandomAccessIter __first,
 }
 
 // sort() and its auxiliary functions. 
-
-# define  __stl_threshold  16
+#define __stl_threshold  16
 
 template <class _RandomAccessIter, class _Tp, class _Compare>
 void __unguarded_linear_insert(_RandomAccessIter __last, _Tp __val, 
@@ -956,7 +1006,8 @@ void __chunk_insertion_sort(_RandomAccessIter __first,
                             _RandomAccessIter __last,
                             _Distance __chunk_size, _Compare __comp) {
   while (__last - __first >= __chunk_size) {
-    __insertion_sort(__first, __first + __chunk_size, _STLP_VALUE_TYPE(__first,_RandomAccessIter), __comp);
+    __insertion_sort(__first, __first + __chunk_size,
+                     _STLP_VALUE_TYPE(__first,_RandomAccessIter), __comp);
     __first += __chunk_size;
   }
   __insertion_sort(__first, __last, _STLP_VALUE_TYPE(__first,_RandomAccessIter), __comp);
