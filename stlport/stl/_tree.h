@@ -568,8 +568,8 @@ public:
 #endif //_STLP_DEBUG
 };
 
-# define _STLP_TEMPLATE_HEADER template <class _Key, class _Value, class _KeyOfValue, class _Compare, class _Alloc>
-# define _STLP_TEMPLATE_CONTAINER _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>
+# define _STLP_TEMPLATE_HEADER template <class _Key, class _Compare, class _Value, class _KeyOfValue, class _ConstIteTraits, class _Alloc>
+# define _STLP_TEMPLATE_CONTAINER _Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstIteTraits,_Alloc>
 # include <stl/_relops_cont.h>
 # undef _STLP_TEMPLATE_CONTAINER
 # undef _STLP_TEMPLATE_HEADER
@@ -585,24 +585,6 @@ _STLP_END_NAMESPACE
 #if defined (_STLP_DEBUG)
 # include <stl/debug/_tree.h> 
 #endif
-
-_STLP_BEGIN_NAMESPACE
-// Class rb_tree is not part of the C++ standard.  It is provided for
-// compatibility with the HP STL.
-
-template <class _Key, class _Value, class _KeyOfValue, class _Compare,
-          _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) > struct rb_tree : public _Rb_tree<_Key, _Value, _KeyOfValue, _Compare, _Alloc> {
-  typedef _Rb_tree<_Key, _Value, _KeyOfValue, _Compare, _Alloc> _Base;
-  typedef typename _Base::allocator_type allocator_type;
-
-  rb_tree()
-     : _Rb_tree<_Key, _Value, _KeyOfValue, _Compare, _Alloc>(_Compare(), allocator_type()) {}
-  rb_tree(const _Compare& __comp,
-          const allocator_type& __a = allocator_type())
-    : _Rb_tree<_Key, _Value, _KeyOfValue, _Compare, _Alloc>(__comp, __a) {} 
-  ~rb_tree() {}
-};
-_STLP_END_NAMESPACE
 
 #endif /* _STLP_INTERNAL_TREE_H */
 
