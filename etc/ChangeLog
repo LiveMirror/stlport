@@ -13,6 +13,22 @@
 
 	* test/unit/list_test.cpp: add illustration for list iterator/reverse_iterator questions.
 
+	* src/explore/Makefiles/gmake/unix/lib.mak: moved from linux/lib.mak, as
+	common rules for all *nixes.
+
+	* src/explore/Makefiles/gmake/linux/lib.mak: use common for all *nixes rules
+	in unix/lib.mak.
+
+	* src/explore/Makefiles/gmake/freebsd/lib.mak: ditto.
+
+	* src/explore/Makefiles/gmake/openbsd/lib.mak: ditto.
+
+	* src/explore/Makefiles/gmake/sunos/lib.mak: ditto.
+
+	* src/explore/Makefiles/gmake/unix/lib.mak, test/unit/gcc.mak: changed library name;
+	libraries now named as libstlport, libstlportg, libstlportstlg for optimized, with
+	debug symbols, and with debug symbols and _STLP_DEBUG mode libraries respectivly.
+
 2004-09-21  Francois Dumont  <dums@...>
 
 	* stlport/stl/debug: Modification of the __check_range class in the more general
