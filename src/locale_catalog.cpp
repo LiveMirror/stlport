@@ -114,16 +114,8 @@ __acquire_category(const char* name, loc_extract_name_func_t extract_name,
                    Category_Map ** M) {
   typedef Category_Map::iterator Category_iterator;
   pair<Category_iterator, bool> result;
-  _STLP_auto_lock sentry(__category_hash_lock);
-
-  if (!*M)
-    *M = new Category_Map();
-
-#if defined(__SC__)		//*TY 06/01/2000 - added workaround for SCpp
-  if(!*M) delete *M;	//*TY 06/01/2000 - it forgets to generate dtor for Category_Map class. This fake code forces to generate one.
-#endif					//*TY 06/01/2000 - 
-
-  // Find what name to look for.  Be careful if user requests the default.
+  
+  // Find what name to look for. Be careful if user requests the default.
   const char *cname;
   char buf[_Locale_MAX_SIMPLE_NAME];
   if (name == 0 || name[0] == 0) {
@@ -139,6 +131,15 @@ __acquire_category(const char* name, loc_extract_name_func_t extract_name,
   }
 
   Category_Map::value_type __e(cname, pair<void*,size_t>((void*)0,size_t(0)));
+
+  _STLP_auto_lock sentry(__category_hash_lock);
+
+  if (!*M)
+    *M = new Category_Map();
+
+#if defined(__SC__)		//*TY 06/01/2000 - added workaround for SCpp
+  if(!*M) delete *M;	//*TY 06/01/2000 - it forgets to generate dtor for Category_Map class. This fake code forces to generate one.
+#endif					//*TY 06/01/2000 - 
 
   // Look for an existing entry with that name.
   result = (*M)->insert_noresize(__e);
@@ -159,8 +160,6 @@ __release_category(void* cat,
                    loc_destroy_func_t destroy_fun,
                    loc_name_func_t get_name,
                    Category_Map** M) {
-  _STLP_auto_lock sentry(__category_hash_lock);
-
   Category_Map *pM = *M;
 
   if (cat && pM) {
@@ -169,6 +168,7 @@ __release_category(void* cat,
     char* name = get_name(cat, buf);
 
     if (name != 0) {
+      _STLP_auto_lock sentry(__category_hash_lock);
       Category_Map::iterator it = pM->find(name);
       if (it != pM->end()) {
         // Decrement the ref count.  If it goes to zero, delete this category
