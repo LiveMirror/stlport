@@ -1,4 +1,10 @@
 2004-08-24  Francois Dumont  <dums@...>
+
+	* stlport/config/stl_gcc.h, stl_msvc.h: fixing of configuration concerning
+	uncaught_exception and exception handling in general thanks John Roberts.
+
+2004-08-24  Francois Dumont  <dums@...>
+
 	* stlport/stl/_tree.h, _tree.c: Modification of the _Rb_tree_iterator	struct
 	to be able to distiguish iterator types from different tree based containers
 	Removal of the == and != member operators of the _Rb_tree_base_iterator struct
