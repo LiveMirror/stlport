@@ -1,3 +1,20 @@
+2005-01-19  Francois Dumont  <dums@stlport...>
+
+	* test/unit/logic_test.cpp: Fix of the tests to avoid warning regarding int
+	to bool cast.
+
+	* stlport/stl/pointers/_deque.h, _list.h: Fix of the exported class under MSVC
+	compiler thanks Timothy Tenebekov report.
+
+	* build/test/unit/nmake-vc-common.mak, nmake-vc6.mak, nmake-vc70.mak: Modification
+	of the make files to avoid unusefull inclusion of vc_warning_disable.h file for
+	MSVC.Net 2003 and MSVC 8 compilers.
+
+	* src/locale_impl.h: Export of the locale facets container for MSVC compilers.
+
+	* src/vc_warning_disable.h: Modification to limit the number of disables depending
+	on the compiler.
+
 2005-01-18  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_algo.c: Modification of the stable_partition implementation

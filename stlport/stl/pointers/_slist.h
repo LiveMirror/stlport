@@ -245,6 +245,14 @@ private:
   _Base _M_impl;
 };
 
+#if defined (_STLP_USE_TEMPLATE_EXPORT)
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_PRIV::_Slist_node<void*>;
+typedef _STLP_PRIV::_Slist_node<void*> _VoidPtrSNode;
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<_STLP_PRIV::_Slist_node_base, _VoidPtrSNode, allocator<_VoidPtrSNode> >;
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_PRIV::_Slist_base<void*, allocator<void*> >;
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_PRIV::_Slist_impl<void*, allocator<void*> >;
+#endif
+
 /*
  * The pointer partial specialization.
  */
@@ -503,14 +511,6 @@ public:
 private:
   _Base _M_impl;
 };
-
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
-_STLP_EXPORT_TEMPLATE_CLASS _STLP_PRIV::_Slist_node<void*>;
-typedef _STLP_PRIV::_Slist_node<void*> _VoidPtrSNode;
-_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<_STLP_PRIV::_Slist_node_base, _VoidPtrSNode, allocator<_VoidPtrSNode> >;
-_STLP_EXPORT_TEMPLATE_CLASS _STLP_PRIV::_Slist_base<void*, allocator<void*> >;
-_STLP_EXPORT_TEMPLATE_CLASS _STLP_PRIV::_Slist_impl<void*, allocator<void*> >;
-# endif
 
 #endif /* _STLP_SPECIALIZED_SLIST_H */
 

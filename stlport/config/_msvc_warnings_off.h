@@ -1,9 +1,11 @@
 #if (_MSC_VER > 1000)
+#  if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
 /*
  * 31/07/2004: dums - now that we do not export the basic_string class anymore but only a base class
  * we have to disable this warning as the string are used as data members type of many iostream classes.
  */
-#  pragma warning ( disable : 4251 )	// ignore template classes being exported in .dll's
+#    pragma warning ( disable : 4251 )	// ignore template classes being exported in .dll's
+#  endif
 /* 
  * "this used in base member initializer list"
  * arrow operator warning

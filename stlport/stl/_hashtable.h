@@ -63,7 +63,7 @@
 _STLP_BEGIN_NAMESPACE
 
 #if defined (_STLP_USE_TEMPLATE_EXPORT)
-//Export of the type used to represent buckets in the hashtable implementation.
+//Export of the classes used to represent buckets in the hashtable implementation.
 _STLP_EXPORT_TEMPLATE_CLASS allocator<_STLP_PRIV::_Slist_node_base*>;
 _STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<_STLP_PRIV::_Slist_node_base**, 
                                               _STLP_PRIV::_Slist_node_base*, 
