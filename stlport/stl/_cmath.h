@@ -141,7 +141,14 @@ _STLP_END_NAMESPACE
   inline float_type func (float_type x, type y) { return (cfunc(x,y)); }
 #endif
 
-#if !defined(_STLP_NO_LONG_DOUBLE) // && defined(_STLP_VENDOR_LONG_DOUBLE_MATH)
+#define _STLP_MATH_INLINEX(__type,func,cfunc) \
+  inline __type func (__type x) { return __STATIC_CAST(__type,::cfunc((double)x)); }
+#define _STLP_MATH_INLINE2X(__type1,__type2,func,cfunc) \
+  inline __type1 func (__type1 x, __type2 y) { return __STATIC_CAST(__type1,::cfunc((double)x,y)); }
+#define _STLP_MATH_INLINE2XX(__type1,func,cfunc) \
+  inline __type1 func (__type1 x, __type1 y) { return __STATIC_CAST(__type1,::cfunc((double)x,(double)y)); }
+
+#if !defined(_STLP_NO_LONG_DOUBLE) && !defined(_STLP_NO_VENDOR_MATH_L) && !defined(_STLP_NO_VENDOR_MATH_F) // && defined(_STLP_VENDOR_LONG_DOUBLE_MATH)
 # define _STLP_DEF_MATH_INLINE(func,cf) \
   _STLP_MATH_INLINE(float,func,cf##f) \
   _STLP_MATH_INLINE(long double,func,cf##l)
@@ -158,16 +165,29 @@ _STLP_END_NAMESPACE
   _STLP_MATH_INLINE2(float,int,func,cf##f) \
   _STLP_MATH_INLINE2(long double,int,func,cf##l)
 #else // !_STLP_NO_LONG_DOUBLE
-# define _STLP_DEF_MATH_INLINE(func,cf) \
-  _STLP_MATH_INLINE(float,func,cf##f)
-# define _STLP_DEF_MATH_INLINE2(func,cf) \
-  _STLP_MATH_INLINE2(float,float,func,cf##f)
-# define _STLP_DEF_MATH_INLINE2P(func,cf) \
-  _STLP_MATH_INLINE2(float,float *,func,cf##f)
-# define _STLP_DEF_MATH_INLINE2PI(func,cf) \
-  _STLP_MATH_INLINE2(float,int *,func,cf##f)
-# define _STLP_DEF_MATH_INLINE2I(func,cf) \
-  _STLP_MATH_INLINE2(float,int,func,cf##f)
+# ifndef _STLP_NO_VENDOR_MATH_F
+#  define _STLP_DEF_MATH_INLINE(func,cf) \
+    _STLP_MATH_INLINE(float,func,cf##f)
+#  define _STLP_DEF_MATH_INLINE2(func,cf) \
+    _STLP_MATH_INLINE2(float,float,func,cf##f)
+#  define _STLP_DEF_MATH_INLINE2P(func,cf) \
+    _STLP_MATH_INLINE2(float,float *,func,cf##f)
+#  define _STLP_DEF_MATH_INLINE2PI(func,cf) \
+    _STLP_MATH_INLINE2(float,int *,func,cf##f)
+#  define _STLP_DEF_MATH_INLINE2I(func,cf) \
+    _STLP_MATH_INLINE2(float,int,func,cf##f)
+# else // _STLP_NO_VENDOR_MATH_F
+#  define _STLP_DEF_MATH_INLINE(func,cf) \
+    _STLP_MATH_INLINEX(float,func,cf)
+#  define _STLP_DEF_MATH_INLINE2(func,cf) \
+    _STLP_MATH_INLINE2XX(float,func,cf)
+#  define _STLP_DEF_MATH_INLINE2P(func,cf) \
+    _STLP_MATH_INLINE2X(float,float *,func,cf)
+#  define _STLP_DEF_MATH_INLINE2PI(func,cf) \
+    _STLP_MATH_INLINE2X(float,int *,func,cf)
+#  define _STLP_DEF_MATH_INLINE2I(func,cf) \
+    _STLP_MATH_INLINE2X(float,int,func,cf)
+# endif // _STLP_NO_VENDOR_MATH_F
 #endif // !_STLP_NO_LONG_DOUBLE
 
 #if defined (_STLP_WCE) || \
@@ -206,6 +226,17 @@ _STLP_DEF_MATH_INLINE(fabs,fabs)
 _STLP_DEF_MATH_INLINE(floor,floor)
 _STLP_DEF_MATH_INLINE2(fmod,fmod)
 _STLP_DEF_MATH_INLINE2PI(frexp,frexp)
+
+#if defined(_STLP_MSVC)
+_STLP_MATH_INLINE2XX(float,hypot,hypot)
+_STLP_MATH_INLINE2XX(long double,hypot,hypot)
+#else
+# ifdef _STLP_USE_UCLIBC
+inline double hypot(double x, double y) { return sqrt(x*x + y*y); }
+# endif
+_STLP_DEF_MATH_INLINE2(hypot,hypot)
+#endif
+
 _STLP_DEF_MATH_INLINE2I(ldexp,ldexp)
 _STLP_DEF_MATH_INLINE(log,log)
 _STLP_DEF_MATH_INLINE(log10,log10)
@@ -244,9 +275,17 @@ inline long double modf (long double __x, long double* __y) {
 _STLP_DEF_MATH_INLINE2(pow,pow)
 
 #if !defined(_STLP_MSVC) /* || (_STLP_MSVC > 1300) */ || defined(_STLP_WCE) || !defined (_MSC_EXTENSIONS) /* && !defined(_STLP_WCE_NET) */
+# ifndef _STLP_NO_VENDOR_MATH_F
 inline float       pow(float __x, int __y)       { return ::powf(__x, __STATIC_CAST(float,__y)); }
+# else
+inline float       pow(float __x, int __y)       { return __STATIC_CAST(float,::pow(__x, __STATIC_CAST(float,__y))); }
+# endif
 inline double      pow(double __x, int __y)      { return ::pow(__x, __STATIC_CAST(double,__y)); }
+# if !defined(_STLP_NO_VENDOR_MATH_L) && !defined(_STLP_NO_LONG_DOUBLE)
 inline long double pow(long double __x, int __y) { return ::powl(__x, __STATIC_CAST(long double,__y)); }
+# elif !defined(_STLP_NO_LONG_DOUBLE)
+inline long double pow(long double __x, int __y) { return __STATIC_CAST(long double,::pow(__x, __STATIC_CAST(long double,__y))); }
+# endif
 #else
 //The MS native pow version has a bugged overload so it is not imported
 //in the STLport namespace.
