@@ -1,5 +1,5 @@
 // vc_warning_disable.h
-#if (_MSC_VER < 1310)
+#if 1 //(_MSC_VER < 1310)
 #  pragma warning( disable : 4786 ) // identifier truncated to 255 characters
 #  pragma warning( disable : 4244 ) // implicit conversion: possible loss of data
 #  pragma warning( disable : 4800 ) // forcing value to bool 'true' or 'false' (performance warning)
