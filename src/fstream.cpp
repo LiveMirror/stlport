@@ -1076,9 +1076,11 @@ void* _Filebuf_base::_M_mmap(streamoff offset, streamoff len) {
 
   if (_M_view_id) {
 # if 0
+/*
     printf("view %x created from file %x, error = %d, size = %d, map_offset = %d map_len = %d\n", 
 	   _M_view_id, _M_file_id, GetLastError(), 
 	   (int)cur_filesize, ULL(offset) & 0xffffffff, len);
+*/
 # endif
     
     base = MapViewOfFile(_M_view_id, FILE_MAP_READ, ULL(offset)>>32, 

@@ -80,7 +80,7 @@ Make targets.
 
   install
 
-    cumulative target for install-*-shared on Unix-lile platforms and
+    cumulative target for install-*-shared on Unix-like platforms and
     install-*-* on Windows.
 
   clean
