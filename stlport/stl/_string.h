@@ -116,13 +116,13 @@ class basic_string : protected _String_base<_CharT,_Alloc> _STLP_STLPORT_CLASS_N
 protected:                        // Protected members inherited from base.
   typedef _String_base<_CharT,_Alloc> _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
-  typedef _Self _NonDbgBase;
   // fbp : used to optimize char/wchar_t cases, and to simplify
   // _STLP_DEF_CONST_PLCT_NEW_BUG problem workaround
   typedef typename _Is_integer<_CharT>::_Integral _Char_Is_Integral;
   typedef typename _IsPOD<_CharT>::_Type _Char_Is_POD;
   typedef random_access_iterator_tag r_a_i_t;
 public:
+  typedef _Self _NonDbgBase;
   typedef _CharT value_type;
   typedef _Traits traits_type;
 
@@ -920,9 +920,9 @@ protected:                        // Protected members inherited from base.
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
   typedef _STLP_STRING_BASE_NAME _Base;
   typedef typename _Base::_NonDbgBase _NonDbgBase;
-  typedef _Base _DbgBase;
 
 public:
+  typedef _Base _DbgBase;
 
   __IMPORT_WITH_REVERSE_ITERATORS(_NonDbgBase)
 
@@ -1127,11 +1127,11 @@ private:                        // Helper functions for append.
   _Self& _M_appendT(_ForwardIter __first, _ForwardIter __last, 
                     const forward_iterator_tag &)  {
     if (__first != __last) {
-      const size_type __old_size = size();
+      const size_type __old_size = this->size();
       difference_type __n = distance(__first, __last);
-      if (__STATIC_CAST(size_type,__n) > max_size() || __old_size > max_size() - __STATIC_CAST(size_type,__n))
+      if (__STATIC_CAST(size_type,__n) > this->max_size() || __old_size > this->max_size() - __STATIC_CAST(size_type,__n))
         this->_M_throw_length_error();
-      if (__old_size + __n > capacity()) {
+      if (__old_size + __n > this->capacity()) {
         const size_type __len = __old_size +
           (max)(__old_size, __STATIC_CAST(size_type,__n)) + 1;
         pointer __new_start = this->_M_end_of_storage.allocate(__len);
@@ -1650,10 +1650,10 @@ public:                         // find_last_not_of
 public:                         // Substring.
 
   _Self substr(size_type __pos = 0, size_type __n = _Base::npos) const {
-    if (__pos > size())
+    if (__pos > this->size())
       this->_M_throw_out_of_range();
     return _Self(this->_M_Start() + __pos, 
-                 this->_M_Start() + __pos + (min) (__n, size() - __pos));
+                 this->_M_Start() + __pos + (min) (__n, this->size() - __pos));
   }
 
 public:                         // Compare
