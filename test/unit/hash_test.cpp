@@ -70,6 +70,9 @@ void HashTest::hmap1()
   //Some iterators compare check, really compile time checks
   maptype::iterator ite(m.begin());
   maptype::const_iterator cite(m.begin());
+  cite = m.begin();
+  maptype const& cm = m;
+  cite = cm.begin();
   CPPUNIT_ASSERT( ite == cite );
   CPPUNIT_ASSERT( !(ite != cite) );
   CPPUNIT_ASSERT( cite == ite );

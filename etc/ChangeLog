@@ -1,3 +1,8 @@
+2004-12-20  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.h: Fix of the const begin and end methods of the
+	new implementation thanks Timothy Tenebekov report.
+
 2004-12-17  Francois Dumont  <dums@stlport...>
 
 	* stlport/cmath, cstdlib, stl/_cmath.h, config/stl_msvc.h: Configuration

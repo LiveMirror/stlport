@@ -247,7 +247,7 @@ private:
 #if !defined (_STLP_DEBUG)
   _ElemsIte _M_get_elem_ite(_BucketType const* __b) const { return __CONST_CAST(_BucketType*, __b); }
   _ElemsIte _M_get_elem_ite(_ElemsCont&, _BucketType* __b) const { return __CONST_CAST(_BucketType*, __b); }
-  _BucketType* _M_get_bucket_val(const _ElemsIte& __ite) const { return __ite._M_node; }
+  _BucketType* _M_get_bucket_val(_ElemsIte __ite) const { return __ite._M_node; }
 #else
   _ElemsIte _M_get_elem_ite(_BucketType const* __b) const { 
     return _M_get_elem_ite(__CONST_CAST(_ElemsCont&, _M_elems), __b);
@@ -352,8 +352,8 @@ public:
   local_iterator begin(size_type __n) { return _M_get_elem_ite(_M_buckets[__n]); }
   local_iterator end(size_type __n) { return _M_get_elem_ite(_M_buckets[__n + 1]); }
 
-  const_iterator begin() const { return _M_elems.begin(); }
-  const_iterator end() const { return _M_elems.end(); }
+  const_iterator begin() const { return __CONST_CAST(_ElemsCont&, _M_elems).begin(); }
+  const_iterator end() const { return __CONST_CAST(_ElemsCont&, _M_elems).end(); }
   const_local_iterator begin(size_type __n) const { return _M_get_elem_ite(_M_buckets[__n]); }
   const_local_iterator end(size_type __n) const { return _M_get_elem_ite(_M_buckets[__n + 1]); }
 
