@@ -114,11 +114,19 @@
 # endif /* _STLP_MSVC <= 1300 */
 
 # if (_STLP_MSVC <= 1200)
-// dums: VC6 can't handle correctly member templates of class that are explicitely
-// instanciated to be exported
+/*
+ * dums: VC6 do not handle correctly member templates of class that are explicitely
+ * instanciated to be exported. There is a workaround, seperate the non template methods
+ * from the template ones within 2 different classes and only export the non template one.
+ * It is not implemented at the writing of this note. But this has finally been concidered
+ * as not important enough to not use this feature. 
+ * Moreover boost (www.boost.org) required it to be granted.
+ */
+/*
 #  ifdef _DLL
 #    define _STLP_NO_MEMBER_TEMPLATES 1
 #  endif
+*/
 # endif
 
 # endif /* _STLP_MSVC */
