@@ -393,11 +393,11 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
 #    endif
 #  elif defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__)
 // those guys claim _cvt functions being reentrant.
-inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf) {  return _ecvt(x, n, pt, sign); }
-inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf) { return _fcvt(x, n, pt, sign); }
+inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char*) {  return _ecvt(x, n, pt, sign); }
+inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char*) { return _fcvt(x, n, pt, sign); }
 #    ifndef _STLP_NO_LONG_DOUBLE
-inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf) { return _ecvt((double)x, n, pt, sign); }
-inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf) { return _fcvt((double)x, n, pt, sign); }
+inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char*) { return _ecvt((double)x, n, pt, sign); }
+inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char*) { return _fcvt((double)x, n, pt, sign); }
 #    endif
 #  elif defined (__ISCPP__)
 inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
@@ -502,7 +502,6 @@ size_t __format_float_fixed(__iostring &buf, const char * bp,
   char static_buf[128];
   int const BUF_SIZE = sizeof(static_buf) - 1;
   char *sbuf = static_buf;
-  char *sendbuf = static_buf + sizeof(static_buf);
 
   if (sign && decpt > -precision && *bp != 0)
     *sbuf++ = '-';
@@ -624,7 +623,7 @@ size_t __format_float(__iostring &buf, const char * bp,
       int kk = precision;
       if (!(flags & ios_base::showpoint)) {
         size_t n = strlen(bp);
-        if (n < kk)
+        if (n < (size_t)kk)
           kk = (int)n;
         while (kk >= 1 && bp[kk-1] == '0')
           --kk;

@@ -969,7 +969,7 @@ _Stl_string_to_long_double(const char * s) {
 
 void  _STLP_CALL
 __string_to_float(const __iostring& v, float& val) {
-    val = _Stl_string_to_double(v.c_str());
+    val = (float)_Stl_string_to_double(v.c_str());
 }
 
 void  _STLP_CALL

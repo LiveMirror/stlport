@@ -4,6 +4,11 @@
 	call broadcast to the base class. Non debug workaround always call non debug
 	base class methods, debug workaround always calls debug base class methods.
 
+	* Many fixes to avoid warnings using MSVC in level 4 warnings:
+		- while (true) replaced by for(;;) which do not produce the conditional
+		expression is constant warning
+		- removal of unused parameters
+
 2005-01-19  Francois Dumont  <dums@stlport...>
 
 	* src/msvc_warning_disablers.h: unused file, removed.

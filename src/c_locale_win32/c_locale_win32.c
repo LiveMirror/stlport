@@ -848,7 +848,7 @@ extern "C" {
 	      else if(retval == -1) return -1;
 	      else return count+retval;
 	    }
-    	if(retval == -2) return (size_t)-2;
+    	if (retval == -2) return (size_t)-2;
 
     	return n;
     }
@@ -859,12 +859,12 @@ extern "C" {
     int size = \
       WideCharToMultiByte(ltype->cp,  WC_COMPOSITECHECK | WC_SEPCHARS, &c, 1, NULL, 0, NULL, NULL);
 
-    if(size > n) return (size_t)-2;
+    if ((size_t)size > n) return (size_t)-2;
 
     size = \
       WideCharToMultiByte(ltype->cp,  WC_COMPOSITECHECK | WC_SEPCHARS, &c, 1, to, n, NULL, NULL);
 
-    if(size == 0) return (size_t)-1;
+    if (size == 0) return (size_t)-1;
 
     return (size_t)size;
   }

@@ -128,7 +128,7 @@ struct SortTestAux {
 };
 
 template <class _Tp>
-void SortTestFunc (_Tp __x) {
+void SortTestFunc (_Tp) {
 }
 
 void SortTest::sort4()

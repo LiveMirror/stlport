@@ -1,4 +1,5 @@
 #include <vector>
+#include <deque>
 #include <string>
 #include <algorithm>
 //#include <sstream>
@@ -198,20 +199,20 @@ void StringTest::short_string()
 
 void StringTest::erase()
 {
-  char const* array = "Hello, World!";
-  std::string v(array);
+  char const* c_str = "Hello, World!";
+  std::string str(c_str);
+  CPPUNIT_ASSERT( str == c_str );
   
-  CPPUNIT_ASSERT( v == array );
+  str.erase(str.begin() + 1, str.end() - 1); // Erase all but first and last.
   
-  v.erase(v.begin() + 1, v.end() - 1); // Erase all but first and last.
-  
-  for( size_t i = 0; i < v.size(); i++ ) {
+  size_t i;
+  for (i = 0; i < str.size(); ++i) {
     switch ( i ) {
       case 0:
-        CPPUNIT_ASSERT( v[i] == 'H' );
+        CPPUNIT_ASSERT( str[i] == 'H' );
         break;
       case 1:
-        CPPUNIT_ASSERT( v[i] == '!' );
+        CPPUNIT_ASSERT( str[i] == '!' );
         break;
       default:
         CPPUNIT_ASSERT( false );
@@ -219,12 +220,33 @@ void StringTest::erase()
     }
   } 
   
-  v.insert(1, (char*)array);
-  v.erase(v.begin()); // Erase first element.
-  v.erase(v.end() - 1); // Erase last element.
-  CPPUNIT_ASSERT( v == array );
-  v.clear(); // Erase all.
-  CPPUNIT_ASSERT( v.empty() );
+  str.insert(1, (char*)c_str);
+  str.erase(str.begin()); // Erase first element.
+  str.erase(str.end() - 1); // Erase last element.
+  CPPUNIT_ASSERT( str == c_str );
+  str.clear(); // Erase all.
+  CPPUNIT_ASSERT( str.empty() );
+
+  str = c_str;
+  CPPUNIT_ASSERT( str == c_str );
+
+  str.erase(1, str.size() - 1); // Erase all but first and last.
+  for (i = 0; i < str.size(); i++) {
+    switch ( i ) {
+      case 0:
+        CPPUNIT_ASSERT( str[i] == 'H' );
+        break;
+      case 1:
+        CPPUNIT_ASSERT( str[i] == '!' );
+        break;
+      default:
+        CPPUNIT_ASSERT( false );
+        break;
+    }
+  }
+
+  str.erase(1);
+  CPPUNIT_ASSERT( str == "H" );
 }
 
 void StringTest::data()
@@ -422,6 +444,13 @@ void StringTest::replace()
   str = strorg;
   str.replace(5, 5, str.c_str(), 10);
   CPPUNIT_ASSERT( str == "This This is test string for string calls" );
+
+#if !defined (STLPORT) || defined (_STLP_MEMBER_TEMPLATES)
+  deque<char> cdeque;
+  cdeque.push_back('I');
+  str.replace(str.begin(), str.begin() + 11, cdeque.begin(), cdeque.end());
+  CPPUNIT_ASSERT( str == "Is test string for string calls" );
+#endif
 }
 
 void StringTest::resize()
@@ -641,7 +670,7 @@ void StringTest::template_expresion()
     CPPUNIT_CHECK( result == ' ' );
 
 #ifdef _STLP_USE_EXCEPTIONS
-    while (true) {
+    for (;;) {
       try {
         result = (one + ' ' + two).at(10);
         CPPUNIT_ASSERT(false);

@@ -263,7 +263,7 @@ void VectorTest::at() {
   CPPUNIT_ASSERT( cv.at(0) == 20 );
   
 #ifdef _STLP_USE_EXCEPTIONS
-  while (true) {
+  for (;;) {
     try {
       v.at(1) = 20;
       CPPUNIT_ASSERT(false);

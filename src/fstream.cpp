@@ -325,6 +325,7 @@ ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
      mode |= O_RDONLY;
 # else
    // on Windows, this seems to work...
+  (void)oshandle; //unused variable
    if (dosflags & F_WRITABLE)
       mode |= O_RDWR;
    else
@@ -451,8 +452,7 @@ _Filebuf_base::_M_file_size()
 }
 
 bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
-                            long permission)
-{
+                            long permission) {
   _STLP_fd file_no;
 
   if (_M_is_open)
@@ -653,7 +653,7 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
   if (_M_is_open)
     _M_regular_file = _SgI::__is_regular_file(_M_file_id);
   
-  return _M_is_open;
+  return (_M_is_open != 0);
 }
 
   
@@ -900,7 +900,7 @@ ptrdiff_t _Filebuf_base::_M_read(char* buf, ptrdiff_t n) {
 // to write the entire buffer, false if we didn't.  
 bool _Filebuf_base::_M_write(char* buf, ptrdiff_t n) {
   
-  while (true) {
+  for (;;) {
     ptrdiff_t written;
     
 #   if defined (_STLP_USE_UNIX_IO)
@@ -1112,6 +1112,7 @@ void _Filebuf_base::_M_unmap(void* base, streamoff len) {
     CloseHandle(_M_view_id);
   _M_view_id = NULL;
   base = 0;
+  (void)len; //unused variable
 #else
   (void)len;    //*TY 02/26/2000 - unused variables
   (void)base;   //*TY 02/26/2000 - 
