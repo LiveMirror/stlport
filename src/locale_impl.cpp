@@ -607,16 +607,9 @@ static locale *_Stl_global_locale = 0;
 // build classic _Locale_impl (1):
 static _Locale_impl *_Stl_classic_locale_impl = new (&_Locale_classic_impl_buf) _Locale_impl("C");
 
-#if !defined (_STLP_ATOMIC_CAS)
-_STLP_STATIC_MUTEX _Stl_loc_global_locale_lock _STLP_MUTEX_INITIALIZER;
-#endif
-
-#ifdef _STLP_LEAKS_PEDANTIC
-
-static struct _Locale_classic_free
-{
-  ~_Locale_classic_free()
-    {
+#if defined (_STLP_LEAKS_PEDANTIC)
+static struct _Locale_classic_free {
+  ~_Locale_classic_free() {
       _Stl_global_locale->~locale();
       _Stl_classic_locale->~locale();
       _Stl_classic_locale = 0;
@@ -625,7 +618,6 @@ static struct _Locale_classic_free
       _Stl_classic_locale_impl = 0;
     }
 } _classic_free;
-
 #endif
 
 /*
