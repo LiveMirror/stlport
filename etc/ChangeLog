@@ -1,45 +1,62 @@
+	The following changes were made in 4.5.5 since 4.5.3 release:
 
-The following changes were made in 4.5.5 since 4.5.3 release:
+2003-10-25  Petr Ovchenkov
+
+	* _istreambuf_iterator.h: fix postfix increment operator to provide
+	conformance with ISO/IEC 14882:1998(E), 24.1.1, p.511, i.e.
+	*r++ equivalent to { T tmp = *r; ++r; return tmp; }
+
 
 2003-10-23  Francois Dumont
-  * debug/: modification of the invalidation of iterators to avoid invalidation of the end iterator for the
-            associative containers, hashed containers and list on calls to clear/assign/assignment operator.
-            (thanks  Alexey  Sarytchev)
+	
+	* debug/: modification of the invalidation of iterators to avoid
+	invalidation of the end iterator for the associative containers,
+	hashed containers and list on calls to clear/assign/assignment
+	operator. (thanks  Alexey  Sarytchev)
             
-  * _rope.h: Correction of the rope::iterator and rope::const_iterator copy constructor and assignment operator
-    (thanks Bradley Grainger)
+	* _rope.h: Correction of the rope::iterator and rope::const_iterator
+	copy constructor and assignment operator (thanks Bradley Grainger)
 
 2003-10-16  Francois Dumont
 
-  * _alloc.h: Add of the throw() specification on allocator comparision.
-  * _iterator.h: Correction of the operator++(int) signature to conform to the standard.
-  * _ctype.h: tolower and toupper for wchar_t types.
-  * _valarray.h: gslice_array::operator = (const value_type&) not const anymore
-  * _valarray.h: slice_array idem
-  * _valarray.h: valarray<T> operator [](const gslice&) former version was taking a copy of gslice
-  * _codecvt.h : correction of the default codecvt class definition and correction of the out method
-    (all thanks Richard Peng)
+	* _alloc.h: Add of the throw() specification on allocator comparision.
+	
+	* _iterator.h: Correction of the operator++(int) signature to conform
+	to the standard.
+	
+	* _ctype.h: tolower and toupper for wchar_t types.
+	
+	* _valarray.h: gslice_array::operator = (const value_type&) not
+	const anymore
+	
+	* _valarray.h: slice_array idem
+	
+	* _valarray.h: valarray<T> operator [](const gslice&) former version
+	was taking a copy of gslice
+	
+	* _codecvt.h: correction of the default codecvt class definition and
+	correction of the out method (all thanks Richard Peng)
     
 2003-10-16  Francois Dumont
 
-  * debug/: add of the iterator range check on all container constructors.
+	* debug/: add of the iterator range check on all container constructors.
 
-  * _string.h: correction of a bug on string auto referencing throught some
-  method like insert and replace. (thanks Tanaka)
+	* _string.h: correction of a bug on string auto referencing throught
+	some method like insert and replace. (thanks Tanaka)
 
-  * _valarray.h: correction of the missing slice_array copy constructor and assignment
-  operator in the private section (thanks Tanaka)
+	* _valarray.h: correction of the missing slice_array copy constructor
+	and assignment operator in the private section (thanks Tanaka)
 
 2003-10-11  Petr Ovchenkov
 
-  * _sstream.c: [io]?stringstream must do equivalent of seek at end,
-  after opened with ios_base::ate; this behaviour useful only when buffer
-  initialized by string (thanks Tanaka)
+	* _sstream.c: [io]?stringstream must do equivalent of seek at end,
+	after opened with ios_base::ate; this behaviour useful only when buffer
+	initialized by string (thanks Tanaka)
 	
 2003-10-07  Francois Dumont
 
-  * _[i,o]streambuf_iterator.h: correction of the missing iterator base class
-  (Thanks Tanaka)
+	* _istreambuf_iterator.h, _ostreambuf_iterator.h: correction
+	of the missing iterator base class (Thanks Tanaka)
   
   ----
   
