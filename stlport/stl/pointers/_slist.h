@@ -257,7 +257,7 @@ _STLP_EXPORT_TEMPLATE_CLASS _STLP_PRIV::_Slist_impl<void*, allocator<void*> >;
  * The pointer partial specialization.
  */
 template <class _Tp, class _Alloc>
-class slist<_Tp*, _Alloc> _STLP_STLPORT_CLASS_1 {
+class slist<_Tp*, _Alloc> {
 private:
   //Member datas as a void* slist:
   typedef typename _Alloc_traits<void*, _Alloc>::allocator_type _VoidAlloc;
