@@ -26,19 +26,19 @@ _STLP_BEGIN_NAMESPACE
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC float _STLP_CALL abs(const complex<float>& __z)
 {
-  return _STLP_HYPOTF(__z._M_re, __z._M_im);
+  return ::hypotf(__z._M_re, __z._M_im);
 }
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC double _STLP_CALL abs(const complex<double>& __z)
 {
-  return _STLP_HYPOT(__z._M_re, __z._M_im);
+  return ::hypot(__z._M_re, __z._M_im);
 }
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z)
 {
-  return _STLP_HYPOTL(__z._M_re, __z._M_im);
+  return ::hypotl(__z._M_re, __z._M_im);
 }
 #endif
 
@@ -47,20 +47,20 @@ _STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z)
 _STLP_TEMPLATE_NULL 
 _STLP_DECLSPEC float _STLP_CALL arg(const complex<float>& __z) 
 {
-  return _STLP_ATAN2F(__z._M_im, __z._M_re);
+  return ::atan2f(__z._M_im, __z._M_re);
 }
 
 _STLP_TEMPLATE_NULL 
 _STLP_DECLSPEC double _STLP_CALL arg(const complex<double>& __z) 
 {
-  return _STLP_ATAN2(__z._M_im, __z._M_re);
+  return ::atan2(__z._M_im, __z._M_re);
 }
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC long double _STLP_CALL arg(const complex<long double>& __z) 
 {
-  return _STLP_ATAN2L(__z._M_im, __z._M_re);
+  return ::atan2l(__z._M_im, __z._M_re);
 }
 #endif
 
@@ -68,19 +68,19 @@ _STLP_DECLSPEC long double _STLP_CALL arg(const complex<long double>& __z)
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC complex<float> _STLP_CALL polar(const float& __rho, const float& __phi) 
 {
-  return complex<float>(__rho * _STLP_COSF(__phi), __rho * _STLP_SINF(__phi));
+  return complex<float>(__rho * ::cosf(__phi), __rho * ::sinf(__phi));
 }
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC complex<double> _STLP_CALL polar(const double& __rho, const double& __phi) 
 {
-  return complex<double>(__rho * _STLP_COS(__phi), __rho * _STLP_SIN(__phi));
+  return complex<double>(__rho * ::cos(__phi), __rho * ::sin(__phi));
 }
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL 
 _STLP_DECLSPEC complex<long double> _STLP_CALL polar(const long double& __rho, const long double& __phi)
 {
-  return complex<long double>(__rho * _STLP_COSL(__phi), __rho * _STLP_SINL(__phi));
+  return complex<long double>(__rho * ::cosl(__phi), __rho * ::sinl(__phi));
 }
 #endif
 
@@ -224,16 +224,16 @@ complex<float> _STLP_CALL
 sqrt(const complex<float>& z) {
   float re = z._M_re;
   float im = z._M_im;
-  float mag = _STLP_HYPOTF(re, im);
+  float mag = ::hypotf(re, im);
   complex<float> result;
 
   if (mag == 0.) {
     result._M_re = result._M_im = 0.f;
   } else if (re > 0.f) {
-    result._M_re = _STLP_SQRTF(0.5f * (mag + re));
+    result._M_re = ::sqrtf(0.5f * (mag + re));
     result._M_im = im/result._M_re/2.f;
   } else {
-    result._M_im = _STLP_SQRTF(0.5f * (mag - re));
+    result._M_im = ::sqrtf(0.5f * (mag - re));
     if (im < 0.f)
       result._M_im = - result._M_im;
     result._M_re = im/result._M_im/2.f;
@@ -246,16 +246,16 @@ complex<double>  _STLP_CALL
 sqrt(const complex<double>& z) {
   double re = z._M_re;
   double im = z._M_im;
-  double mag = _STLP_HYPOT(re, im);
+  double mag = ::hypot(re, im);
   complex<double> result;
 
   if (mag == 0.) {
     result._M_re = result._M_im = 0.;
   } else if (re > 0.) {
-    result._M_re = _STLP_SQRT(0.5 * (mag + re));
+    result._M_re = ::sqrt(0.5 * (mag + re));
     result._M_im = im/result._M_re/2;
   } else {
-    result._M_im = _STLP_SQRT(0.5 * (mag - re));
+    result._M_im = ::sqrt(0.5 * (mag - re));
     if (im < 0.)
       result._M_im = - result._M_im;
     result._M_re = im/result._M_im/2;
@@ -268,16 +268,16 @@ complex<long double> _STLP_CALL
 sqrt(const complex<long double>& z) {
   long double re = z._M_re;
   long double im = z._M_im;
-  long double mag = _STLP_HYPOTL(re, im);
+  long double mag = ::hypotl(re, im);
   complex<long double> result;
 
   if (mag == 0.L) {
     result._M_re = result._M_im = 0.L;
   } else if (re > 0.L) {
-    result._M_re = _STLP_SQRTL(0.5L * (mag + re));
+    result._M_re = ::sqrtl(0.5L * (mag + re));
     result._M_im = (im/result._M_re) * .5L;
   } else {
-    result._M_im = _STLP_SQRTL(0.5L * (mag - re));
+    result._M_im = ::sqrtl(0.5L * (mag - re));
     if (im < 0.L)
       result._M_im = - result._M_im;
     result._M_re = (im/result._M_im) * .5L;
