@@ -398,6 +398,11 @@ At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
 #   define _STLP_STATIC_TEMPLATE_DATA 1
 # endif
 
+# if defined (__hpux) && defined(__GNUC__)
+#   define _STLP_NO_LONG_DOUBLE
+# endif
+
+
 #ifdef _STLP_FREEBSD_HAS_WFUNCS
 #  undef _STLP_FREEBSD_HAS_WFUNCS
 #endif
