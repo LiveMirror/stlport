@@ -619,7 +619,7 @@ num_get<_CharT, _InputIter>::do_get(_InputIter __in, _InputIter __end, ios_base&
     __err |= ios_base::eofbit;
   return __in;
 }
-#endif /* _STLP_LONG_DOUBLE */
+#endif /* _STLP_NO_LONG_DOUBLE */
 
 template <class _CharT, class _InputIter>  
 _InputIter 

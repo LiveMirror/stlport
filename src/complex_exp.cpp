@@ -42,7 +42,7 @@ _STLP_DECLSPEC complex<double> _STLP_CALL exp(const complex<double>& z)
                          expx * _STLP_SIN(z._M_im));
 }
 
-# ifndef _STLP_LONG_DOUBLE
+# ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL exp(const complex<long double>& z)
 {
   long double expx = _STLP_EXPL(z._M_re);
