@@ -12,6 +12,9 @@
 	before_begin iterators are not dereferenceable but were not detected
 	as so.
 
+	* stlport/math.h, stdexcept: patches from Michael Fink to avoid warning 
+	on the EVC platform.
+
 2004-11-22  Francois Dumont  <dums@stlport...>
 
 	* src/explore/Makefiles/nmake/evc3.mak, evc4.mak: removal of the useless 
