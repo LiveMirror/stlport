@@ -92,8 +92,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::_M_set_ptrs() {
 // Precondition: gptr() >= egptr().  Returns a character, if one is available.
 template <class _CharT, class _Traits, class _Alloc>
 __BSB_int_type__
-basic_stringbuf<_CharT, _Traits, _Alloc>::underflow()
-{
+basic_stringbuf<_CharT, _Traits, _Alloc>::underflow() {
   return this->gptr() != this->egptr()
     ? _Traits::to_int_type(*this->gptr())
     : _Traits::eof();
@@ -102,8 +101,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::underflow()
 // Precondition: gptr() >= egptr().
 template <class _CharT, class _Traits, class _Alloc>
 __BSB_int_type__
-basic_stringbuf<_CharT, _Traits, _Alloc>::uflow()
-{
+basic_stringbuf<_CharT, _Traits, _Alloc>::uflow() {
   if (this->gptr() != this->egptr()) {
     int_type __c = _Traits::to_int_type(*this->gptr());
     this->gbump(1);
@@ -115,8 +113,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::uflow()
 
 template <class _CharT, class _Traits, class _Alloc>
 __BSB_int_type__
-basic_stringbuf<_CharT, _Traits, _Alloc>::pbackfail(int_type __c)
-{
+basic_stringbuf<_CharT, _Traits, _Alloc>::pbackfail(int_type __c) {
   if (this->gptr() != this->eback()) {
     if (!_Traits::eq_int_type(__c, _Traits::eof())) {
       if (_Traits::eq(_Traits::to_char_type(__c), this->gptr()[-1])) {
@@ -125,7 +122,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::pbackfail(int_type __c)
       }
       else if (_M_mode & ios_base::out) {
         this->gbump(-1);
-        *this->gptr() = __c;
+        *this->gptr() = _Traits::to_char_type(__c);
         return __c;
       }
       else
@@ -142,8 +139,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::pbackfail(int_type __c)
 
 template <class _CharT, class _Traits, class _Alloc>
 __BSB_int_type__
-basic_stringbuf<_CharT, _Traits, _Alloc>::overflow(int_type __c)
-{
+basic_stringbuf<_CharT, _Traits, _Alloc>::overflow(int_type __c) {
   // fbp : reverse order of "ifs" to pass Dietmar's test.
   // Apparently, standard allows overflow with eof even for read-only streams.
   if (!_Traits::eq_int_type(__c, _Traits::eof())) {
@@ -161,15 +157,14 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::overflow(int_type __c)
         else
           return _Traits::eof();
       }
-
       else {
         // We're not using a special append buffer, just the string itself.
         if (this->pptr() == this->epptr()) {
           ptrdiff_t __offset = this->gptr() - this->eback();
           _M_str.push_back(_Traits::to_char_type(__c));
 
-	  _CharT* __data_ptr = __CONST_CAST(_CharT*,_M_str.data());
-	  size_t __data_size = _M_str.size();
+          _CharT* __data_ptr = __CONST_CAST(_CharT*,_M_str.data());
+          size_t __data_size = _M_str.size();
 
           this->setg(__data_ptr, __data_ptr + __offset, __data_ptr+__data_size);
           this->setp(__data_ptr, __data_ptr + __data_size);
@@ -193,8 +188,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::overflow(int_type __c)
 template <class _CharT, class _Traits, class _Alloc>
 streamsize 
 basic_stringbuf<_CharT, _Traits, _Alloc>::xsputn(const char_type* __s,
-                                                 streamsize __n)
-{
+                                                 streamsize __n) {
   streamsize __nwritten = 0;
 
   if ((_M_mode & ios_base::out) && __n > 0) {
@@ -242,8 +236,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::xsputn(const char_type* __s,
 template <class _CharT, class _Traits, class _Alloc>
 streamsize 
 basic_stringbuf<_CharT, _Traits, _Alloc>::_M_xsputnc(char_type __c,
-                                                     streamsize __n)
-{
+                                                     streamsize __n) {
   streamsize __nwritten = 0;
 
   if ((_M_mode & ios_base::out) && __n > 0) {
@@ -294,8 +287,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::_M_xsputnc(char_type __c,
 // string.
 template <class _CharT, class _Traits, class _Alloc>
 basic_streambuf<_CharT, _Traits>*
-basic_stringbuf<_CharT, _Traits, _Alloc>::setbuf(_CharT*, streamsize __n)
-{
+basic_stringbuf<_CharT, _Traits, _Alloc>::setbuf(_CharT*, streamsize __n) {
   if (__n > 0) {
     bool __do_get_area = false;
     bool __do_put_area = false;
@@ -335,10 +327,10 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::setbuf(_CharT*, streamsize __n)
 
 template <class _CharT, class _Traits, class _Alloc>
 __BSB_pos_type__
-basic_stringbuf<_CharT, _Traits, _Alloc>::seekoff(off_type __off, 
+basic_stringbuf<_CharT, _Traits, _Alloc>
+  ::seekoff(off_type __off, 
             ios_base::seekdir __dir,
-            ios_base::openmode __mode)
-{
+            ios_base::openmode __mode) {
   __mode &= _M_mode;
 
   bool __in  = (__mode & ios_base::in) != 0;
@@ -393,8 +385,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::seekoff(off_type __off,
 template <class _CharT, class _Traits, class _Alloc>
 __BSB_pos_type__
 basic_stringbuf<_CharT, _Traits, _Alloc>
-  ::seekpos(pos_type __pos, ios_base::openmode __mode)
-{
+  ::seekpos(pos_type __pos, ios_base::openmode __mode) {
   __mode &= _M_mode;
 
   bool __in  = (__mode & ios_base::in) != 0;
@@ -436,9 +427,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>
 // write stringbufs.  Postcondition: pptr is reset to the beginning
 // of the buffer.
 template <class _CharT, class _Traits, class _Alloc>
-void basic_stringbuf<_CharT, _Traits, _Alloc>::_M_append_buffer() const
-
-{
+void basic_stringbuf<_CharT, _Traits, _Alloc>::_M_append_buffer() const {
   // Do we have a buffer to append?
   if (this->pbase() == this->_M_Buf && this->pptr() != this->_M_Buf) {
     basic_stringbuf<_CharT, _Traits, _Alloc>* __this = __CONST_CAST(_Self*,this);
@@ -462,8 +451,7 @@ template <class _CharT, class _Traits, class _Alloc>
 basic_istringstream<_CharT, _Traits, _Alloc>
   ::basic_istringstream(ios_base::openmode __mode)
     : basic_istream<_CharT, _Traits>(0),
-      _M_buf(__mode | ios_base::in)
-{
+      _M_buf(__mode | ios_base::in) {
   this->init(&_M_buf);
 }
 
@@ -471,8 +459,7 @@ template <class _CharT, class _Traits, class _Alloc>
 basic_istringstream<_CharT, _Traits, _Alloc>
   ::basic_istringstream(const _String& __str,ios_base::openmode __mode)
     : basic_istream<_CharT, _Traits>(0),
-      _M_buf(__str, __mode | ios_base::in)
-{
+      _M_buf(__str, __mode | ios_base::in) {
   this->init(&_M_buf);
 }
 
@@ -487,8 +474,7 @@ template <class _CharT, class _Traits, class _Alloc>
 basic_ostringstream<_CharT, _Traits, _Alloc>
   ::basic_ostringstream(ios_base::openmode __mode)
     : basic_ostream<_CharT, _Traits>(0),
-      _M_buf(__mode | ios_base::out)
-{
+      _M_buf(__mode | ios_base::out) {
   this->init(&_M_buf);
 }
   
@@ -496,8 +482,7 @@ template <class _CharT, class _Traits, class _Alloc>
 basic_ostringstream<_CharT, _Traits, _Alloc>
   ::basic_ostringstream(const _String& __str, ios_base::openmode __mode)
     : basic_ostream<_CharT, _Traits>(0),
-      _M_buf(__str, __mode | ios_base::out)
-{
+      _M_buf(__str, __mode | ios_base::out) {
   this->init(&_M_buf);
 }
 
@@ -511,16 +496,14 @@ basic_ostringstream<_CharT, _Traits, _Alloc>::~basic_ostringstream()
 template <class _CharT, class _Traits, class _Alloc>
 basic_stringstream<_CharT, _Traits, _Alloc>
   ::basic_stringstream(ios_base::openmode __mode)
-    : basic_iostream<_CharT, _Traits>(0), _M_buf(__mode)
-{
+    : basic_iostream<_CharT, _Traits>(0), _M_buf(__mode) {
    this->init(&_M_buf);
 }
 
 template <class _CharT, class _Traits, class _Alloc>
 basic_stringstream<_CharT, _Traits, _Alloc>
   ::basic_stringstream(const _String& __str, ios_base::openmode __mode)
-    : basic_iostream<_CharT, _Traits>(0), _M_buf(__str, __mode)
-{
+    : basic_iostream<_CharT, _Traits>(0), _M_buf(__str, __mode) {
   this->init(&_M_buf);
 }
 

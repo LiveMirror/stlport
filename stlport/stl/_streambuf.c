@@ -61,7 +61,7 @@ basic_streambuf<_CharT, _Traits>::xsgetn(_CharT* __s, streamsize __n)
   while (__result < __n) {
     if (_M_gnext < _M_gend) {
       size_t __chunk = (min) (__STATIC_CAST(size_t,_M_gend - _M_gnext),
-                           __STATIC_CAST(size_t,__n - __result));
+                              __STATIC_CAST(size_t,__n - __result));
       _Traits::copy(__s, _M_gnext, __chunk);
       __result += __chunk;
       __s += __chunk;
@@ -70,7 +70,7 @@ basic_streambuf<_CharT, _Traits>::xsgetn(_CharT* __s, streamsize __n)
     else {
       int_type __c = this->sbumpc();
       if (!_Traits::eq_int_type(__c, __eof)) {
-        *__s = __c;
+        *__s = _Traits::to_char_type(__c);
         ++__result;
 	++__s;
       }

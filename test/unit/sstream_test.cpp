@@ -74,7 +74,8 @@ void SstreamTest::input()
   s >> str;
   CPPUNIT_ASSERT( s.good() );
   CPPUNIT_ASSERT( str == "abcd" );
-  char c = s.get(); // extract newline, that not extracted by operator >>
+  char c;
+  s.get(c); // extract newline, that not extracted by operator >>
   CPPUNIT_ASSERT( s.good() );
   CPPUNIT_ASSERT( c == '\n' );
   getline( s, str );
@@ -103,7 +104,8 @@ void SstreamTest::io()
   s >> str;
   CPPUNIT_ASSERT( str == "abcd" );
   CPPUNIT_ASSERT( s.good() );
-  char c = s.get(); // extract newline, that not extracted by operator >>
+  char c;
+  s.get(c); // extract newline, that not extracted by operator >>
   CPPUNIT_ASSERT( s.good() );
   CPPUNIT_ASSERT( c == '\n' );
   getline( s, str );
@@ -216,10 +218,10 @@ void SstreamTest::buf()
   CPPUNIT_ASSERT( buf[6] == '7' ); // 27.6.1.3 paragraph 10, paragraph 7
   CPPUNIT_ASSERT( buf[7] == 0 ); // 27.6.1.3 paragraph 8
   char c;
-  c = ss.get();
+  ss.get(c);
   CPPUNIT_ASSERT( !ss.fail() );
   CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 10, paragraph 7
-  c = ss.get();
+  ss.get(c);
   CPPUNIT_ASSERT( !ss.fail() );
   CPPUNIT_ASSERT( c == '8' );
 }
@@ -234,7 +236,7 @@ void SstreamTest::rdbuf()
   ss.get( *os.rdbuf(), '\n' );
   CPPUNIT_ASSERT( !ss.fail() );
   char c;
-  c = ss.get();
+  ss.get(c);
   CPPUNIT_ASSERT( !ss.fail() );
   CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 12
   CPPUNIT_ASSERT( os.str() == "1234567" );

@@ -876,7 +876,7 @@ _Stl_string_to_long_double(const char * s) {
   }
 
   d = digits;
-  dpchar = '.' -'0';
+  dpchar = '.' - '0';
   decimal_point = 0;
   exp = 0;
 
@@ -893,12 +893,12 @@ _Stl_string_to_long_double(const char * s) {
           ;
         }
         else {
-          *d++ = c;
+          *d++ = (char)c;
         }
         exp -= decimal_point;
       }
     }
-    else if (c == dpchar && !decimal_point) {    /* INTERNATIONAL */
+    else if ((char)c == dpchar && !decimal_point) {    /* INTERNATIONAL */
       decimal_point = 1;
     }
     else {

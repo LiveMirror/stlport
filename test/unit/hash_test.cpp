@@ -7,9 +7,9 @@
 #include "cppunit/cppunit_proxy.h"
 
 #if defined (__MVS__)
-#  define star   92 
+const char star = 92;
 #else
-#  define star   42
+const char star = 42;
 #endif
 
 #if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
@@ -86,10 +86,10 @@ void HashTest::hmmap1()
   m.insert(pair<const char,int>('X', 10)); // Standard way.
   CPPUNIT_ASSERT(m.count('X')==1);
 //  m.insert('X', 20); // Non-standard, but very convenient!
-  m.insert(pair<const char,int>('X', 20));	// jbuck: standard way
+  m.insert(pair<const char,int>('X', 20));  // jbuck: standard way
   CPPUNIT_ASSERT(m.count('X')==2);
 //  m.insert('Y', 32);
-  m.insert(pair<const char,int>('Y', 32));	// jbuck: standard way
+  m.insert(pair<const char,int>('Y', 32));  // jbuck: standard way
   mmap::iterator i = m.find('X'); // Find first match.
 
   CPPUNIT_ASSERT((*i).first=='X');
@@ -122,7 +122,7 @@ void HashTest::hmset1()
   CPPUNIT_ASSERT(s.count(star)==1);
   s.insert(star);
   CPPUNIT_ASSERT(s.count(star)==2);
-  hmset::iterator i = s.find(40);
+  hmset::iterator i = s.find(char(40));
   CPPUNIT_ASSERT(i == s.end());
 
   i = s.find(star);

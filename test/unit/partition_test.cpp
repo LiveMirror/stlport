@@ -29,7 +29,7 @@ protected:
   void stblptn1();
 
   struct less_n {
-    less_n(int limit, int &nb_calls) 
+    less_n(int limit, size_t &nb_calls) 
       : _limit(limit), _nb_calls(nb_calls) {}
 
     bool operator() (int a_) const {
@@ -38,7 +38,7 @@ protected:
     }
 
     int _limit;
-    int &_nb_calls;
+    size_t &_nb_calls;
   };
 };
 
@@ -51,7 +51,7 @@ void PartitionTest::stblptn0()
 {
   int numbers[6] = { 10, 5, 11, 20, 6, -2 };
 
-  int nb_pred_calls = 0;
+  size_t nb_pred_calls = 0;
   stable_partition((int*)numbers, (int*)numbers + 6, less_n(10, nb_pred_calls));
   // 5 6 -2 10 11 20
   CPPUNIT_ASSERT(numbers[0]==5);
@@ -71,7 +71,7 @@ void PartitionTest::stblptn1()
   int numbers[] = { 5, 5, 2, 10, 0, 12, 5, 0, 0, 19 };
   vector <int> v1(numbers, numbers+10);
 
-  int nb_pred_calls = 0;
+  size_t nb_pred_calls = 0;
   stable_partition(v1.begin(), v1.end(), less_n(11, nb_pred_calls));
 
   CPPUNIT_ASSERT(v1[0]==5);
@@ -89,7 +89,7 @@ void PartitionTest::stblptn1()
 void PartitionTest::ptition0()
 {
   int numbers[6] = { 6, 12, 3, 10, 1, 20 };
-  int nb_pred_calls = 0;
+  size_t nb_pred_calls = 0;
   // 6 1 3 10 12 20 
   partition((int*)numbers, (int*)numbers + 6, less_n(10, nb_pred_calls));
   CPPUNIT_ASSERT(numbers[0]==6);
@@ -109,7 +109,7 @@ void PartitionTest::ptition1()
   int numbers[10] ={ 19, 3, 11, 14, 10, 19, 8, 17, 9, 6 };
 
   vector <int> v1(numbers, numbers+10);
-  int nb_pred_calls = 0;
+  size_t nb_pred_calls = 0;
   partition(v1.begin(), v1.end(), less_n(11, nb_pred_calls));
 
   CPPUNIT_ASSERT(v1[0]==6);

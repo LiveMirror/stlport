@@ -286,7 +286,7 @@ extern "C" {
 	      for(i=*ptr; i <= *(ptr+1); ++i) Buffer[i] = 0;
     }
 
-    if(NativeCP != ltype->cp) {
+    if((UINT)NativeCP != ltype->cp) {
     	OSVERSIONINFO ver_info;
         ver_info.dwOSVersionInfoSize = sizeof(ver_info);
     	GetVersionEx(&ver_info);
@@ -700,7 +700,7 @@ extern "C" {
   int _Locale_toupper(struct _Locale_ctype* ltype, int c) {
     char buf[2], out_buf[2];
     buf[0] = (char)c; buf[1] = 0;
-    if(__GetDefaultCP(ltype->lcid) == ltype->cp) {
+    if((UINT)__GetDefaultCP(ltype->lcid) == ltype->cp) {
 	    LCMapStringA(ltype->lcid, LCMAP_LINGUISTIC_CASING | LCMAP_UPPERCASE, buf, 2, out_buf, 2);
 	    return out_buf[0];
     }
@@ -720,7 +720,7 @@ extern "C" {
   int _Locale_tolower(struct _Locale_ctype* ltype, int c) {
     char buf[2], out_buf[2];
     buf[0] = (char)c; buf[1] = 0;
-    if(__GetDefaultCP(ltype->lcid) == ltype->cp) {
+    if((UINT)__GetDefaultCP(ltype->lcid) == ltype->cp) {
 	    LCMapStringA(ltype->lcid, LCMAP_LINGUISTIC_CASING | LCMAP_LOWERCASE, buf, 2, out_buf, 2);
 	    return out_buf[0];
     }
@@ -737,7 +737,7 @@ extern "C" {
     }
   }
 
-# ifndef _STLP_NO_WCHAR_T
+#if !defined (_STLP_NO_WCHAR_T)
   _Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype* ltype, wint_t c,
                                      _Locale_mask_t which_bits) {
     wchar_t buf[2];
@@ -746,7 +746,7 @@ extern "C" {
     GetStringTypeW(CT_CTYPE1, buf, -1, out);
 
     return (_Locale_mask_t)out[0] & which_bits;
-    //	ltype;
+    (void*)ltype;
   }
 
   wint_t _Locale_wchar_tolower(struct _Locale_ctype* ltype, wint_t c) {
@@ -762,9 +762,9 @@ extern "C" {
     LCMapStringW(ltype->lcid, LCMAP_UPPERCASE, &c, 1, &res, 1);
     return res;
   }
-# endif
+#endif
 
-# ifndef _STLP_NO_MBSTATE_T
+#if !defined (_STLP_NO_MBSTATE_T)
 
   int _Locale_mb_cur_max (struct _Locale_ctype * ltype) {
     CPINFO CPInfo;
@@ -772,8 +772,10 @@ extern "C" {
     return CPInfo.MaxCharSize;
   }
 
-  int _Locale_mb_cur_min (struct _Locale_ctype *dummy)
-  { return 1; }
+  int _Locale_mb_cur_min (struct _Locale_ctype *dummy) {
+    (void*)dummy;
+    return 1; 
+  }
 
   int _Locale_is_stateless (struct _Locale_ctype * ltype) {
     CPINFO CPInfo;
@@ -871,6 +873,7 @@ extern "C" {
 
   size_t _Locale_unshift(struct _Locale_ctype *ltype, mbstate_t *st,
                          char *buf, size_t n, char **next) {
+    (void*)ltype;
     if(*st == 0) {
 	    *next = buf;
 	    return 0;
@@ -883,15 +886,15 @@ extern "C" {
     }
   }
 
-# endif /*  _STLP_NO_MBSTATE_T */
+#endif /*  _STLP_NO_MBSTATE_T */
 
 
-# ifndef CSTR_EQUAL /* VC5SP3*/
-# define CSTR_EQUAL 2
-# endif
-# ifndef CSTR_LESS_THAN /* VC5SP3 */
-# define CSTR_LESS_THAN 1
-# endif
+#ifndef CSTR_EQUAL /* VC5SP3*/
+#  define CSTR_EQUAL 2
+#endif
+#ifndef CSTR_LESS_THAN /* VC5SP3 */
+#  define CSTR_LESS_THAN 1
+#endif
 
   /* Collate */
   int _Locale_strcmp(struct _Locale_collate* lcol,
@@ -913,7 +916,7 @@ extern "C" {
     return (result == CSTR_EQUAL) ? 0 : (result == CSTR_LESS_THAN) ? -1 : 1;
   }
 
-# ifndef _STLP_NO_WCHAR_T
+#if !defined (_STLP_NO_WCHAR_T)
 
   int _Locale_strwcmp(struct _Locale_collate* lcol,
                       const wchar_t* s1, size_t n1,
@@ -923,7 +926,7 @@ extern "C" {
     return (result == CSTR_EQUAL) ? 0 : (result == CSTR_LESS_THAN) ? -1 : 1;
   }
 
-# endif
+#endif
 
   size_t _Locale_strxfrm(struct _Locale_collate* lcol,
 	  	                   char* dst, size_t dst_size,

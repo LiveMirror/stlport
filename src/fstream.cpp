@@ -165,21 +165,16 @@ extern "C" {
 __SGI_BEGIN_NAMESPACE
 
 #if !defined(__MSL__) && !defined(__MRC__) && !defined(__SC__) && !defined(_STLP_WCE)		//*TY 04/15/2000 - exclude mpw compilers also
-ios_base::openmode flag_to_openmode(int mode)
-{
-  ios_base::openmode ret;
+ios_base::openmode flag_to_openmode(int mode) {
+  ios_base::openmode ret = ios_base::__default_mode;
   
   switch(mode & O_ACCMODE) {
-
   case O_RDONLY:
     ret = ios_base::in; break;
-
   case O_WRONLY:
     ret = ios_base::out; break;
-
   case O_RDWR:
     ret = ios_base::in | ios_base::out; break;
-
   }
 
   if (mode & O_APPEND)
@@ -191,7 +186,6 @@ ios_base::openmode flag_to_openmode(int mode)
 #  endif // _MSC_VER
 
   return ret;
-  
 }
 # endif /* MSL */
 
@@ -953,7 +947,7 @@ bool _Filebuf_base::_M_write(char* buf, ptrdiff_t n) {
       }
       // now write out the translated buffer
       char * writetextbuf = textbuf;
-      for (ptrdiff_t NumberOfBytesToWrite = ptrtextbuf - textbuf; 
+      for (DWORD NumberOfBytesToWrite = ptrtextbuf - textbuf;
            NumberOfBytesToWrite;) {
         DWORD NumberOfBytesWritten;
         WriteFile((HANDLE)_M_file_id, (LPVOID)writetextbuf, 
