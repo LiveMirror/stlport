@@ -16,7 +16,11 @@ class MemFunPtrTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(MemFunPtrTest);
   CPPUNIT_TEST(mem_ptr_fun);
+#if !defined (STLPORT) || defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+  //This test require partial template specialization feature to avoid the
+  //reference to reference problem. No workaround yet for limited compilers.
   CPPUNIT_TEST(find);
+#endif
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -115,7 +119,6 @@ void MemFunPtrTest::mem_ptr_fun()
 #endif /* _STLP_DONT_TEST_RETURN_VOID */
 
   // mem_fun_ref (const)
-
   mem_fun_ref(&Class::f0c)(objc);
   mem_fun_ref(&Class::f1c)(objc, s1);
 
@@ -172,6 +175,7 @@ void Class::vf0c() const
 void Class::vf1c(const S1&) const
 {}
 
+#if !defined (STLPORT) || defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 struct V {
   public:
     V(int _v) :
@@ -195,7 +199,7 @@ void MemFunPtrTest::find()
 
   // step 1:
   const_mem_fun1_ref_t<bool,V,int> pmf = mem_fun_ref( &V::f );
-  binder2nd<const_mem_fun1_ref_t<bool,V,int> > b( pmf, 2 );
+  binder2nd<const_mem_fun1_ref_t<bool,V,int> > b(pmf, 2);
   vector<V>::iterator i = find_if( v.begin(), v.end(), b );
   CPPUNIT_ASSERT(i != v.end());
   CPPUNIT_ASSERT(i->v == 2);
@@ -210,11 +214,12 @@ void MemFunPtrTest::find()
   CPPUNIT_ASSERT(j != v.end());
   CPPUNIT_ASSERT(j->v == 2);
 
-  // step 4, most brief, most complex:
+  // step 4, more brief, more complex:
   vector<V>::iterator k = find_if( v.begin(), v.end(), bind2nd( mem_fun_ref( &V::f ), 2 ) );
   CPPUNIT_ASSERT(k != v.end());
   CPPUNIT_ASSERT(k->v == 2);
 }
+#endif
 
 
 #ifdef _STLP_DONT_TEST_RETURN_VOID

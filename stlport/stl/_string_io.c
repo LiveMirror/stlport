@@ -25,8 +25,6 @@ __stlp_string_fill(basic_ostream<_CharT, _Traits>& __os,
 }
 
 
-inline void __avoid_unused_var_warning(char[1 == 1]) {}
-
 template <class _CharT, class _Traits, class _Alloc>
 basic_ostream<_CharT, _Traits>& _STLP_CALL
 operator << (basic_ostream<_CharT, _Traits>& __os, 
@@ -38,10 +36,8 @@ operator << (basic_ostream<_CharT, _Traits>& __os,
    * and streamsize is at least equal to size_type.
    * It is important in the way we compare it to streamsize.
    */
-  char __static_assert_unsigned_size_type[__STATIC_CAST(size_type, -1) > 0];
-  __avoid_unused_var_warning(__static_assert_unsigned_size_type);
-  char __static_assert_gt_or_eq_size[sizeof(streamsize) >= sizeof(size_type)];
-  __avoid_unused_var_warning(__static_assert_gt_or_eq_size);
+  typedef char __static_assert_unsigned_size_type[__STATIC_CAST(size_type, -1) > 0];
+  typedef char __static_assert_gt_or_eq_size[sizeof(streamsize) >= sizeof(size_type)];
 
   typename __ostream::sentry __sentry(__os);
   bool __ok = false;
@@ -87,10 +83,8 @@ operator >> (basic_istream<_CharT, _Traits>& __is,
    * and streamsize is at least equal to size_type.
    * It is important in the way we compare it to streamsize.
    */
-  char __static_assert_unsigned_size_type[__STATIC_CAST(size_type, -1) > 0];
-  __avoid_unused_var_warning(__static_assert_unsigned_size_type);
-  char __static_assert_gt_or_eq_size[sizeof(streamsize) >= sizeof(size_type)];
-  __avoid_unused_var_warning(__static_assert_gt_or_eq_size);
+  typedef char __static_assert_unsigned_size_type[__STATIC_CAST(size_type, -1) > 0];
+  typedef char __static_assert_gt_or_eq_size[sizeof(streamsize) >= sizeof(size_type)];
 
   typename __istream::sentry __sentry(__is);
 

@@ -21,3 +21,4 @@
 #endif 
 
 #define _STLP_GLOBAL_NEW_HANDLER 1
+#define _STLP_NO_VENDOR_STDLIB_L 1
