@@ -1408,14 +1408,13 @@ const _CharT* rope<_CharT,_Alloc>::c_str() const {
     return _S_empty_c_str;
   }
   _CharT* __old_c_string = _M_tree_ptr._M_data->_M_c_string;
-  if (0 != __old_c_string) return(__old_c_string);
+  if (0 != __old_c_string) return __old_c_string;
   size_t __s = size();
   _CharT* __result = _STLP_CREATE_ALLOCATOR(allocator_type,(const allocator_type&)_M_tree_ptr, _CharT).allocate(__s + 1);
   _S_flatten(_M_tree_ptr._M_data, __result);
   _S_construct_null(__result + __s);
-  if ((__old_c_string = (_CharT*)
-        _Atomic_swap((__stl_atomic_t *)(&(_M_tree_ptr._M_data->_M_c_string)),
-                     (__stl_atomic_t)__result)) != 0) {
+  __old_c_string = (_CharT*)_Atomic_swap_ptr((void**)&(_M_tree_ptr._M_data->_M_c_string), __result);
+  if (0 != __old_c_string) {
     // It must have been added in the interim.  Hence it had to have been
     // separately allocated.  Deallocate the old copy, since we just
     // replaced it.

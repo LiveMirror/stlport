@@ -1,3 +1,8 @@
+2005-03-01  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_threads.h, _windows.h, _rope.c: Fix of a 64 bits portage issue
+	in the rope implementation under Win64 thanks Patrick Bergeron report.
+
 2005-02-28  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.c: hashtable::erase fix thanks Patrick Bergeron.
