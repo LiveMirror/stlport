@@ -1,10 +1,8 @@
 #include <algorithm>
 #include <cstring>
-#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
-#  include <sstream>
-#endif
 #include <vector>
 #include <iterator>
+
 #include "cppunit/cppunit_proxy.h"
 
 #if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
@@ -17,25 +15,19 @@ using namespace std;
 class CopyTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(CopyTest);
-  CPPUNIT_TEST(copy1);
-#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
-  CPPUNIT_TEST(copy2);
-  CPPUNIT_TEST(copy3);
-  CPPUNIT_TEST(copy4);
-  CPPUNIT_TEST(copyb);
-#endif
-  CPPUNIT_TEST(copyb0);
+  CPPUNIT_TEST(copy_array);
+  CPPUNIT_TEST(copy_vector);
+  CPPUNIT_TEST(copy_insert);
+  CPPUNIT_TEST(copy_back);
+  CPPUNIT_TEST(copy_back_array);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
-  void copy1();
-#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
-  void copy2();
-  void copy3();
-  void copy4();
-  void copyb();
-#endif
-  void copyb0();
+  void copy_array();
+  void copy_vector();
+  void copy_insert();
+  void copy_back();
+  void copy_back_array();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CopyTest);
@@ -43,42 +35,27 @@ CPPUNIT_TEST_SUITE_REGISTRATION(CopyTest);
 //
 // tests implementation
 //
-void CopyTest::copy1()
+void CopyTest::copy_array()
 {
   char string[23] = "A string to be copied.";
   char result[23];
   copy(string, string + 23, result);
   CPPUNIT_ASSERT(!strncmp(string, result, 23));
 }
-#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
-void CopyTest::copy2()
-{
-  vector<int> v(10);
-  for (int i = 0; (size_t)i < v.size(); ++i)
-    v[i] = i;
-  
-  ostringstream os;
-  ostream_iterator<int> iter(os, " ");
-  copy(v.begin(), v.end(), iter);
-  CPPUNIT_ASSERT( os.good() );
-  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
-}
-void CopyTest::copy3()
+
+void CopyTest::copy_vector()
 {
   vector<int> v1(10);
   for (int i = 0; (size_t)i < v1.size(); ++i)
     v1[i] = i;
 
-  vector<int> v2(10);
+  vector<int> v2(v1.size());
   copy(v1.begin(), v1.end(), v2.begin());
 
-  ostringstream os;
-  ostream_iterator<int> iter(os, " ");
-  copy(v2.begin(), v2.end(), iter);
-  CPPUNIT_ASSERT( os.good() );
-  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
+  CPPUNIT_ASSERT( v2 == v1 );
 }
-void CopyTest::copy4() {
+
+void CopyTest::copy_insert() {
   vector<int> v1(10);
   for (int loc = 0; (size_t)loc < v1.size(); ++loc)
     v1[loc] = loc;
@@ -86,28 +63,21 @@ void CopyTest::copy4() {
   insert_iterator<vector<int> > i(v2, v2.begin());
   copy(v1.begin(), v1.end(), i);
 
-  ostringstream os;
-  ostream_iterator<int> outIter(os, " ");
-  copy(v2.begin(), v2.end(), outIter);
-  CPPUNIT_ASSERT( os.good() );
-  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
+  CPPUNIT_ASSERT( v2 == v1 );
 }
-void CopyTest::copyb()
+
+void CopyTest::copy_back()
 {
   vector<int> v1(10);
   for (int i = 0; (size_t)i < v1.size(); ++i)
     v1[i] = i;
-  vector <int> v2(v1.size());
+  vector<int> v2(v1.size());
   copy_backward(v1.begin(), v1.end(), v2.end());
 
-  ostringstream os;
-  ostream_iterator<int> iter(os, " ");
-  copy(v2.begin(), v2.end(), iter);
-  CPPUNIT_ASSERT( os.good() );
-  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
+  CPPUNIT_ASSERT( v2 == v1 );
 }
-#endif
-void CopyTest::copyb0()
+
+void CopyTest::copy_back_array()
 {
   int numbers[5] = { 1, 2, 3, 4, 5 };
 

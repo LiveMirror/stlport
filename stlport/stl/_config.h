@@ -51,9 +51,9 @@
 
 /* Include useful information about system:
  */
-# ifdef __linux__
+#ifdef __linux__
 #  include <features.h>
-# endif
+#endif
 
 
 /* Definition of the STLport version informations */
@@ -69,27 +69,31 @@
  */
 #include <stl_user_config.h>
 
-//For the STLport implementation we can use everything:
 #if defined (__BUILDING_STLPORT)
+//For the STLport implementation we can use everything:
 #  if defined (_STLP_NO_ANACHRONISMS)
 #    undef _STLP_NO_ANACHRONISMS
 #  endif
 #  if defined (_STLP_NO_EXTENSIONS)
 #    undef _STLP_NO_EXTENSIONS
 #  endif
+//Moreover there are things that has no sens:
+#  if defined (_STLP_NO_IOSTREAMS)
+#    error If you do not use iostreams you do not need to build the STLport library.
+#  endif
 #endif
 
 /* ========================================================= */
 /* This file is used for compatibility; it accepts old-style config
    switches */
-#  include <stl/_config_compat.h>
+#include <stl/_config_compat.h>
 
 /* Common configuration file for this particular installation. */
 
-# include <stl/_site_config.h>
+#include <stl/_site_config.h>
 
 /* Use per-version compiler recognition */
-#  include <config/stlcomp.h>
+#include <config/stlcomp.h>
 
 /* ========================================================= */
 
@@ -98,7 +102,7 @@
  * or settings applicable to a group of compilers, such as
  * to all who use EDG front-end.
  */
-# include <config/stl_confix.h>
+#include <config/stl_confix.h>
 
 #ifdef _STLP_USE_BOOST_SUPPORT
 /* We are going to use the boost library support. To limit the problem

@@ -32,7 +32,7 @@ _STLP_BEGIN_NAMESPACE
 //----------------------------------------------------------------------
 // helpers
 
-#ifdef __sgi
+#if defined (__sgi)
   static const union { unsigned int i; float f; } float_ulimit = { 0x42b2d4fc };
   static const float float_limit = float_ulimit.f;
   static union {
@@ -44,23 +44,24 @@ _STLP_BEGIN_NAMESPACE
     struct { unsigned int h[2]; unsigned int l[2]; } w;
     long double ld;
   } ldouble_ulimit = {0x408633ce, 0x8fb9f87e, 0xbd23b659, 0x4e9bd8b1};
-# ifndef _STLP_NO_LONG_DOUBLE
+#  if !defined (_STLP_NO_LONG_DOUBLE)
   static const long double ldouble_limit = ldouble_ulimit.ld;
-# endif
-#else
-# if defined(M_LN2) && defined(FLT_MAX_EXP)
-  static const float float_limit = float(M_LN2*FLT_MAX_EXP);
-  static const double double_limit = M_LN2*DBL_MAX_EXP;
-#  ifndef _STLP_NO_LONG_DOUBLE
-  static const long double ldouble_limit = M_LN2l * LDBL_MAX_EXP;
 #  endif
-# else
+#else
+#  if defined (M_LN2) && defined (FLT_MAX_EXP)
+  static const float float_limit = float(M_LN2 * FLT_MAX_EXP);
+  static const double double_limit = M_LN2 * DBL_MAX_EXP;
+#  else
   static const float float_limit = log(FLT_MAX);
   static const double double_limit = log(DBL_MAX);
-#  ifndef _STLP_NO_LONG_DOUBLE
-  static const long double ldouble_limit = log(LDBL_MAX);
 #  endif
-# endif
+#  if !defined (_STLP_NO_LONG_DOUBLE)
+#    if defined (M_LN2l)
+  static const long double ldouble_limit = M_LN2l * LDBL_MAX_EXP;
+#    else
+  static const long double ldouble_limit = log(LDBL_MAX);
+#    endif
+#  endif
 #endif
 
 

@@ -25,15 +25,15 @@
   inline __type func (__type x) { return __STATIC_CAST(__type,::cfunc((double)x)); }
 #define _STLP_MATH_INLINE2X(__type1,__type2,func,cfunc) \
   inline __type1 func (__type1 x, __type2 y) { return __STATIC_CAST(__type1,::cfunc((double)x,y)); }
-#define _STLP_MATH_INLINE2PX(__type1,__type2,func,cfunc) \
-  inline __type1 func (__type1 x, __type2 *y) { \
+#define _STLP_MATH_INLINE2PX(__type,func,cfunc) \
+  inline __type func (__type x, __type *y) { \
      double tmp1, tmp2; \
-     tmp1 = ::cfunc(__STATIC_CAST(double,x),&tmp2); *y = __STATIC_CAST(__type2,tmp2); \
-     return __STATIC_CAST(__type1,tmp1); }
-#define _STLP_MATH_INLINE2XX(__type1,func,cfunc) \
-  inline __type1 func (__type1 x, __type1 y) { return __STATIC_CAST(__type1,::cfunc((double)x,(double)y)); }
+     tmp1 = ::cfunc(__STATIC_CAST(double,x),&tmp2); *y = __STATIC_CAST(__type,tmp2); \
+     return __STATIC_CAST(__type,tmp1); }
+#define _STLP_MATH_INLINE2XX(__type,func,cfunc) \
+  inline __type func (__type x, __type y) { return __STATIC_CAST(__type,::cfunc((double)x,(double)y)); }
 
-#if !defined(_STLP_NO_LONG_DOUBLE) && !defined(_STLP_NO_VENDOR_MATH_L) && !defined(_STLP_NO_VENDOR_MATH_F) // && defined(_STLP_VENDOR_LONG_DOUBLE_MATH)
+#if !defined (_STLP_NO_LONG_DOUBLE) && !defined (_STLP_NO_VENDOR_MATH_L) && !defined (_STLP_NO_VENDOR_MATH_F) // && defined(_STLP_VENDOR_LONG_DOUBLE_MATH)
 #  define _STLP_DEF_MATH_INLINE(func,cf) \
   _STLP_MATH_INLINE(float,func,cf##f) \
   _STLP_MATH_INLINE(long double,func,cf##l)
@@ -50,29 +50,47 @@
   _STLP_MATH_INLINE2(float,int,func,cf##f) \
   _STLP_MATH_INLINE2(long double,int,func,cf##l)
 #else // !_STLP_NO_LONG_DOUBLE
-#  ifndef _STLP_NO_VENDOR_MATH_F
+#  if !defined (_STLP_NO_LONG_DOUBLE) && defined (_STLP_NO_VENDOR_MATH_L)
 #    define _STLP_DEF_MATH_INLINE(func,cf) \
-    _STLP_MATH_INLINE(float,func,cf##f)
+    _STLP_MATH_INLINE(float,func,cf##f) \
+    _STLP_MATH_INLINEX(long double,func,cf)
 #    define _STLP_DEF_MATH_INLINE2(func,cf) \
-    _STLP_MATH_INLINE2(float,float,func,cf##f)
+    _STLP_MATH_INLINE2(float,float,func,cf##f) \
+    _STLP_MATH_INLINE2XX(long double,func,cf)
 #    define _STLP_DEF_MATH_INLINE2P(func,cf) \
-    _STLP_MATH_INLINE2(float,float *,func,cf##f)
+    _STLP_MATH_INLINE2(float,float *,func,cf##f) \
+    _STLP_MATH_INLINE2PX(long double,func,cf)
 #    define _STLP_DEF_MATH_INLINE2PI(func,cf) \
-    _STLP_MATH_INLINE2(float,int *,func,cf##f)
+    _STLP_MATH_INLINE2(float,int *,func,cf##f) \
+    _STLP_MATH_INLINE2X(long double,int *,func,cf)
 #    define _STLP_DEF_MATH_INLINE2I(func,cf) \
-    _STLP_MATH_INLINE2(float,int,func,cf##f)
-#  else // _STLP_NO_VENDOR_MATH_F
-#    define _STLP_DEF_MATH_INLINE(func,cf) \
-    _STLP_MATH_INLINEX(float,func,cf)
-#    define _STLP_DEF_MATH_INLINE2(func,cf) \
-    _STLP_MATH_INLINE2XX(float,func,cf)
-#    define _STLP_DEF_MATH_INLINE2P(func,cf) \
-    _STLP_MATH_INLINE2PX(float,float,func,cf)
-#    define _STLP_DEF_MATH_INLINE2PI(func,cf) \
-    _STLP_MATH_INLINE2X(float,int *,func,cf)
-#    define _STLP_DEF_MATH_INLINE2I(func,cf) \
-    _STLP_MATH_INLINE2X(float,int,func,cf)
-#  endif // _STLP_NO_VENDOR_MATH_F
+    _STLP_MATH_INLINE2(float,int,func,cf##f) \
+    _STLP_MATH_INLINE2X(long double,int,func,cf)
+#  else
+#    ifndef _STLP_NO_VENDOR_MATH_F
+#      define _STLP_DEF_MATH_INLINE(func,cf) \
+      _STLP_MATH_INLINE(float,func,cf##f)
+#      define _STLP_DEF_MATH_INLINE2(func,cf) \
+      _STLP_MATH_INLINE2(float,float,func,cf##f)
+#      define _STLP_DEF_MATH_INLINE2P(func,cf) \
+      _STLP_MATH_INLINE2(float,float *,func,cf##f)
+#      define _STLP_DEF_MATH_INLINE2PI(func,cf) \
+      _STLP_MATH_INLINE2(float,int *,func,cf##f)
+#      define _STLP_DEF_MATH_INLINE2I(func,cf) \
+      _STLP_MATH_INLINE2(float,int,func,cf##f)
+#    else // _STLP_NO_VENDOR_MATH_F
+#      define _STLP_DEF_MATH_INLINE(func,cf) \
+      _STLP_MATH_INLINEX(float,func,cf)
+#      define _STLP_DEF_MATH_INLINE2(func,cf) \
+      _STLP_MATH_INLINE2XX(float,func,cf)
+#      define _STLP_DEF_MATH_INLINE2P(func,cf) \
+      _STLP_MATH_INLINE2PX(float,func,cf)
+#      define _STLP_DEF_MATH_INLINE2PI(func,cf) \
+      _STLP_MATH_INLINE2X(float,int *,func,cf)
+#      define _STLP_DEF_MATH_INLINE2I(func,cf) \
+      _STLP_MATH_INLINE2X(float,int,func,cf)
+#    endif // _STLP_NO_VENDOR_MATH_F
+#  endif
 #endif // !_STLP_NO_LONG_DOUBLE
 
 #if defined (_STLP_WCE) || \
@@ -158,10 +176,12 @@ inline float       pow(float __x, int __y)       { return ::powf(__x, __STATIC_C
 inline float       pow(float __x, int __y)       { return __STATIC_CAST(float,::pow(__x, __STATIC_CAST(float,__y))); }
 #    endif
 inline double      pow(double __x, int __y)      { return ::pow(__x, __STATIC_CAST(double,__y)); }
-#    if !defined(_STLP_NO_VENDOR_MATH_L) && !defined(_STLP_NO_LONG_DOUBLE)
+#    if !defined (_STLP_NO_LONG_DOUBLE)
+#      if !defined(_STLP_NO_VENDOR_MATH_L)
 inline long double pow(long double __x, int __y) { return ::powl(__x, __STATIC_CAST(long double,__y)); }
-#    elif !defined(_STLP_NO_LONG_DOUBLE)
+#      else
 inline long double pow(long double __x, int __y) { return __STATIC_CAST(long double,::pow(__x, __STATIC_CAST(long double,__y))); }
+#      endif
 #    endif
 #  else
 //The MS native pow version has a bugged overload so it is not imported

@@ -725,5 +725,13 @@ void StringTest::io()
     CPPUNIT_ASSERT( !istr.fail() && istr.eof() );
     CPPUNIT_ASSERT( istr_content == str );
   }
+  {
+    istringstream istr(str);
+    istr.width(3);
+    string istr_content;
+    istr >> istr_content;
+    CPPUNIT_ASSERT( !istr.fail() && !istr.eof() );
+    CPPUNIT_ASSERT( istr_content == "STL" );
+  }
 }
 #endif

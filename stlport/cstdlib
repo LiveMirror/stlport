@@ -27,7 +27,7 @@
 #  include _STLP_NATIVE_C_HEADER(stdlib.h)
 #endif
 
-#if defined( __MSL__ ) && __MSL__ <= 0x5003
+#if defined (__MSL__) && (__MSL__ <= 0x5003)
 namespace std {
 	typedef ::div_t div_t;
 	typedef ::ldiv_t ldiv_t;
@@ -76,7 +76,7 @@ using _STLP_VENDOR_CSTD::wctomb;
 using _STLP_VENDOR_CSTD::qsort;
 using _STLP_VENDOR_CSTD::labs;
 using _STLP_VENDOR_CSTD::ldiv;
-#    if defined ( _STLP_LONG_LONG ) && !defined(_STLP_MSVC)
+#    if defined (_STLP_LONG_LONG) && !defined (_STLP_NO_VENDOR_STDLIB_L)
 using _STLP_VENDOR_CSTD::llabs;
 using _STLP_VENDOR_CSTD::lldiv_t;
 using _STLP_VENDOR_CSTD::lldiv;
@@ -108,7 +108,7 @@ inline ldiv_t div(long __x, long __y) { return ::ldiv(__x, __y); }
 #endif
 
 #if defined (_STLP_LONG_LONG)
-#  if !defined(_STLP_MSVC)
+#  if !defined (_STLP_NO_VENDOR_STDLIB_L)
 inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::llabs(__x); }
 inline lldiv_t div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDOR_CSTD::lldiv(__x, __y); } 
 #  else

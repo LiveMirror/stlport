@@ -1,3 +1,25 @@
+2005-03-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_io.c: Fix basic_string stream output operator 
+	implementation for cygwin.
+	
+	* stlport/stl/_cmath.h: Add fixes for cygwin support that handle long double
+	but do not have *l maths function per default.
+	
+	* src/complex_exp.cpp: Fix call to logl, replaced by call to log.
+	
+	* src/complex_trig.cpp: Fix mingw support by checking M_LN2l existence
+	before using it.
+
+	* test/unit/copy_test.cpp: Change test cases to avoid use of iostreams.
+
+	* test/unit/string_test.cpp: Add a small check to test use of istream width
+	in the input operator.
+
+	* stlport/cstdlib, stlport/config/stl_msvc.h, stl_gcc.h: Creation of the
+	_STLP_NO_VENDOR_STDLIB_L macro to report support of the llabs and lldiv
+	function.
+
 2005-03-21  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_cmath.h: removed logf, expf, sinf, cosf; option

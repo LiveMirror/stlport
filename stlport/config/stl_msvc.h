@@ -2,9 +2,6 @@
 // It is internal STLport header - DO NOT include it directly
 // Microsoft Visual C++ 4.0, 4.1, 4.2, 5.0, 6.0, 7.0, 7.1, ICL
 
-
-// Common features for VC++ 4.0 and higher
-
 #if defined (_M_IA64)
 #  define _STLP_NATIVE_INCLUDE_PATH ../crt
 #  define _STLP_GLOBAL_NEW_HANDLER
@@ -49,6 +46,7 @@
 
 #  define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
 #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG 1
+#  define _STLP_NO_VENDOR_STDLIB_L 1
 
 // # ifndef __BUILDING_STLPORT
 // #  define _STLP_USE_TEMPLATE_EXPORT 1
@@ -194,15 +192,14 @@ typedef char __stl_char;
 #  undef  _STLP_NO_AT_MEMBER_FUNCTION
 #  undef  _STLP_NO_MEMBER_TEMPLATES
 #  undef  _STLP_NO_MEMBER_TEMPLATE_CLASSES
-#  define  _STLP_HAS_NO_NAMESPACES 1
-#  define  _STLP_NO_AT_MEMBER_FUNCTION 1
-#  define  _STLP_NO_MEMBER_TEMPLATES 1
-#  define  _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
+#  define _STLP_HAS_NO_NAMESPACES 1
+#  define _STLP_NO_AT_MEMBER_FUNCTION 1
+#  define _STLP_NO_MEMBER_TEMPLATES 1
+#  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 #endif /* 1100 */
 
 // If we are under Windows CE, include appropriate config
-
-#if defined(UNDER_CE) && (_MSC_VER < 1200)
+#if defined (UNDER_CE) && (_MSC_VER < 1200)
     // Microsoft Visual C++ 5 with Windows CE Toolkit;
     // could also be Visual C++ 6 with toolkit, but we can't detect that.
     // the Windows CE Toolkit is obsolete, anyway
@@ -214,12 +211,12 @@ typedef char __stl_char;
 #  define _STLP_USE_ABBREVS
 #endif
 
-#if !( defined(_STLP_WINCE) )
+#if !defined (_STLP_WINCE)
 #  define _STLP_EXPORT_DECLSPEC __declspec(dllexport)
 #  define _STLP_IMPORT_DECLSPEC __declspec(dllimport)
 #endif
 
-#if !( defined(_STLP_MSVC) && _STLP_MSVC < 1100)
+#if !(defined (_STLP_MSVC) && _STLP_MSVC < 1100)
 #  define _STLP_CLASS_EXPORT_DECLSPEC __declspec(dllexport)
 #  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 #endif

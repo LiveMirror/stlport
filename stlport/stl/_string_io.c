@@ -75,13 +75,16 @@ operator>>(basic_istream<_CharT, _Traits>& __is,
     const locale& __loc = __is.getloc();
     const _C_type& _Ctype = use_facet<_C_type>(__loc);
     __s.clear();
-    streamsize __n = __is.width(0);
-    if (__n == 0)
+    streamsize __width = __is.width(0);
+    size_type __n;
+    if (__width <= 0)
       __n = __s.max_size();
-    else if (__n > __s.max_size())
+    else if (__width > __s.max_size())
       __n = 0;
-    else
-      __s.reserve(__STATIC_CAST(size_type, __n));
+    else {
+      __n = __STATIC_CAST(size_type, __width);
+      __s.reserve(__n);
+    }
 
     while (__n-- > 0) {
       typename _Traits::int_type __c1 = __buf->sbumpc();

@@ -15,6 +15,13 @@
 #  endif
 #endif
 
+#if defined (__CYGWIN__)
+#  if (__GNUC__ >= 3) && (__GNUC_MINOR__ >= 3) && !defined (_GLIBCPP_USE_C99)
+#    define _STLP_NO_VENDOR_MATH_L
+#    define _STLP_NO_VENDOR_STDLIB_L
+#  endif
+#endif
+
 #if (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ <= 3))
 //define for gcc versions before 3.4.0.
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD

@@ -73,7 +73,7 @@ _STLP_DECLSPEC complex<double> _STLP_CALL log10(const complex<double>& z) {
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL log10(const complex<long double>& z) {
   complex<long double> result;
-  static long double ln10_inv = 1.l / logl(10.l);
+  static long double ln10_inv = 1.l / log(10.l);
 
   result._M_im = atan2(z._M_im, z._M_re) * ln10_inv;
   result._M_re = log10(hypot(z._M_re, z._M_im));
