@@ -1,3 +1,10 @@
+2004-09-03  Petr Ovtchenkov  <ptr@Island...>
+
+	* stlport/stl/_ostream.c: removed infinite loop in case when outgoing stream
+	can't accept more chars. Thanks Daniel White, Ulrich Eckhardt, Francois Dumont.
+
+	* test/unit/fstream_test.cpp: test for problem above. Thanks Ulrich Eckhardt.
+
 2004-09-02  Francois Dumont  <dums@...>
 
 	* stlport/exception, stlport/stl/_site_config.h, test/unit/exception_test.cpp:

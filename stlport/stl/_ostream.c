@@ -135,43 +135,34 @@ bool basic_ostream<_CharT, _Traits>
   ::_M_copy_unbuffered(basic_streambuf<_CharT, _Traits>* __from,
                        basic_streambuf<_CharT, _Traits>* __to) {
   bool __any_inserted = false;
+  int_type __c;
 
-  while (true) {
-    int_type __c;
-    _STLP_TRY {
-      __c = __from->sbumpc();
-    }
-    _STLP_CATCH_ALL {
-      this->_M_handle_exception(ios_base::failbit);
-      return __any_inserted;
-    }
-
-    if (this->_S_eof(__c))
-      return __any_inserted;
-
-    else {
-      int_type __tmp;
+  _STLP_TRY {
+    while (true) {
       _STLP_TRY {
-        __tmp = __to->sputc(__c);
+        __c = __from->sbumpc();
       }
       _STLP_CATCH_ALL {
-        this->_M_handle_exception(ios_base::badbit);
+        this->_M_handle_exception(ios_base::failbit);
         return __any_inserted;
       }
 
-      if (this->_S_eof(__tmp)) {
-        _STLP_TRY {
-          /* __tmp = */ __from->sputbackc(__c);
-        }
-        _STLP_CATCH_ALL {
-          this->_M_handle_exception(ios_base::badbit);
-          return __any_inserted;
-        }
+      if ( this->_S_eof(__c) )
+        return __any_inserted;
+
+      if ( this->_S_eof( __to->sputc(__c) ) ) {
+        __from->sputbackc(__c);
+        return __any_inserted;
       }
-      else
-        __any_inserted = true;
+      __any_inserted = true;
     }
   }
+  _STLP_CATCH_ALL {
+    this->_M_handle_exception(ios_base::badbit);
+    // return __any_inserted;
+  }
+  // we reach this only via catch( ... ) above; this line is here to make happy some compilers
+  return __any_inserted;
 }
 
 // Helper function for numeric output.
