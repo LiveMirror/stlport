@@ -280,7 +280,7 @@
 #  endif /* _REENTRANT */
 
 // warning : pthread_spinlock code was reported not to work on RedHat 3
-# if defined(__linux__) && !defined(_STLP_USE_PTHREAD_SPINLOCK)
+# if defined(__linux__) && defined(_STLP_USE_PTHREAD_SPINLOCK)
 #  include <features.h>
 #  ifndef __USE_XOPEN2K
 #   undef _STLP_USE_PTHREAD_SPINLOCK
