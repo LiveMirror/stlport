@@ -29,6 +29,7 @@
 #endif
 
 #ifndef _STLP_PTHREAD_ALLOC_H
+# include <pthread.h>
 # include <stl/_pthread_alloc.h>
 #endif
 

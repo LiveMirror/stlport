@@ -39,6 +39,8 @@
 // cache lines among processors, with potentially serious performance
 // consequences.
 
+#include <pthread.h>
+
 #ifndef _STLP_INTERNAL_ALLOC_H
 #include <stl/_alloc.h>
 #endif
