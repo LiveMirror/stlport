@@ -126,16 +126,10 @@ inline double abs(double __x)                 { return _STLP_DO_ABS(double)(__x)
 inline float abs (float __x)                  { return _STLP_DO_ABS(float)(__x); }
 #    endif
 
-# ifdef _STLP_WCE
+#    ifdef _STLP_WCE
 inline double abs(double __x) { return _STLP_DO_ABS(double)(__x); }
-// evc3 doesn't have fabsf(), but evc4 has
-#  ifdef _STLP_WCE_EVC3
 inline float abs (float __x) { return _STLP_DO_ABS(float)(__x); }
-#  endif
-#  ifdef _STLP_WCE_NET
-inline float abs(float __x) {return (fabsf(__x)); }
-#  endif
-# endif
+#    endif
 
 inline double pow(double __x, int __y)        { return _STLP_DO_POW(double)(__x, __y); }
 inline float acos (float __x)                 { return _STLP_DO_ACOS(float)(__x); }
@@ -230,6 +224,9 @@ _STLP_BEGIN_NAMESPACE
  * _MSC_EXTENSIONS is not defined (a bug?). STLport just do the same
  * thing also when _MSC_EXTENSIONS is defined.
  */
+//We have to tell the compilers that abs, acos ... math functions are not intrinsic
+//otherwise we have Internal Compiler Error in release mode...
+#pragma function (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh)
 inline double abs(double __x) {return (fabs(__x)); }
 inline float abs(float __x) {return (fabsf(__x)); }
 inline float acos(float __x) {return (acosf(__x)); }
@@ -275,6 +272,8 @@ inline long double sinh(long double __x) {return (sinhl(__x)); }
 inline long double sqrt(long double __x) {return (sqrtl(__x)); }
 inline long double tan(long double __x) {return (tanl(__x)); }
 inline long double tanh(long double __x) {return (tanhl(__x)); }
+//restoration of the default intrinsic status of those functions:
+//#pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh)
 #    endif
 
 //The native pow version has a bugged overload so it is not imported
