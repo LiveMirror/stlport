@@ -455,6 +455,7 @@ public:
                                 /* doesn't matter.               */
 private:
   typedef _Rope_RopeRep<_CharT,_Alloc> _RopeRep;
+  typedef typename _RopeRep::_IsBasicCharType _IsBasicCharType;
   void _M_init(__true_type const& /*_IsBasicCharType*/) {
     this->_M_c_string = _M_data;
   }
@@ -468,7 +469,7 @@ public:
     : _Rope_RopeRep<_CharT,_Alloc>(_RopeRep::_S_leaf, 0, true, _p_size, __a), 
       _M_data(__d) {
     _STLP_ASSERT(_p_size > 0)
-    _M_init(_RopeRep::_IsBasicCharType());
+    _M_init(_IsBasicCharType());
   }
 
 # ifdef _STLP_NO_ARROW_OPERATOR
