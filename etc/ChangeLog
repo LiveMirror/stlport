@@ -1,6 +1,16 @@
+
 The following changes were made in 4.5.5 since 4.5.3 release:
 
-  * _[i,o]streambuf_iterator.h: correction of the missing iterator base class (Thanks Tanaka)
+2003-10-11  Petr Ovchenkov
+
+	* _sstream.c: [io]?stringstream must do equivalent of seek at end,
+	after opened with ios_base::ate; this behaviour useful only when buffer
+	initialized by string (thanks Tanaka)
+	
+2003-10-07  Francois Dumont
+
+	* _[i,o]streambuf_iterator.h: correction of the missing iterator base class
+	(Thanks Tanaka)
   
   ----
   
