@@ -1,5 +1,8 @@
 2004-10-24  Francois Dumont  <dums@stlport...>
 
+	* stlport/stl/_ios_base.h, src/ios.cpp: definition of the ios_base::failure
+	nested class only when exception support is activated.
+	
 	* stlport/stl/_deque.h, _deque.c: Modification of the deque implementation
 	to use the internal move framework.
 	

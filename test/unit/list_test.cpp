@@ -55,8 +55,14 @@ void ListTest::list1()
   CPPUNIT_ASSERT(*i2++==16);
   CPPUNIT_ASSERT(*i2++==36);
 
-  //A small compilation time check to be activated from time to time:
+  //Default construct check (_STLP_DEF_CONST_PLCT_NEW_BUG)
+  list<int> l(2);
+  i1 = l.begin();
+  CPPUNIT_ASSERT( *(i1++) == 0 );
+  CPPUNIT_ASSERT( *i1 == 0 );
 #if 0
+  //A small compilation time check to be activated from time to time,
+  //compilation should fail.
   {
     list<char>::iterator l_char_ite;
     list<int>::iterator l_int_ite;

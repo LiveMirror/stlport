@@ -169,6 +169,21 @@ Status (stldbg-shared):         All pass (286 tests)
 Notes:                          Idem release-shared
 
 =======================================================================
+Operational environment:        Windows 2000 SP4
+=======================================================================
+
+-----------------------------------------------------------------------
+Compiler:                       Visual C++ .Net 2003 (7.1)
+-----------------------------------------------------------------------
+Date:                           2004-10-24
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       dums (Francois Dumont)
+Status (release-shared):        All pass (298 tests)
+Notes:                          
+Status (stldbg-shared):         All pass (298 tests)
+Notes:
+
+=======================================================================
 Operational environment:        Windows CE 3.0 Pocket PC 2002 (iPAQ h3950)
 =======================================================================
 
