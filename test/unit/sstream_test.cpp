@@ -306,4 +306,11 @@ void SstreamTest::seek()
   CPPUNIT_ASSERT( s.tellg() == stringstream::pos_type(6) );
   s.seekg( -3, ios::cur );
   CPPUNIT_ASSERT( s.tellg() == stringstream::pos_type(3) );
+
+  istringstream is( "0123456789" );
+  CPPUNIT_ASSERT( is.tellg() == stringstream::pos_type(0) );
+  is.seekg( 6, ios::beg );
+  CPPUNIT_ASSERT( is.tellg() == stringstream::pos_type(6) );
+  is.seekg( -3, ios::cur );
+  CPPUNIT_ASSERT( is.tellg() == stringstream::pos_type(3) );
 }
