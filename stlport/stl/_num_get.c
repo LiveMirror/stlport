@@ -244,7 +244,8 @@ template <class _InputIter, class _Integer, class _CharT>
 bool _STLP_CALL
 __get_decimal_integer(_InputIter& __first, _InputIter& __last, _Integer& __val, _CharT* /*dummy*/) {
   string __grp;
-  return __get_integer(__first, __last, 10, __val, 0, false, _CharT(' '), __grp, __false_type());
+  //Here there is no grouping so separator is not important, we just pass the default charater.
+  return __get_integer(__first, __last, 10, __val, 0, false, _CharT() /*separator*/, __grp, __false_type());
 }
 
 template <class _InputIter, class _Integer, class _CharT>
