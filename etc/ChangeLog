@@ -1,3 +1,9 @@
+The following changes were made in 5.0 since 4.5.2 release:
+
+	* reorganize header structure; C library headers moved to subdirectories "cstd" and "cstd_h";
+	C++ runtime support headers modev to "cpp_runtime" subdirectory; 
+  	classic iostreams headers moved to "classic_iostreams" subdirectory
+	
 The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
 	* _config.h, _epilog.h : new namespace inclusion schema implemented for own iostreams mode
