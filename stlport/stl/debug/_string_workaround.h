@@ -51,7 +51,7 @@ public:                         // Constructor, destructor, assignment.
   basic_string(const _Self& __s) :
     _ConstructCheck(__s), _STLP_NON_DBG_STRING_BASE(__s) {}
 
-  basic_string(const _Self& __s, size_type __pos, size_type __n = _Base::npos,
+  basic_string(const _Self& __s, size_type __pos, size_type __n = _DbgBase::npos,
                const allocator_type& __a = allocator_type()) :
     _STLP_NON_DBG_STRING_BASE(__s, __pos, __n, __a) {}
 
@@ -91,61 +91,61 @@ public:                         // Constructor, destructor, assignment.
     : _STLP_NON_DBG_STRING_BASE(__x) {}
 
   _Self& operator=(const _Self& __s) {
-    _Base::operator=(__s);
+    _DbgBase::operator=(__s);
     return *this;
   }
 
   _Self& operator=(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Base::operator=(__s);
+    _DbgBase::operator=(__s);
     return *this;
   }
 
   _Self& operator=(_CharT __c) {
-    _Base::operator=(__c);
+    _DbgBase::operator=(__c);
     return *this;
   }
 
 public:                         // Append, operator+=, push_back.
 
   _Self& operator+=(const _Self& __s) {
-    _Base::operator+=(__s);
+    _DbgBase::operator+=(__s);
     return *this;
   }
   _Self& operator+=(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Base::operator+=(__s);
+    _DbgBase::operator+=(__s);
     return *this;
   }
   _Self& operator+=(_CharT __c) {
-    _Base::operator+=(__c);
+    _DbgBase::operator+=(__c);
     return *this;
   }
 
   _Self& append(const _Self& __s) {
-    _Base::append(__s);
+    _DbgBase::append(__s);
     return *this;
   }
 
   _Self& append(const _Self& __s, size_type __pos, size_type __n) {
-    _Base::append(__s, __pos, __n);
+    _DbgBase::append(__s, __pos, __n);
     return *this;
   }
 
   _Self& append(const _CharT* __s, size_type __n) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Base::append(__s, __n);
+    _DbgBase::append(__s, __n);
     return *this;
   }
 
   _Self& append(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Base::append(__s);
+    _DbgBase::append(__s);
     return *this;
   }
 
   _Self& append(size_type __n, _CharT __c) {
-    _Base::append(__n, __c);
+    _DbgBase::append(__n, __c);
     return *this;
   }
 
@@ -161,12 +161,12 @@ public:                         // Append, operator+=, push_back.
 #if !defined (_STLP_NO_METHOD_SPECIALIZATION) && !defined (_STLP_NO_EXTENSIONS)
   _Self& append(const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-    _Base::append(__f, __l);
+    _DbgBase::append(__f, __l);
     return *this;
   }
 
   _Self& append(const_iterator __f, const_iterator __l) {
-    _Base::append(__f, __l);
+    _DbgBase::append(__f, __l);
     return *this;
   }
 #endif
@@ -174,29 +174,29 @@ public:                         // Append, operator+=, push_back.
 public:                         // Assign
   
   _Self& assign(const _Self& __s) {
-    _Base::assign(__s); 
+    _DbgBase::assign(__s); 
     return *this; 
   }
 
   _Self& assign(const _Self& __s, size_type __pos, size_type __n) {
-    _Base::assign(__s, __pos, __n);
+    _DbgBase::assign(__s, __pos, __n);
     return *this;
   }
 
   _Self& assign(const _CharT* __s, size_type __n) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Base::assign(__s, __n);
+    _DbgBase::assign(__s, __n);
     return *this;
   }
 
   _Self& assign(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
-    _Base::assign(__s);
+    _DbgBase::assign(__s);
     return *this;
   }
 
   _Self& assign(size_type __n, _CharT __c) {
-    _Base::assign(__n, __c);
+    _DbgBase::assign(__n, __c);
     return *this;    
   }
 
@@ -204,17 +204,18 @@ public:                         // Assign
   inline _Self& assign(_InputIter __first, _InputIter __last) {
     _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
     _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    _Invalidate_all();
     _Base::assign(__first, __last);
     return *this;    
   }
 
 #if !defined (_STLP_NO_METHOD_SPECIALIZATION) && !defined (_STLP_NO_EXTENSIONS)
   _Self& assign(const _CharT* __f, const _CharT* __l) {
-    _Base::assign(__f, __l);
+    _DbgBase::assign(__f, __l);
     return *this;
   }
   _Self& assign(const_iterator __f, const_iterator __l) {
-    _Base::assign(__f, __l);
+    _DbgBase::assign(__f, __l);
     return *this;
   }
 #endif
@@ -290,12 +291,12 @@ public:
   }
   void insert(iterator __p, const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f)_STLP_FIX_LITERAL_BUG(__l)
-    _DbgBase::insert(__p, __f, __l); 
+    _DbgBase::insert(__p, __f, __l);
   }
 #endif
 
 public:                         // Erase.
-  _Self& erase(size_type __pos = 0, size_type __n = _Base::npos) {
+  _Self& erase(size_type __pos = 0, size_type __n = _DbgBase::npos) {
     _DbgBase::erase(__pos, __n);
     return *this;
   }
@@ -307,7 +308,7 @@ public:                         // Erase.
   }
 
 public:                         // Substring.
-  _Self substr(size_type __pos = 0, size_type __n = _Base::npos) const {
+  _Self substr(size_type __pos = 0, size_type __n = _DbgBase::npos) const {
     return _Base::substr(__pos, __n);
   }
 
@@ -363,6 +364,20 @@ public:                         // Replace.  (Conceptually equivalent
     return *this;
   }
 
+private:
+  template <class _RandomIter>
+  void _M_replace_aux(iterator __first, iterator __last,
+                      _RandomIter __f, _RandomIter __l, __true_type const& /*_IsIterator*/) {
+    _Base::replace(__first._M_iterator, __last._M_iterator, __f._M_iterator, __l._M_iterator);
+  }
+  
+  template <class _InputIter>
+  void _M_replace_aux(iterator __first, iterator __last,
+                      _InputIter __f, _InputIter __l, __false_type const& /*_IsIterator*/) {
+    _Base::replace(__first._M_iterator, __last._M_iterator, __f, __l);
+  }  
+
+public:
   template <class _InputIter>
   _Self& replace(iterator __first, iterator __last,
                  _InputIter __f, _InputIter __l) {
@@ -394,29 +409,16 @@ public:                         // Replace.  (Conceptually equivalent
   }
 #endif
 
-private:
-  template <class _RandomIter>
-  void _M_replace_aux(iterator __first, iterator __last,
-                      _RandomIter __f, _RandomIter __l, __true_type const& /*_IsIterator*/) {
-    _Base::replace(__first._M_iterator, __last._M_iterator, __f._M_iterator, __l._M_iterator);
-  }
-  
-  template <class _InputIter>
-  void _M_replace_aux(iterator __first, iterator __last,
-                      _InputIter __f, _InputIter __l, __false_type const& /*_IsIterator*/) {
-    _Base::replace(__first._M_iterator, __last._M_iterator, __f, __l);
-  }  
-
 public:                         // Other modifier member functions.
 
   void swap(_Self& __s) {
     this->_M_iter_list._Swap_owners(__s._M_iter_list);
-    _Base::swap(__s);
+    _DbgBase::swap(__s);
   }
 
 #if defined (_STLP_USE_TEMPLATE_EXPRESSION)
 #  define _STLP_STRING_SUM_BASE _STLP_NON_DBG_STRING_BASE
-#  define _STLP_STRING_BASE_SCOPE _Base::
+#  define _STLP_STRING_BASE_SCOPE _DbgBase::
 #  include <stl/_string_sum_methods.h>
 #  undef _STLP_STRING_BASE_SCOPE
 #  undef _STLP_STRING_SUM_BASE

@@ -1,6 +1,12 @@
+2005-01-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_workaround.h, debug/_string_workaround.h: Fix of the
+	call broadcast to the base class. Non debug workaround always call non debug
+	base class methods, debug workaround always calls debug base class methods.
+
 2005-01-19  Francois Dumont  <dums@stlport...>
 
-	* msvc_warning_disablers.h: unused file, removed.
+	* src/msvc_warning_disablers.h: unused file, removed.
 
 	* test/unit/logic_test.cpp: Fix of the tests to avoid warning regarding int
 	to bool cast.
