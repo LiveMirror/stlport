@@ -22,15 +22,15 @@
 #ifndef _STLP_INTERNAL_CTYPE_H
 #define _STLP_INTERNAL_CTYPE_H
 
-# ifndef _STLP_C_LOCALE_H
+#ifndef _STLP_C_LOCALE_H
 #  include <stl/c_locale.h>
-# endif
-# ifndef _STLP_INTERNAL_LOCALE_H
+#endif
+#ifndef _STLP_INTERNAL_LOCALE_H
 #  include <stl/_locale.h>
-# endif
-# ifndef _STLP_INTERNAL_ALGOBASE_H
+#endif
+#ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h>
-# endif
+#endif
 
 _STLP_BEGIN_NAMESPACE
 
@@ -59,17 +59,15 @@ template <class charT> class ctype_byname {};
 //ctype specializations
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC ctype<char> : public locale::facet, public ctype_base 
-{
-
-# ifndef _STLP_NO_WCHAR_T
+class _STLP_CLASS_DECLSPEC ctype<char> : public locale::facet, public ctype_base {
+#ifndef _STLP_NO_WCHAR_T
 #  ifdef _STLP_MSVC
     typedef ctype<wchar_t> _Wctype;
     friend _Wctype;
 #  else
     friend class ctype<wchar_t>;
 #  endif
-# endif
+#endif
   friend class _Locale_impl;
 public:
 
@@ -77,7 +75,7 @@ public:
 
   explicit ctype(const mask* __tab = 0, bool __del = false, size_t __refs = 0);
   bool is(mask __m, char __c) const
-    { return ((*(_M_ctype_table+(unsigned char)__c)) & __m) != 0; }
+  { return ((*(_M_ctype_table+(unsigned char)__c)) & __m) != 0; }
 
   const char* is(const char* __low, const char* __high, mask* __vec) const {
     for (const char* __p = __low;__p != __high; ++__p, ++__vec) {
@@ -142,7 +140,7 @@ private:
    bool operator()(char __c) {return (__m & (unsigned char) __c) != 0;}
   };
 
-    static const mask _S_classic_table[table_size];
+  static const mask _S_classic_table[table_size];
 protected:
   const mask* _M_ctype_table;
 private:
