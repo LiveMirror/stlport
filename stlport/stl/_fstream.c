@@ -531,7 +531,7 @@ basic_filebuf<_CharT, _Traits>::_M_underflow_aux()
   // Now fill the external buffer with characters from the file.  This is
   // a loop because occasonally we don't get enough external characters
   // to make progress.
-  while (true) {
+  for (;;) {
     ptrdiff_t __n = _M_base._M_read(_M_ext_buf_end, _M_ext_buf_EOS - _M_ext_buf_end);
  
     // Don't enter error mode for a failed read.  Error mode is sticky,

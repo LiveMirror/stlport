@@ -366,10 +366,7 @@ money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  _
                                       _STLP_LONG_DOUBLE& __units) const {
   string_type __buf;
   bool __is_positive = true;
-  {
-    _CharT *__pdummy = 0;
-    __s = _S_do_get(__s, __end, __intl, __str, __err, __buf, __is_positive, __pdummy);
-  }
+  __s = _S_do_get(__s, __end, __intl, __str, __err, __buf, __is_positive, (_CharT*)0);
 
   if (__err == ios_base::goodbit || __err == ios_base::eofbit) {
     typename string_type::iterator __b = __buf.begin(), __e = __buf.end();
@@ -377,7 +374,7 @@ money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  _
     if (!__is_positive) ++__b;
     // Can't use atold, since it might be wchar_t. Don't get confused by name below :
     // it's perfectly capable of reading long double.
-    __get_decimal_integer(__b, __e, __units);
+    __get_decimal_integer(__b, __e, __units, (_CharT*)0);
 
     if (!__is_positive) {
       __units = -__units;
@@ -394,8 +391,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
                                       ios_base&  __str, ios_base::iostate&  __err,
                                       string_type& __digits) const {
   bool __is_positive = true;
-  _CharT *__pdummy = 0;
-  return _S_do_get(__s, __end, __intl, __str, __err, __digits, __is_positive, __pdummy);
+  return _S_do_get(__s, __end, __intl, __str, __err, __digits, __is_positive, (_CharT*)0);
 }
 
 // money_put facets
@@ -420,8 +416,8 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
   char_type __plus  = __c_type.widen('+');
   char_type __space = __c_type.widen(' ');
   char_type __zero  = __c_type.widen('0');
-  char_type __point = __intl ? __c_type.widen(__punct_intl.decimal_point())
-                             : __c_type.widen(__punct.decimal_point());
+  char_type __point = __intl ? __punct_intl.decimal_point() //__c_type.widen(__punct_intl.decimal_point())
+                             : __punct.decimal_point(); //__c_type.widen(__punct.decimal_point());
 
   char_type __sep = __intl ? __punct_intl.thousands_sep()
                            : __punct.thousands_sep();

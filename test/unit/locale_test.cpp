@@ -58,11 +58,14 @@ LColl::LColl( const char *loc_dir )
     }
   }
   closedir( d );
-# endif
-# if defined (WIN32) && !defined (_STLP_WCE)
+#else
+  //Avoids warning:
+  (void*)loc_dir;
+#endif
+#if defined (WIN32) && !defined (_STLP_WCE)
   // real list of installed locales should be here...
   _m[string("french")] = true;
-# endif
+#endif
   // std::locale must at least support the C locale
   _m[string("C")] = true;
 }
@@ -284,10 +287,10 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   }
 }
 
-void LocaleTest::_time_put_get( const locale& loc, const ref_locale& rl )
+void LocaleTest::_time_put_get( const locale& loc, const ref_locale&)
 {
   time_put<char> const&tmp = use_facet<time_put<char> >(loc);
-  time_get<char> const&tmg = use_facet<time_get<char> >(loc);
+  //time_get<char> const&tmg = use_facet<time_get<char> >(loc);
 
   struct tm xmas = { 0, 0, 12, 25, 11, 93 };
   ostringstream ostr;
@@ -300,7 +303,7 @@ void LocaleTest::_time_put_get( const locale& loc, const ref_locale& rl )
   string str_ret = ostr.str();
 }
 
-void LocaleTest::_collate_facet( const locale& loc, const ref_locale& rl )
+void LocaleTest::_collate_facet( const locale& loc, const ref_locale&)
 {
   CPPUNIT_ASSERT( has_facet<collate<char> >(loc) );
   collate<char> const& col = use_facet<collate<char> >(loc);
@@ -392,7 +395,7 @@ void LocaleTest::locale_init_problem()
   test_supported_locale(*this, &LocaleTest::_locale_init_problem);
 }
 
-void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale& rl )
+void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale&)
 {
   typedef codecvt<char,char,mbstate_t> my_facet;
 

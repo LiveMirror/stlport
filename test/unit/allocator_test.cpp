@@ -43,13 +43,15 @@ void AllocatorTest::bad_alloc_test()
     //Lets try to allocate almost 4096 Go (on most of the platforms) of memory:
     BigStructAllocType::pointer pbigStruct = bigStructAlloc.allocate(1024 * 1024 * 1024);
 
-    CPPUNIT_ASSERT( pbigStruct != 0 && "Allocation failed but no exception thrown" );
+    //Allocation failed but no exception thrown
+    CPPUNIT_ASSERT( pbigStruct != 0 );
   }
   catch (bad_alloc const&) {
   }
   catch (...) {
     //We shouldn't be there:
-    CPPUNIT_ASSERT( false && "Not bad_alloc exception thrown." );
+    //Not bad_alloc exception thrown.
+    CPPUNIT_ASSERT( false );
   }
 }
 #endif

@@ -606,8 +606,8 @@ _STLP_INLINE_LOOP _BidirectionalIter __partition(_BidirectionalIter __first,
                                                  _BidirectionalIter __last,
                                                  _Predicate __pred,
                                                  const bidirectional_iterator_tag &) {
-  while (true) {
-    while (true) {
+  for (;;) {
+    for (;;) {
       if (__first == __last)
         return __first;
       else if (__pred(*__first))
@@ -616,7 +616,7 @@ _STLP_INLINE_LOOP _BidirectionalIter __partition(_BidirectionalIter __first,
         break;
     }
     --__last;
-    while (true) {
+    for (;;) {
       if (__first == __last)
         return __first;
       else if (!__pred(*__last))
@@ -784,7 +784,7 @@ template <class _RandomAccessIter, class _Tp, class _Compare>
 _RandomAccessIter __unguarded_partition(_RandomAccessIter __first, 
                                         _RandomAccessIter __last, 
                                         _Tp __pivot, _Compare __comp) {
-  while (true) {
+  for (;;) {
     while (__comp(*__first, __pivot))
       ++__first;
     --__last;
@@ -1367,7 +1367,7 @@ _BidirectionalIter3 __merge_backward(_BidirectionalIter1 __first1,
     return copy_backward(__first1, __last1, __result);
   --__last1;
   --__last2;
-  while (true) {
+  for (;;) {
     if (__comp(*__last2, *__last1)) {
       *--__result = *__last1;
       if (__first1 == __last1)

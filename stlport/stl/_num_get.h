@@ -201,11 +201,11 @@ _STLP_EXPORT_TEMPLATE_CLASS num_get<wchar_t, istreambuf_iterator<wchar_t, char_t
 
 #if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
-extern bool  _STLP_CALL __valid_grouping(const char*, const char*, const char*, const char*);
+extern bool _STLP_CALL __valid_grouping(const char*, const char*, const char*, const char*);
 
-template <class _InputIter, class _Integer>
+template <class _InputIter, class _Integer, class _CharT>
 bool _STLP_CALL
-__get_decimal_integer(_InputIter& __first, _InputIter& __last, _Integer& __val);
+__get_decimal_integer(_InputIter& __first, _InputIter& __last, _Integer& __val, _CharT*);
 
 # ifndef _STLP_NO_WCHAR_T
 bool _STLP_CALL __get_fdigit(wchar_t&, const wchar_t*);

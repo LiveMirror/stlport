@@ -25,8 +25,8 @@
 class FileReporter : public CPPUNIT_NS::Reporter
 {
 private:
-    FileReporter(const FileReporter& mr) {}
-    const FileReporter& operator=(const FileReporter& mr) { return *this; }
+    FileReporter(const FileReporter&) {}
+    const FileReporter& operator=(const FileReporter&) { return *this; }
 public:
     FileReporter() : m_numErrors(0), m_numTests(0), _myStream(false) { _file=stderr; }
     FileReporter(const char* file) : m_numErrors(0), m_numTests(0), _myStream(true) { _file=fopen(file, "w");  }

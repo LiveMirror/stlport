@@ -166,7 +166,7 @@ bool basic_ostream<_CharT, _Traits>
 
   _STLP_TRY {
     _SPutBackCGuard __cguard(__from);
-    while (true) {
+    for (;;) {
       _STLP_TRY {
         __c = __from->sbumpc();
       }

@@ -190,7 +190,7 @@ __make_heap(_RandomAccessIterator __first,
   _Distance __len = __last - __first;
   _Distance __parent = (__len - 2)/2;
     
-  while (true) {
+  for (;;) {
     __adjust_heap(__first, __parent, __len, _Tp(*(__first + __parent)));
     if (__parent == 0) return;
     __parent--;
@@ -216,7 +216,7 @@ __make_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
   _Distance __len = __last - __first;
   _Distance __parent = (__len - 2)/2;
     
-  while (true) {
+  for (;;) {
     __adjust_heap(__first, __parent, __len, _Tp(*(__first + __parent)),
                   __comp);
     if (__parent == 0) return;

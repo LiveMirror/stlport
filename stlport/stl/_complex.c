@@ -18,7 +18,7 @@
 #ifndef _STLP_COMPLEX_C
 #define _STLP_COMPLEX_C
 
-# ifndef _STLP_internal_complex_h
+# ifndef _STLP_INTERNAL_COMPLEX_H
 #  include <stl/_complex.h>
 # endif
 

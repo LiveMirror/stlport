@@ -38,7 +38,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(IncludesTest);
 void IncludesTest::incl0()
 {
   int numbers1[5] = { 1, 2, 3, 4, 5 };
-  int numbers2[5] = { 1, 2, 4, 8, 16 };
+  //int numbers2[5] = { 1, 2, 4, 8, 16 };
   int numbers3[2] = { 4, 8 };
   bool r1=includes(numbers1, numbers1 + 5, numbers3, numbers3 + 2);
   CPPUNIT_ASSERT(!r1);

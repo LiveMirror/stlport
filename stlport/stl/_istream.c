@@ -211,7 +211,7 @@ basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (shor
     return *this;
   }
   __val = __STATIC_CAST(short, __lval);
-  __uval = __lval;
+  __uval = __STATIC_CAST(unsigned short, __lval);
   // check if we lose digits
   //    if ((__val != __lval) && ((unsigned short)__val != __lval))
   if ((__val != __lval) && ((long)__uval != __lval))
@@ -583,7 +583,7 @@ _M_read_unbuffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_Char
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
   // The operations that can potentially throw are sbumpc, snextc, and sgetc.
   _STLP_TRY {
-    while (true) {
+    for (;;) {
       int_type __c = __buf->sbumpc(); // sschwarz
 
       if (__that->_S_eof(__c)) {
@@ -1228,7 +1228,7 @@ _M_copy_unbuffered( basic_istream<_CharT, _Traits>* __that, basic_streambuf<_Cha
 
   _STLP_TRY {
   
-    while (true) {
+    for (;;) {
   
       // Get a character. If there's an exception, catch and (maybe) rethrow it.
       __c = __src->sbumpc();
@@ -1269,7 +1269,7 @@ _M_copy_unbuffered( basic_istream<_CharT, _Traits>* __that, basic_streambuf<_Cha
           break;
       }
 
-    } /* while (true) */
+    } /* for (;;) */
     
   }
   // fbp : this try/catch moved here in reasonable assumption
@@ -1305,7 +1305,7 @@ _M_copy_buffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT,
   bool __do_handle_exceptions;
 
   _STLP_TRY {
-    while (true) {
+    for (;;) {
       __do_handle_exceptions = false ;
       const _CharT* __last = __scan_delim(__first, __src->_M_egptr());
       

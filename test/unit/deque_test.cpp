@@ -73,7 +73,7 @@ void DequeTest::at() {
   CPPUNIT_ASSERT( cd.at(0) == 20 );
   
 #if defined (_STLP_USE_EXCEPTIONS)
-  while (true) {
+  for (;;) {
     try {
       d.at(1) = 20;
       CPPUNIT_ASSERT(false);

@@ -29,9 +29,9 @@ namespace CPPUNIT_NS
     {
     public:
       virtual ~Reporter() {}
-      virtual void error(const char *macroName, const char *in_macro, const char *in_file, int in_line) {}
-      virtual void message( const char *msg ) {}
-      virtual void progress( const char *in_className, const char *in_testName) {}
+      virtual void error(const char * /*macroName*/, const char * /*in_macro*/, const char * /*in_file*/, int /*in_line*/) {}
+      virtual void message( const char * /*msg*/ ) {}
+      virtual void progress( const char * /*in_className*/, const char * /*in_testName*/) {}
       virtual void printSummary() {}
     };
 
@@ -57,7 +57,7 @@ namespace CPPUNIT_NS
       int numErrors() { return m_numErrors; }
       static void registerTestCase(TestCase *in_testCase);
 
-      virtual void myRun(const char *in_name) {}
+      virtual void myRun(const char * /*in_name*/) {}
 
       virtual void error(const char *in_macroName, const char *in_macro, const char *in_file, int in_line)
       {

@@ -58,8 +58,7 @@ extern const char __narrow_atoms[];
 
 template <class _InputIter, class _CharT>
 int 
-_M_get_base_or_zero(_InputIter& __in, _InputIter& __end, ios_base& __str, _CharT*)
-{
+_M_get_base_or_zero(_InputIter& __in, _InputIter& __end, ios_base& __str, _CharT*) {
   _CharT __atoms[5];
   const ctype<_CharT>& __c_type = *(const ctype<_CharT>*)__str._M_ctype_facet();
 
@@ -74,7 +73,6 @@ _M_get_base_or_zero(_InputIter& __in, _InputIter& __end, ios_base& __str, _CharT
   }
   else if (__c == __atoms[0] /* __xplus_char */ ) 
     ++__in;
-
 
   int __base;
   int __valid_zero = 0;
@@ -121,12 +119,11 @@ _M_get_base_or_zero(_InputIter& __in, _InputIter& __end, ios_base& __str, _CharT
 }
 
 
-template <class _InputIter, class _Integer>
+template <class _InputIter, class _Integer, class _CharT>
 bool _STLP_CALL
 __get_integer(_InputIter& __first, _InputIter& __last,
               int __base, _Integer& __val, 
-              int __got, bool __is_negative, char __separator, const string& __grouping, const __true_type&) 
-{
+              int __got, bool __is_negative, _CharT __separator, const string& __grouping, const __true_type& /*_IsSigned*/) {
   bool __ovflow = false;
   _Integer __result = 0;
   bool __is_group = !__grouping.empty();
@@ -138,7 +135,7 @@ __get_integer(_InputIter& __first, _InputIter& __last,
 
    for ( ; __first != __last ; ++__first) {
   
-     const char __c = *__first;
+     const _CharT __c = *__first;
      
      if (__is_group && __c == __separator) {
        *__group_sizes_end++ = __current_group_size;
@@ -170,22 +167,23 @@ __get_integer(_InputIter& __first, _InputIter& __last,
 
    // fbp : added to not modify value if nothing was read
    if (__got > 0) {
-       __val = __ovflow
-         ? __is_negative ? (numeric_limits<_Integer>::min)()
-         : (numeric_limits<_Integer>::max)()
-         : (__is_negative ? __result : __STATIC_CAST(_Integer, -__result));
+       __val = __ovflow ? __is_negative ? (numeric_limits<_Integer>::min)()
+                                        : (numeric_limits<_Integer>::max)()
+                        : __is_negative ? __result 
+                                        : __STATIC_CAST(_Integer, -__result);
    }
   // overflow is being treated as failure
-  return ((__got > 0) && !__ovflow) && (__is_group == 0 || __valid_grouping(__group_sizes, __group_sizes_end,
-                                                                            __grouping.data(), __grouping.data()+ __grouping.size())) ;
+  return ((__got > 0) && !__ovflow) && 
+          (__is_group == 0 || 
+           __valid_grouping(__group_sizes, __group_sizes_end,
+                            __grouping.data(), __grouping.data()+ __grouping.size()));
 }
 
-template <class _InputIter, class _Integer>
+template <class _InputIter, class _Integer, class _CharT>
 bool _STLP_CALL
 __get_integer(_InputIter& __first, _InputIter& __last,
               int __base, _Integer& __val, 
-              int __got, bool __is_negative, char __separator, const string& __grouping, const __false_type&) 
-{
+              int __got, bool __is_negative, _CharT __separator, const string& __grouping, const __false_type& /*_IsSigned*/) {
   bool __ovflow = false;
   _Integer __result = 0;
   bool __is_group = !__grouping.empty();
@@ -197,7 +195,7 @@ __get_integer(_InputIter& __first, _InputIter& __last,
 
   for ( ; __first != __last ; ++__first) {
 
-    const char __c = *__first;
+    const _CharT __c = *__first;
     
     if (__is_group && __c == __separator) {
       *__group_sizes_end++ = __current_group_size;
@@ -229,31 +227,30 @@ __get_integer(_InputIter& __first, _InputIter& __last,
 
   // fbp : added to not modify value if nothing was read
   if (__got > 0) {
-      __val = __ovflow
-        ? (numeric_limits<_Integer>::max)()
-        : (__is_negative ? __STATIC_CAST(_Integer, -__result) : __result);      
+      __val = __ovflow ? (numeric_limits<_Integer>::max)()
+                       : (__is_negative ? __STATIC_CAST(_Integer, -__result) 
+                                        : __result);      
   }
+
   // overflow is being treated as failure
   return ((__got > 0) && !__ovflow) && 
-    (__is_group == 0 || __valid_grouping(__group_sizes, __group_sizes_end,
-                                         __grouping.data(), __grouping.data()+ __grouping.size())) ;
+          (__is_group == 0 || 
+           __valid_grouping(__group_sizes, __group_sizes_end,
+                            __grouping.data(), __grouping.data()+ __grouping.size()));
 }
 
 
-template <class _InputIter, class _Integer>
+template <class _InputIter, class _Integer, class _CharT>
 bool _STLP_CALL
-__get_decimal_integer(_InputIter& __first, _InputIter& __last, _Integer& __val)
-{
+__get_decimal_integer(_InputIter& __first, _InputIter& __last, _Integer& __val, _CharT* /*dummy*/) {
   string __grp;
-  return __get_integer(__first, __last, 10, __val, 0, false, ' ', __grp, __false_type());
+  return __get_integer(__first, __last, 10, __val, 0, false, _CharT(' '), __grp, __false_type());
 }
 
 template <class _InputIter, class _Integer, class _CharT>
 _InputIter _STLP_CALL
 _M_do_get_integer(_InputIter& __in, _InputIter& __end, ios_base& __str,
-                  ios_base::iostate& __err, _Integer& __val, _CharT* __pc) 
-{
-
+                  ios_base::iostate& __err, _Integer& __val, _CharT* __pc) {
 #if defined(__HP_aCC) && (__HP_aCC == 1)
   bool _IsSigned = !((_Integer)(-1) > 0);
 #else
@@ -278,7 +275,7 @@ _M_do_get_integer(_InputIter& __in, _InputIter& __end, ios_base& __str,
       __result = false;    
   } else {
 
-    const bool __negative = __base_or_zero & 2;
+    const bool __negative = (__base_or_zero & 2) != 0;
     const int __base = __base_or_zero >> 2;
 
 #if defined(__HP_aCC) && (__HP_aCC == 1)
@@ -645,7 +642,7 @@ _InputIter
 num_get<_CharT, _InputIter>::do_get(_InputIter __in, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err,
                            void*& __p) const {
-# if defined(_STLP_LONG_LONG)&&!defined(__MRC__)		//*ty 12/07/2001 - MrCpp can not cast from long long to void*
+# if defined(_STLP_LONG_LONG) && !defined(__MRC__)		//*ty 12/07/2001 - MrCpp can not cast from long long to void*
   unsigned _STLP_LONG_LONG __val;
 # else
   unsigned long __val;
