@@ -45,6 +45,11 @@
 // we don't have a static native runtime library
 # undef _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
 
+// no *f and *l math functions
+# define _STLP_NO_LONG_DOUBLE
+# define _STLP_NO_VENDOR_MATH_F
+# define _STLP_NO_VENDOR_MATH_L
+
 /*
  * Workaround Pocket PC 2003 missing RTTI support in OS image:
  * Turn this on if you are targeting Pocket PC 2003 or
@@ -127,7 +132,7 @@
 #  ifdef _STLP_WINCE_USE_OUTPUTDEBUGSTRING
 #   define _STLP_WINCE_TRACE(msg)   OutputDebugString(msg)
 #  else
-#   define _STLP_WINCE_TRACE(msg)   MessageBox(NULL,(msg),NULL,MB_OK)
+#   define _STLP_WINCE_TRACE(msg)   MessageBox(NULL,(msg),NULL,0L/*MB_OK*/)
 #  endif
 #  ifndef __THROW_BAD_ALLOC
 #   define __THROW_BAD_ALLOC { _STLP_WINCE_TRACE(L"out of memory"); ExitThread(1); }
@@ -262,12 +267,18 @@ inline void __cdecl operator delete(void *, void *) { return; }
 #  define NOMINMAX
 # endif
 
+/*
+ * original call: TerminateProcess(GetCurrentProcess(), 0);
+ * we substitute the GetCurrentProcess() with the result of the inline function
+ * defined in kfuncs.h, since we then can avoid including <windows.h> at all.
+ * all needed Win32 API functions are defined in <stl/_windows.h>
+ */
 # ifndef _ABORT_DEFINED
-#  define _STLP_ABORT() TerminateProcess(GetCurrentProcess(), 0)
+#  define _STLP_ABORT() TerminateProcess(reinterpret_cast<HANDLE>(66), 0)
 #  define _ABORT_DEFINED
 # endif
 
-// needed for TerminateProcess and others
-# include <windows.h>
+// Notice: windows.h isn't included here anymore; all needed defines are in
+// stl/_windows.h now
 
 #endif /* _STLP_EVC_H */

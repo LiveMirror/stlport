@@ -1,7 +1,17 @@
 2005-04-04  Petr Ovtchenkov  <ptr@island...>
 
 	* errno.h, time.h, test_errno.cpp: evc3 and evc4 has no errno.h
-	and time.h headers [patch from Michael Fink].
+	and time.h headers [patch by Michael Fink].
+
+	* stl_evc.h, _windows.h, test_main.cpp: workaround to not include
+	<windows.h> in STLport headers (it is still needed for building
+	the lib and the unit tests, but that should be no problem).
+	I [Michael Fink] wanted to forward-define GetCurrentProcess(), but
+	under WinCE that is an inline function that returns a pseudo-HANDLE.
+	I [Michael Fink] just replaced the only usage (in the _STLP_ABORT)
+	macro with the value from the inline function.
+	Not including <windows.h> in the headers should fix above problem
+	with include order. [patch by Michael Fink]
 
 2005-04-02  Francois Dumont  <dums@stlport...>
 

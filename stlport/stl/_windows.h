@@ -62,6 +62,38 @@ _STLP_IMPORT_DECLSPEC long _STLP_STDCALL InterlockedCompareExchange(long volatil
 long _STLP_STDCALL InterlockedIncrement(long*);
 long _STLP_STDCALL InterlockedDecrement(long*);
 long _STLP_STDCALL InterlockedExchange(long*, long);
+
+#include <windef.h> // needed for basic windows types
+
+#define MessageBox MessageBoxW
+int _STLP_CALL MessageBoxW(HWND hWnd, LPCWSTR lpText, LPCWSTR lpCaption, UINT uType);
+
+#define wvsprintf wvsprintfW
+int _STLP_CALL wvsprintfW(LPWSTR, LPCWSTR, va_list ArgList);
+
+void _STLP_CALL ExitThread(DWORD dwExitCode);
+
+int _STLP_CALL MultiByteToWideChar(UINT CodePage, DWORD dwFlags, LPCSTR lpMultiByteStr,
+     int      cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar);
+
+UINT _STLP_CALL GetACP();
+
+BOOL _STLP_CALL TerminateProcess(HANDLE hProcess, DWORD uExitCode);
+
+//#define GetCurrentProcess _Stlp_Wce_GetCurrentProcess
+//_inline HANDLE _Stlp_Wce_GetCurrentProcess(void){ return (HANDLE)66; }
+
+#define OutputDebugString OutputDebugStringW
+void _STLP_CALL OutputDebugStringW(LPCWSTR);
+
+#      if defined (_ARM_)
+void _STLP_STDCALL Sleep(DWORD);
+#      else
+_STLP_IMPORT_DECLSPEC void _STLP_STDCALL Sleep(DWORD);
+#      endif
+
+DWORD _STLP_STDCALL GetCurrentThreadId();
+
 #    else
 // boris : for the latest SDK, you may actually need the other version of the declaration (above)
 // even for earlier VC++ versions. There is no way to tell SDK versions apart, sorry ...
@@ -76,25 +108,16 @@ _STLP_IMPORT_DECLSPEC long _STLP_STDCALL InterlockedExchange(long*, long);
 #      define STLPInterlockedExchangePointer(a, b) (void*)InterlockedExchange((long*)a, (long)b)
 #    endif
 
-#    if defined (_STLP_WCE) && defined (_ARM_)
-void _STLP_STDCALL Sleep(unsigned long);
-#    else
+#    if !defined(_STLP_WCE)
 _STLP_IMPORT_DECLSPEC void _STLP_STDCALL Sleep(unsigned long);
-#    endif
-#    if defined (_STLP_WCE)
-void _STLP_STDCALL OutputDebugStringA(const char* lpOutputString);
-#    else
 _STLP_IMPORT_DECLSPEC void _STLP_STDCALL OutputDebugStringA(const char* lpOutputString);
-#    endif
 
-#    if defined (_STLP_DEBUG)
+#      if defined (_STLP_DEBUG)
 typedef unsigned long DWORD;
-#      if defined (_STLP_WCE)
-DWORD _STLP_STDCALL GetCurrentThreadId();
-#      else
 _STLP_IMPORT_DECLSPEC DWORD _STLP_STDCALL GetCurrentThreadId();
-#      endif /* !STLP_WCE_NET */
-#    endif /* _STLP_DEBUG */
+#      endif /* _STLP_DEBUG */
+
+#    endif
 
 #    if defined (InterlockedIncrement)
 #      pragma intrinsic(_InterlockedIncrement)
