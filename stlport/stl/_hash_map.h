@@ -31,16 +31,16 @@
 #define _STLP_INTERNAL_HASH_MAP_H
 
 #ifndef _STLP_INTERNAL_HASHTABLE_H
-# include <stl/_hashtable.h>
+#  include <stl/_hashtable.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
 
-# define  hash_map      __WORKAROUND_RENAME(hash_map)
-# define  hash_multimap __WORKAROUND_RENAME(hash_multimap)
+#define  hash_map      __WORKAROUND_RENAME(hash_map)
+#define  hash_multimap __WORKAROUND_RENAME(hash_multimap)
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashMapTraitsT, traits)
+_STLP_CREATE_HASH_ITERATOR_TRAITS(HashMapTraitsT, traits)
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
@@ -220,7 +220,7 @@ public:
 };
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashMultimapTraitsT, traits)
+_STLP_CREATE_HASH_ITERATOR_TRAITS(HashMultimapTraitsT, traits)
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
@@ -405,10 +405,7 @@ public:
 #undef _STLP_TEMPLATE_CONTAINER
 #undef _STLP_TEMPLATE_HEADER
 
-// Specialization of insert_iterator so that it will work for hash_map
-// and hash_multimap.
-
-#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 template <class _Key, class _Tp, class _HashFn,  class _EqKey, class _Alloc>
 struct __move_traits<hash_map<_Key, _Tp, _HashFn, _EqKey, _Alloc> > :
   __move_traits_help<typename hash_map<_Key, _Tp, _HashFn, _EqKey, _Alloc>::_Ht>
@@ -419,6 +416,8 @@ struct __move_traits<hash_multimap<_Key, _Tp, _HashFn, _EqKey, _Alloc> > :
   __move_traits_help<typename hash_map<_Key, _Tp, _HashFn, _EqKey, _Alloc>::_Ht>
 {};
 
+// Specialization of insert_iterator so that it will work for hash_map
+// and hash_multimap.
 template <class _Key, class _Tp, class _HashFn,  class _EqKey, class _Alloc>
 class insert_iterator<hash_map<_Key, _Tp, _HashFn, _EqKey, _Alloc> > {
 protected:
@@ -471,7 +470,6 @@ public:
   insert_iterator<_Container>& operator++() { return *this; }
   insert_iterator<_Container>& operator++(int) { return *this; }
 };
-
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 _STLP_END_NAMESPACE

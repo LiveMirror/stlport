@@ -21,7 +21,7 @@
 #define _STLP_INTERNAL_UNORDERED_SET_H
 
 #ifndef _STLP_INTERNAL_HASHTABLE_H
-# include <stl/_hashtable.h>
+#  include <stl/_hashtable.h>
 #endif
 
 #define unordered_set      __WORKAROUND_RENAME(unordered_set)
@@ -30,13 +30,13 @@
 _STLP_BEGIN_NAMESPACE
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(UnorderedSetTraitsT, Const_traits)
+_STLP_CREATE_HASH_ITERATOR_TRAITS(UnorderedSetTraitsT, Const_traits)
 
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
 class unordered_set
-#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                : public __stlport_class<unordered_set<_Value, _HashFcn, _EqualKey, _Alloc> >
 #endif
 {
@@ -74,83 +74,42 @@ private:
   _Ht _M_ht;
 
 public:
-  unordered_set()
-    : _M_ht(100, hasher(), key_equal(), allocator_type()) {}
-  explicit unordered_set(size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type()) {}
-  unordered_set(size_type __n, const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type()) {}
-  unordered_set(size_type __n, const hasher& __hf, const key_equal& __eql,
-           const allocator_type& __a = allocator_type())
+  explicit unordered_set(size_type __n = 100, const hasher& __hf = hasher(),
+                         const key_equal& __eql = key_equal(),
+                         const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a) {}
 
   unordered_set(__move_source<_Self> src)
     : _M_ht(__move_source<_Ht>(src.get()._M_ht)) {
   }
 
-#ifdef _STLP_MEMBER_TEMPLATES
+#if defined (_STLP_MEMBER_TEMPLATES)
   template <class _InputIterator>
-  unordered_set(_InputIterator __f, _InputIterator __l)
-    : _M_ht(100, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  template <class _InputIterator>
-  unordered_set(_InputIterator __f, _InputIterator __l, size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  template <class _InputIterator>
-  unordered_set(_InputIterator __f, _InputIterator __l, size_type __n,
-           const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
-  template <class _InputIterator>
-  unordered_set(_InputIterator __f, _InputIterator __l, size_type __n,
-           const hasher& __hf, const key_equal& __eql)
-    : _M_ht(__n, __hf, __eql, allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-#  endif
-  template <class _InputIterator>
-  unordered_set(_InputIterator __f, _InputIterator __l, size_type __n,
-           const hasher& __hf, const key_equal& __eql,
-           const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
+  unordered_set(_InputIterator __f, _InputIterator __l, 
+                size_type __n = 100, const hasher& __hf = hasher(),
+                const key_equal& __eql = key_equal(),
+                const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a)
-    { _M_ht.insert_unique(__f, __l); }
+  { _M_ht.insert_unique(__f, __l); }
 #else
-
-  unordered_set(const value_type* __f, const value_type* __l)
-    : _M_ht(100, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  unordered_set(const value_type* __f, const value_type* __l, size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  unordered_set(const value_type* __f, const value_type* __l, size_type __n,
-           const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  unordered_set(const value_type* __f, const value_type* __l, size_type __n,
-           const hasher& __hf, const key_equal& __eql,
-           const allocator_type& __a = allocator_type())
+  unordered_set(const value_type* __f, const value_type* __l,
+                size_type __n = 100, const hasher& __hf = hasher(),
+                const key_equal& __eql = key_equal(),
+                const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a)
-    { _M_ht.insert_unique(__f, __l); }
+  { _M_ht.insert_unique(__f, __l); }
 
-  unordered_set(const_iterator __f, const_iterator __l)
-    : _M_ht(100, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  unordered_set(const_iterator __f, const_iterator __l, size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  unordered_set(const_iterator __f, const_iterator __l, size_type __n,
-           const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type())
-    { _M_ht.insert_unique(__f, __l); }
-  unordered_set(const_iterator __f, const_iterator __l, size_type __n,
-           const hasher& __hf, const key_equal& __eql,
-           const allocator_type& __a = allocator_type())
+  unordered_set(const_iterator __f, const_iterator __l, 
+                size_type __n = 100, const hasher& __hf = hasher(),
+                const key_equal& __eql = key_equal(),
+                const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a)
-    { _M_ht.insert_unique(__f, __l); }
+  { _M_ht.insert_unique(__f, __l); }
 #endif /*_STLP_MEMBER_TEMPLATES */
 
-public:
+  _Self& operator = (const _Self& __other)
+  { _M_ht = __other._M_ht; return *this; }
+
   size_type size() const { return _M_ht.size(); }
   size_type max_size() const { return _M_ht.max_size(); }
   bool empty() const { return _M_ht.empty(); }
@@ -161,16 +120,11 @@ public:
   const_iterator begin() const { return _M_ht.begin(); }
   const_iterator end() const { return _M_ht.end(); }
 
-  local_iterator begin(size_type __n) { return _M_ht.begin(__n); }
-  local_iterator end(size_type __n) { return _M_ht.end(__n); }
-  const_local_iterator begin(size_type __n) const { return _M_ht.begin(__n); }
-  const_local_iterator end(size_type __n) const { return _M_ht.end(__n); }
-
-public:
-  pair<iterator, bool> insert(const value_type& __obj) {
-    return _M_ht.insert_unique(__obj);
-  }
-#ifdef _STLP_MEMBER_TEMPLATES
+  pair<iterator, bool> insert(const value_type& __obj) 
+  { return _M_ht.insert_unique(__obj); }
+  iterator insert(const_iterator /*__hint*/, const value_type& __obj)
+  { return _M_ht.insert_unique(__obj); }
+#if defined (_STLP_MEMBER_TEMPLATES)
   template <class _InputIterator>
   void insert(_InputIterator __f, _InputIterator __l) 
 #else
@@ -180,49 +134,57 @@ public:
 #endif
   { _M_ht.insert_unique(__f,__l); }
 
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
+#if defined(_STLP_MEMBER_TEMPLATES) && !defined (_STLP_NO_EXTENSIONS)
   template <class _KT>
   iterator find(const _KT& __key)
-# else
+#else
   iterator find(const key_type& __key)
-# endif
+#endif
   { return _M_ht.find(__key); }
 
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
+#if defined(_STLP_MEMBER_TEMPLATES) && !defined (_STLP_NO_EXTENSIONS)
   template <class _KT>
   const_iterator find(const _KT& __key) const
-# else
+#else
   const_iterator find(const key_type& __key) const
-# endif
+#endif
   { return _M_ht.find(__key); }
 
   size_type count(const key_type& __key) const { return _M_ht.count(__key); }
   
   pair<iterator, iterator> equal_range(const key_type& __key)
-    { return _M_ht.equal_range(__key); }
+  { return _M_ht.equal_range(__key); }
   pair<const_iterator, const_iterator> equal_range(const key_type& __key) const
-    { return _M_ht.equal_range(__key); }
+  { return _M_ht.equal_range(__key); }
 
   size_type erase(const key_type& __key) {return _M_ht.erase(__key); }
   void erase(const_iterator __it) { _M_ht.erase(__it); }
   void erase(const_iterator __f, const_iterator __l) { _M_ht.erase(__f, __l); }
   void clear() { _M_ht.clear(); }
 
-public:
-  void rehash(size_type __hint) { _M_ht.resize(__hint); }
   size_type bucket_count() const { return _M_ht.bucket_count(); }
   size_type max_bucket_count() const { return _M_ht.max_bucket_count(); }
+  size_type bucket_size(size_type __n) const { return _M_ht.elems_in_bucket(__n); }
   size_type bucket(const key_type& __k) const { return _M_ht.bucket(__k); }
+  local_iterator begin(size_type __n) { return _M_ht.begin(__n); }
+  local_iterator end(size_type __n) { return _M_ht.end(__n); }
+  const_local_iterator begin(size_type __n) const { return _M_ht.begin(__n); }
+  const_local_iterator end(size_type __n) const { return _M_ht.end(__n); }
+
+  float load_factor() const { return _M_ht.load_factor(); }
+  float max_load_factor() const { return _M_ht.max_load_factor(); }
+  void max_load_factor(float __val) { _M_ht.max_load_factor(__val); }
+  void rehash(size_type __hint) { _M_ht.rehash(__hint); }
 };
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(UnorderedMultisetTraitsT, Const_traits)
+_STLP_CREATE_HASH_ITERATOR_TRAITS(UnorderedMultisetTraitsT, Const_traits)
 
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
 class unordered_multiset 
-#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                : public __stlport_class<unordered_multiset<_Value, _HashFcn, _EqualKey, _Alloc> >
 #endif
 {
@@ -260,86 +222,42 @@ private:
   _Ht _M_ht;
 
 public:
-  unordered_multiset()
-    : _M_ht(100, hasher(), key_equal(), allocator_type()) {}
-  explicit unordered_multiset(size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type()) {}
-  unordered_multiset(size_type __n, const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type()) {}
-  unordered_multiset(size_type __n, const hasher& __hf, const key_equal& __eql)
-    : _M_ht(__n, __hf, __eql, allocator_type()) {}
-  unordered_multiset(size_type __n, const hasher& __hf, const key_equal& __eql,
-                const allocator_type& __a)
+  explicit unordered_multiset(size_type __n = 100, const hasher& __hf = hasher(),
+                              const key_equal& __eql = key_equal(),
+                              const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a) {}
 
   unordered_multiset(__move_source<_Self> src)
     : _M_ht(__move_source<_Ht>(src.get()._M_ht)) {
   }
 
-#ifdef _STLP_MEMBER_TEMPLATES
+#if defined (_STLP_MEMBER_TEMPLATES)
   template <class _InputIterator>
-  unordered_multiset(_InputIterator __f, _InputIterator __l)
-    : _M_ht(100, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  template <class _InputIterator>
-  unordered_multiset(_InputIterator __f, _InputIterator __l, size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  template <class _InputIterator>
-  unordered_multiset(_InputIterator __f, _InputIterator __l, size_type __n,
-                const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-
-# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
-  template <class _InputIterator>
-  unordered_multiset(_InputIterator __f, _InputIterator __l, size_type __n,
-                const hasher& __hf, const key_equal& __eql)
-    : _M_ht(__n, __hf, __eql, allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-# endif
-  template <class _InputIterator>
-  unordered_multiset(_InputIterator __f, _InputIterator __l, size_type __n,
-                const hasher& __hf, const key_equal& __eql,
-                const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
+  unordered_multiset(_InputIterator __f, _InputIterator __l, 
+                     size_type __n = 100, const hasher& __hf = hasher(),
+                     const key_equal& __eql = key_equal(),
+                     const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a)
-    { _M_ht.insert_equal(__f, __l); }
+  { _M_ht.insert_equal(__f, __l); }
 #else
-
-  unordered_multiset(const value_type* __f, const value_type* __l)
-    : _M_ht(100, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  unordered_multiset(const value_type* __f, const value_type* __l, size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  unordered_multiset(const value_type* __f, const value_type* __l, size_type __n,
-                const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  unordered_multiset(const value_type* __f, const value_type* __l, size_type __n,
-                const hasher& __hf, const key_equal& __eql,
-                const allocator_type& __a = allocator_type())
+  unordered_multiset(const value_type* __f, const value_type* __l,
+                     size_type __n = 100, const hasher& __hf = hasher(),
+                     const key_equal& __eql = key_equal(),
+                     const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a)
-    { _M_ht.insert_equal(__f, __l); }
+  { _M_ht.insert_equal(__f, __l); }
 
-  unordered_multiset(const_iterator __f, const_iterator __l)
-    : _M_ht(100, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  unordered_multiset(const_iterator __f, const_iterator __l, size_type __n)
-    : _M_ht(__n, hasher(), key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  unordered_multiset(const_iterator __f, const_iterator __l, size_type __n,
-                const hasher& __hf)
-    : _M_ht(__n, __hf, key_equal(), allocator_type())
-    { _M_ht.insert_equal(__f, __l); }
-  unordered_multiset(const_iterator __f, const_iterator __l, size_type __n,
-                const hasher& __hf, const key_equal& __eql,
-                const allocator_type& __a = allocator_type())
+  unordered_multiset(const_iterator __f, const_iterator __l, 
+                     size_type __n = 100, const hasher& __hf = hasher(),
+                     const key_equal& __eql = key_equal(),
+                     const allocator_type& __a = allocator_type())
     : _M_ht(__n, __hf, __eql, __a)
-    { _M_ht.insert_equal(__f, __l); }
+  { _M_ht.insert_equal(__f, __l); }
 #endif /*_STLP_MEMBER_TEMPLATES */
 
-public:
+  _Self& operator = (const _Self& __other)
+  { _M_ht = __other._M_ht; return *this; }
+
   size_type size() const { return _M_ht.size(); }
   size_type max_size() const { return _M_ht.max_size(); }
   bool empty() const { return _M_ht.empty(); }
@@ -349,59 +267,62 @@ public:
   iterator end() { return _M_ht.end(); }
   const_iterator begin() const { return _M_ht.begin(); }
   const_iterator end() const { return _M_ht.end(); }
-  local_iterator begin(size_type __n) { return _M_ht.begin(__n); }
-  local_iterator end(size_type __n) { return _M_ht.end(__n); }
-  const_local_iterator begin(size_type __n) const { return _M_ht.begin(__n); }
-  const_local_iterator end(size_type __n) const { return _M_ht.end(__n); }
 
-public:
   iterator insert(const value_type& __obj)
-    { return _M_ht.insert_equal(__obj); }
-#ifdef _STLP_MEMBER_TEMPLATES
+  { return _M_ht.insert_equal(__obj); }
+  iterator insert(const_iterator /*__hint*/, const value_type& __obj)
+  { return _M_ht.insert_equal(__obj); }
+#if defined (_STLP_MEMBER_TEMPLATES)
   template <class _InputIterator>
   void insert(_InputIterator __f, _InputIterator __l) 
-    { _M_ht.insert_equal(__f,__l); }
 #else
-  void insert(const value_type* __f, const value_type* __l) {
-    _M_ht.insert_equal(__f,__l);
-  }
+  void insert(const value_type* __f, const value_type* __l)
+  { _M_ht.insert_equal(__f,__l); }
   void insert(const_iterator __f, const_iterator __l) 
-    { _M_ht.insert_equal(__f, __l); }
 #endif /*_STLP_MEMBER_TEMPLATES */
+  { _M_ht.insert_equal(__f, __l); }
 
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
+#if defined(_STLP_MEMBER_TEMPLATES) && !defined (_STLP_NO_EXTENSIONS)
   template <class _KT>
   iterator find(const _KT& __key)
-# else
+#else
   iterator find(const key_type& __key)
-# endif
+#endif
   { return _M_ht.find(__key); }
 
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
+#if defined(_STLP_MEMBER_TEMPLATES) && !defined (_STLP_NO_EXTENSIONS)
   template <class _KT>
   const_iterator find(const _KT& __key) const
-# else
+#else
   const_iterator find(const key_type& __key) const
-# endif
+#endif
   { return _M_ht.find(__key); }
 
   size_type count(const key_type& __key) const { return _M_ht.count(__key); }
   
   pair<iterator, iterator> equal_range(const key_type& __key)
-    { return _M_ht.equal_range(__key); }
+  { return _M_ht.equal_range(__key); }
   pair<const_iterator, const_iterator> equal_range(const key_type& __key) const
-    { return _M_ht.equal_range(__key); }
+  { return _M_ht.equal_range(__key); }
 
   size_type erase(const key_type& __key) {return _M_ht.erase(__key); }
   void erase(const_iterator __it) { _M_ht.erase(__it); }
   void erase(const_iterator __f, const_iterator __l) { _M_ht.erase(__f, __l); }
   void clear() { _M_ht.clear(); }
 
-public:
-  void rehash(size_type __hint) { _M_ht.resize(__hint); }
   size_type bucket_count() const { return _M_ht.bucket_count(); }
   size_type max_bucket_count() const { return _M_ht.max_bucket_count(); }
+  size_type bucket_size(size_type __n) const { return _M_ht.elems_in_bucket(__n); }
   size_type bucket(const key_type& __k) const { return _M_ht.bucket(__k); }
+  local_iterator begin(size_type __n) { return _M_ht.begin(__n); }
+  local_iterator end(size_type __n) { return _M_ht.end(__n); }
+  const_local_iterator begin(size_type __n) const { return _M_ht.begin(__n); }
+  const_local_iterator end(size_type __n) const { return _M_ht.end(__n); }
+
+  float load_factor() const { return _M_ht.load_factor(); }
+  float max_load_factor() const { return _M_ht.max_load_factor(); }
+  void max_load_factor(float __val) { _M_ht.max_load_factor(__val); }
+  void rehash(size_type __hint) { _M_ht.rehash(__hint); }
 };
 
 #define _STLP_TEMPLATE_HEADER template <class _Value, class _HashFcn, class _EqualKey, class _Alloc>
@@ -419,7 +340,7 @@ public:
 // Specialization of insert_iterator so that it will work for unordered_set
 // and unordered_multiset.
 
-#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 template <class _Value, class _HashFcn, class _EqualKey, class _Alloc>
 struct __move_traits<unordered_set<_Value, _HashFcn, _EqualKey, _Alloc> > :
   __move_traits_aux<typename unordered_set<_Value, _HashFcn, _EqualKey, _Alloc>::_Ht>
@@ -482,8 +403,8 @@ public:
   insert_iterator<_Container>& operator++() { return *this; }
   insert_iterator<_Container>& operator++(int) { return *this; }
 };
-
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+
 _STLP_END_NAMESPACE
 
 // do a cleanup

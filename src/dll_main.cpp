@@ -169,6 +169,13 @@ template class _STLP_CLASS_DECLSPEC _Swap_lock_struct<0>;
 #  endif
 
 //Export of the types used to represent buckets in the hashtable implementation.
+/*
+ * For the vector class we do not use any MSVC6 workaround even if we export it from
+ * the STLport dynamic libraries because we know what methods are called and none is
+ * a template method. Moreover the exported class is an instanciation of vector with
+ * _Slist_node_base struct that is an internal STLport class that no user should ever
+ * use.
+ */
 template class _STLP_CLASS_DECLSPEC allocator<_STLP_PRIV::_Slist_node_base*>;
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<_STLP_PRIV::_Slist_node_base**, 
                                                       _STLP_PRIV::_Slist_node_base*, 
@@ -179,24 +186,8 @@ template class _STLP_CLASS_DECLSPEC _Vector_base<_STLP_PRIV::_Slist_node_base*,
 template class _STLP_CLASS_DECLSPEC _Vector_impl<_STLP_PRIV::_Slist_node_base*, 
                                                  allocator<_STLP_PRIV::_Slist_node_base*> >;
 #  endif
-
-#  if defined (_STLP_DEBUG)
-#    define vector __WORKAROUND_DBG_RENAME(vector)
-/*
- * For the vector class we do not use any MSVC6 workaround even if we export it from
- * the STLport dynamic libraries because we know what methods are called and none is
- * a template method. Moreover the exported class is an instanciation of vector with
- * _Slist_node_base struct that is an internal STLport class that no user should ever
- * use.
- */
-template class _STLP_CLASS_DECLSPEC __construct_checker<vector<_STLP_PRIV::_Slist_node_base*, 
-                                                        allocator<_STLP_PRIV::_Slist_node_base*> > >;
-template class _STLP_CLASS_DECLSPEC vector<_STLP_PRIV::_Slist_node_base*, 
-                                           allocator<_STLP_PRIV::_Slist_node_base*> >;
-#    undef vector
-#  endif
-template class _STLP_CLASS_DECLSPEC vector<_STLP_PRIV::_Slist_node_base*, 
-                                           allocator<_STLP_PRIV::_Slist_node_base*> >;
+template class _STLP_CLASS_DECLSPEC __WORKAROUND_DBG_RENAME(vector)<_STLP_PRIV::_Slist_node_base*, 
+                                                                    allocator<_STLP_PRIV::_Slist_node_base*> >;
 //End of hashtable bucket types export.
 
 //Export of _Locale_impl facets container:

@@ -21,6 +21,8 @@ class UnorderedTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(umap);
   CPPUNIT_TEST(umultimap);
   CPPUNIT_TEST(user_case);
+  CPPUNIT_TEST(hash_policy);
+  CPPUNIT_TEST(buckets);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -29,6 +31,8 @@ protected:
   void umap();
   void umultimap();
   void user_case();
+  void hash_policy();
+  void buckets();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UnorderedTest);
@@ -244,4 +248,50 @@ void UnorderedTest::user_case()
   UnorderedMap1 &body = it->second;
   UnorderedMap1::iterator cur = body.find(3);
   CPPUNIT_ASSERT( cur != body.end() );
+
+  body.erase(body.begin(), body.end());
+  CPPUNIT_ASSERT( body.empty() );
+}
+
+void UnorderedTest::hash_policy()
+{
+  unordered_set<int> int_uset;
+
+  CPPUNIT_ASSERT( int_uset.max_load_factor() == 1.0f );
+  CPPUNIT_ASSERT( int_uset.load_factor() == 0.0f );
+
+  size_t nbInserts = int_uset.bucket_count() - 1;
+  for (size_t i = 0; i < nbInserts; ++i) {
+    int_uset.insert(i);
+  }
+  CPPUNIT_ASSERT( int_uset.size() == nbInserts );
+
+  int_uset.max_load_factor(0.5f);
+  int_uset.rehash(0);
+  CPPUNIT_ASSERT( int_uset.load_factor() < int_uset.max_load_factor() );
+
+  size_t bucketsHint = int_uset.bucket_count() + 1;
+  int_uset.rehash(bucketsHint);
+  CPPUNIT_ASSERT( int_uset.bucket_count() >= bucketsHint );
+}
+
+void UnorderedTest::buckets()
+{
+  unordered_set<int> int_uset;
+
+  CPPUNIT_ASSERT( int_uset.bucket_count() < int_uset.max_bucket_count() );
+
+  size_t i;
+  size_t nbBuckets = int_uset.bucket_count();
+  size_t nbInserts = int_uset.bucket_count() - 1;
+  for (i = 0; i < nbInserts; ++i) {
+    int_uset.insert(i);
+  }
+  CPPUNIT_ASSERT( nbBuckets == int_uset.bucket_count() );
+
+  size_t bucketSizes = 0;
+  for (i = 0; i < nbBuckets; ++i) {
+    bucketSizes += int_uset.bucket_size(i);
+  }
+  CPPUNIT_ASSERT( bucketSizes == int_uset.size() );
 }

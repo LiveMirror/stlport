@@ -40,13 +40,13 @@
 _STLP_BEGIN_NAMESPACE
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashSetTraitsT, Const_traits)
+_STLP_CREATE_HASH_ITERATOR_TRAITS(HashSetTraitsT, Const_traits)
 
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
 class hash_set 
-#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                : public __stlport_class<hash_set<_Value, _HashFcn, _EqualKey, _Alloc> >
 #endif
 {
@@ -224,14 +224,14 @@ public:
 };
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashMultisetTraitsT, Const_traits)
+_STLP_CREATE_HASH_ITERATOR_TRAITS(HashMultisetTraitsT, Const_traits)
 
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
 class hash_multiset 
-#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
-               : public __stlport_class<hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> >
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                    : public __stlport_class<hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> >
 #endif
 {
   typedef hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> _Self;

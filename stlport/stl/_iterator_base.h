@@ -426,11 +426,11 @@ struct _Nonconst_Const_traits {
 };
 
 /*
- * dums: a macro to generate a new iterator traits from one of the
- * previous one.
+ * A macro to generate a new iterator traits from one of the
+ * previous one. Changing the iterator traits type make iterators
+ * from different containers not comparable.
  */
-#define _STLP_CREATE_ITERATOR_TRAITS(Motif, Traits)             \
-_STLP_MOVE_TO_PRIV_NAMESPACE                                    \
+#define _STLP_CREATE_ITERATOR_TRAITS_BASE(Motif, Traits)        \
 template <class _Tp>                                            \
 struct _##Motif;                                                \
 template <class _Tp>                                            \
@@ -442,6 +442,23 @@ template <class _Tp>                                            \
 struct _##Motif : public _STLP_STD::_Nonconst_##Traits<_Tp> {   \
   typedef _Const##Motif<_Tp> _ConstTraits;                      \
   typedef _##Motif<_Tp> _NonConstTraits;                        \
+};
+
+#define _STLP_CREATE_ITERATOR_TRAITS(Motif, Traits)             \
+_STLP_MOVE_TO_PRIV_NAMESPACE                                    \
+_STLP_CREATE_ITERATOR_TRAITS_BASE(Motif, Traits)                \
+_STLP_MOVE_TO_STD_NAMESPACE
+
+#define _STLP_CREATE_HASH_ITERATOR_TRAITS(Motif, Traits)        \
+_STLP_MOVE_TO_PRIV_NAMESPACE                                    \
+_STLP_CREATE_ITERATOR_TRAITS_BASE(NonLocal##Motif, Traits)      \
+_STLP_CREATE_ITERATOR_TRAITS_BASE(Local##Motif, Traits)         \
+template <class _Tp>                                            \
+struct _##Motif {                                               \
+  typedef _ConstNonLocal##Motif<_Tp> _ConstTraits;              \
+  typedef _NonLocal##Motif<_Tp> _NonConstTraits;                \
+  typedef _ConstLocal##Motif<_Tp> _ConstLocalTraits;            \
+  typedef _Local##Motif<_Tp> _NonConstLocalTraits;              \
 };                                                              \
 _STLP_MOVE_TO_STD_NAMESPACE
 
@@ -458,36 +475,40 @@ struct __cnst_traits_aux : private _Traits {
 #  endif
 */
 
-# if defined (_STLP_MSVC)
+#if defined (_STLP_MSVC)
 // MSVC specific
 template <class _InputIterator, class _Dist>
 inline void  _STLP_CALL _Distance(_InputIterator __first, 
                                   _InputIterator __last, _Dist& __n) {
   __distance(__first, __last, __n, _STLP_ITERATOR_CATEGORY(__first, _InputIterator));
 }
-# endif
+#endif
 
 template <class _InputIter, class _Distance>
-_STLP_INLINE_LOOP void  _STLP_CALL __advance(_InputIter& __i, _Distance __n, const input_iterator_tag &) {
+_STLP_INLINE_LOOP void  _STLP_CALL 
+__advance(_InputIter& __i, _Distance __n, const input_iterator_tag &) {
   while (__n--) ++__i;
 }
 
 // fbp : added output iterator tag variant
 template <class _InputIter, class _Distance>
-_STLP_INLINE_LOOP void  _STLP_CALL __advance(_InputIter& __i, _Distance __n, const output_iterator_tag &) {
+_STLP_INLINE_LOOP void  _STLP_CALL 
+__advance(_InputIter& __i, _Distance __n, const output_iterator_tag &) {
   while (__n--) ++__i;
 }
 
-# if defined (_STLP_NONTEMPL_BASE_MATCH_BUG)
+#if defined (_STLP_NONTEMPL_BASE_MATCH_BUG)
 template <class _ForwardIterator, class _Distance>
-_STLP_INLINE_LOOP void _STLP_CALL __advance(_ForwardIterator& i, _Distance n, const forward_iterator_tag &) {
-    while (n--) ++i;
+_STLP_INLINE_LOOP void _STLP_CALL 
+__advance(_ForwardIterator& i, _Distance n, const forward_iterator_tag &) {
+  while (n--) ++i;
 }
-# endif
+#endif
 
 template <class _BidirectionalIterator, class _Distance>
-_STLP_INLINE_LOOP void _STLP_CALL __advance(_BidirectionalIterator& __i, _Distance __n, 
-                      const bidirectional_iterator_tag &) {
+_STLP_INLINE_LOOP void _STLP_CALL 
+__advance(_BidirectionalIterator& __i, _Distance __n, 
+          const bidirectional_iterator_tag &) {
   if (__n > 0)
     while (__n--) ++__i;
   else
@@ -495,8 +516,9 @@ _STLP_INLINE_LOOP void _STLP_CALL __advance(_BidirectionalIterator& __i, _Distan
 }
 
 template <class _RandomAccessIterator, class _Distance>
-inline void _STLP_CALL __advance(_RandomAccessIterator& __i, _Distance __n, 
-                      const random_access_iterator_tag &) {
+inline void _STLP_CALL 
+__advance(_RandomAccessIterator& __i, _Distance __n, 
+          const random_access_iterator_tag &) {
   __i += __n;
 }
 
@@ -507,9 +529,9 @@ inline void _STLP_CALL advance(_InputIterator& __i, _Distance __n) {
 
 _STLP_END_NAMESPACE
 
-# if defined (_STLP_DEBUG) && ! defined (_STLP_DEBUG_H)
+#if defined (_STLP_DEBUG) && !defined (_STLP_DEBUG_H)
 #  include <stl/debug/_debug.h>
-# endif
+#endif
 
 #endif /* _STLP_INTERNAL_ITERATOR_BASE_H */
 

@@ -1,3 +1,10 @@
+2005-02-18  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.h, _unordered_set.h, _unordered_map.h: Code review
+	based on the 12 April 2004 Technical Report document. Add missing hash policy
+	and bucket_size methods. Fix of the rehash method behavior. erase method
+	bug fix.
+
 2005-02-14  Francois Dumont  <dums@stlport...>
 
 	* stlport/string, /stl/_string.h: Modification of the include schema.
