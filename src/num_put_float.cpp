@@ -47,7 +47,6 @@ typedef long double max_double_type;
 #  include <floatingpoint.h>
 # endif
 
-//# if !(defined(_STLP_USE_GLIBC) || defined(__FreeBSD__) || defined(__NetBSD__) || defined (_AIX) || defined(__MVS__) || defined (__OS400__) || defined (__QNXNTO__) || defined (__APPLE__) || defined (__DJGPP))
 # if defined (__sun) || defined (__digital__) || defined (__sgi) || defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
 // DEC, SGI & Solaris need this
 #  include <values.h>
@@ -99,10 +98,6 @@ typedef long double max_double_type;
 
 #if defined (__DMC__)
 # define snprintf _snprintf
-#endif
-
-#if defined (USE_SPRINTF_INSTEAD)
-#  define ARRAY_AND_SIZE(A) A, (sizeof(A) / sizeof(A[0]))
 #endif
 
 #if defined(__hpux) && (!defined(_INCLUDE_HPUX_SOURCE) || defined(__GNUC__))
@@ -204,24 +199,25 @@ _STLP_BEGIN_NAMESPACE
 # define USE_SPRINTF_INSTEAD
 #endif
 
-# if defined (_AIX)
+#if defined (_AIX) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 // Some OS'es only provide non-reentrant primitives, so we have to use additional synchronization here
-# ifdef _REENTRANT
-static _STLP_STATIC_MUTEX __put_float_mutex _STLP_MUTEX_INITIALIZER;
-# define LOCK_CVT _STLP_auto_lock lock(__put_float_mutex);
-# define RETURN_CVT(ecvt, x, n, pt, sign, buf) strcpy(buf, ecvt(x, n, pt, sign)); return buf;
+
+# if !defined(_REENTRANT) && !defined(_THREAD_SAFE) && !(defined(_POSIX_THREADS) && defined(__OpenBSD__))
+#  define LOCK_CVT
+#  define RETURN_CVT(ecvt, x, n, pt, sign, buf) return ecvt(x, n, pt, sign);
 # else
-# define LOCK_CVT
-# define RETURN_CVT(ecvt, x, n, pt, sign, buf) return ecvt(x, n, pt, sign);
-# endif
-# endif
+static _STLP_STATIC_MUTEX __put_float_mutex _STLP_MUTEX_INITIALIZER;
+#  define LOCK_CVT _STLP_auto_lock lock(__put_float_mutex);
+#  define RETURN_CVT(ecvt, x, n, pt, sign, buf) strcpy(buf, ecvt(x, n, pt, sign)); return buf;
+# endif // !_REENTRANT
+#endif // _AIX || __FreeBSD__ || __NetBSD__ || __OpenBSD__
 
 // Tests for infinity and NaN differ on different OSs.  We encapsulate
 // these differences here.
 
-#ifdef USE_SPRINTF_INSTEAD
-
-#elif defined (__hpux) || defined (__DJGPP) || ( defined(_STLP_USE_GLIBC) && ! defined (__MSL__) )
+#ifndef USE_SPRINTF_INSTEAD
+# if defined (__hpux) || defined (__DJGPP) || (defined(_STLP_USE_GLIBC) && ! defined (__MSL__) ) \
+  || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 #  if defined (isfinite) 
 inline bool _Stl_is_nan_or_inf(double x) { return !isfinite(x); }
 #  else
@@ -231,8 +227,8 @@ inline bool _Stl_is_neg_nan(double x)    { return isnan(x) && ( copysign(1., x) 
 inline bool _Stl_is_inf(double x)        { return isinf(x); }
 // inline bool _Stl_is_neg_inf(double x)    { return isinf(x) < 0; }  
 inline bool _Stl_is_neg_inf(double x)    { return isinf(x) && x < 0; }
-#elif defined(__unix) && !defined(__FreeBSD__)  && !defined(__NetBSD__) \
-      && !defined(__APPLE__)  && !defined(__DJGPP) && !defined(__osf__) \
+# elif (defined(__unix) || defined(__unix__)) \
+      && !defined(__APPLE__) && !defined(__DJGPP) && !defined(__osf__) \
       && !defined(_CRAY)
 inline bool _Stl_is_nan_or_inf(double x) { return IsNANorINF(x); }
 inline bool _Stl_is_inf(double x)        { return IsNANorINF(x) && IsINF(x); }
@@ -243,7 +239,7 @@ inline bool _Stl_is_nan_or_inf(double x) {  return !_finite(x); }
 inline bool _Stl_is_inf(double x)        {  return _Stl_is_nan_or_inf(x) && ! _isnan(x);}
 inline bool _Stl_is_neg_inf(double x)    {  return _Stl_is_inf(x) && x < 0 ; }
 inline bool _Stl_is_neg_nan(double x)    { return _isnan(x) && x < 0 ; } 
-#elif defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__)
+# elif defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__)
 inline bool _Stl_is_nan_or_inf(double x) { return !_finite(x); }
 inline bool _Stl_is_inf(double x)        { 
   int fclass = _fpclass(x); 
@@ -251,43 +247,43 @@ inline bool _Stl_is_inf(double x)        {
 }
 inline bool _Stl_is_neg_inf(double x)    { return _fpclass(x) == _FPCLASS_NINF; }
 inline bool _Stl_is_neg_nan(double x)    { return _isnan(x) && _copysign(1., x) < 0 ; } 
-#elif defined(__MRC__) || defined(__SC__)    //*TY 02/24/2000 - added support for MPW
+# elif defined(__MRC__) || defined(__SC__)    //*TY 02/24/2000 - added support for MPW
 bool _Stl_is_nan_or_inf(double x) { return isnan(x) || !isfinite(x); }
 bool _Stl_is_inf(double x)        { return !isfinite(x); }
 bool _Stl_is_neg_inf(double x)    { return !isfinite(x) && signbit(x); }
 bool _Stl_is_neg_nan(double x)    { return isnan(x) && signbit(x); }
-#elif /* defined(__FreeBSD__) || defined(__OpenBSD__) || */ (defined(__GNUC__) && defined(__APPLE__))
+# elif /* defined(__FreeBSD__) || defined(__OpenBSD__) || */ (defined(__GNUC__) && defined(__APPLE__))
 inline bool _Stl_is_nan_or_inf(double x) { return !finite(x); }
 inline bool _Stl_is_inf(double x)        {   return _Stl_is_nan_or_inf(x) && ! isnan(x); }
 inline bool _Stl_is_neg_inf(double x)    {   return _Stl_is_inf(x) && x < 0 ; }
 inline bool _Stl_is_neg_nan(double x)    { return isnan(x) && copysign(1., x) < 0 ; } 
-#elif defined( _AIX ) // JFA 11-Aug-2000
+# elif defined( _AIX ) // JFA 11-Aug-2000
 bool _Stl_is_nan_or_inf(double x) { return isnan(x) || !finite(x); }
 bool _Stl_is_inf(double x)        { return !finite(x); }
 // bool _Stl_is_neg_inf(double x)    { return _class(x) == FP_MINUS_INF; }
 bool _Stl_is_neg_inf(double x)    { return _Stl_is_inf(x) && ( copysign(1., x) < 0 );  }
 bool _Stl_is_neg_nan(double x)    { return isnan(x) && ( copysign(1., x) < 0 );  }
-#elif defined (__ISCPP__)
+# elif defined (__ISCPP__)
 inline bool _Stl_is_nan_or_inf  (double x) { return _fp_isINF(x) || _fp_isNAN(x); }
 inline bool _Stl_is_inf         (double x) { return _fp_isINF(x); }
 inline bool _Stl_is_neg_inf     (double x) { return _fp_isINF(x) && x < 0; }
 inline bool _Stl_is_neg_nan     (double x) { return _fp_isNAN(x) && x < 0; }
-#elif defined(_CRAY)
-# if defined(_CRAYIEEE)
+# elif defined(_CRAY)
+#  if defined(_CRAYIEEE)
 inline bool _Stl_is_nan_or_inf(double x) { return isnan(x) || isinf(x); }
 inline bool _Stl_is_inf(double x)        { return isinf(x); }
 inline bool _Stl_is_neg_inf(double x)    { return isinf(x) && signbit(x); }
 inline bool _Stl_is_neg_nan(double x)    { return isnan(x) && signbit(x); }
-# else
+#  else
 inline bool _Stl_is_nan_or_inf(double x) { return false; }
 inline bool _Stl_is_inf(double x)        { return false; }
 inline bool _Stl_is_neg_inf(double x)    { return false; }
 inline bool _Stl_is_neg_nan(double x)    { return false; }
+#  endif
+# else // nothing from above
+#  define USE_SPRINTF_INSTEAD
 # endif
-#elif !defined(USE_SPRINTF_INSTEAD)
-# define USE_SPRINTF_INSTEAD
-#endif
-
+#endif // !USE_SPRINTF_INSTEAD
 
 #ifndef USE_SPRINTF_INSTEAD
 // Reentrant versions of floating-point conversion functions.  The argument
@@ -369,7 +365,7 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
      { return _ldfcvt(*(long_double*)&x, n, pt, sign); }
 #      endif
 #    endif
-#  elif defined (_AIX)
+#  elif defined (_AIX) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { LOCK_CVT RETURN_CVT(ecvt, x, n, pt, sign, buf) }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
@@ -380,7 +376,7 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { LOCK_CVT RETURN_CVT(fcvt, x, n, pt, sign, buf) }
 #    endif
-#  elif defined (__unix)  && !defined(__FreeBSD__)  && !defined(__NetBSD__) && !defined(__APPLE__) && !defined(_CRAY)
+#  elif defined (__unix) && !defined(__APPLE__) && !defined(_CRAY)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return ecvt_r(x, n, pt, sign, buf); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
@@ -647,6 +643,8 @@ size_t __format_float(__iostring &buf, const char * bp,
 }
 
 #else /* USE_SPRINTF_INSTEAD */
+
+# define ARRAY_AND_SIZE(A) A, (sizeof(A) / sizeof(A[0]))
 
 struct GroupPos {
   bool operator () (char __c) const {
