@@ -192,7 +192,7 @@ inline void _Stl_loc_init_num_put() {
 _STLP_END_NAMESPACE
 
 #  if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && ! defined (_STLP_LINK_TIME_INSTANTIATION)
-#   include <stl/_num_put.c>
+#    include <stl/_num_put.c>
 #  endif
 
 #endif /* _STLP_INTERNAL_NUMERIC_FACETS_H */
