@@ -1,5 +1,5 @@
 **********************************************************************
-* 	INSTALL file for STLport 4.5                                 *
+* 	INSTALL file for STLport 5.0                                 *
 *                                                                    *
 **********************************************************************
 
@@ -134,7 +134,7 @@ Below are step-by-step instructions to build STLport streams library:
 
 10) Have fun !
 
-05/10/01, Boris Fomitchev.
+03/14/02, Boris Fomitchev.
 
 
 
