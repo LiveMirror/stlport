@@ -8,6 +8,13 @@
 	* stlport/stl/_collate.h, _numpunct.h, _monetary.h, _codecvt.h, _time_facets.h:
 	_Locale_imp made friend without relation to _STLP_LEAKS_PEDANTIC. Thanks Ulrich Eckhardt.
 
+	* stlport/stl/_locale.h: remove body of protected constructor to avoid warnings.
+	Thanks Kidman and Ulrich Eckhardt.
+
+	* src/locale_impl.cpp: use simple resize of facets_vec; reserve space for facets_vec to be
+	sure that allocation don't throw exception during vector resize in insert_*_facets functions.
+	Thanks Ulrich Eckhardt.
+
 
 2004-11-29  Petr Ovtchenkov  <ptr@island...>
 
