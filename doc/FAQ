@@ -13,9 +13,10 @@ library that shipout with compiler?
 Q2.3 Can I mix STL implementations in my project?
 
 Q3 Building
-Q3.0 On my SuSE Linux 9.0 g++ headers are in /usr/include/g++, but they
+Q3.0 On my XXXX Linux n.n g++ headers are in /usr/include/g++, but they
 are looked for in /usr/include/3.3.1. Is it a STLport bug?
 Q3.1 Do I need to build library to use STLport?
+Q3.2 During library compilation with MS VC++ 6.0 I see following error report:...
 
 Q4 Installation
 
@@ -33,7 +34,7 @@ ISO/IEC 14882:2003(E).
 
 ========================================================================
 
-Q3.0 On my SuSE Linux 9.0 g++ headers are in /usr/include/g++, but they
+Q3.0 On my XXXX Linux n.n g++ headers are in /usr/include/g++, but they
 are looked for in /usr/include/3.3.1. Is it a STLport bug?
 
 A3.0 Path to native compiler headers for gcc correspond to default path
@@ -52,6 +53,22 @@ Q3.1 Do I need to build library to use STLport?
 
 A3.1 You may omit usage (and, thus building) STLport library, but in this
 case you can't use iostreams, locale, complex.
+
+========================================================================
+
+Q3.2 During library compilation with MS VC++ 6.0 I see following error report:
+
+C:\Program Files\Microsoft SDK\Include\.\winbase.h(1123) : error C2733: second C linkage of overloaded function 'InterlockedIncrement' not allowed
+        C:\Program Files\Microsoft SDK\Include\.\winbase.h(1121) : see declaration of 'InterlockedIncrement'
+C:\Program Files\Microsoft SDK\Include\.\winbase.h(1130) : error C2733: second C linkage of overloaded function 'InterlockedDecrement' not allowed
+        C:\Program Files\Microsoft SDK\Include\.\winbase.h(1128) : see declaration of 'InterlockedDecrement'
+C:\Program Files\Microsoft SDK\Include\.\winbase.h(1138) : error C2733: second C linkage of overloaded function 'InterlockedExchange' not allowed
+        C:\Program Files\Microsoft SDK\Include\.\winbase.h(1135) : see declaration of 'InterlockedExchange'
+
+A3.2 You have SDK installed. Uncomment line
+#define _STLP_NEW_PLATFORM_SDK 1
+in the file stlport/stl_user_config.h. There is no way to detect SDK
+presence during preprocessor stage.
 
 ========================================================================
 
