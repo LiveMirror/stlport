@@ -2,8 +2,6 @@
 #include <stdexcept>
 	
 
-#define _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
-
 #include "cppunit/cppunit_proxy.h"
 
 /*
