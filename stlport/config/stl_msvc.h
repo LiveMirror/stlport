@@ -92,6 +92,7 @@
 #    if !defined (_STLP_DONT_USE_EXCEPTIONS)
 #      define _STLP_NOTHROW throw()
 #    endif
+#    define _STLP_HAS_NATIVE_FLOAT_ABS 1
 #  endif	//	(_STLP_MSVC >= 1300)
 
 #  if (_STLP_MSVC <= 1300) 
