@@ -2,6 +2,8 @@
  * multiple times with different _STLP_TEMPLATE_CONTAINER settings.
  */
 
+#include <stl/_relops_cont.h>
+
 #if defined (_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
 
 _STLP_TEMPLATE_HEADER

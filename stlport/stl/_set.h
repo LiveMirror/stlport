@@ -386,16 +386,13 @@ public:
   }
 };
 
+# undef _STLP_EQUAL_OPERATOR_SPECIALIZED
 # define _STLP_TEMPLATE_HEADER template <class _Key, class _Compare, class _Alloc>
 # define _STLP_TEMPLATE_CONTAINER set<_Key,_Compare,_Alloc>
-# define _STLP_TEMPLATE_CONTAINER_BASE typename set<_Key,_Compare,_Alloc>::_Rep_type
 # include <stl/_relops_cont.h>
-# undef  _STLP_TEMPLATE_CONTAINER_BASE
 # undef  _STLP_TEMPLATE_CONTAINER
 # define _STLP_TEMPLATE_CONTAINER multiset<_Key,_Compare,_Alloc>
-# define _STLP_TEMPLATE_CONTAINER_BASE typename multiset<_Key,_Compare,_Alloc>::_Rep_type
 # include <stl/_relops_cont.h>
-# undef  _STLP_TEMPLATE_CONTAINER_BASE
 # undef  _STLP_TEMPLATE_CONTAINER
 # undef  _STLP_TEMPLATE_HEADER
 

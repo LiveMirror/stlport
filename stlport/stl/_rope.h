@@ -918,12 +918,8 @@ class _Rope_iterator : public _Rope_iterator_base<_CharT,_Alloc> {
   typedef _Rope_iterator<_CharT, _Alloc> _Self;
   typedef _Rope_iterator_base<_CharT,_Alloc> _Base;
   typedef _Rope_RopeRep<_CharT,_Alloc> _RopeRep;
-#ifndef __BORLANDC__
-protected:
-#else
-public:
-#endif
 
+public:
   rope<_CharT,_Alloc>* _M_root_rope;
   // root is treated as a cached version of this,
   // and is used to detect changes to the underlying
