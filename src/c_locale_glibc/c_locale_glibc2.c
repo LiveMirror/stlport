@@ -31,7 +31,7 @@ struct locale_data
      the data.  */
   struct
   {
-    void (*cleanup) (struct locale_data *) internal_function;
+    void (*cleanup) (struct locale_data *);
     union
     {
       void *data;
