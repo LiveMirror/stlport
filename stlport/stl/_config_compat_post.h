@@ -36,7 +36,9 @@
 
 # define _STLP_USE_NEW_IOSTREAMS 1
 # define _STLP_OWN_IOSTREAMS 1
+#ifndef  _STLP_USING_NAMESPACE_BUG
 # define _STLP_USING_NAMESPACE_BUG
+#endif
 
 // provide a uniform way to access full funclionality
 # define __slist__  __FULL_NAME(slist)
