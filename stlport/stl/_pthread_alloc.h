@@ -277,6 +277,9 @@ public:
   // __n is permitted to be 0.  The C++ standard says nothing about what
   // the return value is when __n == 0.
   _Tp* allocate(size_type __n, const void* = 0) {
+    if (__n > max_size()) {
+      __THROW_BAD_ALLOC;
+    }
     return __n != 0 ? __STATIC_CAST(_Tp*,_S_Alloc::allocate(__n * sizeof(_Tp)))
                     : 0;
   }
@@ -401,6 +404,9 @@ public:
   // __n is permitted to be 0.  The C++ standard says nothing about what
   // the return value is when __n == 0.
   _Tp* allocate(size_type __n, const void* = 0) {
+    if (__n > max_size()) {
+      __THROW_BAD_ALLOC;
+    }
     return __n != 0 ? __STATIC_CAST(_Tp*,_S_Alloc::allocate(__n * sizeof(_Tp), _M_state)): 0;
   }
 
