@@ -3,6 +3,8 @@
 	* test/unit/limits_test.cpp: wchar_t is treated as signed, except when it
 	equiv to unsigned short on Wins systems.
 
+	* Repository: STLport 5.0 RC2
+
 2005-02-20  Francois Dumont  <dums@stlport...>
 
 	* Add many private definition of copy constructor and assignment operators
