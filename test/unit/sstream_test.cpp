@@ -1,5 +1,8 @@
 #include <string>
 #include <sstream>
+#include <memory>
+
+#include "full_streambuf.h"
 
 #include "cppunit/cppunit_proxy.h"
 
@@ -23,6 +26,7 @@ class SstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(init_out);
   CPPUNIT_TEST(buf);
   CPPUNIT_TEST(rdbuf);
+  CPPUNIT_TEST(streambuf_output);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -36,6 +40,7 @@ class SstreamTest : public CPPUNIT_NS::TestCase
     void init_out();
     void buf();
     void rdbuf();
+    void streambuf_output();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SstreamTest);
@@ -233,3 +238,38 @@ void SstreamTest::rdbuf()
   CPPUNIT_ASSERT( os.str() == "1234567" );
 }
 
+
+void SstreamTest::streambuf_output()
+{
+  istringstream in("00000000000000000000");
+  CPPUNIT_ASSERT( in );
+
+  {
+    auto_ptr<streambuf> pfull_buf(new full_streambuf(10));
+    ostream out(pfull_buf.get());
+    CPPUNIT_ASSERT( out );
+
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out );
+    CPPUNIT_ASSERT( in );
+
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out.fail() );
+    CPPUNIT_ASSERT( in );
+  }
+
+  {
+    //If the output stream buffer throws:
+    auto_ptr<streambuf> pfull_buf(new full_streambuf(10, true));
+    ostream out(pfull_buf.get());
+    CPPUNIT_ASSERT( out );
+
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out );
+    CPPUNIT_ASSERT( in );
+
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out.fail() );
+    CPPUNIT_ASSERT( in );
+  }
+}

@@ -1,5 +1,12 @@
 2004-09-03  Francois Dumont  <dums@...>
 
+	* test/unit/fstream_test.cpp, sstream_test.cpp: Move of the test for the
+	infinite loop from FstreamTest test case to SstreamTest, addition of some
+	checks.
+	
+	* test/unit/full_streambuf.h: streambuf implementation simulating full
+	output.
+	
 	* stlport/exception: restauration of some modification removed after the
 	rollback of the 2004-09-01.
 	
