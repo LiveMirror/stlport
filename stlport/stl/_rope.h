@@ -69,12 +69,8 @@
 #  include <stl/char_traits.h>
 # endif
 
-# ifdef __GC
-#   define __GC_CONST const
-# else
 # include <stl/_threads.h>
-#   define __GC_CONST   // constant except for deallocation
-# endif
+
 # ifdef _STLP_SGI_THREADS
 #    include <mutex.h>
 # endif
@@ -317,9 +313,7 @@ public:
 
 template<class _CharT, class _Alloc>
 struct _Rope_RopeRep
-# ifndef __GC
   : public _Refcount_Base
-# endif
 {
   typedef _Rope_RopeRep<_CharT, _Alloc> _Self;
 public:
@@ -342,7 +336,7 @@ public:
   allocator_type get_allocator() const { return allocator_type(_M_size);  }
 
   unsigned char _M_depth;
-  __GC_CONST _CharT* _M_c_string;
+  _CharT* _M_c_string;
   _STLP_alloc_proxy<size_t, _CharT, allocator_type> _M_size;
 
 # ifdef _STLP_NO_ARROW_OPERATOR
@@ -357,31 +351,18 @@ public:
   /* the same memory as the data field.       */
   _Rope_RopeRep(_Tag __t, int __d, bool __b, size_t _p_size,
                 allocator_type __a) :
-# ifndef __GC
     _Refcount_Base(1),
-# endif
     _M_tag(__t), _M_is_balanced(__b), _M_depth(__d), _M_c_string(0), _M_size(__a, _p_size)
   { }
-# ifdef __GC
-  void _M_incr () {}
-# endif
 
   static size_t _S_rounded_up_size_aux(size_t __n, __true_type const& /*_IsBasicCharType*/) {
-# ifdef __GC
-    return __n + 1;
-# else
     // Allow slop for in-place expansion.
     return (__n + _S_alloc_granularity) & ~(_S_alloc_granularity-1);
-# endif
   }
   
   static size_t _S_rounded_up_size_aux(size_t __n, __false_type const& /*_IsBasicCharType*/) {
-# ifdef __GC
-    return __n;
-# else
     // Allow slop for in-place expansion.
     return (__n + _S_alloc_granularity - 1) & ~(_S_alloc_granularity-1);
-# endif
   }
   
   typedef typename _AreSameUnCVTypes<_CharT, char>::_Ret _IsChar;
@@ -398,7 +379,7 @@ public:
     return _S_rounded_up_size_aux(__n, _IsBasicCharType());
   }
 
-  static void _S_free_string(/*__GC_CONST*/ _CharT* __s, size_t __len,
+  static void _S_free_string( _CharT* __s, size_t __len,
                              allocator_type __a) {
     _STLP_STD::_Destroy_Range(__s, __s + __len);
     //  This has to be a static member, so this gets a bit messy
@@ -415,12 +396,11 @@ public:
   // moment, because it's templatized w.r.t.
   // an allocator.
   // Does nothing if __GC is defined.
-# ifndef __GC
   void _M_free_c_string();
   void _M_free_tree();
   // Deallocate t. Assumes t is not 0.
   void _M_unref_nonnil() {
-    _M_decr(); if (!_M_ref_count) _M_free_tree();
+    if (_M_decr() == 0) _M_free_tree();
   }
   void _M_ref_nonnil() {
     _M_incr();
@@ -433,22 +413,15 @@ public:
   static void _S_ref(_Self* __t) {
     if (0 != __t) __t->_M_incr();
   }
-  static void _S_free_if_unref(_Self* __t) {
-    if (0 != __t && 0 == __t->_M_ref_count) __t->_M_free_tree();
-  }
-# else /* __GC */
-  void _M_unref_nonnil() {}
-  void _M_ref_nonnil() {}
-  static void _S_unref(_Self*) {}
-  static void _S_ref(_Self*) {}
-  static void _S_free_if_unref(_Self*) {}
-# endif
+  //static void _S_free_if_unref(_Self* __t) {
+  //  if (0 != __t && 0 == __t->_M_ref_count) __t->_M_free_tree();
+  //}
 };
 
 template<class _CharT, class _Alloc>
 struct _Rope_RopeLeaf : public _Rope_RopeRep<_CharT,_Alloc> {
 public:
-  __GC_CONST _CharT* _M_data; /* Not necessarily 0 terminated. */
+  _CharT* _M_data; /* Not necessarily 0 terminated. */
                                 /* The allocated size is         */
                                 /* _S_rounded_up_size(size), except */
                                 /* in the GC case, in which it   */
@@ -465,7 +438,7 @@ public:
   _STLP_FORCE_ALLOCATORS(_CharT, _Alloc)
   typedef typename _RopeRep::allocator_type allocator_type;
   
-  _Rope_RopeLeaf(__GC_CONST _CharT* __d, size_t _p_size, allocator_type __a)
+  _Rope_RopeLeaf( _CharT* __d, size_t _p_size, allocator_type __a)
     : _Rope_RopeRep<_CharT,_Alloc>(_RopeRep::_S_leaf, 0, true, _p_size, __a), 
       _M_data(__d) {
     _STLP_ASSERT(_p_size > 0)
@@ -480,14 +453,12 @@ public:
 // The constructor assumes that d has been allocated with
   // the proper allocator and the properly padded size.
   // In contrast, the destructor deallocates the data:
-# ifndef __GC
   ~_Rope_RopeLeaf() {
     if (_M_data != this->_M_c_string) {
       this->_M_free_c_string();
     }
     _RopeRep::_S_free_string(_M_data, this->_M_size._M_data, this->get_allocator());
   }
-# endif
 };
 
 template<class _CharT, class _Alloc>
@@ -510,13 +481,11 @@ public:
   _Rope_RopeConcatenation(const _Rope_RopeConcatenation<_CharT, _Alloc>&) {}
 # endif
 
-# ifndef __GC
   ~_Rope_RopeConcatenation() {
     this->_M_free_c_string();
     _M_left->_M_unref_nonnil();
     _M_right->_M_unref_nonnil();
   }
-# endif
 };
 
 template<class _CharT, class _Alloc>
@@ -525,7 +494,6 @@ private:
   typedef _Rope_RopeRep<_CharT,_Alloc> _RopeRep;
 public:
   char_producer<_CharT>* _M_fn;
-# ifndef __GC
   /*
    * Char_producer is owned by the
    * rope and should be explicitly
@@ -533,18 +501,6 @@ public:
    * inaccessible.
    */
   bool _M_delete_when_done;
-# else
-  /* 
-   * In the GC case, we either register the rope for
-   * finalization, or not.  Thus the field is unnecessary;
-   * the information is stored in the collector data structures.
-   * We do need a finalization procedure to be invoked by the
-   * collector.
-   */
-  static void _S_fn_finalization_proc(void * __tree, void *) {
-    delete __STATIC_CAST(_Rope_RopeFunction*, __tree)->_M_fn;
-  }
-# endif
   _STLP_FORCE_ALLOCATORS(_CharT, _Alloc)
   typedef typename _Rope_RopeRep<_CharT,_Alloc>::allocator_type allocator_type;
 # ifdef _STLP_NO_ARROW_OPERATOR
@@ -555,25 +511,16 @@ public:
   _Rope_RopeFunction(char_producer<_CharT>* __f, size_t _p_size,
                      bool __d, allocator_type __a)
     : _Rope_RopeRep<_CharT,_Alloc>(_RopeRep::_S_function, 0, true, _p_size, __a), _M_fn(__f)
-# ifndef __GC
     , _M_delete_when_done(__d)
-# endif
   {
     _STLP_ASSERT(_p_size > 0)
-# ifdef __GC
-    if (__d) {
-      GC_REGISTER_FINALIZER(this, _Rope_RopeFunction::_S_fn_finalization_proc, 0, 0, 0);
-    }
-# endif
   }
-# ifndef __GC
   ~_Rope_RopeFunction() {
     this->_M_free_c_string();
     if (_M_delete_when_done) {
       delete _M_fn;
     }
   }
-# endif
 };
 
 /*
@@ -615,7 +562,7 @@ public:
       break;
     case _RopeRep::_S_leaf:
       {
-        __GC_CONST _CharT* __s =
+        _CharT* __s =
           __STATIC_CAST(_RopeLeaf*, _M_base)->_M_data;
         uninitialized_copy_n(__s + __start_pos + _M_start, __req_len, __buffer);
       }
@@ -634,15 +581,11 @@ public:
       _M_base(__b), _M_start(__s) {
     _STLP_ASSERT(__l > 0)
     _STLP_ASSERT(__s + __l <= __b->_M_size._M_data)
-# ifndef __GC
     _M_base->_M_ref_nonnil();
-# endif
     this->_M_tag = _RopeRep::_S_substringfn;
   }
   virtual ~_Rope_RopeSubstring() { 
-# ifndef __GC
     _M_base->_M_unref_nonnil();
-# endif
   }
 };
 
@@ -657,7 +600,6 @@ public:
  * the number of potentially expensive reference count
  * updates.)
  */
-# ifndef __GC
 template<class _CharT, class _Alloc>
 struct _Rope_self_destruct_ptr {
   _Rope_RopeRep<_CharT,_Alloc>* _M_ptr;
@@ -676,7 +618,6 @@ struct _Rope_self_destruct_ptr {
   operator= (_Rope_RopeRep<_CharT,_Alloc>* __x)
   { _M_ptr = __x; return *this; }
 };
-# endif
 
 /*
  * Dereferencing a nonconst iterator has to return something
@@ -691,11 +632,7 @@ class _Rope_char_ref_proxy {
   friend class rope<_CharT,_Alloc>;
   friend class _Rope_iterator<_CharT,_Alloc>;
   friend class _Rope_char_ptr_proxy<_CharT,_Alloc>;
-# ifdef __GC
-  typedef _Rope_RopeRep<_CharT,_Alloc>* _Self_destruct_ptr;
-# else
   typedef _Rope_self_destruct_ptr<_CharT,_Alloc> _Self_destruct_ptr;
-# endif
   typedef _Rope_RopeRep<_CharT,_Alloc> _RopeRep;
   typedef rope<_CharT,_Alloc> _My_rope;
   size_t _M_pos;
@@ -809,11 +746,11 @@ public:
   // Starting position for current leaf
   size_t _M_leaf_pos;
   // Buffer possibly containing current char.
-  __GC_CONST _CharT* _M_buf_start;
+  _CharT* _M_buf_start;
   // Pointer to current char in buffer, != 0 ==> buffer valid.
-  __GC_CONST _CharT* _M_buf_ptr;
+  _CharT* _M_buf_ptr;
   // One past __last valid char in buffer.
-  __GC_CONST _CharT* _M_buf_end;
+  _CharT* _M_buf_end;
   
   // What follows is the path cache.  We go out of our
   // way to make this compact.
@@ -930,7 +867,7 @@ public:
     return *(this->_M_buf_ptr);
   }
   _Self& operator++() {
-    __GC_CONST _CharT* __next;
+    _CharT* __next;
     if (0 != this->_M_buf_ptr && (__next = this->_M_buf_ptr + 1) < this->_M_buf_end) {
       this->_M_buf_ptr = __next;
       ++this->_M_current_pos;
@@ -1122,7 +1059,7 @@ public:
   _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS;
   
 protected:
-  typedef __GC_CONST _CharT* _Cstrptr;
+  typedef _CharT* _Cstrptr;
   
   static _CharT _S_empty_c_str[1];
   
@@ -1153,7 +1090,6 @@ public:
   // Retrieve a character at the indicated position.
   static _CharT _S_fetch(_RopeRep* __r, size_type __pos);
 
-# ifndef __GC
   // Obtain a pointer to the character at the indicated position.
   // The pointer can be used to change the character.
   // If such a pointer cannot be produced, as is frequently the
@@ -1170,12 +1106,6 @@ public:
   }
   
   typedef _Rope_self_destruct_ptr<_CharT,_Alloc> _Self_destruct_ptr;
-# else /* __GC */
-  static void _S_unref(_RopeRep*) {}
-  static void _S_ref(_RopeRep*) {}
-  
-  typedef _RopeRep* _Self_destruct_ptr;
-# endif
   
   // _Result is counted in refcount.
   static _RopeRep* _S_substring(_RopeRep* __base,
@@ -1187,16 +1117,10 @@ public:
   // Should really take an arbitrary iterator.
   // Result is counted in refcount.
   static _RopeRep* _S_destr_concat_char_iter(_RopeRep* __r,
-                                             const _CharT* __iter, size_t __slen)
+                                             const _CharT* __iter, size_t __slen);
     // As above, but one reference to __r is about to be
     // destroyed.  Thus the pieces may be recycled if all
     // relevent reference counts are 1.
-# ifdef __GC
-    // We can't really do anything since refcounts are unavailable.
-  { return _S_concat_char_iter(__r, __iter, __slen); }
-# else
-  ;
-# endif
 
   // General concatenation on _RopeRep.  _Result
   // has refcount of 1.  Adjusts argument refcounts.
@@ -1225,7 +1149,7 @@ protected:
                 
   // Allocate and construct a RopeLeaf using the supplied allocator
   // Takes ownership of s instead of copying.
-  static _RopeLeaf* _S_new_RopeLeaf(__GC_CONST _CharT *__s,
+  static _RopeLeaf* _S_new_RopeLeaf(_CharT *__s,
                                     size_t _p_size, allocator_type __a) {
     _RopeLeaf* __space = _STLP_CREATE_ALLOCATOR(allocator_type,__a, _RopeLeaf).allocate(1,(const void*)0);
     _STLP_TRY {
@@ -1291,11 +1215,9 @@ protected:
   // Concatenate by copying leaf.
   // should take an arbitrary iterator
   // result has refcount 1.
-#       ifndef __GC
   static _RopeLeaf* _S_destr_leaf_concat_char_iter
   (_RopeLeaf* __r, const _CharT* __iter, size_t __slen);
   // A version that potentially clobbers __r if __r->_M_ref_count == 1.
-#       endif
 
 
   // A helper function for exponentiating strings.
@@ -1466,10 +1388,8 @@ public:
       __base_rope._M_tree_ptr._M_data = __base_leaf;
       if (1 == __exponent) {
         __result = __base_rope;
-# ifndef __GC
         // One each for base_rope and __result
-        _STLP_ASSERT(2 == __result._M_tree_ptr._M_data->_M_ref_count)
-# endif
+        //_STLP_ASSERT(2 == __result._M_tree_ptr._M_data->_M_ref_count)
       } else {
         __result = power(__base_rope, __exponent, _Concat_fn());
       }
@@ -1610,9 +1530,7 @@ public:
       // Representation shared
       return;
     }
-# ifndef __GC
     _M_tree_ptr._M_data->_M_free_c_string();
-# endif
     _M_tree_ptr._M_data->_M_c_string = 0;
   }
 
