@@ -1,4 +1,4 @@
-# -*- makefile -*- Time-stamp: <03/11/30 11:41:22 ptr>
+# -*- makefile -*- Time-stamp: <04/07/25 18:05:31 ptr>
 # $Id$
 
 
@@ -25,9 +25,14 @@ release-static:	LDFLAGS += ${LDSEARCH}
 endif
 
 ifeq ($(OSNAME),linux)
-dbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_DBGxx) ${LDSEARCH}
-stldbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_STLDBGxx) ${LDSEARCH}
-release-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAMExx) ${LDSEARCH}
+START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
+#START_A_OBJ := $(shell for o in crt{i,beginT}.o; do ${CXX} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
+#END_A_OBJ := $(shell for o in crtn.o; do ${CXX} -print-file-name=$$o; done)
+STDLIBS := -lsupc++ -lgcc_s -lpthread -lc -lm
+dbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_DBGxx) ${LDSEARCH} -nostdlib
+stldbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_STLDBGxx) ${LDSEARCH} -nostdlib
+release-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAMExx) ${LDSEARCH} -nostdlib
 dbg-static:	LDFLAGS += ${LDSEARCH}
 stldbg-static:	LDFLAGS += ${LDSEARCH}
 release-static:	LDFLAGS += ${LDSEARCH}
