@@ -21,6 +21,12 @@ endif
 OSREL  := $(shell uname -r | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
 M_ARCH := $(shell uname -m | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
 P_ARCH := $(shell uname -p | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
+
+ifeq ($(OSNAME),freebsd)
+OSREL_MAJOR := $(shell echo ${OSREL} | tr '.-' ' ' | awk '{print $$1;}')
+OSREL_MINOR := $(shell echo ${OSREL} | tr '.-' ' ' | awk '{print $$2;}')
+endif
+
 else
 OSNAME := $(shell echo ${TARGET_OS} | sed 's/^[a-z0-9]\+-[a-z0-9]\+-\([a-z]\+\).*/\1/' )
 OSREL  := $(shell echo ${TARGET_OS} | sed 's/^[[:alnum:]]\+-[a-z0-9]\+-[a-z]\+\([a-zA-Z.0-9]*\).*/\1/' )
@@ -31,6 +37,11 @@ endif
 NODENAME := $(shell uname -n | tr '[A-Z]' '[a-z]' )
 SYSVER := $(shell uname -v )
 USER := $(shell echo $$USER )
+
+ifeq ($(OSNAME),freebsd)
+OSREL_MAJOR := $(shell echo ${OSREL} | tr '.-' ' ' | awk '{print $$1;}')
+OSREL_MINOR := $(shell echo ${OSREL} | tr '.-' ' ' | awk '{print $$2;}')
+endif
 
 # OS_VER := $(shell uname -s | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',_')
 

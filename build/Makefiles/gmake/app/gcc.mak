@@ -63,9 +63,11 @@ END_OBJ := $(shell for o in crtend.o; do ${CXX} -print-file-name=$$o; done)
 STDLIBS := -lgcc -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),freebsd)
-START_OBJ := $(shell for o in crt{1,i,begin}.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crt{end,n}.o; do ${CXX} -print-file-name=$$o; done)
-STDLIBS := -lgcc_s -lpthread -lc -lm
+# FreeBSD < 5.3 should use -lc_r, while FreeBSD >= 5.3 use -lpthread
+PTHR := $(shell if [ ${OSREL_MAJOR} -gt 5 ] ; then echo "ptherad" ; else if [ ${OSREL_MAJOR} -lt 5 ] ; then echo "supc++ -lc_r" ; else if [ ${OSREL_MINOR} -lt 3 ] ; then echo "supc++ -lc_r" ; else echo "pthread"; fi ; fi ; fi)
+START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+STDLIBS := -lgcc -l${PTHR} -lc -lm
 endif
 ifeq ($(OSNAME),netbsd)
 START_OBJ := $(shell for o in crt{1,i,begin}.o; do ${CXX} -print-file-name=$$o; done)
