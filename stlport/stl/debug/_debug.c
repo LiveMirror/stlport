@@ -210,15 +210,24 @@ _STLP_STRING_LITERAL("Attempt to dereference null pointer returned by auto_ptr::
 _STLP_STRING_LITERAL("Unknown problem") \
   }
 
-# if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
+#if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
 template <class _Dummy>
 const char* __stl_debug_engine<_Dummy>::_Message_table[_StlMsg_MAX]  _STLP_MESSAGE_TABLE_BODY;
 
-# else
+#  if (defined(__CYGWIN__) || defined(__MINGW32__)) && defined(_STLP_USE_DYNAMIC_LIB)
+/*
+ * Under cygwin, when STLport is used as a shared library, the id needs
+ * to be specified as imported otherwise they will be duplicated in the
+ * calling executable.
+ */
+template <>
+_STLP_DECLSPEC const char* __stl_debug_engine<bool>::_Message_table[_StlMsg_MAX];
+#  endif
+
+#else
 __DECLARE_INSTANCE(const char*, __stl_debug_engine<bool>::_Message_table[_StlMsg_MAX],
              _STLP_MESSAGE_TABLE_BODY);
-
-# endif
+#endif
 
 # undef _STLP_STRING_LITERAL
 # undef _STLP_PERCENT_S
