@@ -1,3 +1,8 @@
+2004-10-18  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_vector.h, _vector.c: Add of checks to know if a reference
+	is in *this before making a systematical copy of it.
+
 2004-10-18  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/type_manips.h: replace template <> by macro.

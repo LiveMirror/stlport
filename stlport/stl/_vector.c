@@ -202,11 +202,16 @@ typename _VECTOR_IMPL<_Tp, _Alloc>::iterator _VECTOR_IMPL<_Tp, _Alloc>::insert(i
       _Copy_Construct(this->_M_finish, __x);
       ++this->_M_finish;
     } else {
-      _Copy_Construct(this->_M_finish, *(this->_M_finish - 1));
-      ++this->_M_finish;
-      _Tp __x_copy = __x;
-      __copy_backward_ptrs(__pos, this->_M_finish - 2, this->_M_finish - 1, _TrivialAss());
-      *__pos = __x_copy;
+      if (&__x >= this->_M_start && &__x < this->_M_finish) {
+        _Tp __x_copy = __x;
+        insert(__pos, __x_copy);
+      }
+      else {
+        _Copy_Construct(this->_M_finish, *(this->_M_finish - 1));
+        ++this->_M_finish;
+        __copy_backward_ptrs(__pos, this->_M_finish - 2, this->_M_finish - 1, _TrivialAss());
+        *__pos = __x;
+      }
     }
   } else
     _M_insert_overflow(__pos, __x, _TrivialCpy(), 1UL);
