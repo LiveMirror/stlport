@@ -70,8 +70,8 @@ void _VECTOR_IMPL<_Tp, _Alloc>::reserve(size_type __n) {
 }
 
 template <class _Tp, class _Alloc>
-void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow(pointer __pos, const _Tp& __x, const __false_type& /*_TrivialCpy*/,
-                                                   size_type __fill_len, bool __atend ) {
+void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow_aux(pointer __pos, const _Tp& __x, const __false_type& /*NOT TO USE!!*/,
+                                                       size_type __fill_len, bool __atend ) {
   const size_type __old_size = size();
   const size_type __len = __old_size + (max)(__old_size, __fill_len);
 
@@ -96,6 +96,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow(pointer __pos, const _Tp& __x
 
 template <class _Tp, class _Alloc>
 void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow(pointer __pos, const _Tp& __x, const __true_type& /*_TrivialCpy*/,
+
                                                    size_type __fill_len, bool __atend ) {
   const size_type __old_size = size();
   const size_type __len = __old_size + (max)(__old_size, __fill_len);
@@ -113,7 +114,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow(pointer __pos, const _Tp& __x
 template <class _Tp, class _Alloc>
 void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __n, 
                                                     const _Tp& __x, const __true_type& /*_Movable*/) {
-  if (&__x >= this->_M_start && &__x < this->_M_finish) {
+  if (_M_is_inside(__x)) {
     _Tp __x_copy = __x;
     _M_fill_insert_aux(__pos, __n, __x_copy, __true_type());
     return;
@@ -129,7 +130,8 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __
 template <class _Tp, class _Alloc>
 void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __n, 
                                                     const _Tp& __x, const __false_type& /*_Movable*/) {
-  if (&__x >= this->_M_start && &__x < this->_M_finish) {
+  //Here self referencing needs to be checked even for non movable types.
+  if (_M_is_inside(__x)) {
     _Tp __x_copy = __x;
     _M_fill_insert_aux(__pos, __n, __x_copy, __false_type());
     return;
@@ -204,7 +206,7 @@ _VECTOR_IMPL<_Tp, _Alloc>::insert(iterator __pos, const _Tp& __x) {
       _Copy_Construct(this->_M_finish, __x);
       ++this->_M_finish;
     } else {
-      if (&__x >= this->_M_start && &__x < this->_M_finish) {
+      if (_M_is_inside(__x)) {
         _Tp __x_copy = __x;
         insert(__pos, __x_copy);
       }

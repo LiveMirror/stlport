@@ -276,7 +276,7 @@ _STLP_STRING_LITERAL("Trying to extract an object out from empty container"),\
 _STLP_STRING_LITERAL("Past-the-end iterator could not be erased"),  \
 _STLP_STRING_LITERAL("Index out of bounds"),  \
 _STLP_STRING_LITERAL("Container doesn't own the iterator"),  \
-_STLP_STRING_LITERAL("Container is own of the iterator, but should not"),  \
+_STLP_STRING_LITERAL("Container is owner of the iterator, but should not"),  \
 _STLP_STRING_LITERAL("Uninitialized or invalidated (by mutating operation) iterator used"),  \
 _STLP_STRING_LITERAL("Uninitialized or invalidated (by mutating operation) lefthand iterator in expression"),  \
 _STLP_STRING_LITERAL("Uninitialized or invalidated (by mutating operation) righthand iterator in expression"),  \

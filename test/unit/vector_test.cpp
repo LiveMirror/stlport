@@ -26,6 +26,7 @@ class VectorTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(capacity);
   CPPUNIT_TEST(at);
   CPPUNIT_TEST(pointer);
+  CPPUNIT_TEST(auto_ref);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -39,6 +40,7 @@ protected:
   void capacity();
   void at();
   void pointer();
+  void auto_ref();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(VectorTest);
@@ -285,4 +287,34 @@ void VectorTest::pointer()
   vector<int *> v3;
   
   v3.insert( v3.end(), v1.begin(), v1.end() );
+}
+
+void VectorTest::auto_ref()
+{
+  size_t i;
+  vector<int> ref;
+  for (i = 0; i < 5; ++i) {
+    ref.push_back(i);
+  }
+
+  vector<vector<int> > v_v_int(1, ref);
+  v_v_int.push_back(v_v_int[0]);
+  v_v_int.push_back(ref);
+  v_v_int.push_back(v_v_int[0]);
+  v_v_int.push_back(v_v_int[0]);
+  v_v_int.push_back(ref);
+
+  vector<vector<int> >::iterator vvit(v_v_int.begin()), vvitEnd(v_v_int.end());
+  for (; vvit != vvitEnd; ++vvit) {
+    CPPUNIT_ASSERT( *vvit == ref );
+  }
+
+  /*
+   * Forbidden by the Standard:
+  v_v_int.insert(v_v_int.end(), v_v_int.begin(), v_v_int.end());
+  for (vvit = v_v_int.begin(), vvitEnd = v_v_int.end();
+       vvit != vvitEnd; ++vvit) {
+    CPPUNIT_ASSERT( *vvit == ref );
+  }
+   */
 }

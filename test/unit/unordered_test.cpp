@@ -117,6 +117,18 @@ void UnorderedTest::umap()
   typedef unordered_map<int, int, hash<int>, equal_to<int> > umaptype;
   umaptype us;
 
+  //Compilation check of the [] operator:
+  umaptype us2;
+  us[0] = us2[0];
+  us.clear();
+
+  {
+    typedef unordered_map<int, umaptype> uumaptype;
+    uumaptype uus;
+    umaptype const& uref = uus[0];
+    umaptype ucopy = uus[0];
+  }
+
   int i;
   pair<umaptype::iterator, bool> ret;
   for (i = 0; i < 2000; ++i) {

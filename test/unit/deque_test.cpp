@@ -18,11 +18,13 @@ class DequeTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE(DequeTest);
   CPPUNIT_TEST(deque1);
   CPPUNIT_TEST(at);
+  CPPUNIT_TEST(auto_ref);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void deque1();
   void at();
+  void auto_ref();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(DequeTest);
@@ -86,4 +88,24 @@ void DequeTest::at() {
     }
   }
 #endif
+}
+
+void DequeTest::auto_ref()
+{
+  size_t i;
+  deque<int> ref;
+  for (i = 0; i < 5; ++i) {
+    ref.push_back(i);
+  }
+
+  deque<deque<int> > d_d_int(1, ref);
+  d_d_int.push_back(d_d_int[0]);
+  d_d_int.push_back(ref);
+  d_d_int.push_back(d_d_int[0]);
+  d_d_int.push_back(d_d_int[0]);
+  d_d_int.push_back(ref);
+
+  for (i = 0; i < 5; ++i) {
+    CPPUNIT_ASSERT( d_d_int[i] == ref );
+  }
 }

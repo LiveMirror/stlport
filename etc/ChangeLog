@@ -1,3 +1,12 @@
+2004-12-23  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_vector.h, _vector.c: Fix of the code for movable types
+	in call to push_back or insert of a value in case of auto referencing
+	thanks Benjamin Redelings.
+	
+	* stlport/stl/_hashtable.c: Fix of the _M_copy method thanks Timothy
+	Tenebekov.
+	
 2004-12-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_string.h: Fix of missing scopes thanks arabesc and
