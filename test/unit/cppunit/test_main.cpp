@@ -15,7 +15,6 @@
 
 #include "cppunit_proxy.h"
 #include "file_reporter.h"
-#include <windows.h>
 
 namespace CPPUNIT_NS
 {
