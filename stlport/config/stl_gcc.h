@@ -7,7 +7,10 @@
 # define _STLP_USE_GLIBC
 #endif
 
-#define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
+#if (__GNUC__ <= 3) && (__GNUC_MAJOR__ <= 3)
+//define for gcc versions before 3.4.0.
+#  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
+#endif
 
 #if defined (__hpux) || defined(__amigaos__) || ( defined(__OS2__) && defined(__EMX__) )
 # define _STLP_NO_WCHAR_T
@@ -290,7 +293,7 @@ At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
 #  if ((__GNUC_MINOR__ == 0) || (__APPLE__))
 #   define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
 #  else
-#   if defined(__GNUC_PATCHLEVEL__) && (__GNUC_PATCHLEVEL__ > 0)
+#   if defined(__GNUC_PATCHLEVEL__) && (__GNUC_PATCHLEVEL__ >= 0)
 #     define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__
 #   else
 #     define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__
