@@ -8,6 +8,9 @@
 	language support in libsupc++ in gcc before 3.3 not allow to use it;
 	link with libstdc++ instead.
 
+	* stlport/config/stl_icc.h: fix features for icc 7.1; fix features for Linux
+	platforms.
+
 2004-08-24  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_gcc.h, stl_msvc.h: fixing of configuration concerning
