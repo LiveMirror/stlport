@@ -1,4 +1,14 @@
-2004-08-30  
+2004-08-31  Francois Dumont  <dums@...>
+
+	* _STLP_INCOMPLETE_EXCEPTION_HEADER replace by the more intuitive
+	_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT macro.
+	
+	* Modification of the include schema of all public headers in stlport folder
+	that need to be reentrant. Now those files are fully guarded and the specific
+	STLport code is only included once at the end of the inclusion, the reentrancy
+	only concern inclusion of the native headers.
+
+2004-08-30  Francois Dumont  <dums@...>
 
 	* stlport/stl/_deque.c: Fix of a pseudo 'uninitialized variable used' thanks 
 	Kidman.
