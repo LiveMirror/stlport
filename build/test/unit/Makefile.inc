@@ -1,4 +1,4 @@
-# -*- makefile -*- Time-stamp: <05/03/25 00:24:56 ptr>
+# -*- makefile -*- Time-stamp: <05/03/30 10:27:53 ptr>
 # $Id$
 
 # this is the version number of needed STLport library for linking
@@ -99,4 +99,5 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/unique_test.cpp \
 	../../../test/unit/unordered_test.cpp \
 	../../../test/unit/valarray_test.cpp \
-	../../../test/unit/vector_test.cpp 
+	../../../test/unit/vector_test.cpp \
+	../../../test/unit/test_errno.cpp
