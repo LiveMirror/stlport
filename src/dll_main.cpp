@@ -156,10 +156,6 @@ template class _STLP_CLASS_DECLSPEC __node_alloc<true,0>;
 template class _STLP_CLASS_DECLSPEC __debug_alloc< __node_alloc<true,0> >;
 template class _STLP_CLASS_DECLSPEC __debug_alloc< __node_alloc<false,0> >;
 template class _STLP_CLASS_DECLSPEC __debug_alloc<__new_alloc>;
-#ifdef _STLP_HAS_PERTHREAD_ALLOCATOR
-template class _STLP_CLASS_DECLSPEC _Pthread_alloc<_MAX_BYTES>;
-template class _STLP_CLASS_DECLSPEC __debug_alloc<__pthread_alloc>;
-#endif
 template class _STLP_CLASS_DECLSPEC __malloc_alloc<0>;
 
 # if defined (_STLP_THREADS) && ! defined ( _STLP_ATOMIC_EXCHANGE ) && (defined(_STLP_PTHREADS) || defined (_STLP_UITHREADS)  || defined (_STLP_OS2THREADS))
