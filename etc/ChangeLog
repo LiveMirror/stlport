@@ -1,3 +1,9 @@
+2005-01-06  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_msvc.h: Move the _STLP_DONT_RETURN_VOID configuration
+	macro to the specific MSVC6 compiler as it is the only one that has ever
+	reveal this bug.
+
 2005-01-05  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_sum_methods.h: Fixes reported by gcc.
