@@ -114,6 +114,7 @@ public:
 
   basic_string(const _CharT* __s, size_type __n,
                const allocator_type& __a = allocator_type()) :
+    //TODO: Add not null pointer check.
     _STLP_NON_DBG_STRING_BASE(__s, __n, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(const _CharT* __s,
