@@ -1,5 +1,8 @@
 #include <exception>
 #include <stdexcept>
+	
+
+#define _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
 
 #include "cppunit/cppunit_proxy.h"
 
@@ -19,8 +22,12 @@
 class ExceptionTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(ExceptionTest);
+#  if !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT)
   CPPUNIT_TEST(unexpected_except);
+#  endif
+#  if !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
   CPPUNIT_TEST(uncaught_except);
+#  endif
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -30,6 +37,7 @@ protected:
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ExceptionTest);
 
+#  if !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT)
 bool g_unexpected_called = false;
 void unexpected_hdl() {
   g_unexpected_called = true;
@@ -61,7 +69,9 @@ void ExceptionTest::unexpected_except()
   }
   CPPUNIT_ASSERT( g_unexpected_called );
 }
+#  endif
 
+#  if !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
 struct UncaughtClassTest
 {
   UncaughtClassTest(int &res) : _res(res)
@@ -94,5 +104,6 @@ void ExceptionTest::uncaught_except()
   }
   CPPUNIT_ASSERT( uncaught_result == 1 );
 }
+#  endif /* _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT */
 
 #endif // _STLP_NO_EXCEPTIONS

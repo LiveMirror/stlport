@@ -217,5 +217,5 @@
 // but so few compilers would have it undefined, so that we set them here,
 // with the option to be turned off later in compiler-specific file
 
-# define _STLP_INCOMPLETE_EXCEPTION_HEADER
+# define _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 

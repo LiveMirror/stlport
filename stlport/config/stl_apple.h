@@ -95,7 +95,7 @@ typedef int wint_t;
 #define _STLP_NO_NATIVE_MBSTATE_T					// known limitation
 #define _STLP_NO_NATIVE_WIDE_FUNCTIONS				// known limitation
 #define _STLP_NO_NATIVE_WIDE_STREAMS				// known limitation
-#define _STLP_INCOMPLETE_EXCEPTION_HEADER			// known limitation
+#define _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT			// known limitation
 #define _STLP_BROKEN_EXCEPTION_CLASS				// known limitation
 
 // compiler limitations

@@ -86,7 +86,7 @@
 #endif	//	(_STLP_MSVC >= 1310)
 
 #if (_STLP_MSVC >= 1300)
-#  undef _STLP_INCOMPLETE_EXCEPTION_HEADER
+#  undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 #  if !defined (_STLP_HAS_NO_EXCEPTIONS)
 #    define _STLP_NOTHROW throw()
 #  endif
