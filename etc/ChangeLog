@@ -1,3 +1,8 @@
+2005-04-04  Petr Ovtchenkov  <ptr@island...>
+
+	* errno.h, time.h, test_errno.cpp: evc3 and evc4 has no errno.h
+	and time.h headers [patch from Michael Fink].
+
 2005-04-02  Francois Dumont  <dums@stlport...>
 
 	* stlport/cstdlib: Fix missing div taking long definition for VC71.
