@@ -1,3 +1,12 @@
+2005-01-18  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_algo.c: Modification of the stable_partition implementation
+	to limit the size of the allocated temporary buffer of the begin and end
+	of the range are already at the right place.
+	
+	* build/test/unit/nmake-vc-common.mak, nmake-evc-common.mak: Removal of the 
+	_STLP_USE_AUTO_LINK macro which is now the default.
+
 2005-01-14  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_windows.h, char_traits.h, src/c_locale_win32/c_locale_win32.c:
