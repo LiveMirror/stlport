@@ -24,7 +24,7 @@
  */
 
 #ifndef _STLP_CONFIG_H
-# define _STLP_CONFIG_H
+#define _STLP_CONFIG_H
 
 /*
  * Purpose of this file :
@@ -49,22 +49,18 @@
    whether or not _STLP_ASSERTIONS is defined.
 */
 
-/* The last SGI STL release we merged with */
-#   define __SGI_STL                                      0x330
+/* Definition of the STLport version informations */
+#include <stl/_stlport_version.h>
 
-/* STLport version */
-#   define _STLPORT_MAJOR 5
-#   define _STLPORT_MINOR 0
+/* Definition of the 2 STLport debug levels */
+#define _STLP_STLPORT_DBG_LEVEL 1
+#define _STLP_STANDARD_DBG_LEVEL 2
 
-#   define _STLPORT_VERSION                               0x500
-
-# define _STLP_STLPORT_DBG_LEVEL 1
-# define _STLP_STANDARD_DBG_LEVEL 2
 /* Placeholder for user to override settings.
  * It could be also used to mask settings from 
  * different directories.
  */
-# include <stl_user_config.h>
+#include <stl_user_config.h>
 
 //For the STLport implementation we can use everything:
 #if defined (__BUILDING_STLPORT)
@@ -543,11 +539,8 @@ namespace __std_alias = std;
 /* assume std:: namespace for C++ std library if not being told otherwise */
 #  if defined (_STLP_VENDOR_GLOBAL_STD)
 #    define _STLP_VENDOR_STD
-#    define _STLP_USING_VENDOR_STD
 #  else
 #    define _STLP_VENDOR_STD __std_alias
-#    define _STLP_USING_VENDOR_STD _STLP_USING_NAMESPACE(_STLP_VENDOR_STD)
-//#    define _STLP_USING_VENDOR_STD
 #  endif
 
 /* tune things that come from C library */
@@ -577,7 +570,6 @@ namespace __std_alias = std;
 #  define _STLP_VENDOR_CSTD
 #  define _STLP_USING_NAMESPACE(x)
 #  define _STLP_USING_VENDOR_CSTD
-#  define _STLP_USING_VENDOR_STD 
 #  define _STLP_VENDOR_EXCEPT_STD
 #endif
 
@@ -1004,8 +996,8 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 
 #ifdef _STLP_USE_NO_IOSTREAMS
 /*
- * If we do not use own iostream there is no reason to use the export/import
- * techniques as there is no library to link with.
+ * If we do not use iostreams we do not use the export/import
+ * techniques to avoid build of the STLport library.
  */
 #  undef _STLP_USE_DECLSPEC
 #endif

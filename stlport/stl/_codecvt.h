@@ -250,7 +250,7 @@ private:
 
 # ifndef _STLP_NO_WCHAR_T
 _STLP_TEMPLATE_NULL
-class codecvt_byname<wchar_t, char, mbstate_t>
+class _STLP_CLASS_DECLSPEC codecvt_byname<wchar_t, char, mbstate_t>
   : public codecvt<wchar_t, char, mbstate_t> 
 {
 public:
