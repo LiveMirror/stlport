@@ -382,7 +382,6 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
  * Recursive Safe locking class.
 */
 # ifndef _STLP_THREADS
-#pragma message ("Using empty definition")
 class _STLP_mutex_RS
 {};
 # else
@@ -393,11 +392,11 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
       : _count( 0 )
 #  ifdef _STLP_UITHREADS
         ,_id( __STATIC_CAST(thread_t,-1) )
-#  elif _STLP_PTHREADS
+#  elif defined(_STLP_PTHREADS)
         ,_id( __STATIC_CAST(pthread_t,-1) )
-#  elif __FIT_NOVELL_THREADS
+#  elif defined(__FIT_NOVELL_THREADS)
         ,_id( -1 )
-#  elif _STLP_WIN32THREADS
+#  elif defined(_STLP_WIN32THREADS)
         ,_id( -1 )
 #  endif
     {}
@@ -408,11 +407,11 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
     void _M_acquire_lock() {
 #  ifdef _STLP_PTHREADS
       pthread_t _c_id = pthread_self();
-#  elif _STLP_UITHREADS
+#  elif defined(_STLP_UITHREADS)
       thread_t _c_id = thr_self();
-#  elif __FIT_NOVELL_THREADS
+#  elif defined(__FIT_NOVELL_THREADS)
       int _c_id = GetThreadID();
-#  elif _STLP_WIN32THREADS
+#  elif defined(_STLP_WIN32THREADS)
       DWORD _c_id = GetCurrentThreadId();
 #  endif
       if ( _c_id == _id ) {
@@ -428,11 +427,11 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
       if ( --_count == 0 ) {
 #  ifdef _STLP_UITHREADS
         _id = __STATIC_CAST(thread_t,-1);
-#  elif _STLP_PTHREADS
+#  elif defined(_STLP_PTHREADS)
         _id =  __STATIC_CAST(pthread_t,-1);
-#  elif __FIT_NOVELL_THREADS
+#  elif defined(__FIT_NOVELL_THREADS)
         _id = -1;
-#  elif _STLP_WIN32THREADS
+#  elif defined(_STLP_WIN32THREADS)
         _id = -1;
 #  endif
         _STLP_mutex::_M_release_lock();
@@ -444,11 +443,11 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 
 #  ifdef _STLP_PTHREADS
     pthread_t _id;
-#  elif _STLP_UITHREADS
+#  elif defined(_STLP_UITHREADS)
     thread_t  _id;
-#  elif __FIT_NOVELL_THREADS
+#  elif defined(__FIT_NOVELL_THREADS)
     int _id;
-#  elif _STLP_WIN32THREADS
+#  elif defined(_STLP_WIN32THREADS)
     DWORD _id;
 #  endif
 };
