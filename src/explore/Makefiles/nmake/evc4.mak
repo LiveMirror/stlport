@@ -1,11 +1,26 @@
 # Time-stamp: <04/03/31 07:55:19 ptr>
 # $Id$
 
+DEFS_COMMON = /D _WIN32_WCE=$(CEVERSION) /D "$(PLATFORM)" /D UNDER_CE=$(CEVERSION) /D "UNICODE"
+
+!if "$(TARGET_PROC)" == ""
+!error No target processor configured! Please rerun configure.bat!
+!endif
+
+!if "$(TARGET_PROC)" == "arm"
 CXX = clarm.exe
 CC = clarm.exe
-
-DEFS_COMMON = /D _WIN32_WCE=$(CEVERSION) /D "$(PLATFORM)" /D UNDER_CE=$(CEVERSION) /D "UNICODE"
 DEFS_COMMON = $(DEFS_COMMON) /D "ARM" /D "_ARM_" /D "ARMV4"
+OPT_COMMON =
+!endif
+
+!if "$(TARGET_PROC)" == "x86"
+CXX = cl.exe
+CC = cl.exe
+DEFS_COMMON = $(DEFS_COMMON) /D "x86" /D "_X86_" /D "_i386_"
+OPT_COMMON = /Gs8192 /GF
+!endif
+
 
 # exception handling support
 CFLAGS_COMMON = /nologo /TC /W3 /GR /GX
@@ -22,8 +37,5 @@ CXXFLAGS_DBG = $(CXXFLAGS_COMMON) $(OPT_DBG)
 CXXFLAGS_STATIC_DBG = $(CXXFLAGS_COMMON) $(OPT_STATIC_DBG)
 CXXFLAGS_STLDBG = $(CXXFLAGS_COMMON) $(OPT_STLDBG)
 CXXFLAGS_STATIC_STLDBG = $(CXXFLAGS_COMMON) $(OPT_STATIC_STLDBG)
-
-# optimization and debug compiler flags
-OPT_COMMON =
 
 !include evc-common.mak

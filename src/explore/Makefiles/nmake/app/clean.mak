@@ -12,6 +12,12 @@ clobber:	clean
 	@-del /F /Q $(OUTPUT_DIR_A_DBG)\$(PRGNAME).pdb
 	@-del /F /Q $(OUTPUT_DIR_STLDBG)\$(PRGNAME).pdb
 	@-del /F /Q $(OUTPUT_DIR_A_STLDBG)\$(PRGNAME).pdb
+	@-rd $(OUTPUT_DIR)
+	@-rd $(OUTPUT_DIR_DBG)
+	@-rd $(OUTPUT_DIR_STLDBG)
+	@-rd $(OUTPUT_DIR_A)
+	@-rd $(OUTPUT_DIR_A_DBG)
+	@-rd $(OUTPUT_DIR_A_STLDBG)
 
 distclean:	clobber
 	@-del /F /Q  $(INSTALL_BIN_DIR)\$(PRG_NAME)

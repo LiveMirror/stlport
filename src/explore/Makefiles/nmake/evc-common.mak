@@ -25,7 +25,7 @@ OPT_STATIC_STLDBG = $(OPT) $(OPT_STATIC_STLDBG)
 
 OUTPUT_OPTION = /Fo$@
 # The sentence below is bit strange: ...$(PRGNAME)$(LIBNAME).pdb
-# In this place I don't know what I build build: library or application.
+# In this place I don't know what I build : library or application.
 # But in real projects only one will be defined---either $(PRGNAME) or
 # $(LIBNAME), so .pdb name will be correct.
 OUTPUT_OPTION_DBG = /Fo$@ /Fd"$(OUTPUT_DIR_DBG)/$(PRGNAME)$(LIBNAME).pdb"
