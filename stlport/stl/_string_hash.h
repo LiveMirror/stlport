@@ -36,7 +36,7 @@ __stl_string_hash(const basic_string<_CharT,_Traits,_Alloc>& __s) {
   size_t __len = __s.size();
   const _CharT* __data = __s.data();
   for ( size_t __i = 0; __i < __len; ++__i)
-    __h = 5*__h + __data[__i];
+    __h = /* 5 *__h */(__h << 2) + __h + __data[__i];
   return size_t(__h);
 }
 

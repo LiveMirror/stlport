@@ -1,3 +1,8 @@
+2004-09-05  Francois Dumont  <dums@...>
+
+	* stlport/stl/_string_hash.h: Performance improvement, multiplication
+	replaced by shift operations thanks Greg S
+	
 2004-09-03  Francois Dumont  <dums@...>
 
 	* test/unit/fstream_test.cpp, sstream_test.cpp: Move of the test for the
