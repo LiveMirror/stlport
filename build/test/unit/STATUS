@@ -49,13 +49,13 @@ Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
-Date:                           2005-02-15
+Date:                           2005-02-22
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
-Status (release-shared):        One fail (316 tests)
-Notes:				../../../test/unit/limits_test.cpp(123) : CPPUNIT_ASSERT(test_unsigned_integral_limits(wchar_t()));
-Status (stldbg-shared):         One fail (316 tests)
-Notes:				../../../test/unit/limits_test.cpp(123) : CPPUNIT_ASSERT(test_unsigned_integral_limits(wchar_t()));
+Status (release-shared):        All pass (318 tests)
+Notes:				
+Status (stldbg-shared):         All pass (318 tests)
+Notes:				
 
 -----------------------------------------------------------------------
 Compiler:			gcc 3.4.1
