@@ -23,6 +23,10 @@ The following changes were made in 4.5.2 since 4.5.1 release:
 
 	* _fstream.c : fixed bug in _M_seek_init (thanks Pavel Kuznetsov)
 	
+	* _rope.h : rope<>::swap() methods fixed for non-partial ordering case (thanks Eric Musser)
+ 	
+	* comlex_trig.cpp : fixed bug on SGI (thanks Mortis)
+	
 	
 The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
