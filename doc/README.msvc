@@ -48,7 +48,8 @@ on your Windows OS.
 3. Run the vcvars32.bat script. This sets the environment variables required
 to have the MSVC++ compiler run during the build process. The most important
 one is the PATH variable so that you can call the cl.exe command which is the
-MSVC++ command line compiler.
+MSVC++ command line compiler. [You may omit this step, if you chose 'Install paths
+to access command-line tools' during Microsoft Visual Studio installation procedure.]
 
 4. Go to the STLport build/lib folder:
 	cd C:\STLport\build\lib
@@ -56,7 +57,7 @@ MSVC++ command line compiler.
 5. Run the following command:
 	nmake /fnmake-vc6.mak install
 
-	nmake is the makefile system from microsoft. /f is an nmake option
+	nmake is the make utility from microsoft. /f is an nmake option
 telling it which make file script to use. You have of course to grant the 
 closer make file to your effective compiler.
 
@@ -102,7 +103,7 @@ on of 'InterlockedIncrement'
 
 	It means that you are using the new Microsoft platform SDK. There is no
 way to known it from STLport so you have to signal it in the 
-stlport/stl_user_config.h file.
+stlport/stl_user_config.h file (uncomment appropriate #define in this file).
 
 2. C symbols in std namespace
 
