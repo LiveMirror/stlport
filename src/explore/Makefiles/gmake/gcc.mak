@@ -4,12 +4,16 @@
 #INCLUDES = -I$(SRCROOT)/include
 INCLUDES :=
 
-CXX := c++
+CXX := g++
 CC := gcc
 
+ifeq ($(OSNAME), cygwin)
+RC := windres
+endif
+
 ifdef TARGET_OS
-CXX := ${TARGET_OS}-c++
-CC := ${TARGET_OS}-gcc
+CXX := ${TARGET_OS}-${CXX}
+CC := ${TARGET_OS}-${CC}
 endif
 
 DEFS ?=
@@ -18,6 +22,11 @@ OPT ?=
 OUTPUT_OPTION = -o $@
 LINK_OUTPUT_OPTION = ${OUTPUT_OPTION}
 CPPFLAGS = $(DEFS) $(INCLUDES)
+
+ifeq ($(OSNAME), cygwin)
+RCFLAGS = --output-format coff
+RC_OUTPUT_OPTION = -o $@
+endif
 
 ifeq ($(OSNAME),sunos)
 CCFLAGS = -pthreads $(OPT)
@@ -31,6 +40,16 @@ CCFLAGS = -pthread $(OPT)
 CFLAGS = -pthread $(OPT)
 # CXXFLAGS = -pthread -nostdinc++ -fexceptions -fident $(OPT)
 CXXFLAGS = -pthread -fexceptions -fident $(OPT)
+endif
+
+ifeq ($(OSNAME),cygwin)
+CCFLAGS = $(OPT)
+CFLAGS = $(OPT)
+CXXFLAGS = -fexceptions -fident $(OPT)
+#release-shared : DEFS += -D_STLP_USE_DYNAMIC_LIB
+#dbg-shared : DEFS += -D_STLP_USE_DYNAMIC_LIB
+#stldbg-shared : DEFS += -D_STLP_USE_DYNAMIC_LIB
+COMPILE.rc = $(RC) $(RCFLAGS)
 endif
 
 ifeq ($(OSNAME),openbsd)
