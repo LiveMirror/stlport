@@ -40,6 +40,10 @@ typedef _BSD_WINT_T_ wint_t;
 #  endif /* __OpenBSD__ */
 # endif
 
+# if defined(__OpenBSD__) && defined(__GNUC__) && !defined(_GLIBCPP_HAVE_MBSTATE_T)
+#  define __mbstate_t_defined // mbstate_t defined in native <cwchar>, so not defined in in C!
+# endif
+
 # if !defined ( _STLP_USE_NO_IOSTREAMS ) && defined (_STLP_NO_NATIVE_MBSTATE_T) && ! defined (_STLP_NO_MBSTATE_T) && ! defined (_MBSTATE_T) && ! defined (__mbstate_t_defined)
 #  define _STLP_USE_OWN_MBSTATE_T
 #  define _MBSTATE_T
