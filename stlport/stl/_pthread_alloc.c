@@ -223,7 +223,7 @@ template <size_t _Max_size>
 _Pthread_alloc_per_thread_state<_Max_size> * _Pthread_alloc<_Max_size>::_S_free_per_thread_states = 0;
 
 template <size_t _Max_size>
-pthread_key_t _Pthread_alloc<_Max_size>::_S_key;
+pthread_key_t _Pthread_alloc<_Max_size>::_S_key =0;
 
 template <size_t _Max_size>
 bool _Pthread_alloc<_Max_size>::_S_key_initialized = false;
