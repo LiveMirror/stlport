@@ -197,16 +197,15 @@ struct _STLP_mutex_spin {
 
 // For non-static cases, clients should use  _STLP_mutex.
 
-struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
-{
+struct _STLP_CLASS_DECLSPEC _STLP_mutex_base {
 #if defined(_STLP_ATOMIC_EXCHANGE) || defined(_STLP_SGI_THREADS)
   // It should be relatively easy to get this to work on any modern Unix.
   volatile __stl_atomic_t _M_lock;
 #endif
 
-#ifdef _STLP_THREADS
-# ifdef _STLP_ATOMIC_EXCHANGE
-  inline void _M_initialize() { _M_lock=0; }
+#if defined (_STLP_THREADS)
+#  ifdef _STLP_ATOMIC_EXCHANGE
+  inline void _M_initialize() { _M_lock = 0; }
   inline void _M_destroy() {}
 
   void _M_acquire_lock() {
@@ -215,28 +214,28 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 
   inline void _M_release_lock() {
     volatile __stl_atomic_t* __lock = &_M_lock;
-#  if defined(_STLP_SGI_THREADS) && defined(__GNUC__) && __mips >= 3
-        asm("sync");
-        *__lock = 0;
-#  elif defined(_STLP_SGI_THREADS) && __mips >= 3 \
-     && (defined (_ABIN32) || defined(_ABI64))
-        __lock_release(__lock);
-#  elif defined (_STLP_SPARC_SOLARIS_THREADS)
-#   if defined (__WORD64) || defined (__arch64__) || defined (__sparcv9) || defined (__sparcv8plus)
+#    if defined(_STLP_SGI_THREADS) && defined(__GNUC__) && __mips >= 3
+    asm("sync");
+    *__lock = 0;
+#    elif defined(_STLP_SGI_THREADS) && __mips >= 3 && \
+         (defined (_ABIN32) || defined(_ABI64))
+    __lock_release(__lock);
+#    elif defined (_STLP_SPARC_SOLARIS_THREADS)
+#      if defined (__WORD64) || defined (__arch64__) || defined (__sparcv9) || defined (__sparcv8plus)
     asm("membar #StoreStore ; membar #LoadStore");
-#   else
+#      else
     asm(" stbar ");
-#   endif
-        *__lock = 0;    
-#  else
-        *__lock = 0;
-        // This is not sufficient on many multiprocessors, since
-        // writes to protected variables and the lock may be reordered.
-#  endif
+#      endif
+    *__lock = 0;    
+#    else
+    *__lock = 0;
+    // This is not sufficient on many multiprocessors, since
+    // writes to protected variables and the lock may be reordered.
+#    endif
   }
-# elif defined(_STLP_PTHREADS)
-#  ifdef _STLP_USE_PTHREAD_SPINLOCK
-#   ifndef __OpenBSD__
+#  elif defined(_STLP_PTHREADS)
+#    ifdef _STLP_USE_PTHREAD_SPINLOCK
+#      ifndef __OpenBSD__
   pthread_spinlock_t _M_lock;
   inline void _M_initialize() { pthread_spin_init( &_M_lock, 0 ); }
   inline void _M_destroy() { pthread_spin_destroy( &_M_lock ); }
@@ -253,14 +252,14 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 
   inline void _M_acquire_lock() { pthread_spin_lock( &_M_lock ); }
   inline void _M_release_lock() { pthread_spin_unlock( &_M_lock ); }
-#   else // __OpenBSD__
+#      else // __OpenBSD__
   spinlock_t _M_lock;
   inline void _M_initialize() { _SPINLOCK_INIT( &_M_lock ); }
   inline void _M_destroy() { }
   inline void _M_acquire_lock() { _SPINLOCK( &_M_lock ); }
   inline void _M_release_lock() { _SPINUNLOCK( &_M_lock ); }
-#   endif // __OpenBSD__
-#  else // !_STLP_USE_PTHREAD_SPINLOCK
+#      endif // __OpenBSD__
+#    else // !_STLP_USE_PTHREAD_SPINLOCK
   pthread_mutex_t _M_lock;
   inline void _M_initialize() {
     pthread_mutex_init(&_M_lock,_STLP_PTHREAD_ATTR_DEFAULT);
@@ -270,15 +269,15 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
   }
   inline void _M_acquire_lock() { 
 
-#   if defined ( __hpux ) && ! defined (PTHREAD_MUTEX_INITIALIZER)
+#      if defined ( __hpux ) && ! defined (PTHREAD_MUTEX_INITIALIZER)
     if (!_M_lock.field1)  _M_initialize();
-#   endif
+#      endif
     pthread_mutex_lock(&_M_lock); 
   }
   inline void _M_release_lock() { pthread_mutex_unlock(&_M_lock); }
-#  endif // !_STLP_USE_PTHREAD_SPINLOCK
+#    endif // !_STLP_USE_PTHREAD_SPINLOCK
   
-# elif defined (_STLP_UITHREADS)
+#  elif defined (_STLP_UITHREADS)
   mutex_t _M_lock;
   inline void _M_initialize() {
     mutex_init(&_M_lock,0,NULL);
@@ -289,7 +288,7 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
   inline void _M_acquire_lock() { mutex_lock(&_M_lock); }
   inline void _M_release_lock() { mutex_unlock(&_M_lock); }
 
-# elif defined(_STLP_OS2THREADS)
+#  elif defined(_STLP_OS2THREADS)
   HMTX _M_lock;
   inline void _M_initialize() { DosCreateMutexSem(NULL, &_M_lock, 0, false); }
   inline void _M_destroy() { DosCloseMutexSem(_M_lock); }
@@ -298,27 +297,24 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
     DosRequestMutexSem(_M_lock, SEM_INDEFINITE_WAIT);
   }
   inline void _M_release_lock() { DosReleaseMutexSem(_M_lock); }
-# elif defined(_STLP_BETHREADS)
+#  elif defined(_STLP_BETHREADS)
   sem_id sem;
-  inline void _M_initialize() 
-  {
-     sem = create_sem(1, "STLPort");
-     assert(sem > 0);
+  inline void _M_initialize() {
+    sem = create_sem(1, "STLPort");
+    assert(sem > 0);
   }
-  inline void _M_destroy() 
-  {
-     int t = delete_sem(sem);
-     assert(t == B_NO_ERROR);
+  inline void _M_destroy() {
+    int t = delete_sem(sem);
+    assert(t == B_NO_ERROR);
   }
   inline void _M_acquire_lock();
-  inline void _M_release_lock() 
-  {
-     status_t t = release_sem(sem);
-     assert(t == B_NO_ERROR);
+  inline void _M_release_lock() {
+    status_t t = release_sem(sem);
+    assert(t == B_NO_ERROR);
   }
-# else      //*ty 11/24/2001 - added configuration check
-#  error "Unknown thread facility configuration"
-# endif
+#  else      //*ty 11/24/2001 - added configuration check
+#    error "Unknown thread facility configuration"
+#  endif
 #else /* No threads */
   inline void _M_initialize() {}
   inline void _M_destroy() {}
