@@ -34,6 +34,10 @@
 #ifndef _STLP_INTERNAL_DBG_LIST_H
 #define _STLP_INTERNAL_DBG_LIST_H
 
+# ifndef _STLP_INTERNAL_ALGO_H
+#  include <stl/_algo.h>
+# endif
+
 #include <stl/debug/_iterator.h>
 
 #define _STLP_FILE_UNIQUE_ID LIST_H
