@@ -138,8 +138,11 @@
 #  endif
 # endif /* (_MSC_VER <= 1310) */
 
-# if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
+# if (_MSC_VER <= 1200)
 #  define _STLP_NO_IEC559_SUPPORT 1
+# endif
+
+# if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
 //  these work, as long they are inline
 #  define _STLP_INLINE_MEMBER_TEMPLATES 1
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
