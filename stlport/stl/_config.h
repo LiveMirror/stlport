@@ -53,6 +53,9 @@
 #   define __SGI_STL                                      0x330
 
 /* STLport version */
+#   define _STLPORT_MAJOR 5
+#   define _STLPORT_MINOR 0
+
 #   define _STLPORT_VERSION                               0x500
 
 # define _STLP_STLPORT_DBG_LEVEL 1
