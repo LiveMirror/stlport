@@ -254,8 +254,20 @@ typedef unsigned int wint_t;
 
 # if (__GNUC__ >= 3)
 
-#  define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
-#  define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../g++-v3/backward
+
+
+# if (__GNUC__ == 3) && (__GNUC_MINOR__ > 0) && (__GNUC_PATCHLEVEL__ > 0)
+# define _STLP_NATIVE_INCLUDE_PATH ../../c++/__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__
+# define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH/backward
+# else
+# if (__GNUC__ == 3) && (__GNUC_MINOR > 0)
+# define _STLP_NATIVE_INCLUDE_PATH ../../c++/__GNUC__.__GNUC_MINOR__
+# define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH/backward
+# else
+# define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
+# define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../g++-v3/backward
+# endif
+# endif 
 
 # elif (__GNUC_MINOR__ < 8)
 

@@ -38,7 +38,8 @@
 // fbp: these defines are for outline methods definitions.
 // needed for definitions to be portable. Should not be used in method bodies.
 # if defined  ( _STLP_NESTED_TYPE_PARAM_BUG )
-#  define __iterator__        _Rb_tree_iterator<_Value, _Nonconst_traits<_Value> > #  define __size_type__       size_t
+#  define __iterator__        _Rb_tree_iterator<_Value, _Nonconst_traits<_Value> > 
+#  define __size_type__       size_t
 #  define iterator __iterator__
 # else
 #  define __iterator__  _STLP_TYPENAME_ON_RETURN_TYPE _Rb_tree<_Key, _Value, _KeyOfValue, _Compare, _Alloc>::iterator

@@ -95,8 +95,8 @@ template <class _Traits> struct _Not_within_traits
     : _M_first(__f), _M_last(__l) {}
 
   bool operator()(const typename _Traits::char_type& __x) const {
-    return find_if((_CharT*)_M_first, (_CharT*)_M_last, 
-                   _Eq_char_bound<_Traits>(__x)) == (_CharT*)_M_last;
+    return find_if(_M_first, _M_last, 
+                   _Eq_char_bound<_Traits>(__x)) == _M_last;
   }
 };
 

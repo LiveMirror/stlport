@@ -229,6 +229,17 @@ public:                         // Append, operator+=, push_back.
     return *this;
   }
 
+#ifdef _STLP_MSVC
+// specialization for append
+ template <>
+ inline _Self& append(iterator __f, iterator __l) {
+ _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
+  __check_range(__f, __l);
+  _Base::append(__f._M_iterator, __l._M_iterator);
+  return *this;
+ }
+#endif
+
 #else /* _STLP_MEMBER_TEMPLATES */
 
   _Self& append(const _CharT* __first, const _CharT* __last) {
@@ -284,6 +295,18 @@ public:                         // Assign
       _Base::assign(__first, __last);
       return *this;    
   }
+
+#ifdef _STLP_MSVC
+// partial specialization for assign
+template <>
+inline _Self& assign(iterator __f, iterator __l) {
+  _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
+    __check_range(__f, __l);
+  _Base::assign(__f._M_iterator, __l._M_iterator);
+  return *this;
+  }
+#endif
+
 #else
   _Self& assign(const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
