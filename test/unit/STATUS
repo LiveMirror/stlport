@@ -1,16 +1,34 @@
 =======================================================================
-Operational environment:	Linux 2.4.26/SMP glibc 2.2.5
+Operational environment:        Solaris 9, SPARC
+=======================================================================
+
+-----------------------------------------------------------------------
+Compiler:                       gcc 3.4.1
+-----------------------------------------------------------------------
+Date:                           2004-09-10
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        runtime fail
+Notes:                          uncatched exception during locale test:
+                                terminate called after throwing an instance of '_STL::runtime_error'
+                                what():  locale error
+Status (stldbg-shared):         runtime fail
+Notes:
+
+
+=======================================================================
+Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 =======================================================================
 
 -----------------------------------------------------------------------
 Compiler:			gcc 3.4.1
 -----------------------------------------------------------------------
-Date:				2004-09-07
+Date:				2004-09-11
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (286 tests)
+Status (release-shared):	All pass (287 tests)
 Notes:
-Status (stldbg-shared):         All pass (286 tests)
+Status (stldbg-shared):         All pass (287 tests)
 Notes:
 
 -----------------------------------------------------------------------
@@ -62,6 +80,7 @@ Compiler:			gcc 2.95.4 20011002 (Debian prerelease)
 -----------------------------------------------------------------------
 Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
 Status (release-shared):	runtime fail
 Notes:                          sstream_test.cpp(68) : CPPUNIT_ASSERT(s.good());
                                 sstream_test.cpp(97) : CPPUNIT_ASSERT(str == "abcd");
