@@ -1,3 +1,14 @@
+2004-07-26  Petr Ovtchenkov <ptr@Island...>
+
+	* src/explore/Makefiles/gmake/lib/gcc.mak: avoid linkage with libstd++
+	for gcc compilers.
+
+	* src/explore/Makefiles/gmake/linux/rules-so.mak: ditto
+
+	* src/explore/Makefiles/gmake/lib/rules-a.mak: ditto
+
+	* src/explore/Makefiles/gmake/app/top.mak: ditto
+
 2004-07-21  Francois Dumont <dums@...>
 
 	* stlport/config/stl_gcc.h: Fix of a gcc 3.3.0 test that did not handle
