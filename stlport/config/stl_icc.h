@@ -18,12 +18,14 @@
 # define _STLP_REDEFINE_STD 1
 # endif /* __GNUC__ */
 
+#define _STLP_HAS_NO_NEW_C_HEADERS 1
+
 # endif /* __INTEL_COMPILER >= 800 */
 
 # undef _STLP_WINCE
 
 # ifndef __GNUC__ 
-# define __GNUC__ 1
+# define __GNUC__ 3
 # endif
 
 # define _STLP_NO_NATIVE_WIDE_FUNCTIONS 1
