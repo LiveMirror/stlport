@@ -612,7 +612,7 @@ _M_read_buffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT,
       // The buffer contained fewer than _Num - __n characters.  Either we're
       // at eof, or we should refill the buffer and try again.
       else {
-	if (__that->_S_eof(__buf->sgetc())) {
+        if (__that->_S_eof(__buf->sgetc())) {
           __status |= ios_base::eofbit;
           __done = true;
         }
