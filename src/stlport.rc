@@ -42,7 +42,7 @@ VALUE "LegalCopyright", "Copyright (C) Boris Fomitchev\0"
 
 VALUE "OriginalFilename", DLLNAME_STRING2(COMP,BUILD)
 
-VALUE "ProductName", "STLport Standard ANSI C++ Libarary\0"
+VALUE "ProductName", "STLport Standard ANSI C++ Library\0"
 VALUE "ProductVersion", VERSION_STR
 #ifdef BUILD
 VALUE "SpecialBuild", VERSION_STRING2(BUILD)
