@@ -113,7 +113,7 @@ void HashTest::hmset1()
 void HashTest::hset2()
 {
   hash_set<int, hash<int>, equal_to<int> > s;
-  pair<std::hash_set<int, hash<int>, equal_to<int> >::const_iterator, bool> p = s.insert(42);
+  pair<hash_set<int, hash<int>, equal_to<int> >::iterator, bool> p = s.insert(42);
   CPPUNIT_ASSERT(p.second);
   CPPUNIT_ASSERT(*(p.first)==42);
 

@@ -442,7 +442,7 @@ public:
 #if !defined (_STLP_MEMBER_TEMPLATES)
   _Self& append(const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-    return _M_append(__first, __last);
+    return _M_append(__f, __l);
   }
 #endif
 

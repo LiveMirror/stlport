@@ -324,7 +324,7 @@ _LocaleBase::_LocaleBase(const char* name)
 
 // Create a locale that's a copy of L, except that all of the facets
 // in category c are instead constructed by name.
-_LocaleBase::_LocaleBase(const _LocaleBase& L, const char* name, locae::caltegory c)
+_LocaleBase::_LocaleBase(const _LocaleBase& L, const char* name, locale::category c)
   : _M_impl(0) {
   if (name == 0 || strcmp(name, "*") == 0)
     _M_throw_runtime_error(name);
