@@ -1,0 +1,70 @@
+                           Content
+
+Q1 About STLport and availability
+Q1.0 What is STLport?
+Q1.1 What is benefits from using STLport?
+Q1.2 What versions of STLport available?
+
+Q2 General
+Q2.0 Do I need a C++ compiler?
+Q2.1 Do I need runtime libraries from C++ compiler?
+Q2.2 Can I use containers and algorithms from STLport and iostreams from
+library that shipout with compiler?
+Q2.3 Can I mix STL implementations in my project?
+
+Q3 Building
+Q3.0 On my SuSE Linux 9.0 g++ headers are in /usr/include/g++, but they
+are looked for in /usr/include/3.3.1. Is it a STLport bug?
+Q3.1 Do I need to build library to use STLport?
+
+Q4 Installation
+
+Q5 Bug report
+Q5.0 I am found a bug. How I can report about it?
+
+                           Answers
+
+========================================================================
+
+Q1.0 What is STLport?
+A1.0 STLport is implementation of C++ Standard Library, as described in
+the INTERNATIONAL STANDARD ISO/IEC 14882:1998(E) and latest
+ISO/IEC 14882:2003(E).
+
+========================================================================
+
+Q3.0 On my SuSE Linux 9.0 g++ headers are in /usr/include/g++, but they
+are looked for in /usr/include/3.3.1. Is it a STLport bug?
+
+A3.0 Path to native compiler headers for gcc correspond to default path
+after build/install compiler (i.e. pathes from compiler origo).
+Package maintainers can use any path by own taste---we can't satisfy
+variety of distributions/packages.
+
+So you can:
+ - fix path in stlport sources (for you own needs)
+ - make request to package maintainer
+ - build and install compiler
+
+========================================================================
+
+Q3.1 Do I need to build library to use STLport?
+
+A3.1 You may omit usage (and, thus building) STLport library, but in this
+case you can't use iostreams, locale, complex.
+
+========================================================================
+
+Q5.0 I am found a bug. How I can report about it?
+
+A5.0 
+  0. Ensure that this is a really bug (standard violation, incorrect
+     behaviour with correct usage);
+  1. Ensure that bug is in STLport, not in your code;
+  2. Write short test that demonstrate this bug;
+  3. Write bug description and test here
+     http://www.stlport.com/cgi-bin/forum/dcboard.cgi?az=list&forum=DCForumID6&conf=DCConfID1
+     (for stable, fixed release) or here
+     http://www.stlport.com/cgi-bin/forum/dcboard.cgi?az=list&forum=DCForumID5&conf=DCConfID1
+     (for betas).
+
