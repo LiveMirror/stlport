@@ -30,7 +30,7 @@ int string1_test(int, char**)
   const char* strorg = "This is test string for string calls";
   string str;
   //size it correctly to avoid reallocation
-  str.reserve(50);
+  str.reserve(100);
   str = strorg;
 
   //test self insertion:
@@ -42,6 +42,16 @@ int string1_test(int, char**)
   str = strorg;
   str.insert(15, str.c_str() + 5, 25);
   //Should be: This is test stis test string for stringring for string calls
+  cout << str << endl;
+
+  str = strorg;
+  str.insert(0, str.c_str() + str.size() - 4, 4);
+  //Should be: allsThis is test string for string calls
+  cout << str << endl;
+
+  str = strorg;
+  str.insert(0, str.c_str() + str.size() / 2 - 1, str.size() / 2 + 1);
+  //Should be: ng for string callsThis is test string for string calls
   cout << str << endl;
 
   str = strorg;

@@ -782,17 +782,71 @@ private:  // Helper functions for insert.
   }
 
   template <class _ForwardIter>
+  void _M_insert_overflow(iterator __position, _ForwardIter __first, _ForwardIter __last,
+                          difference_type __n) {
+    const size_type __old_size = this->size();        
+    const size_type __len = __old_size + (max)(__old_size, __STATIC_CAST(size_type,__n)) + 1;
+    pointer __new_start = this->_M_end_of_storage.allocate(__len);
+    pointer __new_finish = __new_start;
+    _STLP_TRY {
+      __new_finish = uninitialized_copy(this->_M_start, __position, __new_start);
+      __new_finish = uninitialized_copy(__first, __last, __new_finish);
+      __new_finish = uninitialized_copy(__position, this->_M_finish, __new_finish);
+      _M_construct_null(__new_finish);
+    }
+    _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
+                  this->_M_end_of_storage.deallocate(__new_start,__len)));
+    _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
+    this->_M_deallocate_block();
+    this->_M_start = __new_start;
+    this->_M_finish = __new_finish;
+    this->_M_end_of_storage._M_data = __new_start + __len; 
+  }
+
+  template <class _ForwardIter>
   void insert(iterator __position, _ForwardIter __first, _ForwardIter __last, 
-		             const forward_iterator_tag &) {
+		             const random_access_iterator_tag &) {
+    //This version has to take care about self referencing
     if (__first != __last) {
-      difference_type __n = distance(__first, __last);
+      difference_type __n = __last - __first;
       if (this->_M_end_of_storage._M_data - this->_M_finish >= __n + 1) {
-      		 const difference_type __elems_after = this->_M_finish - __position;
+        const difference_type __elems_after = this->_M_finish - __position;
         if (__elems_after >= __n) {
           uninitialized_copy((this->_M_finish - __n) + 1, this->_M_finish + 1, this->_M_finish + 1);
           this->_M_finish += __n;
-		         _Traits::move(__position + __n, __position, (__elems_after - __n) + 1);
-          _M_move(__first, __last, __position);
+          iterator __move_dest = __position + __n;
+          iterator __move_dest_end = __position + __elems_after + 1;
+          //We have to check that the source buffer won't be modified by the move
+          if ((__first >= __move_dest) && (__first < __move_dest_end)) {
+            if (__last <= __move_dest_end) {
+              __first += __n;
+              __last += __n;
+              _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
+              _M_copy(__first, __last, __position);
+            }
+            else {
+              _ForwardIter __mid = __move_dest_end;
+              difference_type __mid_pos = __mid - __first;
+              _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
+              _M_copy(__mid, __last, __position + __mid_pos);
+              __first += __n;
+              __mid += __n;
+              _M_copy(__first, __mid, __position);
+            }
+          }
+          else if ((__last > __move_dest) && (__last <= __move_dest_end)) {
+            _ForwardIter __mid = __move_dest;
+            difference_type __mid_pos = __mid - __first;
+            _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
+            _M_copy(__first, __mid, __position);
+            __mid += __n;
+            __last += __n;
+            _M_copy(__mid, __last, __position + __mid_pos);
+          }
+          else {
+            _Traits::move(__position + __n, __position, (__elems_after - __n) + 1);
+            _M_copy(__first, __last, __position);
+          }
         }
         else {
           pointer __old_finish = this->_M_finish;
@@ -810,24 +864,42 @@ private:  // Helper functions for insert.
         }
       }
       else {
-        const size_type __old_size = size();        
-        const size_type __len = __old_size + (max)(__old_size, __STATIC_CAST(size_type,__n)) + 1;
-        pointer __new_start = this->_M_end_of_storage.allocate(__len);
-        pointer __new_finish = __new_start;
-        _STLP_TRY {
-          __new_finish = uninitialized_copy(this->_M_start, __position, __new_start);
-          __new_finish = uninitialized_copy(__first, __last, __new_finish);
-          __new_finish
-            = uninitialized_copy(__position, this->_M_finish, __new_finish);
-          _M_construct_null(__new_finish);
+        _M_insert_overflow(__position, __first, __last, __n);
+      }
+    }
+  }
+
+  template <class _ForwardIter>
+  void insert(iterator __position, _ForwardIter __first, _ForwardIter __last, 
+		             const forward_iterator_tag &) {
+    //This version can't have self referencing
+    if (__first != __last) {
+      difference_type __n = distance(__first, __last);
+      if (this->_M_end_of_storage._M_data - this->_M_finish >= __n + 1) {
+      		 const difference_type __elems_after = this->_M_finish - __position;
+        if (__elems_after >= __n) {
+          uninitialized_copy((this->_M_finish - __n) + 1, this->_M_finish + 1, this->_M_finish + 1);
+          this->_M_finish += __n;
+          _Traits::move(__position + __n, __position, (__elems_after - __n) + 1);
+          _M_copy(__first, __last, __position);
         }
-        _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
-                      this->_M_end_of_storage.deallocate(__new_start,__len)));
-        _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
-        this->_M_deallocate_block();
-        this->_M_start = __new_start;
-        this->_M_finish = __new_finish;
-        this->_M_end_of_storage._M_data = __new_start + __len; 
+        else {
+          pointer __old_finish = this->_M_finish;
+          _ForwardIter __mid = __first;
+          advance(__mid, __elems_after + 1);
+          uninitialized_copy(__mid, __last, this->_M_finish + 1);
+          this->_M_finish += __n - __elems_after;
+          _STLP_TRY {
+            uninitialized_copy(__position, __old_finish + 1, this->_M_finish);
+            this->_M_finish += __elems_after;
+          }
+          _STLP_UNWIND((_STLP_STD::_Destroy_Range(__old_finish + 1, this->_M_finish), 
+                                                  this->_M_finish = __old_finish));
+          _M_copy(__first, __mid, __position);
+        }
+      }
+      else {
+        _M_insert_overflow(__position, __first, __last, __n);
       }
     }
   }

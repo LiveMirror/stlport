@@ -261,12 +261,41 @@ void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
       const ptrdiff_t __elems_after = this->_M_finish - __position;
       pointer __old_finish = this->_M_finish;
       if (__elems_after >= __n) {
-        uninitialized_copy((this->_M_finish - __n) + 1, this->_M_finish + 1,
-                           this->_M_finish + 1);
+        uninitialized_copy((this->_M_finish - __n) + 1, this->_M_finish + 1, this->_M_finish + 1);
         this->_M_finish += __n;
-        _Traits::move(__position + __n,
-                      __position, (__elems_after - __n) + 1);
-        _M_move(__first, __last, __position);
+        iterator __move_dest = __position + __n;
+        iterator __move_dest_end = __position + __elems_after + 1;
+        //We have to check that the source buffer won't be modified by the move
+        if ((__first >= __move_dest) && (__first < __move_dest_end)) {
+          if (__last <= __move_dest_end) {
+            __first += __n;
+            __last += __n;
+            _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
+            _M_copy(__first, __last, __position);
+          }
+          else {
+            const _CharT* __mid = __move_dest_end;
+            difference_type __mid_pos = __mid - __first;
+            _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
+            _M_copy(__mid, __last, __position + __mid_pos);
+            __first += __n;
+            __mid += __n;
+            _M_copy(__first, __mid, __position);
+          }
+        }
+        else if ((__last > __move_dest) && (__last <= __move_dest_end)) {
+          const _CharT* __mid = __move_dest;
+          difference_type __mid_pos = __mid - __first;
+          _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
+          _M_copy(__first, __mid, __position);
+          __mid += __n;
+          __last += __n;
+          _M_copy(__mid, __last, __position + __mid_pos);
+        }
+        else {
+          _Traits::move(__position + __n, __position, (__elems_after - __n) + 1);
+          _M_copy(__first, __last, __position);
+        }
       }
       else {
         const _CharT* __mid = __first;
@@ -283,16 +312,14 @@ void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
       }
     }
     else {
-      size_type __old_size = size();        
-      size_type __len
-        = __old_size + (max)(__old_size, __STATIC_CAST(const size_type,__n)) + 1;
+      const size_type __old_size = size();        
+      const size_type __len = __old_size + (max)(__old_size, __STATIC_CAST(const size_type,__n)) + 1;
       pointer __new_start = this->_M_end_of_storage.allocate(__len);
       pointer __new_finish = __new_start;
       _STLP_TRY {
         __new_finish = uninitialized_copy(this->_M_start, __position, __new_start);
         __new_finish = uninitialized_copy(__first, __last, __new_finish);
-        __new_finish
-          = uninitialized_copy(__position, this->_M_finish, __new_finish);
+        __new_finish = uninitialized_copy(__position, this->_M_finish, __new_finish);
         _M_construct_null(__new_finish);
       }
       _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
