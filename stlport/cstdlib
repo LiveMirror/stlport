@@ -76,7 +76,7 @@ using _STLP_VENDOR_CSTD::wctomb;
 using _STLP_VENDOR_CSTD::qsort;
 using _STLP_VENDOR_CSTD::labs;
 using _STLP_VENDOR_CSTD::ldiv;
-#  if defined ( _STLP_LONG_LONG )
+#  if defined ( _STLP_LONG_LONG ) && !defined(_STLP_MSVC)
 using _STLP_VENDOR_CSTD::llabs;
 using _STLP_VENDOR_CSTD::lldiv;
 #  endif
@@ -120,7 +120,7 @@ inline long abs(long __x) {return (labs(__x)); }
 #endif
 //#endif /* __cplusplus */
 
-#  if defined ( _STLP_LONG_LONG ) // may be more conditions should be here
+#  if defined ( _STLP_LONG_LONG ) && !defined(_STLP_MSVC) // may be more conditions should be here
 inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::llabs(__x); }
 inline lldiv_t div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDOR_CSTD::lldiv(__x, __y); } 
 #  endif
