@@ -1,5 +1,10 @@
 	The following changes were made in 4.5.5 since 4.5.3 release:
 	
+2003-11-01  Francois Dumont
+
+  * _string.c: judicious correction for string::find_first_not_of to
+               improve performance. (thanks Stephen Cleary)
+	
 2003-10-26  Francois Dumont
 
   * _monetary.c: fix an other memory overrun on monetary display 

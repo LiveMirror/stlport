@@ -294,7 +294,7 @@ void basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
         }
         else {
           _Traits::move(__position + __n, __position, (__elems_after - __n) + 1);
-          _M_copy(__first, __last, __position);
+          _M_move(__first, __last, __position);
         }
       }
       else {
@@ -480,7 +480,7 @@ basic_string<_CharT,_Traits,_Alloc> ::find_last_of(const _CharT* __s, size_type 
 template <class _CharT, class _Traits, class _Alloc> __size_type__
 basic_string<_CharT,_Traits,_Alloc> ::find_first_not_of(const _CharT* __s, size_type __pos, size_type __n) const {
   typedef typename _Traits::char_type _CharType;
-  if (__pos > size())
+  if (__pos >= size())
     return npos;
   else {
     const_pointer __result = _STLP_STD::find_if(__CONST_CAST(const_pointer, this->_M_start) + __pos, 
@@ -493,7 +493,7 @@ basic_string<_CharT,_Traits,_Alloc> ::find_first_not_of(const _CharT* __s, size_
 
 template <class _CharT, class _Traits, class _Alloc> __size_type__
 basic_string<_CharT,_Traits,_Alloc> ::find_first_not_of(_CharT __c, size_type __pos) const {
-  if (__pos > size())
+  if (__pos >= size())
     return npos;
   else {
     const_pointer __result = _STLP_STD::find_if(__CONST_CAST(const_pointer, this->_M_start) + __pos,
