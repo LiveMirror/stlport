@@ -390,14 +390,14 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
   public:
     _STLP_mutex_RS()
       : _count( 0 )
-#  ifdef _STLP_UITHREADS
+#  if defined(_STLP_UITHREADS)
         ,_id( __STATIC_CAST(thread_t,-1) )
 #  elif defined(_STLP_PTHREADS)
-#   ifndef __FreeBSD__
+#   if !defined(__FreeBSD__)
         ,_id( __STATIC_CAST(pthread_t,-1) )
 #   else
         ,_id( __STATIC_CAST(pthread_t,0) )
-#   endif
+#   endif /*__FreeBSD__*/
 #  elif defined(__FIT_NOVELL_THREADS)
         ,_id( -1 )
 #  elif defined(_STLP_WIN32THREADS)
@@ -409,7 +409,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
     {}
 
     void _M_acquire_lock() {
-#  ifdef _STLP_PTHREADS
+#  if defined(_STLP_PTHREADS)
       pthread_t _c_id = pthread_self();
 #  elif defined(_STLP_UITHREADS)
       thread_t _c_id = thr_self();
@@ -429,14 +429,14 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 
     void _M_release_lock() {
       if ( --_count == 0 ) {
-#  ifdef _STLP_UITHREADS
+#  if defined(_STLP_UITHREADS)
         _id = __STATIC_CAST(thread_t,-1);
 #  elif defined(_STLP_PTHREADS)
-#   ifndef __FreeBSD__
+#   if !defined(__FreeBSD__)
         _id =  __STATIC_CAST(pthread_t,-1);
 #   else
         _id =  __STATIC_CAST(pthread_t,0);
-#   endif
+#   endif /*__FreeBSD__*/
 #  elif defined(__FIT_NOVELL_THREADS)
         _id = -1;
 #  elif defined(_STLP_WIN32THREADS)
@@ -449,7 +449,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
   protected:
     unsigned int _count;
 
-#  ifdef _STLP_PTHREADS
+#  if defined(_STLP_PTHREADS)
     pthread_t _id;
 #  elif defined(_STLP_UITHREADS)
     thread_t  _id;
