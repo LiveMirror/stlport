@@ -297,6 +297,9 @@ void _Stl_loc_combine_names(_Locale* L,
   }
 }
 
+inline bool is_C_locale_name (const char* name) {
+  return ((name[0] == 'C') && (name[1] == 0));
+}
 
 // Create a locale from a name.
 _LocaleBase::_LocaleBase(const char* name)
@@ -304,8 +307,12 @@ _LocaleBase::_LocaleBase(const char* name)
   if (!name)
     _M_throw_runtime_error(0);
 
-  _Locale* impl = 0;
+  if (is_C_locale_name(name)) {
+    _M_impl = _S_copy_impl(locale::classic()._M_impl);
+    return;
+  }
 
+  _Locale* impl = 0;
   _STLP_TRY {
     impl = new _Locale(locale::id::_S_max, name);
 
@@ -435,7 +442,7 @@ void _Locale::insert_ctype_facets(const char* pname) {
   if (pname == 0 || pname[0] == 0)
     pname = _Locale_ctype_default(buf);
 
-  if (pname == 0 || pname[0] == 0 || strcmp(pname, "C") == 0) {
+  if (pname == 0 || pname[0] == 0 || is_C_locale_name(pname)) {
     this->insert(i2, ctype<char>::id);
 # ifndef _STLP_NO_MBSTATE_T
     this->insert(i2, codecvt<char, char, mbstate_t>::id);
@@ -507,7 +514,7 @@ void _Locale::insert_numeric_facets(const char* pname) {
   if (pname == 0 || pname[0] == 0)
     pname = _Locale_numeric_default(buf);
 
-  if (pname == 0 || pname[0] == 0 || strcmp(pname, "C") == 0) {
+  if (pname == 0 || pname[0] == 0 || is_C_locale_name(pname)) {
     this->insert(i2, numpunct<char>::id);
     this->insert(i2, 
 		 num_put<char, ostreambuf_iterator<char, char_traits<char> >  >::id);
@@ -564,7 +571,7 @@ void _Locale::insert_time_facets(const char* pname) {
   if (pname == 0 || pname[0] == 0)
     pname = _Locale_time_default(buf);
   
-  if (pname == 0 || pname[0] == 0 || strcmp(pname, "C") == 0) {
+  if (pname == 0 || pname[0] == 0 || is_C_locale_name(pname)) {
 
     this->insert(i2, 
 		 time_get<char, istreambuf_iterator<char, char_traits<char> > >::id);
@@ -612,7 +619,7 @@ void _Locale::insert_collate_facets(const char* nam) {
   if (nam == 0 || nam[0] == 0)
     nam = _Locale_collate_default(buf);
 
-  if (nam == 0 || nam[0] == 0 || strcmp(nam, "C") == 0) {
+  if (nam == 0 || nam[0] == 0 || is_C_locale_name(nam)) {
     this->insert(i2, collate<char>::id);
 # ifndef _STLP_NO_WCHAR_T
     this->insert(i2, collate<wchar_t>::id);
@@ -656,7 +663,7 @@ void _Locale::insert_monetary_facets(const char* pname) {
   if (pname == 0 || pname[0] == 0)
     pname = _Locale_monetary_default(buf);
 
-  if (pname == 0 || pname[0] == 0 || strcmp(pname, "C") == 0) {
+  if (pname == 0 || pname[0] == 0 || is_C_locale_name(pname)) {
     this->insert(i2, moneypunct<char, false>::id);
     this->insert(i2, moneypunct<char, true>::id);
     this->insert(i2, money_get<char, istreambuf_iterator<char, char_traits<char> > >::id);
@@ -712,7 +719,7 @@ void _Locale::insert_messages_facets(const char* pname) {
   if (pname == 0 || pname[0] == 0)
     pname = _Locale_messages_default(buf);
 
-  if (pname == 0 || pname[0] == 0 || strcmp(pname, "C") == 0) {
+  if (pname == 0 || pname[0] == 0 || is_C_locale_name(pname)) {
     this->insert(i2, messages<char>::id);
 # ifndef _STLP_NO_WCHAR_T
     this->insert(i2, messages<wchar_t>::id);

@@ -35,15 +35,24 @@ _STLP_BEGIN_NAMESPACE
 // Class _Locale_impl
 // This is the base class which implements access only and is supposed to 
 // be used for classic locale only
-class _STLP_CLASS_DECLSPEC _Locale_impl
-{
+class _STLP_CLASS_DECLSPEC _Locale_impl : public _Refcount_Base {
   public:
     _Locale_impl(const char* s);
-    //  _Locale_impl(const _Locale_impl&);
+    _Locale_impl(const _Locale_impl&);
     virtual ~_Locale_impl();
 
-    virtual void incr();
-    virtual void decr();
+    virtual void incr() { this->_M_incr(); }
+    virtual void decr() { 
+      this->_M_decr();
+      if (!this->_M_ref_count) {
+        /*
+         * Here we do not call the delete operator like in the not classic
+         * locale implementation because the classic implementation is only
+         * instanciated once on a static buffer and not on the heap.
+         */
+        this->~_Locale_impl();
+      }
+    }
 
     size_t size() const { return _M_size; }
 

@@ -48,9 +48,12 @@ _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct<char> : public locale::facet
 {
   friend class _Locale;
-# ifndef _STLP_NO_FRIEND_TEMPLATES
+#ifdef _STLP_LEAKS_PEDANTIC
+  friend class _Locale_impl;
+#endif
+#ifndef _STLP_NO_FRIEND_TEMPLATES
   template <class _Ch, class _InIt> friend class num_get;
-# endif
+#endif
 public:
   typedef char               char_type;
   typedef string             string_type;
@@ -65,9 +68,9 @@ public:
 
   static _STLP_STATIC_MEMBER_DECLSPEC locale::id id;
 
-# ifndef _STLP_NO_FRIEND_TEMPLATES
+#ifndef _STLP_NO_FRIEND_TEMPLATES
 protected:
-# endif
+#endif
   ~numpunct();
 
   static _STLP_STATIC_MEMBER_DECLSPEC string  _M_truename;
@@ -87,6 +90,9 @@ _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct<wchar_t> : public locale::facet
 {
   friend class _Locale;
+#ifdef _STLP_LEAKS_PEDANTIC
+  friend class _Locale_impl;
+#endif
 public:
   typedef wchar_t               char_type;
   typedef wstring               string_type;

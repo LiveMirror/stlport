@@ -56,12 +56,20 @@ _Locale_impl::Init::Init() {
 }
 
 _Locale_impl::Init::~Init() {
-  if ( --_S_count == 0 )
-    _Locale_impl::_S_uninitialize();
+  _STLP_ASSERT( _S_count != 0 );
+  if ( --_S_count == 0) {
+    _S_uninitialize();
+  }
 }
 
 _Locale_impl::_Locale_impl(const char* s)
-  : name(s) {
+  : _Refcount_Base(1), name(s) {
+  new (&__Loc_init_buf) Init();
+}
+
+_Locale_impl::_Locale_impl(_Locale_impl const&) 
+  : _Refcount_Base(1) {
+  //Call just to increment the _S_count
   new (&__Loc_init_buf) Init();
 }
 
@@ -69,13 +77,14 @@ _Locale_impl::~_Locale_impl() {
   (&__Loc_init_buf)->~Init();
 }
 
-void _Locale_impl::incr() {}
-void _Locale_impl::decr() {}
-
 // _Locale_impl non-inline member functions.
 void _STLP_CALL
 _Locale_impl::_M_throw_bad_cast() {
   _STLP_THROW(bad_cast());  
+}
+
+_STLP_DECLSPEC void _STLP_CALL _S_Locale_impl_decr(_Locale_impl* I) {
+  I->decr();
 }
 
 static void 
@@ -221,13 +230,27 @@ static locale::facet* _S_classic_facets[] = {
   0
 };
 
-static _Stl_aligned_buffer<_Locale_impl> _Locale_impl_buf;
-static _Locale_impl *_Stl_classic_locale_impl = new (&_Locale_impl_buf) _Locale_impl("C");
+static _Stl_aligned_buffer<_Locale_impl> _Locale_classic_impl_buf;
+static _Locale_impl *_Stl_global_locale_impl = new (&_Locale_classic_impl_buf) _Locale_impl("C");
+
+#ifdef _STLP_LEAKS_PEDANTIC
+//Small helper struct to release the global locale implementation.
+static struct _Locale_global_decr {
+  ~_Locale_global_decr() {
+    _Stl_global_locale_impl->decr();
+  }
+} _Stl_global_locale_impl_decr;
+#endif
+
+/*
+ * This object is instanciated here to guarantee creation of the classic locale
+ * before creation of the dependent Standard streams cout, cin, wcout...
+ */
 static ios_base::Init _IosInit;
 
 void _Locale_impl::make_classic_locale() {
   // The classic locale contains every facet that belongs to a category.
-  _Locale_impl* classic = &_Locale_impl_buf;
+  _Locale_impl* classic = &_Locale_classic_impl_buf;
   
   // new (classic) _Locale_impl("C");
 
@@ -239,10 +262,12 @@ void _Locale_impl::make_classic_locale() {
   // collate category
   new(&_S_collate_char) collate<char>(1);
   new(&_S_codecvt_char) codecvt<char, char, mbstate_t>(1);
-  // numeric category
+  // numeric punctuation category
   new(&_S_numpunct_char) numpunct<char>(1);
+  // numeric category
   new (&_S_num_get_char) num_get<char, istreambuf_iterator<char, char_traits<char> > >(1);
   new (&_S_num_put_char) num_put<char, ostreambuf_iterator<char, char_traits<char> > >(1);
+  // time category
   new (&_S_time_get_char) time_get<char, istreambuf_iterator<char, char_traits<char> > >(1);
   new (&_S_time_put_char) time_put<char, ostreambuf_iterator<char, char_traits<char> > >(1);
   // monetary category
@@ -259,33 +284,55 @@ void _Locale_impl::make_classic_locale() {
   // collate category
   new(&_S_collate_wchar) collate<wchar_t>(1);
   new(&_S_codecvt_wchar) codecvt<wchar_t, char, mbstate_t>(1);
-  // numeric category
+  // numeric punctuation category
   new(&_S_numpunct_wchar) numpunct<wchar_t>(1);
+  // numeric category
   new (&_S_num_get_wchar) num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
   new (&_S_num_put_wchar) num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
+  // time category
   new (&_S_time_get_wchar) time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
   new (&_S_time_put_wchar) time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
-  new (&_S_messages_wchar)messages<wchar_t>(&_Null_messages);
   // monetary category
   new (&_S_moneypunct_true_wchar) moneypunct<wchar_t, true>(1);
   new (&_S_moneypunct_false_wchar) moneypunct<wchar_t, false>(1);
   new (&_S_money_get_wchar) money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
   new (&_S_money_put_wchar) money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
+  // messages category
+  new (&_S_messages_wchar)messages<wchar_t>(&_Null_messages);
 # endif
 }
 
 #ifdef _STLP_LEAKS_PEDANTIC
 void _Locale_impl::free_classic_locale() {
-  _Locale_impl* classic = &_Locale_impl_buf;
-  
 # ifndef _STLP_NO_WCHAR_T
+  (&_S_messages_wchar)->~messages<wchar_t>();
+  (&_S_money_put_wchar)->~money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
+  (&_S_money_get_wchar)->~money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
+  (&_S_moneypunct_false_wchar)->~moneypunct<wchar_t, false>();
+  (&_S_moneypunct_true_wchar)->~moneypunct<wchar_t, true>();
   (&_S_time_put_wchar)->~time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
   (&_S_time_get_wchar)->~time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
+  (&_S_num_put_wchar)->~num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
+  (&_S_num_get_wchar)->~num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >();
+  (&_S_numpunct_wchar)->~numpunct<wchar_t>();
+  (&_S_codecvt_wchar)->~codecvt<wchar_t, char, mbstate_t>();
+  (&_S_collate_wchar)->~collate<wchar_t>();
+  (&_S_ctype_wchar)->~ctype<wchar_t>();
 # endif
 
+  (&_S_messages_char)->~messages<char>();
+  (&_S_money_put_char)->~money_put<char, ostreambuf_iterator<char, char_traits<char> > >();
+  (&_S_money_get_char)->~money_get<char, istreambuf_iterator<char, char_traits<char> > >();
+  (&_S_moneypunct_false_char)->~moneypunct<char, false>();
+  (&_S_moneypunct_true_char)->~moneypunct<char, true>();
   (&_S_time_put_char)->~time_put<char, ostreambuf_iterator<char, char_traits<char> > >();
   (&_S_time_get_char)->~time_get<char, istreambuf_iterator<char, char_traits<char> > >();
-  classic->~_Locale_impl();
+  (&_S_num_put_char)->~num_put<char, ostreambuf_iterator<char, char_traits<char> > >();
+  (&_S_num_get_char)->~num_get<char, istreambuf_iterator<char, char_traits<char> > >();
+  (&_S_numpunct_char)->~numpunct<char>();
+  (&_S_codecvt_char)->~codecvt<char, char, mbstate_t>();
+  (&_S_collate_char)->~collate<char>();
+  (&_S_ctype_char)->~ctype<char>();
 }
 #endif // _STLP_LEAKS_PEDANTIC
 
@@ -340,12 +387,12 @@ bool _LocaleBase::operator()(const wstring& __x,
 #  endif
 #endif
 
-static locale _Stl_loc_classic_locale(_Stl_classic_locale_impl);
+//During lib initialization _Stl_global_locale_impl points to the classic locale implementation.
+static locale _Stl_loc_classic_locale(_Stl_global_locale_impl);
 _STLP_STATIC_MUTEX _Stl_loc_global_locale_lock _STLP_MUTEX_INITIALIZER;
-  
+
 //----------------------------------------------------------------------
 // class locale
-
 void _STLP_CALL
 _LocaleBase::_M_throw_runtime_error(const char* name) {
   char buf[256];
@@ -371,22 +418,29 @@ _Locale_impl::_S_initialize() {
   make_classic_locale();
 }
 
+// Release of the classic locale ressources. Has to be called after the last
+// locale destruction and not only after the classic locale destruction as
+// the facets can be shared between different facets.
 void _STLP_CALL
 _Locale_impl::_S_uninitialize() {
-  _Stl_classic_locale_impl->decr();
 #ifdef _STLP_LEAKS_PEDANTIC
   free_classic_locale();
-#endif // _STLP_LEAKS_PEDANTIC
+#endif
 }
-
 
 // Default constructor: create a copy of the global locale.
 _LocaleBase::_LocaleBase() : _M_impl(0) {
-  _M_impl = _S_copy_impl(_Stl_classic_locale_impl);
+  _M_impl = _S_copy_impl(_Stl_global_locale_impl);
 }
 
-_LocaleBase::_LocaleBase(_Locale_impl* impl) : _M_impl(impl)
-{}
+_LocaleBase::_LocaleBase(_Locale_impl* impl)  : _M_impl(impl) {
+  /*
+   * No incrementation of the _Locale_impl ref counter here as this
+   * is only used once at the classic locale creation from a classic
+   * locale implementation that do not have a ref counter.
+   */
+  _M_impl = _S_copy_impl(impl);
+}
 
 // Copy constructor
 _LocaleBase::_LocaleBase(const _LocaleBase& L) _STLP_NOTHROW
@@ -443,15 +497,15 @@ _LocaleBase::classic() {
   return _Stl_loc_classic_locale;
 }
 
-locale  _STLP_CALL
+locale _STLP_CALL
 _LocaleBase::global(const _LocaleBase& L) {
   locale old;                   // A copy of the old global locale.
 
   L._M_impl->incr();
   {
     _STLP_auto_lock lock(_Stl_loc_global_locale_lock);
-    _Stl_classic_locale_impl->decr();     // We made a copy, so it can't be zero.
-    _Stl_classic_locale_impl = L._M_impl;
+    _Stl_global_locale_impl->decr();     // We made a copy (old), so it can't be zero.
+    _Stl_global_locale_impl = L._M_impl;
   }
 
   // Set the global C locale, if appropriate.

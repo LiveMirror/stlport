@@ -50,6 +50,8 @@ class _STLP_CLASS_DECLSPEC _Locale;             // Forward declaration of opaque
 class _STLP_CLASS_DECLSPEC _LocaleBase;
 class _STLP_CLASS_DECLSPEC ios_base;
 
+_STLP_DECLSPEC void _STLP_CALL _S_Locale_impl_decr(_Locale_impl*);
+
 #if defined (_STLP_MEMBER_TEMPLATES)
 class locale;
 #endif
@@ -74,7 +76,7 @@ public:
     friend class _Locale;
     
   private:                        // Invalidate assignment and copying.
-    facet(const facet& __f) : _Refcount_Base(1), _M_delete(__f._M_delete == 0)  {};       
+    facet(const facet& __f) : _Refcount_Base(1), _M_delete(__f._M_delete == 0) {};
     void operator=(const facet&); 
     
   private:                        // Data members.
@@ -198,6 +200,10 @@ public:
   template <class _Facet> 
   locale(const locale& __loc, _Facet* __f) {
     //      _M_impl = this->_S_copy_impl(__loc._M_impl, __f != 0);
+    if (_M_impl != 0) {
+      _S_Locale_impl_decr(_M_impl);
+      _M_impl = 0;
+    }
     new(this) locale(__loc._M_impl, __f != 0);
     if (__f != 0)
       this->_M_insert(__f, _Facet::id);

@@ -23,10 +23,10 @@
 
 _STLP_BEGIN_NAMESPACE
 
-class _STLP_CLASS_DECLSPEC _Locale : public _Locale_impl, public _Refcount_Base
+class _STLP_CLASS_DECLSPEC _Locale : public _Locale_impl
 {
 public:
-  _Locale(size_t n, const char* s) : _Locale_impl(s), _Refcount_Base(1), 
+  _Locale(size_t n, const char* s) : _Locale_impl(s), 
     facets_vec(n, (void*)0 ) { facets = (locale::facet**)&facets_vec[0]; _M_size = n; }
   _Locale(const _Locale_impl&);
   ~_Locale();

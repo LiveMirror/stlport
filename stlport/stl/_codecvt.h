@@ -54,6 +54,9 @@ class _STLP_CLASS_DECLSPEC codecvt<char, char, mbstate_t>
   : public locale::facet, public codecvt_base 
 {
   friend class _Locale;
+#ifdef _STLP_LEAKS_PEDANTIC
+  friend class _Locale_impl;
+#endif
 public:
   typedef char       intern_type;
   typedef char       extern_type;
@@ -145,6 +148,9 @@ class _STLP_CLASS_DECLSPEC codecvt<wchar_t, char, mbstate_t>
   : public locale::facet, public codecvt_base
 {
   friend class _Locale;
+#ifdef _STLP_LEAKS_PEDANTIC
+  friend class _Locale_impl;
+#endif
 public:
   typedef wchar_t    intern_type;
   typedef char       extern_type;

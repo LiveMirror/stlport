@@ -26,7 +26,7 @@
 _STLP_BEGIN_NAMESPACE
 
 _Locale::_Locale(const _Locale_impl& L)
-  : _Locale_impl(L), _Refcount_Base(1), facets_vec((void**)L.facets, (void**)L.facets+L.size()) {
+  : _Locale_impl(L), facets_vec((void**)L.facets, (void**)L.facets+L.size()) {
   for (size_t i = 1; i < L.size(); ++i) {
     locale::facet* f = L.facets[i];
     if (f && f->_M_delete)

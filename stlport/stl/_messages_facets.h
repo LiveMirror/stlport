@@ -53,6 +53,9 @@ _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC messages<char> : public locale::facet, public messages_base 
 {
   friend class _Locale;
+#ifdef _STLP_LEAKS_PEDANTIC
+  friend class _Locale_impl;
+#endif
 public:
   typedef messages_base::catalog catalog;
   typedef char                   char_type;
@@ -93,6 +96,9 @@ _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC messages<wchar_t> : public locale::facet, public messages_base 
 {
   friend class _Locale;
+#ifdef _STLP_LEAKS_PEDANTIC
+  friend class _Locale_impl;
+#endif
 public:
   typedef messages_base::catalog catalog;
   typedef wchar_t                char_type;
