@@ -216,7 +216,7 @@ template <class _Tp, class _Alloc, class _StrictWeakOrdering>
 void _S_sort(list<_Tp, _Alloc>& __that, _StrictWeakOrdering __comp);
 
 template <class _Tp, class _Alloc>
-class list : public _List_base<_Tp, _Alloc> _STLP_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+class list : public _List_base<_Tp, _Alloc> _STLP_SIGNAL_BASE_CLASS_N
 {
   typedef _List_base<_Tp, _Alloc> _Base;
   typedef list<_Tp, _Alloc> _Self;

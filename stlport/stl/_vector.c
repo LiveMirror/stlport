@@ -67,7 +67,7 @@ __vector__<_Tp, _Alloc>::_M_fill_insert(
       const size_type __elems_after = this->_M_finish - __position;
       pointer __old_finish = this->_M_finish;
       if (__elems_after > __n) {
-        __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
+        __uninitialized_copy(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
         this->_M_finish += __n;
         __copy_backward_ptrs(__position, __old_finish - __n, __old_finish, _TrivialAss());
         _STLP_STD::fill(__position, __position + __n, __x_copy);
@@ -75,7 +75,7 @@ __vector__<_Tp, _Alloc>::_M_fill_insert(
       else {
         uninitialized_fill_n(this->_M_finish, __n - __elems_after, __x_copy);
         this->_M_finish += __n - __elems_after;
-        __uninitialized_move(__position, __old_finish, this->_M_finish, _IsPODType());
+        __uninitialized_copy(__position, __old_finish, this->_M_finish, _IsPODType());
         this->_M_finish += __elems_after;
         _STLP_STD::fill(__position, __old_finish, __x_copy);
       }

@@ -42,7 +42,7 @@ _STLP_BEGIN_NAMESPACE
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
-class hash_set _STLP_FIRST_DERIVE(__partial_move_supported)
+class hash_set _STLP_SIGNAL_BASE_CLASS_1
 {
 private:
   typedef hashtable<_Value, _Value, _HashFcn, _Identity<_Value>, 
@@ -218,7 +218,7 @@ public:
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
-class hash_multiset _STLP_FIRST_DERIVE(__partial_move_supported)
+class hash_multiset _STLP_SIGNAL_BASE_CLASS_1
 {
 private:
   typedef hashtable<_Value, _Value, _HashFcn, _Identity<_Value>, 

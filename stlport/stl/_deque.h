@@ -357,7 +357,7 @@ protected:
 
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class deque : protected _Deque_base<_Tp, _Alloc> _STLP_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+class deque : protected _Deque_base<_Tp, _Alloc> _STLP_SIGNAL_BASE_CLASS_N
 {
   typedef _Deque_base<_Tp, _Alloc> _Base;
   typedef deque<_Tp, _Alloc> _Self;

@@ -49,28 +49,24 @@
 
 _STLP_BEGIN_NAMESPACE
 
-# ifdef _STLP_TRIVIAL_DESTRUCTOR_BUG
 template <class _Tp>
-inline void __destroy_aux(_Tp* __pointer, const __false_type&) { __pointer->~_Tp(); }
+inline void __destroy_aux(_Tp* __pointer, const __false_type& /*_Trivial_destructor*/) {
+#  if ( defined (__BORLANDC__) && ( __BORLANDC__ < 0x500 ) )
+    __pointer->_Tp::~_Tp();
+#  else
+    __pointer->~_Tp();
+#  endif
+}
 template <class _Tp>
-inline void __destroy_aux(_Tp* __pointer, const __true_type&) {}
-# endif
+inline void __destroy_aux(_Tp* __pointer, const __true_type& /*_Trivial_destructor*/) {}
 
 template <class _Tp>
 inline void _Destroy(_Tp* __pointer) {
 # if _MSC_VER >= 1010
   __pointer;
 # endif	// _MSC_VER >= 1000
-# ifdef _STLP_TRIVIAL_DESTRUCTOR_BUG
   typedef typename __type_traits<_Tp>::has_trivial_destructor _Trivial_destructor;
   __destroy_aux(__pointer, _Trivial_destructor());
-# else
-#  if ( defined (__BORLANDC__) && ( __BORLANDC__ < 0x500 ) )
-    __pointer->_Tp::~_Tp();
-#  else
-    __pointer->~_Tp();
-#  endif
-# endif
 # ifdef _STLP_DEBUG_UNINITIALIZED
 	memset((char*)__pointer, _STLP_SHRED_BYTE, sizeof(_Tp));
 # endif
@@ -114,11 +110,22 @@ inline void _Copy_Construct(_T1* __p, const _T2& __val) {
 }
 
 template <class _T1, class _T2>
+inline void _Move_Construct_Aux(_T1* __p, _T2& __val, const __false_type& /*_IsPOD*/) {
+  _STLP_PLACEMENT_NEW (__p) _T1(_AsMoveSource(__val));
+}
+
+template <class _T1, class _T2>
+inline void _Move_Construct_Aux(_T1* __p, _T2& __val, const __true_type& /*_IsPOD*/) {
+  _STLP_PLACEMENT_NEW (__p) _T1(__val);
+}
+
+template <class _T1, class _T2>
 inline void _Move_Construct(_T1* __p, _T2& __val) {
 # ifdef _STLP_DEBUG_UNINITIALIZED
 	memset((char*)__p, _STLP_SHRED_BYTE, sizeof(_T1));
 # endif
-  _STLP_PLACEMENT_NEW (__p) _T1(_AsMoveSource(__val));
+  _Move_Construct_Aux(__p, __val, _Is_POD(__p)._Answer());
+  //_STLP_PLACEMENT_NEW (__p) _T1(_AsMoveSource(__val));
 }
 
 # if defined(_STLP_NEW_REDEFINE)
@@ -130,14 +137,14 @@ inline void _Move_Construct(_T1* __p, _T2& __val) {
 
 template <class _ForwardIterator>
 _STLP_INLINE_LOOP void
-__destroy_aux(_ForwardIterator __first, _ForwardIterator __last, const __false_type&) {
+__destroy_aux(_ForwardIterator __first, _ForwardIterator __last, const __false_type& /*_Trivial_destructor*/) {
   for ( ; __first != __last; ++__first)
     _STLP_STD::_Destroy(&*__first);
 }
 
 template <class _ForwardIterator> 
 inline void
-__destroy_aux(_ForwardIterator, _ForwardIterator, const __true_type&) {}
+__destroy_aux(_ForwardIterator, _ForwardIterator, const __true_type& /*_Trivial_destructor*/) {}
 
 template <class _ForwardIterator, class _Tp>
 inline void 
@@ -159,20 +166,20 @@ inline void _Destroy_Range(const wchar_t*, const wchar_t*) {}
 
 template <class _ForwardIterator, class _Tp>
 _STLP_INLINE_LOOP void
-__destroy_mv_srcs_aux(_ForwardIterator __first, _ForwardIterator __last, _Tp*, const __false_type& /*full_move*/) {
-  typedef typename __type_traits<_Tp>::has_trivial_destructor _Trivial_destructor;
-  __destroy_aux(__first, __last, _Trivial_destructor());
+__destroy_mv_srcs_aux(_ForwardIterator __first, _ForwardIterator __last, _Tp*, const __false_type& /*_Trivial_destructor*/) {
+  typedef typename __full_move_traits<_Tp>::supported _Full_move;
+  __destroy_aux(__first, __last, _Full_move());
 }
 
 template <class _ForwardIterator, class _Tp> 
 inline void
-__destroy_mv_srcs_aux(_ForwardIterator, _ForwardIterator, _Tp*, const __true_type&/*full_move*/) {}
+__destroy_mv_srcs_aux(_ForwardIterator, _ForwardIterator, _Tp*, const __true_type&/*_Trivial_destructor*/) {}
 
 template <class _ForwardIterator, class _Tp>
 inline void 
 __destroy_mv_srcs(_ForwardIterator __first, _ForwardIterator __last, _Tp* __p) {
-  typedef typename __full_move_traits<_Tp>::_Supported _Full_move;
-  __destroy_mv_srcs_aux(__first, __last, __p, _Full_move());
+  typedef typename __type_traits<_Tp>::has_trivial_destructor _Trivial_destructor;
+  __destroy_mv_srcs_aux(__first, __last, __p, _Trivial_destructor());
 }
 
 template <class _ForwardIterator>

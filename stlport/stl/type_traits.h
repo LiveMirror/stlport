@@ -307,6 +307,16 @@ inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*)  {
 #   define _IS_POD_ITER(_It, _Tp) _Is_POD( _STLP_VALUE_TYPE( _It, _Tp ) )._Answer()
 #  endif
 
+//Base class used for internal purpose
+#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+class __stlp_base_class {};
+#define _STLP_SIGNAL_BASE_CLASS_1 : public __stlp_base_class
+#define _STLP_SIGNAL_BASE_CLASS_N , public __stlp_base_class
+#else
+#define _STLP_SIGNAL_BASE_CLASS_1
+#define _STLP_SIGNAL_BASE_CLASS_N
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
+
 _STLP_END_NAMESPACE
 
 #endif /* __TYPE_TRAITS_H */

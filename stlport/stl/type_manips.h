@@ -1,10 +1,7 @@
 /*
  *
- * The Loki Library
- * Copyright (c) 2001 by Andrei Alexandrescu
- * This code accompanies the book:
- * Alexandrescu, Andrei. "Modern C++ Design: Generic Programming and Design
- *     Patterns Applied". Copyright (c) 2001. Addison-Wesley.
+ * Copyright (c) 2003
+ * François Dumont
  *
  * This material is provided "as is", with absolutely no warranty expressed
  * or implied. Any use is at your own risk.
@@ -234,16 +231,28 @@ struct _IsSame<_Tp, _Tp> { enum { _Ret = 1 }; };
 
 # endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
 
+
 template <class _Derived, class _Base>
-struct __is_convertible {
+struct _ConversionHelper {
+  static char _Test(bool, _Base*);
+  static _Derived* _MakeDerived();
+  
+  static char* _Test(bool, ...);
+};
 
-  static char _TestFun(bool, _Base*);
-  static char* _TestFun(bool, ...);
+template <class _Derived, class _Base>
+struct _IsConvertible
+{
+  typedef _ConversionHelper<_Derived, _Base> _H;
+  enum {exists = (sizeof(char) == sizeof(_H::_Test(false, _H::_MakeDerived()))) };
+};
 
-  static _Derived* __null_rep();
 
-  enum { _Ret = (sizeof(_TestFun(false, __null_rep())) == sizeof(char)) };
-  typedef typename __bool2type<_Ret>::_Ret _Answer;
+template <class _Derived, class _Base>
+struct _IsConvertibleType {
+  enum {exists = _IsConvertible<_Derived, _Base>::exists};
+  typedef __bool2type< exists > _BT;
+  typedef typename _BT::_Ret _Type;
 };
 
 _STLP_END_NAMESPACE

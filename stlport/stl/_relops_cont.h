@@ -31,13 +31,13 @@ inline void  _STLP_CALL swap(_STLP_TEMPLATE_CONTAINER& __x,
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 _STLP_TEMPLATE_HEADER
 struct __partial_move_traits<_STLP_TEMPLATE_CONTAINER > {
-  typedef __true_type _Supported;
+  typedef __true_type supported;
 };
 
 /*
 _STLP_TEMPLATE_HEADER
 struct __full_move_traits<_STLP_TEMPLATE_CONTAINER > {
-  typedef __true_type _Supported;
+  typedef __true_type supported;
 };
 */
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */

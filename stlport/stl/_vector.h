@@ -92,7 +92,7 @@ protected:
 };
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class vector : public _Vector_base<_Tp, _Alloc> _STLP_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+class vector : public _Vector_base<_Tp, _Alloc> _STLP_SIGNAL_BASE_CLASS_N
 {
 private:
   typedef _Vector_base<_Tp, _Alloc> _Base;
@@ -450,7 +450,7 @@ public:
         const size_type __elems_after = this->_M_finish - __position;
         pointer __old_finish = this->_M_finish;
         if (__elems_after > __n) {
-          __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
+          __uninitialized_copy(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
           this->_M_finish += __n;
           __copy_backward_ptrs(__position, __old_finish - __n, __old_finish, _TrivialAss());
           copy(__first, __last, __position);
@@ -464,7 +464,7 @@ public:
 # endif
           __uninitialized_copy(__mid, __last, this->_M_finish, _IsPODType());
           this->_M_finish += __n - __elems_after;
-          __uninitialized_move(__position, __old_finish, this->_M_finish, _IsPODType());
+          __uninitialized_copy(__position, __old_finish, this->_M_finish, _IsPODType());
           this->_M_finish += __elems_after;
           copy(__first, __mid, __position);
         } /* elems_after */

@@ -41,7 +41,7 @@ _STLP_BEGIN_NAMESPACE
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class map _STLP_FIRST_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+class map _STLP_SIGNAL_BASE_CLASS_1
 {
   typedef map<_Key, _Tp, _Compare, _Alloc> _Self;
 public:
@@ -227,7 +227,7 @@ public:
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class multimap _STLP_FIRST_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+class multimap _STLP_SIGNAL_BASE_CLASS_1
 {
   typedef multimap<_Key, _Tp, _Compare, _Alloc> _Self;
 public:

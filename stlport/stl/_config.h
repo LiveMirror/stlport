@@ -990,15 +990,10 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define _STLP_OPSPEC2(t1,t2)	/* nothing */
 # endif
 
-//Used in partial template simulation:
-# ifndef _STLP_CLASS_PARTIAL_SPECIALIZATION
-# define _STLP_FIRST_DERIVE(base) : public base
-# define _STLP_DERIVE(base) , public base
-# else
-# define _STLP_FIRST_DERIVE(base)
-# define _STLP_DERIVE(base)
-#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
-
+//Activation of the partial template workaround:
+# if !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) || !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
+#  define _STLP_USE_PARTIAL_SPEC_WORKAROUND
+# endif
 
 # if defined (_STLP_OWN_IOSTREAMS)
 #  define _STLP_NEW_IO_NAMESPACE _STLP_STD

@@ -200,7 +200,7 @@ public:
 
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
-class multiset _STLP_FIRST_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+class multiset _STLP_SIGNAL_BASE_CLASS_1
 {
   typedef multiset<_Key, _Compare, _Alloc> _Self;
 public:

@@ -1,13 +1,7 @@
 /*
  *
- * Copyright (c) 1996,1997
- * Silicon Graphics Computer Systems, Inc.
- *
- * Copyright (c) 1997
- * Moscow Center for SPARC Technology
- *
- * Copyright (c) 1999 
- * Boris Fomitchev
+ * Copyright (c) 2003
+ * François Dumont
  *
  * This material is provided "as is", with absolutely no warranty expressed
  * or implied. Any use is at your own risk.
@@ -54,12 +48,19 @@ class __partial_move_supported {};
 template <class _Tp>
 struct __partial_move_traits {
   //default value based on the alternative way to signal full move support: derivation
-  typedef typename __is_convertible<_Tp, __partial_move_supported>::_Answer _Supported;
+  typedef typename _IsConvertibleType<_Tp, __partial_move_supported>::_Type _Sup1;
+
+#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+  typedef typename _IsConvertibleType<_Tp, __stlp_base_class>::_Type _StlpClass;
+  typedef typename _Lor2<_Sup1, _StlpClass>::_Ret supported;
+#else
+  typedef _Sup1 supported;
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
 };
 
 template <class _Tp>
 struct _PartialMoveSourceTraits {
-  typedef typename __partial_move_traits<_Tp>::_Supported _PartialMvSupRet;
+  typedef typename __partial_move_traits<_Tp>::supported _PartialMvSupRet;
   enum {_PartialMvSup = __type2bool<_PartialMvSupRet>::_Ret};
   typedef typename __select<_PartialMvSup,
                             __partial_move_source<_Tp>,
@@ -94,12 +95,13 @@ class __full_move_supported {};
 template <class _Tp>
 struct __full_move_traits {
   //default value based on the alternative way to signal full move support: derivation
-  typedef typename __is_convertible<_Tp, __full_move_supported>::_Answer _Supported;
+  typedef typename _IsConvertibleType<_Tp, __full_move_supported>::_Type supported;
+  //typedef __false_type supported;
 };
 
 template <class _Tp>
 struct _FullMoveSourceTraits {
-	typedef typename __full_move_traits<_Tp>::_Supported _FullMvSupRet;
+	typedef typename __full_move_traits<_Tp>::supported _FullMvSupRet;
   enum {_FullMvSup = __type2bool<_FullMvSupRet>::_Ret};
   typedef typename __select<_FullMvSup,
                             __full_move_source<_Tp>,
@@ -109,7 +111,7 @@ struct _FullMoveSourceTraits {
 /*
 template <class _Tp>
 inline  _STLP_TYPENAME_ON_RETURN_TYPE _FullMoveSourceTraits<_Tp>::_Type
-_AsFullMoveSource(_Tp &src) {
+_ForceFullMoveSource(_Tp &src) {
 	typedef typename _FullMoveSourceTraits<_Tp>::_Type _MvSrcType;
 	return _MvSrcType(src);
 }
@@ -128,8 +130,8 @@ _FullMoveSource(_Tp &src) {
 
 template <class _Tp>
 struct _MoveConstructSupported {
-	typedef typename __partial_move_traits<_Tp>::_Supported _PartialSup;
-	typedef typename __full_move_traits<_Tp>::_Supported _FullSup;
+	typedef typename __partial_move_traits<_Tp>::supported _PartialSup;
+	typedef typename __full_move_traits<_Tp>::supported _FullSup;
 
 	typedef typename _Lor2<_PartialSup, _FullSup>::_Ret _Ret;
 	static _Ret _Answer() {return _Ret();}
@@ -137,12 +139,12 @@ struct _MoveConstructSupported {
 
 template<class _Tp>
 _MoveConstructSupported<_Tp> _IsMoveConstructSupported (_Tp const* pt)
-{return _MoveConstructSupported()}
+{return _MoveConstructSupported<_Tp>();}
 
 template <class _Tp>
 struct _MoveSourceTraits {
   typedef typename _PartialMoveSourceTraits<_Tp>::_Type _PartialSrcType;
-	typedef typename __full_move_traits<_Tp>::_Supported _FullMvSupRet;
+	typedef typename __full_move_traits<_Tp>::supported _FullMvSupRet;
   enum {_FullMvSup = __type2bool<_FullMvSupRet>::_Ret};
   typedef typename __select<_FullMvSup,
                             __full_move_source<_Tp>,
@@ -175,15 +177,15 @@ class __enable_swap_on_move {};
 template <class _Tp>
 struct _SwapOnMove {
 	typedef typename __action_on_move<_Tp>::_Swap _Ret1;
-	typedef typename __is_convertible<_Tp, __enable_swap_on_move>::_Answer _Ret2;
+	typedef typename _IsConvertibleType<_Tp, __enable_swap_on_move>::_Type _Ret2;
 
 	typedef typename _Lor2<_Ret1, _Ret2>::_Ret _Result;
-	static _Result _Ret() {return _Result()}
+	static _Result _Ret() {return _Result();}
 };
 
 template<class _Tp>
 _SwapOnMove<_Tp> _DoSwapOnMove (_Tp const* pt)
-{return _SwapOnMove()}
+{return _SwapOnMove<_Tp>();}
 
 _STLP_END_NAMESPACE
 
