@@ -1,6 +1,6 @@
 /***********************************************************************************
-	TestClass.cpp
-	
+  TestClass.cpp
+  
  * Copyright (c) 1997
  * Mark of the Unicorn, Inc.
  *
@@ -24,7 +24,7 @@
 # ifdef EH_NEW_IOSTREAMS
 EH_STD::ostream& 
 operator << (EH_STD::ostream& s, 
-	     const TestClass& t) { 
+       const TestClass& t) { 
   return s<<t.value(); 
 } 
 

@@ -11,13 +11,13 @@
  * purpose.  It is provided "as is" without express or implied warranty.
  */
 /***********************************************************************************
-	LeakCheck.h
-	
-		SUMMARY: A suite of template functions for verifying the behavior of
-			operations in the presence of exceptions. Requires that the operations
-			be written so that each operation that could cause an exception causes
-			simulate_possible_failure() to be called (see "nc_alloc.h").
-		
+  LeakCheck.h
+  
+    SUMMARY: A suite of template functions for verifying the behavior of
+      operations in the presence of exceptions. Requires that the operations
+      be written so that each operation that could cause an exception causes
+      simulate_possible_failure() to be called (see "nc_alloc.h").
+    
 ***********************************************************************************/
 #if !INCLUDED_MOTU_LeakCheck
 #define INCLUDED_MOTU_LeakCheck 1
@@ -59,10 +59,10 @@ const pair <T1, T2>& p) {
 EH_END_NAMESPACE
 
 /*===================================================================================
-	CheckInvariant
+  CheckInvariant
 
-	EFFECTS:  Generalized function to check an invariant on a container. Specialize
-		this for particular containers if such a check is available.
+  EFFECTS:  Generalized function to check an invariant on a container. Specialize
+    this for particular containers if such a check is available.
 ====================================================================================*/
 template <class C>
 void CheckInvariant(const C&)
@@ -97,7 +97,7 @@ void WeakCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
                 succeeded = true;
 # ifndef EH_NO_EXCEPTIONS
             }
-            catch(...) {}	// Just try again.
+            catch(...) {}  // Just try again.
 # endif
             gTestController.CancelFailureCountdown();
             CheckInvariant(dup);
@@ -108,15 +108,15 @@ void WeakCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
         if ( succeeded )
           gTestController.ReportSuccess(count);
     }
-    EH_ASSERT( succeeded || failed );	// Make sure the count hasn't gone over
+    EH_ASSERT( succeeded || failed );  // Make sure the count hasn't gone over
 }
 
 /*===================================================================================
-	ConstCheck
+  ConstCheck
 
-	EFFECTS:  Similar to WeakCheck (above), but for operations which may not modify
-		their arguments. The operation is performed on the value itself, and no
-		invariant checking is performed. Leak checking still occurs.
+  EFFECTS:  Similar to WeakCheck (above), but for operations which may not modify
+    their arguments. The operation is performed on the value itself, and no
+    invariant checking is performed. Leak checking still occurs.
 ====================================================================================*/
 template <class Value, class Operation>
 void ConstCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
@@ -136,7 +136,7 @@ void ConstCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
                 succeeded = true;
 # ifndef EH_NO_EXCEPTIONS
             }
-            catch(...) {}	// Just try again.
+            catch(...) {}  // Just try again.
 # endif
             gTestController.CancelFailureCountdown();
         }
@@ -144,23 +144,23 @@ void ConstCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
         EH_ASSERT( !failed );
 
         if ( succeeded )
-			gTestController.ReportSuccess(count);
+      gTestController.ReportSuccess(count);
     }
-    EH_ASSERT( succeeded || failed );	// Make sure the count hasn't gone over
+    EH_ASSERT( succeeded || failed );  // Make sure the count hasn't gone over
 }
 
 /*===================================================================================
-	StrongCheck
+  StrongCheck
 
-	EFFECTS:  Similar to WeakCheck (above), but additionally checks a component of
-		the "strong guarantee": if the operation fails due to an exception, the
-		value being operated on must be unchanged, as checked with operator==().
-		
-	CAVEATS: Note that this does not check everything required for the strong
-		guarantee, which says that if an exception is thrown, the operation has no
-		effects. Do do that we would have to check that no there were no side-effects
-		on objects which are not part of v (e.g. iterator validity must be preserved).
-		
+  EFFECTS:  Similar to WeakCheck (above), but additionally checks a component of
+    the "strong guarantee": if the operation fails due to an exception, the
+    value being operated on must be unchanged, as checked with operator==().
+    
+  CAVEATS: Note that this does not check everything required for the strong
+    guarantee, which says that if an exception is thrown, the operation has no
+    effects. Do do that we would have to check that no there were no side-effects
+    on objects which are not part of v (e.g. iterator validity must be preserved).
+    
 ====================================================================================*/
 template <class Value, class Operation>
 void StrongCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
@@ -178,12 +178,12 @@ void StrongCheck( const Value& v, const Operation& op, long max_iters = 2000000 
 # ifndef EH_NO_EXCEPTIONS
             try
 # endif
-			{
+      {
                 gTestController.SetFailureCountdown(count);
                 op( dup );
                 succeeded = true;
                 gTestController.CancelFailureCountdown();
-			}
+      }
 # ifndef EH_NO_EXCEPTIONS
             catch(...)
             {
@@ -204,22 +204,22 @@ void StrongCheck( const Value& v, const Operation& op, long max_iters = 2000000 
 #endif
                     failed = true;
                 }
-            }	// Just try again.
+            }  // Just try again.
 # endif
             CheckInvariant(v);
         }
 
         }
 
-	bool leaked = gTestController.ReportLeaked();
-	EH_ASSERT( !leaked );
-	if ( leaked )
-	  failed = true;
+  bool leaked = gTestController.ReportLeaked();
+  EH_ASSERT( !leaked );
+  if ( leaked )
+    failed = true;
     
         if ( succeeded )
-			gTestController.ReportSuccess(count);
+      gTestController.ReportSuccess(count);
     }
-    EH_ASSERT( succeeded || failed );	// Make sure the count hasn't gone over
+    EH_ASSERT( succeeded || failed );  // Make sure the count hasn't gone over
 }
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)

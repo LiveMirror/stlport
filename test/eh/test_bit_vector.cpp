@@ -1,6 +1,6 @@
 /***********************************************************************************
-	test_bit_vector.cpp
-	
+  test_bit_vector.cpp
+  
  * Copyright (c) 1997
  * Mark of the Unicorn, Inc.
  *
@@ -43,7 +43,7 @@ typedef EH_BIT_VECTOR BitVector;
 inline sequence_container_tag
 container_category(const BitVector&)
 {
-	return sequence_container_tag();
+  return sequence_container_tag();
 }
 
 USING_CSTD_NAME(size_t)
@@ -57,7 +57,7 @@ struct test_BitVector_reserve
     {
         gTestController.SetCurrentTestName("BitVector::reserve()");
     }
-	
+  
     void operator()( BitVector& v ) const
     {
         v.reserve( fAmount );
@@ -67,15 +67,15 @@ private:
 };
 
 /*===================================================================================
-	test_bit_vector
+  test_bit_vector
 
-	EFFECTS:  Performs tests on bit vectors
+  EFFECTS:  Performs tests on bit vectors
 ====================================================================================*/
 void test_bit_vector()
 {
-	#define __WORD_BIT (int(CHAR_BIT*sizeof(unsigned int)))
-	
-	// Make some bit vectors to work with.
+  #define __WORD_BIT (int(CHAR_BIT*sizeof(unsigned int)))
+  
+  // Make some bit vectors to work with.
     BitVector emptyVector;
     BitVector testVector, testVector2;
     
@@ -84,8 +84,8 @@ void test_bit_vector()
     size_t BitVectorSize = random_number( random_base );
     // Half the time, choose a size that will guarantee immediate reallocation
     if ( random_number(2) )
-    	BitVectorSize = BitVectorSize / __WORD_BIT * __WORD_BIT;
-	
+      BitVectorSize = BitVectorSize / __WORD_BIT * __WORD_BIT;
+  
     EH_ASSERT( testVector.size() == 0 );
     testVector.reserve(BitVectorSize);
     EH_ASSERT( testVector.size() == 0 );
@@ -94,8 +94,8 @@ void test_bit_vector()
         testVector.push_back( bool(random_number(2)) );
         testVector2.push_back( bool(random_number(2)) );
     }
-	
-	// Test insertions
+  
+  // Test insertions
     StrongCheck( testVector, test_insert_one<BitVector>(testVector) );
     StrongCheck( testVector, test_insert_one<BitVector>(testVector,0) );
     StrongCheck( testVector, test_insert_one<BitVector>(testVector, (int)testVector.size()) );
@@ -103,8 +103,8 @@ void test_bit_vector()
     StrongCheck( testVector, test_insert_n<BitVector>(testVector, random_number(random_base) ) );
     StrongCheck( testVector, test_insert_n<BitVector>(testVector, random_number(random_base),0 ) );
     StrongCheck( testVector, test_insert_n<BitVector>(testVector, random_number(random_base), (int)testVector.size()) );
-# if 0	
-	// Allocate some random bools to insert
+# if 0  
+  // Allocate some random bools to insert
     size_t insCnt = 1 + random_number(random_base);
     bool *insFirst = new BitVector::value_type[insCnt];
     for ( size_t n = 0; n < insCnt; n++ )
@@ -117,12 +117,12 @@ void test_bit_vector()
 # endif
     StrongCheck( testVector, insert_range_tester(testVector, testVector2.begin(), testVector2.end() ) );
     StrongCheck( testVector, insert_range_at_begin_tester(testVector, testVector2.begin(), 
-							  testVector2.end() ) );
+                testVector2.end() ) );
     StrongCheck( testVector, insert_range_at_end_tester(testVector, testVector2.begin(), 
-							  testVector2.end() ) );
+                testVector2.end() ) );
     StrongCheck( testVector, test_BitVector_reserve( testVector.capacity() + random_number(50) ) );
     StrongCheck( testVector, test_push_back<BitVector>(testVector) );
-    StrongCheck( emptyVector, test_push_back<BitVector>(emptyVector) );	
+    StrongCheck( emptyVector, test_push_back<BitVector>(emptyVector) );  
 
     ConstCheck( 0, test_default_construct<BitVector>() );
     ConstCheck( 0, test_construct_n<BitVector>( random_number(random_base) ) );

@@ -1,6 +1,6 @@
 /***********************************************************************************
-	test_deque.cpp
-	
+  test_deque.cpp
+  
  * Copyright (c) 1997
  * Mark of the Unicorn, Inc.
  *
@@ -69,14 +69,14 @@ void test_deque()
     DQTestClass *insFirst = new TestDeque::value_type[insCnt+1];
 
     WeakCheck( testDeque, insert_range_tester(testDeque, (DQTestClass *)insFirst, 
-					      insFirst+insCnt) );
+                insFirst+insCnt) );
     StrongCheck( testDeque, insert_range_at_begin_tester(testDeque, (DQTestClass *)insFirst,
-							 insFirst+insCnt) );
+               insFirst+insCnt) );
     StrongCheck( testDeque, insert_range_at_end_tester(testDeque, (DQTestClass *)insFirst, 
-						       insFirst+insCnt) );
+                   insFirst+insCnt) );
 
     ConstCheck( 0, test_construct_pointer_range<TestDeque>( (DQTestClass *)insFirst, 
-							    insFirst+insCnt ) );
+                  insFirst+insCnt ) );
     delete[] insFirst;
 
     WeakCheck( testDeque, insert_range_tester(testDeque, testDeque2.begin(), testDeque2.end() ) );

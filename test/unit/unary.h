@@ -2,7 +2,7 @@
 #define _unary_h
 #include <cmath>
 #include <cfloat>
-#include <functional>		//*TY 12/26/1998 - added to get unary_function
+#include <functional>    //*TY 12/26/1998 - added to get unary_function
 
 #if !defined (STLPORT) || defined(__STL_USE_NAMESPACES)
 using std::unary_function;
