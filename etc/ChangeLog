@@ -1,10 +1,18 @@
 	The following changes were made in 4.5.5 since 4.5.3 release:
 
+2003-10-26  Petr Ovchenkov
+
+	* ioiter.cpp, gcc.mak, stl_test.h, stl_test.cpp, stl_test.exp
+	(test/regression): tests for postfix increment operator and
+	indirection of istreambuf_iterator.
+
 2003-10-25  Petr Ovchenkov
 
-	* _istreambuf_iterator.h: fix postfix increment operator to provide
-	conformance with ISO/IEC 14882:1998(E), 24.1.1, p.511, i.e.
-	*r++ equivalent to { T tmp = *r; ++r; return tmp; }
+	* _istreambuf_iterator.h: fix postfix increment operator
+	of istreambuf_iterator to provide conformance with
+	ISO/IEC 14882:1998(E), 24.1.1, p.511, i.e.
+	*r++ equivalent to { T tmp = *r; ++r; return tmp; }.
+	Thanks Tanaka for the report.
 
 
 2003-10-23  Francois Dumont
@@ -51,7 +59,7 @@
 
 	* _sstream.c: [io]?stringstream must do equivalent of seek at end,
 	after opened with ios_base::ate; this behaviour useful only when buffer
-	initialized by string (thanks Tanaka)
+	initialized by string; thanks Tanaka for the report.
 	
 2003-10-07  Francois Dumont
 
