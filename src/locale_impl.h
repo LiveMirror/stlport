@@ -69,7 +69,6 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
         Init();
         ~Init();
       private:
-        // static long _S_count;
         static _Refcount_Base _S_count;
     };
 

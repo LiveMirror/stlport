@@ -110,7 +110,7 @@ void _STLP_CALL _Locale_impl::_M_throw_bad_cast() {
   _STLP_THROW(bad_cast());  
 }
 
-void _STLP_CALL _Locale_impl::insert( _Locale_impl *from, const locale::id& n )
+void _Locale_impl::insert( _Locale_impl *from, const locale::id& n )
 {
   size_t index = n._M_index;
   if (index > 0 && index < from->size()) {
@@ -118,7 +118,7 @@ void _STLP_CALL _Locale_impl::insert( _Locale_impl *from, const locale::id& n )
   }
 }
 
-locale::facet* _STLP_CALL _Locale_impl::insert(locale::facet *f, size_t index)
+locale::facet* _Locale_impl::insert(locale::facet *f, size_t index)
 {
   if ( f == 0 || index == 0 )
     return 0;
@@ -250,8 +250,7 @@ void _Locale_impl::insert_numeric_facets(const char* pname) {
 # endif
     }
 # ifndef _STLP_NO_WCHAR_T
-    _STLP_UNWIND(delete punct; delete wpunct; delete get; delete wget;
-    delete put; delete wput);
+    _STLP_UNWIND(delete punct; delete wpunct; delete get; delete wget; delete put; delete wput);
 # else
     _STLP_UNWIND(delete punct; delete get;delete put);
 # endif
@@ -398,8 +397,7 @@ void _Locale_impl::insert_monetary_facets(const char* pname) {
 # endif
     }
 # ifndef _STLP_NO_WCHAR_T
-    _STLP_UNWIND(delete punct; delete ipunct; delete wpunct; delete wipunct;
-    delete get; delete wget; delete put; delete wput);
+    _STLP_UNWIND(delete punct; delete ipunct; delete wpunct; delete wipunct; delete get; delete wget; delete put; delete wput);
 # else
     _STLP_UNWIND(delete punct; delete ipunct; delete get; delete put);
 # endif
