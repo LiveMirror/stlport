@@ -560,7 +560,7 @@ __node_alloc<__threads, __inst>::_S_chunk_alloc(size_t _p_size,
   }
 
 #  ifdef _STLP_DO_CLEAN_NODE_ALLOC
-  __cas_new_head(&_S_chunks, (Obj*)__result);
+  __cas_new_head(&_S_chunks, (_Obj*)__result);
   __result += sizeof(_Obj);
   __bytes_to_get -= sizeof(_Obj);
 #  endif
