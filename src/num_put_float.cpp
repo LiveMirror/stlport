@@ -736,12 +736,23 @@ __write_float(string &buf, ios_base::fmtflags flags, int precision,
 
 
 # ifndef _STLP_NO_WCHAR_T
+inline void _STLP_CALL
+__replace_dot (wchar_t *first, wchar_t *last, wchar_t old_dot, wchar_t new_dot, bool &found) {
+  if (!found && (old_dot != new_dot)) {
+    wchar_t *dot_pos = _STLP_STD::find(first, last, old_dot);
+    if (dot_pos != last) {
+      found = true;
+      *dot_pos = new_dot;
+    }
+  }
+}
 
 void _STLP_CALL
 __convert_float_buffer(string const& str, wstring &out,
                        const ctype<wchar_t>& ct, wchar_t dot)
 {
   const wchar_t __wdot = ct.widen('.');
+  bool __dot_found(false);
   wchar_t __static_buf[128];
   wchar_t *__beg = __static_buf;
   wchar_t *__end = __static_buf + (sizeof(__static_buf) / sizeof(wchar_t));
@@ -752,15 +763,13 @@ __convert_float_buffer(string const& str, wstring &out,
     *__cur = ct.widen(*str_ite);
     ++__cur;
     if (__cur == __end) {
-      if (__wdot != dot)
-        replace(__beg, __cur, __wdot, dot);
+      __replace_dot(__beg, __cur, __wdot, dot, __dot_found);
       out.append(__beg, __cur);
       __cur = __beg;
     }
     ++str_ite;
   }
-  if (__wdot != dot)
-    replace(__beg, __cur, __wdot, dot);
+  __replace_dot(__beg, __cur, __wdot, dot, __dot_found);
   out.append(__beg, __cur);
 }
 
@@ -769,8 +778,12 @@ __convert_float_buffer(string const& str, wstring &out,
 void _STLP_CALL
 __adjust_float_buffer(string &str, char dot)
 {
-  if ('.' != dot)
-    replace(str.begin(), str.end(), '.', dot);
+  if ('.' != dot) {
+    size_t __dot_pos = str.find('.');
+    if (__dot_pos != string::npos) {
+      str[__dot_pos] = dot;
+    }
+  }
 }
 
 _STLP_END_NAMESPACE
