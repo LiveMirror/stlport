@@ -120,20 +120,15 @@ _STLP_END_NAMESPACE
 #  if !defined (_STLP_USE_NEW_C_HEADERS) 
 
 _STLP_BEGIN_NAMESPACE
-#    ifdef _STLP_WCE
+#    if defined (_STLP_WCE)
 #      pragma warning(push)
 #      pragma warning(disable: 4162 4163) // "no function with C linkage found", "not available as an intrinsic function"
 #      pragma function (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh, ceil, floor)
 #    endif
 
-#    ifndef _STLP_HAS_NATIVE_FLOAT_ABS
+#    if !defined (_STLP_HAS_NATIVE_FLOAT_ABS) || defined (_STLP_WCE)
 inline double abs(double __x)                 { return _STLP_DO_ABS(double)(__x); }
 inline float abs (float __x)                  { return _STLP_DO_ABS(float)(__x); }
-#    endif
-
-#    ifdef _STLP_WCE
-inline double abs(double __x) { return _STLP_DO_ABS(double)(__x); }
-inline float abs (float __x) { return _STLP_DO_ABS(float)(__x); }
 #    endif
 
 inline double pow(double __x, int __y)        { return _STLP_DO_POW(double)(__x, __y); }
