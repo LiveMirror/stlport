@@ -1,3 +1,22 @@
+2005-03-11  Petr Ovtchenkov  <ptr@island...>
+
+	* build/test/unit/gcc.mak: don't write runtime path to libstlport
+	in case of crosscompilation.
+
+	* stlport/stl/_cmath.h: exclude *f and *l variants of math functions
+	if ones absent in system; add missed hypot function; few workarounds
+	for uClibc and for VC.
+
+	* src/complex.cpp, complex_exp.cpp, complex_trig.cpp: workaround
+	for systems without *f and *l variants of math functions.
+
+	* test/unit/resolve_name.cpp: exclude test line that confuse VC.
+
+	* stlport/cstdlib: div isn't intrinsic for VC.
+
+	* stlport/config/stl_gcc.h: don't use *f and *l math functions in
+	case of uClibc.
+
 2005-03-09  Petr Ovtchenkov  <ptr@island...>
 
 	* doc/FAQ: FAQ was established.
