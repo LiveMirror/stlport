@@ -20,7 +20,7 @@
  * Purpose of this file :
  *
  * A list of COMPILER-SPECIFIC portion of STLport settings.
- * This file is provided to help in manulal configuration
+ * This file is provided to help in manual configuration
  * of STLport. This file is being included by stlcomp.h 
  * when STLport is unable to identify your compiler.
  * Please remove the error diagnostic below before adjusting 
@@ -41,7 +41,7 @@
 // that has 64-bit "long")
 // #  define _STLP_UINT32_T unsigned long
 
-// Disables wchar_t functinality
+// Disables wchar_t functionality
 // #  define _STLP_NO_WCHAR_T  1
 
 // Define if wchar_t is not a unique type, and is actually a typedef to unsigned short. 
@@ -113,6 +113,9 @@
 // does not define bad_alloc exception
 // #  define _STLP_NO_BAD_ALLOC  1
 
+// Define this if your compiler do not throw bad_alloc from the new operator
+// #  define _STLP_NEW_DONT_THROW  1
+
 // Uncomment if member template methods are not available
 // #  define _STLP_NO_MEMBER_TEMPLATES   1
 
@@ -140,7 +143,7 @@
 // #  define _STLP_MEMBER_SPECIALIZATION_BUG
 
 // Uncomment if partial order of template functions is not available
-// #  define _STLP_NO_FUNC_PARTIAL_ORDERING 1
+// #  define _STLP_NO_FUNCTION_TMPL_PARTIAL_ORDER 1
 
 // Uncomment if specialization of methods is not allowed
 // #  define _STLP_NO_METHOD_SPECIALIZATION  1
@@ -253,7 +256,7 @@
 // # define _STLP_NATIVE_HEADER(header) _STLP_MAKE_HEADER(_STLP_NATIVE_INCLUDE_PATH,header)
 
 // Same for C headers
-// _STLP_NATIVE_C_HEADER(header)
+// #define _STLP_NATIVE_C_HEADER(header)
 
 //==========================================================
 # endif

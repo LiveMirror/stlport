@@ -1,5 +1,20 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * fstream.cpp : text file stream position bug correction (thanks Christopher Kohlert)
+  ---
+  * _num_put.c : Correction of the display of the min 64 bits signed integer values
+                 like numeric_limits<__int64>::min() on WIN32 for instance (thanks Anders Dalvander)
+  ---
+  * _num_put.c : Add of the '+' sign when requested for the unsigned integer display 
+                 (thanks Francois Dumont)
+  ---
+  * debug : many missing iterator invalidation corrected (thanks Detlev V.Davidson and Francois Dumont)
+  ---
+  * _new.h : introduction of a new config compiler switch for those which do define
+             bad_alloc but that do not throw it! (thanks ?)
+  ---
+  * _new.h : class nothrow_t changed to struct nothrow_t (Thanks Francois Dumont)
+	---
 	* _bvector.h : Addition of the |= and &= operator on the _Bit_reference struct (thanks Ed Rice)
 	---
 	* Performance bug in type_traits.h fixed (Thanks Francois Dumont)
