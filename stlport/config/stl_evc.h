@@ -245,6 +245,12 @@ inline void __cdecl operator delete(void *, void *) { return; }
 // evc3 doesn't have native wide functions, e.g. fgetwc, wmemmove
 # define _STLP_NO_NATIVE_WIDE_FUNCTIONS
 
+// evc3 doesn't have assert.h
+# ifndef _ASSERT_DEFINED
+#  define assert(expr) _STLP_ASSERT(expr)
+#  define _ASSERT_DEFINED
+# endif
+
 # endif /* _STLP_WCE_EVC3 */
 
 
@@ -267,11 +273,6 @@ inline void __cdecl operator delete(void *, void *) { return; }
 # ifndef _ABORT_DEFINED
 #  define _STLP_ABORT() TerminateProcess(GetCurrentProcess(), 0)
 #  define _ABORT_DEFINED
-# endif
-
-# ifndef _ASSERT_DEFINED
-#  define assert(expr) _STLP_ASSERT(expr)
-#  define _ASSERT_DEFINED
 # endif
 
 // needed for TerminateProcess and others

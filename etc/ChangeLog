@@ -10,6 +10,11 @@
 	* stlport/exception: Add check of the _STLP_HAS_SPECIFIC_PROLOG_EPILOG macro before
 	including _msvc_warning_off.h to avoid bad resulting warning status when the _epilog.h
 	header is not included thanks Gail (baker88) report.
+	
+	* stlport/cassert, cerrno, csignal, ctype.h, cwctype, stdarg.h, stdlib.h, string.h,
+	config/stl_evc.h: Patch from Michael Fink to fix compilation problem using ressource
+	compiler for evc3 and evc4 and problems with cerrno and cassert inclusions reported
+	by Ulrich Eckhardt.
 
 2004-12-01  Petr Ovtchenkov  <ptr@island...>
 

@@ -15,6 +15,11 @@
 
 #ifndef _STLP_CTYPE_H
 
+// Workaround for a "misbehaviour" when compiling resource scripts using
+// eMbedded Visual C++. The standard .rc file includes windows header files,
+// which in turn include ctype.h, which results in warnings and errors
+#if !defined(RC_INVOKED)
+
 #if !defined (_STLP_OUTERMOST_HEADER_ID)
 #  define _STLP_OUTERMOST_HEADER_ID 0x219
 #  include <stl/_prolog.h>
@@ -89,6 +94,8 @@ __inline int (iswascii)(int c) { return ((unsigned)(c) < 0x80); }
 #    undef  _STLP_DONT_POP_HEADER_ID
 #  endif
 #endif
+
+#endif /* RC_INVOKED */
 
 #endif /* _STLP_CTYPE_H */
 
