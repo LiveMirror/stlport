@@ -1,0 +1,60 @@
+-----------------------------------------------------------------------
+Operational environment:	Linux 2.4.26/SMP glibc 2.2.5
+
+Compiler:			gcc 3.4.1
+Date:				2004-08-26
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:			ptr (Petr Ovtchenkov)
+Status (release-shared):	All pass (282 tests)
+Notes:
+Status (stldbg-shared):         All pass (282 tests)
+Notes:
+
+Compiler:			gcc 3.3.3
+Date:				2004-08-26
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:			ptr (Petr Ovtchenkov)
+Status (release-shared):	All pass (282 tests)
+Notes:
+Status (stldbg-shared):         All pass (282 tests)
+Notes:
+
+Compiler:			gcc 3.3.1
+Date:				2004-08-26
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:			ptr (Petr Ovtchenkov)
+Status (release-shared):	All pass (282 tests)
+Notes:
+Status (stldbg-shared):         All pass (282 tests)
+Notes:
+
+Compiler:			gcc 3.2.3
+Date:				2004-08-26
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:			ptr (Petr Ovtchenkov)
+Status (release-shared):	runtime fail in DequeTest::at
+Notes:
+        see notes for stldbg-shared
+Status (stldbg-shared):         runtime fail in DequeTest::at
+Notes:
+        uncatched exception (but it should be catched)
+
+Compiler:			gcc 3.1.1
+Date:				2004-08-26
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:			ptr (Petr Ovtchenkov)
+Status (release-shared):	runtime fail in DequeTest::at
+Notes:
+        see notes for stldbg-shared
+Status (stldbg-shared):         runtime fail in DequeTest::at
+Notes:
+        uncatched exception (but it should be catched)
+
+Compiler:			gcc 2.95.4 20011002 (Debian prerelease)
+Date:				2004-08-26
+STLP Version:                   current CVS STLPORT_5_0 branch
+Status (release-shared):	runtime fail in DequeTest::at
+Notes:
+Status (stldbg-shared):         runtime fail during load
+Notes:
+        problem with order of static member initialization
