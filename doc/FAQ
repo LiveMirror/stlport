@@ -21,6 +21,10 @@ Q3.3 Does anybody success in building STLport on OS Y with compiler K n.n?
 
 Q4 Installation
 
+Q4.1 I tried "make -f gcc.mak install", but it install nothing into
+/usr/local/. How I can install headers into /usr/local/include and
+libs into /usr/local/lib?
+
 Q5 Bug report
 Q5.0 I am found a bug. How I can report about it?
 
@@ -76,6 +80,25 @@ presence during preprocessor stage.
 Q3.3 Does anybody success in building STLport on OS S with compiler K n.n?
 
 A3.3 See report about results of regression tests here: build/test/unit/STATUS.
+
+========================================================================
+
+Q4.1 I tried "make -f gcc.mak install", but it install nothing into
+/usr/local/. How I can install headers into /usr/local/include and
+libs into /usr/local/lib?
+
+A4.1 Installation in any system-wide place is issue of either 'package builder'
+or system administrator. He/she should be familiar with building package
+procedure and/or understand where headers and libraries should be situated.
+The place choice not issue of STLport.
+
+You can just use
+
+(cd ${STLPORT_SRC}/lib; tar cf - . ) | (cd ${TARGET_LIB_DIR}; tar xf - ); \
+ (cd ${STLPORT_SRC}; tar cf - stlport) | (cd ${TARGET_INCLUDE_DIR}; tar xf - )
+
+Sometimes we will think about 'make install', but not now.
+
 
 ========================================================================
 
