@@ -57,6 +57,7 @@
 #  endif
 
 #  define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
+#  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG 1
 
 // # ifndef __BUILDING_STLPORT
 // #  define _STLP_USE_TEMPLATE_EXPORT 1
@@ -86,7 +87,6 @@
 #    define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
 #    define _STLP_NO_METHOD_SPECIALIZATION 1
 #    define _STLP_DEF_CONST_PLCT_NEW_BUG 1
-#    define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
 #    define _STLP_NO_TYPENAME_ON_RETURN_TYPE 1
 // VC++ cannot handle default allocator argument in template constructors
 #    define _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
