@@ -27,7 +27,11 @@
 #include "test_insert.h"
 #include "test_push_front.h"
 
+# if defined (__GNUC__) && defined (__APPLE__)
+typedef EH_STD::vector<TestClass, eh_allocator(TestClass) > TestVector;
+# else
 typedef EH_STD::__vector__<TestClass, eh_allocator(TestClass) > TestVector;
+# endif
 
 inline sequence_container_tag
 container_category(const TestVector&)

@@ -29,7 +29,8 @@
 
 #ifndef errno
 
-# if defined (_STLP_IMPORT_VENDOR_CSTD) && ! defined (__IBMCPP__) && ! defined(__hpux)
+# if defined (_STLP_IMPORT_VENDOR_CSTD) && \
+  ! defined (__IBMCPP__) && ! defined(__hpux) && ! defined(__MWERKS__)
 _STLP_BEGIN_NAMESPACE
 using _STLP_VENDOR_CSTD::errno;
 _STLP_END_NAMESPACE

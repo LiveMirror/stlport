@@ -113,8 +113,10 @@
 /* Mac OS X is a little different with namespaces and cannot instantiate
  * static data members in template classes */
 # if defined (__APPLE__)
+#  if ((__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ < 3)))
 /* Mac OS X is missing a required typedef and standard macro */
 typedef unsigned int wint_t;
+#  endif
 
 #  define __unix
 
@@ -301,7 +303,7 @@ At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
 #   define _STLP_REDEFINE_STD 1
 #  endif
 
-#  if ((__GNUC_MINOR__ == 0) || (__APPLE__))
+#  if ((__GNUC_MINOR__ == 0) || ((__GNUC_MINOR__ < 3) && __APPLE__))
 #   define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
 #  else
 #   if defined(__GNUC_PATCHLEVEL__) && (__GNUC_PATCHLEVEL__ >= 0)
@@ -309,8 +311,13 @@ At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
 #   else
 #     define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__
 #   endif
+#    if ((__GNUC_MINOR__ >= 3) && __APPLE__)
+#     define _STLP_NATIVE_INCLUDE_PATH ../c++
+#     define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../c++/backward
+#    else
 #  endif
 #  define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH/backward
+#    endif
 /* Instantiation scheme that used (default) in gcc 3 made void of sense explicit
    instantiation within library: nothing except increased library size. - ptr
  */

@@ -47,6 +47,9 @@
 # endif
 
 #if defined ( _STLP_DEBUG)
+# if defined(_Rb_tree)
+#  undef _Rb_tree
+# endif
 #  define _Rb_tree __WORKAROUND_DBG_RENAME(Rb_tree)
 #endif
 

@@ -76,6 +76,17 @@ int mem_ptr_fun_test(int, char**)
 
   // mem_fun
 
+// Metrowerks can sometimes do a mem_fun() function call.
+// It just can't do it all on the same line.
+#ifdef __MWERKS__
+  (mem_fun_t<int, Class>(&Class::f0))(&obj);
+  (mem_fun1_t<int, Class, const S1&>(&Class::f1))(&obj, s1);
+
+#ifndef _STLP_DONT_TEST_RETURN_VOID
+  (mem_fun_t<void, Class>(&Class::vf0))(&obj);
+  (mem_fun1_t<void, Class, const S1&>(&Class::vf1))(&obj, s1);
+#endif /* _STLP_DONT_TEST_RETURN_VOID */
+#else
   mem_fun(&Class::f0)(&obj);
   mem_fun(&Class::f1)(&obj, s1);
 
@@ -83,9 +94,22 @@ int mem_ptr_fun_test(int, char**)
   mem_fun(&Class::vf0)(&obj);
   mem_fun(&Class::vf1)(&obj, s1);
 #endif /* _STLP_DONT_TEST_RETURN_VOID */
+#endif
+
 
   // mem_fun (const)
 
+// Metrowerks can sometimes do a mem_fun() function call.
+// It just can't do it all on the same line.
+#ifdef __MWERKS__
+  (mem_fun_t<int, const Class>(&Class::f0c))(&objc);
+  (mem_fun1_t<int, const Class, const S1&>(&Class::f1c))(&objc, s1);
+
+#ifndef _STLP_DONT_TEST_RETURN_VOID
+  (mem_fun_t<void, const Class>(&Class::vf0c))(&objc);
+  (mem_fun1_t<void, const Class, const S1&>(&Class::vf1c))(&objc, s1);
+#endif /* _STLP_DONT_TEST_RETURN_VOID */
+#else
   mem_fun(&Class::f0c)(&objc);
   mem_fun(&Class::f1c)(&objc, s1);
 
@@ -93,9 +117,21 @@ int mem_ptr_fun_test(int, char**)
   mem_fun(&Class::vf0c)(&objc);
   mem_fun(&Class::vf1c)(&objc, s1);
 #endif /* _STLP_DONT_TEST_RETURN_VOID */
+#endif
 
   // mem_fun_ref
 
+// Metrowerks can sometimes do a mem_fun() function call.
+// It just can't do it all on the same line.
+#ifdef __MWERKS__
+  (mem_fun_ref_t<int, Class>(&Class::f0))(obj);
+  (mem_fun1_ref_t<int, Class, const S1 &>(&Class::f1))(obj, s1);
+
+#ifndef _STLP_DONT_TEST_RETURN_VOID
+  (mem_fun_ref_t<void, Class>(&Class::vf0))(obj);
+  (mem_fun1_ref_t<void, Class, const S1 &>(&Class::vf1))(obj, s1);
+#endif /* _STLP_DONT_TEST_RETURN_VOID */
+#else
   mem_fun_ref(&Class::f0)(obj);
   mem_fun_ref(&Class::f1)(obj, s1);
 
@@ -103,9 +139,21 @@ int mem_ptr_fun_test(int, char**)
   mem_fun_ref(&Class::vf0)(obj);
   mem_fun_ref(&Class::vf1)(obj, s1);
 #endif /* _STLP_DONT_TEST_RETURN_VOID */
+#endif
 
   // mem_fun_ref (const)
 
+// Metrowerks can sometimes do a mem_fun() function call.
+// It just can't do it all on the same line.
+#ifdef __MWERKS__
+  (mem_fun_ref_t<int, const Class>(&Class::f0c))(objc);
+  (mem_fun1_ref_t<int, const Class, const S1 &>(&Class::f1c))(objc, s1);
+
+#ifndef _STLP_DONT_TEST_RETURN_VOID
+  (mem_fun_ref_t<void, const Class>(&Class::vf0c))(objc);
+  (mem_fun1_ref_t<void, const Class, const S1 &>(&Class::vf1c))(objc, s1);
+#endif /* _STLP_DONT_TEST_RETURN_VOID */
+#else
   mem_fun_ref(&Class::f0c)(objc);
   mem_fun_ref(&Class::f1c)(objc, s1);
 
@@ -113,6 +161,7 @@ int mem_ptr_fun_test(int, char**)
   mem_fun_ref(&Class::vf0c)(objc);
   mem_fun_ref(&Class::vf1c)(objc, s1);
 #endif /* _STLP_DONT_TEST_RETURN_VOID */
+#endif
 
   return 0;
 }

@@ -132,8 +132,8 @@ public:
   typedef const _Tp* const_pointer;
   typedef _Tp&       reference;
   typedef const _Tp& const_reference;
-  typedef size_t     size_type;
-  typedef ptrdiff_t  difference_type;
+  typedef EH_CSTD::size_t     size_type;
+  typedef EH_CSTD::ptrdiff_t  difference_type;
 # if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
   template <class _Tp1> struct rebind {
     typedef EH_allocator<_Tp1> other;

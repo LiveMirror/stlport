@@ -16,6 +16,7 @@
 #  endif
 
 #  define _STLP_USE_UNIX_EMULATION_IO	1
+
 #  define _STLP_USE_AUTO_PTR_CONVERSIONS	1
 
 # ifdef __INTEL__
@@ -31,10 +32,12 @@
 # define _STLP_WCHAR_T_IS_USHORT
 #endif
 
+#  if __MWERKS__ < 0x3000
 // *** CodeWarrior Compiler Common Bugs ***
-#  define __MSL_FIX_ITERATORS__(myType)		// Some MSL headers rely on this
-#  define _STLP_NO_FRIEND_TEMPLATES 1	// Bug mysteriously reintroduced in this version.
-#  define _STLP_THROW_RETURN_BUG	1
+#   define __MSL_FIX_ITERATORS__(myType)		// Some MSL headers rely on this
+#   define _STLP_NO_FRIEND_TEMPLATES 1	// Bug mysteriously reintroduced in this version.
+#   define _STLP_THROW_RETURN_BUG	1
+#  endif
 
 //  *** Version-specific settings ***
 
@@ -136,6 +139,13 @@
 #  endif
 
 # define _STLP_LIB_BASENAME stlport_mwerks_x86
+
+# if defined(__MACH__)
+#  define _STLP_MAC
+#  define O_BINARY 0
+# elif defined(macintosh)
+#  define _NOTHREADS
+# endif
 # define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
 
 // # include <config/vc_select_lib.h>

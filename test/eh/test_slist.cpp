@@ -33,7 +33,11 @@
 _STLP_INSTRUMENT_FILE();
 # endif
 
+# if defined (__GNUC__) && defined (__APPLE__)
+typedef EH_STD::slist<TestClass, eh_allocator(TestClass) > TestSList;
+# else
 typedef EH_STD::__slist__<TestClass, eh_allocator(TestClass) > TestSList;
+# endif
 
 inline sequence_container_tag
 container_category(const TestSList&)

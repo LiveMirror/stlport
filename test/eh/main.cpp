@@ -50,11 +50,13 @@ no
 #  include <assert.h>
 # endif
 
-# if defined ( EH_USE_SGI_STL ) 
+# if defined (_STL_DEBUG)
+
+#  if defined ( EH_USE_SGI_STL ) 
 // Override assertion behavior
 #  include <cstdarg>
 //#  include <stldebug.h>
-void __stl_debug_message(const char * format_str, ...)
+void STLPORT::__stl_debug_message(const char * format_str, ...)
 {
   std::va_list args;
   va_start( args, format_str );
@@ -62,7 +64,7 @@ void __stl_debug_message(const char * format_str, ...)
   std::vsnprintf(msg, sizeof(msg)/sizeof(*msg) - 1, format_str, args );
   DebugStr( c2pstr(msg) );
 }
-# else
+#  else
 /*===================================================================================
   __assertion_failed  (override standard library function)
 
@@ -85,6 +87,8 @@ extern "C"
       DebugStr( c2pstr( msg ) );
   }
 }
+#  endif
+
 # endif
 
 #endif
