@@ -99,15 +99,16 @@ public:
   typedef forward_iterator_tag iterator_category;
   typedef size_t size_type;
   typedef ptrdiff_t difference_type;
-  
-  typedef _Slist_iterator<_Tp, _Nonconst_traits<_Tp> > iterator;
-  typedef _Slist_iterator<_Tp, _Const_traits<_Tp> >    const_iterator;
-  typedef _Slist_iterator<_Tp, _Traits>       _Self;
+
+  typedef _Slist_iterator<_Tp, _Traits>         _Self;
+  typedef typename _Traits::_NonConstTraits     _NonConstTraits;
+  typedef _Slist_iterator<_Tp, _NonConstTraits> iterator;
 
   typedef _Slist_node<value_type> _Node;
 
   _Slist_iterator(_Slist_node_base *__x) : _Slist_iterator_base(__x) {}
   _Slist_iterator() : _Slist_iterator_base(0) {}
+  //copy constructor for iterator and constructor from iterator for const_iterator
   _Slist_iterator(const iterator& __x) : _Slist_iterator_base(__x._M_node) {}
 
   reference operator*() const { return __STATIC_CAST(_Node*, this->_M_node)->_M_data; }

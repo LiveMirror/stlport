@@ -44,12 +44,12 @@ template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
 class hash_set _STLP_STLPORT_CLASS_1
 {
+  typedef _Const_Const_traits<_Value> _ConstIteTraits;
 public:
-  typedef hashtable<_Value, _Value, _HashFcn, _Identity<_Value>,
-                    _EqualKey, _Alloc> _Ht;
+  typedef hashtable<_Value, _Value, _HashFcn, 
+                    _ConstIteTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
 private:
   typedef hash_set<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
-  typedef typename _Ht::iterator _ht_iterator;
 public:
   typedef typename _Ht::key_type key_type;
   typedef typename _Ht::value_type value_type;
@@ -63,9 +63,8 @@ public:
   typedef typename _Ht::reference       reference;
   typedef typename _Ht::const_reference const_reference;
 
-  // SunPro bug
+  typedef typename _Ht::iterator iterator;
   typedef typename _Ht::const_iterator const_iterator;
-  typedef const_iterator iterator;
 
   typedef typename _Ht::allocator_type allocator_type;
 
@@ -159,43 +158,50 @@ public:
   bool empty() const { return _M_ht.empty(); }
   void swap(_Self& __hs) { _M_ht.swap(__hs._M_ht); }
 
-  iterator begin() const { return _M_ht.begin(); }
-  iterator end() const { return _M_ht.end(); }
+  iterator begin() { return _M_ht.begin(); }
+  iterator end() { return _M_ht.end(); }
+  const_iterator begin() const { return _M_ht.begin(); }
+  const_iterator end() const { return _M_ht.end(); }
 
 public:
-  pair<iterator, bool> insert(const value_type& __obj)
-    {
-      pair<_ht_iterator, bool> __p = _M_ht.insert_unique(__obj);
-      return pair<iterator,bool>(__REINTERPRET_CAST(const iterator&, __p.first), __p.second);
-    }
+  pair<iterator, bool> insert(const value_type& __obj) {
+    return _M_ht.insert_unique(__obj);
+  }
 #ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIterator>
   void insert(_InputIterator __f, _InputIterator __l) 
-    { _M_ht.insert_unique(__f,__l); }
 #else
-  void insert(const value_type* __f, const value_type* __l) {
-    _M_ht.insert_unique(__f,__l);
-  }
   void insert(const_iterator __f, const_iterator __l) 
-    {_M_ht.insert_unique(__f, __l); }
+  {_M_ht.insert_unique(__f, __l); }
+  void insert(const value_type* __f, const value_type* __l)
+#endif
+  { _M_ht.insert_unique(__f,__l); }
 
-#endif /*_STLP_MEMBER_TEMPLATES */
-  pair<iterator, bool> insert_noresize(const value_type& __obj)
-  {
-    pair<_ht_iterator, bool> __p = 
-      _M_ht.insert_unique_noresize(__obj);
-    return pair<iterator, bool>(__p.first, __p.second);
+  pair<iterator, bool> insert_noresize(const value_type& __obj) {
+    return _M_ht.insert_unique_noresize(__obj);
   }
 
 # if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
   template <class _KT>
-  iterator find(const _KT& __key) const { return _M_ht.find(__key); }
+  iterator find(const _KT& __key)
 # else
-  iterator find(const key_type& __key) const { return _M_ht.find(__key); }
+  iterator find(const key_type& __key)
 # endif
+  { return _M_ht.find(__key); }
+
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
+  template <class _KT>
+  const_iterator find(const _KT& __key) const
+# else
+  const_iterator find(const key_type& __key) const
+# endif
+  { return _M_ht.find(__key); }
+
   size_type count(const key_type& __key) const { return _M_ht.count(__key); }
   
-  pair<iterator, iterator> equal_range(const key_type& __key) const
+  pair<iterator, iterator> equal_range(const key_type& __key)
+    { return _M_ht.equal_range(__key); }
+  pair<const_iterator, const_iterator> equal_range(const key_type& __key) const
     { return _M_ht.equal_range(__key); }
 
   size_type erase(const key_type& __key) {return _M_ht.erase(__key); }
@@ -220,9 +226,10 @@ template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
 class hash_multiset _STLP_STLPORT_CLASS_1
 {
+  typedef _Const_Const_traits<_Value> _ConstIteTraits;
 public:
-  typedef hashtable<_Value, _Value, _HashFcn, _Identity<_Value>,
-                    _EqualKey, _Alloc> _Ht;
+  typedef hashtable<_Value, _Value, _HashFcn, 
+                    _ConstIteTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
 private:
   typedef hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
 
@@ -239,9 +246,8 @@ public:
   typedef typename _Ht::reference reference;
   typedef typename _Ht::const_reference const_reference;
 
+  typedef typename _Ht::iterator iterator;
   typedef typename _Ht::const_iterator const_iterator;
-  // SunPro bug
-  typedef const_iterator iterator;
 
   typedef typename _Ht::allocator_type allocator_type;
 
@@ -338,8 +344,10 @@ public:
   bool empty() const { return _M_ht.empty(); }
   void swap(_Self& hs) { _M_ht.swap(hs._M_ht); }
 
-  iterator begin() const { return _M_ht.begin(); }
-  iterator end() const { return _M_ht.end(); }
+  iterator begin() { return _M_ht.begin(); }
+  iterator end() { return _M_ht.end(); }
+  const_iterator begin() const { return _M_ht.begin(); }
+  const_iterator end() const { return _M_ht.end(); }
 
 public:
   iterator insert(const value_type& __obj)
@@ -360,14 +368,25 @@ public:
 
 # if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
   template <class _KT>
-  iterator find(const _KT& __key) const { return _M_ht.find(__key); }
+  iterator find(const _KT& __key)
 # else
-  iterator find(const key_type& __key) const { return _M_ht.find(__key); }
+  iterator find(const key_type& __key)
 # endif
+  { return _M_ht.find(__key); }
+
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
+  template <class _KT>
+  const_iterator find(const _KT& __key) const
+# else
+  const_iterator find(const key_type& __key) const
+# endif
+  { return _M_ht.find(__key); }
 
   size_type count(const key_type& __key) const { return _M_ht.count(__key); }
   
-  pair<iterator, iterator> equal_range(const key_type& __key) const
+  pair<iterator, iterator> equal_range(const key_type& __key)
+    { return _M_ht.equal_range(__key); }
+  pair<const_iterator, const_iterator> equal_range(const key_type& __key) const
     { return _M_ht.equal_range(__key); }
 
   size_type erase(const key_type& __key) {return _M_ht.erase(__key); }

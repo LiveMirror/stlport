@@ -30,17 +30,17 @@
 #ifndef _STLP_INTERNAL_TEMPBUF_H
 #define _STLP_INTERNAL_TEMPBUF_H
 
-# ifndef _STLP_CLIMITS
+#ifndef _STLP_CLIMITS
 #  include <climits>
-# endif
+#endif
 
-# ifndef _STLP_CSTDLIB
+#ifndef _STLP_CSTDLIB
 #  include <cstdlib>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_UNINITIALIZED_H
+#ifndef _STLP_INTERNAL_UNINITIALIZED_H
 #  include <stl/_uninitialized.h>
-# endif
+#endif
 
 _STLP_BEGIN_NAMESPACE
 

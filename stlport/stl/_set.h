@@ -39,29 +39,6 @@
 
 _STLP_BEGIN_NAMESPACE
 
-/*
- * dums: A special iterator/const_iterator traits for set and multiset for which even
- * the iterator is not mutable
- */
-template <class _Tp>
-struct _Nonconst_set_traits;
-
-template <class _Tp>
-struct _Const_set_traits {
-  typedef _Tp value_type;
-  typedef const _Tp&  reference;
-  typedef const _Tp*  pointer;
-  typedef _Nonconst_set_traits<_Tp> _Non_const_traits;
-};
-
-template <class _Tp>
-struct _Nonconst_set_traits {
-  typedef _Tp value_type;
-  typedef const _Tp& reference;
-  typedef const _Tp* pointer;
-  typedef _Nonconst_set_traits<_Tp> _Non_const_traits;
-};
-
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class set {
@@ -74,7 +51,7 @@ public:
   typedef _Compare value_compare;
   
 protected:
-  typedef _Const_set_traits<value_type> _ConstIteTraits;
+  typedef _Const_Const_traits<value_type> _ConstIteTraits;
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
@@ -236,7 +213,7 @@ public:
   typedef _Compare value_compare;
   
 protected:
-  typedef _Const_set_traits<value_type> _ConstIteTraits;
+  typedef _Const_Const_traits<value_type> _ConstIteTraits;
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 

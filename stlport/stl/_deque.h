@@ -166,14 +166,17 @@ struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 
   typedef _Deque_iterator_base< _Tp > _Base;
   typedef _Deque_iterator<_Tp, _Traits> _Self;
-  typedef _Deque_iterator<_Tp, _Nonconst_traits<_Tp> > _Nonconst_self;
-  typedef _Deque_iterator<_Tp, _Const_traits<_Tp> > _Const_self;
+  typedef typename _Traits::_NonConstTraits _NonConstTraits;
+  typedef _Deque_iterator<_Tp, _NonConstTraits> iterator;
+  typedef typename _Traits::_ConstTraits _ConstTraits;
+  typedef _Deque_iterator<_Tp, _ConstTraits> const_iterator;
 
   _Deque_iterator(value_type* __x, _Map_pointer __y) :
     _Deque_iterator_base<value_type>(__x,__y) {}
 
   _Deque_iterator() {}
-  _Deque_iterator(const _Nonconst_self& __x) : 
+  //copy constructor for iterator and constructor from iterator for const_iterator
+  _Deque_iterator(const iterator& __x) :
     _Deque_iterator_base<value_type>(__x) {}
 
   reference operator*() const { 
@@ -182,7 +185,7 @@ struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 
   _STLP_DEFINE_ARROW_OPERATOR
 
-  difference_type operator-(const _Const_self& __x) const { return this->_M_subtract(__x); }
+  difference_type operator-(const const_iterator& __x) const { return this->_M_subtract(__x); }
 
   _Self& operator++() { this->_M_increment(); return *this; }
   _Self operator++(int)  {

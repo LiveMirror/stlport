@@ -112,9 +112,9 @@ struct _List_iterator : public _List_iterator_base {
   typedef typename _Traits::pointer    pointer;
   typedef typename _Traits::reference  reference;
 
-  typedef _List_iterator<_Tp, _Nonconst_traits<_Tp> > iterator;
-  typedef _List_iterator<_Tp, _Const_traits<_Tp> >    const_iterator;
-  typedef _List_iterator<_Tp, _Traits>                _Self;
+  typedef _List_iterator<_Tp, _Traits>         _Self;
+  typedef typename _Traits::_NonConstTraits    _NonConstTraits;
+  typedef _List_iterator<_Tp, _NonConstTraits> iterator;
 
   typedef bidirectional_iterator_tag iterator_category;
   typedef _List_node<_Tp> _Node;
@@ -123,6 +123,7 @@ struct _List_iterator : public _List_iterator_base {
 
   _List_iterator(_List_node_base* __x) : _List_iterator_base(__x) {}
   _List_iterator() : _List_iterator_base(0) {}
+  //copy constructor for iterator and constructor from iterator for const_iterator
   _List_iterator(const iterator& __x) :  _List_iterator_base(__x._M_node) {}
 
   reference operator*() const { return __STATIC_CAST(_Node*, this->_M_node)->_M_data; }

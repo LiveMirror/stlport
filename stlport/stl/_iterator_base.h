@@ -31,7 +31,7 @@
 #define _STLP_INTERNAL_ITERATOR_BASE_H
 
 #ifndef _STLP_CSTDDEF
-# include <cstddef>
+#  include <cstddef>
 #endif
 
 //# if defined  (_STLP_IMPORT_VENDOR_CSTD) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
@@ -40,8 +40,10 @@
 //_STLP_END_NAMESPACE
 //#endif /* _STLP_IMPORT_VENDOR_CSTD */
 
-#ifndef __TYPE_TRAITS_H
-# include <stl/type_traits.h>
+#if !defined(_STLP_USE_OLD_HP_ITERATOR_QUERIES) && !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION)
+#  ifndef __TYPE_TRAITS_H
+#    include <stl/type_traits.h>
+#  endif
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -73,25 +75,25 @@ struct iterator<output_iterator_tag, void, void, void, void> {
 #endif
 };
 
-# ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
+#ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 #  define _STLP_ITERATOR_CATEGORY(_It, _Tp) iterator_category(_It)
 #  define _STLP_DISTANCE_TYPE(_It, _Tp)     distance_type(_It)
 #  define _STLP_VALUE_TYPE(_It, _Tp)        value_type(_It)
-# else
+#else
 #  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
-#   define _STLP_VALUE_TYPE(_It, _Tp)        (typename iterator_traits< _Tp >::value_type*)0
-#   define _STLP_DISTANCE_TYPE(_It, _Tp)     (typename iterator_traits< _Tp >::difference_type*)0
-#   if defined (__BORLANDC__) || defined (__SUNPRO_CC) || ( defined (__MWERKS__) && (__MWERKS__ <= 0x2303)) || ( defined (__sgi) && defined (_COMPILER_VERSION)) || defined (__DMC__)
-#    define _STLP_ITERATOR_CATEGORY(_It, _Tp) iterator_traits< _Tp >::iterator_category()
-#   else
-#    define _STLP_ITERATOR_CATEGORY(_It, _Tp) typename iterator_traits< _Tp >::iterator_category()
-#   endif
+#    define _STLP_VALUE_TYPE(_It, _Tp)        (typename iterator_traits< _Tp >::value_type*)0
+#    define _STLP_DISTANCE_TYPE(_It, _Tp)     (typename iterator_traits< _Tp >::difference_type*)0
+#    if defined (__BORLANDC__) || defined (__SUNPRO_CC) || ( defined (__MWERKS__) && (__MWERKS__ <= 0x2303)) || ( defined (__sgi) && defined (_COMPILER_VERSION)) || defined (__DMC__)
+#      define _STLP_ITERATOR_CATEGORY(_It, _Tp) iterator_traits< _Tp >::iterator_category()
+#    else
+#      define _STLP_ITERATOR_CATEGORY(_It, _Tp) typename iterator_traits< _Tp >::iterator_category()
+#    endif
 #  else
-#   define _STLP_ITERATOR_CATEGORY(_It, _Tp) __iterator_category(_It, _IsPtrType<_Tp>::_Ret())
-#   define _STLP_DISTANCE_TYPE(_It, _Tp)     (ptrdiff_t*)0
-#   define _STLP_VALUE_TYPE(_It, _Tp)        __value_type(_It, _IsPtrType<_Tp>::_Ret() )
+#    define _STLP_ITERATOR_CATEGORY(_It, _Tp) __iterator_category(_It, _IsPtrType<_Tp>::_Ret())
+#    define _STLP_DISTANCE_TYPE(_It, _Tp)     (ptrdiff_t*)0
+#    define _STLP_VALUE_TYPE(_It, _Tp)        __value_type(_It, _IsPtrType<_Tp>::_Ret() )
 #  endif
-# endif
+#endif
 
 template <class _Iterator>
 struct iterator_traits {
@@ -103,13 +105,13 @@ struct iterator_traits {
 };
 
 
-# if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION) && ! defined (__SUNPRO_CC)
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION) && ! defined (__SUNPRO_CC)
 #  define _STLP_DIFFERENCE_TYPE(_Iterator) typename iterator_traits<_Iterator>::difference_type
-# else
+#else
 #  define _STLP_DIFFERENCE_TYPE(_Iterator) ptrdiff_t
-# endif
+#endif
 
-# ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 
 // fbp : this order keeps gcc happy
 template <class _Tp>
@@ -141,25 +143,25 @@ struct iterator_traits<_Tp* const> {
 };
 #  endif
 
-# endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 
-# if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION) \
-  || (defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS) && ! defined (_STLP_NO_ARROW_OPERATOR))
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION) ||\
+   (defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS) && ! defined (_STLP_NO_ARROW_OPERATOR))
 #  define _STLP_POINTERS_SPECIALIZE( _TpP )
 #  define _STLP_DEFINE_ARROW_OPERATOR  pointer operator->() const { return &(operator*()); }
-# else 
+#else 
 #  include <stl/_ptrs_specialize.h>
-# endif
+#endif
 
-# ifndef _STLP_USE_OLD_HP_ITERATOR_QUERIES
+#ifndef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 // The overloaded functions iterator_category, distance_type, and
 // value_type are not part of the C++ standard.  (They have been
 // replaced by struct iterator_traits.)  They are included for
 // backward compatibility with the HP STL.
 // We introduce internal names for these functions.
 
-#  ifdef  _STLP_CLASS_PARTIAL_SPECIALIZATION
+#  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 
 template <class _Iter>
 inline typename iterator_traits<_Iter>::iterator_category __iterator_category(const _Iter&) {
@@ -179,7 +181,7 @@ inline typename iterator_traits<_Iter>::value_type* __value_type(const _Iter&) {
   return __STATIC_CAST(_value_type*,0);
 }
 
-# else
+#  else /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 template <class _Iter>
 inline random_access_iterator_tag 
@@ -211,9 +213,9 @@ __value_type(const _Tp*, const __true_type&) {
   return __STATIC_CAST(_Tp*, 0);
 }
 
-# endif
+#  endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
-#else /* old queries */
+#else /* _STLP_USE_OLD_HP_ITERATOR_QUERIES */
 template <class _Category, class _Tp, class _Distance, class _Pointer, class _Reference>
 inline _Category _STLP_CALL iterator_category(const iterator<_Category,_Tp,_Distance,_Pointer,_Reference>&) { return _Category(); }
 template <class _Category, class _Tp, class _Distance, class _Pointer, class _Reference>
@@ -284,9 +286,6 @@ inline void _STLP_CALL __distance(const _InputIterator& __first, const _InputIte
   _InputIterator __it(__first);
   while (__it != __last) { ++__it; ++__n; }
 }
-
-
-
 
 
 # if defined (_STLP_NONTEMPL_BASE_MATCH_BUG) 
@@ -384,7 +383,8 @@ struct _Const_traits {
   typedef _Tp value_type;
   typedef const _Tp&  reference;
   typedef const _Tp*  pointer;
-  typedef _Nonconst_traits<_Tp> _Non_const_traits;
+  typedef _Const_traits<_Tp> _ConstTraits;
+  typedef _Nonconst_traits<_Tp> _NonConstTraits;
 };
 
 template <class _Tp>
@@ -392,9 +392,38 @@ struct _Nonconst_traits {
   typedef _Tp value_type;
   typedef _Tp& reference;
   typedef _Tp* pointer;
-  typedef _Nonconst_traits<_Tp> _Non_const_traits;
+  typedef _Const_traits<_Tp> _ConstTraits;
+  typedef _Nonconst_traits<_Tp> _NonConstTraits;
 };
 
+/*
+ * dums: A special iterator/const_iterator traits for set and multiset for which even
+ * the iterator is not mutable
+ */
+template <class _Tp>
+struct _Nonconst_Const_traits;
+
+template <class _Tp>
+struct _Const_Const_traits {
+  typedef _Tp value_type;
+  typedef const _Tp&  reference;
+  typedef const _Tp*  pointer;
+  typedef _Const_Const_traits<_Tp> _ConstTraits;
+  typedef _Nonconst_Const_traits<_Tp> _NonConstTraits;
+};
+
+template <class _Tp>
+struct _Nonconst_Const_traits {
+  typedef _Tp value_type;
+  typedef const _Tp& reference;
+  typedef const _Tp* pointer;
+  typedef _Const_Const_traits<_Tp> _ConstTraits;
+  typedef _Nonconst_Const_traits<_Tp> _NonConstTraits;
+};
+
+
+
+/*
 #  if defined (_STLP_BASE_TYPEDEF_BUG)
 // this workaround is needed for SunPro 4.0.1
 template <class _Traits>
@@ -405,6 +434,7 @@ struct __cnst_traits_aux : private _Traits {
 #  else
 #  define __TRAITS_VALUE_TYPE(_Traits) _Traits::value_type
 #  endif
+*/
 
 # if defined (_STLP_MSVC)
 // MSVC specific

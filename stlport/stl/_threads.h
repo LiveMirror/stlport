@@ -19,7 +19,6 @@
 // WARNING: This is an internal header file, included by other C++
 // standard library headers.  You should not attempt to use this header
 // file directly.
-// Stl_config.h should be included before this file.
 
 
 #ifndef _STLP_INTERNAL_THREADS_H
@@ -29,10 +28,6 @@
 // (similar to pthreads, but based on an earlier draft of the Posix
 // threads standard), and Win32 threads.  Uithread support by Jochen
 // Schlick, 1999, and Solaris threads generalized to them.
-
-#ifndef _STLP_CONFIG_H
-#include <stl/_config.h>
-#endif
 
 # if ! defined (_STLP_CSTDDEF)
 #  include <cstddef>
