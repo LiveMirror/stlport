@@ -52,6 +52,20 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_SLIST_BASE >&) {
 }
 # endif
 
+/*
+ * slist special debug traits version.
+ */
+template <class _Traits>
+struct _SlistDbgTraits : _Traits {
+  typedef _SlistDbgTraits<typename _Traits::_ConstTraits> _ConstTraits;
+  typedef _SlistDbgTraits<typename _Traits::_NonConstTraits> _NonConstTraits;
+
+  template <class _Iterator>
+  static bool _Check(const _Iterator& __it) {
+    return !(__it._M_iterator == (__it._Get_container_ptr())->before_begin());
+  }
+};
+
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
 class _DBG_slist : private _STLP_CONSTRUCT_CHECKER(_STLP_DBG_SLIST_BASE),
                    public _STLP_DBG_SLIST_BASE
@@ -68,8 +82,8 @@ public:
 
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
 
-  typedef _DBG_iter<_Base, _Nonconst_traits<value_type> > iterator;
-  typedef _DBG_iter<_Base, _Const_traits<value_type> >    const_iterator;
+  typedef _DBG_iter<_Base, _SlistDbgTraits<_Nonconst_traits<value_type> > > iterator;
+  typedef _DBG_iter<_Base, _SlistDbgTraits<_Const_traits<value_type> > >    const_iterator;
 
 protected:
   __owned_list _M_iter_list;

@@ -200,6 +200,20 @@ _STLP_END_NAMESPACE
 
 _STLP_BEGIN_NAMESPACE
 
+/*
+ * Special debug iterator traits having an additionnal static member
+ * method _Check. It is used by the slit debug implementation to check
+ * the special before_begin iterator.
+ */
+template <class _Traits>
+struct _DbgTraits : _Traits {
+  typedef _DbgTraits<typename _Traits::_ConstTraits> _ConstTraits;
+  typedef _DbgTraits<typename _Traits::_NonConstTraits> _NonConstTraits;
+
+  template <class _Iterator>
+  static bool _Check(const _Iterator&) {return true;}
+};
+
 //=============================================================
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2, 

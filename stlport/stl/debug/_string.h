@@ -61,8 +61,8 @@ protected:
 
 public:
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
-  typedef _DBG_iter<_Base, _Nonconst_traits<value_type> > iterator;
-  typedef _DBG_iter<_Base, _Const_traits<value_type> > const_iterator;
+  typedef _DBG_iter<_Base, _DbgTraits<_Nonconst_traits<value_type> > > iterator;
+  typedef _DBG_iter<_Base, _DbgTraits<_Const_traits<value_type> > > const_iterator;
   _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS;
 
 public:                         // Constructor, destructor, assignment.

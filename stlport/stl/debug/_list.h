@@ -30,16 +30,16 @@
 #ifndef _STLP_INTERNAL_DBG_LIST_H
 #define _STLP_INTERNAL_DBG_LIST_H
 
-# ifndef _STLP_INTERNAL_ALGO_H
+#ifndef _STLP_INTERNAL_ALGO_H
 #  include <stl/_algo.h>
-# endif
+#endif
 
 #include <stl/debug/_iterator.h>
 
-# ifndef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
+#ifndef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
 #  undef  _DBG_list
 #  define _DBG_list list
-# endif
+#endif
 
 #  define _STLP_DBG_LIST_BASE __WORKAROUND_DBG_RENAME(list) <_Tp, _Alloc>
 
@@ -73,8 +73,8 @@ public:
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
 
 public:
-  typedef _DBG_iter<_Base, _Nonconst_traits<value_type> > iterator;
-  typedef _DBG_iter<_Base, _Const_traits<value_type> >    const_iterator;
+  typedef _DBG_iter<_Base, _DbgTraits<_Nonconst_traits<value_type> > > iterator;
+  typedef _DBG_iter<_Base, _DbgTraits<_Const_traits<value_type> > >    const_iterator;
 
   _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS;
 

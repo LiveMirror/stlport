@@ -119,10 +119,10 @@ public:
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
 
   typedef _DBG_iter<_Base,
-      _Vector_nonconst_traits<value_type, typename _Base::iterator> > iterator;
+      _DbgTraits<_Vector_nonconst_traits<value_type, typename _Base::iterator> > > iterator;
     
   typedef _DBG_iter<_Base,
-      _Vector_const_traits<value_type, typename _Base::iterator> > const_iterator;
+      _DbgTraits<_Vector_const_traits<value_type, typename _Base::iterator> > > const_iterator;
 
 protected:
   void _Invalidate_all() {

@@ -69,9 +69,9 @@ public:
   typedef typename _Base::key_type key_type;
   
   typedef typename _Traits::_NonConstTraits _NonConstIteTraits;
-  typedef typename _Traits::_ConstTraits _ConstIteTraits;
-  typedef _DBG_iter<_Base, _NonConstIteTraits> iterator;
-  typedef _DBG_iter<_Base, _ConstIteTraits> const_iterator;
+  typedef typename _Traits::_ConstTraits    _ConstIteTraits;
+  typedef _DBG_iter<_Base, _DbgTraits<_NonConstIteTraits> > iterator;
+  typedef _DBG_iter<_Base, _DbgTraits<_ConstIteTraits> >    const_iterator;
 
   _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS;
 

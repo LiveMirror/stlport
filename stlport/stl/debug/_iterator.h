@@ -305,6 +305,7 @@ _STLP_TYPENAME_ON_RETURN_TYPE _DBG_iter<_Container, _Traits>::reference
 #endif
 _DBG_iter<_Container, _Traits>::operator*() const {
   _STLP_DEBUG_CHECK(_Dereferenceable(*this))
+  _STLP_DEBUG_CHECK(_Traits::_Check(*this))
   return *this->_M_iterator;
 }
 
