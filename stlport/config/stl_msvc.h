@@ -93,27 +93,21 @@
 #endif	//	(_STLP_MSVC >= 1300)
 
 # if (_STLP_MSVC <= 1300) 
+#  define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1
+#  define _STLP_NO_FUNCTION_TMPL_PARTIAL_ORDER 1
+// there is no partial spec, and MSVC breaks on simulating it for iterator_traits queries
+#  define _STLP_USE_OLD_HP_ITERATOR_QUERIES
+#  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
 #  define _STLP_NO_METHOD_SPECIALIZATION 1
 #  define _STLP_DEF_CONST_PLCT_NEW_BUG 1
 #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
-#  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
-// fails to properly resolve call to sin() from within sin()
-#  define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
 #  define _STLP_NO_TYPENAME_ON_RETURN_TYPE 1
-// boris : not defining this macro for SP5 causes other problems
-// #  if !defined (_MSC_FULL_VER) || (_MSC_FULL_VER < 12008804 )
-#  define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
-//#  endif
-#  define _STLP_NO_FUNCTION_TMPL_PARTIAL_ORDER 1
-#  define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1
-#  define _STLP_NO_FRIEND_TEMPLATES
 // VC++ cannot handle default allocator argument in template constructors
 #  define _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
-// there is no partial spec, and MSVC breaks on simulating it for iterator_traits queries
-#  define _STLP_USE_OLD_HP_ITERATOR_QUERIES
-// #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
 #  define _STLP_NO_QUALIFIED_FRIENDS    1
-#  define _STLP_DONT_USE_BOOL_TYPEDEF 1
+#  define _STLP_NO_FRIEND_TEMPLATES
+// fails to properly resolve call to sin() from within sin()
+#  define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
 # endif /* _STLP_MSVC <= 1300 */
 
 # if (_STLP_MSVC <= 1200)
@@ -129,7 +123,13 @@
 #  ifdef _DLL
 #    define _STLP_NO_MEMBER_TEMPLATES 1
 #  endif
+
 */
+// boris : not defining this macro for SP5 causes other problems
+//#  if !defined (_MSC_FULL_VER) || (_MSC_FULL_VER < 12008804 )
+#  define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
+//#  endif
+#  define _STLP_DONT_USE_BOOL_TYPEDEF 1
 # endif
 
 # endif /* _STLP_MSVC */
@@ -273,7 +273,7 @@
 #endif
 
 # ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
-#  if defined(_STLP_MSVC) && _STLP_MSVC > 1300
+#  if defined(_STLP_MSVC) && _STLP_MSVC >= 1300
 #   define _STLP_IMPORT_TEMPLATE_KEYWORD
 #  else
 #   define _STLP_IMPORT_TEMPLATE_KEYWORD  extern
