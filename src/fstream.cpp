@@ -35,7 +35,7 @@
 extern "C" {
 // open/close/read/write
 #  include <sys/stat.h>           // For stat
-#if !defined (_CRAY)
+#if !defined (_CRAY) && ! defined (__EMX__)
 #  include <sys/mman.h>           // For mmap
 #endif
 
