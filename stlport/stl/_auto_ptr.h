@@ -19,6 +19,11 @@
 #ifndef _STLP_AUTO_PTR_H
 # define _STLP_AUTO_PTR_H
 
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  define _STLP_FILE_UNIQUE_ID AUTO_PTR_H
+_STLP_DEFINE_THIS_FILE();
+# endif
+
 _STLP_BEGIN_NAMESPACE
 // implementation primitive
 class __ptr_base {
@@ -120,6 +125,10 @@ public:
 	
 };
 _STLP_END_NAMESPACE
+
+# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
+#  undef _STLP_FILE_UNIQUE_ID
+# endif
 
 #endif /* _STLP_AUTO_PTR_H */
 

@@ -65,10 +65,10 @@ public:
 public:                         // Constructor, destructor, assignment.
   typedef typename _Base::_Reserve_t _Reserve_t;
 
-protected:
   const _Base* _Get_base() const { return (const _Base*)this; }
   _Base* _Get_base() { return (_Base*)this; }
 
+protected:
   mutable __owned_list _M_iter_list;
   void _Invalidate_all() {
     _M_iter_list._Invalidate_all();
