@@ -247,13 +247,11 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
         if (__ps.empty()) {
           if (__ns.empty())
             break;
-          if (*__s == ++__ns[0]) {
+          if (*__s == __ns[0]) {
             ++__s;
             __is_positive = false;
-            break;
           }
-          __err = ios_base::failbit;
-//        return __s;
+          break;
         } 
         else {
           if (*__s == __ps[0]) {
@@ -268,11 +266,9 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
             break;
           }
           __err = ios_base::failbit;
-//        return __s;
         }
       }
       return __s;
-      //      break;
     }
     case money_base::value: {
       char_type __point = __intl ? __punct_intl.decimal_point()
@@ -311,7 +307,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
         __result = __get_string(__s, __end, __ps.begin() + 1, __ps.end());
       __s = __result.first;
       if (!__result.second)
-	__err |= ios::failbit;
+	      __err |= ios::failbit;
     }
     if (!(__err & ios_base::failbit))
       __digits = __buf;
@@ -322,11 +318,11 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
         __result = __get_string(__s, __end, __ns.begin() + 1, __ns.end());
       __s = __result.first;
       if (!__result.second)
-	__err |= ios::failbit;
+	      __err |= ios::failbit;
     }
     if (!(__err & ios::failbit)) {
-      __buf.insert(__buf.begin(),__c_type.widen('-'));
-      __digits = __buf;
+      __digits = __c_type.widen('-');
+      __digits += __buf;
     }
   }
   if (__s == __end)

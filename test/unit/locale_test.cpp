@@ -117,19 +117,18 @@ void LocaleTest::money_put_get() {
   CPPUNIT_ASSERT( str_res[6] == '5' );
   CPPUNIT_ASSERT( str_res[7] == '6' );
   CPPUNIT_ASSERT( str_res[8] == ' ' );
-  CPPUNIT_ASSERT( str_res.substr(8, intl_fmp.curr_symbol().size()) == intl_fmp.curr_symbol() );
-  CPPUNIT_ASSERT( str_res.size() == 8 + intl_fmp.curr_symbol().size() );
+  CPPUNIT_ASSERT( str_res.substr(9, intl_fmp.curr_symbol().size()) == intl_fmp.curr_symbol() );
+  CPPUNIT_ASSERT( str_res.size() == 9 + intl_fmp.curr_symbol().size() );
 
-  ios_base::iostate err;
+  ios_base::iostate err = ios_base::goodbit;
   string digits;
-  string::iterator sit;
 
-#if 0 // wrong: string::iterator isn't input iterator, problem in line below
-  sit = fmg.get(str_res.begin(), str_res.end(), true, ostr, err, digits);
-  CPPUNIT_ASSERT( (err & (failbit | badbit)) == 0 );
-  CPPUNIT_ASSERT( sit == str_res.end() );
+  istringstream istr(str_res);
+  fmg.get(istr, istreambuf_iterator<char>(), true, ostr, err, digits);
+  CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
   CPPUNIT_ASSERT( digits == "123456" );
 
+  ostr.str("");
   moneypunct<char, false> const&dom_fmp = use_facet<moneypunct<char, false> >(*floc);
   res = fmp.put(ostr, false, ostr, ' ', -123456);
 
@@ -155,9 +154,8 @@ void LocaleTest::money_put_get() {
   err = 0;
   _STLP_LONG_DOUBLE val;
 
-  sit = fmg.get(str_res.begin(), str_res.end(), false, ostr, err, val);
-  CPPUNIT_ASSERT( (err & (failbit | badbit)) == 0 );
-  CPPUNIT_ASSERT( sit == str_res.end() );
+  istr.str(str_res);
+  fmg.get(istr, istreambuf_iterator<char>(), false, ostr, err, val);
+  CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
   CPPUNIT_ASSERT( val == -1234.56 );
-#endif
 }
