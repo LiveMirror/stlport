@@ -323,7 +323,7 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
 }
 
 void LocaleTest::locale_by_name() {
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
   /*
    * Check of the 22.1.1.2.7 standard point. Construction of a locale
    * instance from a null pointer or an unknown name should result in 
@@ -395,14 +395,14 @@ void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale& rl )
     locale::global( gloc );
   }
 
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
   try {
 #endif
     ostringstream os("test") ;
     locale loc2( loc, new my_facet() );
     CPPUNIT_ASSERT( has_facet<my_facet>( loc2 ) );
     os.imbue( loc2 );
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
   }
   catch ( runtime_error& ) {
     CPPUNIT_ASSERT( false );
@@ -413,11 +413,11 @@ void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale& rl )
   }
 #endif
 
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
   try {
 #endif
     ostringstream os2("test2");
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
   }
   catch ( runtime_error& ) {
     CPPUNIT_ASSERT( false );

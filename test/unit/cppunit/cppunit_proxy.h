@@ -28,7 +28,7 @@
  /*
   * STLport specific
   */
-#if defined _STLP_USE_EXCEPTIONS && !defined _STLP_NO_EXCEPTIONS
+#if defined _STLP_USE_EXCEPTIONS
 # define CPPUNIT_MINI_USE_EXCEPTIONS
 #endif
 

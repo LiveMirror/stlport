@@ -283,8 +283,8 @@ __GIVE_UP_WITH_STL(GCC_272);
 //#endif
 
 #ifndef __EXCEPTIONS
-#  undef  _STLP_HAS_NO_EXCEPTIONS
-#  define _STLP_HAS_NO_EXCEPTIONS  1
+#  undef  _STLP_DONT_USE_EXCEPTIONS
+#  define _STLP_DONT_USE_EXCEPTIONS 1
 #endif
 
 #if (__GNUC__ >= 3)

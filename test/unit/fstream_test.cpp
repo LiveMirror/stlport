@@ -239,7 +239,7 @@ void FstreamTest::streambuf_output()
     CPPUNIT_ASSERT( ostr.str() == "0123456789" );
   }
 
-#if !defined (_STLP_NO_EXCEPTIONS)
+#if defined (_STLP_USE_EXCEPTIONS)
   {
     //If the output stream buffer throws:
     ifstream in("test_file.txt", ios_base::binary);

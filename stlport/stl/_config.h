@@ -895,58 +895,62 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define __TRIVIAL_STUFF(__type)  \
   __TRIVIAL_CONSTRUCTOR(__type) __TRIVIAL_DESTRUCTOR(__type)
 
-# if defined (_STLP_HAS_NO_EXCEPTIONS)
+#if defined (_STLP_HAS_NO_EXCEPTIONS)
 #  define _STLP_NO_EXCEPTIONS
-# endif
+#endif
 
-# if !defined ( _STLP_NO_EXCEPTIONS ) && !defined ( _STLP_USE_EXCEPTIONS )
+#if !defined (_STLP_DONT_USE_EXCEPTIONS) && !defined (_STLP_NO_EXCEPTIONS) && !defined (_STLP_USE_EXCEPTIONS)
 #  define _STLP_USE_EXCEPTIONS
-# endif 
+#endif 
 
-# ifdef _STLP_USE_EXCEPTIONS
-#   define _STLP_TRY try
-#   define _STLP_CATCH_ALL catch(...)
-#   ifndef _STLP_THROW
+#ifdef _STLP_USE_EXCEPTIONS
+#  define _STLP_TRY try
+#  define _STLP_CATCH_ALL catch(...)
+#  ifndef _STLP_THROW
 #    define _STLP_THROW(x) throw x
-#   endif
-#   define _STLP_RETHROW throw
+#  endif
+#  define _STLP_RETHROW throw
 
-#   define _STLP_UNWIND(action) catch(...) { action; throw; }
+#  define _STLP_UNWIND(action) catch(...) { action; throw; }
 
-#   ifdef _STLP_THROW_RETURN_BUG
-#     define _STLP_RET_AFTER_THROW(data) return data;
-#   else
-#     define _STLP_RET_AFTER_THROW(data)
-#   endif
+#  ifdef _STLP_THROW_RETURN_BUG
+#    define _STLP_RET_AFTER_THROW(data) return data;
+#  else
+#    define _STLP_RET_AFTER_THROW(data)
+#  endif
 
-#   if !defined ( _STLP_NO_EXCEPTION_SPEC )
-#    define _STLP_THROWS_INHERENTLY(x) throw x
-#    define _STLP_NOTHROW_INHERENTLY throw()
-#   else
-#    define _STLP_THROWS_INHERENTLY(x)
-#    define _STLP_NOTHROW_INHERENTLY 
-#   endif
 /* We do not use exception throw specifications unless we are forced to */
-#   if !defined(_STLP_THROWS)
-#     define _STLP_THROWS(x)
-#   endif
-#   if !defined(_STLP_NOTHROW)
-#     define _STLP_NOTHROW
-#   endif
-# else
-#   define _STLP_TRY 
-#   define _STLP_CATCH_ALL if (false)
-#   ifndef _STLP_THROW
+#  if !defined(_STLP_THROWS)
+#    define _STLP_THROWS(x)
+#  endif
+#  if !defined(_STLP_NOTHROW)
+#    define _STLP_NOTHROW
+#  endif
+#else
+#  define _STLP_TRY 
+#  define _STLP_CATCH_ALL if (false)
+#  ifndef _STLP_THROW
 #    define _STLP_THROW(x)
-#   endif
-#   define _STLP_RETHROW {}
-#   define _STLP_UNWIND(action) 
-#   define _STLP_THROWS(x)
-#   define _STLP_NOTHROW
-#   define _STLP_RET_AFTER_THROW(data)
-#   define _STLP_THROWS_INHERENTLY(x)
-#   define _STLP_NOTHROW_INHERENTLY 
-# endif
+#  endif
+#  define _STLP_RETHROW {}
+#  define _STLP_UNWIND(action) 
+#  define _STLP_THROWS(x)
+#  define _STLP_NOTHROW
+#  define _STLP_RET_AFTER_THROW(data)
+#endif
+
+/*
+ * Here we check _STLP_NO_EXCEPTIONS which means that the compiler has no
+ * exception support but not the _STLP_USE_EXCEPTIONS which simply means
+ * that the user do not want to use them.
+ */
+#if !defined (_STLP_NO_EXCEPTIONS) && !defined (_STLP_NO_EXCEPTION_SPEC)
+#  define _STLP_THROWS_INHERENTLY(x) throw x
+#  define _STLP_NOTHROW_INHERENTLY throw()
+#else
+#  define _STLP_THROWS_INHERENTLY(x)
+#  define _STLP_NOTHROW_INHERENTLY 
+#endif
 
 #if defined(_STLP_NO_BOOL)
 # if (defined (__IBMCPP__) && (__IBMCPP__ < 400)) && ! defined (_AIX)
@@ -1082,6 +1086,12 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  if defined (__DECCXX) && ! defined (__USE_STD_IOSTREAM)
 #    define __USE_STD_IOSTREAM
 #  endif
+
+/* We only need to expose details of streams implementation 
+   if we use non-standard i/o or are building STLport*/
+# if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE) || !defined(_STLP_NO_CUSTOM_IO)
+#  define _STLP_EXPOSE_STREAM_IMPLEMENTATION 1
+# endif
 
 /* We only need to expose details of global implementation if we are building STLport 
    or have not instantiated everything in the lib */

@@ -1,6 +1,6 @@
 #include <vector>
 #include <algorithm>
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
 # include <stdexcept>
 #endif
 
@@ -260,7 +260,7 @@ void VectorTest::at() {
   v.at(0) = 20;
   CPPUNIT_ASSERT( cv.at(0) == 20 );
   
-#ifndef _STLP_NO_EXCEPTIONS
+#ifdef _STLP_USE_EXCEPTIONS
   while (true) {
     try {
       v.at(1) = 20;

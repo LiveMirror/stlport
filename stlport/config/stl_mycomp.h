@@ -106,6 +106,10 @@
 // Uncomment this if your compiler does not support exceptions
 // #  define _STLP_HAS_NO_EXCEPTIONS 1
 
+// Uncomment this when you are able to detect that the user do not
+// want to use the exceptions feature.
+// #  define _STLP_DONT_USE_EXCEPTIONS 1
+
 // Uncomment this if your compiler does not support exception specifications
 // #  define _STLP_NO_EXCEPTION_SPEC
 

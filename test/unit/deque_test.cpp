@@ -1,6 +1,6 @@
 #include <deque>
 #include <algorithm>
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
 # include <stdexcept>
 #endif
 
@@ -70,7 +70,7 @@ void DequeTest::at() {
   d.at(0) = 20;
   CPPUNIT_ASSERT( cd.at(0) == 20 );
   
-#ifndef _STLP_NO_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
   while (true) {
     try {
       d.at(1) = 20;

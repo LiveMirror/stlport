@@ -44,9 +44,9 @@
 # define _STLP_PRAGMA_ONCE
 
 // these switches depend on compiler flags
-# ifndef _CPPUNWIND
-#  define _STLP_HAS_NO_EXCEPTIONS 1
-# endif
+#ifndef _CPPUNWIND
+#  define _STLP_DONT_USE_EXCEPTIONS 1
+#endif
 
 #ifndef _STLP_MSVC
 # define _STLP_VENDOR_UNEXPECTED_STD
@@ -87,7 +87,7 @@
 
 #if (_STLP_MSVC >= 1300)
 #  undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
-#  if !defined (_STLP_HAS_NO_EXCEPTIONS)
+#  if !defined (_STLP_DONT_USE_EXCEPTIONS)
 #    define _STLP_NOTHROW throw()
 #  endif
 #endif	//	(_STLP_MSVC >= 1300)

@@ -12,7 +12,7 @@ using namespace std;
 class AllocatorTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(AllocatorTest);
-#if !defined (_STLP_NO_EXCEPTIONS)
+#if defined (_STLP_USE_EXCEPTIONS)
   CPPUNIT_TEST(bad_alloc_test);
 #endif
   CPPUNIT_TEST_SUITE_END();
@@ -27,7 +27,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(AllocatorTest);
 // tests implementation
 //
 
-#if !defined (_STLP_NO_EXCEPTIONS)
+#if defined (_STLP_USE_EXCEPTIONS)
 
 struct BigStruct 
 {
