@@ -251,7 +251,7 @@ void  _STLP_CALL ios_base::_S_initialize()
 # endif /*  _STLP_NO_WCHAR_T */
 #endif /* _STLP_WINCE */
 
-    --ios_base::Init::_S_count;
+    ++ios_base::Init::_S_count;
   }
 
   _STLP_CATCH_ALL {}
