@@ -12,7 +12,7 @@ include ${SRCROOT}/Makefiles/top.mak
 INCLUDES += -I${STLPORT_INCLUDE_DIR}
 DEFS += -D_STLP_NO_CUSTOM_IO
 
-ifeq ($(OSNAME), cygwin)
+ifeq ($(OSNAME), cygming)
 release-shared:	DEFS += -D_STLP_USE_DYNAMIC_LIB
 dbg-shared:	DEFS += -D_STLP_USE_DYNAMIC_LIB
 stldbg-shared:	DEFS += -D_STLP_USE_DYNAMIC_LIB
@@ -26,10 +26,10 @@ release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 
-ifeq ($(OSNAME),cygwin)
-release-shared : LDLIBS = -lstlport_gcc_r50
-dbg-shared     : LDLIBS = -lstlport_gcc_d50
-stldbg-shared  : LDLIBS = -lstlport_gcc_stld50
+ifeq ($(OSNAME),cygming)
+release-shared : LDLIBS = -lstlport_r50
+dbg-shared     : LDLIBS = -lstlport_d50
+stldbg-shared  : LDLIBS = -lstlport_stld50
 else
 release-shared : LDLIBS = -lstlport_gcc
 dbg-shared     : LDLIBS = -lstlport_gcc_debug
