@@ -123,7 +123,7 @@
 #endif /* xlC 5 */
 
 /* detect xlC5 by: */
-#if defined(__IBMCPP__) && (500 <= __IBMCPP__) && (__IBMCPP__ < 600)
+#if defined(__IBMCPP__) && (500 <= __IBMCPP__) && (__IBMCPP__ < 700)
 #define _STLP_USE_EXCEPTIONS 1
 #define _STLP_STATIC_CONST_INIT_BUG 1 
 //#pragma report(disable,CPPC1500029)

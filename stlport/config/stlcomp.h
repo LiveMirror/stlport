@@ -47,6 +47,9 @@
 # if defined (__xlC__)  || defined (__IBMC__) || defined ( __IBMCPP__ ) 
 /* AIX xlC, Visual Age C++ , OS-390 C++ */
 #  include <config/stl_ibm.h>
+# elif defined (__INTEL_COMPILER) && defined(__unix__)
+/* Check intel before gcc, since newer versions define __GNUC__ */
+#  include <config/stl_icc.h>
 # elif defined (__GNUC__ )
 #  include <config/stl_gcc.h>
 # elif defined (__KCC)
