@@ -59,7 +59,7 @@ CPP_PRJ_IOS =
 !IF "$(LIBTYPE)" == "STATIC"
 CPP_PRJ_LIBTYP = /D_STLP_USE_STATIC_LIB /MT
 !ELSE
-CPP_PRJ_LIBTYP = /D_STLP_USE_DYNAMIC_LIB /MD
+CPP_PRJ_LIBTYP = /MD
 !ENDIF
 
 !IF "$(DEBUG)" == ""
@@ -84,7 +84,7 @@ check: eh_test.out
 eh_test.out : $(Dep_stl)
 	$(CPP) $(CPP_PROJ) $(Dep_stl) /Feeh_test.exe $(CPP_PRJ_LINK)
 #  	    fbp : this is to locate DLL
-        cd ..\..\lib
+        cd ..\..\bin
 	..\test\eh\eh_test.exe -s 100
 	echo done
 

@@ -47,12 +47,13 @@
 # ifndef _STLP_USE_NEWALLOC
 #  define _STLP_USE_NEWALLOC
 # endif
-# if !defined  (_STLP_NO_CUSTOM_IO) && ! defined (__BORLANDC__)
+
+# if 0 // !defined  (_STLP_NO_CUSTOM_IO) && ! defined (__BORLANDC__)
 #  define _STLP_NO_CUSTOM_IO
 # endif
 
 // Just include something to get whatever configuration header we're using.
-# include <stl/_config.h>
+# include <utility>
 
 # ifndef _STLP_CALL
 #  define _STLP_CALL
