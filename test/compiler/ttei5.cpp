@@ -7,6 +7,7 @@
  *   gcc 3.3.3
  *
  *   MSVC 6
+ *   MSVC 8 Beta
  */
 
 /*
@@ -30,6 +31,7 @@ struct A
             static void f( T& ) {}
         };
 
+        template <>
         struct C<true>
         {
             template <typename T>

@@ -6,6 +6,7 @@
  *   gcc 3.3.3
  *   gcc 3.4.1
  *   MSVC 6
+ *   MSVC 8
  */
 
 struct A
