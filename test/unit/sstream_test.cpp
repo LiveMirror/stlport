@@ -22,6 +22,8 @@ class SstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(maxint);
   CPPUNIT_TEST(init_in);
   CPPUNIT_TEST(init_out);
+  CPPUNIT_TEST(buf);
+  CPPUNIT_TEST(rdbuf);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -33,6 +35,8 @@ class SstreamTest : public CPPUNIT_NS::TestCase
     void maxint();
     void init_in();
     void init_out();
+    void buf();
+    void rdbuf();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SstreamTest);
@@ -187,3 +191,46 @@ void SstreamTest::init_out()
   CPPUNIT_ASSERT( os.good() );
   CPPUNIT_ASSERT( os.str() == "10ab" );
 }
+
+void SstreamTest::buf()
+{
+  stringstream ss;
+
+  ss << "1234567\n89\n";
+  char buf[10];
+  buf[7] = 'x';
+  ss.get( buf, 10 );
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( buf[0] == '1' );
+  CPPUNIT_ASSERT( buf[1] == '2' );
+  CPPUNIT_ASSERT( buf[2] == '3' );
+  CPPUNIT_ASSERT( buf[3] == '4' );
+  CPPUNIT_ASSERT( buf[4] == '5' );
+  CPPUNIT_ASSERT( buf[5] == '6' );
+  CPPUNIT_ASSERT( buf[6] == '7' ); // 27.6.1.3 paragraph 10, paragraph 7
+  CPPUNIT_ASSERT( buf[7] == 0 ); // 27.6.1.3 paragraph 8
+  char c;
+  c = ss.get();
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 10, paragraph 7
+  c = ss.get();
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( c == '8' );
+}
+
+void SstreamTest::rdbuf()
+{
+  stringstream ss;
+
+  ss << "1234567\n89\n";
+
+  ostringstream os;
+  ss.get( *os.rdbuf(), '\n' );
+  CPPUNIT_ASSERT( !ss.fail() );
+  char c;
+  c = ss.get();
+  CPPUNIT_ASSERT( !ss.fail() );
+  CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 12
+  CPPUNIT_ASSERT( os.str() == "1234567" );
+}
+
