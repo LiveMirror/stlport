@@ -1,3 +1,12 @@
+2005-03-25  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stddef.h: fix typo in header id---this mistake prevent
+	inclusion _epilog.h.
+
+	* test/unit/epilog_test.cpp: regression test for bug above.
+
+	* stlport/cstdio: fix header id to avoid possible errors.
+
 2005-03-24  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/lib/gcc.mak, build/Makefiles/gmake/app/gcc.mak:
