@@ -107,6 +107,14 @@
 // #define   _STLP_USE_MALLOC 1
 
 /*
+ * Uncomment _STLP_USE_PERTHREAD_ALLOC to force allocator<T> to use 
+ * a specific implementation targetting the massively multi-threaded
+ * environment. The implementation is based on the POSIX pthread
+ * interface.
+ */
+// #define _STLP_USE_PERTHREAD_ALLOC 1
+
+/*
  * Set _STLP_DEBUG_ALLOC to use allocators that perform memory debugging,
  * such as padding/checking for memory consistency 
  */

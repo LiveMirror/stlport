@@ -954,6 +954,13 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define _STLP_IMPORT_TEMPLATE_KEYWORD
 # endif
 
+#ifdef _STLP_NO_OWN_IOSTREAMS
+/*
+ * If we do not use own iostream there is no reason to use the export/import
+ * techniques as there is no library to link with.
+ */
+#  undef _STLP_USE_DECLSPEC
+#endif
 
 # if  defined (_STLP_DLLEXPORT_NEEDS_PREDECLARATION) && defined (_STLP_USE_DECLSPEC)
 #  if ! defined (_STLP_USE_TEMPLATE_EXPORT)
@@ -975,7 +982,7 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define  _STLP_EXPORT_TEMPLATE _STLP_EXPORT template
 # endif
 
-#if defined (_STLP_USE_DECLSPEC) /* using export/import technique */
+#if defined(_STLP_USE_DECLSPEC) /* using export/import technique */
 
 #  ifndef _STLP_EXPORT_DECLSPEC
 #    define _STLP_EXPORT_DECLSPEC
@@ -1083,20 +1090,20 @@ _TMPL inline bool _STLP_CALL operator>=(const _TP& __x, const _TP& __y) { return
 #  define _STLP_RELOPS_OPERATORS(_TMPL, _TP)
 # endif
 
-# if defined (_STLP_FULL_ADL_IMPLEMENTED) && defined (_STLP_NO_OWN_IOSTREAMS) && !defined (_STLP_USE_NO_IOSTREAMS)
-#  error "Invalid configuration, STLport wrapper iostream mode can't be used with compiler \
+#if defined (_STLP_FULL_ADL_IMPLEMENTED) && defined (_STLP_NO_OWN_IOSTREAMS) && !defined (_STLP_USE_NO_IOSTREAMS)
+#  error Invalid configuration, STLport wrapper iostream mode can't be used with compiler \
 implementing full Argument Dependent Lookup. Please turn off _STLP_NO_OWN_IOSTREAMS switch \
-or turn on _STLP_USE_NO_IOSTREAMS if you are not using any component of the iostream library."
-# endif /* _STLP_FULL_ADL_IMPLEMENTED && _STLP_NO_OWN_IOSTREAMS */
+or turn on _STLP_USE_NO_IOSTREAMS if you are not using any component of the iostream library.
+#endif /* _STLP_FULL_ADL_IMPLEMENTED && _STLP_NO_OWN_IOSTREAMS */
 
-# if defined (_STLP_USE_TEMPLATE_EXPRESSION) && defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES)
+#if defined (_STLP_USE_TEMPLATE_EXPRESSION) && defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES)
 #  error Your compiler is not able to handle template expressions. \
 Please turn off _STLP_USE_TEMPLATE_EXPRESSION switch.
-# endif /* _STLP_USE_TEMPLATE_EXPRESSION && _STLP_NO_MEMBER_TEMPLATE_CLASSES */
+#endif /* _STLP_USE_TEMPLATE_EXPRESSION && _STLP_NO_MEMBER_TEMPLATE_CLASSES */
 
-# if defined (_STLP_DEBUG) && defined (_STLP_NO_OWN_IOSTREAMS)
-#  error "The special STLport debug mode can only be used with own STLport iostream"
-# endif /* _STLP_DEBUG && _STLP_NO_OWN_IOSTREAMS */
+#if defined (_STLP_DEBUG) && defined (_STLP_NO_OWN_IOSTREAMS) && !defined (_STLP_USE_NO_IOSTREAMS)
+#  error The STLport debug mode can only be used with own STLport iostream.
+#endif /* _STLP_DEBUG && _STLP_NO_OWN_IOSTREAMS */
 
 
 # if defined ( _STLP_USE_ABBREVS )

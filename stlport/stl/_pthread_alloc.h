@@ -26,18 +26,26 @@
 #ifndef _STLP_PTHREAD_ALLOC_H
 #define _STLP_PTHREAD_ALLOC_H
 
-// Pthread-specific node allocator.
-// This is similar to the default allocator, except that free-list
-// information is kept separately for each thread, avoiding locking.
-// This should be reasonably fast even in the presence of threads.
-// The down side is that storage may not be well-utilized.
-// It is not an error to allocate memory in thread A and deallocate
-// it in thread B.  But this effectively transfers ownership of the memory,
-// so that it can only be reallocated by thread B.  Thus this can effectively
-// result in a storage leak if it's done on a regular basis.
-// It can also result in frequent sharing of
-// cache lines among processors, with potentially serious performance
-// consequences.
+/*
+ * Pthread-specific node allocator.
+ * This is similar to the default allocator, except that free-list
+ * information is kept separately for each thread, avoiding locking.
+ * This should be reasonably fast even in the presence of threads.
+ * The down side is that storage may not be well-utilized.
+ * It is not an error to allocate memory in thread A and deallocate
+ * it in thread B.  But this effectively transfers ownership of the memory,
+ * so that it can only be reallocated by thread B.  Thus this can effectively
+ * result in a storage leak if it's done on a regular basis.
+ * It can also result in frequent sharing of
+ * cache lines among processors, with potentially serious performance
+ * consequences.
+ */
+
+#ifndef _STLP_PTHREADS
+#  error POSIX specific allocator implementation. Your system do not seems to \
+have this interface so please comment the _STLP_USE_PERTHREAD_ALLOC macro \
+or report to the STLport forum.
+#endif
 
 #include <pthread.h>
 

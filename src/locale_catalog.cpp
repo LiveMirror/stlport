@@ -177,10 +177,12 @@ __release_category(void* cat,
           void* cat1 = (*it).second.first;
           destroy_fun(cat1);
           pM->erase(it);
+#ifdef _STLP_LEAKS_PEDANTIC
           if (pM->empty()) {
             delete pM;
             *M = 0;
           }
+#endif /* _STLP_LEAKS_PEDANTIC */
         }
       }
     }

@@ -1,3 +1,12 @@
+2004-06-24  Francois Dumont  <dums@...>
+
+  * stlport/stl/_site_config.h: Addition of an entry for the per thread
+  allocator configuration.
+
+  * stlport/stl/_config.h: Avoid use of the import/export technique
+  when not using own iostreams. This way you can use the STLport debug
+  mode without building the libraries.
+
 2004-06-23  Francois Dumont  <dums@...>
 
   * extension of the cygwin link problem workaround for mingw32.
