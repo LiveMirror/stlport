@@ -1,3 +1,17 @@
+2005-01-31  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.c: Fix of the _M_copy_from method thanks Jay.
+
+	* stlport/stl/_vector.c: Fix of the _M_insert_fill_aux method thanks
+	Mike Roberts report.
+
+	* test/unit/unordered_test.cpp: Add of a test for the hashtable fix above.
+
+	* src/vc_warning_disable.h: Add of the missing 4503 warning disable for MSVC6.
+
+	* test/unit/nmake-vc-common.mak: Add of the _STLP_DEBUG_UNINITIALIZED macro
+	definition for the debug and stldebug rules.
+
 2005-01-28  Francois Dumont  <dums@stlport...>
 
 	* Application of a patch from Michael Fink for EVC MIPSS.

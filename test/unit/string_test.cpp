@@ -356,7 +356,10 @@ void StringTest::insert()
   CPPUNIT_ASSERT( str0 == "00000" );
 
   string str1;
-  str1.insert(0u, 2, '1');
+  {
+    string::size_type pos = 0, nb = 2;
+    str1.insert(pos, nb, '1');
+  }
   CPPUNIT_ASSERT( str1 == "11" );
 
   str0.insert(0, str1);

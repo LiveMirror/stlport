@@ -352,7 +352,7 @@ template <class _Val, class _Key, class _HF,
           class _Traits, class _ExK, class _EqK, class _All>
 void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   ::resize(size_type __num_elements_hint) {
-  const size_type __old_n = _M_buckets.size();
+  const size_type __old_n = bucket_count();
   if ((float)__num_elements_hint / (float)__old_n > _M_max_load_factor) {
     const size_type __n = _STLP_PRIV::_Stl_prime_type::_S_next_size(__num_elements_hint);
     if ((__n + 1) > __old_n) {
@@ -411,14 +411,19 @@ void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   _M_buckets.resize(__ht._M_buckets.size());
   _ElemsConstIte __src(__ht._M_elems.begin()), __src_end(__ht._M_elems.end());
   _ElemsIte __dst(_M_elems.begin());
-  typename _BucketVector::const_iterator __src_b(__ht._M_buckets.begin());
-  typename _BucketVector::iterator __dst_b(_M_buckets.begin());
+  typename _BucketVector::const_iterator __src_b(__ht._M_buckets.begin()), 
+                                         __src_end_b(__ht._M_buckets.end());
+  typename _BucketVector::iterator __dst_b(_M_buckets.begin()), __dst_end_b(_M_buckets.end());
   for (; __src != __src_end; ++__src, ++__dst) {
-    if (*__src_b == _M_get_bucket_val(__src)) {
-      *__dst_b = _M_get_bucket_val(__dst);
-      ++__src_b; ++__dst_b;
+    for (; __src_b != __src_end_b; ++__src_b, ++__dst_b) {
+      if (*__src_b == __ht._M_get_bucket_val(__src)) {
+        *__dst_b = _M_get_bucket_val(__dst);
+      }
+      else
+        break;
     }
   }
+  _STLP_STD::fill(__dst_b, __dst_end_b, _M_get_bucket_val(_M_elems.end()));
   _M_num_elements = __ht._M_num_elements;
   _M_max_load_factor = __ht._M_max_load_factor;
 }

@@ -124,7 +124,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __
     _STLP_STD::_Move_Construct(__dst, *__src);
     _STLP_STD::_Destroy_Moved(__src);
   }
-  _STLP_STD::fill(__pos, __dst, __x);
+  __uninitialized_fill_n(__pos, __n, __x, _PODType());
   this->_M_finish += __n;
 }
 template <class _Tp, class _Alloc>

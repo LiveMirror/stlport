@@ -1,5 +1,6 @@
 #include <vector>
 #include <algorithm>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -19,6 +20,7 @@ class UnorderedTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(umultiset);
   CPPUNIT_TEST(umap);
   CPPUNIT_TEST(umultimap);
+  CPPUNIT_TEST(user_case);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -26,6 +28,7 @@ protected:
   void umultiset();
   void umap();
   void umultimap();
+  void user_case();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UnorderedTest);
@@ -218,4 +221,27 @@ void UnorderedTest::umultimap()
     CPPUNIT_ASSERT( us_val[i * 2] == p );
     CPPUNIT_ASSERT( us_val[i * 2 + 1] == p );
   }
+}
+
+void UnorderedTest::user_case()
+{
+  typedef unordered_map<int, string> UnorderedMap1;
+  typedef unordered_map<int, UnorderedMap1> UnorderedMap2;
+
+  UnorderedMap1 foo;
+  UnorderedMap2 bar;
+
+  foo.insert(make_pair(1, string("test1")));
+  foo.insert(make_pair(2, string("test2")));
+  foo.insert(make_pair(3, string("test3")));
+  foo.insert(make_pair(4, string("test4")));
+  foo.insert(make_pair(5, string("test5")));
+
+  bar.insert(make_pair(0, foo));
+  UnorderedMap2::iterator it = bar.find(0);
+  CPPUNIT_ASSERT( it != bar.end() );
+
+  UnorderedMap1 &body = it->second;
+  UnorderedMap1::iterator cur = body.find(3);
+  CPPUNIT_ASSERT( cur != body.end() );
 }

@@ -9,6 +9,7 @@
 #  pragma warning( disable : 4097 ) // typedef-name used as based class of (...)
 #  pragma warning( disable : 4251 ) // DLL interface needed
 #  pragma warning( disable : 4284 ) // for -> operator
+#  pragma warning( disable : 4503 ) // decorated name length exceeded, name was truncated
 #  pragma warning( disable : 4511 ) // copy constructor cannot be generated
 #  pragma warning( disable : 4514 ) // unreferenced inline function has been removed
 #  pragma warning( disable : 4660 ) // template-class specialization '...' is already instantiated
