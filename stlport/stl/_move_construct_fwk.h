@@ -33,13 +33,18 @@ _STLP_BEGIN_NAMESPACE
  *************************************************************/
 template <class _Tp>
 class __move_source {
-  _Tp &_M_data;
 public:
   explicit __move_source (_Tp &_src) : _M_data(_src)
   {};
 
   _Tp& get() const
-  {return _M_data;}
+  { return _M_data; }
+private:
+  _Tp &_M_data;
+
+  //We explicitely forbid assignment to avoid warning:
+  typedef __move_source<_Tp> _Self;
+  _Self& operator = (_Self const&);
 };
 
 //Class used to signal move constructor support, implementation and type.

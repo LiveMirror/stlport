@@ -15,20 +15,23 @@
 #    pragma warning( disable : 4522 )
 #  endif
 
-#  if (_MSC_VER <= 1310)
+#  if (_MSC_VER <= 1200)
 #    pragma warning( disable : 4097 ) // typedef-name used as based class of (...)
 #    pragma warning( disable : 4231 ) // non standard extension : 'extern' before template instanciation
 #    pragma warning( disable : 4244 ) // implicit conversion: possible loss of data
 #    pragma warning( disable : 4284 ) // for -> operator
 //This warning is necessary because of the native platform headers:
 #    pragma warning( disable : 4290 ) // c++ exception specification ignored
-#    pragma warning( disable : 4355 ) // this used in base member initializer list
-#    pragma warning( disable : 4511 ) // copy constructor cannot be generated
 #    pragma warning( disable : 4514 ) // unreferenced inline function has been removed
 #    pragma warning( disable : 4660 ) // template-class specialization '...' is already instantiated
 #    pragma warning( disable : 4701 ) // local variable '...' may be used without having been initialized
 #    pragma warning( disable : 4710 ) // function (...) not inlined
 #    pragma warning( disable : 4786 ) // identifier truncated to 255 characters
+#  endif
+
+#  if (_MSC_VER <= 1310)
+#    pragma warning( disable : 4355 ) // this used in base member initializer list
+#    pragma warning( disable : 4511 ) // copy constructor cannot be generated
 #  endif
 
 //Pool of common warnings for all MSVC supported versions:

@@ -1,3 +1,15 @@
+2005-02-19  Francois Dumont  <dums@stlport...>
+
+	* stlport/stdexcept: Removal of a MSVC 7.0 and 7.1 workaround. Those compilers
+	have a bug resulting in the generation of very long compiler message as
+	soon as a simple compiler warning or error occur. Those messages are
+	template instanciation context of previous disabled warning. Warning message
+	are correctly disable but template instanciation context is kept until
+	an enable warning or an error happen. There is nothing to do against that
+	at STLport level except fixing or disabling warnings for unit tests build.
+	
+	* build/Makefiles/nmake/vc70.mak: Add missing file.
+	
 2005-02-18  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.h, _unordered_set.h, _unordered_map.h: Code review
