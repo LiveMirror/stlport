@@ -31,13 +31,29 @@
 
 _STLP_BEGIN_NAMESPACE
 
+#if defined (_STLP_USE_TEMPLATE_EXPORT)
+//Export of _Locale_impl facets container:
+_STLP_EXPORT_TEMPLATE_CLASS allocator<locale::facet*>;
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<locale::facet**, locale::facet*, allocator<locale::facet*> >;
+_STLP_EXPORT_TEMPLATE_CLASS _Vector_base<locale::facet*, allocator<locale::facet*> >;
+#  if !defined (_STLP_DONT_USE_PTR_SPECIALIZATIONS)
+_STLP_EXPORT_TEMPLATE_CLASS _Vector_impl<locale::facet*, allocator<locale::facet*> >;
+#  endif
+#  if defined (_STLP_DEBUG)
+#    define _STLP_DBG_VECTOR_BASE __WORKAROUND_DBG_RENAME(vector)
+_STLP_EXPORT_TEMPLATE_CLASS __construct_checker<_STLP_DBG_VECTOR_BASE<locale::facet*, allocator<locale::facet*> > >;
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_DBG_VECTOR_BASE<locale::facet*, allocator<locale::facet*> >;
+#    undef _STLP_DBG_VECTOR_BASE
+#  endif
+_STLP_EXPORT_TEMPLATE_CLASS vector<locale::facet*, allocator<locale::facet*> >;
+#endif
+
 //----------------------------------------------------------------------
 // Class _Locale_impl
 // This is the base class which implements access only and is supposed to 
 // be used for classic locale only
 class _STLP_CLASS_DECLSPEC _Locale_impl :
-    public _Refcount_Base
-{
+    public _Refcount_Base {
   public:
     _Locale_impl(const char* s);
     _Locale_impl(const _Locale_impl&);

@@ -148,7 +148,7 @@ const nothrow_t nothrow /* = {} */;
 #  endif
 #endif
 
-#ifndef _STLP_NO_FORCE_INSTANTIATE
+#if !defined (_STLP_NO_FORCE_INSTANTIATE)
 
 #  if defined (_STLP_DEBUG) || defined (_STLP_ASSERTIONS)
 template struct _STLP_CLASS_DECLSPEC __stl_debug_engine<bool>;
@@ -196,6 +196,22 @@ template class _STLP_CLASS_DECLSPEC vector<_STLP_PRIV::_Slist_node_base*,
                                            allocator<_STLP_PRIV::_Slist_node_base*> >;
 //End of hashtable bucket types export.
 
+//Export of _Locale_impl facets container:
+template class _STLP_CLASS_DECLSPEC allocator<locale::facet*>;
+template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<locale::facet**, locale::facet*, allocator<locale::facet*> >;
+template class _STLP_CLASS_DECLSPEC _Vector_base<locale::facet*, allocator<locale::facet*> >;
+#  if !defined (_STLP_DONT_USE_PTR_SPECIALIZATIONS)
+template class _STLP_CLASS_DECLSPEC _Vector_impl<locale::facet*, allocator<locale::facet*> >;
+#  endif
+#  if defined (_STLP_DEBUG)
+#    define _STLP_DBG_VECTOR_BASE __WORKAROUND_DBG_RENAME(vector)
+template class _STLP_CLASS_DECLSPEC __construct_checker<_STLP_DBG_VECTOR_BASE<locale::facet*, allocator<locale::facet*> > >;
+template class _STLP_CLASS_DECLSPEC _STLP_DBG_VECTOR_BASE<locale::facet*, allocator<locale::facet*> >;
+#    undef _STLP_DBG_VECTOR_BASE
+#  endif
+template class _STLP_CLASS_DECLSPEC vector<locale::facet*, allocator<locale::facet*> >;
+//End of export of _Locale_impl facets container.
+
 #  if !defined (_STLP_DONT_USE_PTR_SPECIALIZATIONS)
 template class _STLP_CLASS_DECLSPEC allocator<void*>;
 
@@ -203,14 +219,22 @@ template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<void**, void*, allocator<v
 template class _STLP_CLASS_DECLSPEC _Vector_base<void*,allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _Vector_impl<void*, allocator<void*> >;
 
+template class _STLP_CLASS_DECLSPEC _List_node<void*>;
+typedef _List_node<void*> _VoidPtr_Node;
+template class _STLP_CLASS_DECLSPEC allocator<_VoidPtr_Node>;
+template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<_List_node_base, _VoidPtr_Node, allocator<_VoidPtr_Node> >;
 template class _STLP_CLASS_DECLSPEC _List_base<void*,allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _List_impl<void*,allocator<void*> >;
 
-template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Slist_base<void*, allocator<void*> >;
-template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Slist_impl<void*, allocator<void*> >;
+template class _STLP_CLASS_DECLSPEC _STLP_PRIV::_Slist_node<void*>;
+typedef _STLP_PRIV::_Slist_node<void*> _VoidPtrSNode;
+template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<_STLP_PRIV::_Slist_node_base, _VoidPtrSNode, allocator<_VoidPtrSNode> >;
+template class _STLP_CLASS_DECLSPEC _STLP_PRIV::_Slist_base<void*, allocator<void*> >;
+template class _STLP_CLASS_DECLSPEC _STLP_PRIV::_Slist_impl<void*, allocator<void*> >;
 
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<size_t, void*, allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<void***, void**, allocator<void**> >;
+template struct _STLP_CLASS_DECLSPEC _Deque_iterator<void*, _Nonconst_traits<void*> >;
 template class _STLP_CLASS_DECLSPEC _Deque_base<void*,allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _Deque_impl<void*,allocator<void*> >;
 #  endif /* _STLP_DONT_USE_PTR_SPECIALIZATIONS */
