@@ -7,6 +7,11 @@
 
 	* test/unit/floatio_test.cpp: test for infinity and near
 
+	* src/explore/Makefiles/gmake/gcc.mak, app/gcc.mak, lib/gcc.mak: fix detection of
+	gcc version; gcc before 3.x had libgcc.a that contains some language support,
+	so link with it in case when we avoid link with libstd++. This has relation only
+	for linux systems.
+
 2004-08-19  Petr Ovtchenkov  <ptr@Island...>
 
 	* src/explore/configure.bat: setting up compiling STLport under Windows.
