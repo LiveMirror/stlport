@@ -1,3 +1,8 @@
+2005-02-08  Francois Dumont  <dums@stlport...>
+
+  * stlport/stl/_config.h: Fix endianness for AMD 64 thanks Karol
+  Szkudlarek.
+
 2005-02-07  Boris Fomitchev  <boris@stlport...>
         * stlport/stl/_config_compat_post.h, stlport/stl/_relops_hash_cont.h - 4.6 compatibility fix
 	  stlport/stl/_list.h, stlport/stl/_slist.h, stlport/stl/_map.h, stlport/stl/_set.h
