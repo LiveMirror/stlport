@@ -14,6 +14,8 @@
 # elif defined(__FreeBSD__)
 # if (__FreeBSD_cc_version < 500005)
 # define _STLP_NO_WCHAR_T
+# else
+# define _STLP_FREEBSD_HAS_WFUNCS
 # endif /* __FreeBSD_cc_version < 500005 */
 # endif
 
@@ -85,7 +87,7 @@
 
 # endif
 
-#if defined (__CYGWIN__) || defined (__MINGW32__) || !(defined (_STLP_USE_GLIBC) || defined (__sun)) 
+#if defined (__CYGWIN__) || defined (__MINGW32__) || !(defined (_STLP_USE_GLIBC) || defined (_STLP_FREEBSD_HAS_WFUNCS) || defined (__sun)) 
 #ifndef __MINGW32__
 #   define _STLP_NO_NATIVE_MBSTATE_T      1
 #endif
@@ -395,3 +397,7 @@ At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
 # else
 #   define _STLP_STATIC_TEMPLATE_DATA 1
 # endif
+
+#ifdef _STLP_FREEBSD_HAS_WFUNCS
+#  undef _STLP_FREEBSD_HAS_WFUNCS
+#endif
