@@ -28,7 +28,9 @@ void g()
 
 }
 
+#ifndef _STLP_MSVC // I'm sorry, VC still can't resolve name below
 using namespace std;
+#endif
 
 void h()
 {
