@@ -48,7 +48,9 @@
 #  define _STLP_HAS_NO_EXCEPTIONS 1
 # endif
 
+#ifndef _STLP_MSVC
 # define _STLP_VENDOR_UNEXPECTED_STD
+#endif
 
 # if defined ( _MT ) && !defined (_STLP_NO_THREADS)  && !defined (_REENTRANT)
 #   define _REENTRANT 1
@@ -75,13 +77,14 @@
 // # ifndef __BUILDING_STLPORT
 // #  define _STLP_USE_TEMPLATE_EXPORT 1
 // # endif
-# if (_STLP_MSVC <= 1400)
-# define _STLP_STATIC_CONST_INIT_BUG   1
-# endif	//	(_STLP_MSVC <= 1310)
+#if (_STLP_MSVC <= 1400)
+#  define _STLP_STATIC_CONST_INIT_BUG   1
+#endif	//	(_STLP_MSVC <= 1310)
 
-# if (_STLP_MSVC >= 1310)
-# define _STLP_FULL_ADL_IMPLEMENTED 1
-# endif	//	(_STLP_MSVC >= 1310)
+#if (_STLP_MSVC >= 1310)
+#  define _STLP_FULL_ADL_IMPLEMENTED 1
+#  undef _STLP_INCOMPLETE_EXCEPTION_HEADER
+#endif	//	(_STLP_MSVC >= 1310)
 
 # if (_STLP_MSVC <= 1300) 
 #  define _STLP_NO_METHOD_SPECIALIZATION 1
@@ -150,6 +153,7 @@
 #  define _STLP_DONT_RETURN_VOID 1
 #  define _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
+#  define _STLP_VENDOR_UNEXPECTED_STD
 # endif /* (_MSC_VER <= 1200) */
 
 # if (_STLP_MSVC > 1100)
