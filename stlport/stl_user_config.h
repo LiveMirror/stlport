@@ -240,8 +240,11 @@
  * a container of void*. If you prefer systematical instanciation turn on this macro.
  * Remark: This feature is only implemented for compilers supporting partial template
  * specialization.
+ * Limitation: The container pointer specialization do not support pointer to function
+ * and pointer to class member method. So if you have instanciating any container with
+ * such a type compilation will failed.
  */
-// #define _STLP_DONT_USE_PTR_SPECIALIZATIONS 1
+// #define _STLP_USE_PTR_SPECIALIZATIONS 1
 
 /*
  * To achieve many different optimizations within the template implementations STLport
