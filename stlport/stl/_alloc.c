@@ -62,13 +62,12 @@ inline void __stlp_chunck_free(void* __p) { _STLP_STD::__stl_delete(__p); }
 #endif	// !_DEBUG
 
 
-#define _S_FREELIST_INDEX(__bytes) ((__bytes-size_t(1))>>(int)_ALIGN_SHIFT)
+#define _S_FREELIST_INDEX(__bytes) ((__bytes - size_t(1)) >> (int)_ALIGN_SHIFT)
 
 _STLP_BEGIN_NAMESPACE
 
 template <int __inst>
-void *  _STLP_CALL __malloc_alloc<__inst>::_S_oom_malloc(size_t __n)
-{
+void * _STLP_CALL __malloc_alloc<__inst>::_S_oom_malloc(size_t __n) {
   __oom_handler_type __my_malloc_handler;
   void * __result;
 
@@ -82,7 +81,6 @@ void *  _STLP_CALL __malloc_alloc<__inst>::_S_oom_malloc(size_t __n)
 #if defined(_STLP_NEED_UNREACHABLE_RETURN)
   return 0;
 #endif
-
 }
 
 template <class _Alloc>
@@ -116,11 +114,11 @@ __debug_alloc<_Alloc>::deallocate(void *__p, size_t __n) {
   for (__tmp= ((unsigned char*)__p)+__n*sizeof(value_type); 
        __tmp < ((unsigned char*)__real_p)+__real_n ; __tmp++) {
     _STLP_VERBOSE_ASSERT(*__tmp==__shred_byte, _StlMsg_DBA_OVERRUN)
-      }
+  }
   
   // that may be unfortunate, just in case
   __real_p->__magic=__deleted_magic;
-  memset((char*)__p, __shred_byte, __n*sizeof(value_type));
+  memset((char*)__p, __shred_byte, __n * sizeof(value_type));
   __allocator_type::deallocate(__real_p, __real_n);
 }
 

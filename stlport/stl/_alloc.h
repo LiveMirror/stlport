@@ -208,17 +208,17 @@ public:
 // The second parameter is unreferenced and serves only to allow the
 // creation of multiple default_alloc instances.
 
-#if defined(__OS400__)
-enum {_ALIGN = 16, _ALIGN_SHIFT=4, _MAX_BYTES = 256};
-#  define  _STLP_NFREELISTS 16
+#if defined (__OS400__) || defined (_WIN64)
+enum {_ALIGN = 16, _ALIGN_SHIFT = 4, _MAX_BYTES = 256};
 #else
-enum {_ALIGN = 8, _ALIGN_SHIFT=3, _MAX_BYTES = 128};
-#  define  _STLP_NFREELISTS 16
+enum {_ALIGN = 8, _ALIGN_SHIFT = 3, _MAX_BYTES = 128};
 #endif /* __OS400__ */
+
+#define _STLP_NFREELISTS 16
 
 class _STLP_CLASS_DECLSPEC _Node_alloc_obj {
 public:
-    _Node_alloc_obj * _M_next;
+  _Node_alloc_obj * _M_next;
 };
 
 #if defined (_STLP_LEAKS_PEDANTIC) && defined (_STLP_USE_DYNAMIC_LIB)

@@ -32,6 +32,8 @@ template class _STLP_CLASS_DECLSPEC _String_base<wchar_t, allocator<wchar_t> >;
 #    if defined (_STLP_DEBUG)
 #      if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
 #        define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)
+#      else
+#        define basic_string _STLP_NON_DBG_NAME(str)
 #      endif
 
 template class _STLP_CLASS_DECLSPEC basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;

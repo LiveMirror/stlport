@@ -2,7 +2,7 @@
 #include <deque>
 #include <string>
 #include <algorithm>
-//#include <sstream>
+#include <sstream>
 
 #if defined (_STLP_USE_EXCEPTIONS)
 #  include <stdexcept>
@@ -45,6 +45,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(short_string_optim_bug);
   CPPUNIT_TEST(compare);
   CPPUNIT_TEST(template_expresion);
+  CPPUNIT_TEST(io);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -63,11 +64,10 @@ protected:
   void short_string_optim_bug();
   void compare();
   void template_expresion();
+  void io();
 
-  static string func( const string& par )
-  {
+  static string func(const string& par) {
     string tmp( par );
-
     return tmp;
   }
 
@@ -701,3 +701,22 @@ void StringTest::template_expresion()
 #endif
   }
 }
+
+void StringTest::io()
+{
+  string str("STLport");
+  {
+    ostringstream ostr;
+    ostr << str;
+    CPPUNIT_ASSERT( ostr.good() );
+    CPPUNIT_ASSERT( ostr.str() == str );
+  }
+  {
+    istringstream istr(str);
+    string istr_content;
+    istr >> istr_content;
+    CPPUNIT_ASSERT( !istr.fail() && istr.eof() );
+    CPPUNIT_ASSERT( istr_content == str );
+  }
+}
+

@@ -15,14 +15,13 @@ template <class _CharT, class _Traits>
 bool _STLP_CALL
 __stlp_string_fill(basic_ostream<_CharT, _Traits>& __os,
                    basic_streambuf<_CharT, _Traits>* __buf,
-                   size_t __n) {
+                   streamsize __n) {
   _CharT __f = __os.fill();
-  size_t __i;
-  bool __ok = true;
-
-  for (__i = 0; __i < __n; ++__i)
-    __ok = __ok && !_Traits::eq_int_type(__buf->sputc(__f), _Traits::eof());
-  return __ok;
+  for (streamsize __i = 0; __i < __n; ++__i) {
+    if (_Traits::eq_int_type(__buf->sputc(__f), _Traits::eof()))
+      return false;
+  }
+  return true;
 }
 
 template <class _CharT, class _Traits, class _Alloc>
@@ -30,15 +29,16 @@ basic_ostream<_CharT, _Traits>& _STLP_CALL
 operator<<(basic_ostream<_CharT, _Traits>& __os, 
            const basic_string<_CharT,_Traits,_Alloc>& __s) {
   typedef basic_ostream<_CharT, _Traits> __ostream;
+  typedef typename basic_string<_CharT, _Traits>::size_type size_type;
   typename __ostream::sentry __sentry(__os);
   bool __ok = false;
 
   if (__sentry) {
     __ok = true;
-    size_t __n = __s.size();
-    size_t __pad_len = 0;
+    size_type __n = __s.size();
+    streamsize __pad_len = 0;
     const bool __left = (__os.flags() & __ostream::left) != 0;
-    const size_t __w = __os.width(0);
+    const streamsize __w = __os.width(0);
     basic_streambuf<_CharT, _Traits>* __buf = __os.rdbuf();
 
     if (__n < __w) {
@@ -65,6 +65,7 @@ basic_istream<_CharT, _Traits>& _STLP_CALL
 operator>>(basic_istream<_CharT, _Traits>& __is,
            basic_string<_CharT,_Traits, _Alloc>& __s) {
   typedef basic_istream<_CharT, _Traits> __istream;
+  typedef typename basic_string<_CharT, _Traits>::size_type size_type;
   typename __istream::sentry __sentry(__is);
 
   if (__sentry) {
@@ -74,11 +75,13 @@ operator>>(basic_istream<_CharT, _Traits>& __is,
     const locale& __loc = __is.getloc();
     const _C_type& _Ctype = use_facet<_C_type>(__loc);
     __s.clear();
-    size_t __n = __is.width(0);
+    streamsize __n = __is.width(0);
     if (__n == 0)
-      __n = __STATIC_CAST(size_t,-1);
+      __n = __s.max_size();
+    else if (__n > __s.max_size())
+      __n = 0;
     else
-      __s.reserve(__n);    
+      __s.reserve(__STATIC_CAST(size_type, __n));
 
     while (__n-- > 0) {
       typename _Traits::int_type __c1 = __buf->sbumpc();
@@ -115,7 +118,8 @@ getline(basic_istream<_CharT, _Traits>& __is,
         basic_string<_CharT,_Traits,_Alloc>& __s,
         _CharT __delim) {
   typedef basic_istream<_CharT, _Traits> __istream;
-  size_t __nread = 0;
+  typedef typename basic_string<_CharT, _Traits>::size_type size_type;
+  size_type __nread = 0;
   typename basic_istream<_CharT, _Traits>::sentry __sentry(__is, true);
   if (__sentry) {
     basic_streambuf<_CharT, _Traits>* __buf = __is.rdbuf();

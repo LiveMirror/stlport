@@ -1,3 +1,19 @@
+2005-03-17  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_io.h: Fix implementation that used to think that
+	size_t and streamsize was simply aliases. Thanks Jay Amin report.
+	
+	* stlport/config/_prolog.h: Add comment about the reason of alignment
+	specification when using MSVC compilers. Fix alignment for Win64 platform.
+	
+	* stlport/stl/_alloc.h: Fix _ALIGN enum definition for _Win64 platform.
+	
+	* src/string_w.cpp: Fix wrong class export under debug mode thanks
+	Charlemagne report.
+	
+	* build/Makefiles/nmake: Preparation of the build system for icl (Intel cl
+	compiler (mimic cl compiler from Microsoft).
+	
 2005-03-16  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_cmath.h: added logf, expf, sinf, cosf---this fix
