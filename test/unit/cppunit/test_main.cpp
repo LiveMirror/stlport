@@ -16,6 +16,10 @@
 #include "cppunit_proxy.h"
 #include "file_reporter.h"
 
+#ifdef WIN32
+# include <windows.h>
+#endif
+
 namespace CPPUNIT_NS
 {
   int CPPUNIT_NS::TestCase::m_numErrors = 0;
