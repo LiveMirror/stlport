@@ -384,6 +384,7 @@ locale::locale(const locale& L) _STLP_NOTHROW
 // Destructor.
 locale::~locale() _STLP_NOTHROW
 {
+  if (_M_impl)
   _M_impl->decr();
 }
 
