@@ -23,6 +23,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(tellg);
   CPPUNIT_TEST(buf);
   CPPUNIT_TEST(rdbuf);
+  CPPUNIT_TEST(eofloop);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -33,6 +34,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
     void tellg();
     void buf();
     void rdbuf();
+    void eofloop();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FstreamTest);
@@ -200,3 +202,39 @@ void FstreamTest::rdbuf()
   CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 12
   CPPUNIT_ASSERT( os.str() == "1234567" );
 }
+
+/* a streambuffer that always returns EOF when written to, this seems to be all that is needed to show the problem. */
+
+class full_streambuf :
+    public std::streambuf
+{
+  public:
+    typedef std::streambuf::int_type int_type;
+    typedef std::streambuf::traits_type traits_type;
+    
+    full_streambuf()
+    {}
+
+  protected:
+    int_type overflow(int_type c)
+    {
+      return traits_type::eof();
+    }
+};
+
+void FstreamTest::eofloop()
+{
+  ofstream of( "test_file.txt", ios_base::out | ios_base::binary | ios_base::trunc );
+  // write zeroes into of
+  of.write( "\0\0\0\0", 4 );
+  of.close();
+
+  ifstream in( "test_file.txt", ios_base::in | ios_base::binary );
+  full_streambuf *sb = new full_streambuf;
+  {
+    ostream out( sb );
+    out << in.rdbuf() << flush;
+  }
+  delete sb;
+}
+
