@@ -136,19 +136,26 @@ template <class _CharT, class _Traits>
 struct _SPutBackC {
   typedef basic_streambuf<_CharT, _Traits> _StreamBuf;
   typedef typename _StreamBuf::int_type int_type;
-  _SPutBackC(_StreamBuf *pfrom, int_type c)
-    : __pfrom(pfrom), __c(c) {}
+  _SPutBackC(_StreamBuf *pfrom)
+    : __pfrom(pfrom), __c(0), __do_guard(false) {}
   ~_SPutBackC() {
-    if (__pfrom != 0) {
+    if (__do_guard) {
       __pfrom->sputbackc(__c);
     }
   }
 
-  void dontPutBack() { __pfrom = 0; }
+  void guard(int_type c) {
+    __c = c;
+    __do_guard = true;
+  }
+  void release() {
+    __do_guard = false;
+  }
 
 private:
   _StreamBuf *__pfrom;
   int_type __c;
+  bool __do_guard;
 };
 
 template <class _CharT, class _Traits>
@@ -160,6 +167,7 @@ bool basic_ostream<_CharT, _Traits>
   int_type __c;
 
   _STLP_TRY {
+    _SPutBackCGuard __cguard(__from);
     while (true) {
       _STLP_TRY {
         __c = __from->sbumpc();
@@ -172,12 +180,12 @@ bool basic_ostream<_CharT, _Traits>
       if ( this->_S_eof(__c) )
         return __any_inserted;
 
-      _SPutBackCGuard __cguard(__from, __c);
+      __cguard.guard(__c);
       if ( this->_S_eof( __to->sputc(__c) ) ) {
         return __any_inserted;
       }
 
-      __cguard.dontPutBack();
+      __cguard.release();
       __any_inserted = true;
     }
   }
