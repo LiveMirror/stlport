@@ -1,6 +1,12 @@
 2004-11-29  Petr Ovtchenkov  <ptr@island...>
 
-	* stlport/stl/_cmath.h: patch from Michael Fink aplied.
+	* stlport/stl/_cmath.h: patch from Michael Fink applied.
+
+	* stlport/stl/_locale.h: remove enclose class spec to avoid VC confuse.
+	Thanks Ulrich Eckhardt.
+
+	* src/locale_impl.cpp, src/locale_impl.h: remove bogus _STLP_CALL decls.
+	Thanks Ulrich Eckhardt.
 
 2004-11-27  Petr Ovtchenkov  <ptr@island...>
 
