@@ -1,3 +1,13 @@
+2005-04-01  Petr Ovtchenkov  <ptr@island...>
+
+	* test/unit/test_errno.cpp: fix test, errno may be non-zero without
+	any error, but it reflect error code after some function fail.
+	This not the same.
+
+	* test/unit/mfunptr_test.cpp: add step-by-step test how compiler
+	recognize bind of member function for find_if. Not all compilers may
+	understand this. Thanks Markus for test idea.
+
 2005-03-31  Francois Dumont  <dums@stlport...>
 
 	* stlport/errno.h: Fixed for MSVC compilers, should still be fine for
