@@ -1,9 +1,9 @@
 
-========================================
-STLport README for Microsoft Visual C++ 6 SP5 
-========================================
+==================================================
+STLport README for Microsoft Visual C++ compilers.
+==================================================
 
-by: Francois Dumont, dums@stlport.com, last edited 12/7/2004
+by: Francois Dumont, dums@stlport.com, last edited 08/02/2005
 
 ============
 Introduction
@@ -18,7 +18,20 @@ http://www.stlport.com/cgi-bin/forum/dcboard.cgi.
 Prerequisites
 =============
 To build and use STLport you will need following tools and libraries:
- - Microsoft Visual C++ 6.0 with at least Service Pack 5
+ - Microsoft Visual C++ 6.0 with at least Service Pack 5 or any higher
+ version.
+
+===================
+Configuring STLport
+===================
+This is an optionnal step for the MSVC++ compilers, if you don't want to pass
+throught it just move to the 'Building STLport' section.
+
+Go to the STLport build/lib folder. Run
+	configure --help
+
+This command will present you the different available build options. Just follow
+the instructions to set STLport configuration according your needs.
 
 ================
 Building STLport
@@ -37,8 +50,8 @@ to have the MSVC++ compiler run during the build process. The most important
 one is the PATH variable so that you can call the cl.exe command which is the
 MSVC++ command line compiler.
 
-4. Go to the STLport src folder:
-	cd C:\STLport\src
+4. Go to the STLport build/lib folder:
+	cd C:\STLport\build\lib
 
 5. Run the following command:
 	nmake /fnmake-vc6.mak install
@@ -50,15 +63,15 @@ closer make file to your effective compiler.
 	Once the command return you will have all the necessary libraries within
 the STLport lib folder. For a description of the generated libraries check the README
 file within the src folder. You can also set special make process options, you will 
-find a list of those in the README.options file once again in the src folder.
+find a list of those in the README.options file once again in the build/lib folder.
 
 ===============
 Testing STLport
 ===============
 You can use the unit tests to verify STLport behaves correctly. Change into
-STLports 'test\unit' folder and type:
+STLports 'build/test/unit' folder and type:
 
-  nmake /fnmake-vc6.mak
+  nmake /fnmake-vc6.mak install
 
 Once the unit test is built you just need to run it. They can be found
 within the STLport bin folder.
@@ -109,4 +122,5 @@ int main(int, char**) {
 ::abs or std::abs. For this reason injection of C symbols in the std namespace
 has been disable by default. To force it you have to define the 
 _STLP_DO_IMPORT_CSTD_FUNCTIONS macro. Doing so you will have to explicitely 
-scope all your calls.
+scope all your C functions calls.
+
