@@ -112,6 +112,7 @@ private:
   _StateT _M_st;
 };
 
+# ifndef _STLP_NO_MBSTATE_T
 typedef fpos<mbstate_t> streampos;
 typedef fpos<mbstate_t> wstreampos;
 # endif
@@ -283,6 +284,7 @@ public:
   }
 # endif
 };
+# endif
 
 _STLP_END_NAMESPACE
 

@@ -135,6 +135,7 @@ inline void __get_money_digits_aux (__iostring &__buf, ios_base &, _STLP_LONG_DO
   __get_floor_digits(__buf, __x);
 }
 
+# ifndef _STLP_NO_WCHAR_T
 inline void __get_money_digits_aux (__iowstring &__wbuf, ios_base &__f, _STLP_LONG_DOUBLE __x) {
   __iostring __buf;
   __get_floor_digits(__buf, __x);
@@ -142,6 +143,7 @@ inline void __get_money_digits_aux (__iowstring &__wbuf, ios_base &__f, _STLP_LO
   const ctype<wchar_t>& __ct = *(ctype<wchar_t>*)__f._M_ctype_facet() ;
   __convert_float_buffer(__buf, __wbuf, __ct, wchar_t(0), false);
 }
+# endif
 
 template <class _CharT>
 void _STLP_CALL __get_money_digits(_STLP_BASIC_IOSTRING(_CharT) &__buf, ios_base& __f, _STLP_LONG_DOUBLE __x) {

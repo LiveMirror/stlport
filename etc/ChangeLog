@@ -1,3 +1,7 @@
+2004-12-17  Boris Fomitchev  <boris@stlport...>
+        * char_traits.h : fixed _STLP_NO_WCHAR_T case
+	* src/common_macros.mak : deleted locale.cpp
+	
 2004-12-17  Francois Dumont  <dums@stlport...>
 
 	* src/explore/Makefiles/nmake/app/rules-install-a.mak, rules-install-so.mak

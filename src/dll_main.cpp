@@ -181,8 +181,8 @@ template class _STLP_CLASS_DECLSPEC _Vector_impl<void*, allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _List_base<void*,allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _List_impl<void*,allocator<void*> >;
 
-template class _STLP_CLASS_DECLSPEC _Slist_base<void*, allocator<void*> >;
-template class _STLP_CLASS_DECLSPEC _Slist_impl<void*, allocator<void*> >;
+template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Slist_base<void*, allocator<void*> >;
+template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Slist_impl<void*, allocator<void*> >;
 
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<size_t, void*, allocator<void*> >;
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<void***, void**, allocator<void**> >;
@@ -192,8 +192,8 @@ template class _STLP_CLASS_DECLSPEC _Deque_impl<void*,allocator<void*> >;
 
 template class _STLP_CLASS_DECLSPEC _Rb_global<bool>;
 template class _STLP_CLASS_DECLSPEC _List_global<bool>;
-template class _STLP_CLASS_DECLSPEC _Sl_global<bool>;
-template class _STLP_CLASS_DECLSPEC _Stl_prime<bool>;
+template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Sl_global<bool>;
+template class _STLP_CLASS_DECLSPEC  _STLP_PRIV::_Stl_prime<bool>;
 template class _STLP_CLASS_DECLSPEC _LimG<bool>;
 template class _STLP_CLASS_DECLSPEC _Bs_G<bool>;
 

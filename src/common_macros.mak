@@ -110,7 +110,6 @@ $(RELEASE_OBJDIR_static)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(RELEASE_OBJDIR_static)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(RELEASE_OBJDIR_static)$(PATH_SEP)messages.$(OBJEXT) \
 $(RELEASE_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(RELEASE_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
 $(RELEASE_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(RELEASE_OBJDIR_static)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(RELEASE_OBJDIR_static)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -145,7 +144,6 @@ $(DEBUG_OBJDIR_static)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(DEBUG_OBJDIR_static)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(DEBUG_OBJDIR_static)$(PATH_SEP)messages.$(OBJEXT) \
 $(DEBUG_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(DEBUG_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
 $(DEBUG_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(DEBUG_OBJDIR_static)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(DEBUG_OBJDIR_static)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -179,7 +177,6 @@ $(STLDEBUG_OBJDIR_static)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_static)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_static)$(PATH_SEP)messages.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_static)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_static)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -215,7 +212,6 @@ $(RELEASE_OBJDIR_staticx)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(RELEASE_OBJDIR_staticx)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(RELEASE_OBJDIR_staticx)$(PATH_SEP)messages.$(OBJEXT) \
 $(RELEASE_OBJDIR_staticx)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(RELEASE_OBJDIR_staticx)$(PATH_SEP)locale.$(OBJEXT) \
 $(RELEASE_OBJDIR_staticx)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(RELEASE_OBJDIR_staticx)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(RELEASE_OBJDIR_staticx)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -250,7 +246,6 @@ $(DEBUG_OBJDIR_staticx)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(DEBUG_OBJDIR_staticx)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(DEBUG_OBJDIR_staticx)$(PATH_SEP)messages.$(OBJEXT) \
 $(DEBUG_OBJDIR_staticx)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(DEBUG_OBJDIR_staticx)$(PATH_SEP)locale.$(OBJEXT) \
 $(DEBUG_OBJDIR_staticx)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(DEBUG_OBJDIR_staticx)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(DEBUG_OBJDIR_staticx)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -284,7 +279,6 @@ $(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)messages.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)locale.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_staticx)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -321,7 +315,6 @@ $(RELEASE_OBJDIR_dynamic)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(RELEASE_OBJDIR_dynamic)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(RELEASE_OBJDIR_dynamic)$(PATH_SEP)messages.$(OBJEXT) \
 $(RELEASE_OBJDIR_dynamic)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(RELEASE_OBJDIR_dynamic)$(PATH_SEP)locale.$(OBJEXT) \
 $(RELEASE_OBJDIR_dynamic)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(RELEASE_OBJDIR_dynamic)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(RELEASE_OBJDIR_dynamic)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -356,7 +349,6 @@ $(DEBUG_OBJDIR_dynamic)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(DEBUG_OBJDIR_dynamic)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(DEBUG_OBJDIR_dynamic)$(PATH_SEP)messages.$(OBJEXT) \
 $(DEBUG_OBJDIR_dynamic)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(DEBUG_OBJDIR_dynamic)$(PATH_SEP)locale.$(OBJEXT) \
 $(DEBUG_OBJDIR_dynamic)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(DEBUG_OBJDIR_dynamic)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(DEBUG_OBJDIR_dynamic)$(PATH_SEP)c_locale.$(OBJEXT) \
@@ -391,7 +383,6 @@ $(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)numpunct.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)time_facets.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)messages.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)locale_impl.$(OBJEXT) \
-$(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)locale.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)locale_catalog.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)facets_byname.$(OBJEXT) \
 $(STLDEBUG_OBJDIR_dynamic)$(PATH_SEP)c_locale.$(OBJEXT) \
