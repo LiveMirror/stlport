@@ -30,25 +30,21 @@
 #ifndef _STLP_INTERNAL_VECTOR_H
 #define _STLP_INTERNAL_VECTOR_H
 
-# ifndef _STLP_INTERNAL_ALGOBASE_H
+#ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ALLOC_H
+#ifndef _STLP_INTERNAL_ALLOC_H
 #  include <stl/_alloc.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ITERATOR_H
+#ifndef _STLP_INTERNAL_ITERATOR_H
 #  include <stl/_iterator.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_UNINITIALIZED_H
+#ifndef _STLP_INTERNAL_UNINITIALIZED_H
 #  include <stl/_uninitialized.h>
-# endif
-
-# ifndef _STLP_RANGE_ERRORS_H
-#  include <stl/_range_errors.h>
-# endif
+#endif
 
 #undef  vector
 #define vector __WORKAROUND_DBG_RENAME(vector)

@@ -1,5 +1,12 @@
 2005-03-05  Francois Dumont  <dums@stlport...>
 
+	* stlport/stl/_construct.h: Simplification of the _Copy_Construct
+	function, now only takes a single template parameter and only call
+	the strict copy constructor. Creation of the _Param_Construct function
+	that replace the former _Copy_Construct implementation.
+
+	* cstdlib: Fix abs definition for MSVC compilers.
+
 	* test/unit: Fixing 64 bits warnings in many tests.
 
 	* src/c_locale_win32/c_locale_win32.c: Fixing 64 bits warnings.

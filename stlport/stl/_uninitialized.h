@@ -108,7 +108,7 @@ __uninitialized_copy(_InputIter __first, _InputIter __last, _ForwardIter __resul
   _ForwardIter __cur = __result;
   _STLP_TRY {
     for ( ; __first != __last; ++__first, ++__cur)
-      _Copy_Construct(&*__cur, *__first);
+      _Param_Construct(&*__cur, *__first);
     return __cur;
   }
   _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __cur))
@@ -147,7 +147,7 @@ __uninitialized_copy_n(_InputIter __first, _Size __count,
   _ForwardIter __cur = __result;
   _STLP_TRY {
     for ( ; __count > 0 ; --__count, ++__first, ++__cur) 
-      _Copy_Construct(&*__cur, *__first);
+      _Param_Construct(&*__cur, *__first);
     return pair<_InputIter, _ForwardIter>(__first, __cur);
   }
   _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __cur))
@@ -213,7 +213,7 @@ __uninitialized_fill(_ForwardIter __first, _ForwardIter __last,
   _ForwardIter __cur = __first;
   _STLP_TRY {
     for ( ; __cur != __last; ++__cur)
-      _Copy_Construct(&*__cur, __x);
+      _Param_Construct(&*__cur, __x);
   }
   _STLP_UNWIND(_STLP_STD::_Destroy_Range(__first, __cur))
 }
@@ -239,7 +239,7 @@ __uninitialized_fill_n(_ForwardIter __first, _Size __n,
   _ForwardIter __cur = __first;
   _STLP_TRY {
     for ( ; __n > 0; --__n, ++__cur)
-      _Copy_Construct(&*__cur, __x);
+      _Param_Construct(&*__cur, __x);
     return __cur;
   }
   _STLP_UNWIND(_STLP_STD::_Destroy_Range(__first, __cur))
