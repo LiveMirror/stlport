@@ -336,7 +336,7 @@ public:
   }
   
   mutable __owned_link              _M_node; 
-  mutable _STLP_mutex               _M_lock;
+  mutable _STLP_mutex_RS            _M_lock;
   
 private:
   // should never be called, should be left undefined,
