@@ -133,7 +133,9 @@ template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT, _Trait
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
-template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT,_Traits,_Alloc>& basic_string<_CharT,_Traits,_Alloc>::assign(size_type __n, _CharT __c) {
+template <class _CharT, class _Traits, class _Alloc> 
+basic_string<_CharT,_Traits,_Alloc>& 
+basic_string<_CharT,_Traits,_Alloc>::assign(size_type __n, _CharT __c) {
   if (__n <= size()) {
     _Traits::assign(this->_M_start, __n, __c);
     erase(begin() + __n, end());
@@ -144,29 +146,6 @@ template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT,_Traits
   }
   return *this;
 }
-
-
-#if !defined(_STLP_MEMBER_TEMPLATES)
-// dwa 2/4/00 - specializing the member template might be a better solution,
-// but I'm not sure how to write it correctly (and portably). If this is not
-// a specialization but it appears alongside the member template we get an
-// ambiguity error.
-
-template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT,_Traits,_Alloc>& basic_string<_CharT,_Traits,_Alloc>::assign(const _CharT* __f, 
-                                            const _CharT* __l)
-{
-  ptrdiff_t __n = __l - __f;
-  if (__STATIC_CAST(size_type,__n) <= size()) {
-    _Traits::copy(this->_M_start, __f, __n);
-    erase(begin() + __n, end());
-  }
-  else {
-    _Traits::copy(this->_M_start, __f, size());
-    append(__f + size(), __l);
-  }
-  return *this;
-}
-#endif
 
 template <class _CharT, class _Traits, class _Alloc> _CharT* 
 basic_string<_CharT,_Traits,_Alloc> ::_M_insert_aux(_CharT* __p,
