@@ -338,6 +338,24 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
     void operator=(const _STLP_mutex&);
 };
 
+// A locking class that uses _STLP_STATIC_MUTEX.  The constructor takes
+// a reference to an _STLP_STATIC_MUTEX, and acquires a lock.  The destructor
+// releases the lock.
+// It's not clear that this is exactly the right functionality.
+// It will probably change in the future.
+
+struct _STLP_CLASS_DECLSPEC _STLP_auto_lock
+{
+  _STLP_STATIC_MUTEX& _M_lock;
+
+  _STLP_auto_lock(_STLP_STATIC_MUTEX& __lock) : _M_lock(__lock)
+    { _M_lock._M_acquire_lock(); }
+  ~_STLP_auto_lock() { _M_lock._M_release_lock(); }
+
+private:
+  void operator=(const _STLP_auto_lock&);
+  _STLP_auto_lock(const _STLP_auto_lock&);
+};
 
 /*
  * Class _Refcount_Base provides a type, __stl_atomic_t, a data member,
@@ -345,8 +363,9 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
  * atomic preincrement/predecrement.  The constructor initializes 
  * _M_ref_count.
  */
-struct _STLP_CLASS_DECLSPEC _Refcount_Base
+class _STLP_CLASS_DECLSPEC _Refcount_Base
 {
+  private:
   // The data member _M_ref_count
   volatile __stl_atomic_t _M_ref_count;
 
@@ -354,27 +373,26 @@ struct _STLP_CLASS_DECLSPEC _Refcount_Base
   _STLP_mutex _M_mutex;
 # endif
 
+  public:
   // Constructor
   _Refcount_Base(__stl_atomic_t __n) : _M_ref_count(__n) {}
 
   // _M_incr and _M_decr
 # if defined (_STLP_THREADS) && defined (_STLP_ATOMIC_EXCHANGE)
-   void _M_incr() { _STLP_ATOMIC_INCREMENT((__stl_atomic_t*)&_M_ref_count); }
-   void _M_decr() { _STLP_ATOMIC_DECREMENT((__stl_atomic_t*)&_M_ref_count); }
+   int _M_incr() { return _STLP_ATOMIC_INCREMENT((__stl_atomic_t*)&_M_ref_count); }
+   int _M_decr() { return _STLP_ATOMIC_DECREMENT((__stl_atomic_t*)&_M_ref_count); }
 # elif defined(_STLP_THREADS)
-  void _M_incr() {
-    _M_mutex._M_acquire_lock();
-    ++_M_ref_count;
-    _M_mutex._M_release_lock();
+  int _M_incr() {
+    _STLP_auto_lock l( _M_mutex );
+    return ++_M_ref_count;
   }
-  void _M_decr() {
-    _M_mutex._M_acquire_lock();
-    --_M_ref_count;
-    _M_mutex._M_release_lock();
+  int _M_decr() {
+    _STLP_auto_lock l( _M_mutex );
+    return --_M_ref_count;
   }
 # else  /* No threads */
-  void _M_incr() { ++_M_ref_count; }
-  void _M_decr() { --_M_ref_count; }
+  int _M_incr() { return ++_M_ref_count; }
+  int _M_decr() { return --_M_ref_count; }
 # endif
 };
 
@@ -415,25 +433,6 @@ _Atomic_swap(volatile __stl_atomic_t * __p, __stl_atomic_t __q) {
   return __result;
 }
 # endif // _STLP_THREADS
-
-// A locking class that uses _STLP_STATIC_MUTEX.  The constructor takes
-// a reference to an _STLP_STATIC_MUTEX, and acquires a lock.  The destructor
-// releases the lock.
-// It's not clear that this is exactly the right functionality.
-// It will probably change in the future.
-
-struct _STLP_CLASS_DECLSPEC _STLP_auto_lock
-{
-  _STLP_STATIC_MUTEX& _M_lock;
-  
-  _STLP_auto_lock(_STLP_STATIC_MUTEX& __lock) : _M_lock(__lock)
-    { _M_lock._M_acquire_lock(); }
-  ~_STLP_auto_lock() { _M_lock._M_release_lock(); }
-
-private:
-  void operator=(const _STLP_auto_lock&);
-  _STLP_auto_lock(const _STLP_auto_lock&);
-};
 
 #ifdef _STLP_BETHREADS
 
