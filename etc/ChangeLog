@@ -5,6 +5,9 @@
 
 	* build/Makefiles/gmake/cygmin/rules-install-so.mak: Add missing folder
 	creation in the install process thanks Charlemagne report.
+
+	* build/Makefiles/nmake/icl.mak: Fix Intel compiler build system under
+	Windows.
 	
 2005-03-28  Petr Ovtchenkov  <ptr@island...>
 

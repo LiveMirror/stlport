@@ -125,14 +125,12 @@ __match(_InIt& __first, _InIt& __last, _RAIt __name, _RAIt __name_end, _DiffType
   for (__i = 0; __i < _MAXNAMES; ++__i)
     __do_check[__i] = true;
 
-
-
   for (__i = 0; __i < _MAX_NAME_LENGTH; ++__i)
     __matching_name[__i] = __name_end;
 
   while (__first != __last) {
-    for (__i = 0; __i < __n; ++__i)
-      if (__do_check[__i])
+    for (__i = 0; __i < __n; ++__i) {
+      if (__do_check[__i]) {
         if (*__first == __name[__i][__pos]) {
           if (__pos == _DiffType(__name[__i].size()) - 1) {
             __do_check[__i] = 0;
@@ -140,8 +138,8 @@ __match(_InIt& __first, _InIt& __last, _RAIt __name, _RAIt __name_end, _DiffType
             --__check_count;
             if (__check_count == 0) {
               ++__first; 
-        return __name + __i;
-      }
+              return __name + __i;
+            }
           }
         }
         else {
@@ -150,6 +148,8 @@ __match(_InIt& __first, _InIt& __last, _RAIt __name, _RAIt __name_end, _DiffType
           if (__check_count == 0) 
             return __matching_name[__pos];
         }
+      }
+    }
 
     ++__first; ++__pos;
   }
@@ -190,7 +190,7 @@ __get_formatted_time _STLP_WEAK (_InIt1 __first,  _InIt1 __last,
                                  _InIt2 __format, _InIt2 __format_end,
                                  _Ch*, const _Time_Info& __table,
                                  ios_base::iostate& __err, tm* __t) {
-  while(__first != __last && __format != __format_end) {
+  while (__first != __last && __format != __format_end) {
     if (*__format == '%') {
       ++__format;
       char __c = *__format;
