@@ -1,3 +1,8 @@
+2004-10-13  Petr Ovtchenkov  <ptr@island...>
+
+	* src/explore/Makefiles/gmake: a bit correction of compiled and installed names
+	of executables on *nix systems, see record 2004-09-29 by Francois.
+
 2004-10-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config.h: typo fix thanks Mickael Fink
