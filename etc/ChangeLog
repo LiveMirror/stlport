@@ -1,3 +1,15 @@
+2004-10-18  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/type_manips.h: replace template <> by macro.
+
+	* stlport/stl/debug/_debug.h, _debug.c: __check_if_not_owner should return true
+	in case of incompatible types and do check different from __check_if_owner;
+	added message for check __check_if_not_owner.
+
+	* test/unit/mvctor_test.cpp, test/unit/ptrspec_test.cpp: fix tests to satisfy
+	changes related to 23.1.1 Table 67 in stlport/stl/debug/_vector.h, _deque.h---see
+	record 2004-10-14 below.
+
 2004-10-14  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_iterator.h: Move of some _DBG_iter_base and _DBG_iter
