@@ -281,7 +281,7 @@ inline long double sqrt(long double __x) {return (sqrtl(__x)); }
 inline long double tan(long double __x) {return (tanl(__x)); }
 inline long double tanh(long double __x) {return (tanhl(__x)); }
 //restoration of the default intrinsic status of those functions:
-//#pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh)
+#pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh)
 #pragma warning(pop)
 #    endif
 
