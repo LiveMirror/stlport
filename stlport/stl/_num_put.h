@@ -51,10 +51,7 @@ template <class _CharT, class _OutputIter = ostreambuf_iterator<_CharT, char_tra
 # endif
 class num_put: public locale::facet
 {
-  //friend class _Locale;
-# ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-# endif
 public:
   typedef _CharT      char_type;
   typedef _OutputIter iter_type;

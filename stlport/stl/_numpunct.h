@@ -87,10 +87,7 @@ protected:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct<wchar_t> : public locale::facet
 {
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 public:
   typedef wchar_t               char_type;
   typedef wstring               string_type;

@@ -70,10 +70,7 @@ class _STLP_CLASS_DECLSPEC ctype<char> : public locale::facet, public ctype_base
     friend class ctype<wchar_t>;
 #  endif
 # endif
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 public:
 
   typedef char char_type;
@@ -177,10 +174,7 @@ private:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC ctype<wchar_t> : public locale::facet, public ctype_base 
 {
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 public:
   typedef wchar_t char_type;
 

@@ -127,10 +127,7 @@ protected:
   virtual pattern     do_pos_format()    const;
   virtual pattern     do_neg_format()    const;
 
-  // friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 };
 
 _STLP_TEMPLATE_NULL
@@ -177,10 +174,7 @@ protected:
   virtual pattern     do_pos_format()    const;
   virtual pattern     do_neg_format()    const;
 
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 };
 
 
@@ -189,10 +183,7 @@ protected:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, true> : public locale::facet, public money_base 
 {
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 public:
   typedef wchar_t                 char_type;
   typedef wstring                 string_type;
@@ -237,10 +228,7 @@ protected:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, false> : public locale::facet, public money_base 
 {
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 public:
   typedef wchar_t                 char_type;
   typedef wstring                 string_type;
@@ -390,10 +378,7 @@ protected:
 
 template <class _CharT, __DFL_TMPL_PARAM( _OutputIter , ostreambuf_iterator<_CharT>) >
 class money_put : public locale::facet {
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
 
 public:
   typedef _CharT               char_type;
