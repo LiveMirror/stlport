@@ -38,6 +38,11 @@ void UnorderedTest::uset()
   typedef unordered_set<int, hash<int>, equal_to<int> > usettype;
   usettype us;
 
+  //Small compilation check of the copy constructor:
+  usettype us2(us);
+  //And assignment operator
+  us = us2;
+
   int i;
   pair<usettype::iterator, bool> ret;
   for (i = 0; i < 2000; ++i) {

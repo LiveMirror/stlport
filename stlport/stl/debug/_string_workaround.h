@@ -16,15 +16,12 @@
  *
  */
 
-#ifndef _STLP_DBG_STRING_MEM_T_H
-#define _STLP_DBG_STRING_MEM_T_H
-
-# define _STLP_NON_DBG_STRING_BASE _STLP_NON_DBG_NAME(str)<_CharT, _Traits, _Alloc>
-
 _STLP_BEGIN_NAMESPACE
 
+#define _STLP_NON_DBG_STRING_BASE _STLP_NON_DBG_NAME(str)<_CharT, _Traits, _Alloc>
+
 template <class _CharT, class _Traits, class _Alloc> 
-class basic_string : private __construct_checker_mem_t
+class basic_string : private __construct_checker<_STLP_NON_DBG_STRING_BASE >
                    , public _STLP_NON_DBG_STRING_BASE
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                    , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
@@ -33,7 +30,7 @@ class basic_string : private __construct_checker_mem_t
 private:
   typedef _STLP_NON_DBG_STRING_BASE _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
-  typedef __construct_checker_mem_t _ConstructCheck;
+  typedef __construct_checker<_STLP_NON_DBG_STRING_BASE > _ConstructCheck;
   typedef typename _Base::_DbgBase _DbgBase;
 
 public:
@@ -155,8 +152,6 @@ public:                         // Append, operator+=, push_back.
     return *this;
   }
 
-  // Check to see if _InputIterator is an integer type.  If so, then
-  // it can't be an iterator.
   template <class _InputIter>
   _Self& append(_InputIter __first, _InputIter __last) {
     _STLP_DEBUG_CHECK(__check_range(__first, __last))
@@ -178,19 +173,6 @@ public:                         // Append, operator+=, push_back.
     return *this;
   }
 #endif
-
-/*#ifdef _STLP_MSVC
-// specialization for append
- template <>
- inline _Self& append(iterator __f, iterator __l) {
-   _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-   _STLP_DEBUG_CHECK(__check_range(__f, __l))
-    size_type __old_capacity = this->capacity();
-   _Base::append(__f._M_iterator, __l._M_iterator);
-    _Compare_Capacity(__old_capacity);
-   return *this;
- }
-#endif*/
 
 public:                         // Assign
   
@@ -239,19 +221,6 @@ public:                         // Assign
     return *this;
   }
 #endif
-
-  /*
-#ifdef _STLP_MSVC
-// partial specialization for assign
-template <>
-inline _Self& assign(iterator __f, iterator __l) {
-  _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-  _STLP_DEBUG_CHECK(__check_range(__f, __l))
-  _Base::assign(__f._M_iterator, __l._M_iterator);
-  return *this;
-  }
-#endif
-  */
     
 public:                         // Insert
 
@@ -290,6 +259,20 @@ public:                         // Insert
     _DbgBase::insert(__p, __n, __c);
   }
 
+protected:
+  template <class _RandomIter>
+  void _M_insert_aux (iterator __p, _RandomIter __first, _RandomIter __last,
+                      const __true_type& /*_IsIterator*/) {
+    _Base::insert(__p._M_iterator, __first._M_iterator, __last._M_iterator);
+  }
+  
+  template<class _InputIter>
+  void _M_insert_aux (iterator __p, _InputIter __first, _InputIter __last,
+                      const __false_type& /*_IsIterator*/) {
+    _Base::insert(__p._M_iterator, __first, __last);
+  }
+
+public:
   template <class _InputIter>
   void insert(iterator __p, _InputIter __first, _InputIter __last) {
     _STLP_DEBUG_CHECK(__check_if_owner(&this->_M_iter_list,__p))
@@ -313,19 +296,6 @@ public:                         // Insert
     _DbgBase::insert(__p, __f, __l); 
   }
 #endif
-
-private:
-  template <class _RandomIter>
-  void _M_insert_aux (iterator __p, _RandomIter __first, _RandomIter __last,
-                      const __true_type& /*_IsIterator*/) {
-    _Base::insert(__p._M_iterator, __first._M_iterator, __last._M_iterator);
-  }
-  
-  template<class _InputIter>
-  void _M_insert_aux (iterator __p, _InputIter __first, _InputIter __last,
-                      const __false_type& /*_IsIterator*/) {
-    _Base::insert(__p._M_iterator, __first, __last);
-  }
 
 public:                         // Erase.
   _Self& erase(size_type __pos = 0, size_type __n = _Base::npos) {
@@ -448,13 +418,9 @@ public:                         // Other modifier member functions.
   }
 };
 
-_STLP_END_NAMESPACE
-
-#undef basic_string
 #undef _STLP_NON_DBG_STRING_BASE
 
-
-#endif /* _STLP_DBG_STRING_MEM_T_H */
+_STLP_END_NAMESPACE
 
 // Local Variables:
 // mode:C++

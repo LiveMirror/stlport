@@ -1,6 +1,4 @@
 /*
- *
- *
  * Copyright (c) 1994
  * Hewlett-Packard Company
  *
@@ -410,12 +408,13 @@ void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   ::_M_copy_from(const hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>& __ht) {
   _M_elems = __ht._M_elems;
   _M_buckets.resize(__ht._M_buckets.size());
-  _ElemsIte __src(__ht._M_elems.begin()), __src_end(__ht._M_elems.end());
+  _ElemsConstIte __src(__ht._M_elems.begin()), __src_end(__ht._M_elems.end());
   _ElemsIte __dst(_M_elems.begin());
-  typename _BucketVector::iterator __src_b(__ht._M_buckets.begin()), __dst_b(_M_buckets.begin());
+  typename _BucketVector::const_iterator __src_b(__ht._M_buckets.begin());
+  typename _BucketVector::iterator __dst_b(_M_buckets.begin());
   for (; __src != __src_end; ++__src, ++__dst) {
-    if (*__src_b == __src) {
-      *__dst_b = __dst;
+    if (*__src_b == _M_get_bucket_val(__src)) {
+      *__dst_b = _M_get_bucket_val(__dst);
       ++__src_b; ++__dst_b;
     }
   }

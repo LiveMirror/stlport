@@ -67,7 +67,7 @@ struct _SlistDbgTraits : _Traits {
 };
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_slist : private _STLP_CONSTRUCT_CHECKER(_STLP_DBG_SLIST_BASE),
+class _DBG_slist : private __construct_checker<_STLP_DBG_SLIST_BASE >,
                    public _STLP_DBG_SLIST_BASE
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                    , public __stlport_class<_DBG_slist<_Tp, _Alloc> >
@@ -76,7 +76,7 @@ class _DBG_slist : private _STLP_CONSTRUCT_CHECKER(_STLP_DBG_SLIST_BASE),
 private:
   typedef _STLP_DBG_SLIST_BASE _Base;
   typedef _DBG_slist<_Tp,_Alloc> _Self;
-  typedef _STLP_CONSTRUCT_CHECKER(_STLP_DBG_SLIST_BASE) _ConstructCheck;
+  typedef __construct_checker<_STLP_DBG_SLIST_BASE > _ConstructCheck;
 
 public:
 

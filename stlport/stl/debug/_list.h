@@ -59,7 +59,7 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_LIST_BASE >&) {
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_list : private _STLP_CONSTRUCT_CHECKER(_STLP_DBG_LIST_BASE),
+class _DBG_list : private __construct_checker<_STLP_DBG_LIST_BASE >,
                   public _STLP_DBG_LIST_BASE
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                   , public __stlport_class<_DBG_list<_Tp, _Alloc> >
@@ -67,7 +67,7 @@ class _DBG_list : private _STLP_CONSTRUCT_CHECKER(_STLP_DBG_LIST_BASE),
 {
   typedef _STLP_DBG_LIST_BASE _Base;
   typedef _DBG_list<_Tp, _Alloc> _Self;
-  typedef _STLP_CONSTRUCT_CHECKER(_STLP_DBG_LIST_BASE) _ConstructCheck;
+  typedef __construct_checker<_STLP_DBG_LIST_BASE > _ConstructCheck;
 
 public:      
   __IMPORT_CONTAINER_TYPEDEFS(_Base)

@@ -552,6 +552,8 @@ public:
     return _M_erase(__pos, _Movable());
   }
   iterator erase(iterator __first, iterator __last) {
+    if (__first == __last)
+      return __first;
     return _M_erase(__first, __last, _Movable());
   }
 

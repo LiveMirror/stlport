@@ -55,7 +55,7 @@ inline random_access_iterator_tag iterator_category(const  _DBG_iter_base< _STLP
 # endif
 
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
-class _DBG_deque : private _STLP_CONSTRUCT_CHECKER(_STLP_DEQUE_SUPER),
+class _DBG_deque : private __construct_checker<_STLP_DEQUE_SUPER >,
                    public _STLP_DEQUE_SUPER
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                     , public __stlport_class<_DBG_deque<_Tp, _Alloc> >
@@ -63,7 +63,7 @@ class _DBG_deque : private _STLP_CONSTRUCT_CHECKER(_STLP_DEQUE_SUPER),
 {
   typedef _DBG_deque<_Tp,_Alloc> _Self;
   typedef _STLP_DEQUE_SUPER _Base;
-  typedef _STLP_CONSTRUCT_CHECKER(_STLP_DEQUE_SUPER) _ConstructCheck;
+  typedef __construct_checker<_STLP_DEQUE_SUPER > _ConstructCheck;
 
 public:                         // Basic types
 
@@ -165,7 +165,7 @@ public:                         // Constructor, destructor.
   template <class _InputIterator>
   _DBG_deque(_InputIterator __first, _InputIterator __last)
     : _ConstructCheck(__first, __last),
-      _STLP_DEQUE_SUPER(__first, __last) , 
+      _STLP_DEQUE_SUPER(__first, __last), 
       _M_iter_list(_Get_base()) {
     }
 # endif

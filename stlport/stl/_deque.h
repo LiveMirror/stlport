@@ -813,6 +813,8 @@ public:                         // Erase
       return this->_M_finish;
     }
     else {
+      if (__first == __last)
+        return __first;
       return _M_erase(__first, __last, _Movable());
     }
   }

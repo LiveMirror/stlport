@@ -366,7 +366,8 @@ operator+(ptrdiff_t __n, const _DBG_iter<_Container, _Traits>& __it) {
 }
 
 /*
- * Helper classes to check iterator range validity at construction time.
+ * Helper classes to check iterator range or pointer validity 
+ * at construction time.
  */
 template <class _Container>
 class __construct_checker {
@@ -378,28 +379,9 @@ protected:
     _STLP_VERBOSE_ASSERT((__p != 0), _StlMsg_INVALID_ARGUMENT)
   }
 
-  /*
-   * The __true_type and __false_type parameters are here to distinguish
-   * between the 2 constructors if _InputIterator is equal to const _Tp*.
-   */
-  __construct_checker(const value_type* __f, const value_type* __l) {
-    _STLP_DEBUG_CHECK(__check_ptr_range(__f,__l))
-  }
-
-  typedef _DBG_iter_base<_Container> _IteType;
-  __construct_checker(const _IteType& __f, const _IteType& __l) {
-    _STLP_DEBUG_CHECK(__check_range(__f,__l))
-  }
-};
-
-
 #if defined (_STLP_MEMBER_TEMPLATES)
-class __construct_checker_mem_t {
-protected:
-  __construct_checker_mem_t() {}
-
   template <class _InputIter>
-  __construct_checker_mem_t(const _InputIter& __f, const _InputIter& __l) {
+  __construct_checker(const _InputIter& __f, const _InputIter& __l) {
     typedef typename _Is_integer<_InputIter>::_Integral _Integral;
     _M_check_dispatch(__f, __l, _Integral());
   }
@@ -411,14 +393,46 @@ protected:
   void _M_check_dispatch(const _InputIter& __f, const _InputIter& __l, const __false_type& /*IsIntegral*/) {
     _STLP_DEBUG_CHECK(__check_range(__f,__l))
   }
-};
 #endif
 
-#if !defined (_STLP_MEMBER_TEMPLATES)
-#  define _STLP_CONSTRUCT_CHECKER(a) __construct_checker<a >
-#else
-#  define _STLP_CONSTRUCT_CHECKER(a) __construct_checker_mem_t
+#if !defined (_STLP_MEMBER_TEMPLATES) || !defined (_STLP_NO_METHOD_SPECIALIZATION)
+  __construct_checker(const value_type* __f, const value_type* __l) {
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f,__l))
+  }
+
+  typedef _DBG_iter_base<_Container> _IteType;
+  __construct_checker(const _IteType& __f, const _IteType& __l) {
+    _STLP_DEBUG_CHECK(__check_range(__f,__l))
+  }
 #endif
+};
+
+#if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+//Construct checker used by all exported containers.
+template <class _Container>
+class __msvc6_construct_checker {
+  typedef typename _Container::value_type value_type;
+protected:
+  __msvc6_construct_checker() {}
+
+  __msvc6_construct_checker(const value_type* __p) {
+    _STLP_VERBOSE_ASSERT((__p != 0), _StlMsg_INVALID_ARGUMENT)
+  }
+
+  __msvc6_construct_checker(const value_type* __f, const value_type* __l) {
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f,__l))
+  }
+
+  typedef _DBG_iter_base<_Container> _IteType;
+  __msvc6_construct_checker(const _IteType& __f, const _IteType& __l) {
+    _STLP_DEBUG_CHECK(__check_range(__f,__l))
+  }
+};
+#  define _STLP_CONSTRUCT_CHECKER __msvc6_construct_checker
+#else
+#  define _STLP_CONSTRUCT_CHECKER __construct_checker
+#endif
+
 
 
 # ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES

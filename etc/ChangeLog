@@ -1,3 +1,14 @@
+2004-12-21  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.c: Fix copy method thanks KL report.
+	
+	* stlport/stl/_vector.h, _deque.h: Fix implementation for vector of 
+	movable objects when calling erase of a null range thanks to arabesc report.
+	
+	* stlport/stl/_string.h, _string_workaround.h, debug/_string.h, 
+	  debug/_string_workaround.h: Implementation of the MSVC6 template method bug
+	  workaround exclusively for MSVC6 and not anymore for all compilers.
+	
 2004-12-21  Petr Ovtchenkov  <ptr@island...>
 
 	* src: untested (lost support) .mak and installation files moved into

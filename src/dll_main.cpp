@@ -176,13 +176,21 @@ template class _STLP_CLASS_DECLSPEC _Vector_base<_STLP_PRIV::_Slist_node_base*,
 template class _STLP_CLASS_DECLSPEC _Vector_impl<_STLP_PRIV::_Slist_node_base*, 
                                                  allocator<_STLP_PRIV::_Slist_node_base*> >;
 #  endif
+
 #  if defined (_STLP_DEBUG)
-#    define _STLP_DBG_VECTOR_BASE __WORKAROUND_DBG_RENAME(vector)
-template class _STLP_CLASS_DECLSPEC __construct_checker<_STLP_DBG_VECTOR_BASE<_STLP_PRIV::_Slist_node_base*, 
+#    define vector __WORKAROUND_DBG_RENAME(vector)
+/*
+ * For the vector class we do not use any MSVC6 workaround even if we export it from
+ * the STLport dynamic libraries because we know what methods are called and none is
+ * a template method. Moreover the exported class is an instanciation of vector with
+ * _Slist_node_base struct that is an internal STLport class that no user should ever
+ * use.
+ */
+template class _STLP_CLASS_DECLSPEC __construct_checker<vector<_STLP_PRIV::_Slist_node_base*, 
                                                         allocator<_STLP_PRIV::_Slist_node_base*> > >;
-template class _STLP_CLASS_DECLSPEC _STLP_DBG_VECTOR_BASE<_STLP_PRIV::_Slist_node_base*, 
-                                                          allocator<_STLP_PRIV::_Slist_node_base*> >;
-#    undef _STLP_DBG_VECTOR_BASE
+template class _STLP_CLASS_DECLSPEC vector<_STLP_PRIV::_Slist_node_base*, 
+                                           allocator<_STLP_PRIV::_Slist_node_base*> >;
+#    undef vector
 #  endif
 template class _STLP_CLASS_DECLSPEC vector<_STLP_PRIV::_Slist_node_base*, 
                                            allocator<_STLP_PRIV::_Slist_node_base*> >;
@@ -220,12 +228,26 @@ template class _STLP_CLASS_DECLSPEC allocator<char>;
 template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<char *,char, allocator<char> >;
 template class _STLP_CLASS_DECLSPEC _String_base<char, allocator<char> >;
 
-#  if defined (_STLP_DEBUG) && ! defined (__SUNPRO_CC)
-template class _STLP_CLASS_DECLSPEC _STLP_NON_DBG_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> >;
-template class _STLP_CLASS_DECLSPEC __construct_checker<_STLP_NON_DBG_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> > >;
+#  if defined (_STLP_DEBUG) && !defined (__SUNPRO_CC)
+
+#    if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#      define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)
+#    endif
+
+template class _STLP_CLASS_DECLSPEC basic_string<char, char_traits<char>, allocator<char> >;
+template class _STLP_CLASS_DECLSPEC _STLP_CONSTRUCT_CHECKER<basic_string<char, char_traits<char>, allocator<char> > >;
+
+#    undef basic_string
 #  endif
 
-template class _STLP_CLASS_DECLSPEC _STLP_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> >;
+#  if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#    define basic_string _STLP_NO_MEM_T_NAME(str)
+#  endif
+
+template class _STLP_CLASS_DECLSPEC basic_string<char, char_traits<char>, allocator<char> >;
+
+#undef basic_string
+
 #endif /* _STLP_NO_FORCE_INSTANTIATE */
 
 _STLP_END_NAMESPACE

@@ -247,7 +247,7 @@ private:
 #if !defined (_STLP_DEBUG)
   _ElemsIte _M_get_elem_ite(_BucketType const* __b) const { return __CONST_CAST(_BucketType*, __b); }
   _ElemsIte _M_get_elem_ite(_ElemsCont&, _BucketType* __b) const { return __CONST_CAST(_BucketType*, __b); }
-  _BucketType* _M_get_bucket_val(_ElemsIte __ite) const { return __ite._M_node; }
+  _BucketType* _M_get_bucket_val(_ElemsConstIte __ite) const { return __ite._M_node; }
 #else
   _ElemsIte _M_get_elem_ite(_BucketType const* __b) const { 
     return _M_get_elem_ite(__CONST_CAST(_ElemsCont&, _M_elems), __b);
@@ -255,7 +255,7 @@ private:
   _ElemsIte _M_get_elem_ite(_ElemsCont& __elems, _BucketType const* __b) const {
     return _ElemsIte(__elems.begin()._Owner(), __CONST_CAST(_BucketType*, __b));
   }
-  _BucketType* _M_get_bucket_val(const _ElemsIte& __ite) const { return __ite._M_iterator._M_node; }
+  _BucketType* _M_get_bucket_val(const _ElemsConstIte& __ite) const { return __ite._M_iterator._M_node; }
 #endif
 
   typedef typename _Traits::_NonConstTraits _NonConstTraits;
