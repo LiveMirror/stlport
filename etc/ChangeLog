@@ -1,5 +1,9 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * como 4.3.0 on linux support (thanks Synge Todo and Karel Gardas)
+  
+  ----
+  
   * Quazy-leak patch: make memory detection tools happier, option _STLP_LEAKS_PEDANTIC in _site_config.h.
                   (thanks Petr Ovchenkov)
   
