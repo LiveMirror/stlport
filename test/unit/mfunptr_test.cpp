@@ -16,9 +16,11 @@ class MemFunPtrTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(MemFunPtrTest);
   CPPUNIT_TEST(mem_ptr_fun);
+  CPPUNIT_TEST(find);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
+  void find();
   // compile test not neccessary to run but...
   void mem_ptr_fun();
 };
@@ -169,6 +171,50 @@ void Class::vf0c() const
 
 void Class::vf1c(const S1&) const
 {}
+
+struct V {
+  public:
+    V(int _v) :
+      v(_v)
+    { }
+
+  bool f( int _v ) const { return (v == _v); }
+
+  int v;
+};
+
+void MemFunPtrTest::find()
+{
+  vector<V> v;
+
+  v.push_back( V(1) );
+  v.push_back( V(2) );
+  v.push_back( V(3) );
+
+  // step-by-step complication of work for compiler:
+
+  // step 1:
+  const_mem_fun1_ref_t<bool,V,int> pmf = mem_fun_ref( &V::f );
+  binder2nd<const_mem_fun1_ref_t<bool,V,int> > b( pmf, 2 );
+  vector<V>::iterator i = find_if( v.begin(), v.end(), b );
+  CPPUNIT_ASSERT(i != v.end());
+  CPPUNIT_ASSERT(i->v == 2);
+
+  // step 2, just check that compiler understand what pass to bind2nd:
+  binder2nd<const_mem_fun1_ref_t<bool,V,int> > b2 = bind2nd( pmf, 2 );
+
+  // step 3, the same as step 1, but more intellect from compiler required:
+  binder2nd<const_mem_fun1_ref_t<bool,V,int> > b3 = bind2nd( mem_fun_ref( &V::f ), 2 );
+
+  vector<V>::iterator j = find_if( v.begin(), v.end(), b3 );
+  CPPUNIT_ASSERT(j != v.end());
+  CPPUNIT_ASSERT(j->v == 2);
+
+  // step 4, most brief, most complex:
+  vector<V>::iterator k = find_if( v.begin(), v.end(), bind2nd( mem_fun_ref( &V::f ), 2 ) );
+  CPPUNIT_ASSERT(k != v.end());
+  CPPUNIT_ASSERT(k->v == 2);
+}
 
 
 #ifdef _STLP_DONT_TEST_RETURN_VOID
