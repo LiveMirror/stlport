@@ -1,3 +1,11 @@
+2004-07-15  Francois Dumont <dums@...>
+
+	* stlport/stl/_epilog.h: systematical use of the redefined std namespace
+	rather than using the namespace inclusion schema.
+
+	* test/unit/set_test.cpp: addition of a test case to show the problem of
+	the namespace injection schema.
+
 2004-07-13  Francois Dumont <dums@...>
 
 	* stlport/numeric: removal of the _function.h header include.

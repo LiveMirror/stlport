@@ -19,6 +19,7 @@ class SetTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(insert);
   CPPUNIT_TEST(find);
   CPPUNIT_TEST(bounds);
+  CPPUNIT_TEST(specialized_less);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -28,9 +29,11 @@ class SetTest : public CPPUNIT_NS::TestCase
     void insert();
     void find();
     void bounds();
+    void specialized_less();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SetTest);
+
 
 //
 // tests implementation
@@ -163,3 +166,42 @@ void SetTest::bounds()
   CPPUNIT_ASSERT( pcit.second != crs.end() );
   CPPUNIT_ASSERT( *pcit.second == 7 );
 }
+
+
+class SetTestClass {
+public:
+  SetTestClass (int data) : _data(data)
+  {}
+
+  int data() const {
+    return _data;
+  }
+
+private:
+  int _data;
+};
+
+namespace std {
+  template <>
+  struct less<SetTestClass> {
+    bool operator () (SetTestClass const& lhs, SetTestClass const& rhs) const {
+      return lhs.data() < rhs.data();
+    }
+  };
+};
+
+void SetTest::specialized_less()
+{
+  set<SetTestClass> s;
+  s.insert(SetTestClass(1));
+  s.insert(SetTestClass(3));
+  s.insert(SetTestClass(2));
+  s.insert(SetTestClass(0));
+
+  set<SetTestClass>::iterator sit(s.begin()), sitEnd(s.end());
+  unsigned int i = 0;
+  for (; sit != sitEnd; ++sit, ++i) {
+    CPPUNIT_ASSERT( sit->data() == i );
+  }
+}
+
