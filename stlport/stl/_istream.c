@@ -517,73 +517,31 @@ _M_read_unbuffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_Char
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
   // The operations that can potentially throw are sbumpc, snextc, and sgetc.
   _STLP_TRY {
-# if 0
-    int_type __c = __buf->sgetc();
     while (true) {
+      int_type __c = __buf->sbumpc(); // sschwarz
+
       if (__that->_S_eof(__c)) {
         if (__n < _Num || __is_getline)
           __status |= ios_base::eofbit;
         break;
-      }
-
-      else if (__is_delim(__c)) {
-        if (__extract_delim) {  // Extract and discard current character.
-          __buf->sbumpc();
+      } else if (__is_delim(__c)) {
+        if (__extract_delim) { // Extract and discard current character.
           ++__n;
+        } else if ( !__pushback(__buf, _Traits::to_char_type(__c)) ) { // leave delimiter
+          __status |= ios_base::failbit;
         }
         break;
+      } else { // regular character
+        *__s++ = _Traits::to_char_type(__c);
+        ++__n;
       }
 
-      else if (__n == _Num) {
-        if (__is_getline)
+      if (__n == _Num) {
+        if (__is_getline) // didn't find delimiter as one of the _Num chars
           __status |= ios_base::failbit;
         break;
       }
-        
-      *__s++ = _Traits::to_char_type(__c);
-      ++__n;
-      __c = __buf->snextc();
     }
-# else
-// int_type __c = __buf->sbumpc(); // __buf->sgetc();
-while (true) {
-
-int_type __c = __buf->sbumpc(); // sschwarz
-
-if (__that->_S_eof(__c)) {
-if (__n < _Num || __is_getline)
-__status |= ios_base::eofbit;
-break;
-}
-
-else if (__is_delim(__c)) {
-if (__extract_delim) { // Extract and discard current character.
-// __buf->sbumpc();
-++__n;
-}
-break;
-}
-
-else { // regular character
-
-*__s++ = _Traits::to_char_type(__c);
-++__n;
-
-}
-
-if (__n == _Num) {
-if (__is_getline) // didn't find delimiter as one of the _Num chars
-__status |= ios_base::failbit;
-break;
-}
-
-// *__s++ = _Traits::to_char_type(__c);
-// ++__n;
-
-}
-
-# endif
-
   }
   _STLP_CATCH_ALL {
     __that->_M_handle_exception(ios_base::badbit);
