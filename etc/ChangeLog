@@ -1,3 +1,11 @@
+2004-09-06  Francois Dumont  <dums@...>
+
+	* test/unit/locale_test.cpp: Application of a patch from Michael Fink
+	to check the "C" locale on all platforms. Fix of the money_get_put test
+	case for the "C" locale.
+	
+	* test/unit/allocator_test.cpp: new test case for std::allocator checks.
+
 2004-09-05  Francois Dumont  <dums@...>
 
 	* stlport/stl/_string_hash.h: Performance improvement, multiplication

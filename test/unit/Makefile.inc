@@ -7,6 +7,7 @@ SRC_CPP = cppunit/test_main.cpp \
 	adj_test.cpp \
 	advance_test.cpp \
 	alg_test.cpp \
+	allocator_test.cpp \
 	bcompos_test.cpp \
 	bind_test.cpp \
 	binsert_test.cpp \

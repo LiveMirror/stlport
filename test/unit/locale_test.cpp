@@ -2,6 +2,8 @@
 #include <sstream>
 #include <locale>
 
+#include <cstdio>
+
 #if defined(__unix) || defined(__unix__)
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -61,6 +63,8 @@ LColl::LColl( const char *loc_dir )
   // real list of installed locales should be here...
   _m[string("french")] = true;
 # endif
+  // std::locale must at least support the C locale
+  _m[string("C")] = true;
 }
 
 # if defined(__FreeBSD__) || defined(__OpenBSD__)
@@ -91,18 +95,9 @@ static ref_locale tested_locales[] = {
   { "french",      ",",           "\xa0",        "",               "",           " EUR",           " FRF",               "",           ",",                  "\xa0" },
   { "ru_RU.koi8r", ",",           ".",           "",               "",           " RUR",           " RUR",               "",           ".",                  " " },
   { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",               "",                   "",           ".",                  "," },
-  { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",                   "",           ".",                  "," }
+  { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",                   "",           ".",                  "," },
+  { "C",           ".",           ",",           "",               "",           "",               "",                   "",           " ",                  " " },
 };
-
-
-#if 0
-// std::locale must at least support the C locale
-static ref_locale tested_locales[] = {
-//{  name,         decimal_point, thousands_sep, money_prefix, money_suffix},
-  { "C",           ".",           ",",           "",           "" }
-};
-
-#endif // _STLP_REAL_LOCALE_IMPLEMENTED
 
 
 //
@@ -158,7 +153,9 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   fostr << val;
 
   string ref = "1";
-  ref += npct.thousands_sep();
+  if (!npct.grouping().empty()) {
+    ref += npct.thousands_sep();
+  }
   ref += "234";
   ref += npct.decimal_point();
   ref += "56";
@@ -201,21 +198,26 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   //The result is '1 234,56 EUR'
   string str_res = ostr.str();
 
+  size_t index = 0;
   string::size_type p = strlen( rl.money_int_prefix );
   CPPUNIT_ASSERT( str_res.substr( 0, p ) == rl.money_int_prefix );
-  CPPUNIT_ASSERT( str_res[p] == '1' );
-  // CPPUNIT_ASSERT( str_res[0] == '1' );
-  CPPUNIT_ASSERT( str_res[p + 1] == /* intl_fmp.thousands_sep() */ *rl.money_thousands_sep );
-  CPPUNIT_ASSERT( str_res[p + 2] == '2' );
-  CPPUNIT_ASSERT( str_res[p + 3] == '3' );
-  CPPUNIT_ASSERT( str_res[p + 4] == '4' );
-  CPPUNIT_ASSERT( str_res[p + 5] == /* intl_fmp.decimal_point() */ *rl.money_decimal_point );
-  CPPUNIT_ASSERT( str_res[p + 6] == '5' );
-  CPPUNIT_ASSERT( str_res[p + 7] == '6' );
+  index = p;
+  CPPUNIT_ASSERT( str_res[index++] == '1' );
+  if (!intl_fmp.grouping().empty()) {
+    CPPUNIT_ASSERT( str_res[index++] == /* intl_fmp.thousands_sep() */ *rl.money_thousands_sep );
+  }
+  CPPUNIT_ASSERT( str_res[index++] == '2' );
+  CPPUNIT_ASSERT( str_res[index++] == '3' );
+  CPPUNIT_ASSERT( str_res[index++] == '4' );
+  if (intl_fmp.frac_digits() != 0) {
+    CPPUNIT_ASSERT( str_res[index++] == /* intl_fmp.decimal_point() */ *rl.money_decimal_point );
+  }
+  CPPUNIT_ASSERT( str_res[index++] == '5' );
+  CPPUNIT_ASSERT( str_res[index++] == '6' );
   // CPPUNIT_ASSERT( str_res[p + 8] == ' ' );
   string::size_type p1 = strlen( rl.money_int_suffix );
-  CPPUNIT_ASSERT( str_res.substr(p + 8, p1) == rl.money_int_suffix || 
-                  str_res.substr(p + 8, p1) == rl.money_int_suffix_old );
+  CPPUNIT_ASSERT( str_res.substr(index, p1) == rl.money_int_suffix || 
+                  str_res.substr(index, p1) == rl.money_int_suffix_old );
   // CPPUNIT_ASSERT( intl_fmp.curr_symbol() == rl.money_suffix );
 
   // CPPUNIT_ASSERT( str_res.substr(p + 9, intl_fmp.curr_symbol().size()) == intl_fmp.curr_symbol() );
@@ -239,17 +241,21 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   //The result is '-1 234,56 E' E being the euro symbol
   str_res = ostr.str();
 
-  size_t index = 0;
+  index = 0;
   CPPUNIT_ASSERT( str_res.substr(index, dom_fmp.negative_sign().size()) == dom_fmp.negative_sign() );
   index += dom_fmp.negative_sign().size();
   p = strlen( rl.money_prefix );
   index += p;
   CPPUNIT_ASSERT( str_res[index++] == '1' );
-  CPPUNIT_ASSERT( str_res[index++] == dom_fmp.thousands_sep() );
+  if (!dom_fmp.grouping().empty()) {
+    CPPUNIT_ASSERT( str_res[index++] == dom_fmp.thousands_sep() );
+  }
   CPPUNIT_ASSERT( str_res[index++] == '2' );
   CPPUNIT_ASSERT( str_res[index++] == '3' );
   CPPUNIT_ASSERT( str_res[index++] == '4' );
-  CPPUNIT_ASSERT( str_res[index++] == dom_fmp.decimal_point() );
+  if (dom_fmp.frac_digits() != 0) {
+    CPPUNIT_ASSERT( str_res[index++] == dom_fmp.decimal_point() );
+  }
   CPPUNIT_ASSERT( str_res[index++] == '5' );
   CPPUNIT_ASSERT( str_res[index++] == '6' );
   p1 = strlen( rl.money_suffix );
@@ -265,7 +271,13 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   istr.str(str_res);
   fmg.get(istr, istreambuf_iterator<char>(), false, ostr, err, val);
   CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
-  CPPUNIT_ASSERT( val == -123456 );
+  if (dom_fmp.negative_sign().empty()) {
+    //Without negative sign there is no way to guess the resulting amount sign ("C" locale):
+    CPPUNIT_ASSERT( val == 123456 );
+  }
+  else {
+    CPPUNIT_ASSERT( val == -123456 );
+  }
 }
 
 void LocaleTest::_time_put_get( const locale& loc, const ref_locale& rl )
@@ -377,28 +389,36 @@ void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale& rl )
   CPPUNIT_ASSERT( has_facet<my_facet>( gloc ) );
   locale::global( gloc );
 
+#ifndef _STLP_NO_EXCEPTIONS
   try {
+#endif
     ostringstream os("test") ;
     locale loc2( loc, new my_facet() );
     CPPUNIT_ASSERT( has_facet<my_facet>( loc2 ) );
     os.imbue( loc2 );
+#ifndef _STLP_NO_EXCEPTIONS
   }
-  catch ( runtime_error& err ) {
+  catch ( runtime_error& ) {
     CPPUNIT_ASSERT( false );
     // cerr << "-- " << err.what() << endl;
   }
   catch ( ... ) {
    CPPUNIT_ASSERT( false );
   }
- 
+#endif
+
+#ifndef _STLP_NO_EXCEPTIONS
   try {
-    ostringstream os("test2");
+#endif
+    ostringstream os2("test2");
+#ifndef _STLP_NO_EXCEPTIONS
   }
-  catch ( runtime_error& err ) {
+  catch ( runtime_error& ) {
     CPPUNIT_ASSERT( false );
   }
   catch ( ... ) {
     CPPUNIT_ASSERT( false );
   }
+#endif
 }
 
