@@ -525,6 +525,9 @@ namespace stdD = std;
 _STLP_BEGIN_NAMESPACE _STLP_END_NAMESPACE
 
 namespace stlport = _STLP_STD;
+// backward compatibility 
+# undef __STLPORT_NAMESPACE
+# define __STLPORT_NAMESPACE _STLP_STD
 
 /* decide whether or not we use separate namespace for rel ops */
 #   if defined(_STLP_NO_RELOPS_NAMESPACE)

@@ -26,11 +26,11 @@
 # define __PUT_STATIC_DATA_MEMBERS_HERE
 # define _STLP_EXPOSE_GLOBALS_IMPLEMENTATION
 
+# include "stlport_prefix.h"
+
 # if !defined(_STLP_DEBUG) && ! defined (_STLP_ASSERTIONS)
 # define _STLP_ASSERTIONS 1
 # endif
-
-# include "stlport_prefix.h"
 
 #include <utility>
 
@@ -52,7 +52,8 @@
 # endif
 
 # if defined (_STLP_UNIX)
-#  define _STLP_HAS_PERTHREAD_ALLOC
+#  define _STLP_HAS_PERTHREAD_ALLOCATOR
+# include <stl/_pthread_alloc.h>
 # endif
 
 // boris : this piece of code duplicated from _range_errors.h
@@ -155,7 +156,7 @@ template class _STLP_CLASS_DECLSPEC __debug_alloc< __node_alloc<true,0> >;
 template class _STLP_CLASS_DECLSPEC __debug_alloc< __node_alloc<false,0> >;
 template class _STLP_CLASS_DECLSPEC __debug_alloc<__new_alloc>;
 #ifdef _STLP_HAS_PERTHREAD_ALLOCATOR
-template class _STLP_CLASS_DECLSPEC __Pthread_alloc<_MAX_BYTES>;
+template class _STLP_CLASS_DECLSPEC _Pthread_alloc<_MAX_BYTES>;
 template class _STLP_CLASS_DECLSPEC __debug_alloc<__pthread_alloc>;
 #endif
 template class _STLP_CLASS_DECLSPEC __malloc_alloc<0>;

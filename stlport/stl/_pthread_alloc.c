@@ -63,16 +63,22 @@ template <size_t _Max_size>
 _Pthread_alloc_per_thread_state<_Max_size> *
 _Pthread_alloc<_Max_size>::_S_get_per_thread_state()
 {
+
+    int __ret_code;
+    __state_type* __result;
+    
+    if (_S_key_initialized && (__result = (__state_type*) pthread_getspecific(_S_key)))
+      return __result;
+    
     /*REFERENCED*/
     _M_lock __lock_instance;	// Need to acquire lock here.
-    int __ret_code;
-    _Pthread_alloc_per_thread_state<_Max_size> * __result;
     if (!_S_key_initialized) {
-        if (pthread_key_create(&_S_key, _S_destructor)) {
-            __THROW_BAD_ALLOC;  // failed
-        }
-        _S_key_initialized = true;
+      if (pthread_key_create(&_S_key, _S_destructor)) {
+	__THROW_BAD_ALLOC;  // failed
+      }
+      _S_key_initialized = true;
     }
+
     __result = _S_new_per_thread_state();
     __ret_code = pthread_setspecific(_S_key, __result);
     if (__ret_code) {

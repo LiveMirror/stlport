@@ -149,14 +149,14 @@ void _S_unique(list<_Tp, _Alloc>& __that, _BinaryPredicate __binary_pred) {
 template <class _Tp, class _Alloc, class _StrictWeakOrdering>
 void _S_merge(list<_Tp, _Alloc>& __that, list<_Tp, _Alloc>& __x,
 	      _StrictWeakOrdering __comp) {
-  typedef typename list<_Tp, _Alloc>::iterator iterator;
-  iterator __first1 = __that.begin();
-  iterator __last1 = __that.end();
-  iterator __first2 = __x.begin();
-  iterator __last2 = __x.end();
+  typedef typename list<_Tp, _Alloc>::iterator _Literator;
+  _Literator __first1 = __that.begin();
+  _Literator __last1 = __that.end();
+  _Literator __first2 = __x.begin();
+  _Literator __last2 = __x.end();
   while (__first1 != __last1 && __first2 != __last2)
     if (__comp(*__first2, *__first1)) {
-      iterator __next = __first2;
+      _Literator __next = __first2;
       _List_global_inst::_Transfer(__first1._M_node, __first2._M_node, (++__next)._M_node);
       __first2 = __next;
     }

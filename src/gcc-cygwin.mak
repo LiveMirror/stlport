@@ -29,6 +29,7 @@ COMP=cygwin
 # STATIC_SUFFIX=_static
 
 all: all_static
+INSTALL_STEP = install_unix
 
 include common_macros.mak
 

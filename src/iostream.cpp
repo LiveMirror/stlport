@@ -134,7 +134,7 @@ _Stl_create_filebuf(FILE* f, ios_base::openmode mode )
   result = new basic_filebuf<char, char_traits<char> >();
 
   _STLP_TRY {
-    result->_M_open(_FILE_fd(*f), mode);
+    result->_M_open(_FILE_fd(f), mode);
   }
   _STLP_CATCH_ALL {}
 
@@ -155,7 +155,7 @@ _Stl_create_wfilebuf(FILE* f, ios_base::openmode mode )
   result = new basic_filebuf<wchar_t, char_traits<wchar_t> >();
 
   _STLP_TRY {
-    result->_M_open(_FILE_fd(*f), mode);
+    result->_M_open(_FILE_fd(f), mode);
   }
   _STLP_CATCH_ALL {}
 
@@ -170,7 +170,7 @@ _Stl_create_wfilebuf(FILE* f, ios_base::openmode mode )
 
 void  _STLP_CALL ios_base::_S_initialize()
 {
-# ifndef _STLP_HAS_NO_NAMESPACES
+# if !defined(_STLP_HAS_NO_NAMESPACES) && !defined(_STLP_WINCE)
   using _SgI::stdio_istreambuf;
   using _SgI::stdio_ostreambuf;
 # endif
@@ -180,6 +180,7 @@ void  _STLP_CALL ios_base::_S_initialize()
     if (_Loc_init::_S_count++ == 0) {
       locale::_S_initialize();
     }
+#if !defined(_STLP_WINCE)
     istream* ptr_cin  = new((void*)&cin)  istream(0);
     ostream* ptr_cout = new((void*)&cout) ostream(0);
     ostream* ptr_cerr = new((void*)&cerr) ostream(0);
@@ -222,6 +223,7 @@ void  _STLP_CALL ios_base::_S_initialize()
     ptr_wcerr->setf(ios_base::unitbuf);
     
 # endif /*  _STLP_NO_WCHAR_T */
+#endif /* _STLP_WINCE */
 
   }
 
@@ -273,6 +275,7 @@ void _STLP_CALL ios_base::_S_uninitialize()
 
 
 bool _STLP_CALL ios_base::sync_with_stdio(bool sync) {
+#if !defined(STLP_WINCE)
 # ifndef _STLP_HAS_NO_NAMESPACES
   using _SgI::stdio_istreambuf;
   using _SgI::stdio_ostreambuf;
@@ -337,6 +340,9 @@ bool _STLP_CALL ios_base::sync_with_stdio(bool sync) {
   }
 
   return was_synced;
+#else
+  return false;
+#endif /* _STLP_WINCE */
 }
 
 _STLP_END_NAMESPACE

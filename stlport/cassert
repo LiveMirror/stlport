@@ -23,7 +23,7 @@
 
 # if defined (_STLP_USE_NEW_C_HEADERS) || defined (__IN_STLPORT_CASSERT)
 #  include _STLP_NATIVE_CPP_C_HEADER(cassert)
-# else
+# elif !defined(_STLP_WINCE)
 #  include <assert.h>
 # endif
 

@@ -425,8 +425,10 @@ locale::global(const locale& L)
   }
 
                                 // Set the global C locale, if appropriate.
+#if !defined(_STLP_WINCE)
   if (L.name() != _Nameless)
     setlocale(LC_ALL, L.name().c_str());
+#endif
 
   return old;
 }

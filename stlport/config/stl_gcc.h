@@ -9,7 +9,7 @@
 
 #   define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
 
-# if defined(__FreeBSD__) || defined (__hpux)
+# if defined(__FreeBSD__) || defined (__hpux) || defined(__amigaos__)
 #  define _STLP_NO_WCHAR_T
 # endif
 
@@ -24,6 +24,11 @@
 #  include <config/stl_solaris.h>
 # endif
 
+// no thread support on AmigaOS
+#if defined (__amigaos__)
+# define _NOTHREADS
+# define _STLP_NO_THREADS
+#endif
 
 // azov: gcc on lynx have a bug that causes internal
 // compiler errors when compiling STLport with namespaces turned on. 
@@ -39,7 +44,7 @@
 /* Tru64 Unix, AIX, HP : gcc there by default uses uses native ld and hence cannot auto-instantiate 
    static template data. If you are using GNU ld, please say so in stl_user_config.h header */    
 # if (__GNUC__ < 3) && ! (_STLP_GCC_USES_GNU_LD) && \
-   ((defined (__osf__) && defined (__alpha__)) || defined (_AIX) || defined (__hpux))
+   ((defined (__osf__) && defined (__alpha__)) || defined (_AIX) || defined (__hpux) || defined(__amigaos__) )
 #   define _STLP_NO_STATIC_TEMPLATE_DATA
 # endif
 

@@ -44,7 +44,7 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
                       _OutputIter __out,
                       ios_base::fmtflags __flags,
                       streamsize __width, _CharT __fill,
-                      _CharT __plus, _CharT __minus) {
+                      _CharT __xplus, _CharT __xminus) {
   if (__width <= __last - __first)
     return copy(__first, __last, __out);
   else {
@@ -56,7 +56,7 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
       return fill_n(__out, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __first != __last &&
-             (*__first == __plus || *__first == __minus)) {
+             (*__first == __xplus || *__first == __xminus)) {
       *__out++ = *__first++;
       __out = fill_n(__out, __pad, __fill);
       return copy(__first, __last, __out);
@@ -156,7 +156,7 @@ _OutputIter _STLP_CALL
 __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
                         _OutputIter __out,
                         ios_base::fmtflags __flg, streamsize __wid, _CharT __fill,
-                        _CharT __plus, _CharT __minus)
+                        _CharT __xplus, _CharT __xminus)
 {
   if (__len >= __wid)
     return copy(__buf, __buf + __len, __out);
@@ -169,7 +169,7 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
       return fill_n(__out, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __len != 0 &&
-             (__buf[0] == __plus || __buf[0] == __minus)) {
+             (__buf[0] == __xplus || __buf[0] == __xminus)) {
       *__out++ = __buf[0];
       __out = fill_n(__out, __pad, __fill);
       return copy(__buf + 1, __buf + __len, __out);
@@ -201,8 +201,8 @@ __put_integer(char* __buf, char* __iend, _OutputIter __s,
   //  const ctype<wchar_t>& __ct = use_facet<ctype<wchar_t> >(__loc);
   const ctype<wchar_t>& __ct = *(const ctype<wchar_t>*)__f._M_ctype_facet();
 
-  wchar_t __plus  = __ct.widen('+');
-  wchar_t __minus = __ct.widen('-');
+  wchar_t __xplus  = __ct.widen('+');
+  wchar_t __xminus = __ct.widen('-');
 
   wchar_t __wbuf[64];
   __ct.widen(__buf, __iend, __wbuf);
@@ -227,11 +227,11 @@ __put_integer(char* __buf, char* __iend, _OutputIter __s,
       __basechars = 0;
 
     __len = __insert_grouping(__wbuf, __eend, __grouping, __np.thousands_sep(),
-			      __plus, __minus, __basechars);
+			      __xplus, __xminus, __basechars);
   }
 
   return __copy_integer_and_fill((wchar_t*)__wbuf, __len, __s,
-                                 __flags, __f.width(0), __fill, __plus, __minus);
+                                 __flags, __f.width(0), __fill, __xplus, __xminus);
 }
 #endif
 

@@ -1,3 +1,19 @@
+The following changes were made in 4.5.2 since 4.5.1 release:
+
+	* iostreams ported to Windows CE (thanks Andrew Waters)
+
+	* iostreams ported to AmigaOS (thanks Steven Solie)
+	
+	* stl/_num_put.c, stl/_list.c : workarounds for Debian gcc (thanks Levente Farkas)
+	
+	* <typeinfo> : fixed MS workaround (thanks  Wil Evers,  Andrew Ushakov)
+
+	* _pthread_alloc.h : added per_thread_allocator class; returns memory to the same thread it's been allocated in.
+
+	* _iterator_old.h : restored ->() operator for MSVC (thanks Daniel Anderson)
+
+	
+
 The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
 	* _config.h, _epilog.h : new namespace inclusion schema implemented for own iostreams mode
@@ -109,7 +125,7 @@ The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
 	* _alloc.h : allocator::construct uses std::_Construct (thanks Gert Grossmann)
 
-	* stl?_alloc_old.h : restored (thanks Gert Grossmann)
+	* stl/_alloc_old.h : restored (thanks Gert Grossmann)
 	
 	
 The following changes were made in 4.5 release since 4.5 beta 8 :

@@ -161,7 +161,7 @@ extern "C" {
 
 __SGI_BEGIN_NAMESPACE
 
-#if !defined(__MSL__) && !defined(__MRC__) && !defined(__SC__)		//*TY 04/15/2000 - exclude mpw compilers also
+#if !defined(__MSL__) && !defined(__MRC__) && !defined(__SC__) && !defined(_STLP_WINCE)		//*TY 04/15/2000 - exclude mpw compilers also
 ios_base::openmode flag_to_openmode(int mode)
 {
   ios_base::openmode ret;
@@ -211,7 +211,7 @@ bool __is_regular_file(_STLP_fd fd) {
   struct stat buf;
   return fstat(fd, &buf) == 0 && (buf.st_mode & _S_IFREG) != 0 ;
 
-#   elif defined (_STLP_USE_WIN32_IO)
+#   elif defined (_STLP_USE_WIN32_IO) && !defined(_STLP_WINCE)
 
   return (GetFileType(fd) & ~FILE_TYPE_REMOTE) == FILE_TYPE_DISK;
 
@@ -262,7 +262,7 @@ streamoff __file_size(_STLP_fd fd) {
 
 // Visual C++ and Intel use this, but not Metrowerks
 // Also MinGW, msvcrt.dll (but not crtdll.dll) dependent version
-#if (!defined(__MSL__) && defined( _MSC_VER ) && defined(_WIN32)) || \
+#if (!defined(__MSL__) && !defined(_STLP_WINCE) && defined( _MSC_VER ) && defined(_WIN32)) || \
  (defined(__MINGW32__) && defined(__MSVCRT__))
 
 // fcntl(fileno, F_GETFL) for Microsoft library
@@ -583,7 +583,12 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
     return false;               // flags allowed by the C++ standard.
   }
 
-  file_no = CreateFileA(name, dwDesiredAccess, dwShareMode, 0,
+  #if defined(_STLP_WINCE)
+    file_no = CreateFile(__ASCIIToWide(name).c_str(),
+  #else
+    file_no = CreateFileA(name,
+  #endif
+                  dwDesiredAccess, dwShareMode, 0,
 			dwCreationDisposition, permission, 0);
   
   if ( file_no == INVALID_HANDLE_VALUE )
