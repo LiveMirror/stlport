@@ -3,6 +3,12 @@
 	* stlport/stl/_bitset.h, _bitset.c: Avoid include of istream when
 	NO_IOSTREAMS mode thanks Bruno report.
 
+	* stlport/stl/char_traits.h: Modification of the streamoff and streamsize
+	definition to take into account the 64 bits file access support.
+
+	* test/unit/fstream.cpp: New test for big files ( > 2Go) unactivated by
+	default. 
+
 2005-03-06  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/cstdlib, stlport/cmath, stlport/stl/_cmath.h: define

@@ -59,7 +59,13 @@ typedef off64_t streamoff;
 #elif defined(_STLP_WCE)
 typedef long streamoff;
 #elif defined (_STLP_WIN32)
+#  if defined (_STLP_LONG_LONG) && !defined (__CYGWIN__)
+//The Win32 file io API support 64 bits access so streamoff and streamsize 
+//has to reflect that. Do not change the stringbuf behavior.
+typedef _STLP_LONG_LONG streamoff;
+#  else
 typedef ptrdiff_t streamoff;
+#  endif
 #else // __unix
 typedef off_t streamoff;
 #endif /* _STLP_HAS_NO_NEW_C_HEADERS */
@@ -68,7 +74,11 @@ typedef off_t streamoff;
  * be able to represent all offsets between 2 positions represented
  * using streamsize with streamoff.
  */
+#if defined (_STLP_WIN32)
+typedef streamoff streamsize;
+#else
 typedef ptrdiff_t streamsize;
+#endif
 
 // Class fpos, which represents a position within a file.  (The C++
 // standard calls for it to be defined in <ios>.  This implementation

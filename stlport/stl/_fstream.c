@@ -260,15 +260,14 @@ basic_filebuf<_CharT, _Traits>::overflow(int_type __c)
 // This member function must be called before any I/O has been
 // performed on the stream, otherwise it has no effect.
 //
-// __buf == 0 && __n == 0 means to make ths stream unbuffered.
+// __buf == 0 && __n == 0 means to make this stream unbuffered.
 // __buf != 0 && __n > 0 means to use __buf as the stream's internal
 // buffer, rather than the buffer that would otherwise be allocated
 // automatically.  __buf must be a pointer to an array of _CharT whose
 // size is at least __n.
 template <class _CharT, class _Traits>
 basic_streambuf<_CharT, _Traits>*
-basic_filebuf<_CharT, _Traits>::setbuf(_CharT* __buf, streamsize __n)
-{
+basic_filebuf<_CharT, _Traits>::setbuf(_CharT* __buf, streamsize __n) {
   if (!_M_in_input_mode &&! _M_in_output_mode && !_M_in_error_mode &&
       _M_int_buf == 0) {
     if (__buf == 0 && __n == 0)
@@ -283,8 +282,7 @@ template <class _CharT, class _Traits>
 __BF_pos_type__
 basic_filebuf<_CharT, _Traits>::seekoff(off_type __off,
                                         ios_base::seekdir __whence,
-                                        ios_base::openmode /* dummy */)
-{
+                                        ios_base::openmode /* dummy */) {
   if (this->is_open() &&
       (__off == 0 || (_M_constant_width && this->_M_base._M_in_binary_mode()))) {
 

@@ -735,7 +735,7 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
 
   HANDLE oshandle = (HANDLE)_get_osfhandle(file_no);
   
-  if ((long)oshandle != -1)
+  if (oshandle != INVALID_STLP_FD)
     file_no = (int)oshandle;
   else
     return false;

@@ -47,7 +47,7 @@
 #  elif defined (_STLP_WIN32)
 // CreateFile/ReadFile/WriteFile
 #    define _STLP_USE_WIN32_IO
-#  elif defined (_STLP_WIN16) || defined (_STLP_WIN32) || defined (_STLP_MAC)
+#  elif defined (_STLP_WIN16) || defined (_STLP_MAC)
 // _open/_read/_write
 #    define _STLP_USE_UNIX_EMULATION_IO
 #  else
