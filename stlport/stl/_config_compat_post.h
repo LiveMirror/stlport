@@ -50,4 +50,5 @@
 # define __hash_multiset__  __FULL_NAME(hash_multiset)
 # define __vector__ __FULL_NAME(vector)
 
+#endif
 

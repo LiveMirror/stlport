@@ -1,3 +1,7 @@
+2005-02-07  Boris Fomitchev  <boris@stlport...>
+        * stlport/stl/_config_compat_post.h, stlport/stl/_relops_hash_cont.h - 4.6 compatibility fix
+	  stlport/stl/_list.h, stlport/stl/_slist.h, stlport/stl/_map.h, stlport/stl/_set.h
+
 2005-02-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_alloc.c: Fix of the _S_refill method in the lock free 

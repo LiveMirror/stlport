@@ -37,7 +37,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(short_string);
   CPPUNIT_TEST(find);
   CPPUNIT_TEST(assign);
-  CPPUNIT_TEST(mt);
+  //  CPPUNIT_TEST(mt);
   CPPUNIT_TEST(short_string_optim_bug);
   CPPUNIT_TEST(compare);
   CPPUNIT_TEST(template_expresion);
