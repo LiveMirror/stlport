@@ -1,3 +1,13 @@
+2005-03-15  Petr Ovtchenkov  <ptr@island...>
+
+	* src/complex.cpp, complex_exp.cpp, complex_io.cpp, complex_trig.cpp:
+	use achievements in _cmath.h---use overloaded funcs; mascarade from
+	complex_impl.h not required more.
+
+	* src/complex_impl.h: deleted.
+
+	* test/unit/cmath_test.cpp: check nested sqrt(sqrt)---possible problem with macro
+
 2005-03-14  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG notion
