@@ -87,6 +87,12 @@ _STLP_mutex_spin<__inst>::_S_nsec_sleep(int __log_nsec) {
 	  } else {
 	      Sleep(1 << (__log_nsec - 20));
 	  }
+#    elif defined(_STLP_OS2THREADS)
+      if (__log_nsec <= 20) {
+         DosSleep(0);
+      } else {
+         DosSleep(1 << (__log_nsec - 20));
+      }
 #     elif defined (_STLP_UNIX)
           timespec __ts;
           /* Max sleep is 2**27nsec ~ 60msec      */

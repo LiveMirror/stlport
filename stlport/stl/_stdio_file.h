@@ -86,7 +86,7 @@ _STLP_BEGIN_NAMESPACE
     ( defined(__sgi) || \
       ( defined(__sun) && ! defined (_LP64) )  || \
       defined (__osf__) || defined(__DECCXX) || \
-      defined (_STLP_MSVC) || defined (__ICL) || defined (__MINGW32__) || defined(__DJGPP) || defined (_AIX))
+      defined (_STLP_MSVC) || defined (__ICL) || defined (__MINGW32__) || defined(__DJGPP) || defined (_AIX) || defined (_CRAY))
 
 #if defined ( _MSC_VER ) || defined (__ICL) || defined (__MINGW32__) || defined(__DJGPP)
 typedef  char* _File_ptr_type;
@@ -120,6 +120,42 @@ inline void _FILE_I_set(FILE *__f, char* __begin, char* __next, char* __end) {
 }
 
 # define _STLP_FILE_I_O_IDENTICAL 1
+
+#elif defined(__EMX__)
+
+inline int   _FILE_fd(const FILE* __f) { return __f->_handle; }
+inline char* _FILE_I_begin(const FILE* __f) { return (char*) __f->_buffer; }
+inline char* _FILE_I_next(const FILE* __f) { return (char*) __f->_ptr; }
+inline char* _FILE_I_end(const FILE* __f) { return (char *) __f->_ptr + __f->_rcount; }
+inline ptrdiff_t _FILE_I_avail(const FILE* __f) { return __f->_rcount; }
+inline char& _FILE_I_preincr(FILE* __f) { --__f->_rcount; return *(char*) (++__f->_ptr); }
+inline char& _FILE_I_postincr(FILE* __f) { --__f->_rcount; return *(char*) (__f->_ptr++); }
+inline char& _FILE_I_predecr(FILE* __f) { ++__f->_rcount; return *(char*) (--__f->_ptr); }
+inline char& _FILE_I_postdecr(FILE* __f) { ++__f->_rcount; return *(char*) (__f->_ptr--); }
+inline void  _FILE_I_bump(FILE* __f, int __n) { __f->_ptr += __n; __f->_rcount -= __n; }
+inline void _FILE_I_set(FILE* __f, char* __begin, char* __next, char* __end) {
+  __f->_buffer = __begin;
+  __f->_ptr  = __next;
+  __f->_rcount  = __end - __next;
+}
+
+inline char* _FILE_O_begin(const FILE* __f) { return (char*) __f->_buffer; }
+inline char* _FILE_O_next(const FILE* __f) { return (char*) __f->_ptr; }
+inline char* _FILE_O_end(const FILE* __f) { return (char*) __f->_ptr + __f->_wcount; }
+inline ptrdiff_t _FILE_O_avail(const FILE* __f) { return __f->_wcount; }
+inline char& _FILE_O_preincr(FILE* __f) { --__f->_wcount; return *(char*) (++__f->_ptr); }
+inline char& _FILE_O_postincr(FILE* __f) { --__f->_wcount; return *(char*) (__f->_ptr++); }
+inline char& _FILE_O_predecr(FILE* __f) { ++__f->_wcount; return *(char*) (--__f->_ptr); }
+inline char& _FILE_O_postdecr(FILE* __f) { ++__f->_wcount; return *(char*) (__f->_ptr--); }
+inline void _FILE_O_bump(FILE* __f, int __n) { __f->_ptr += __n; __f->_wcount -= __n; }
+inline void _FILE_O_set(FILE* __f, char* __begin, char* __next, char* __end) {
+  __f->_buffer = __begin;
+  __f->_ptr  = __next;
+  __f->_wcount  = __end - __next;
+}
+
+
+# undef _STLP_FILE_I_O_IDENTICAL
 
 # elif defined(_STLP_SCO_OPENSERVER) || defined(__NCR_SVR)
 

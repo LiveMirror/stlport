@@ -208,9 +208,17 @@ public:
 
   is_specialized = true,
   is_signed = true, 
-  has_infinity     =  true,
-  has_quiet_NaN    =  true,
-  has_signaling_NaN=  true,
+
+#if (!defined(_CRAY) || !defined(_CRAYIEEE))
+   has_infinity     =  true,
+   has_quiet_NaN    =  true,
+   has_signaling_NaN=  true,
+#else
+  has_infinity     =  false,
+  has_quiet_NaN    =  false,
+  has_signaling_NaN=  false,
+#endif
+
   has_denorm_loss  =  false,
   is_iec559      =  __IsIEC559,
   is_bounded     =  true,
