@@ -62,6 +62,8 @@ REM C runtime library
 if "%1" == "--rtl-static" goto opt_rtl
 if "%1" == "--rtl-dynamic" goto opt_rtl
 
+REM clean rule
+if "%1" == "--clean" goto opt_clean
 
 echo Unknown option: %1
 
@@ -121,6 +123,9 @@ echo    _site_config.h set the following macro depending on the configure option
 echo    "--rtl-dynamic -> _STLP_USE_DYNAMIC_LIB"
 echo    "--rtl-static  -> _STLP_USE_STATIC_LIB"
 echo    This is a Microsoft-only option.
+echo.
+echo "--clean"
+echo    Removes the build configuration file.
 goto skp_comp
 
 REM **************************************************************************
@@ -295,6 +300,14 @@ if "%1" == "--rtl-dynamic" echo STLP_BUILD_FORCE_DYNAMIC_RUNTIME=1 >> ..\Makefil
 :or_end
 goto cont_lp
 
+REM **************************************************************************
+REM *
+REM * Clean
+REM *
+REM **************************************************************************
+:opt_clean
+del ..\Makefiles\config.mak
+goto cont_lp
 
 REM **************************************************************************
 REM *

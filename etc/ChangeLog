@@ -1,3 +1,23 @@
+2005-04-05  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_evc.h: apply patch from Michael Fink to add support for
+	various EVC SDK.
+	
+	* stlport/stl/_cmath.h: An other adaptation to the Intel C++ compiler.
+	
+	* build/lib/nmake-vc-common.mak, test/unit/nmake-vc-common.mak: Removed check
+	of STLP_BUILD_FORCE_[STATIC,DYNAMIC]_RUNTIME environment variables,
+	moved in a common build system file.
+	
+	* build/Makefiles/nmake/vc-common.mak: Add checks of 
+	STLP_BUILD_FORCE_[STATIC,DYNAMIC]_RUNTIME variables.
+	
+	* build/lib/configure.bat: Add a clean option to remove the hidden 
+	Makefiles/config.mak file.
+	
+	* stlport/stdexcept: Disable 'non dll-interface class used as base' warning
+	when building STLport dll linked with the static runtime.
+	
 2005-04-04  Francois Dumont  <dums@stlport...>
 
 	* test/unit/mfunptr_test.cpp: Add necessary macro checks for a test

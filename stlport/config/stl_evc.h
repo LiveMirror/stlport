@@ -146,18 +146,42 @@
  */
 #ifdef _STLP_WCE_NET
 // include headers for ARM and emulator
-#  if defined(_X86_)
+#  if defined (_X86_)
 #    define _STLP_NATIVE_INCLUDE_PATH ../Emulator
-#  elif defined(_ARM_)
-#    define _STLP_NATIVE_INCLUDE_PATH ../Armv4
-#  elif defined(_MIPS_)
-#    if defined(MIPS16)
-#      define _STLP_NATIVE_INCLUDE_PATH ../mips16
-#    elif defined(MIPSII)
-#      define _STLP_NATIVE_INCLUDE_PATH ../mipsII
-#    elif defined(MIPSIV)
-#      define _STLP_NATIVE_INCLUDE_PATH ../mipsIV
+#  elif defined (_ARM_)
+#    if defined (ARMV4)
+#      define _STLP_NATIVE_INCLUDE_PATH ../Armv4
+#    elif defined (ARMV4I)
+#      define _STLP_NATIVE_INCLUDE_PATH ../Armv4i
+#    elif defined (ARMV4T)
+#      define _STLP_NATIVE_INCLUDE_PATH ../Armv4t
+#    else
+#      error Unknown ARM SDK.
 #    endif
+#  elif defined (_MIPS_)
+#    if defined (MIPS16)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mips16
+#    elif defined (MIPSII)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mipsII
+#    elif defined (MIPSII_FP)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mipsII_fp
+#    elif defined (MIPSIV)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mipsIV
+#    elif defined (MIPSIV_FP)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mipsIV_fp
+#    else
+#      error Unknown MIPS SDK.
+#    endif
+#  elif defined (SHx)
+#    if defined (SH3)
+#      define _STLP_NATIVE_INCLUDE_PATH ../sh3
+#    elif defined (SH4)
+#      define _STLP_NATIVE_INCLUDE_PATH ../sh4
+#    else
+#      error Unknown SHx SDK.
+#    endif
+#  else
+#    error Unknown SDK.
 #  endif
 #endif /* _STLP_WCE_NET */
 
