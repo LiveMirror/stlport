@@ -17,6 +17,7 @@ Q3.0 On my XXXX Linux n.n g++ headers are in /usr/include/g++, but they
 are looked for in /usr/include/3.3.1. Is it a STLport bug?
 Q3.1 Do I need to build library to use STLport?
 Q3.2 During library compilation with MS VC++ 6.0 I see following error report:...
+Q3.3 Does anybody success in building STLport on OS Y with compiler K n.n?
 
 Q4 Installation
 
@@ -69,6 +70,12 @@ A3.2 You have SDK installed. Uncomment line
 #define _STLP_NEW_PLATFORM_SDK 1
 in the file stlport/stl_user_config.h. There is no way to detect SDK
 presence during preprocessor stage.
+
+========================================================================
+
+Q3.3 Does anybody success in building STLport on OS S with compiler K n.n?
+
+A3.3 See report about results of regression tests here: build/test/unit/STATUS.
 
 ========================================================================
 
