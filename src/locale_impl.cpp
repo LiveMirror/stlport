@@ -350,6 +350,8 @@ locale::_S_initialize()
     return;
   _Stl_loc_assign_ids();
   _Locale_impl::_S_global_impl = _Locale_impl::make_classic_locale();
+  locale* loc = __REINTERPRET_CAST(locale*, &_S_b_classic);
+  new (loc) locale (_Locale_impl::_S_global_impl);
 }
 
 

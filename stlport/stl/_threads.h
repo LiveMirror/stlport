@@ -446,8 +446,7 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 };
 
 
-
-#if defined (_STLP_MUTEX_NEEDS_ONDEMAND_INITIALIZATION)
+#if defined (_STLP_THREADS) && defined (_STLP_MUTEX_NEEDS_ONDEMAND_INITIALIZATION)
 // for use in _STLP_mutex, our purposes do not require ondemand initialization
 // also, mutex_base may use some hacks to determine uninitialized state by zero data, which only works for globals.
 class _STLP_CLASS_DECLSPEC _STLP_mutex_nodemand : public _STLP_mutex_base {

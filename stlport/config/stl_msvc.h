@@ -51,6 +51,7 @@
 # endif
 
 #  define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
+#  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
 
 // # ifndef __BUILDING_STLPORT
 // #  define _STLP_USE_TEMPLATE_EXPORT 1
@@ -71,7 +72,7 @@
 
 # if (_STLP_MSVC <= 1300) 
 #  define _STLP_DEFAULT_CONSTRUCTOR_BUG 1
-#  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
+
 #  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
 // fails to properly resolve call to sin() from within sin()
 #  define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG

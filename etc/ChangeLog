@@ -1,3 +1,13 @@
+The following changes were made in 4.6.2 since 4.6.1 release:
+
+  * threads.h:447 - fixed _NOTHREADS compilation error (thanks Wu Yongwei)
+  
+  * stl_solaris.h - fixed pthreads compilation error
+
+  * stl_msvc.h : #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG added for VC7.1
+
+  * locale_impl.cpp : locale::classic() initialization fixed	
+	
 The following changes were made in 4.6 since 4.5.3 release:
   ---
   * A few ANSI conformance fixes (thanks Richard Peng)
