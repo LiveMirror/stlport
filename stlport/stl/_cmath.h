@@ -121,6 +121,7 @@ _STLP_END_NAMESPACE
 
 _STLP_BEGIN_NAMESPACE
 #    ifdef _STLP_WCE
+#      pragma warning(push)
 #      pragma warning(disable: 4162 4163) // "no function with C linkage found", "not available as an intrinsic function"
 #      pragma function (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh, ceil, floor)
 #    endif
@@ -218,6 +219,7 @@ inline long double tanh (long double __x)                 { return _STLP_DO_TANH
 #    ifdef _STLP_WCE
 #      pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh, ceil, floor)
 #      pragma warning(default: 4162)
+#      pragma warning(pop)
 #    endif
 
 _STLP_END_NAMESPACE
@@ -235,6 +237,8 @@ _STLP_BEGIN_NAMESPACE
  */
 //We have to tell the compilers that abs, acos ... math functions are not intrinsic
 //otherwise we have Internal Compiler Error in release mode...
+#pragma warning(push)
+#pragma warning(disable: 4162) // "no function with C linkage found"
 #pragma function (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh)
 inline double abs(double __x) {return (fabs(__x)); }
 inline float abs(float __x) {return (fabsf(__x)); }
@@ -283,6 +287,7 @@ inline long double tan(long double __x) {return (tanl(__x)); }
 inline long double tanh(long double __x) {return (tanhl(__x)); }
 //restoration of the default intrinsic status of those functions:
 //#pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh)
+#pragma warning(pop)
 #    endif
 
 //The native pow version has a bugged overload so it is not imported
