@@ -32,6 +32,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(find);
   CPPUNIT_TEST(assign);
   CPPUNIT_TEST(mt);
+  CPPUNIT_TEST(short_string_optim_bug);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -45,6 +46,7 @@ protected:
   void find();
   void assign();
   void mt();
+  void short_string_optim_bug();
 
   static string func( const string& par )
   {
@@ -458,3 +460,29 @@ void StringTest::assign()
   s.assign(s2);
   CPPUNIT_ASSERT( s == s2 );
 }
+
+/* This test is to check if std::string properly supports the short string
+ * optimization. It has been found out that eMbedded Visual C++ 3.0 and .NET
+ * compilers for the ARM platform fail to pass structs and classes of certain
+ * size per value. This seems to be a known compiler bug. For other processors
+ * (e.g. x86) the error doesn't occur.
+ * (The ARM compiler creates a temporary object from teststr on the stack, to
+ * pass it to the helper function. It uses the copy constructor for this.
+ * After this the temporary object is copied to another place on the stack.
+ * The result is that the _M_finish pointer then points to the wrong buffer
+ * end and the size of the short string is incorrectly calculated.)
+ */
+void StringTest::short_string_optim_bug()
+{
+   string teststr("shortest");
+
+   bool short_string_optim_bug_helper(std::string teststr);
+
+   CPPUNIT_ASSERT(true == short_string_optim_bug_helper(teststr));
+}
+
+bool short_string_optim_bug_helper(std::string teststr)
+{
+   size_t ss = teststr.size();
+   return (ss == 8);
+} 
