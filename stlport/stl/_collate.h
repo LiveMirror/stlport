@@ -158,10 +158,9 @@ private:
 
 # endif /* NO_WCHAR_T */
 
-
 template <class _CharT>
 bool 
-__locale_do_operator_call (const locale* __that, 
+__locale_do_operator_call (const _LocaleBase* __that, 
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __x,
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __y) 
 {

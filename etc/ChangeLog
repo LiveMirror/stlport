@@ -4,6 +4,11 @@
 	Removal of any Standard reference in the slist class debug implementation. Removal
 	of some unjustified iterator invalidation.
 
+	* stlport/stl/_locale.h, _collate.h, src/locale.cpp, locale_catalog.cpp, locale_impl.cpp:
+	Split of the locale class implementation into _LocaleBase base class with no member
+	template methods which is exported and the locale class which is not exported. This
+	is a workaround for the MSVC6 compiler.
+
 2004-08-03  Francois Dumont <dums@...>
 
 	* stlport/stl/_iterator.h: Fix of the back_insert_iterator, front_insert_iterator

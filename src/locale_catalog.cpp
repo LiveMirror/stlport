@@ -299,7 +299,7 @@ void _Stl_loc_combine_names(_Locale* L,
 
 
 // Create a locale from a name.
-locale::locale(const char* name)
+_LocaleBase::_LocaleBase(const char* name)
   : _M_impl(0) {
   if (!name)
     _M_throw_runtime_error(0);
@@ -324,7 +324,7 @@ locale::locale(const char* name)
 
 // Create a locale that's a copy of L, except that all of the facets
 // in category c are instead constructed by name.
-locale::locale(const locale& L, const char* name, locale::category c)
+_LocaleBase::_LocaleBase(const _LocaleBase& L, const char* name, locae::caltegory c)
   : _M_impl(0) {
   if (name == 0 || strcmp(name, "*") == 0)
     _M_throw_runtime_error(name);
@@ -355,7 +355,7 @@ locale::locale(const locale& L, const char* name, locale::category c)
 
 // Contruct a new locale where all facets that aren't in category c
 // come from L1, and all those that are in category c come from L2.
-locale::locale(const locale& L1, const locale& L2, category c)
+_LocaleBase::_LocaleBase(const _LocaleBase& L1, const _LocaleBase& L2, category c)
   : _M_impl(0) {
   _Locale* impl = new _Locale(*L1._M_impl);
   

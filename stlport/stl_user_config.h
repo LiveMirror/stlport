@@ -111,7 +111,7 @@
 
 /*
  * If _STLP_USE_OWN_NAMESPACE is in effect, STLport by default will try
- * to rename std:: for the user to _STL::. If you do want this feature, 
+ * to rename std:: for the user to _STL::. If you do not want this feature, 
  * please define the following switch :
  */
 // # define _STLP_DONT_REDEFINE_STD 1

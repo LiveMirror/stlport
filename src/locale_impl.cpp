@@ -323,23 +323,22 @@ _STLP_STATIC_MEMBER_DECLSPEC locale::id messages<wchar_t>::id = { 26 };
 //
 // locale class
 //
+_LocaleBase::facet::~facet() {}
 
-locale::facet::~facet() {}
-
-# if ! defined ( _STLP_MEMBER_TEMPLATES ) || defined (_STLP_INLINE_MEMBER_TEMPLATES)
+#if ! defined ( _STLP_MEMBER_TEMPLATES ) || defined (_STLP_INLINE_MEMBER_TEMPLATES)
 // members that fail to be templates 
-bool locale::operator()(const string& __x,
-                        const string& __y) const {
+bool _LocaleBase::operator()(const string& __x,
+                             const string& __y) const {
   return __locale_do_operator_call(this, __x, __y);
 }
 
-#  ifndef _STLP_NO_WCHAR_T
-bool locale::operator()(const wstring& __x,
-                  const wstring& __y) const {
+#  if !defined (_STLP_NO_WCHAR_T)
+bool _LocaleBase::operator()(const wstring& __x,
+                             const wstring& __y) const {
   return __locale_do_operator_call(this, __x, __y);
 }
 #  endif
-# endif
+#endif
 
 static locale _Stl_loc_classic_locale(_Stl_classic_locale_impl);
 _STLP_STATIC_MUTEX _Stl_loc_global_locale_lock _STLP_MUTEX_INITIALIZER;
@@ -348,7 +347,7 @@ _STLP_STATIC_MUTEX _Stl_loc_global_locale_lock _STLP_MUTEX_INITIALIZER;
 // class locale
 
 void _STLP_CALL
-locale::_M_throw_runtime_error(const char* name) {
+_LocaleBase::_M_throw_runtime_error(const char* name) {
   char buf[256];
 
   if (name) {
@@ -382,27 +381,27 @@ _Locale_impl::_S_uninitialize() {
 
 
 // Default constructor: create a copy of the global locale.
-locale::locale() : _M_impl(0) {
+_LocaleBase::_LocaleBase() : _M_impl(0) {
   _M_impl = _S_copy_impl(_Stl_classic_locale_impl);
 }
 
-locale::locale(_Locale_impl* impl) : _M_impl(impl)
+_LocaleBase::_LocaleBase(_Locale_impl* impl) : _M_impl(impl)
 {}
 
 // Copy constructor
-locale::locale(const locale& L) _STLP_NOTHROW
+_LocaleBase::_LocaleBase(const _LocaleBase& L) _STLP_NOTHROW
   : _M_impl(0) {
   _M_impl = _S_copy_impl(L._M_impl);
 }
 
 // Destructor.
-locale::~locale() _STLP_NOTHROW {
+_LocaleBase::~_LocaleBase() _STLP_NOTHROW {
   _M_impl->decr();
 }
 
 // Assignment operator.  Much like the copy constructor: just a bit of
 // pointer twiddling.
-const locale& locale::operator=(const locale& L) _STLP_NOTHROW {
+const _LocaleBase& _LocaleBase::operator=(const _LocaleBase& L) _STLP_NOTHROW {
   if (this->_M_impl != L._M_impl) {
     this->_M_impl->decr();
     this->_M_impl = _S_copy_impl(L._M_impl);
@@ -410,42 +409,42 @@ const locale& locale::operator=(const locale& L) _STLP_NOTHROW {
   return *this;
 }
 
-locale::facet* locale::_M_get_facet(const locale::id& n) const {
+_LocaleBase::facet* _LocaleBase::_M_get_facet(const _LocaleBase::id& n) const {
   return n._M_index < _M_impl->size() ? _M_impl->facets[n._M_index] : 0;
 }
 
-locale::facet* locale::_M_use_facet(const locale::id& n) const {
-  locale::facet* f = (n._M_index < _M_impl->size()
+_LocaleBase::facet* _LocaleBase::_M_use_facet(const _LocaleBase::id& n) const {
+  _LocaleBase::facet* f = (n._M_index < _M_impl->size()
                       ? _M_impl->facets[n._M_index] : 0);
   if (!f)
     _M_impl->_M_throw_bad_cast();
   return f;
 }
 
-string locale::name() const {
+string _LocaleBase::name() const {
   return _M_impl->name;
 }
 
 static string _Nameless("*");
 
 // Compare two locales for equality.
-bool locale::operator==(const locale& L) const {
+bool _LocaleBase::operator==(const _LocaleBase& L) const {
   return this->_M_impl == L._M_impl ||
          (this->name() == L.name() && this->name() != _Nameless);
 }
 
-bool locale::operator!=(const locale& L) const {
+bool _LocaleBase::operator!=(const _LocaleBase& L) const {
   return !(*this == L);
 }
 
 // Static member functions.
 const locale&  _STLP_CALL
-locale::classic() {
+_LocaleBase::classic() {
   return _Stl_loc_classic_locale;
 }
 
 locale  _STLP_CALL
-locale::global(const locale& L) {
+_LocaleBase::global(const _LocaleBase& L) {
   locale old;                   // A copy of the old global locale.
 
   L._M_impl->incr();
@@ -469,14 +468,14 @@ locale::global(const locale& L) {
 
 # if !defined (_STLP_STATIC_CONST_INIT_BUG) && ! defined (_STLP_USE_DECLSPEC)
 
-const locale::category locale::none;
-const locale::category locale::collate;
-const locale::category locale::ctype;
-const locale::category locale::monetary;
-const locale::category locale::numeric;
-const locale::category locale::time; 
-const locale::category locale::messages;
-const locale::category locale::all;
+const _LocaleBase::category _LocaleBase::none;
+const _LocaleBase::category _LocaleBase::collate;
+const _LocaleBase::category _LocaleBase::ctype;
+const _LocaleBase::category _LocaleBase::monetary;
+const _LocaleBase::category _LocaleBase::numeric;
+const _LocaleBase::category _LocaleBase::time; 
+const _LocaleBase::category _LocaleBase::messages;
+const _LocaleBase::category _LocaleBase::all;
 
 # endif
 

@@ -96,7 +96,7 @@ static size_t _Stl_loc_get_index(locale::id& id) {
   return id._M_index;
 }
 
-void locale::_M_insert(facet* f, locale::id& n) {
+void _LocaleBase::_M_insert(facet* f, _LocaleBase::id& n) {
   if (f)
     ((_Locale*)_M_impl)->insert(f, _Stl_loc_get_index(n), false);
 }
@@ -104,7 +104,7 @@ void locale::_M_insert(facet* f, locale::id& n) {
 
 // Make a locale directly from a _Locale_impl object.  If the second argument
 // is true, we clone the _Locale_impl.  If false, we just twiddle pointers.
-locale::locale(_Locale_impl* impl, bool do_copy)
+_LocaleBase::_LocaleBase(_Locale_impl* impl, bool do_copy)
   : _M_impl(0) {
   if (do_copy) {
     _M_impl = new _Locale(*impl);
