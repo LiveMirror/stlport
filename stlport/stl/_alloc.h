@@ -27,34 +27,34 @@
 #ifndef _STLP_INTERNAL_ALLOC_H
 #define _STLP_INTERNAL_ALLOC_H
 
-# ifndef _STLP_CSTDDEF
+#ifndef _STLP_CSTDDEF
 #  include <cstddef>
-# endif
-
-#if !defined (_STLP_DEBUG_H) && (defined  (_STLP_DEBUG) || defined (_STLP_ASSERTIONS))
-# include <stl/debug/_debug.h>
 #endif
 
-# ifndef _STLP_CSTDLIB
-#  include <cstdlib>
-# endif
-# ifndef _STLP_CSTRING
-#  include <cstring>
-# endif
+#if !defined (_STLP_DEBUG_H) && (defined  (_STLP_DEBUG) || defined (_STLP_ASSERTIONS))
+#  include <stl/debug/_debug.h>
+#endif
 
-# ifndef __THROW_BAD_ALLOC
+#ifndef _STLP_CSTDLIB
+#  include <cstdlib>
+#endif
+#ifndef _STLP_CSTRING
+#  include <cstring>
+#endif
+
+#ifndef __THROW_BAD_ALLOC
 #  if !defined(_STLP_USE_EXCEPTIONS)
-#   if !defined (_STLP_CSTDIO)
-#    include <cstdio>
-#   endif
-#   if !defined (_STLP_CSTDLIB)
-#    include <cstdlib>
-#   endif
-#   define __THROW_BAD_ALLOC puts("out of memory\n"); exit(1)
+#    if !defined (_STLP_CSTDIO)
+#      include <cstdio>
+#    endif
+#    if !defined (_STLP_CSTDLIB)
+#      include <cstdlib>
+#    endif
+#    define __THROW_BAD_ALLOC puts("out of memory\n"); exit(1)
 #  else /* !defined(_STLP_USE_EXCEPTIONS) */
-#   define __THROW_BAD_ALLOC throw _STLP_STD::bad_alloc()
+#    define __THROW_BAD_ALLOC throw _STLP_STD::bad_alloc()
 #  endif /* !defined(_STLP_USE_EXCEPTIONS) */
-# endif   /* __THROW_BAD_ALLOC */
+#endif   /* __THROW_BAD_ALLOC */
 
 //# ifndef _STLP_INTERNAL_NEW_HEADER
 //#  include <stl/_new.h>

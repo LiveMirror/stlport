@@ -224,14 +224,6 @@ _STLP_EXPORT_TEMPLATE_CLASS _String_base<wchar_t, allocator<wchar_t> >;
 #  endif
 #endif /* _STLP_USE_TEMPLATE_EXPORT */
 
-#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
-template <class _CharT, class _Alloc>
-struct __move_traits<_String_base<_CharT,_Alloc> > :
-  __move_traits_help<typename _String_base<_CharT,_Alloc>::_AllocProxy>
-{};
-#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
-
-
 _STLP_END_NAMESPACE
 
 #endif /* _STLP_STRING_BASE_H */

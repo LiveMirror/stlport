@@ -23,10 +23,6 @@
 #  include <memory>
 #endif
 
-#ifndef _STLP_CCTYPE
-#  include <cctype>
-#endif
-
 #ifndef _STLP_STRING_FWD_H
 #  include <stl/_string_fwd.h>
 #endif
@@ -1328,24 +1324,21 @@ _STLP_BEGIN_NAMESPACE
 // Non-member functions.
 // Swap.
 #if defined (_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
-
 template <class _CharT, class _Traits, class _Alloc> 
 inline void _STLP_CALL
 swap(basic_string<_CharT,_Traits,_Alloc>& __x,
      basic_string<_CharT,_Traits,_Alloc>& __y) {
   __x.swap(__y);
 }
-
 #endif /* _STLP_FUNCTION_TMPL_PARTIAL_ORDER */
 
 #if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
-
 template <class _CharT, class _Traits, class _Alloc>
-struct __move_traits<basic_string<_CharT,_Traits,_Alloc> > :
-  //everything rely on the _String_base class that managed memory.
-  __move_traits_aux<_String_base<_CharT, _Alloc> >
-{};
-
+struct __move_traits<basic_string<_CharT, _Traits, _Alloc> > {
+  typedef __true_type implemented;
+  //Completness depends on the allocator:
+  typedef typename __move_traits<_Alloc>::complete complete;
+};
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 template <class _CharT, class _Traits, class _Alloc> 
@@ -1366,12 +1359,6 @@ _STLP_END_NAMESPACE
     (defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION))
 #  include <stl/_string.c>
 #endif
-
-#if !defined (_STLP_USE_NO_IOSTREAMS)
-#  include <stl/_string_io.h>
-#endif
-
-#include <stl/_string_hash.h>
 
 #endif /* _STLP_INTERNAL_STRING_H */
 

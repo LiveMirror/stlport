@@ -2,15 +2,11 @@
 #define _STLP_STRING_IO_C
 
 #ifndef _STLP_STRING_IO_H
-# include <stl/_string_io.h>
+#  include <stl/_string_io.h>
 #endif
 
 #ifndef _STLP_INTERNAL_CTYPE_H
-# include <stl/_ctype.h>
-#endif
-
-#ifdef _STLP_DEBUG
-#  define basic_string _STLP_NON_DBG_NAME(str)
+#  include <stl/_ctype.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -18,9 +14,8 @@ _STLP_BEGIN_NAMESPACE
 template <class _CharT, class _Traits>
 bool _STLP_CALL
 __stlp_string_fill(basic_ostream<_CharT, _Traits>& __os,
-                  basic_streambuf<_CharT, _Traits>* __buf,
-                  size_t __n)
-{
+                   basic_streambuf<_CharT, _Traits>* __buf,
+                   size_t __n) {
   _CharT __f = __os.fill();
   size_t __i;
   bool __ok = true;
@@ -33,8 +28,7 @@ __stlp_string_fill(basic_ostream<_CharT, _Traits>& __os,
 template <class _CharT, class _Traits, class _Alloc>
 basic_ostream<_CharT, _Traits>& _STLP_CALL
 operator<<(basic_ostream<_CharT, _Traits>& __os, 
-           const basic_string<_CharT,_Traits,_Alloc>& __s)
-{
+           const basic_string<_CharT,_Traits,_Alloc>& __s) {
   typedef basic_ostream<_CharT, _Traits> __ostream;
   typename __ostream::sentry __sentry(__os);
   bool __ok = false;
@@ -69,8 +63,7 @@ operator<<(basic_ostream<_CharT, _Traits>& __os,
 template <class _CharT, class _Traits, class _Alloc>
 basic_istream<_CharT, _Traits>& _STLP_CALL 
 operator>>(basic_istream<_CharT, _Traits>& __is,
-           basic_string<_CharT,_Traits, _Alloc>& __s)
-{
+           basic_string<_CharT,_Traits, _Alloc>& __s) {
   typedef basic_istream<_CharT, _Traits> __istream;
   typename __istream::sentry __sentry(__is);
 
@@ -107,7 +100,7 @@ operator>>(basic_istream<_CharT, _Traits>& __is,
     }
     
     // If we have read no characters, then set failbit.
-    if (__s.size() == 0)
+    if (__s.empty())
       __is.setstate(__istream::failbit);
   }
   else
@@ -120,8 +113,7 @@ template <class _CharT, class _Traits, class _Alloc>
 basic_istream<_CharT, _Traits>& _STLP_CALL 
 getline(basic_istream<_CharT, _Traits>& __is,
         basic_string<_CharT,_Traits,_Alloc>& __s,
-        _CharT __delim)
-{
+        _CharT __delim) {
   typedef basic_istream<_CharT, _Traits> __istream;
   size_t __nread = 0;
   typename basic_istream<_CharT, _Traits>::sentry __sentry(__is, true);
@@ -152,8 +144,6 @@ getline(basic_istream<_CharT, _Traits>& __is,
 }
 
 _STLP_END_NAMESPACE
-
-# undef basic_string
 
 #endif
 

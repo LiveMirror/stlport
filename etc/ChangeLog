@@ -1,11 +1,29 @@
+2005-02-14  Francois Dumont  <dums@stlport...>
+
+	* stlport/string, /stl/_string.h: Modification of the include schema.
+	_string_io.h no more included from _string.h to avoid circular headers
+	dependencies as basic_string class is used in iostream implementation.
+	This headers is now included from the Standard string header. Useless 
+	cctype include removed from _string.h. _string_hash.h also moved from
+	_string.h to string for consistency.
+
+	* stlport/stl/_complex.c: Add of the _string_io.h header include that
+	was missing after string include schema modification.
+
+	* stlport/stl/_string_base.h, _string.h: basic_string move traits STLport
+	struct definition do not depends anymore on the _String_base struct to
+	make definition more clear.
+
 2005-02-08  Francois Dumont  <dums@stlport...>
 
-  * stlport/stl/_config.h: Fix endianness for AMD 64 thanks Karol
-  Szkudlarek.
+	* stlport/stl/_config.h: Fix endianness for AMD 64 thanks Karol
+	Szkudlarek.
 
 2005-02-07  Boris Fomitchev  <boris@stlport...>
-        * stlport/stl/_config_compat_post.h, stlport/stl/_relops_hash_cont.h - 4.6 compatibility fix
-	  stlport/stl/_list.h, stlport/stl/_slist.h, stlport/stl/_map.h, stlport/stl/_set.h
+	* stlport/stl/_config_compat_post.h, stlport/stl/_relops_hash_cont.h 
+	  stlport/stl/_list.h, stlport/stl/_slist.h, stlport/stl/_map.h, 
+	  stlport/stl/_set.h
+	  4.6 compatibility fix
 
 2005-02-04  Francois Dumont  <dums@stlport...>
 

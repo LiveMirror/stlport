@@ -17,13 +17,11 @@
  */ 
 # include "stlport_prefix.h"
 
-// #include <locale>
 #include <hash_map>
 #include <string>
 #include "locale_impl.h"
 #include "c_locale.h"
 
-//#include "locale_nonclassic.h"
 #include "locale_impl.h"
 
 
