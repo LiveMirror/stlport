@@ -1,3 +1,18 @@
+2004-07-05  Petr Ovchenkov  <ptr@Island...>
+
+	* src/facets_byname.cpp: avoid pass address to member of derived class into
+	base class via constructor.
+
+	* src/facets_byname.cpp: remove first member---EOF---of _M_byname_table---one
+	not required and lead to wrong reference; this a fix for test in
+	locale_test.cpp.
+
+	* src/ctype.cpp: ditto.
+
+	* src/c_locale_win32/c_locale_win32.c: ditto.
+
+	* stlport/stl/_ctype.h: ditto.
+
 2004-07-02  Petr Ovtchenkov  <ptr@Island...>
 
 	* src/c_locale_glibc/c_locale_glibc2.c: message catalog functions dealing
