@@ -7,7 +7,10 @@
 # define _STLP_USE_GLIBC
 #endif
 
-#   define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
+#   if (__GNUC__ < 3) || (__GNUC__ == 3 && __GNUC_MINOR__ < 4)
+#    define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
+#   endif
+
 
 # if defined(__FreeBSD__) || defined (__hpux) || defined(__amigaos__) || ( defined(__OS2__) && defined(__EMX__) )
 #  define _STLP_NO_WCHAR_T
