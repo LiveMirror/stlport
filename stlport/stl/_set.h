@@ -178,7 +178,7 @@ public:
 # endif /* _STLP_MEMBER_TEMPLATES */
   void erase(iterator __pos) { _M_t.erase( __pos ); }
   size_type erase(const key_type& __x) { 
-    return _M_t.erase(__x); 
+    return _M_t.erase_unique(__x); 
   }
   void erase(iterator __first, iterator __last) { 
     _M_t.erase(__first, __last ); 
@@ -203,10 +203,10 @@ public:
   iterator upper_bound(const key_type& __x) { return _M_t.upper_bound(__x); }
   const_iterator upper_bound(const key_type& __x) const { return _M_t.upper_bound(__x); }
   pair<iterator, iterator> equal_range(const key_type& __x) {
-    return _M_t.equal_range(__x);
+    return _M_t.equal_range_unique(__x);
   }
   pair<const_iterator, const_iterator> equal_range(const key_type& __x) const {
-    return _M_t.equal_range(__x);
+    return _M_t.equal_range_unique(__x);
   }
 };
 

@@ -64,11 +64,12 @@ public:
     : public binary_function<value_type, value_type, bool> {
   friend class map<_Key,_Tp,_Compare,_Alloc>;
   protected :
-    _Compare _M_comp;
-    value_compare(_Compare __c) : _M_comp(__c) {}
+    //c is a Standard name (23.3.1), do no make it STLport naming convention compliant.
+    _Compare comp;
+    value_compare(_Compare __c) : comp(__c) {}
   public:
     bool operator()(const value_type& __x, const value_type& __y) const {
-      return _M_comp(__x.first, __y.first);
+      return comp(__x.first, __y.first);
     }
   };
 
@@ -196,7 +197,7 @@ public:
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   void erase(iterator __position) { _M_t.erase(__position); }
-  size_type erase(const key_type& __x) { return _M_t.erase(__x); }
+  size_type erase(const key_type& __x) { return _M_t.erase_unique(__x); }
   void erase(iterator __first, iterator __last)
     { _M_t.erase(__first, __last); }
   void clear() { _M_t.clear(); }
@@ -218,10 +219,10 @@ public:
   }
   
   pair<iterator,iterator> equal_range(const key_type& __x) {
-    return _M_t.equal_range(__x);
+    return _M_t.equal_range_unique(__x);
   }
   pair<const_iterator,const_iterator> equal_range(const key_type& __x) const {
-    return _M_t.equal_range(__x);
+    return _M_t.equal_range_unique(__x);
   }
 };
 
@@ -249,11 +250,12 @@ public:
   class value_compare : public binary_function<value_type, value_type, bool> {
   friend class multimap<_Key,_Tp,_Compare,_Alloc>;
   protected:
-    _Compare _M_comp;
-    value_compare(_Compare __c) : _M_comp(__c) {}
+    //comp is a Standard name (23.3.2), do no make it STLport naming convention compliant.
+    _Compare comp;
+    value_compare(_Compare __c) : comp(__c) {}
   public:
     bool operator()(const value_type& __x, const value_type& __y) const {
-      return _M_comp(__x.first, __y.first);
+      return comp(__x.first, __y.first);
     }
   };
 

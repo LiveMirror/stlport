@@ -389,7 +389,9 @@ bool _LocaleBase::operator()(const wstring& __x,
 
 //During lib initialization _Stl_global_locale_impl points to the classic locale implementation.
 static locale _Stl_loc_classic_locale(_Stl_global_locale_impl);
+#if !defined (_STLP_ATOMIC_CAS)
 _STLP_STATIC_MUTEX _Stl_loc_global_locale_lock _STLP_MUTEX_INITIALIZER;
+#endif
 
 //----------------------------------------------------------------------
 // class locale
@@ -503,9 +505,18 @@ _LocaleBase::global(const _LocaleBase& L) {
 
   L._M_impl->incr();
   {
+#if defined (_STLP_ATOMIC_CAS)
+    _Locale_impl *pold_impl;
+    do {
+      pold_impl = _Stl_global_locale_impl;
+    } while (!_STLP_ATOMIC_CAS(&_Stl_global_locale_impl, L._M_impl, pold_impl));
+    //can't be null:
+    pold_impl->decr();
+#else
     _STLP_auto_lock lock(_Stl_loc_global_locale_lock);
     _Stl_global_locale_impl->decr();     // We made a copy (old), so it can't be zero.
     _Stl_global_locale_impl = L._M_impl;
+#endif
   }
 
   // Set the global C locale, if appropriate.

@@ -1,3 +1,22 @@
+2004-11-04  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_function.h, _queue.h, _stack.h, _map.h, _iterator.h: 
+	restoration of the Standard names of the protected datas.
+	
+	* stlport/stl/_alloc.h, _alloc.c: implementation of a lock free version
+	of the default STLport node_allocator. Supported by the Win32 platform
+	for the moment.
+	
+	* src/ios.cpp, locale.cpp, locale_impl.cpp: use of atomic operations
+	under Win32 platform rather than using synchronisation primitives.
+	
+	* stlport/stl/_tree.h, _map.h, _set.h: creation of the erase_unique and
+	equal_range_unique methods to use the unicity information of the map and
+	set containers in binary tree searches.
+
+  * stlport/stl/_string.h: Add _STLP_USE_NO_ISTREAMS check beforing deciding
+  not to include _string.c thanks KL
+	
 2004-11-02  Francois Dumont  <dums@stlport...>
 
   * stlport/stl/pointers/_deque.h: Fix for the problem of the deque<void*>
@@ -461,7 +480,7 @@
 2004-08-30  Francois Dumont  <dums@...>
 
 	* stlport/stl/_deque.c: Fix of a pseudo 'uninitialized variable used' thanks 
-	Kidman.
+	Oliver Stoeneberg.
 	
 2004-08-27  Francois Dumont  <dums@...>
 
@@ -609,7 +628,7 @@
 	the char type.
 	
 	* stlport/stl/_construct.h, _num_put.c: fix of some unused parameter warning
-	thanks Kidman report.
+	thanks Oliver Stoeneberg report.
 
 2004-08-05  Francois Dumont <dums@...>
 

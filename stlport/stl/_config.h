@@ -549,7 +549,7 @@
 #    define  _STLP_IMPORT_VENDOR_CSTD 1
 #  endif
 
-# if defined (_STLP_NO_USING_FOR_GLOBAL_FUNCTIONS) && ! defined (_STLP_DO_IMPORT_CSTD_FUNCTIONS)
+# if defined (_STLP_NO_USING_FOR_GLOBAL_FUNCTIONS) && !defined (_STLP_DO_IMPORT_CSTD_FUNCTIONS)
 #  define _STLP_NO_CSTD_FUNCTION_IMPORTS
 # endif
 
@@ -749,7 +749,6 @@ namespace _STL = _STLP_STD;
 #  endif
 
 #  define _STLP_PRIVATE public
-#  define _STLP_PROTECTED public
 
 #  ifndef _STLP_NO_PARTIAL_SPECIALIZATION_SYNTAX
 #   define _STLP_TEMPLATE_NULL template<>
@@ -1092,9 +1091,9 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 
 /* We only need to expose details of streams implementation 
    if we use non-standard i/o or are building STLport*/
-# if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE) || !defined(_STLP_NO_CUSTOM_IO)
-#  define _STLP_EXPOSE_STREAM_IMPLEMENTATION 1
-# endif
+#  if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE) || !defined(_STLP_NO_CUSTOM_IO)
+#    define _STLP_EXPOSE_STREAM_IMPLEMENTATION 1
+#  endif
 
 /* We only need to expose details of global implementation if we are building STLport 
    or have not instantiated everything in the lib */

@@ -150,14 +150,15 @@ private:
   typedef typename __call_traits<argument_type>::param_type _ArgParamType;
   typedef typename __call_traits<typename _Operation::first_argument_type>::param_type _ValueParamType;
 protected:
-  _Operation _M_op;
+  //op is a Standard name (20.3.6.1), do no make it STLport naming convention compliant.
+  _Operation op;
   typename _Operation::first_argument_type _M_value;
 public:
   binder1st(const _Operation& __x, _ValueParamType __y)
-      : _M_op(__x), _M_value(__y) {}
+      : op(__x), _M_value(__y) {}
 
   result_type operator()(_ArgParamType __x) const {
-    return _M_op(_M_value, __x); 
+    return op(_M_value, __x); 
   }
 };
 
@@ -181,14 +182,15 @@ private:
   typedef typename __call_traits<argument_type>::param_type _ArgParamType;
   typedef typename __call_traits<typename _Operation::second_argument_type>::param_type _ValueParamType;
 protected:
-  _Operation _M_op;
+  //op is a Standard name (20.3.6.3), do no make it STLport naming convention compliant.
+  _Operation op;
   typename _Operation::second_argument_type value;
 public:
   binder2nd(const _Operation& __x, _ValueParamType __y) 
-      : _M_op(__x), value(__y) {}
+      : op(__x), value(__y) {}
 
   result_type operator()(_ArgParamType __x) const {
-    return _M_op(__x, value); 
+    return op(__x, value); 
   }
 };
 

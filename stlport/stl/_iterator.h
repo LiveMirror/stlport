@@ -179,19 +179,20 @@ class back_insert_iterator
   : public iterator<output_iterator_tag,void,void,void,void> {
   typedef back_insert_iterator<_Container> _Self;
 protected:
-  _Container *_M_pcontainer;
+  //c is a Standard name (24.4.2.1), do no make it STLport naming convention compliant.
+  _Container *container;
 public:
   typedef _Container          container_type;
   typedef output_iterator_tag iterator_category;
 
-  explicit back_insert_iterator(_Container& __x) : _M_pcontainer(&__x) {}
+  explicit back_insert_iterator(_Container& __x) : container(&__x) {}
 
   _Self& operator=(const _Self& __other) {
-    _M_pcontainer = __other._M_pcontainer;
+    container = __other.container;
     return *this;
   }
   _Self& operator=(const typename _Container::value_type& __val) { 
-    _M_pcontainer->push_back(__val);
+    container->push_back(__val);
     return *this;
   }
   _Self& operator*() { return *this; }
@@ -209,18 +210,19 @@ class front_insert_iterator
   : public iterator<output_iterator_tag,void,void,void,void> {
   typedef front_insert_iterator<_Container> _Self;
 protected:
-  _Container *_M_pcontainer;
+  //c is a Standard name (24.4.2.3), do no make it STLport naming convention compliant.
+  _Container *container;
 public:
   typedef _Container          container_type;
   typedef output_iterator_tag iterator_category;
-  explicit front_insert_iterator(_Container& __x) : _M_pcontainer(&__x) {}
+  explicit front_insert_iterator(_Container& __x) : container(&__x) {}
 
   _Self& operator=(const _Self& __other) {
-    _M_pcontainer = __other._M_pcontainer;
+    container = __other.container;
     return *this;
   }
   _Self& operator=(const typename _Container::value_type& __val) { 
-    _M_pcontainer->push_front(__val);
+    container->push_front(__val);
     return *this;
   }
   _Self& operator*() { return *this; }
@@ -238,21 +240,22 @@ class insert_iterator
   : public iterator<output_iterator_tag,void,void,void,void> {
   typedef insert_iterator<_Container> _Self;
 protected:
-  _Container *_M_pcontainer;
+  //container is a Standard name (24.4.2.5), do no make it STLport naming convention compliant.
+  _Container *container;
   typename _Container::iterator _M_iter;
 public:
   typedef _Container          container_type;
   typedef output_iterator_tag iterator_category;
   insert_iterator(_Container& __x, typename _Container::iterator __i) 
-    : _M_pcontainer(&__x), _M_iter(__i) {}
+    : container(&__x), _M_iter(__i) {}
 
   _Self& operator=(_Self const& __other) {
-    _M_pcontainer = __other._M_pcontainer;
+    container = __other.container;
     _M_iter = __other._M_iter;
     return *this;
   }
   _Self& operator=(const typename _Container::value_type& __val) { 
-    _M_iter = _M_pcontainer->insert(_M_iter, __val);
+    _M_iter = container->insert(_M_iter, __val);
     ++_M_iter;
     return *this;
   }

@@ -183,7 +183,7 @@ inline void _Destroy_Range(const wchar_t*, const wchar_t*) {}
 
 template <class _ForwardIterator, class _Tp>
 inline void 
-__destroy_mv_srcs(_ForwardIterator __first, _ForwardIterator __last, _Tp* __p) {
+__destroy_mv_srcs(_ForwardIterator __first, _ForwardIterator __last, _Tp*) {
   typedef typename __move_traits<_Tp>::complete _CompleteMove;
   __destroy_range_aux(__first, __last, _CompleteMove());
 }

@@ -29,22 +29,22 @@
 // threads standard), and Win32 threads.  Uithread support by Jochen
 // Schlick, 1999, and Solaris threads generalized to them.
 
-# if ! defined (_STLP_CSTDDEF)
+#if ! defined (_STLP_CSTDDEF)
 #  include <cstddef>
-# endif
+#endif
 
-# if ! defined (_STLP_CSTDLIB)
+#if ! defined (_STLP_CSTDLIB)
 #  include <cstdlib>
-# endif
+#endif
 
 // On SUN and Mac OS X gcc, zero-initialization works just fine...
-# if defined (__sun) || ( defined(__GNUC__) && defined(__APPLE__) )
-# define _STLP_MUTEX_INITIALIZER
-# endif
+#if defined (__sun) || ( defined(__GNUC__) && defined(__APPLE__) )
+#  define _STLP_MUTEX_INITIALIZER
+#endif
 
-# if defined (_STLP_WIN32) || defined (__sgi) || defined (_STLP_SPARC_SOLARIS_THREADS)
+#if defined (_STLP_WIN32) || defined (__sgi) || defined (_STLP_SPARC_SOLARIS_THREADS)
   typedef long __stl_atomic_t;
-# else 
+#else 
 /* Don't import whole namespace!!!! - ptr */
 // # if defined (_STLP_USE_NAMESPACES) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
 // // using _STLP_VENDOR_CSTD::size_t;
@@ -53,87 +53,95 @@
   typedef size_t __stl_atomic_t;
 #endif  
 
-# if defined(_STLP_SGI_THREADS)
+#if defined(_STLP_SGI_THREADS)
 #  include <mutex.h>
 // Hack for SGI o32 compilers.
-#if !defined(__add_and_fetch) && \
-    (__mips < 3 || !(defined (_ABIN32) || defined(_ABI64)))
-#  define __add_and_fetch(__l,__v) add_then_test((unsigned long*)__l,__v)  
-#  define __test_and_set(__l,__v)  test_and_set(__l,__v)
-#endif /* o32 */
+#  if !defined(__add_and_fetch) && \
+      (__mips < 3 || !(defined (_ABIN32) || defined(_ABI64)))
+#    define __add_and_fetch(__l,__v) add_then_test((unsigned long*)__l,__v)  
+#    define __test_and_set(__l,__v)  test_and_set(__l,__v)
+#  endif /* o32 */
 
-# if __mips < 3 || !(defined (_ABIN32) || defined(_ABI64))
-#  define _STLP_ATOMIC_EXCHANGE(__p, __q) test_and_set(__p, __q)
-# else
-#  define _STLP_ATOMIC_EXCHANGE(__p, __q) __test_and_set((unsigned long*)__p, (unsigned long)__q)
-# endif
+#  if __mips < 3 || !(defined (_ABIN32) || defined(_ABI64))
+#    define _STLP_ATOMIC_EXCHANGE(__p, __q) test_and_set(__p, __q)
+#  else
+#    define _STLP_ATOMIC_EXCHANGE(__p, __q) __test_and_set((unsigned long*)__p, (unsigned long)__q)
+#  endif
 
 #  define _STLP_ATOMIC_INCREMENT(__x) __add_and_fetch(__x, 1)
 #  define _STLP_ATOMIC_DECREMENT(__x) __add_and_fetch(__x, (size_t) -1)
 
-# elif defined(_STLP_PTHREADS)
+#elif defined(_STLP_PTHREADS)
 #  include <pthread.h>
 #  ifndef _STLP_USE_PTHREAD_SPINLOCK
-#   if defined(PTHREAD_MUTEX_INITIALIZER) && !defined(_STLP_MUTEX_INITIALIZER) && defined(_REENTRANT)
-#    define _STLP_MUTEX_INITIALIZER = { PTHREAD_MUTEX_INITIALIZER }
-#   endif
+#    if defined(PTHREAD_MUTEX_INITIALIZER) && !defined(_STLP_MUTEX_INITIALIZER) && defined(_REENTRANT)
+#      define _STLP_MUTEX_INITIALIZER = { PTHREAD_MUTEX_INITIALIZER }
+#    endif
 
 //HPUX variants have (on some platforms optional) non-standard "DCE" pthreads impl
-#   if defined(_DECTHREADS_) && (defined(_PTHREAD_USE_D4) || defined(__hpux)) && !defined(_CMA_SUPPRESS_EXTERNALS_)
-#    define _STLP_PTHREAD_ATTR_DEFAULT pthread_mutexattr_default
-#   else
-#    define _STLP_PTHREAD_ATTR_DEFAULT 0
-#   endif
+#    if defined(_DECTHREADS_) && (defined(_PTHREAD_USE_D4) || defined(__hpux)) && !defined(_CMA_SUPPRESS_EXTERNALS_)
+#      define _STLP_PTHREAD_ATTR_DEFAULT pthread_mutexattr_default
+#    else
+#      define _STLP_PTHREAD_ATTR_DEFAULT 0
+#    endif
 #  else // _STLP_USE_PTHREAD_SPINLOCK
-#   ifdef __OpenBSD__
-#    include <spinlock.h>
-#   endif
+#    ifdef __OpenBSD__
+#      include <spinlock.h>
+#    endif
 #  endif // _STLP_USE_PTHREAD_SPINLOCK 
 
-# elif defined(_STLP_WIN32THREADS)
+#elif defined(_STLP_WIN32THREADS)
 
 #  include <stl/_windows.h>
 
 #  ifndef _STLP_ATOMIC_INCREMENT
-#   define _STLP_ATOMIC_INCREMENT(__x)           InterlockedIncrement((long*)__x)
-#   define _STLP_ATOMIC_DECREMENT(__x)           InterlockedDecrement((long*)__x)
-#   define _STLP_ATOMIC_EXCHANGE(__x, __y)       InterlockedExchange((long*)__x, (long)__y)
+#    define _STLP_ATOMIC_INCREMENT(__x)           InterlockedIncrement((long*)__x)
+#    define _STLP_ATOMIC_DECREMENT(__x)           InterlockedDecrement((long*)__x)
+#    define _STLP_ATOMIC_EXCHANGE(__x, __y)       InterlockedExchange((long*)__x, (long)__y)
+/*
+ * The following functionnality is only available since Windows 98, those that are targeting previous OSes
+ * should define _WIN32_WINDOWS to a value lower that the one of Win 98, see Platform SDK documentation for
+ * more informations:
+ */
+#    if defined (_STLP_NEW_PLATFORM_SDK) && (!defined (_WIN32_WINDOWS) || (_WIN32_WINDOWS >= 0x0410))
+#      define _STLP_ATOMIC_CAS(__dst, __val, __old_val) (InterlockedCompareExchange((long volatile*)__dst, (long)__val, (long)__old_val) == (long)__old_val)
+#    endif
 #  endif
-# elif defined(__DECC) || defined(__DECCXX)
+#elif defined(__DECC) || defined(__DECCXX)
 #  include <machine/builtins.h>
 #  define _STLP_ATOMIC_EXCHANGE __ATOMIC_EXCH_LONG
 #  define _STLP_ATOMIC_INCREMENT(__x) __ATOMIC_ADD_LONG(__x, 1)
 #  define _STLP_ATOMIC_DECREMENT(__x) __ATOMIC_ADD_LONG(__x, -1)
-# elif defined(_STLP_SPARC_SOLARIS_THREADS)
+#elif defined(_STLP_SPARC_SOLARIS_THREADS)
 #  include <stl/_sparc_atomic.h>
-# elif defined (_STLP_UITHREADS)
+#elif defined (_STLP_UITHREADS)
 // this inclusion is potential hazard to bring up all sorts
 // of old-style headers. Let's assume vendor already know how
 // to deal with that.
 #  include <ctime>
-# if defined (_STLP_USE_NAMESPACES) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
+#  if defined (_STLP_USE_NAMESPACES) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
 using _STLP_VENDOR_CSTD::time_t;
-# endif
+#  endif
 #  include <synch.h>
 #  include <cstdio>
 #  include <stl/_cwchar.h>
-# elif defined (_STLP_BETHREADS)
+#elif defined (_STLP_BETHREADS)
 #  include <OS.h>
-#include <cassert>
-#include <stdio.h>
+#  include <cassert>
+#  include <stdio.h>
 #  define _STLP_MUTEX_INITIALIZER = { 0 }
 #elif defined(_STLP_OS2THREADS)
-# ifdef __GNUC__
-#  define INCL_DOSSEMAPHORES
-#  include <os2.h>
-# else
-  // This section serves to replace os2.h for VisualAge C++
+#  ifdef __GNUC__
+#    define INCL_DOSSEMAPHORES
+#    include <os2.h>
+#  else
+// This section serves to replace os2.h for VisualAge C++
   typedef unsigned long ULONG;
-  #ifndef __HEV__  /* INCL_SEMAPHORE may also define HEV */
-    #define __HEV__
-    typedef ULONG HEV;
-    typedef HEV*  PHEV;
-  #endif
+#    ifndef __HEV__  /* INCL_SEMAPHORE may also define HEV */
+#      define __HEV__
+  typedef ULONG HEV;
+  typedef HEV*  PHEV;
+#    endif
   typedef ULONG APIRET;
   typedef ULONG HMTX;
   typedef HMTX*  PHMTX;
@@ -143,19 +151,19 @@ using _STLP_VENDOR_CSTD::time_t;
   APIRET _System DosRequestMutexSem(HMTX hmtx, ULONG ulTimeout);
   APIRET _System DosReleaseMutexSem(HMTX hmtx);
   APIRET _System DosCloseMutexSem(HMTX hmtx);
-# define _STLP_MUTEX_INITIALIZER = { 0 };
+#    define _STLP_MUTEX_INITIALIZER = { 0 };
 #  endif /* GNUC */
-# endif
+#endif
 
-# ifndef _STLP_MUTEX_INITIALIZER
-#   if defined(_STLP_ATOMIC_EXCHANGE)
-#     define _STLP_MUTEX_INITIALIZER = { 0 }
-#   elif defined(_STLP_UITHREADS)
-#     define _STLP_MUTEX_INITIALIZER = { DEFAULTMUTEX }
-#   else
-#     define _STLP_MUTEX_INITIALIZER
-#   endif
-# endif
+#ifndef _STLP_MUTEX_INITIALIZER
+#  if defined(_STLP_ATOMIC_EXCHANGE)
+#    define _STLP_MUTEX_INITIALIZER = { 0 }
+#  elif defined(_STLP_UITHREADS)
+#    define _STLP_MUTEX_INITIALIZER = { DEFAULTMUTEX }
+#  else
+#    define _STLP_MUTEX_INITIALIZER
+#  endif
+#endif
 
 _STLP_BEGIN_NAMESPACE
 

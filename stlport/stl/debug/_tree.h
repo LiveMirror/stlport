@@ -91,6 +91,7 @@ protected:
   _Base* _Get_base() { return (_Base*)this; }
 
   typedef typename _Base::iterator _Base_iterator;
+  typedef typename _Base::const_iterator _Base_const_iterator;
 
 public:
   _DBG_Rb_tree() : _STLP_DBG_TREE_SUPER(), 
@@ -169,8 +170,20 @@ public:
                                                const_iterator(&_M_iter_list, _Base::upper_bound(__x)));
   }
 
+  pair<iterator,iterator> equal_range_unique(const key_type& __x) {
+    _STLP_STD::pair<_Base_iterator, _Base_iterator> __p;
+    __p = _Base::equal_range_unique(__x);
+    return pair<iterator, iterator>(iterator(&_M_iter_list, __p.first), iterator(&_M_iter_list, __p.second));
+  }
+  pair<const_iterator, const_iterator> equal_range_unique(const key_type& __x) const {
+    _STLP_STD::pair<_Base_const_iterator, _Base_const_iterator> __p;
+    __p = _Base::equal_range_unique(__x);
+    return pair<const_iterator, const_iterator>(const_iterator(&_M_iter_list, __p.first), 
+                                                const_iterator(&_M_iter_list, __p.second));
+  }
+
   pair<iterator,bool> insert_unique(const value_type& __x) {
-    _STLP_STD::pair<_STLP_HEADER_TYPENAME _Base::iterator, bool> __res = _Base::insert_unique(__x);
+    _STLP_STD::pair<_Base_iterator, bool> __res = _Base::insert_unique(__x);
     return pair<iterator,bool>( iterator(&_M_iter_list, __res.first), __res.second ) ;
   }
   iterator insert_equal(const value_type& __x) {
@@ -228,6 +241,15 @@ public:
     _Invalidate_iterators(iterator(&_M_iter_list, __p.first), iterator(&_M_iter_list, __p.second));
     _Base::erase(__p.first, __p.second);
     return __n;
+  }
+  size_type erase_unique(const key_type& __x) {
+    _Base_iterator __i = _Base::find(__x);
+    if (__i != _Base::end()) {
+      _Invalidate_iterator(iterator(&_M_iter_list, __i));
+      _Base::erase(__i);
+      return 1;
+    }
+    return 0;
   }
 
   void erase(iterator __first, iterator __last) {

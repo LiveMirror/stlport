@@ -489,6 +489,15 @@ public:
     return __n;
   }
 
+  size_type erase_unique(const key_type& __x) {
+    iterator __i = find(__x);
+    if (__i != end()) {
+      erase(__i);
+      return 1;
+    }
+    return 0;
+  }
+
   void erase(iterator __first, iterator __last) {
     if (__first == begin() && __last == end())
       clear();
@@ -532,6 +541,7 @@ private:
         __y = __x, __x = _S_left(__x);
       else
         __x = _S_right(__x);
+
     if (__y != &this->_M_header._M_data) {
       if (_M_key_compare(__k, _S_key(__y))) {
         __y = __CONST_CAST(_Base_ptr, &this->_M_header._M_data);
@@ -576,7 +586,29 @@ public:
     return pair<iterator, iterator>(lower_bound(__x), upper_bound(__x));
   }
   pair<const_iterator, const_iterator> equal_range(const key_type& __x) const {
-    return pair<const_iterator,const_iterator>(lower_bound(__x), upper_bound(__x));
+    return pair<const_iterator, const_iterator>(lower_bound(__x), upper_bound(__x));
+  }
+  pair<iterator,iterator> equal_range_unique(const key_type& __x) {
+    pair<iterator, iterator> __p;
+    __p.second = lower_bound(__x);
+    if (!_M_key_compare(*__p.second, __x)) {
+      __p.first = __p.second++;
+    }
+    else {
+      __p.first = __p.second;
+    }
+    return __p;
+  }
+  pair<const_iterator, const_iterator> equal_range_unique(const key_type& __x) const {
+    pair<const_iterator, const_iterator> __p;
+    __p.second = lower_bound(__x);
+    if (!_M_key_compare(*__p.second, __x)) {
+      __p.first = __p.second++;
+    }
+    else {
+      __p.first = __p.second;
+    }
+    return __p;
   }
 
 #ifdef _STLP_DEBUG

@@ -82,16 +82,22 @@ void _Locale::insert(_Locale_impl* from, const locale::id& n) {
 }
 
 
+#if !(defined (_STLP_WIN32THREADS) && defined (_STLP_NEW_PLATFORM_SDK))
 static _STLP_STATIC_MUTEX _Index_lock _STLP_MUTEX_INITIALIZER;
+#endif
 
 // Takes a reference to a locale::id, and returns its numeric index.
 // If no numeric index has yet been assigned, assigns one.  The return
 // value is always positive.
 static size_t _Stl_loc_get_index(locale::id& id) {
   if (id._M_index == 0) {
+#if defined (_STLP_WIN32THREADS) && defined (_STLP_NEW_PLATFORM_SDK)
+    id._M_index = _STLP_ATOMIC_INCREMENT(&(locale::id::_S_max));
+#else
     _STLP_auto_lock sentry(_Index_lock);
     size_t new_index = locale::id::_S_max++;
     id._M_index = new_index;
+#endif
   }
   return id._M_index;
 }

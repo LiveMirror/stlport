@@ -232,25 +232,54 @@ public:
 #  define _STLP_DO_CLEAN_NODE_ALLOC
 #endif
 
+#if defined (_STLP_ATOMIC_CAS)
+/* 
+ * Thanks to the support of the simple Compare And Swap atomic operation
+ * we are able to grant a lock free node_alloc implementation.
+ */
+#  define _STLP_USE_LOCK_FREE_IMPLEMENTATION
+#endif
+
+#if defined (_STLP_USE_LOCK_FREE_IMPLEMENTATION)
+  struct _Node_alloc_Mem_block {
+    //Pointer to the end of the memory block
+    char *_M_end;
+    //Pointer to the next memory block
+    _Node_alloc_Mem_block *_M_next;
+  };
+#endif
+
 template <bool __threads, int __inst>
 class __node_alloc {
-  _STLP_PRIVATE:
+_STLP_PRIVATE:
   static inline size_t _STLP_CALL _S_round_up(size_t __bytes) { return (((__bytes) + (size_t)_ALIGN-1) & ~((size_t)_ALIGN - 1)); }
   typedef _Node_alloc_obj _Obj;
+
 private:
   // Returns an object of size __n, and optionally adds to size __n free list.
-  static void*  _STLP_CALL _S_refill(size_t __n);
+  static _Obj*  _STLP_CALL _S_refill(size_t __n);
   // Allocates a chunk for nobjs of size __p_size.  nobjs may be reduced
   // if it is inconvenient to allocate the requested number.
   static char*  _STLP_CALL _S_chunk_alloc(size_t __p_size, int& __nobjs);
   // Chunk allocation state.
   static _Obj * _STLP_VOLATILE _S_free_list[_STLP_NFREELISTS]; 
+  // Amount of total allocated memory
+  static size_t _S_heap_size;
+
+  static void * _STLP_CALL _M_allocate(size_t __n);
+  /* __p may not be 0 */
+  static void _STLP_CALL _M_deallocate(void *__p, size_t __n);
+
+#if defined (_STLP_USE_LOCK_FREE_IMPLEMENTATION)
+  typedef _Node_alloc_Mem_block _Mem_block;
+  static _Mem_block* _S_free_mem_blocks;
+#else
   // Start of the current free memory buffer
   static char* _S_start_free;
   // End of the current free memory buffer
   static char* _S_end_free;
-  // Amount of total allocated memory
-  static size_t _S_heap_size;
+#endif
+
 #ifdef _STLP_DO_CLEAN_NODE_ALLOC
   //A helper class to guaranty the memory pool management:
   //friend struct _Node_alloc_helper;
@@ -264,10 +293,8 @@ private:
   static void _STLP_CALL _S_chunk_dealloc();
   // Beginning of the linked list of allocated chunks of memory
   static _Obj *_S_chunks;
-#endif
-  static void * _STLP_CALL _M_allocate(size_t __n);
-  /* __p may not be 0 */
-  static void _STLP_CALL _M_deallocate(void *__p, size_t __n);
+#endif /* _STLP_DO_CLEAN_NODE_ALLOC */
+
 public:
   // this one is needed for proper simple_alloc wrapping
   typedef char value_type;
