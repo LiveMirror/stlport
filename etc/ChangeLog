@@ -10,6 +10,10 @@
 	* due to change in link sequence most tests [including exceptions] pass
 	for uClibc.
 
+	* stlport/mmemory.h: garbage, removed.
+
+	* stlport/export: ditto.
+
 2005-03-28  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_istream.h, _ostream.h: Fix assignment operators prototypes
