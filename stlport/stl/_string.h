@@ -1424,7 +1424,7 @@ _STLP_END_NAMESPACE
 # include <stl/_string_io.h>  
 # include <stl/_string_hash.h>  
 
-#endif /* _STLP_STRING */
+#endif /* _STLP_STRING_H */
 
 
 // Local Variables:

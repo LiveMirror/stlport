@@ -586,29 +586,11 @@ private:
   void _M_copy_from(const _Self& __ht);
 };
 
-template <class _Val, class _Key, class _HF, class _ExK, class _EqK, class _All>
-inline bool _STLP_CALL operator==(const hashtable<_Val,_Key,_HF,_ExK,_EqK,_All>& __ht1,
-                       const hashtable<_Val,_Key,_HF,_ExK,_EqK,_All>& __ht2)
-{
-  return hashtable<_Val,_Key,_HF,_ExK,_EqK,_All>::_M_equal( __ht1, __ht2 );
-}
-
-#ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
-
-template <class _Val, class _Key, class _HF, class _Ex, class _Eq, class _All>
-inline bool _STLP_CALL operator!=(const hashtable<_Val,_Key,_HF,_Ex,_Eq,_All>& __ht1,
-                       const hashtable<_Val,_Key,_HF,_Ex,_Eq,_All>& __ht2) {
-  return !(__ht1 == __ht2);
-}
-
-template <class _Val, class _Key, class _HF, class _ExK, class _EqK, 
-          class _All>
-inline void _STLP_CALL swap(hashtable<_Val, _Key, _HF, _ExK, _EqK, _All>& __ht1,
-                 hashtable<_Val, _Key, _HF, _ExK, _EqK, _All>& __ht2) {
-  __ht1.swap(__ht2);
-}
-
-#endif /* _STLP_USE_SEPARATE_RELOPS_NAMESPACE */
+#define _STLP_TEMPLATE_HEADER template <class _Val, class _Key, class _HF, class _ExK, class _EqK, class _All>
+#define _STLP_TEMPLATE_CONTAINER hashtable<_Val,_Key,_HF,_ExK,_EqK,_All>
+#include <stl/_relops_hash_cont.h>
+#undef _STLP_TEMPLATE_CONTAINER
+#undef _STLP_TEMPLATE_HEADER
 
 _STLP_END_NAMESPACE
 

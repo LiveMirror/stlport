@@ -920,67 +920,11 @@ protected:                      // Allocation of _M_map and nodes
  
 };
 
-// Nonmember functions.
-
-template <class _Tp, class _Alloc >
-inline bool  _STLP_CALL operator==(const deque<_Tp, _Alloc>& __x,
-                                   const deque<_Tp, _Alloc>& __y)
-{
-  return __x.size() == __y.size() &&
-  equal(__x.begin(), __x.end(), __y.begin());
-}
-
-template <class _Tp, class _Alloc >
-inline bool  _STLP_CALL operator<(const deque<_Tp, _Alloc>& __x,
-                                  const deque<_Tp, _Alloc>& __y)
-{
-  return lexicographical_compare(__x.begin(), __x.end(), 
-                                 __y.begin(), __y.end());
-}
-
-#if defined(_STLP_USE_SEPARATE_RELOPS_NAMESPACE)
-
-template <class _Tp, class _Alloc >
-inline bool  _STLP_CALL operator!=(const deque<_Tp, _Alloc>& __x,
-                                  const deque<_Tp, _Alloc>& __y)
-{
-  return  !(__x == __y); 
-}
-
-template <class _Tp, class _Alloc >
-inline bool  _STLP_CALL operator>(const deque<_Tp, _Alloc>& __x,
-                                  const deque<_Tp, _Alloc>& __y)
-{
-  return __y < __x; 
-}
-
-template <class _Tp, class _Alloc >
-inline bool _STLP_CALL operator>=(const deque<_Tp, _Alloc>& __x,
-                                  const deque<_Tp, _Alloc>& __y)
-{
-  return !(__x < __y); 
-}
-
-template <class _Tp, class _Alloc >
-inline bool _STLP_CALL operator<=(const deque<_Tp, _Alloc>& __x,
-                                  const deque<_Tp, _Alloc>& __y)
-{
- return !(__y < __x); 
-}
-
-
-# endif /* _STLP_SEPARATE_RELOPS_NAMESPACE */
-
-# if defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
-
-template <class _Tp, class _Alloc>
-inline void _STLP_CALL 
-swap(deque<_Tp,_Alloc>& __x, deque<_Tp,_Alloc>& __y)
-{
-  __x.swap(__y);
-}
-
-# endif
+# define _STLP_TEMPLATE_CONTAINER deque<_Tp, _Alloc>
+# define _STLP_TEMPLATE_HEADER    template <class _Tp, class _Alloc>
+# include <stl/_relops_cont.h>
+# undef _STLP_TEMPLATE_CONTAINER
+# undef _STLP_TEMPLATE_HEADER
 
 _STLP_END_NAMESPACE 
 

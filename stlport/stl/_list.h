@@ -536,30 +536,13 @@ operator==(const list<_Tp,_Alloc>& __x, const list<_Tp,_Alloc>& __y)
   return __i1 == __end1 && __i2 == __end2;
 }
 
-template <class _Tp, class _Alloc>
-inline bool  _STLP_CALL operator<(const list<_Tp,_Alloc>& __x,
-                                  const list<_Tp,_Alloc>& __y)
-{
-  return lexicographical_compare(__x.begin(), __x.end(),
-                                 __y.begin(), __y.end());
-}
-
-# define _STLP_TEMPLATE_CONTAINER list<_Tp, _Alloc>
+# define _STLP_EQUAL_OPERATOR_SPECIALIZED
 # define _STLP_TEMPLATE_HEADER    template <class _Tp, class _Alloc>
-_STLP_RELOPS_OPERATORS(_STLP_TEMPLATE_HEADER, _STLP_TEMPLATE_CONTAINER)
+# define _STLP_TEMPLATE_CONTAINER list<_Tp, _Alloc>
+# include <stl/_relops_cont.h>
 # undef _STLP_TEMPLATE_CONTAINER
 # undef _STLP_TEMPLATE_HEADER
-
-#ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
-
-template <class _Tp, class _Alloc>
-inline void _STLP_CALL 
-swap(list<_Tp, _Alloc>& __x, list<_Tp, _Alloc>& __y)
-{
-  __x.swap(__y);
-}
-
-#endif /* _STLP_USE_SEPARATE_RELOPS_NAMESPACE */
+# undef _STLP_EQUAL_OPERATOR_SPECIALIZED
 
 _STLP_END_NAMESPACE 
 
