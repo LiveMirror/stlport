@@ -1,7 +1,7 @@
 # Time-stamp: <04/03/31 07:55:19 ptr>
 # $Id$
 
-DEFS_COMMON = /D _WIN32_WCE=$(CEVERSION) /D "$(PLATFORM)" /D UNDER_CE=$(CEVERSION) /D "UNICODE"
+DEFS_COMMON = /D _WIN32_WCE=$(CEVERSION) /D UNDER_CE=$(CEVERSION) /D "UNICODE"
 
 !if "$(TARGET_PROC)" == ""
 !error No target processor configured! Please rerun configure.bat!

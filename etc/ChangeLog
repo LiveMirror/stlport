@@ -1,3 +1,9 @@
+2004-11-22  Francois Dumont  <dums@stlport...>
+
+	* src/explore/Makefiles/nmake/evc3.mak, evc4.mak: removal of the useless 
+	/DPLATFORM macro definition thanks Ulrich Eckhardt report and Michael Fink
+	patch.
+
 2004-11-16  Francois Dumont  <dums@stlport...>
 
 	* src/explore/configure.bat: Add of the --rtl-static and --rtl-dynamic
