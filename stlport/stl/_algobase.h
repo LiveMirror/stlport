@@ -581,17 +581,6 @@ count(_InputIter __first, _InputIter __last, const _Tp& __val) {
 template <class _InputIter, class _Tp>
 _InputIter find(_InputIter __first, _InputIter __last, const _Tp& __val);
 
-#if !defined (__BORLANDC__)
-inline char* 
-find(char* __first, char* __last, int __val) {
-  return __STATIC_CAST(char*, memchr(__first, __val, __last - __first));
-}
-inline const char* 
-find(const char* __first, const char* __last, int __val) {
-  return __STATIC_CAST(const char*, memchr(__first, __val, __last - __first));
-}
-#endif
-
 template <class _InputIter, class _Predicate>
 _InputIter find_if(_InputIter __first, _InputIter __last, _Predicate __pred);
 

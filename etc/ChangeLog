@@ -1,3 +1,9 @@
+2005-02-27  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_algobase.h, _algobase.c: Fix find algo overload for
+	char* and const char*. Now the overload is on the __find underlying
+	function.
+
 2005-02-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_slist.h: Fix _M_splice_after method.

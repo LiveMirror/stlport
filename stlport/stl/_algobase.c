@@ -62,8 +62,7 @@ bool lexicographical_compare(_InputIter1 __first1, _InputIter1 __last1,
   return __first1 == __last1 && __first2 != __last2;
 }
 
-# ifndef _STLP_NO_EXTENSIONS
-
+#if !defined (_STLP_NO_EXTENSIONS)
 template <class _InputIter1, class _InputIter2>
 int __lexicographical_compare_3way(_InputIter1 __first1, _InputIter1 __last1,
                                    _InputIter2 __first2, _InputIter2 __last2) {
@@ -91,7 +90,7 @@ int lexicographical_compare_3way(_InputIter1 __first1, _InputIter1 __last1,
   _STLP_DEBUG_CHECK(__check_range(__first2, __last2))
   return __lexicographical_compare_3way(__first1, __last1, __first2, __last2);
 }
-# endif
+#endif
 
 template <class _RandomAccessIter, class _Tp>
 _STLP_INLINE_LOOP _RandomAccessIter __find(_RandomAccessIter __first, _RandomAccessIter __last,
@@ -128,6 +127,17 @@ _STLP_INLINE_LOOP _RandomAccessIter __find(_RandomAccessIter __first, _RandomAcc
     return __last;
   }
 }
+
+#if !defined (__BORLANDC__)
+inline char* 
+__find(char* __first, char* __last, char __val, const random_access_iterator_tag &) {
+  return __STATIC_CAST(char*, memchr(__first, __val, __last - __first));
+}
+inline const char* 
+__find(const char* __first, const char* __last, char __val, const random_access_iterator_tag &) {
+  return __STATIC_CAST(const char*, memchr(__first, __val, __last - __first));
+}
+#endif
 
 template <class _RandomAccessIter, class _Predicate>
 _STLP_INLINE_LOOP _RandomAccessIter __find_if(_RandomAccessIter __first, _RandomAccessIter __last,
