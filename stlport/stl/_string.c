@@ -30,6 +30,10 @@
 #  include <stl/_string.h>
 #endif
 
+#ifndef _STLP_INTERNAL_CTRAITS_FUNCTIONS_H
+#  include <stl/_ctraits_fns.h>
+#endif
+
 #if defined(_STLP_DEBUG)
 #  if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
 #    define basic_string _STLP_NON_DBG_NO_MEM_T_NAME(str)

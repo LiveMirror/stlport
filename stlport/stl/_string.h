@@ -20,22 +20,20 @@
 #define _STLP_INTERNAL_STRING_H
 
 #ifndef _STLP_MEMORY
-#  include <memory> 
+#  include <memory>
 #endif
 
 #ifndef _STLP_CCTYPE
-#  include <cctype> 
+#  include <cctype>
 #endif
 
 #ifndef _STLP_STRING_FWD_H
-#  include <stl/_string_fwd.h> 
+#  include <stl/_string_fwd.h>
 #endif
 
 #ifndef _STLP_INTERNAL_FUNCTION_BASE_H
 #  include <stl/_function.h>
 #endif
-
-#include <stl/_ctraits_fns.h>  
 
 #ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h> 
@@ -122,7 +120,8 @@ struct _String_reserve_t {};
 
 template <class _CharT, class _Traits, class _Alloc>
 class basic_string : protected _String_base<_CharT,_Alloc>
-#if !defined(basic_string) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND) && \
+    !defined (basic_string)
                    , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
 #endif
 {

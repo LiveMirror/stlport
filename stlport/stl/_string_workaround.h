@@ -23,7 +23,8 @@
 
 template <class _CharT, class _Traits, class _Alloc>
 class basic_string : public _STLP_NO_MEM_T_STRING_BASE
-#if !defined (basic_string) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND) && \
+    !defined (basic_string)
                    , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
 #endif
 {
