@@ -114,7 +114,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __
                                                     const _Tp& __x, const __true_type& /*_Movable*/) {
   if (&__x >= this->_M_start && &__x < this->_M_finish) {
     _Tp __x_copy = __x;
-    _M_fill_insert_aux(pos, __n, __x_copy, __true_type());
+    _M_fill_insert_aux(__pos, __n, __x_copy, __true_type());
     return;
   }
   iterator __src = this->_M_finish;
@@ -130,7 +130,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __
                                                     const _Tp& __x, const __false_type& /*_Movable*/) {
   if (&__x >= this->_M_start && &__x < this->_M_finish) {
     _Tp __x_copy = __x;
-    _M_fill_insert_aux(pos, __n, __x_copy, __false_type());
+    _M_fill_insert_aux(__pos, __n, __x_copy, __false_type());
     return;
   }
   const size_type __elems_after = this->_M_finish - __pos;
