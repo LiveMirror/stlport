@@ -179,6 +179,19 @@ public:                         // Append, operator+=, push_back.
     return *this;
   }
 
+#if !defined (_STLP_NO_METHOD_SPECIALIZATION) && !defined (_STLP_NO_EXTENSIONS)
+  _Self& append(const _CharT* __f, const _CharT* __l) {
+    _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
+    _Base::append(__f, __l);
+    return *this;
+  }
+
+  _Self& append(const_iterator __f, const_iterator __l) {
+    _Base::append(__f, __l);
+    return *this;
+  }
+#endif
+
 /*#ifdef _STLP_MSVC
 // specialization for append
  template <>
@@ -228,6 +241,17 @@ public:                         // Assign
     _Base::assign(__first, __last);
     return *this;    
   }
+
+#if !defined (_STLP_NO_METHOD_SPECIALIZATION) && !defined (_STLP_NO_EXTENSIONS)
+  _Self& assign(const _CharT* __f, const _CharT* __l) {
+    _Base::assign(__f, __l);
+    return *this;
+  }
+  _Self& assign(const_iterator __f, const_iterator __l) {
+    _Base::assign(__f, __l);
+    return *this;
+  }
+#endif
 
   /*
 #ifdef _STLP_MSVC
@@ -293,6 +317,16 @@ public:                         // Insert
     _Compare_Capacity(__old_capacity);
   }
 
+#if !defined (_STLP_NO_METHOD_SPECIALIZATION) && !defined (_STLP_NO_EXTENSIONS)
+  void insert(iterator __p, const_iterator __f, const_iterator __l) {
+    _DbgBase::insert(__p, __f, __l); 
+  }
+  void insert(iterator __p, const _CharT* __f, const _CharT* __l) {
+    _STLP_FIX_LITERAL_BUG(__f)_STLP_FIX_LITERAL_BUG(__l)
+    _DbgBase::insert(__p, __f, __l); 
+  }
+#endif
+
 private:
   template <class _RandomIter>
   void _M_insert_aux (iterator __p, _RandomIter __first, _RandomIter __last,
@@ -305,8 +339,6 @@ private:
                       const __false_type& /*_IsIterator*/) {
     _Base::insert(__p._M_iterator, __first, __last);
   }
-
-
 
 public:                         // Erase.
   _Self& erase(size_type __pos = 0, size_type __n = _Base::npos) {
@@ -393,6 +425,21 @@ public:                         // Replace.  (Conceptually equivalent
     return *this;
   }
  
+#if !defined (_STLP_NO_METHOD_SPECIALIZATION) && !defined (_STLP_NO_EXTENSIONS)
+  _Self& replace(iterator __first, iterator __last,
+                 const_iterator __f, const_iterator __l) {
+    _DbgBase::replace(__first, __last, __f, __l);
+    return *this;
+  }
+
+  _Self& replace(iterator __first, iterator __last,
+                 const _CharT* __f, const _CharT __l) {
+    _STLP_FIX_LITERAL_BUG(__f)_STLP_FIX_LITERAL_BUG(__l)
+    _DbgBase::replace(__first, __last, __f, __l);
+    return *this;
+  }
+#endif
+
 private:
   template <class _RandomIter>
   void _M_replace_aux(iterator __first, iterator __last,

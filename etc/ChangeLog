@@ -1,3 +1,14 @@
+2004-08-10  Francois Dumont  <dums@...>
+
+	* stlport/stl/_string.h: add check of the _STLP_EXPOSE_STREAM_IMPLEMENTATION
+	macro to include the _string.c file. Improve compile time when _STLP_NO_CUSTOM_IO
+	is defined.
+	
+	* stlport/stl/_sintrg.h, stlport/stl/debug/_string.h, _string_mem_t.h: restoration
+	of the template method specialization for backward compatibility between compilers
+	implementating template method and the most recent one. It is concidered as an 
+	STLport extension.
+
 2004-08-09  Petr Ovtchenkov  <ptr@Island...>
 
 	* test/compiler: tests to check whether compiler understand or not some

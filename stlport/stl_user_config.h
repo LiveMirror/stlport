@@ -89,9 +89,9 @@
  *  with custom types (which is most likely the case).
  *  Custom means types other than char, wchar and char_traits<>,
  *  like basic_ostream<my_char_type, my_traits<my_char_type> >
- *  When this option is on, most non-inline template functions definitions for iostreams are not seen by the client.
- *  Default is off, just not to break compilation for those who do use those types.
+ *  When this option is on, most non-inline template functions definitions for iostreams are not seen by the client
  *  which saves a lot of compile time for most compilers, also object and executable size for some.
+ *  Default is off, just not to break compilation for those who do use those types.
  *  That also guarantees that you still use optimized standard i/o when you compile your program without optimization. 
  *  Option does not affect STLport library build; you may use the same binary library with and without this option, 
  *  on per-project basis.

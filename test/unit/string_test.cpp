@@ -30,6 +30,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(resize);
   CPPUNIT_TEST(short_string);
   CPPUNIT_TEST(find);
+  CPPUNIT_TEST(assign);
   CPPUNIT_TEST(mt);
   CPPUNIT_TEST_SUITE_END();
 
@@ -42,6 +43,7 @@ protected:
   void resize();
   void short_string();
   void find();
+  void assign();
   void mt();
 
   static string func( const string& par )
@@ -415,4 +417,17 @@ void StringTest::find()
   
   CPPUNIT_ASSERT( s.find_first_not_of("enotw ") == 9 );
   CPPUNIT_ASSERT( s.find_last_not_of("ehortw ") == 15 );
+}
+
+void StringTest::assign()
+{
+  string s;
+  char const* cstr = "test string for assign";
+
+  s.assign(cstr, cstr + 22);
+  CPPUNIT_ASSERT( s == "test string for assign" );
+
+  string s2("other test string");
+  s.assign(s2);
+  CPPUNIT_ASSERT( s == s2 );
 }
