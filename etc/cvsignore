@@ -32,3 +32,4 @@ Templates.DB
 *.gz
 test_file.txt
 make_snap.sh
+TAGS
