@@ -309,8 +309,10 @@ public:
   void splice(iterator __position, _Self& __x) {
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
     _Base::splice(__position._M_iterator, __x);
-    //dums: Invalidation according the Standard C++98 but against the SGI specs:
+# if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
+    // Std: 23.2.2.4:4
     __x._Invalidate_all();
+# endif
   }
 
   void splice(iterator __position, _Self& __x, iterator __i) {
@@ -318,8 +320,10 @@ public:
     _STLP_DEBUG_CHECK(_Dereferenceable(__i))
     _STLP_DEBUG_CHECK(__check_if_owner(&(__x._M_iter_list),__i))
     _Base::splice(__position._M_iterator, __x, __i._M_iterator);
-    //dums: Invalidation according the Standard C++98 but against the SGI specs:
+# if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
+    // Std: 23.2.2.4:7
     __x._Invalidate_iterator(__i);
+# endif
   }
 
   void splice(iterator __position, _Self& __x, iterator __first, iterator __last) {
@@ -327,8 +331,10 @@ public:
     _STLP_DEBUG_CHECK(__check_range(__first, __last, __x.begin(), __x.end()))
     _STLP_DEBUG_CHECK(this == &__x ? !__check_range(__position, __first, __last) : true)
     _Base::splice(__position._M_iterator, __x, __first._M_iterator, __last._M_iterator);
-    //dums: Invalidation according the Standard C++98 but against the SGI specs:
+# if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
+    // Std: 23.2.2.4:12
     __x._Invalidate_iterators(__first, __last);
+# endif
   }
 
   void merge(_Self& __x) {

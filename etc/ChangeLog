@@ -1,3 +1,9 @@
+2004-08-04  Francois Dumont <dums@...>
+
+	* stlport/stl/debug/_list.h, _slist.h: small review of the stlport debug code.
+	Removal of any Standard reference in the slist class debug implementation. Removal
+	of some unjustified iterator invalidation.
+
 2004-08-03  Francois Dumont <dums@...>
 
 	* stlport/stl/_iterator.h: Fix of the back_insert_iterator, front_insert_iterator

@@ -147,7 +147,7 @@ public:
   _Self& operator= (const _Self& __x) {
     if (this != &__x) {
       _Invalidate_iterators(this->begin(), this->end());
-      _Base::operator=(__STATIC_CAST(const _Base&, __x));
+      _Base::operator=(__x);
     }
     return *this;
   }
@@ -363,13 +363,8 @@ public:
     _STLP_DEBUG_CHECK(_Dereferenceable(__pos))
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_DEBUG_CHECK(__check_range(__before_first, __before_last))
-    if (__before_first != __before_last) {
-      _Base::splice_after(__pos._M_iterator, 
-                          __before_first._M_iterator, __before_last._M_iterator);
-      ++__before_first;
-      ++__before_last;
-      __invalidate_range(__before_first._Owner(), __before_first, __before_last);
-    }
+    _Base::splice_after(__pos._M_iterator, 
+                        __before_first._M_iterator, __before_last._M_iterator);
   }
 
   // Moves the element that follows __prev to *this, inserting it immediately
@@ -378,7 +373,6 @@ public:
     _STLP_DEBUG_CHECK(_Dereferenceable(__pos))
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _Base::splice_after(__pos._M_iterator, __prev._M_iterator);
-    __invalidate_iterator(__prev._Owner(), ++__prev);
   }
 
   // Removes all of the elements from the list __x to *this, inserting
@@ -388,17 +382,14 @@ public:
     _STLP_DEBUG_CHECK(_Dereferenceable(__pos))
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_VERBOSE_ASSERT(!(&__x==this), _StlMsg_INVALID_ARGUMENT)
-    _Base::splice_after(__pos._M_iterator, __STATIC_CAST(_Base&, __x));
-    __x._Invalidate_all();
+    _Base::splice_after(__pos._M_iterator, __x);
   }
 
   // Linear in distance(begin(), __pos), and linear in __x.size().
   void splice(iterator __pos, _Self& __x) {
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_VERBOSE_ASSERT(!(&__x==this), _StlMsg_INVALID_ARGUMENT)
-    _Base::splice(__pos._M_iterator, __STATIC_CAST(_Base&, __x));
-    //dums: Invalidation according the Standard C++98 rules but against the SGI specs:
-    __x._Invalidate_all();
+    _Base::splice(__pos._M_iterator, __x);
   }
 
   // Linear in distance(begin(), __pos), and in distance(__x.begin(), __i).
@@ -406,9 +397,7 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_DEBUG_CHECK(__check_if_owner(&__x._M_iter_list ,__i))
     _STLP_VERBOSE_ASSERT(&__x!=this, _StlMsg_INVALID_ARGUMENT)
-    _Base::splice(__pos._M_iterator, __STATIC_CAST(_Base&, __x), __i._M_iterator);
-    //dums: Invalidation according the Standard C++98 rules but against the SGI specs:
-    __x._Invalidate_iterator(__i);
+    _Base::splice(__pos._M_iterator, __x, __i._M_iterator);
   }
 
   // Linear in distance(begin(), __pos), in distance(__x.begin(), __first),
@@ -417,11 +406,7 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_VERBOSE_ASSERT(&__x!=this, _StlMsg_INVALID_ARGUMENT)
     _STLP_DEBUG_CHECK(__check_range(__first, __last, __x.begin(), __x.end()))
-    if (__first != __last) {
-      _Base::splice(__pos._M_iterator, __STATIC_CAST(_Base&, __x), __first._M_iterator, __last._M_iterator);      
-      //dums: Invalidation according the Standard C++98 rules but against the SGI specs:
-      __invalidate_range(&__x._M_iter_list, __first, __last);
-    }
+    _Base::splice(__pos._M_iterator, __x, __first._M_iterator, __last._M_iterator);      
   }
 
 public:
@@ -459,7 +444,7 @@ public:
      */
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(_Base::begin(), _Base::end()))
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(__x.begin()._M_iterator, __x.end()._M_iterator))
-    _Base::merge(__STATIC_CAST(_Base&, __x));
+    _Base::merge(__x);
   }
   void sort() {
     _Base::sort();
@@ -504,7 +489,7 @@ public:
      */
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(_Base::begin(), _Base::end(), __ord))
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(__x.begin()._M_iterator, __x.end()._M_iterator, __ord))
-    _Base::merge(__STATIC_CAST(_Base&, __x), __ord);
+    _Base::merge(__x, __ord);
   }
 
   template <class _StrictWeakOrdering>
