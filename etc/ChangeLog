@@ -5,6 +5,8 @@
 	size of interval [__first, __last) is larger than size of interval
 	[__str_first, __str_last).
 
+	* test/unit/fstream_test.cpp: test for correct report by tellg added.
+
 2004-07-05  Francois Dumont  <dums@...>
 
 	* stlport/stl/_map.h: internal type _Rep_type set as public for use
