@@ -1,3 +1,20 @@
+2004-10-25  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config.h: Introduction of the _STLP_DONT_USE_EXCEPTIONS which 
+	means that the client do not want to use the C++ exception feature. It is
+	different from the _STLP_NO_EXCEPTIONS which means that the compiler do not
+	support exceptions at all. The distinction is important for some macros definition.
+	
+	* test/unit: Modification of the _STLP_NO_EXCEPTIONS test to the more general
+	_STLP_USE_EXCEPTION macro.
+
+	* stlport/stl/_ios_base.h, src/ios.cpp: roolback of the modifications of the
+	2004-10-24.
+	
+	* stlport/config/stl_msvc.h, stl_gcc.h: Those 2 compilers have a exception 
+	support switch, when exceptions are unactivated they now define
+	_STLP_DONT_USE_EXCEPTIONS rather than _STLP_NO_EXCEPTIONS.
+	
 2004-10-25  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_sstream.c: cur direction missed in seekoff. Thanks David Obermann.
@@ -101,7 +118,7 @@
 	
 2004-10-05  Francois Dumont  <dums@stlport...>
 
-	* src/explore/Makefiles/nmake: Application of a patch from Mickeal Fink to simplify
+	* src/explore/Makefiles/nmake: Application of a patch from Michael Fink to simplify
 	the evc make system.
 	
 	* doc/README.evc4: New version from Zdenek Nemec.
