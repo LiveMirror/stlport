@@ -148,7 +148,8 @@ public:
   
 #endif /* _STLP_MEMBER_TEMPLATES */
 
-  _DBG_slist(const _Self& __x) : _STLP_DBG_SLIST_BASE(__x), _M_iter_list(_Get_base()) {}
+  _DBG_slist(const _Self& __x) : 
+    __range_checker<_Tp>(__x), _STLP_DBG_SLIST_BASE(__x), _M_iter_list(_Get_base()) {}
   
   _Self& operator= (const _Self& __x) {
     if (this != &__x) {

@@ -114,6 +114,7 @@
 #  define _STLP_DONT_RETURN_VOID 1
 #  define _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
+#  define _STLP_NO_MEMBER_TEMPLATES 1
 # endif /* (_MSC_VER <= 1200) */
 
 # if ( _MSC_VER<=1010 )
@@ -128,7 +129,7 @@
 #  define _STLP_HAS_NO_NEW_IOSTREAMS 1
 # endif /* 1010 */
 
-# if defined (_STLP_MSVC) && ( _STLP_MSVC < 1200 ) /* VC++ 6.0 */
+# if defined (_STLP_MSVC) && ( _STLP_MSVC < 1200 ) /* before VC++ 6.0 */
 // #  define _STLP_NO_MEMBER_TEMPLATES 1
 // #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
 #  define _STLP_NON_TYPE_TMPL_PARAM_BUG 1 

@@ -182,7 +182,7 @@ public:
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   _DBG_vector(const _Self& __x) 
-    : _STLP_DBG_VECTOR_BASE(__x), _M_iter_list(_Get_base()) {}
+    : __range_checker<_Tp>(__x), _STLP_DBG_VECTOR_BASE(__x), _M_iter_list(_Get_base()) {}
 
   explicit _DBG_vector(__partial_move_source<_Self> src)
 		: _STLP_DBG_VECTOR_BASE(_AsPartialMoveSource<_STLP_DBG_VECTOR_BASE >(src.get())),

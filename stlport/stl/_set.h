@@ -200,7 +200,7 @@ public:
 
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
-class multiset _STLP_SIGNAL_BASE_CLASS_1
+class multiset _STLP_STLPORT_CLASS_1
 {
   typedef multiset<_Key, _Compare, _Alloc> _Self;
 public:

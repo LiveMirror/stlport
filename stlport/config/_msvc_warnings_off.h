@@ -5,7 +5,7 @@
  * arrow operator warning
  * copy constr & assignment cannot be generated
  * "forcing value to bool 'true' or 'false'
- * typedef used instaead of full type
+ * typedef used instead of full type
  * 4018 : signed/unsigned mismatch, 4146 - result still unsigned 
  * 4100: unreferenced formal parameter
  * 4663: C++ language change: to explicitly specialize class template 'identifier' use the following syntax

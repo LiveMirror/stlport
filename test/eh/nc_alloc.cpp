@@ -294,10 +294,6 @@ void _STLP_CALL operator delete(void* s)
 				EH_ASSERT( p != alloc_set().end() );
 				alloc_set().erase( p );
 				using_alloc_set = false;
-				if (alloc_set().size() == 1) {
-					allocation_set::iterator it(alloc_set().begin());
-					void *ptr = *it;
-				}
 			}
 		}
 # if ! defined (NO_FAST_ALLOCATOR)	

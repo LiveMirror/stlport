@@ -168,7 +168,7 @@ _STLP_EXPORT_TEMPLATE_CLASS _String_base<wchar_t, allocator<wchar_t> >;
 struct _String_reserve_t {};
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_string : protected _String_base<_CharT,_Alloc> _STLP_SIGNAL_BASE_CLASS_N
+class basic_string : protected _String_base<_CharT,_Alloc> _STLP_STLPORT_CLASS_N
 {
 private:                        // Protected members inherited from base.
   typedef _String_base<_CharT,_Alloc> _Base;

@@ -205,7 +205,7 @@ typedef _Stl_prime<bool> _Stl_prime_type;
 //  wouldn't, for example, simplify the exception-handling code.
 template <class _Val, class _Key, class _HF,
           class _ExK, class _EqK, class _All>
-class hashtable _STLP_SIGNAL_BASE_CLASS_1
+class hashtable _STLP_STLPORT_CLASS_1
 {
   typedef hashtable<_Val, _Key, _HF, _ExK, _EqK, _All> _Self;
 public:

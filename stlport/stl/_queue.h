@@ -132,7 +132,7 @@ template <class _Tp>
 # else
 template <class _Tp, class _Sequence, class _Compare>
 # endif
-class  priority_queue _STLP_SIGNAL_BASE_CLASS_1
+class  priority_queue _STLP_STLPORT_CLASS_1
 {
 # ifdef _STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS
   typedef vector<_Tp> _Sequence;

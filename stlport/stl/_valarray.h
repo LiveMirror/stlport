@@ -168,8 +168,8 @@ public:                         // Element access
 public:                         // Subsetting operations with auxiliary type
   valarray<_Tp>            operator[](slice) const;
   slice_array<_Tp>    operator[](slice);
-  valarray<_Tp>            operator[](gslice) const;
-  gslice_array<_Tp>   operator[](gslice);  
+  valarray<_Tp>            operator[](const gslice&) const;
+  gslice_array<_Tp>   operator[](const gslice&);  
   valarray<_Tp>            operator[](const _Valarray_bool&) const;
   mask_array<_Tp>     operator[](const _Valarray_bool&);
   valarray<_Tp>            operator[](const _Valarray_size_t&) const;
@@ -1181,7 +1181,7 @@ public:
       _M_array[__index] >>= __x[__i];
   }
 
-  void operator=(const value_type& __c) const {
+  void operator=(const value_type& __c) /*const could be const but standard says NO (26.3.5.4-1)*/ {
     size_t __index = _M_slice.start();
     for (size_t __i = 0;
          __i < _M_slice.size();
@@ -1376,7 +1376,7 @@ public:
     }
   }
 
-  void operator= (const value_type& __c) const {
+  void operator= (const value_type& __c) /*const could be const but standard says NO (26.3.7.4-1)*/ {
     if (!_M_gslice._M_empty()) {
       _Gslice_Iter __i(_M_gslice);
       do _M_array[__i._M_1d_idx] = __c; while(__i._M_incr());
@@ -1386,7 +1386,7 @@ public:
   ~gslice_array() {}
 
 private:                        
-  gslice_array(gslice __gslice, valarray<_Tp>& __array)
+  gslice_array(const gslice& __gslice, valarray<_Tp>& __array)
     : _M_gslice(__gslice), _M_array(__array)
     {}
 
@@ -1412,7 +1412,7 @@ inline valarray<_Tp>::valarray(const gslice_array<_Tp>& __x)
 }
 
 template <class _Tp>
-inline gslice_array<_Tp> valarray<_Tp>::operator[](gslice __slice) {
+inline gslice_array<_Tp> valarray<_Tp>::operator[](const gslice& __slice) {
   return gslice_array<_Tp>(__slice, *this);
 }
 

@@ -151,7 +151,6 @@ struct _Deque_iterator_base {
 };
 
 
-
 template <class _Tp, class _Traits>
 struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 
@@ -181,9 +180,7 @@ struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 
   _STLP_DEFINE_ARROW_OPERATOR
 
-  difference_type operator-(const _Nonconst_self& __x) const { return this->_M_subtract(__x); }
   difference_type operator-(const _Const_self& __x) const { return this->_M_subtract(__x); }
-
 
   _Self& operator++() { this->_M_increment(); return *this; }
   _Self operator++(int)  {
@@ -214,6 +211,7 @@ struct _Deque_iterator : public _Deque_iterator_base< _Tp> {
 
   reference operator[](difference_type __n) const { return *(*this + __n); }
 };
+
 
 template <class _Tp, class _Traits>
 inline _Deque_iterator<_Tp, _Traits> _STLP_CALL
@@ -329,7 +327,7 @@ public:
   typedef typename _Alloc_traits<_Tp*, _Alloc>::allocator_type _Map_alloc_type;
 
   typedef _Deque_iterator<_Tp, _Nonconst_traits<_Tp> > iterator;
-  typedef _Deque_iterator<_Tp, _Const_traits<_Tp> >   const_iterator;
+  typedef _Deque_iterator<_Tp, _Const_traits<_Tp> >    const_iterator;
 
   static size_t  _STLP_CALL buffer_size() { return (size_t)_Deque_iterator_base<_Tp>::__buffer_size; } 
 
@@ -359,7 +357,7 @@ protected:
 
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class deque : protected _Deque_base<_Tp, _Alloc> _STLP_SIGNAL_BASE_CLASS_N
+class deque : protected _Deque_base<_Tp, _Alloc> _STLP_STLPORT_CLASS_N
 {
   typedef _Deque_base<_Tp, _Alloc> _Base;
   typedef deque<_Tp, _Alloc> _Self;

@@ -3,6 +3,17 @@ The following changes were made in 4.5.5 since 4.5.3 release:
 
 2003-10-16  Francois Dumont
 
+  * _alloc.h: Add of the throw() specification on allocator comparision.
+  * _iterator.h: Correction of the operator++(int) signature to conform to the standard.
+  * _ctype.h: tolower and toupper for wchar_t types.
+  * _valarray.h: gslice_array::operator = (const value_type&) not const anymore
+  * _valarray.h: slice_array idem
+  * _valarray.h: valarray<T> operator [](const gslice&) former version was taking a copy of gslice
+  * _codecvt.h : correction of the default codecvt class definition and correction of the out method
+    (all thanks Richard Peng)
+    
+2003-10-16  Francois Dumont
+
   * debug/: add of the iterator range check on all container constructors.
 
   * _string.h: correction of a bug on string auto referencing throught some

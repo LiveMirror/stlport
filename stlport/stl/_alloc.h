@@ -354,27 +354,27 @@ public:
  # endif    
   allocator(const allocator<_Tp>&) _STLP_NOTHROW {}
   ~allocator() _STLP_NOTHROW {}
-  pointer address(reference __x) { return &__x; }
+  pointer address(reference __x) const {return &__x;}
   const_pointer address(const_reference __x) const { return &__x; }
   // __n is permitted to be 0.  The C++ standard says nothing about what the return value is when __n == 0.
-  _Tp* allocate(size_type __n, const void* = 0) const {
+  _Tp* allocate(size_type __n, const void* = 0) {
     if (__n > max_size())
       __THROW_BAD_ALLOC;
     return __n != 0 ? __REINTERPRET_CAST(value_type*,__sgi_alloc::allocate(__n * sizeof(value_type))) : 0;
   }
   // __p is permitted to be a null pointer, only if n==0.
-  void deallocate(pointer __p, size_type __n) const {
+  void deallocate(pointer __p, size_type __n) {
     _STLP_ASSERT( (__p == 0) == (__n == 0) )
       if (__p != 0) __sgi_alloc::deallocate((void*)__p, __n * sizeof(value_type));
   }
   // backwards compatibility
   void deallocate(pointer __p) const {  if (__p != 0) __sgi_alloc::deallocate((void*)__p, sizeof(value_type)); }
   size_type max_size() const _STLP_NOTHROW  { return size_t(-1) / sizeof(value_type); }
-  void construct(pointer __p, const _Tp& __val) const { _STLP_STD::_Copy_Construct(__p, __val); }
-  void destroy(pointer __p) const { _STLP_STD::_Destroy(__p); }
+  void construct(pointer __p, const _Tp& __val) { _STLP_STD::_Copy_Construct(__p, __val); }
+  void destroy(pointer __p) { _STLP_STD::_Destroy(__p); }
 # if defined(__MRC__)||(defined(__SC__) && !defined(__DMC__))
-  template <class _T2> bool operator==(const allocator<_T2>&) const  { return true; }
-  template <class _T2> bool operator!=(const allocator<_T2>&) const { return false; }
+  template <class _T2> bool operator==(const allocator<_T2>&) const _STLP_NOTHROW { return true; }
+  template <class _T2> bool operator!=(const allocator<_T2>&) const _STLP_NOTHROW { return false; }
 # endif
 };
 
@@ -394,14 +394,14 @@ public:
   };
 # endif
 # if defined(__MRC__)||(defined(__SC__)&&!defined(__DMC__))		//*ty 03/24/2001 - MPW compilers get confused on these operator definitions
-  template <class _T2> bool operator==(const allocator<_T2>&) const  { return true; }
-  template <class _T2> bool operator!=(const allocator<_T2>&) const { return false; }
+  template <class _T2> bool operator==(const allocator<_T2>&) const _STLP_NOTHROW { return true; }
+  template <class _T2> bool operator!=(const allocator<_T2>&) const _STLP_NOTHROW { return false; }
 # endif
 };
 
 #if !(defined(__MRC__)||(defined(__SC__)&&!defined(__DMC__)))		//*ty 03/24/2001 - MPW compilers get confused on these operator definitions
-template <class _T1, class _T2> inline bool  _STLP_CALL operator==(const allocator<_T1>&, const allocator<_T2>&)  { return true; }
-template <class _T1, class _T2> inline bool  _STLP_CALL operator!=(const allocator<_T1>&, const allocator<_T2>&) { return false; }
+template <class _T1, class _T2> inline bool  _STLP_CALL operator==(const allocator<_T1>&, const allocator<_T2>&) _STLP_NOTHROW { return true; }
+template <class _T1, class _T2> inline bool  _STLP_CALL operator!=(const allocator<_T1>&, const allocator<_T2>&) _STLP_NOTHROW { return false; }
 #endif
 
 # if defined (_STLP_USE_TEMPLATE_EXPORT)

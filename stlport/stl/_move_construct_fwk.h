@@ -46,7 +46,7 @@ public:
 template <class _Tp>
 struct __partial_move_traits {
 #if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION)
-  typedef typename _IsConvertibleType<_Tp, __stlp_base_class>::_Type supported;
+  typedef typename _IsStlportClass<_Tp>::_Ret supported;
 #else
   //By default not supported:
   typedef __false_type supported;

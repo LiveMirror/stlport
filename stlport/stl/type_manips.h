@@ -50,7 +50,18 @@ struct __type2bool<__false_type> {
   enum {_Ret = 0};
 };
 
-// logical end of 3 predicated
+// logical and of 2 predicated
+template <class _P1, class _P2>
+struct _Land2 {
+  typedef __false_type _Ret;
+};
+
+_STLP_TEMPLATE_NULL
+struct _Land2<__true_type, __true_type> {
+  typedef __true_type _Ret;
+};
+
+// logical and of 3 predicated
 template <class _P1, class _P2, class _P3>
 struct _Land3 {
   typedef __false_type _Ret;
@@ -147,22 +158,10 @@ struct __select {
 // The original version of this source code may be found at
 // http://opensource.adobe.com.
 
-struct _PointerShim {
-  // Since the compiler only allows at most one non-trivial
-  // implicit conversion we can make use of a shim class to
-  // be sure that IsPtr below doesn't accept classes with
-  // implicit pointer conversion operators
-  _PointerShim(const volatile void*); // no implementation
-};
-
 // These are the discriminating functions
-
-char _STLP_CALL _IsP(bool, _PointerShim); // no implementation is required
-char* _STLP_CALL _IsP(bool, ...);          // no implementation is required
-
 template <class _Tp>
 char _STLP_CALL _IsSameFun(bool, _Tp*, _Tp*); // no implementation is required
-char* _STLP_CALL _IsSameFun(bool, ...);          // no implementation is required
+char* _STLP_CALL _IsSameFun(bool, ...);       // no implementation is required
 
 template <class _Tp1, class _Tp2>
 struct _IsSame {
@@ -171,45 +170,7 @@ struct _IsSame {
   enum { _Ret = (sizeof(_IsSameFun(false,__null_rep1(),__null_rep2())) == sizeof(char)) };
 };
 
-template <class _Tp>
-struct _IsPtr {
-  
-  // This template meta function takes a type T
-  // and returns true exactly when T is a pointer.
-  // One can imagine meta-functions discriminating on
-  // other criteria.
-  static _Tp& __null_rep();
-  enum { _Ret = (sizeof(_IsP(false,__null_rep())) == sizeof(char)) };
-
-};
-
-template <class _Tp>
-struct _IsPtrType {
-  enum { _Is =  _IsPtr<_Tp>::_Ret } ;
-  typedef __bool2type< _Is > _BT;
-  typedef typename _BT::_Ret _Type;
-  static _Type _Ret() { return _Type(); }
-};
-
-template <class _Tp1, class _Tp2>
-struct _BothPtrType {
-  typedef __bool2type< _IsPtr<_Tp1>::_Ret> _B1;
-  typedef __bool2type< _IsPtr<_Tp2>::_Ret> _B2;
-  typedef typename _B1::_Ret _Type1;
-  typedef typename _B2::_Ret _Type2;
-  typedef typename _Land3<_Type1, _Type2, __true_type>::_Ret _Type;
-  static _Type _Ret() { return _Type(); }
-};
-
 # else /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
-
-template <class _Tp>  struct _IsPtr { enum { _Ret = 0 }; };
-template <class _Tp>  struct _IsPtrType { 
-  static __false_type _Ret() { return __false_type();} 
-};
-template <class _Tp1, class _Tp2>  struct _BothPtrType { 
-  static __false_type _Ret() { return __false_type();} 
-};
 
 template <class _Tp1, class _Tp2>
 struct _IsSame { enum { _Ret = 0 }; };
@@ -218,15 +179,10 @@ struct _IsSame { enum { _Ret = 0 }; };
 // struct _IsSameType {   static __false_type _Ret() { return __false_type(); }  };
 
 #  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
-template <class _Tp>  struct _IsPtr<_Tp*> { enum { _Ret = 1 }; };
-template <class _Tp>  struct _IsPtrType<_Tp*> { 
-  static __true_type _Ret() { return __true_type();} 
-};
-template <class _Tp1, class _Tp2>  struct _BothPtrType<_Tp1*, _Tp2*> { 
-  static __true_type _Ret() { return __true_type();} 
-};
+
 template <class _Tp>
 struct _IsSame<_Tp, _Tp> { enum { _Ret = 1 }; };
+
 #  endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 # endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */

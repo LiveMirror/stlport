@@ -136,7 +136,7 @@ public:                         // Constructor, destructor.
   explicit _DBG_deque(const allocator_type& __a = allocator_type()) :
     _STLP_DEQUE_SUPER(__a), _M_iter_list(_Get_base()) {}
   _DBG_deque(const _Self& __x) : 
-    _STLP_DEQUE_SUPER(__x), _M_iter_list(_Get_base()) {}
+    __range_checker<_Tp>(__x), _STLP_DEQUE_SUPER(__x), _M_iter_list(_Get_base()) {}
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit _DBG_deque(size_type __n, const value_type& __x = _Tp(),

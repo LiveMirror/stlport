@@ -38,7 +38,13 @@ public:
 };
 
 template <class _InternT, class _ExternT, class _StateT>
-class codecvt {};
+class codecvt : public locale::facet, public codecvt_base 
+{
+public:
+  typedef _InternT intern_type;
+  typedef _ExternT extern_type;
+  typedef _StateT state_type;
+};
  
 template <class _InternT, class _ExternT, class _StateT>
 class codecvt_byname {};
@@ -55,7 +61,7 @@ public:
 
   explicit codecvt(size_t __refs = 0) : _BaseFacet(__refs) {}
 
-  result out(mbstate_t    __state,
+  result out(mbstate_t&   __state,
              const char*  __from,
              const char*  __from_end,
              const char*& __from_next,
@@ -146,7 +152,7 @@ public:
 
   explicit codecvt(size_t __refs = 0) : _BaseFacet(__refs) {}
 
-  result out(mbstate_t       __state,
+  result out(mbstate_t&      __state,
              const wchar_t*  __from,
              const wchar_t*  __from_end,
              const wchar_t*& __from_next,

@@ -32,6 +32,16 @@ int deque1_test(int, char**)
   d[2] = 25; // Replace last element.
   for(i = 0; i < d.size(); i++)
     cout << "d[" << i << "] = " << d[i] << endl;
+
+  //Some compile time tests:
+  deque<int>::iterator dit(d.begin());
+  deque<int>::const_iterator cdit(d.begin());
+  size_t nb;
+  nb = dit - cdit;
+  nb = cdit - dit;
+  nb = dit - dit;
+  nb = cdit - cdit;
+
   return 0;
 
 }

@@ -96,7 +96,7 @@ public:
     : _STLP_DBG_STRING_BASE(__r, __n, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(const _Self& __s): 
-    _STLP_DBG_STRING_BASE(__s), _M_iter_list(_Get_base()) {}
+    __range_checker<_CharT>(__s), _STLP_DBG_STRING_BASE(__s), _M_iter_list(_Get_base()) {}
 
   basic_string(const _Self& __s, size_type __pos, size_type __n = _Base::npos,
                const allocator_type& __a = allocator_type()):

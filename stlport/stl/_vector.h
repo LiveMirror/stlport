@@ -95,7 +95,7 @@ protected:
 };
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class vector : protected _Vector_base<_Tp, _Alloc> _STLP_SIGNAL_BASE_CLASS_N
+class vector : protected _Vector_base<_Tp, _Alloc> _STLP_STLPORT_CLASS_N
 {
 private:
   typedef _Vector_base<_Tp, _Alloc> _Base;

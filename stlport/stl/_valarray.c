@@ -97,7 +97,7 @@ valarray<_Tp>& valarray<_Tp>::operator=(const gslice_array<_Tp>& __x)
 }
 
 template <class _Tp>
-valarray<_Tp> valarray<_Tp>::operator[](gslice __slice) const
+valarray<_Tp> valarray<_Tp>::operator[](const gslice& __slice) const
 {
   valarray<_Tp> __tmp(__slice._M_size(), _NoInit());
   if (__tmp.size() != 0) {
