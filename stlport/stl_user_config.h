@@ -108,7 +108,7 @@
 /*
  * Use this option to catch uninitialized members in your classes.
  * When it is set, construct() and destroy() fill the class storage
- * with _STLP_SHRED_BYTE (see below). 
+ * with _STLP_SHRED_BYTE (see below).
  * Note : _STLP_DEBUG and _STLP_DEBUG_ALLOC don't set this option automatically.
  */
 
@@ -164,11 +164,12 @@
 
 /*
  * Some compilers support the automatic linking feature. 
- * Uncomment the following and you won't have to specify the STLport library
- * to link with anymore.
- * For the moment, this feature is only supported by the Microsoft compilers.
+ * Uncomment the following if you prefer to specify the STLport library
+ * to link with yourself.
+ * For the moment, this feature is only supported and implemented within STLport
+ * by the Microsoft compilers.
  */
-// #define _STLP_USE_AUTO_LINK 1
+// #define _STLP_DONT_USE_AUTO_LINK 1
 
 /*
  * When using automatic linking (see above), output a message that tells the 

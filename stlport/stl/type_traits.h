@@ -390,13 +390,6 @@ template <class _Tp1, class _Tp2>  struct _BothPtrType {
 
 #  endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
 
-template <class _Tp>
-struct _IsRefType {
-  enum { is_ref = _IsRef<_Tp>::_Ret };
-  typedef typename __bool2type<is_ref>::_Ret _Type;
-  static _Type _Ret() { return _Type();} 
-};
-
 // Provide some specializations.  This is harmless for compilers that
 //  have built-in __types_traits support, and essential for compilers
 //  that don't.
@@ -485,6 +478,13 @@ struct _DefaultZeroValue {
 
 #endif /* !_STLP_USE_BOOST_SUPPORT */
 
+template <class _Tp>
+struct _IsRefType {
+  enum { is_ref = _IsRef<_Tp>::_Ret };
+  typedef typename __bool2type<is_ref>::_Ret _Type;
+  static _Type _Ret() { return _Type();} 
+};
+
 template <class _Tp> 
 struct __call_traits {
 #if defined(_STLP_USE_BOOST_SUPPORT) && !defined(_STLP_NO_EXTENSIONS)
@@ -519,7 +519,8 @@ struct _OKToSwap {
 };
 
 template <class _Tp1, class _Tp2, class _IsRef1, class _IsRef2>
-inline _OKToSwap<_Tp1, _Tp2, _IsRef1, _IsRef2> _IsOKToSwap(_Tp1*, _Tp2*, const _IsRef1&, const _IsRef2&) {
+inline _OKToSwap<_Tp1, _Tp2, _IsRef1, _IsRef2> 
+_IsOKToSwap(_Tp1*, _Tp2*, const _IsRef1&, const _IsRef2&) {
   return _OKToSwap<_Tp1, _Tp2, _IsRef1, _IsRef2>();
 }
 

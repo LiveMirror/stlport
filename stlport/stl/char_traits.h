@@ -62,6 +62,8 @@ template <class _Tp> class allocator;
 typedef off64_t streamoff;
 #elif defined(_STLP_WCE)
 typedef long    streamoff;
+#elif defined (_M_AMD64) || defined (_M_IA64)
+typedef ptrdiff_t streamoff;
 #else // __unix, VC
 typedef off_t   streamoff;
 #endif /* _STLP_HAS_NO_NEW_C_HEADERS */

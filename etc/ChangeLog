@@ -1,3 +1,11 @@
+2005-01-14  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_windows.h, char_traits.h, src/c_locale_win32/c_locale_win32.c:
+	Patch from Patrick Bergeron to support 64 bits compilation under Windows using
+	VC8.
+	
+	* stlport/stl/boost_type_traits.h: boost support check and fixing.
+
 2005-01-13  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_algobase.h: Improvment of the iter_swap algo to use the swap
