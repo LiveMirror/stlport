@@ -1,5 +1,11 @@
 	The following changes were made in 4.5.5 since 4.5.3 release:
 	
+2003-11-02  Francois Dumont
+
+  * _limits.c: Correction of the quiet and signaling NaN that was inverted for several
+               platform.
+               (thanks  Alexey Sarytchev)
+               
 2003-11-01  Francois Dumont
 
   * _string.c: judicious correction for string::find_first_not_of to
