@@ -262,9 +262,9 @@ private:
   typedef typename _Traits::_ConstTraits _ConstTraits;
 
 public:
-  typedef _STLP_PRIV _Ht_iterator<_ElemsIte, _NonConstTraits> iterator;
+  typedef _STLP_PRIV::_Ht_iterator<_ElemsIte, _NonConstTraits> iterator;
   typedef iterator local_iterator;
-  typedef _STLP_PRIV _Ht_iterator<_ElemsIte, _ConstTraits> const_iterator;
+  typedef _STLP_PRIV::_Ht_iterator<_ElemsIte, _ConstTraits> const_iterator;
   typedef const_iterator const_local_iterator;
 
   typedef typename _Alloc_traits<_Val,_All>::allocator_type allocator_type;
