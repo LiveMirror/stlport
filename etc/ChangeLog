@@ -1,3 +1,12 @@
+2004-08-23  Petr Ovtchenkov  <ptr@Island...>
+
+	* test/unit/cppunit/cppunit_proxy.h, test/init/gcc.mak: CPPUNIT_MINI removed.
+
+	* src/num_get_float.cpp: suggestion to fix problem with float input for gcc 3.4.x
+	with optimization flag.
+
+	* test/unit/floatio_test.cpp: test for infinity and near
+
 2004-08-19  Petr Ovtchenkov  <ptr@Island...>
 
 	* src/explore/configure.bat: setting up compiling STLport under Windows.
