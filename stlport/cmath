@@ -16,6 +16,8 @@
 #ifndef _STLP_CMATH
 #define _STLP_CMATH
 
+#include <cstdlib>
+
 #ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID  0x109
 #  include <stl/_prolog.h>
@@ -92,6 +94,10 @@ inline long double log10l(long double v) { return __log10l(v); }
 
 }
 #endif // __sun && __GNUC__
+
+//_STLP_BEGIN_NAMESPACE
+//using ::abs;
+//_STLP_END_NAMESPACE
 
 #ifndef _STLP_CMATH_H_HEADER
 #  include <stl/_cmath.h>

@@ -27,7 +27,7 @@
 #  include _STLP_NATIVE_C_HEADER(stdlib.h)
 #endif
 
-#if defined( __MSL__ ) && (__MSL__ <= 0x5003)
+#if defined( __MSL__ ) && __MSL__ <= 0x5003
 namespace std {
 	typedef ::div_t div_t;
 	typedef ::ldiv_t ldiv_t;
@@ -44,7 +44,7 @@ using _STLP_VENDOR_CSTD::ldiv_t;
 using _STLP_VENDOR_CSTD::size_t;
 
 #  ifndef _STLP_NO_CSTD_FUNCTION_IMPORTS
-#    ifndef _STLP_WCE
+#   ifndef _STLP_WCE
 // these functions just don't exist on Windows CE
 using _STLP_VENDOR_CSTD::abort;
 using _STLP_VENDOR_CSTD::getenv;
@@ -52,7 +52,7 @@ using _STLP_VENDOR_CSTD::mblen;
 using _STLP_VENDOR_CSTD::mbtowc;
 using _STLP_VENDOR_CSTD::system;
 using _STLP_VENDOR_CSTD::bsearch;
-#    endif
+#   endif
 using _STLP_VENDOR_CSTD::atexit;
 using _STLP_VENDOR_CSTD::exit;
 using _STLP_VENDOR_CSTD::calloc;
@@ -69,36 +69,55 @@ using _STLP_VENDOR_CSTD::strtoul;
 
 #    if !(defined (_STLP_NO_NATIVE_WIDE_STREAMS) || defined (_STLP_NO_MBSTATE_T))
 using _STLP_VENDOR_CSTD::wcstombs;
-#      ifndef _STLP_WCE
+#     ifndef _STLP_WCE
 using _STLP_VENDOR_CSTD::wctomb;
-#      endif
+#     endif
 #    endif
 using _STLP_VENDOR_CSTD::qsort;
 using _STLP_VENDOR_CSTD::labs;
 using _STLP_VENDOR_CSTD::ldiv;
-#    if defined ( _STLP_LONG_LONG ) && !defined(_STLP_MSVC)
+#  if defined ( _STLP_LONG_LONG ) && !defined(_STLP_MSVC)
 using _STLP_VENDOR_CSTD::llabs;
 using _STLP_VENDOR_CSTD::lldiv;
-#    endif
+#  endif
 using _STLP_VENDOR_CSTD::rand;
 using _STLP_VENDOR_CSTD::srand;
 #  endif /* _STLP_NO_CSTD_FUNCTION_IMPORTS */
 _STLP_END_NAMESPACE
 #endif /* _STLP_IMPORT_VENDOR_CSTD */
 
-_STLP_BEGIN_NAMESPACE
 
-inline int abs(int __x ) { return _STLP_VENDOR_CSTD::abs(__x); }
-inline long abs(long __x) { return _STLP_VENDOR_CSTD::labs(__x); }
-inline div_t div(int __x, int __y) { return _STLP_VENDOR_CSTD::div(__x, __y); }
-inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); } 
+#if defined(_MSC_EXTENSIONS) && (defined(_STLP_MSVC) && _STLP_MSVC <= 1300)
+# pragma warning (push)
+# pragma warning (disable: 4162)
+# pragma function (abs,div)
+#endif
 
-#  if defined ( _STLP_LONG_LONG ) && !defined(_STLP_MSVC) // may be more conditions should be here
+#if !defined(_STLP_MSVC) || (_STLP_MSVC > 1300)
+inline long abs(long __x)             { return ::labs(__x); }
+inline ldiv_t div(long __x, long __y) { return ::ldiv(__x, __y); }
+#else
+inline long abs(long __x)             { return (labs(__x)); }
+inline ldiv_t div(long __x, long __y) { return (ldiv(__x, __y)); }
+#endif
+
+#if defined(_MSC_EXTENSIONS) && (defined(_STLP_MSVC) && _STLP_MSVC <= 1300)
+# pragma intrinsic (abs,div)
+# pragma warning (pop)
+#endif
+
+#if defined ( _STLP_LONG_LONG ) && !defined(_STLP_MSVC)
 inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::llabs(__x); }
 inline lldiv_t div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDOR_CSTD::lldiv(__x, __y); } 
-#  endif
+#endif
 
+#ifdef _STLP_IMPORT_VENDOR_CSTD 
+// ad hoc, don't replace with _STLP_VENDOR_CSTD::abs here! - ptr 2005-03-05
+_STLP_BEGIN_NAMESPACE
+using ::abs;
+using ::div;
 _STLP_END_NAMESPACE
+#endif
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x116)
 #  include <stl/_epilog.h>
