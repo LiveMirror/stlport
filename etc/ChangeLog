@@ -1,3 +1,12 @@
+2005-03-29  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/gmake/app/rules.mak, freebsd/rules-so.mak,
+	linux/rules-so.mak, openbsd/rules-so.mak, sunos/rules-so.mak:
+	fix link sequence---the end objects should be really last, i.e. after libs.
+	This affected by linkage without libstdc++.
+
+	* stlport/stl/_cwchar.h, stlport/wchar.h: workarounds for FreeBSD.
+
 2005-03-28  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_istream.h, _ostream.h: Fix assignment operators prototypes
