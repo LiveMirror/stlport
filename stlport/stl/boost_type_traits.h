@@ -17,10 +17,6 @@
 #ifndef _STLP_BOOST_TYPE_TRAITS_H
 #define _STLP_BOOST_TYPE_TRAITS_H
 
-#ifndef BOOST_STDLIB_CONFIG
-#  define BOOST_STDLIB_CONFIG <boost/config/stdlib/stlport.hpp>
-#endif
-
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_float.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
