@@ -1,7 +1,7 @@
 2004-09-16  Francois Dumont  <dums@...>
 
 	* test/unit/cppunit/cppunit_mini.h, cppunit_proxy.h: Adaptation of the CPPUNIT
-	framework to take care of the exception as failures.
+	framework to take care of the exception as failures thanks Michael Fink
 	
 	* stlport/config/stl_msvc.h, stl_bc.h, stl_mwerks.h, stlport/stl_user_config.h:
 	Removal of the non intuitive and difficult to maintain automatic linking feature.
