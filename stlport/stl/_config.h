@@ -925,8 +925,12 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #    define _STLP_NOTHROW_INHERENTLY 
 #   endif
 /* We do not use exception throw specifications unless we are forced to */
-#   define _STLP_THROWS(x)
-#   define _STLP_NOTHROW 
+#   if !defined(_STLP_THROWS)
+#     define _STLP_THROWS(x)
+#   endif
+#   if !defined(_STLP_NOTHROW)
+#     define _STLP_NOTHROW
+#   endif
 # else
 #   define _STLP_TRY 
 #   define _STLP_CATCH_ALL if (false)

@@ -45,7 +45,7 @@
 # include <stl/_alloc.h>
 #endif
 
-#if defined (_STLP_MSVC) && (_STLP_MSVC == 1300)
+#if defined (_STLP_MSVC) && (_STLP_MSVC == 1300 || _STLP_MSVC == 1310)
 /*
  * MSVC7.x needs this include even if it is not a good thing to include
  * it directly. As long as the MSVC message won't be clearer it will be

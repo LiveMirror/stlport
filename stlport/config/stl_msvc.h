@@ -84,6 +84,9 @@
 #if (_STLP_MSVC >= 1310)
 #  define _STLP_FULL_ADL_IMPLEMENTED 1
 #  undef _STLP_INCOMPLETE_EXCEPTION_HEADER
+#  if !defined (_STLP_HAS_NO_EXCEPTIONS)
+#    define _STLP_NOTHROW throw()
+#  endif
 #endif	//	(_STLP_MSVC >= 1310)
 
 # if (_STLP_MSVC <= 1300) 
