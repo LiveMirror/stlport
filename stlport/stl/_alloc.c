@@ -314,28 +314,23 @@ __node_alloc<__threads, __inst>::_S_refill(size_t __n) {
   int __nobjs = 20;
   __n = _S_round_up(__n);
   char* __chunk = _S_chunk_alloc(__n, __nobjs);
-  _Obj* __result;
-  _Obj* __current_obj;
-  _Obj* __next_obj;
-  int __i;
 
   if (1 == __nobjs) return (_Obj*)__chunk;
 
   _Obj* _STLP_VOLATILE* __my_free_list = _S_free_list + _S_FREELIST_INDEX(__n);
+  _Obj* __result;
+  _Obj* __current_obj;
+  _Obj* __next_obj;
 
   /* Build free list in chunk */
   __result = (_Obj*)__chunk;
   *__my_free_list = __next_obj = (_Obj*)(__chunk + __n);
-  for (__i = 1; ; ++__i) {
+  for (--__nobjs; --__nobjs; ) {
     __current_obj = __next_obj;
     __next_obj = (_Obj*)((char*)__next_obj + __n);
-    if (__nobjs - 1 == __i) {
-      __current_obj->_M_next = 0;
-      break;
-    } else {
-      __current_obj->_M_next = __next_obj;
-    }
+    __current_obj->_M_next = __next_obj;
   }
+  __next_obj->_M_next = 0;
   return __result;
 }
 
@@ -413,32 +408,27 @@ __node_alloc<__threads, __inst>::_S_refill(size_t __n) {
   __n = _S_round_up(__n);
   char* __chunk = _S_chunk_alloc(__n, __nobjs);
 
+  if (1 == __nobjs) return (_Obj*)__chunk;
+
+  _Obj* _STLP_VOLATILE* __my_free_list = _S_free_list + _S_FREELIST_INDEX(__n);
   _Obj* __result;
   _Obj* __current_obj;
   _Obj* __new_head;
   _Obj* __next_obj;
-  int __i;
-
-  if (1 == __nobjs) return (_Obj*)__chunk;
-
-  _Obj* _STLP_VOLATILE* __my_free_list = _S_free_list + _S_FREELIST_INDEX(__n);
 
   /* Build free list in chunk */
   __result = (_Obj*)__chunk;
   __new_head = __next_obj = (_Obj*)(__chunk + __n);
-  for (__i = 1; ; ++__i) {
+  for (--__nobjs; --__nobjs; ) {
     __current_obj = __next_obj;
     __next_obj = (_Obj*)((char*)__next_obj + __n);
-    if (__nobjs - 1 == __i) {
-      __current_obj->_M_next = 0;
-      break;
-    } else {
-      __current_obj->_M_next = __next_obj;
-    }
+    __current_obj->_M_next = __next_obj;
   }
 
   //Link the new free list to the global free list
-  __cas_new_head(__my_free_list, __new_head);
+  do {
+    __next_obj->_M_next = *__my_free_list;
+  } while (!_STLP_ATOMIC_CAS(__my_free_list, __new_head, __next_obj->_M_next));
 
   return __result;
 }

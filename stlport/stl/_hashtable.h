@@ -245,26 +245,26 @@ private:
 
   _ElemsIte _M_get_bucket(size_t __n) const { return _M_buckets[__n]; }
 #if !defined (_STLP_DEBUG)
-  _ElemsIte _M_get_elem_ite(_BucketType const* __b) const { return __CONST_CAST(_BucketType*, __b); }
-  _ElemsIte _M_get_elem_ite(_ElemsCont&, _BucketType* __b) const { return __CONST_CAST(_BucketType*, __b); }
-  _BucketType* _M_get_bucket_val(_ElemsConstIte __ite) const { return __ite._M_node; }
+  static _ElemsIte _M_get_elem_ite(_BucketType const* __b) { return __CONST_CAST(_BucketType*, __b); }
+  static _ElemsIte _M_get_elem_ite(_ElemsCont&, _BucketType* __b) { return __CONST_CAST(_BucketType*, __b); }
+  static _BucketType* _M_get_bucket_val(_ElemsConstIte __ite) { return __ite._M_node; }
 #else
   _ElemsIte _M_get_elem_ite(_BucketType const* __b) const { 
     return _M_get_elem_ite(__CONST_CAST(_ElemsCont&, _M_elems), __b);
   }
-  _ElemsIte _M_get_elem_ite(_ElemsCont& __elems, _BucketType const* __b) const {
+  static _ElemsIte _M_get_elem_ite(_ElemsCont& __elems, _BucketType const* __b) {
     return _ElemsIte(__elems.begin()._Owner(), __CONST_CAST(_BucketType*, __b));
   }
-  _BucketType* _M_get_bucket_val(const _ElemsConstIte& __ite) const { return __ite._M_iterator._M_node; }
+  static _BucketType* _M_get_bucket_val(const _ElemsConstIte& __ite) { return __ite._M_iterator._M_node; }
 #endif
 
   typedef typename _Traits::_NonConstTraits _NonConstTraits;
   typedef typename _Traits::_ConstTraits _ConstTraits;
 
 public:
-  typedef _STLP_PRIV::_Ht_iterator<_ElemsIte, _NonConstTraits> iterator;
+  typedef _STLP_PRIV _Ht_iterator<_ElemsIte, _NonConstTraits> iterator;
   typedef iterator local_iterator;
-  typedef _STLP_PRIV::_Ht_iterator<_ElemsIte, _ConstTraits> const_iterator;
+  typedef _STLP_PRIV _Ht_iterator<_ElemsIte, _ConstTraits> const_iterator;
   typedef const_iterator const_local_iterator;
 
   typedef typename _Alloc_traits<_Val,_All>::allocator_type allocator_type;

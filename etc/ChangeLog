@@ -1,5 +1,11 @@
 2005-02-04  Francois Dumont  <dums@stlport...>
 
+	* stlport/stl/_alloc.c: Fix of the _S_refill method in the lock free 
+	implementation thanks Felix Wyss.
+
+	* stlport/stl/_hashtable.h: _M_get_elem_ite set as static when possible
+	to fix a MSVC6 problem thanks Michael Fink report.
+
 	* stlport/new, config/stl_evc.h: EVC patch for MFC support from Michael Fink.
 
 	* build/Makefiles/nmake/evc3.mak, evc4.mak: Warning level raised to 4
