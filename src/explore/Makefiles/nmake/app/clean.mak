@@ -8,6 +8,10 @@ clobber:	clean
 	@-del /F /Q $(PRG_A)
 	@-del /F /Q $(PRG_A_DBG)
 	@-del /F /Q $(PRG_A_STLDBG)
+	@-del /F /Q $(OUTPUT_DIR_DBG)\$(PRGNAME).pdb
+	@-del /F /Q $(OUTPUT_DIR_A_DBG)\$(PRGNAME).pdb
+	@-del /F /Q $(OUTPUT_DIR_STLDBG)\$(PRGNAME).pdb
+	@-del /F /Q $(OUTPUT_DIR_A_STLDBG)\$(PRGNAME).pdb
 
 distclean:	clobber
 	@-del /F /Q  $(INSTALL_BIN_DIR)\$(PRG_NAME)
