@@ -1,3 +1,15 @@
+2004-07-05  Francois Dumont  <dums@...>
+
+  * stlport/stl/_map.h: internal type _Rep_type set as public for use
+  in the __move_traits specialization thanks Oliver Stoeneberg.
+
+  * stlport/stl/_set.h: specialization of the __move_traits to make the
+  set and multiset movable thanks Oliver Stoeneberg.
+
+  * stlport/stl/_function_base.h, stlport/stl/_heaps.h: removal of the 
+  unjustified _config.h inclusion that should only be included from the
+  _prolog.h header.
+
 2004-07-05  Petr Ovchenkov  <ptr@Island...>
 
 	* src/facets_byname.cpp: avoid pass address to member of derived class into

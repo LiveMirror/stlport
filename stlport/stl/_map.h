@@ -68,6 +68,9 @@ public:
 
 protected:
   typedef _Const_traits<value_type> _ConstIteTraits;
+  
+public:
+  //dums: need the following public for the __move_traits framework
 # ifdef _STLP_MULTI_CONST_TEMPLATE_ARG_BUG
   typedef _Rb_tree<key_type, key_compare,
                    value_type, _Select1st_hint<value_type, _Key>, _ConstIteTraits, _Alloc> _Rep_type;
@@ -248,6 +251,8 @@ public:
 
 protected:
   typedef _Const_traits<value_type> _ConstIteTraits;
+public:
+  //dums: need the following public for the __move_traits framework
 # ifdef _STLP_MULTI_CONST_TEMPLATE_ARG_BUG
   typedef _Rb_tree<key_type, key_compare, 
                    value_type, _Select1st_hint<value_type, _Key>, _ConstIteTraits, _Alloc> _Rep_type;

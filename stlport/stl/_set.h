@@ -73,8 +73,10 @@ public:
   typedef _Compare key_compare;
   typedef _Compare value_compare;
   
-private:
+protected:
   typedef _Const_set_traits<value_type> _ConstIteTraits;
+public:
+  //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
                    value_type, _Identity<value_type>, _ConstIteTraits, _Alloc> _Rep_type;
 
@@ -233,8 +235,10 @@ public:
   typedef _Compare key_compare;
   typedef _Compare value_compare;
   
-private:
+protected:
   typedef _Const_set_traits<value_type> _ConstIteTraits;
+public:
+  //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
                    value_type, _Identity<value_type>, _ConstIteTraits, _Alloc> _Rep_type;
                   
@@ -397,6 +401,18 @@ public:
 # undef  _STLP_TEMPLATE_CONTAINER_BASE
 # undef  _STLP_TEMPLATE_CONTAINER
 # undef  _STLP_TEMPLATE_HEADER
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Key, class _Compare, class _Alloc>
+struct __move_traits<set<_Key,_Compare,_Alloc> > :
+  __move_traits_aux<typename set<_Key,_Compare,_Alloc>::_Rep_type>
+{};
+
+template <class _Key, class _Compare, class _Alloc>
+struct __move_traits<multiset<_Key,_Compare,_Alloc> > :
+  __move_traits_aux<typename multiset<_Key,_Compare,_Alloc>::_Rep_type>
+{};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 _STLP_END_NAMESPACE
 
