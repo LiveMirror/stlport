@@ -3,7 +3,7 @@
 STLport README for eMbedded Visual C++ 3
 ========================================
 
-by: Michael Fink, vividos@users.sourceforge.net, last edited 6/1/2004
+by: Michael Fink, vividos@users.sourceforge.net, last edited 2004-09-28
 
 ============
 Introduction
@@ -25,29 +25,38 @@ To build and use STLport you will need following tools and libraries:
 ================
 Building STLport
 ================
-Open a command line prompt and execute the batch file that sets up compiling
-for ARM or x86 processors. These files usually are in a folder like
-'C:\Program Files\Windows CE eMbedded Tools\EVC\WCE300\BIN\' and are called
-WCEARM.bat and WCEx86.bat. Check if the environment variables are set up
-properly after that call.
-
 If you want to compile for the Pocket PC 2002 SDK (which in most cases you want)
 be sure to set the PLATFORM environment variable to "Pocket PC 2002", e.g. with
 this command:
 
   set PLATFORM=Pocket PC 2002
 
-You can also adjust the batch files to have the PLATFORM variable set.
+Open a command line prompt and execute the batch file that sets up compiling
+for ARM or x86 processors. These files usually are in a folder like
+'C:\Program Files\Windows CE eMbedded Tools\EVC\WCE300\BIN\' and are called
+WCEARM.bat and WCEx86.bat. Check if the environment variables are set up
+properly after that call. You can also adjust the batch files to have the
+PLATFORM variable set automatically.
 
 Go into STLport's 'src\explore' folder and type:
 
-  nmake TARGET_PROC=arm /f nmake-evc3.mak install
+  configure.bat -c evc3 -p ARM
 
-All libraries (debug, stldebug, release) should be built, static and shared
-ones. Replace 'arm' with 'x86' to build for the emulator.
+The makefiles are configured with the given settings. Call configure.bat with
+the --help option to see all options. Replace 'ARM' with 'x86' to build for the
+emulator. The program automatically tells you which command line to use. If you
+want to install the libraries, add the "install" target as follows:
 
-Note: The TARGET_PROC strings must be case-sensitive, only "arm" and "x86"
-work.
+  nmake /f nmake-evc3.mak install
+
+All libraries (debug, stldebug, release) are now built, static and shared
+ones. Import libraries (.lib files) are put in the 'lib\evc3-arm' folder, DLLs
+are put in the 'bin\evc3-arm' folder.
+
+Once STLport is built you can decrease the size of the STLport folder by
+removing intermediate build files. This is done with the following command:
+
+  nmake /f nmake-evc3.mak clobber
 
 ===============
 Testing STLport
@@ -55,24 +64,51 @@ Testing STLport
 You can use the unit tests to verify STLport behaves correctly. Change into
 STLports 'test\unit' folder and type:
 
-  nmake TARGET_PROC=arm /f nmake-evc3.mak
+  nmake /f nmake-evc3.mak install
 
-Again, replace 'arm' with 'x86' to build for the emulator.
+If you want to build the unit tests for the emulator, you have to reconfigure
+STLport with the configure.bat, as described above.
 
-Once the unit test is built, upload the binary (found in the
-'obj\arm-evc3\shared*' subfolders) to your device or emulator and start it (it
-runs for about 2 minutes). The file stlp_test.txt is created then, which
-contains the unit test results. It should report no errors.
+Once the unit tests are built, upload the binary (found in the 'bin\evc3-arm'
+folder) to your device or emulator and start it (the test runs for about 30
+seconds, depending on the speed of the device). The file 'stlp_test.txt' is
+created in the root folder of the device, which contains the unit test
+results. It should report no errors.
 
 =============
 Using STLport
 =============
 Adjust your include and link paths in eVC3 in 'Tools -> Options -> Directories'
-and add the paths for all platform and CPUs you want to use STLport. In the
-include files add the path to STLport's 'stlport' folder. Make sure it is the
-first directory listed there. Add STLport's 'arm-lib' or 'x86-lib' (depending on
-what target you want to build) folder for the library files (order of paths
-doesn't matter here).
+and add the paths for all platforms and CPUs on which you want to use STLport.
+In the include files add the path to STLport's 'stlport' folder. Make sure it
+is the first directory listed there. Add STLport's 'lib\evc3-arm' or
+'lib\evc3-x86' (depending on what target you want to build) folder for the
+library files (order of paths doesn't matter here).
+
+There are some preprocessor defines that controls usage of the STLport in evc3
+projects:
+
+In debug builds you have to specify the flag _STLP_USE_DEBUG_LIB if you want to
+link against the debug version of the library. The use of _STLP_DEBUG is
+currently not recommended for eMbedded Visual C++ builds with the ARM compiler.
+
+Define the symbol _STLP_USE_STATIC_LIB when you want to statically link against
+STLport. The linker will remove unused classes and methods then, saving some
+space in the executable.
+
+In all cases you have to specify the proper .lib file for linking, in the
+Project Settings, on the "link" tab. The .lib names have the following syntax:
+
+   stlport_[static_](r|d|stld)<STLport-Version>.lib
+
+Examples:
+
+   stlport_static_r50.lib - static release version, Version 5.0.0
+   stlport_d50.lib - dll debug version, Version 5.0.0
+
+When using STLport together with MFC you have to take care of some things. Be
+sure that you always include the MFC header files first before including STLport
+headers, e.g. in your stdafx.h file.
 
 Now you should be ready to use STLport.
 
@@ -86,4 +122,5 @@ Known issues
 
  - Unit Tests in _STLP_DEBUG mode (target 'stldbg-shared') fails in
    __stl_debug_engine::_M_detach() for several tests due to unknown reasons.
+   A compiler bug in the ARM compiler is suspected.
    There is currently no workaround for this bug.

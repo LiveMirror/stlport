@@ -1,3 +1,10 @@
+2004-10-05  Francois Dumont  <dums@stlport...>
+
+	* src/explore/Makefiles/nmake: Application of a patch from Mickeal Fink to simplify
+	the evc make system.
+	
+	* doc/README.evc4: New version from Zednek Nemec.
+	
 2004-10-04  Francois Dumont  <dums@stlport...>
 
 	* test/unit/type_traits_test.cpp: A new test case to check behavior of

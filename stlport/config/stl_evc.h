@@ -226,9 +226,14 @@ struct tm {
 # define _TM_DEFINED
 # endif
 
+// define placement new and delete operator
+// note: when MFCCE headers are included first, don't define the new operator,
+//       since it was already defined in wcealt.h
 # ifdef __cplusplus
 #  ifndef __PLACEMENT_NEW_INLINE
+#    ifndef _MFC_VER
 inline void *__cdecl operator new(size_t, void *_P) { return (_P); }
+#    endif /* _MFC_VER */
 inline void __cdecl operator delete(void *, void *) { return; }
 #   define __PLACEMENT_NEW_INLINE
 #  endif
