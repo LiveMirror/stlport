@@ -21,7 +21,6 @@ class IterTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(iterswp0);
   CPPUNIT_TEST(iterswp1);
   CPPUNIT_TEST(iterswp2);
-  CPPUNIT_TEST(iterswp3);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -31,7 +30,6 @@ protected:
   void iterswp0();
   void iterswp1();
   void iterswp2();
-  void iterswp3();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(IterTest);
@@ -144,19 +142,4 @@ void IterTest::iterswp2()
 
   CPPUNIT_ASSERT(( *i1 == v1 && *i2 == v0 ));
 
-}
-void IterTest::iterswp3()
-{
-  stringstream s0;
-  stringstream s1;
-
-  vector<bool> boolVector;
-
-  boolVector.push_back( true );
-  boolVector.push_back( false );
-
-  sort( boolVector.begin(), boolVector.end() );
-
-  CPPUNIT_ASSERT(boolVector[0]==false);
-  CPPUNIT_ASSERT(boolVector[1]==true);
 }

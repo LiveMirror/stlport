@@ -1,3 +1,8 @@
+2004-06-07  Francois Dumont  <dums@...>
+
+  * stlport/stl/_algo.c: rollback of the sort algo implementation
+  to the 4.5.3 version.
+
 2004-06-03  Francois Dumont  <dums@...>
 
   * stlport/stl/pointers/README, doc/pointer_specialization.txt: move and

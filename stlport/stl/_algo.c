@@ -738,7 +738,7 @@ _RandomAccessIter __unguarded_partition(_RandomAccessIter __first,
 # define  __stl_threshold  16
 
 template <class _RandomAccessIter, class _Tp, class _Compare>
-void __unguarded_linear_insert(_RandomAccessIter __last, const _Tp& __val, 
+void __unguarded_linear_insert(_RandomAccessIter __last, _Tp __val, 
                                _Compare __comp) {
   _RandomAccessIter __next = __last;
   --__next;  
@@ -752,9 +752,9 @@ void __unguarded_linear_insert(_RandomAccessIter __last, const _Tp& __val,
 
 template <class _RandomAccessIter, class _Tp, class _Compare>
 inline void __linear_insert(_RandomAccessIter __first, 
-                            _RandomAccessIter __last, const _Tp& __val, _Compare __comp) {
+                            _RandomAccessIter __last, _Tp __val, _Compare __comp) {
   //*TY 12/26/1998 - added __val as a paramter
-  //  _Tp __val = *__last;  //*TY 12/26/1998 - __val supplied by caller
+  //  _Tp __val = *__last;		    //*TY 12/26/1998 - __val supplied by caller
   if (__comp(__val, *__first)) {
     copy_backward(__first, __last, __last + 1);
     *__first = __val;
@@ -768,14 +768,8 @@ void __insertion_sort(_RandomAccessIter __first,
                       _RandomAccessIter __last,
                       _Tp *, _Compare __comp) {
   if (__first == __last) return;
-  for (_RandomAccessIter __i = __first + 1; __i != __last; ++__i) {
-#ifdef _MSC_VER // VCs pass *__i by reference here (compiler's bug!), use workaround; 2004-03-30 -ptr
-    _Tp __a(*__i);
-    __linear_insert(__first, __i, __a, __comp);
-#else
-    __linear_insert(__first, __i, _Tp(*__i), __comp);  //*TY 12/26/1998 - supply *__i as __val
-#endif
-  }
+  for (_RandomAccessIter __i = __first + 1; __i != __last; ++__i)
+    __linear_insert<_RandomAccessIter, _Tp, _Compare>(__first, __i, *__i, __comp);  //*TY 12/26/1998 - supply *__i as __val
 }
 
 template <class _RandomAccessIter, class _Tp, class _Compare>
@@ -783,7 +777,7 @@ void __unguarded_insertion_sort_aux(_RandomAccessIter __first,
                                     _RandomAccessIter __last,
                                     _Tp*, _Compare __comp) {
   for (_RandomAccessIter __i = __first; __i != __last; ++__i)
-    __unguarded_linear_insert(__i, _Tp(*__i), __comp);
+    __unguarded_linear_insert<_RandomAccessIter, _Tp, _Compare>(__i, *__i, __comp);
 }
 
 template <class _RandomAccessIter, class _Compare>
