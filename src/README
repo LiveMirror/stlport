@@ -1,9 +1,6 @@
-This is experimental make system.
-
-
 Quick start.
 
-  GNU Make (Linux, FreeBSD, CygWin), with gcc:
+  GNU Make (Linux, OpenBSD, FreeBSD, CygWin, etc.), with gcc:
 
     make -f gcc.mak depend
     make -f gcc.mak install
@@ -19,7 +16,7 @@ Quick start.
     nmake -f nmake-vc6 install
 
 
-Experimental make system goals.
+Make system goals.
 
   - all source files declared in one place (for all platforms and
     compilers); the same is for base library (application) name and
