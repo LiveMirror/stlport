@@ -242,9 +242,6 @@ inline long double modf (long double __x, long double* __y) {
 #endif // 0
 
 _STLP_DEF_MATH_INLINE2(pow,pow)
-// inline double pow(double __x, double __y) { return ::pow(__x, ,__y); }
-//inline float pow(float __x, float __y) { return ::powf(__x, __y); }
-//inline long double pow(long double __x, long double __y) { return ::powl(__x, __y); }
 
 #if !defined(_STLP_MSVC) /* || (_STLP_MSVC > 1300) */ || defined(_STLP_WCE) || !defined (_MSC_EXTENSIONS) /* && !defined(_STLP_WCE_NET) */
 inline float       pow(float __x, int __y)       { return ::powf(__x, __STATIC_CAST(float,__y)); }
@@ -275,14 +272,6 @@ _STLP_DEF_MATH_INLINE(tanh,tanh)
 #  endif
 #  pragma warning(pop)
 #endif // _STLP_MSVC && _STLP_MSVC <= 1300 && !_STLP_WCE && _MSC_EXTENSIONS
-
-#ifdef _STLP_WCE
-# pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh, ceil, floor)
-# pragma warning(default: 4162)
-# pragma warning(pop)
-#endif // _STLP_WCE
-
-//_STLP_END_NAMESPACE
 
 _STLP_BEGIN_NAMESPACE
 using ::abs;
