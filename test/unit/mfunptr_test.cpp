@@ -24,7 +24,10 @@ class MemFunPtrTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE_END();
 
 protected:
+#if !defined (STLPORT) || defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+  // See comment above
   void find();
+#endif
   // compile test not neccessary to run but...
   void mem_ptr_fun();
 };
