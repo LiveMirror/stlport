@@ -20,6 +20,7 @@ class SetTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(find);
   CPPUNIT_TEST(bounds);
   CPPUNIT_TEST(specialized_less);
+  CPPUNIT_TEST(implementation_check);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -30,6 +31,7 @@ class SetTest : public CPPUNIT_NS::TestCase
     void find();
     void bounds();
     void specialized_less();
+    void implementation_check();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SetTest);
@@ -205,3 +207,13 @@ void SetTest::specialized_less()
   }
 }
 
+void SetTest::implementation_check()
+{
+  set<int> tree;
+  tree.insert(1);
+  set<int>::iterator it = tree.begin();
+  ++it;
+
+  CPPUNIT_ASSERT( it == tree.end() );
+  CPPUNIT_ASSERT( it != tree.begin() );
+}

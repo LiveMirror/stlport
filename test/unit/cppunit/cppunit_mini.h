@@ -131,6 +131,7 @@ namespace CPPUNIT_NS
 #define CPPUNIT_TEST_SUITE_END() }
 #define CPPUNIT_TEST_SUITE_REGISTRATION(X) static X local;
 
+#define CPPUNIT_CHECK(X) if(!(X)){ TestCase::error("CPPUNIT_CHECK", #X, __FILE__, __LINE__); }
 #define CPPUNIT_ASSERT(X) if(!(X)){ TestCase::error("CPPUNIT_ASSERT", #X, __FILE__, __LINE__); return; }
 #define CPPUNIT_ASSERT_EQUAL(X,Y) if((X)!=(Y)){ TestCase::error("CPPUNIT_ASSERT_EQUAL", #X","#Y, __FILE__, __LINE__); return; }
 #define CPPUNIT_ASSERT_DOUBLES_EQUAL(X,Y,Z) if(!equalDoubles((X),(Y),(Z))){ TestCase::error("CPPUNIT_ASSERT_DOUBLES_EQUAL", #X","#Y","#Z, __FILE__, __LINE__); return; }

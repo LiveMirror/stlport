@@ -355,9 +355,9 @@ void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   const size_type __old_n = _M_buckets.size();
   if ((float)__num_elements_hint / (float)__old_n > _M_max_load_factor) {
     const size_type __n = _STLP_PRIV::_Stl_prime_type::_S_next_size(__num_elements_hint);
-    if (__n > __old_n) {
-      _ElemsCont __tmp_elems;
-      _BucketVector __tmp(__n, __STATIC_CAST(_BucketType*, 0), _M_buckets.get_allocator());
+    if ((__n + 1) > __old_n) {
+      _ElemsCont __tmp_elems(_M_elems.get_allocator());
+      _BucketVector __tmp(__n + 1, __STATIC_CAST(_BucketType*, 0), _M_buckets.get_allocator());
       _ElemsIte __cur, __end(_M_elems.end());
       while (!_M_elems.empty()) {
         __cur = _M_elems.begin();

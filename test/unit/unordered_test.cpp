@@ -30,6 +30,8 @@ protected:
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UnorderedTest);
 
+const int NB_ELEMS = 2000;
+
 //
 // tests implementation
 //
@@ -45,7 +47,7 @@ void UnorderedTest::uset()
 
   int i;
   pair<usettype::iterator, bool> ret;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     ret = us.insert(i);
     CPPUNIT_ASSERT( ret.second );
     CPPUNIT_ASSERT( *ret.first == i );
@@ -58,7 +60,7 @@ void UnorderedTest::uset()
   vector<int> us_val;
 
   usettype::local_iterator lit, litEnd;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     lit = us.begin(us.bucket(i));
     litEnd = us.end(us.bucket(i));
 
@@ -70,7 +72,7 @@ void UnorderedTest::uset()
   }
 
   sort(us_val.begin(), us_val.end());
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     CPPUNIT_ASSERT( us_val[i] == i );
   }
 }
@@ -82,7 +84,7 @@ void UnorderedTest::umultiset()
 
   int i;
   usettype::iterator ret;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     ret = us.insert(i);
     CPPUNIT_ASSERT( *ret == i );
 
@@ -94,7 +96,7 @@ void UnorderedTest::umultiset()
   vector<int> us_val;
 
   usettype::local_iterator lit, litEnd;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     lit = us.begin(us.bucket(i));
     litEnd = us.end(us.bucket(i));
 
@@ -106,7 +108,7 @@ void UnorderedTest::umultiset()
   }
 
   sort(us_val.begin(), us_val.end());
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     CPPUNIT_ASSERT( us_val[2 * i] == i );
     CPPUNIT_ASSERT( us_val[2 * i + 1] == i );
   }
@@ -123,6 +125,7 @@ void UnorderedTest::umap()
   us.clear();
 
   {
+    //An other compilation check
     typedef unordered_map<int, umaptype> uumaptype;
     uumaptype uus;
     umaptype const& uref = uus[0];
@@ -131,7 +134,7 @@ void UnorderedTest::umap()
 
   int i;
   pair<umaptype::iterator, bool> ret;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     pair<const int, int> p1(i, i);
     ret = us.insert(p1);
     CPPUNIT_ASSERT( ret.second );
@@ -143,11 +146,22 @@ void UnorderedTest::umap()
     CPPUNIT_ASSERT( *ret.first == p1 );
   }
 
-  CPPUNIT_ASSERT( us.size() == 2000 );
+  {
+    //Lets look for some values to see if everything is normal:
+    umaptype::iterator umit;
+    for (int j = 0; j < NB_ELEMS; j += NB_ELEMS / 100) {
+      umit = us.find(j);
+
+      CPPUNIT_ASSERT( umit != us.end() );
+      CPPUNIT_ASSERT( (*umit).second == j );
+    }
+  }
+
+  CPPUNIT_ASSERT( us.size() == NB_ELEMS );
   vector<pair<int, int> > us_val;
 
   umaptype::local_iterator lit, litEnd;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     lit = us.begin(us.bucket(i));
     litEnd = us.end(us.bucket(i));
 
@@ -159,7 +173,7 @@ void UnorderedTest::umap()
   }
 
   sort(us_val.begin(), us_val.end());
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     CPPUNIT_ASSERT( us_val[i] == make_pair(i, i) );
   }
 }
@@ -171,7 +185,7 @@ void UnorderedTest::umultimap()
 
   int i;
   umaptype::iterator ret;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     pair<const int, int> p(i, i);
     ret = us.insert(p);
     CPPUNIT_ASSERT( *ret == p );
@@ -185,7 +199,7 @@ void UnorderedTest::umultimap()
   vector<ptype> us_val;
 
   umaptype::local_iterator lit, litEnd;
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     lit = us.begin(us.bucket(i));
     litEnd = us.end(us.bucket(i));
 
@@ -197,7 +211,7 @@ void UnorderedTest::umultimap()
   }
 
   sort(us_val.begin(), us_val.end());
-  for (i = 0; i < 2000; ++i) {
+  for (i = 0; i < NB_ELEMS; ++i) {
     pair<int, int> p(i, i);
     CPPUNIT_ASSERT( us_val[i * 2] == p );
     CPPUNIT_ASSERT( us_val[i * 2 + 1] == p );

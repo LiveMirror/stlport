@@ -19,17 +19,17 @@
 #  define basic_string _STLP_NON_DBG_NAME(str)
 #endif
 
-#define _STLP_STRING_BASE_NAME _STLP_NO_MEM_T_NAME(str)<_CharT, _Traits, _Alloc>
+#define _STLP_NO_MEM_T_STRING_BASE _STLP_NO_MEM_T_NAME(str)<_CharT, _Traits, _Alloc>
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_string : public _STLP_STRING_BASE_NAME
+class basic_string : public _STLP_NO_MEM_T_STRING_BASE
 #if !defined (basic_string) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                    , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
 #endif
 {
 protected:                        // Protected members inherited from base.
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
-  typedef _STLP_STRING_BASE_NAME _Base;
+  typedef _STLP_NO_MEM_T_STRING_BASE _Base;
   typedef typename _Base::_NonDbgBase _NonDbgBase;
   typedef _Base _DbgBase;
 
@@ -43,36 +43,36 @@ public:
 
 public:                         // Constructor, destructor, assignment.
   basic_string()
-    : _STLP_STRING_BASE_NAME() {}
+    : _STLP_NO_MEM_T_STRING_BASE() {}
 
   explicit basic_string(const allocator_type& __a)
-    : _STLP_STRING_BASE_NAME(__a) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__a) {}
 
-  basic_string(_Reserve_t, size_t __n,
+  basic_string(_Reserve_t __r, size_t __n,
                const allocator_type& __a = allocator_type())
-    : _STLP_STRING_BASE_NAME(_Reserve_t(), __n, __a) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__r, __n, __a) {}
 
   basic_string(const _Self& __s) 
-    : _STLP_STRING_BASE_NAME(__s) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__s) {}
 
-  basic_string(const _Self& __s, size_type __pos, size_type __n = _NonDbgBase::npos,
+  basic_string(const _Self& __s, size_type __pos, size_type __n = _Base::npos,
                const allocator_type& __a = allocator_type()) 
-    : _STLP_STRING_BASE_NAME(__s, __pos, __n, __a) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__s, __pos, __n, __a) {}
 
   basic_string(const _CharT* __s, size_type __n,
                const allocator_type& __a = allocator_type()) 
-    : _STLP_STRING_BASE_NAME(__s, __n, __a) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__s, __n, __a) {}
 
   basic_string(const _CharT* __s,
                const allocator_type& __a = allocator_type())
-    : _STLP_STRING_BASE_NAME(__s, __a) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__s, __a) {}
 
   basic_string(size_type __n, _CharT __c,
                const allocator_type& __a = allocator_type())
-    : _STLP_STRING_BASE_NAME(__n, __c, __a) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__n, __c, __a) {}
 
   basic_string(__move_source<_Self> src)
-    : _STLP_STRING_BASE_NAME(__move_source<_Base>(src.get())) {}
+    : _STLP_NO_MEM_T_STRING_BASE(__move_source<_Base>(src.get())) {}
   
   // Check to see if _InputIterator is an integer type.  If so, then
   // it can't be an iterator.
@@ -80,14 +80,14 @@ public:                         // Constructor, destructor, assignment.
   template <class _InputIterator> 
   basic_string(_InputIterator __f, _InputIterator __l,
                const allocator_type & __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_STRING_BASE_NAME(__a) {
+    : _STLP_NO_MEM_T_STRING_BASE(__a) {
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_dispatch(__f, __l, _Integral());
   }
 #  if defined (_STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS)
   template <class _InputIterator> 
   basic_string(_InputIterator __f, _InputIterator __l)
-    : _STLP_STRING_BASE_NAME(allocator_type()) {
+    : _STLP_NO_MEM_T_STRING_BASE(allocator_type()) {
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_dispatch(__f, __l, _Integral());
   }
@@ -720,12 +720,16 @@ public:                         // Substring.
                  this->_M_Start() + __pos + (min) (__n, this->size() - __pos));
   }
 
-#if defined(_STLP_USE_TEMPLATE_EXPRESSION)
+#if defined (_STLP_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_DEBUG)
+#  define _STLP_STRING_SUM_BASE _STLP_NO_MEM_T_STRING_BASE
+#  define _STLP_STRING_BASE_SCOPE _Base::
 #  include <stl/_string_sum_methods.h>
+#  undef _STLP_STRING_BASE_SCOPE
+#  undef _STLP_STRING_SUM_BASE
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 };
 
-#undef _STLP_STRING_BASE_NAME
+#undef _STLP_NO_MEM_T_STRING_BASE
 #undef basic_string
 
 #if defined (_STLP_DEBUG)

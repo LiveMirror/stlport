@@ -37,7 +37,7 @@ struct __char_wrapper {
 
   const_reference operator[] (size_t __n) const {
     //To avoid a check on __n we use this strange implementation
-    return *((&_Val)[__n]);
+    return (&_Val)[__n];
   }
 
 private:
@@ -142,7 +142,7 @@ public:
 
   size_t max_size() const { return _M_get_storage().max_size(); }
   size_type capacity() const { return size(); }
-  bool empty() const { return (size() == 0); }    
+  bool empty() const { return size() == 0; }    
 
   const_reference operator[](size_t __n) const {
     return (__n < _lhs.size())?_lhs[__n]:_rhs[__n - _lhs.size()];

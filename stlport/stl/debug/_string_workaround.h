@@ -416,6 +416,14 @@ public:                         // Other modifier member functions.
     this->_M_iter_list._Swap_owners(__s._M_iter_list);
     _Base::swap(__s);
   }
+
+#if defined (_STLP_USE_TEMPLATE_EXPRESSION)
+#  define _STLP_STRING_SUM_BASE _STLP_NON_DBG_STRING_BASE
+#  define _STLP_STRING_BASE_SCOPE _Base::
+#  include <stl/_string_sum_methods.h>
+#  undef _STLP_STRING_BASE_SCOPE
+#  undef _STLP_STRING_SUM_BASE
+#endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 };
 
 #undef _STLP_NON_DBG_STRING_BASE

@@ -3,12 +3,16 @@
 #include <algorithm>
 //#include <sstream>
 
+#if defined (_STLP_USE_EXCEPTIONS)
+#  include <stdexcept>
+#endif
+
 #ifdef _STLP_PTHREADS
-# include <pthread.h>
+#  include <pthread.h>
 #endif
 
 #ifdef _STLP_WIN32THREADS
-# include <windows.h>
+#  include <windows.h>
 #endif
 
 #include "cppunit/cppunit_proxy.h"
@@ -35,6 +39,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(mt);
   CPPUNIT_TEST(short_string_optim_bug);
   CPPUNIT_TEST(compare);
+  CPPUNIT_TEST(template_expresion);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -50,6 +55,7 @@ protected:
   void mt();
   void short_string_optim_bug();
   void compare();
+  void template_expresion();
 
   static string func( const string& par )
   {
@@ -184,9 +190,9 @@ void StringTest::short_string()
     str_vect.push_back(short_str2);
     str_vect.push_back(long_str2);
     CPPUNIT_ASSERT((str_vect[0] == ref_short_str1) &&
-                                                  (str_vect[1] == ref_long_str1) &&
-                                                  (str_vect[2] == ref_short_str2) &&
-                                                  (str_vect[3] == ref_long_str2));
+                   (str_vect[1] == ref_long_str1) &&
+                   (str_vect[2] == ref_short_str2) &&
+                   (str_vect[3] == ref_long_str2));
   }
 }
 
@@ -537,4 +543,118 @@ void StringTest::compare()
   CPPUNIT_ASSERT( str1.compare(2, 3, "cdefgh", 3) == 0 );
   CPPUNIT_ASSERT( str1.compare(2, 3, "cdefgh", 2) > 0 );
   CPPUNIT_ASSERT( str1.compare(2, 3, "cdefgh", 4) < 0 );
+}
+
+void StringTest::template_expresion()
+{
+  string one("one"), two("two"), three("three");
+  string space(1, ' ');
+
+  {
+    string result(one + ' ' + two + ' ' + three);
+    CPPUNIT_CHECK( result == "one two three" );
+  }
+
+  {
+    string result(one + ' ' + two + ' ' + three, 4);
+    CPPUNIT_CHECK( result == "two three" );
+  }
+
+  {
+    string result(one + ' ' + two + ' ' + three, 4, 3);
+    CPPUNIT_CHECK( result == "two" );
+  }
+
+  //2 members expressions:
+  CPPUNIT_CHECK( (' ' + one) == " one" );
+  CPPUNIT_CHECK( (one + ' ') == "one " );
+  CPPUNIT_CHECK( (one + " two") == "one two" );
+  CPPUNIT_CHECK( ("one " + two) == "one two" );
+  CPPUNIT_CHECK( (one + space) == "one " );
+
+  //3 members expressions:
+  CPPUNIT_CHECK( ((one + space) + "two") == "one two" );
+  CPPUNIT_CHECK( ("one" + (space + two)) == "one two" );
+  CPPUNIT_CHECK( ((one + space) + two) == "one two" );
+  CPPUNIT_CHECK( (one + (space + two)) == "one two" );
+  CPPUNIT_CHECK( ((one + space) + 't') == "one t" );
+  CPPUNIT_CHECK( ('o' + (space + two)) == "o two" );
+
+  //4 members expressions:
+  CPPUNIT_CHECK( ((one + space) + (two + space)) == "one two " );
+
+  //special operators
+  {
+    string result;
+    result = one + space + two;
+    CPPUNIT_CHECK( result == "one two" );
+
+    result += space + three;
+    CPPUNIT_CHECK( result == "one two three" );
+  }
+
+  //special append method
+  {
+    string result;
+    //Use reserve to avoid reallocation and really test auto-referencing problems:
+    result.reserve(64);
+
+    result.append(one + space + two);
+    CPPUNIT_CHECK( result == "one two" );
+
+    result.append(space + result + space + three);
+    CPPUNIT_CHECK( result == "one two one two three" );
+
+    result = "one two";
+    result.append(space + three, 1, 2);
+    CPPUNIT_ASSERT( result == "one twoth" );
+
+    result.append(space + result);
+    CPPUNIT_CHECK( result == "one twoth one twoth" );
+  }
+
+  //special assign method
+  {
+    string result;
+    //Use reserve to avoid reallocation and really test auto-referencing problems:
+    result.reserve(64);
+
+    result.assign(one + space + two + space + three);
+    CPPUNIT_CHECK( result == "one two three" );
+
+    result.assign(one + space + two + space + three, 3, 5);
+    CPPUNIT_CHECK( result == " two " );
+
+    result.assign(one + result + three);
+    CPPUNIT_CHECK( result == "one two three" );
+  }
+
+  {
+    char result;
+
+    CPPUNIT_CHECK( !(one + ' ' + two).empty() );
+
+    result = (one + ' ' + two)[3];
+    CPPUNIT_CHECK( result == ' ' );
+
+    result = (one + ' ' + two).at(3);
+    CPPUNIT_CHECK( result == ' ' );
+
+#ifdef _STLP_USE_EXCEPTIONS
+    while (true) {
+      try {
+        result = (one + ' ' + two).at(10);
+        CPPUNIT_ASSERT(false);
+      }
+      catch (out_of_range const&) {
+        CPPUNIT_ASSERT(true);
+        return;
+      }
+      catch (...) {
+        CPPUNIT_ASSERT(false);
+        return;
+      }
+    }
+#endif
+  }
 }

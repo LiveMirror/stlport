@@ -45,7 +45,7 @@
 #  include <stl/_iterator.h> 
 #endif
 
-#ifdef _STLP_USE_TEMPLATE_EXPRESSION
+#if defined (_STLP_USE_TEMPLATE_EXPRESSION)
 #  include <stl/_string_sum.h>
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 
@@ -176,14 +176,14 @@ public:                         // Constructor, destructor, assignment.
   basic_string();
 
   explicit basic_string(const allocator_type& __a)
-      : _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE) { 
-    _M_terminate_string(); 
+      : _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE) {
+    _M_terminate_string();
   }
 
   basic_string(_Reserve_t, size_t __n,
                const allocator_type& __a = allocator_type())
-    : _String_base<_CharT,_Alloc>(__a, __n + 1) { 
-    _M_terminate_string(); 
+    : _String_base<_CharT,_Alloc>(__a, __n + 1) {
+    _M_terminate_string();
   }
 
   basic_string(const _Self&);
@@ -1292,8 +1292,13 @@ public:                        // Helper functions for compare.
     const int cmp = _Traits::compare(__f1, __f2, (min) (__n1, __n2));
     return cmp != 0 ? cmp : (__n1 < __n2 ? -1 : (__n1 > __n2 ? 1 : 0));
   }
-#if defined(_STLP_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#if defined (_STLP_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_DEBUG) && \
+    !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#  define _STLP_STRING_SUM_BASE(__reserve, __size, __alloc) _String_base<_CharT,_Alloc>(__alloc, __size + 1)
+#  define _STLP_STRING_BASE_SCOPE
 #  include <stl/_string_sum_methods.h>
+#  undef _STLP_STRING_BASE_SCOPE
+#  undef _STLP_STRING_SUM_BASE
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 };
 

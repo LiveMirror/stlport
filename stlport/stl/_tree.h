@@ -50,27 +50,27 @@ iterators invalidated are those referring to the deleted node.
 
 */
 
-# ifndef _STLP_INTERNAL_ALGOBASE_H
+#ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h> 
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ALLOC_H
+#ifndef _STLP_INTERNAL_ALLOC_H
 #  include <stl/_alloc.h> 
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ITERATOR_H
+#ifndef _STLP_INTERNAL_ITERATOR_H
 #  include <stl/_iterator.h> 
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_CONSTRUCT_H
+#ifndef _STLP_INTERNAL_CONSTRUCT_H
 #  include <stl/_construct.h> 
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_FUNCTION_H
+#ifndef _STLP_INTERNAL_FUNCTION_H
 #  include <stl/_function_base.h> 
-# endif
+#endif
 
-#if defined ( _STLP_DEBUG)
+#if defined (_STLP_DEBUG)
 #  define _Rb_tree __WORKAROUND_DBG_RENAME(Rb_tree)
 #endif
 

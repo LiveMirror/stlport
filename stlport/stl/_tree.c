@@ -296,6 +296,9 @@ _Rb_global<_Dummy>::_M_increment(_Rb_tree_node_base* _M_node) {
       _M_node = __y;
       __y = __y->_M_parent;
     }
+    // check special case: This is necessary if _M_node is the
+    // _M_head and the tree contains only a single node __y. In
+    // that case parent, left and right all point to __y!
     if (_M_node->_M_right != __y)
       _M_node = __y;
   }

@@ -1,3 +1,23 @@
+2004-12-29  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.c: Fix missing allocator argument in new slist
+	construction and band number of buckets thanks See Wong report.
+	
+	* test/unit/unordered_test.cpp: Add of a test to report the previous
+	problem.
+
+	* build/Makefiles/nmake/vc-common.mak, evc-common.mak: Generalization of the 
+	/DMACRO compiler command rather than /D "MACRO".
+
+	* test/unit/string_test.cpp: Creation of a new test case for string template
+	expression.
+
+	* stlport/stl/_string_sum.h, _string_sum_methods.h: Fixing of many bugs in the
+	string template expressions implementation.
+	
+	* stlport/stl/_tree.c: Add of a comment in the _M_increment method explaining
+	a surprising checks thanks Ulrich Eckhardt.
+
 2004-12-24  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles: makesystem moved here from src/Makefiles

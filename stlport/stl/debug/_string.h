@@ -812,6 +812,15 @@ public:                         // find_last_not_of
   }
   size_type find_last_not_of(_CharT __c, size_type __pos = _Base::npos) const
   { return _Base::find_last_not_of(__c, __pos); }
+
+#if defined (_STLP_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#  define _STLP_STRING_SUM_BASE(__reserve, __size, __alloc) _STLP_NON_DBG_STRING_BASE(__reserve, __size, __alloc), \
+          _M_iter_list(_Get_base())
+#  define _STLP_STRING_BASE_SCOPE _Base::
+#  include <stl/_string_sum_methods.h>
+#  undef _STLP_STRING_BASE_SCOPE
+#  undef _STLP_STRING_SUM_BASE
+#endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 };
 
 
