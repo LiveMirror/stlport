@@ -20,22 +20,8 @@
 // exp, log, pow for complex<float>, complex<double>, and complex<long double>
 
 #include <numeric>
-#include "complex_impl.h"
-
-#ifdef _STLP_NO_VENDOR_MATH_F
-_STLP_MATH_INLINE2XX(float,atan2f,atan2)
-_STLP_MATH_INLINEX(float,cosf,cos)
-_STLP_MATH_INLINEX(float,coshf,cosh)
-_STLP_MATH_INLINEX(float,expf,exp)
-_STLP_MATH_INLINE2XX(float,hypotf,hypot)
-_STLP_MATH_INLINEX(float,logf,log)
-_STLP_MATH_INLINEX(float,log10f,log10)
-_STLP_MATH_INLINEX(float,sinf,sin)
-_STLP_MATH_INLINEX(float,sinhf,sinh)
-#elif defined(_STLP_MSVC)
-_STLP_MATH_INLINE2XX(float,hypotf,hypot)
-_STLP_MATH_INLINE2XX(long double,hypotl,hypot)
-#endif
+#include <cmath>
+#include <complex>
 
 _STLP_BEGIN_NAMESPACE
 
@@ -44,22 +30,22 @@ _STLP_BEGIN_NAMESPACE
 
 _STLP_DECLSPEC complex<float>  _STLP_CALL
 exp(const complex<float>& z) {
-  float expx = ::expf(z._M_re);
-  return complex<float>(expx * ::cosf(z._M_im),
-                        expx * ::sinf(z._M_im));
+  float expx = exp(z._M_re);
+  return complex<float>(expx * cos(z._M_im),
+                        expx * sin(z._M_im));
 }
 
 _STLP_DECLSPEC complex<double> _STLP_CALL exp(const complex<double>& z) {
-  double expx = ::exp(z._M_re);
-  return complex<double>(expx * ::cos(z._M_im),
-                         expx * ::sin(z._M_im));
+  double expx = exp(z._M_re);
+  return complex<double>(expx * cos(z._M_im),
+                         expx * sin(z._M_im));
 }
 
 # ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL exp(const complex<long double>& z) {
-  long double expx = ::expl(z._M_re);
-  return complex<long double>(expx * ::cosl(z._M_im),
-                              expx * ::sinl(z._M_im));
+  long double expx = exp(z._M_re);
+  return complex<long double>(expx * cos(z._M_im),
+                              expx * sin(z._M_im));
 }
 # endif
 
@@ -68,29 +54,29 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL exp(const complex<long double>& z
 
 _STLP_DECLSPEC complex<float> _STLP_CALL log10(const complex<float>& z) {
   complex<float> r;
-  static float ln10_inv = 1.f / ::logf(10.f);
+  static float ln10_inv = 1.f / log(10.f);
 
-  r._M_im = ::atan2f(z._M_im, z._M_re) * ln10_inv;
-  r._M_re = ::log10f(::hypotf(z._M_re, z._M_im));
+  r._M_im = atan2(z._M_im, z._M_re) * ln10_inv;
+  r._M_re = log10(hypot(z._M_re, z._M_im));
   return r;
 }
 
 _STLP_DECLSPEC complex<double> _STLP_CALL log10(const complex<double>& z) {
   complex<double> r;
-  static double ln10_inv = 1. / ::log10(10.);
+  static double ln10_inv = 1. / log10(10.);
 
-  r._M_im = ::atan2(z._M_im, z._M_re) * ln10_inv;
-  r._M_re = ::log10(::hypot(z._M_re, z._M_im));
+  r._M_im = atan2(z._M_im, z._M_re) * ln10_inv;
+  r._M_re = log10(hypot(z._M_re, z._M_im));
   return r;
 }
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL log10(const complex<long double>& z) {
   complex<long double> result;
-  static long double ln10_inv = 1.l / ::logl(10.l);
+  static long double ln10_inv = 1.l / logl(10.l);
 
-  result._M_im = ::atan2l(z._M_im, z._M_re) * ln10_inv;
-  result._M_re = ::log10l(::hypotl(z._M_re, z._M_im));
+  result._M_im = atan2(z._M_im, z._M_re) * ln10_inv;
+  result._M_re = log10(hypot(z._M_re, z._M_im));
   return result;
 }
 # endif
@@ -101,16 +87,16 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL log10(const complex<long double>&
 _STLP_DECLSPEC complex<float> _STLP_CALL log(const complex<float>& z) {
   complex<float> r;
 
-  r._M_im = ::atan2f(z._M_im, z._M_re);
-  r._M_re = ::logf(::hypotf(z._M_re, z._M_im));
+  r._M_im = atan2(z._M_im, z._M_re);
+  r._M_re = log(hypot(z._M_re, z._M_im));
   return r;
 }
 
 _STLP_DECLSPEC complex<double> _STLP_CALL log(const complex<double>& z) {
   complex<double> r;
 
-  r._M_im = ::atan2(z._M_im, z._M_re);
-  r._M_re = ::log(::hypot(z._M_re, z._M_im));
+  r._M_im = atan2(z._M_im, z._M_re);
+  r._M_re = log(hypot(z._M_re, z._M_im));
   return r;
 }
 
@@ -118,8 +104,8 @@ _STLP_DECLSPEC complex<double> _STLP_CALL log(const complex<double>& z) {
 _STLP_DECLSPEC complex<long double> _STLP_CALL log(const complex<long double>& z) {
   complex<long double> result;
 
-  result._M_im = ::atan2l(z._M_im, z._M_re);
-  result._M_re = ::logl(::hypotl(z._M_re, z._M_im));
+  result._M_im = atan2(z._M_im, z._M_re);
+  result._M_re = log(hypot(z._M_re, z._M_im));
   return result;
 }
 # endif
@@ -128,11 +114,11 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL log(const complex<long double>& z
 // pow
 
 _STLP_DECLSPEC complex<float> _STLP_CALL pow(const float& a, const complex<float>& b) {
-  float logr = ::logf(a);
-  float x = ::expf(logr*b._M_re);
+  float logr = log(a);
+  float x = exp(logr*b._M_re);
   float y = logr*b._M_im;
 
-  return complex<float>(x * ::cosf(y), x * ::sinf(y));
+  return complex<float>(x * cos(y), x * sin(y));
 }
 
 _STLP_DECLSPEC complex<float> _STLP_CALL pow(const complex<float>& z_in, int n) {
@@ -145,30 +131,30 @@ _STLP_DECLSPEC complex<float> _STLP_CALL pow(const complex<float>& z_in, int n) 
 }
 
 _STLP_DECLSPEC complex<float> _STLP_CALL pow(const complex<float>& a, const float& b) {
-  float logr = ::logf(::hypotf(a._M_re,a._M_im));
-  float logi = ::atan2f(a._M_im, a._M_re);
-  float x = ::expf(logr * b);
+  float logr = log(hypot(a._M_re,a._M_im));
+  float logi = atan2(a._M_im, a._M_re);
+  float x = exp(logr * b);
   float y = logi * b;
 
-  return complex<float>(x * ::cosf(y), x * ::sinf(y));
+  return complex<float>(x * cos(y), x * sin(y));
 }  
 
 _STLP_DECLSPEC complex<float> _STLP_CALL pow(const complex<float>& a, const complex<float>& b) {
-  float logr = ::logf(::hypotf(a._M_re,a._M_im));
-  float logi = ::atan2f(a._M_im, a._M_re);
-  float x = ::expf(logr*b._M_re - logi*b._M_im);
+  float logr = log(hypot(a._M_re,a._M_im));
+  float logi = atan2(a._M_im, a._M_re);
+  float x = exp(logr*b._M_re - logi*b._M_im);
   float y = logr*b._M_im + logi*b._M_re;
 
-  return complex<float>(x * ::cosf(y), x * ::sinf(y));
+  return complex<float>(x * cos(y), x * sin(y));
 }
 
 
 _STLP_DECLSPEC complex<double> _STLP_CALL pow(const double& a, const complex<double>& b) {
-  double logr = ::log(a);
-  double x = ::exp(logr*b._M_re);
+  double logr = log(a);
+  double x = exp(logr*b._M_re);
   double y = logr*b._M_im;
 
-  return complex<double>(x * ::cos(y), x * ::sin(y));
+  return complex<double>(x * cos(y), x * sin(y));
 }
 
 _STLP_DECLSPEC complex<double> _STLP_CALL pow(const complex<double>& z_in, int n) {
@@ -185,31 +171,31 @@ _STLP_DECLSPEC complex<double> _STLP_CALL pow(const complex<double>& z_in, int n
 }
 
 _STLP_DECLSPEC complex<double> _STLP_CALL pow(const complex<double>& a, const double& b) {
-  double logr = ::log(::hypot(a._M_re,a._M_im));
-  double logi = ::atan2(a._M_im, a._M_re);
-  double x = ::exp(logr * b);
+  double logr = log(hypot(a._M_re,a._M_im));
+  double logi = atan2(a._M_im, a._M_re);
+  double x = exp(logr * b);
   double y = logi * b;
 
-  return complex<double>(x * ::cos(y), x * ::sin(y));
+  return complex<double>(x * cos(y), x * sin(y));
 }  
 
 _STLP_DECLSPEC complex<double> _STLP_CALL pow(const complex<double>& a, const complex<double>& b) {
-  double logr = ::log(::hypot(a._M_re,a._M_im));
-  double logi = ::atan2(a._M_im, a._M_re);
-  double x = ::exp(logr*b._M_re - logi*b._M_im);
+  double logr = log(hypot(a._M_re,a._M_im));
+  double logi = atan2(a._M_im, a._M_re);
+  double x = exp(logr*b._M_re - logi*b._M_im);
   double y = logr*b._M_im + logi*b._M_re;
 
-  return complex<double>(x * ::cos(y), x * ::sin(y));
+  return complex<double>(x * cos(y), x * sin(y));
 }
 
 # ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL pow(const long double& a,
                                                    const complex<long double>& b) {
-  long double logr = ::logl(a);
-  long double x = ::expl(logr*b._M_re);
+  long double logr = log(a);
+  long double x = exp(logr*b._M_re);
   long double y = logr*b._M_im;
 
-  return complex<long double>(x * ::cosl(y), x * ::sinl(y));
+  return complex<long double>(x * cos(y), x * sin(y));
 }
 
 _STLP_DECLSPEC complex<long double> _STLP_CALL pow(const complex<long double>& z_in, int n) {
@@ -223,25 +209,24 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL pow(const complex<long double>& z
 
 _STLP_DECLSPEC complex<long double> _STLP_CALL pow(const complex<long double>& a,
                                                    const long double& b) {
-  long double logr = ::logl(::hypotl(a._M_re,a._M_im));
-  long double logi = ::atan2l(a._M_im, a._M_re);
-  long double x = ::expl(logr * b);
+  long double logr = log(hypot(a._M_re,a._M_im));
+  long double logi = atan2(a._M_im, a._M_re);
+  long double x = exp(logr * b);
   long double y = logi * b;
 
-  return complex<long double>(x * ::cosl(y), x * ::sinl(y));
+  return complex<long double>(x * cos(y), x * sin(y));
 }  
 
 _STLP_DECLSPEC complex<long double> _STLP_CALL pow(const complex<long double>& a,
                                                    const complex<long double>& b) {
-  long double logr = ::logl(::hypotl(a._M_re,a._M_im));
-  long double logi = ::atan2l(a._M_im, a._M_re);
-  long double x = ::expl(logr*b._M_re - logi*b._M_im);
+  long double logr = log(hypot(a._M_re,a._M_im));
+  long double logi = atan2(a._M_im, a._M_re);
+  long double x = exp(logr*b._M_re - logi*b._M_im);
   long double y = logr*b._M_im + logi*b._M_re;
 
-  return complex<long double>(x * ::cosl(y), x * ::sinl(y));
+  return complex<long double>(x * cos(y), x * sin(y));
 }
 
 #endif
 
 _STLP_END_NAMESPACE
-
