@@ -34,7 +34,7 @@
 # include <stl/_vector.h>
 # endif
 
-#define __WORD_BIT (int(CHAR_BIT*sizeof(unsigned int)))
+#define _STLP_WORD_BIT (int(CHAR_BIT*sizeof(unsigned int)))
 
 _STLP_BEGIN_NAMESPACE 
 
@@ -96,7 +96,7 @@ struct _Bit_iterator_base
   unsigned int  _M_offset;
 
   void _M_bump_up() {
-    if (_M_offset++ == __WORD_BIT - 1) {
+    if (_M_offset++ == _STLP_WORD_BIT - 1) {
       _M_offset = 0;
       ++_M_p;
     }
@@ -104,7 +104,7 @@ struct _Bit_iterator_base
 
   void _M_bump_down() {
     if (_M_offset-- == 0) {
-      _M_offset = __WORD_BIT - 1;
+      _M_offset = _STLP_WORD_BIT - 1;
       --_M_p;
     }
   }
@@ -116,17 +116,17 @@ struct _Bit_iterator_base
 
   void _M_advance (difference_type __i) {
     difference_type __n = __i + _M_offset;
-    _M_p += __n / __WORD_BIT;
-    __n = __n % __WORD_BIT;
+    _M_p += __n / _STLP_WORD_BIT;
+    __n = __n % _STLP_WORD_BIT;
     if (__n < 0) {
-      _M_offset = (unsigned int) __n + __WORD_BIT;
+      _M_offset = (unsigned int) __n + _STLP_WORD_BIT;
       --_M_p;
     } else
       _M_offset = (unsigned int) __n;
   }
 
   difference_type _M_subtract(const _Bit_iterator_base& __x) const {
-    return __WORD_BIT * (_M_p - __x._M_p) + _M_offset - __x._M_offset;
+    return _STLP_WORD_BIT * (_M_p - __x._M_p) + _M_offset - __x._M_offset;
   }
 };
 
@@ -258,7 +258,7 @@ public:
 protected:
 
   unsigned int* _M_bit_alloc(size_t __n) 
-    { return _M_end_of_storage.allocate((__n + __WORD_BIT - 1)/__WORD_BIT); }
+    { return _M_end_of_storage.allocate((__n + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT); }
   void _M_deallocate() {
     if (_M_start._M_p)
       _M_end_of_storage.deallocate(_M_start._M_p,
@@ -357,7 +357,7 @@ protected:
 
   void _M_initialize(size_type __n) {
     unsigned int* __q = this->_M_bit_alloc(__n);
-    this->_M_end_of_storage._M_data = __q + (__n + __WORD_BIT - 1)/__WORD_BIT;
+    this->_M_end_of_storage._M_data = __q + (__n + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT;
     this->_M_start = iterator(__q, 0);
     this->_M_finish = this->_M_start + difference_type(__n);
   }
@@ -368,13 +368,13 @@ protected:
       ++this->_M_finish;
     }
     else {
-      size_type __len = size() ? 2 * size() : __WORD_BIT;
+      size_type __len = size() ? 2 * size() : _STLP_WORD_BIT;
       unsigned int* __q = this->_M_bit_alloc(__len);
       iterator __i = copy(begin(), __position, iterator(__q, 0));
       *__i++ = __x;
       this->_M_finish = copy(__position, end(), __i);
       this->_M_deallocate();
-      this->_M_end_of_storage._M_data = __q + (__len + __WORD_BIT - 1)/__WORD_BIT;
+      this->_M_end_of_storage._M_data = __q + (__len + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT;
       this->_M_start = iterator(__q, 0);
     }
   }
@@ -427,7 +427,7 @@ protected:
         __i = copy(__first, __last, __i);
         this->_M_finish = copy(__position, end(), __i);
         this->_M_deallocate();
-        this->_M_end_of_storage._M_data = __q + (__len + __WORD_BIT - 1)/__WORD_BIT;
+        this->_M_end_of_storage._M_data = __q + (__len + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT;
         this->_M_start = iterator(__q, 0);
       }
     }
@@ -627,7 +627,7 @@ public:
       this->_M_finish = copy(begin(), end(), __z);
       this->_M_deallocate();
       this->_M_start = iterator(__q, 0);
-      this->_M_end_of_storage._M_data = __q + (__n + __WORD_BIT - 1)/__WORD_BIT;
+      this->_M_end_of_storage._M_data = __q + (__n + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT;
     }
   }
 
@@ -699,7 +699,7 @@ public:
       __i = copy(__first, __last, __i);
       this->_M_finish = copy(__position, end(), __i);
       this->_M_deallocate();
-      this->_M_end_of_storage._M_data = __q + (__len + __WORD_BIT - 1)/__WORD_BIT;
+      this->_M_end_of_storage._M_data = __q + (__len + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT;
       this->_M_start = iterator(__q, 0);
     }
   }
@@ -720,7 +720,7 @@ public:
       __i = copy(__first, __last, __i);
       this->_M_finish = copy(__position, end(), __i);
       this->_M_deallocate();
-      this->_M_end_of_storage._M_data = __q + (__len + __WORD_BIT - 1)/__WORD_BIT;
+      this->_M_end_of_storage._M_data = __q + (__len + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT;
       this->_M_start = iterator(__q, 0);
     }
   }
@@ -740,7 +740,7 @@ public:
       fill_n(__i, __n, __x);
       this->_M_finish = copy(__position, end(), __i + difference_type(__n));
       this->_M_deallocate();
-      this->_M_end_of_storage._M_data = __q + (__len + __WORD_BIT - 1)/__WORD_BIT;
+      this->_M_end_of_storage._M_data = __q + (__len + _STLP_WORD_BIT - 1)/_STLP_WORD_BIT;
       this->_M_start = iterator(__q, 0);
     }
   }
@@ -799,7 +799,7 @@ _STLP_END_NAMESPACE
 #undef __BVECTOR_QUALIFIED
 #undef __BVEC_TMPL_HEADER
 
-# undef __WORD_BIT
+# undef _STLP_WORD_BIT
 
 #endif /* _STLP_INTERNAL_BVECTOR_H */
 

@@ -372,22 +372,22 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
 };
 
 // Recursive Safe locking class.
-
-class _STLP_CLASS_DECLSPEC _STLP_mutex_RS :
-    public _STLP_mutex
+class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 {
   public:
-    _STLP_mutex_RS() :
-        _count( 0 ),
+    _STLP_mutex_RS()
+#ifdef _STLP_THREADS
+      : _count( 0 )
 #ifdef _STLP_UITHREADS
-        _id( __STATIC_CAST(thread_t,-1) )
+        ,_id( __STATIC_CAST(thread_t,-1) )
 #endif
 #ifdef _STLP_PTHREADS
-        _id( __STATIC_CAST(pthread_t,-1) )
+        ,_id( __STATIC_CAST(pthread_t,-1) )
 #endif
 #ifdef __FIT_NOVELL_THREADS
-        _id( -1 )
+        ,_id( -1 )
 #endif
+#endif //_STLP_THREADS
       { }
 
     ~_STLP_mutex_RS()
@@ -395,7 +395,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS :
 
     void _M_acquire_lock()
       {
-#ifndef _STLP_THREADS
+#ifdef _STLP_THREADS
 # ifdef _STLP_PTHREADS
         pthread_t _c_id = pthread_self();
 # endif
@@ -430,14 +430,13 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS :
           _id = -1;
 #    endif
           _STLP_mutex::_M_release_lock();
-#  endif // _STLP_THREADS
         }
+#  endif // _STLP_THREADS
       }
 
   protected:
 #ifdef _STLP_THREADS
     unsigned _count;
-#endif // !_NOTHREADS
 
 #ifdef _STLP_PTHREADS
     pthread_t _id;
@@ -448,6 +447,8 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS :
 #ifdef __FIT_NOVELL_THREADS
     int _id;
 #endif
+
+#endif // _STLP_THREADS
 };
 
 

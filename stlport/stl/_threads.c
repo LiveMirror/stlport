@@ -45,12 +45,14 @@ using _STLP_VENDOR_CSTD::time_t;
 _STLP_BEGIN_NAMESPACE
 
 # if (_STLP_STATIC_TEMPLATE_DATA > 0)
- 
+
+#  ifdef _STLP_THREADS
 #  if !defined(_STLP_ATOMIC_EXCHANGE) && (defined(_STLP_PTHREADS) || defined(_STLP_UITHREADS) || defined(_STLP_OS2THREADS) || defined(_STLP_USE_PTHREAD_SPINLOCK))
 template<int __dummy>
 _STLP_STATIC_MUTEX
 _Swap_lock_struct<__dummy>::_S_swap_lock _STLP_MUTEX_INITIALIZER;
 #  endif
+#  endif //_STLP_THREADS
 
 #  ifndef _STLP_USE_PTHREAD_SPINLOCK
 template <int __inst>

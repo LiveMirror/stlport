@@ -1,5 +1,10 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * _bvector.h: Modification of the __WORD_BIT macro name to avoid a FreeBSD clash 
+                (thanks ).
+  
+  ----
+
   * codecvt.cpp: charcode correction in the do_in method (thanks J Hamilton report)
 
   ----
