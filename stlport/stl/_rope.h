@@ -485,7 +485,7 @@ public:
     if (_M_data != this->_M_c_string) {
       this->_M_free_c_string();
     }
-    _S_free_string(_M_data, this->_M_size._M_data, this->get_allocator());
+    _RopeRep::_S_free_string(_M_data, this->_M_size._M_data, this->get_allocator());
   }
 # endif
 };
