@@ -51,21 +51,21 @@ void SetDifferenceTest::setsymd0()
   CPPUNIT_ASSERT(result[2]==18);
   CPPUNIT_ASSERT(result[3]==0);
 }
+
 void SetDifferenceTest::setsymd1()
 {
-  vector <int> v1(10);
+  vector<int> v1(10);
   iota(v1.begin(), v1.end(), 0);
-  vector <int> v2(10);
+  vector<int> v2(10);
   iota(v2.begin(), v2.end(), 7);
   ostringstream os;
-  ostream_iterator <int> iter(os, " ");
+  ostream_iterator<int> iter(os, " ");
 
   set_symmetric_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), iter);
-  // 0 1 2 3 4 5 6 10 11 12 13 14 15 16 
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(), "0 1 2 3 4 5 6 10 11 12 13 14 15 16 "));
+  CPPUNIT_ASSERT(os.good());
+  CPPUNIT_ASSERT(os.str() == "0 1 2 3 4 5 6 10 11 12 13 14 15 16 ");
 }
+
 void SetDifferenceTest::setsymd2()
 {
   char* word1 = "ABCDEFGHIJKLMNO";
@@ -75,11 +75,10 @@ void SetDifferenceTest::setsymd2()
   ostream_iterator <char> iter(os, " ");
 
   set_symmetric_difference(word1, word1 + ::strlen(word1), word2, word2 + ::strlen(word2), iter, less<char>());
-
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(), "A B C D E F G H I J K P Q R S T U V W X Y Z "));
+  CPPUNIT_ASSERT(os.good());
+  CPPUNIT_ASSERT(os.str() == "A B C D E F G H I J K P Q R S T U V W X Y Z ");
 }
+
 void SetDifferenceTest::setdiff0()
 {
   int v1[3] = { 13, 18, 23 };
@@ -99,8 +98,8 @@ void SetDifferenceTest::setdiff0()
   CPPUNIT_ASSERT(result[1]==17);
   CPPUNIT_ASSERT(result[2]==23);
   CPPUNIT_ASSERT(result[3]==0);
-
 }
+
 void SetDifferenceTest::setdiff1()
 {
   vector <int> v1(10);
@@ -111,11 +110,10 @@ void SetDifferenceTest::setdiff1()
   ostream_iterator <int> iter(os, " ");
 
   set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), iter);
-
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(), "0 1 2 3 4 5 6 "));
+  CPPUNIT_ASSERT(os.good());
+  CPPUNIT_ASSERT(os.str() == "0 1 2 3 4 5 6 ");
 }
+
 void SetDifferenceTest::setdiff2()
 {
   char* word1 = "ABCDEFGHIJKLMNO";
@@ -124,8 +122,6 @@ void SetDifferenceTest::setdiff2()
   ostream_iterator <char> iter(os, " ");
 
   set_difference(word1, word1 + ::strlen(word1), word2, word2 + ::strlen(word2), iter, less<char>());
-
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(), "A B C D E F G H I J K "));
+  CPPUNIT_ASSERT(os.good());
+  CPPUNIT_ASSERT(os.str() == "A B C D E F G H I J K ");
 }

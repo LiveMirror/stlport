@@ -56,12 +56,10 @@ void SetIntersectionTest::setintr1()
   ostream_iterator <int> iter(os, " ");
 
   set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), iter);
-
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(), "7 8 9 "));
-
+  CPPUNIT_ASSERT(os.good());
+  CPPUNIT_ASSERT(os.str() == "7 8 9 ");
 }
+
 void SetIntersectionTest::setintr2()
 {
   char* word1 = "ABCDEFGHIJKLMNO";
@@ -70,7 +68,6 @@ void SetIntersectionTest::setintr2()
   ostringstream os;
   ostream_iterator <char> iter(os, " ");
   set_intersection(word1, word1 + ::strlen(word1), word2, word2 + ::strlen(word2), iter, less<char>());
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(), "L M N O "));
+  CPPUNIT_ASSERT(os.good());
+  CPPUNIT_ASSERT(os.str() == "L M N O ");
 }

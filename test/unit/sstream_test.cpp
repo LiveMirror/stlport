@@ -45,6 +45,7 @@ void SstreamTest::output()
   ostringstream s;
 
   s << 1 << '\n' << 2.0 << '\n' << "abcd\n" << "ghk lm\n" << "abcd ef";
+  CPPUNIT_ASSERT( s.good() );
   CPPUNIT_ASSERT( s.str() == "1\n2\nabcd\nghk lm\nabcd ef" );
 }
 
@@ -77,8 +78,8 @@ void SstreamTest::input()
 void SstreamTest::io()
 {
   stringstream s;
-
   s << 1 << '\n' << 2.0 << '\n' << "abcd\n" << "ghk lm\n" << "abcd ef";
+  CPPUNIT_ASSERT( s.good() );
 
   int i = 0;
   s >> i;
@@ -109,6 +110,7 @@ void SstreamTest::err()
 
   int i = 0;
   s >> i;
+  CPPUNIT_ASSERT( !s.fail() );
   CPPUNIT_ASSERT( i == 9 );
   s >> i;
   CPPUNIT_ASSERT( s.fail() );
@@ -122,6 +124,7 @@ void SstreamTest::err_long()
 
   long i = 0;
   s >> i;
+  CPPUNIT_ASSERT( !s.fail() );
   CPPUNIT_ASSERT( i == 9 );
   s >> i;
   CPPUNIT_ASSERT( s.fail() );
@@ -135,6 +138,7 @@ void SstreamTest::maxint()
 
   s << INT_MAX << " " << UINT_MAX << " " << LONG_MAX << " " << ULONG_MAX << " "
     << INT_MIN << " " << LONG_MIN;
+  CPPUNIT_ASSERT( s.good() );
 
   int i = 0;
   unsigned int u = 0;
@@ -142,12 +146,14 @@ void SstreamTest::maxint()
   unsigned long ul = 0;
 
   s >> i >> u >> l >> ul;
+  CPPUNIT_ASSERT( s.good() );
   CPPUNIT_ASSERT( i == INT_MAX );
   CPPUNIT_ASSERT( u == UINT_MAX );
   CPPUNIT_ASSERT( l == LONG_MAX );
   CPPUNIT_ASSERT( ul == ULONG_MAX );
 
   s >> i >> l;
+  CPPUNIT_ASSERT( !s.fail() );
   CPPUNIT_ASSERT( i == INT_MIN );
   CPPUNIT_ASSERT( l == LONG_MIN );
 }
@@ -158,17 +164,17 @@ void SstreamTest::init_in()
   int n;
 
   is >> n;
-
+  CPPUNIT_ASSERT( !is.fail() );
   CPPUNIT_ASSERT( n == 12345 );
 }
 
 void SstreamTest::init_out()
 {
   ostringstream os( "12345" );
-
   CPPUNIT_ASSERT( os.str() == "12345" );
 
   os << 67;
+  CPPUNIT_ASSERT( os.good() );
 
   // This satisfy to the Standard:
   CPPUNIT_ASSERT( os.str() == "67345" );
@@ -178,6 +184,6 @@ void SstreamTest::init_out()
   CPPUNIT_ASSERT( os.str() == "89ab" );
 
   os << 10;
+  CPPUNIT_ASSERT( os.good() );
   CPPUNIT_ASSERT( os.str() == "10ab" );
 }
-

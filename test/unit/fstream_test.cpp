@@ -37,6 +37,7 @@ void FstreamTest::output()
   ofstream f( "test_file.txt" );
 
   f << 1 << '\n' << 2.0 << '\n' << "abcd\n" << "ghk lm\n" << "abcd ef";
+  CPPUNIT_ASSERT (f.good());
   // CPPUNIT_ASSERT( s.str() == "1\n2\nabcd\nghk lm\nabcd ef" );
 }
 
@@ -95,6 +96,7 @@ void FstreamTest::io()
   CPPUNIT_ASSERT( f.good() );
   CPPUNIT_ASSERT( s == "ghk lm" );
   getline( f, s );
+  CPPUNIT_ASSERT( !f.fail() );
   CPPUNIT_ASSERT( s == "abcd ef" );
   CPPUNIT_ASSERT( f.eof() );
 }
@@ -107,9 +109,11 @@ void FstreamTest::err()
 
   int i = 9;
   f << i;
+  CPPUNIT_ASSERT( f.good() );
   i = 0;
   f.seekg( 0, ios_base::beg );
   f >> i;
+  CPPUNIT_ASSERT( !f.fail() );
   CPPUNIT_ASSERT( i == 9 );
   f >> i;
   CPPUNIT_ASSERT( f.fail() );

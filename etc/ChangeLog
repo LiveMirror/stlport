@@ -1,3 +1,12 @@
+2004-06-11  Francois Dumont  <dums@...>
+
+  * test/unit: Modification of some tests to make the assertion
+  clearer. Mainly add of check of the streams state before check
+  of the stream content.
+
+  * test/unit/LocaleTest.cpp: fix of the thousand seperator which is
+  0xa0 under Win32 and not a simple ' ' for the french locale.
+
 2004-06-07  Francois Dumont  <dums@...>
 
   * stlport/stl/_algo.c: rollback of the sort algo implementation

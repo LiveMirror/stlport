@@ -53,8 +53,8 @@ void CopyTest::copy2()
   ostringstream os;
   ostream_iterator<int> iter(os, " ");
   copy(v.begin(), v.end(), iter);
-  string result = os.str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(),"0 1 2 3 4 5 6 7 8 9 "));
+  CPPUNIT_ASSERT( os.good() );
+  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
 }
 void CopyTest::copy3()
 {
@@ -68,8 +68,8 @@ void CopyTest::copy3()
   ostringstream os;
   ostream_iterator<int> iter(os, " ");
   copy(v2.begin(), v2.end(), iter);
-  string result = os.str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(),"0 1 2 3 4 5 6 7 8 9 "));
+  CPPUNIT_ASSERT( os.good() );
+  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
 }
 void CopyTest::copy4() {
   vector<int> v1(10);
@@ -82,8 +82,8 @@ void CopyTest::copy4() {
   ostringstream os;
   ostream_iterator<int> outIter(os, " ");
   copy(v2.begin(), v2.end(), outIter);
-  string result = os.str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(),"0 1 2 3 4 5 6 7 8 9 "));
+  CPPUNIT_ASSERT( os.good() );
+  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
 }
 void CopyTest::copyb()
 {
@@ -96,8 +96,8 @@ void CopyTest::copyb()
   ostringstream os;
   ostream_iterator<int> iter(os, " ");
   copy(v2.begin(), v2.end(), iter);
-  string result = os.str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(),"0 1 2 3 4 5 6 7 8 9 "));
+  CPPUNIT_ASSERT( os.good() );
+  CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
 }
 void CopyTest::copyb0()
 {

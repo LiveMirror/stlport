@@ -38,12 +38,12 @@ void OstreamIteratorTest::ostmit0()
   
   ostream_iterator<char> iter(os);
   copy(text, text + 5, iter);
+  CPPUNIT_ASSERT(os.good());
   os << ' ';
+  CPPUNIT_ASSERT(os.good());
 
   ostream_iterator<int> iter2(os);
   copy(array, array + 4, iter2);
-  
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(),"hello 1524"));
+  CPPUNIT_ASSERT(os.good());
+  CPPUNIT_ASSERT(os.str() == "hello 1524");
 }
