@@ -1,135 +1,24 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>STLport - Notes for SUNPro C++ Users</title>
+<html><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>STLport: Notes for SUNPro C++ Users</title><link href="doc.css" type="text/css" rel="stylesheet"></head><body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" vlink="#314A30" link="#314A30" text="black" bgcolor="white"><table border="0" cellspacing="0" cellpadding="0"><tr valign="top" align="left"><td width="24"><img src="images/trans.gif" border="0" height="1" width="24"></td><td width="776"><img border="0" height="14" width="1" src="images/trans.gif"><br><a href="../index.html"><img src="images/stl_logo_doc.gif" border="0" height="80" width="80"></a><a href="http://www.stlport.com"><img border="0" height="80" width="461" src="images/t_doc2.gif"></a><br><img src="images/trans.gif" border="0" height="24" width="1"><br><img src="images/black.gif" border="0" height="1" width="776"><br><img src="images/trans.gif" border="0" height="24" width="1"></td></tr><tr valign="top" align="left"><td width="24"><img src="images/trans.gif" border="0" height="1" width="24"></td><td width="776"><img src="images/trans.gif" border="0" height="10" width="776"></td></tr><tr valign="top" align="left"><td width="24"><img src="images/trans.gif" border="0" height="1" width="24"></td><td width="776">
 
-<!--  header goes there -->
-<!-- Header for stlport.org contents -->
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta name="Author" content="Boris Fomitchev">
-<meta name="Keywords" content="STL, C++, Standard, Template, Library, stlport, SGI, gcc, g++, GNU, Borland, Visual, SUN, SUNPro">
-<link rel="stylesheet" type="text/css" href="style.css">
-</head>
-
-<body bgcolor="#FFFFFF" text="#000000">
-
-<div align = center>
- <center>
-  <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="4" width="776">
-  <tr height="64"><td bgcolor="#99ccff" >
-  <table cellspacing="0" cellpadding="0" width="768">
-   <tr  cellspacing="0" cellpadding="0">
-    <td width="248" align="left">
-     <img border="0" src="images/logo_1.jpg" 
-      alt="STLport.org - &quot;Templates that fit&quot;" width="248" height="64">
-    </td>
-    <td bgcolor="#99ccff" width="520">     
-      <table border="0" cellpadding="0" cellspacing="0" width="520">
-       <tr height = "24"> 
-         <td align="right" valign="top" bgcolor="#99ccff" CLASS=HEADER>
-<!---          <img border="0" src="images/logo_2.jpg" width="220" height="20"> -->
-         </td> 
-       </tr>
-      </table>
-    </td>
-   </tr>
-  </table>
-</td></tr>
-</table>
- </center>
-</div>
-<!-- End header for stlport.org contents -->
-
-
-<!--  content bar goes there -->
-<div align="center">
-  <center>
-  <table border="0" cellpadding="4" cellspacing="0" width="776" height="100%">
-    <tr>
-      <td valign="top" width="134">
-
-<table bgcolor="#99CCFF" border="0" cellpadding="8" cellspacing="0" width="142">
-  <tr>
-    <td bgcolor="#d0d0d0" valign="top" align="left" nowrap><b>Contents</b></td>
-  </tr>
-  <tr>
-    <td bgcolor="#EEEEEE" valign="top" align="left" nowrap CLASS=CONTENTS>
-      <b>Introduction</b><br>
-      
-      &nbsp; <a href="index.html">About STLport</a><br>
-      &nbsp; <a href="sgi_stl.html">SGI STL Base</a><br>
-      &nbsp; <a href="story.html">STLport Story</a><br>
-<!--      &nbsp; <a href="projects.html">Portofolio</a> -->
-      
-      <p><b>STLport Features</b><br>
-      &nbsp; <a href="platforms.html">Portability</a><br>
-      &nbsp; <a href="debug_mode.html">Debug Mode</a><br>
-      &nbsp; <a href="sgi_stl.html#thread_safety">Thread Safety</a><br>
-      &nbsp; <a href="exception_safety.html">Exception Safety</a>
-      </p>
-
-      <p><b>Getting Started</b><br>
-
-      &nbsp; <a href="install.html">Download and Install</a><br>
-      &nbsp; <a href="select_io.html">Select Streams Mode</a><br>
-      &nbsp; <a href="use_stlport.html">Compiling with STLport</a>
-      </p>
-
-      <p><b>White Papers</b><br>
-      &nbsp; <a href="release_notes.html">Release Notes</a><br>
-<!--      &nbsp; <a href="FAQ.html">FAQ</a><br> -->
-      &nbsp; <a href="compiler_readmes.html">READMEs</a><br>
-      &nbsp; <a href="vendor_interface.html">Interface with std::</a><br>
-      &nbsp; <a href="wrappers.html">Wrappers</a><br>
-      &nbsp; <a href="configure.html">Config manual</a><br>
-      &nbsp; <a href="testsuite.html">Regression Test</a><br>
-      &nbsp; <a href="eh_testsuite.html">Exception Test</a>
-      </p>
-
-      <p><b>Feedback</b><br>
-      &nbsp; <a href="bug_report.html">Bug Reports</a><br>
-      &nbsp; <a href="http://www.stlport.org/cgi-bin/forum/forum.cgi">Forum</a><br>
-      </p>
-      
-      <p><b>Appendix</b><br>
-      &nbsp; <a href="thanks.html">Acknowledgements</a><br>
-<!--      &nbsp; <a href="copyrights.html">Copyrights</a><br> -->
-      &nbsp; <a href="license.html">Your Free Licence</a></p>
-
-    </td>
-  </tr>
-</table>
-
-</td>
-<td valign="top" width="618">
-
-
-        <h1><font color="#000080">Notes for SUNPro C++ Users</font></h1>
+        <span class="heading">Notes for SUNPro C++ Users</span>
         <p>&nbsp;</p>
 	<h2>Common Notes</h2>
-	For all SUN compilers, STLport 3.2 enables separate compilation with 
+	For all SUN compilers, STLport nables separate compilation with 
         non-inline template members defined in .c file. That is supposed to
         help with code bloat, but does not make a big difference for SUN compilers.
-        So, if having any problems with this mode, just turn off __STL_LINK_TIME_INSTANTIATION switch.
-        <h2>Notes for SUNPro C++ 5.0 users</h2>
+        So, if having any problems with this mode, just turn off _STLP_LINK_TIME_INSTANTIATION switch.
+	Installation: please note that even if you do not use STLport iostreams, you still have to go to "src" subdirectory and do "make" or at least "make prepare" to produce additional .SUNWCCh files necessary for compilation)
+
+        <h2>Notes for SUNPro C++ users</h2>
         <h2>Known problems</h2>
         <h4>Compiling</h4>
-        <ul>
-          <li>Directory <b>STLport/SC5/</b> contains some extra files SunPro C++
-            expects to see on the path. Make sure you put <b>STLport/SC5 </b>in<br>
-            your search path along with <b>STLport </b>main directory.</li>
-          <li>You may encounter problems using&nbsp; <b><tt>&lt;iostream&gt; </tt></b>in
-            mix with STLport <b><tt>&lt;string&gt;, &lt;stdexcept&gt; </tt></b>without
-            defining <b>__STL_USE_OWN_NAMESPACE.</b></li>
-        </ul>
-        <hr>
         <h2>Known problems</h2>
         <h4>Bugs (Note for SUNPro C++ 4.2 or before)</h4>
-	<p><b>Note : in 3.2, proposed workaround is implemented for this bug for all relevant STLport code. 
+	<br><b>Note: proposed workaround is implemented for this bug for all relevant STLport code. 
         However, please be aware of this bug because it might affect your own code.</b>
-        <p>Perry R. Ross 3/12/99<br>
+        <br>Perry R. Ross 3/12/99<br>
         pross@platinum.com<br>
-        <br>
+        <p>
         The SunPro 4.2 compiler has a serious problem handling string literals<br>
         passed as arguments to inline functions. Each time the dummy argument
         representing the string literal appears in the function, it receives a
@@ -143,21 +32,21 @@
         inline void func(char *s) {<br>
         // Each of these will print a different address for s<br>
         // if the arg was a string literal.<br>
-        cout &lt;&lt; &quot;address of &quot; &lt;&lt; s &lt;&lt; &quot; is
-        &quot; &lt;&lt; (int) s &lt;&lt; endl;<br>
-        cout &lt;&lt; &quot;address of &quot; &lt;&lt; s &lt;&lt; &quot; is
-        &quot; &lt;&lt; (int) s &lt;&lt; endl;<br>
-        cout &lt;&lt; &quot;address of &quot; &lt;&lt; s &lt;&lt; &quot; is
-        &quot; &lt;&lt; (int) s &lt;&lt; endl;<br>
+        cout &lt;&lt; "address of " &lt;&lt; s &lt;&lt; " is
+        " &lt;&lt; (int) s &lt;&lt; endl;<br>
+        cout &lt;&lt; "address of " &lt;&lt; s &lt;&lt; " is
+        " &lt;&lt; (int) s &lt;&lt; endl;<br>
+        cout &lt;&lt; "address of " &lt;&lt; s &lt;&lt; " is
+        " &lt;&lt; (int) s &lt;&lt; endl;<br>
         <br>
         // This will print a negative number if the arg is a literal.<br>
-        cout &lt;&lt; &quot;the difference between (s+1) and s is &quot;
+        cout &lt;&lt; "the difference between (s+1) and s is "
         &lt;&lt; ( (s+1) - s) &lt;&lt; endl;<br>
         }</p>
         <p>int<br>
         main(int argc, char *argv[]) {<br>
-        func(&quot;hello&quot;);<br>
-        char *bye = &quot;goodbye&quot;;<br>
+        func("hello");<br>
+        char *bye = "goodbye";<br>
         func(bye);<br>
         return 0;<br>
         }<br>
@@ -167,14 +56,14 @@
         #include &lt;iostream.h&gt;<br>
         #include &lt;string&gt;<br>
         <br>
-        string str(&quot;hello&quot;);<br>
+        string str("hello");<br>
         <br>
         int main(int argc, char *argv[]) {<br>
         cout &lt;&lt; str &lt;&lt; endl;<br>
         return 0;<br>
         }<br>
         <br>
-        This will print &quot;hellohello&quot; on a broken compiler version.<br>
+        This will print "hellohello" on a broken compiler version.<br>
         <br>
         The fix for this is to add this line to the beginning of func():<br>
         <br>
@@ -228,7 +117,7 @@
         <p>STL code itself is now free of this problem.</p>
         <p>C++ 4.1 may also suffer from optimization bugs when using exception
         handling. If your application doesn't use exceptions, you'd better use <tt>-noex</tt>
-        option along with <tt>__STL_NO_EXCEPTIONS</tt> flag.</p>
+        option along with <tt>_STLP_NO_EXCEPTIONS</tt> flag.</p>
         <h4>Linking</h4>
         You may have troubles getting linker errors compiling multiple targets
         in one directory ( for example, running cygnus testsuite). That is a bug
@@ -271,15 +160,15 @@
         <p>More severe problems arise when given template argument's typedefs
         are used as template arguments for base class. The example is function
         adaptors from <b>function.h</b> . Refer to workarounds for binders &amp;
-        composers to see how it can be hanled ( proposed by &quot;Martin
-        Abernethy&quot; &lt;gma@paston.co.uk&gt; ).</p>
+        composers to see how it can be hanled ( proposed by "Martin
+        Abernethy" &lt;gma@paston.co.uk&gt; ).</p>
         <p>C++ 4.01 may also suffer from optimization bugs when using exception
         handling. If your application doesn't use exceptions, you'd better use <tt>-noex</tt>
-        option along with <tt>__STL_NO_EXCEPTIONS</tt> flag.</p>
+        option along with <tt>_STLP_NO_EXCEPTIONS</tt> flag.</p>
         <h4>Linking</h4>
         You may still have to use explicit instantiations and/or specific
-        template database controls for complex cases to avoid &quot;<i>unresolved
-        symbol</i>&quot; linker errors.
+        template database controls for complex cases to avoid "<i>unresolved
+        symbol</i>" linker errors.
         <p>You may have troubles getting linker errors compiling multiple
         targets in one directory ( for example, running cygnus testsuite). That
         is a bug in handling Templates.DB dependencies. Known solutions are :</p>
@@ -299,35 +188,4 @@
         For info on SUNPro C++ 4.0.1, see README.sunpro401. SUNPro C++ older
         than 4.0.1 won't compile STL. You have to upgrade.
 
-<!--  footer goes there -->
-<!-- Footer for stlport.org contents -->
-
-    </tr>
-  </table>
-  </center>
-</div>
-
-<center>
- <table border="0" cellspacing="0" cellpadding="0" width="760">
-   <tr>
-    <td bgcolor="#003399" height="2"><spacer type=block width=1 height=2></td>
-   </tr>
- </table>
-
-  <table border="0" cellspacing="0" cellpadding="0" width="760">
-    <tr>
-      <td bgcolor="#003399" height="2"><spacer type=block width=1 height=2></td>
-    </tr>
-    <tr>
-     <td align = "center">
-      <br>
-      <address class=FOOTNOTE>Copyright © 1999,2000 by Boris Fomitchev.&nbsp;&nbsp;
-       &nbsp;Last modified: July 14, 2000
-     </td>
-    </tr>
-  </table>
-</center>
-<!-- End footer for stlport.org contents -->
-
-</body>
-</html>
+</td></tr><tr valign="top" align="left"><td width="24"><img src="images/trans.gif" border="0" height="1" width="24"></td><td width="776"><img src="images/trans.gif" border="0" height="20" width="50"><br><a href="index.html">Table of Contents</a><br></td></tr><tr valign="top" align="left"><td width="24"><img src="images/trans.gif" border="0" height="1" width="24"></td><td width="776"><img src="images/trans.gif" border="0" height="40" width="80"><br><img src="images/black.gif" border="0" height="1" width="776"></td></tr><tr valign="top" align="left"><td width="24"><img src="images/trans.gif" border="0" height="1" width="24"></td><td width="776"><img src="images/black.gif" border="0" height="1" width="776"></td></tr><tr valign="top" align="left"><td width="24"><img src="images/trans.gif" border="0" height="1" width="24"></td><td width="776"><img src="images/trans.gif" border="0" height="5" width="50"><br><span class="copyright">Copyright 2001 by STLport</span><br><img src="images/trans.gif" border="0" height="50" width="80"></td></tr></table></body></html>
