@@ -45,6 +45,55 @@ namespace std {
 
 #  endif
 
+#if defined(__sun) && defined(__GNUC__) 
+extern "C" {
+float __cosf(float v);
+float __sinf(float v);
+float __atan2f(float, float);
+float __coshf(float v);
+float __sinhf(float v);
+float __sqrtf(float v);
+float __expf(float v);
+float __logf(float v);
+float __log10f(float v);
+
+long double __cosl(long double v);
+long double __sinl(long double v);
+long double __atan2l(long double, long double);
+long double __coshl(long double v);
+long double __sinhl(long double v);
+long double __sqrtl(long double v);
+long double __expl(long double v);
+long double __logl(long double v);
+long double __log10l(long double v);
+
+}
+
+extern "C" {
+inline float cosf(float v) { return __cosf(v); }
+inline float sinf(float v) { return __sinf(v); }
+inline float atan2f(float v1, float v2) { return __atan2f(v1,v2); }
+inline float coshf(float v) { return __coshf(v); }
+inline float sinhf(float v) { return __sinhf(v); }
+inline float sqrtf(float v) { return __sqrtf(v); }
+inline float expf(float v) { return __expf(v); }
+inline float logf(float v) { return __logf(v); }
+inline float log10f(float v) { return __log10f(v); }
+
+inline long double cosl(long double v) { return __cosl(v); }
+inline long double sinl(long double v) { return __sinl(v); }
+inline long double atan2l(long double v1, long double v2) { return __atan2l(v1,v2); }
+inline long double coshl(long double v) { return __coshl(v); }
+inline long double sinhl(long double v) { return __sinhl(v); }
+inline long double sqrtl(long double v) { return __sqrtl(v); }
+inline long double expl(long double v) { return __expl(v); }
+inline long double logl(long double v) { return __logl(v); }
+inline long double log10l(long double v) { return __log10l(v); }
+
+}
+#endif // __sun && __GNUC__
+
+
 #  ifdef _STLP_IMPORT_VENDOR_CSTD
 _STLP_BEGIN_NAMESPACE
 # if ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
