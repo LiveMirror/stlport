@@ -39,6 +39,9 @@
 
 _STLP_BEGIN_NAMESPACE
 
+//Idem _HashMap
+struct _HashSet {};
+
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
@@ -47,12 +50,11 @@ class hash_set
                : public __stlport_class<hash_set<_Value, _HashFcn, _EqualKey, _Alloc> >
 #endif
 {
-  typedef _Const_Const_traits<_Value> _ConstTraits;
+  typedef hash_set<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
+  typedef _Container_traits<_Const_Const_traits<_Value>, _HashSet> _HashSetTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
-                    _ConstTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
-private:
-  typedef hash_set<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
+                    _HashSetTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
 public:
   typedef typename _Ht::key_type key_type;
   typedef typename _Ht::value_type value_type;
@@ -224,6 +226,9 @@ public:
   }
 };
 
+//Idem _HashMap
+struct _HashMultiset {};
+
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
@@ -232,14 +237,12 @@ class hash_multiset
                : public __stlport_class<hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> >
 #endif
 {
-  typedef _Const_Const_traits<_Value> _ConstTraits;
+  typedef hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
+  typedef _Container_traits<_Const_Const_traits<_Value>, _HashMultiset> _HashMultisetTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
-                    _ConstTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
-private:
-  typedef hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
+                    _HashMultisetTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
 
-public:
   typedef typename _Ht::key_type key_type;
   typedef typename _Ht::value_type value_type;
   typedef typename _Ht::hasher hasher;

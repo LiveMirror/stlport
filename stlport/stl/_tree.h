@@ -142,23 +142,17 @@ struct _Rb_tree_base_iterator {
   _Base_ptr _M_node;
   _Rb_tree_base_iterator() : _M_node(0) {}
   _Rb_tree_base_iterator(_Base_ptr __x) : _M_node(__x) {}
-  bool operator==(const _Rb_tree_base_iterator& __y) const {
-    return _M_node == __y._M_node;
-  }
-  bool operator!=(const _Rb_tree_base_iterator& __y) const {
-    return _M_node != __y._M_node;
-  }
 };
 
 
-template <class _Value, class _Traits>
+template <class _Value, class _Traits, class _Container>
 struct _Rb_tree_iterator : public _Rb_tree_base_iterator {
   typedef _Value value_type;
   typedef typename _Traits::reference  reference;
   typedef typename _Traits::pointer    pointer;
   typedef typename _Traits::_NonConstTraits _NonConstTraits;
-  typedef _Rb_tree_iterator<_Value, _NonConstTraits > iterator;
-  typedef _Rb_tree_iterator<_Value, _Traits> _Self;
+  typedef _Rb_tree_iterator<_Value, _NonConstTraits, _Container> iterator;
+  typedef _Rb_tree_iterator<_Value, _Traits, _Container> _Self;
   typedef _Rb_tree_node_base*    _Base_ptr;
   typedef _Rb_tree_node<_Value>* _Link_type;
 
@@ -194,8 +188,23 @@ struct _Rb_tree_iterator : public _Rb_tree_base_iterator {
   }
 };
 
+template <class _Value, class _Traits1, class _Traits2, class _Container>
+bool operator == (const _Rb_tree_iterator<_Value, _Traits1, _Container> &__lhs, 
+                  const _Rb_tree_iterator<_Value, _Traits2, _Container> &__rhs) {
+  return __lhs._M_node == __rhs._M_node;
+}
+
+#ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
+template <class _Value, class _Traits1, class _Traits2, class _Container>
+bool operator != (const _Rb_tree_iterator<_Value, _Traits1, _Container> &__lhs, 
+                  const _Rb_tree_iterator<_Value, _Traits2, _Container> &__rhs) {
+  return __lhs._M_node != __rhs._M_node;
+}
+#endif
+
 # ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
-template <class _Value, class _Traits> inline _Value* value_type(const _Rb_tree_iterator<_Value, _Traits>&) { return (_Value*)0; }
+template <class _Value, class _Traits, class _Container> 
+inline _Value* value_type(const _Rb_tree_iterator<_Value, _Traits, _Container>&) { return (_Value*)0; }
 inline bidirectional_iterator_tag iterator_category(const _Rb_tree_base_iterator&) { return bidirectional_iterator_tag(); }
 inline ptrdiff_t* distance_type(const _Rb_tree_base_iterator&) { return (ptrdiff_t*) 0; }
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
@@ -333,9 +342,10 @@ protected:
     { return _Rb_tree_node_base::_S_maximum(__x); }
 
 public:
+  typedef typename _ConstTraits::container_type _Container;
   typedef typename _ConstTraits::_NonConstTraits _NonConstTraits;
-  typedef _Rb_tree_iterator<value_type, _NonConstTraits> iterator;
-  typedef _Rb_tree_iterator<value_type, _ConstTraits> const_iterator;
+  typedef _Rb_tree_iterator<value_type, _NonConstTraits, _Container> iterator;
+  typedef _Rb_tree_iterator<value_type, _ConstTraits, _Container> const_iterator;
   _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS;
 
 private:

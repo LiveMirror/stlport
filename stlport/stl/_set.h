@@ -39,6 +39,9 @@
 
 _STLP_BEGIN_NAMESPACE
 
+//Idem _HashMap
+struct _Set {};
+
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class set
@@ -55,11 +58,13 @@ public:
   typedef _Compare value_compare;
   
 protected:
-  typedef _Const_Const_traits<value_type> _ConstTraits;
+  typedef _Container_traits<_Const_Const_traits<value_type>, _Set> _ConstSetTraits;
+
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
-                   value_type, _Identity<value_type>, _ConstTraits, _Alloc> _Rep_type;
+                   value_type, _Identity<value_type>, 
+                   _ConstSetTraits, _Alloc> _Rep_type;
 
 public:
   typedef typename _Rep_type::pointer pointer;
@@ -204,6 +209,9 @@ public:
   }
 };
 
+//Idem _HashMap
+struct _Multiset {};
+
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class multiset 
@@ -221,11 +229,12 @@ public:
   typedef _Compare value_compare;
   
 protected:
-  typedef _Const_Const_traits<value_type> _ConstTraits;
+  typedef _Container_traits<_Const_Const_traits<value_type>, _Multiset> _ConstMultisetTraits;
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
-                   value_type, _Identity<value_type>, _ConstTraits, _Alloc> _Rep_type;
+                   value_type, _Identity<value_type>, 
+                   _ConstMultisetTraits, _Alloc> _Rep_type;
                   
 public:                  
   typedef typename _Rep_type::pointer pointer;

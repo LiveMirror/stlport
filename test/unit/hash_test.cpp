@@ -64,6 +64,14 @@ void HashTest::hmap1()
 
   p = m.insert(pair<const char, crope>('c', crope("100")));
   CPPUNIT_ASSERT(!p.second);
+
+  //Some iterators compare check, really compile time checks
+  maptype::iterator ite(m.begin());
+  maptype::const_iterator cite(m.begin());
+  CPPUNIT_ASSERT( ite == cite );
+  CPPUNIT_ASSERT( !(ite != cite) );
+  CPPUNIT_ASSERT( cite == ite );
+  CPPUNIT_ASSERT( !(cite != ite) );
 }
 void HashTest::hmmap1()
 {
@@ -92,6 +100,14 @@ void HashTest::hmmap1()
 
   int count = m.erase('X');
   CPPUNIT_ASSERT(count==2);
+
+  //Some iterators compare check, really compile time checks
+  mmap::iterator ite(m.begin());
+  mmap::const_iterator cite(m.begin());
+  CPPUNIT_ASSERT( ite == cite );
+  CPPUNIT_ASSERT( !(ite != cite) );
+  CPPUNIT_ASSERT( cite == ite );
+  CPPUNIT_ASSERT( !(cite != ite) );
 }
 void HashTest::hmset1()
 {

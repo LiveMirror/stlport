@@ -95,8 +95,7 @@ void MapTest::mmap2()
 
   typedef multimap<int, char, less<int> > mmap;
 
-  pair_type array [] =
-  {
+  pair_type array [] = {
     p1,
     p2,
     p3,
@@ -119,6 +118,17 @@ void MapTest::mmap2()
 
 void MapTest::iterators()
 {
+  {
+    typedef map<int, char, less<int> > int_map;
+    int_map imap;
+    int_map::iterator ite(imap.begin());
+    int_map::const_iterator cite(imap.begin());
+    CPPUNIT_ASSERT( ite == cite );
+    CPPUNIT_ASSERT( !(ite != cite) );
+    CPPUNIT_ASSERT( cite == ite );
+    CPPUNIT_ASSERT( !(cite != ite) );
+  }
+
   typedef multimap<int, char, less<int> > mmap;
   typedef mmap::value_type pair_type;
 
@@ -129,8 +139,7 @@ void MapTest::iterators()
   pair_type p5(3, 'x');
   pair_type p6(6, 'f');
 
-  pair_type array [] =
-  {
+  pair_type array [] = {
     p1,
     p2,
     p3,
@@ -140,6 +149,16 @@ void MapTest::iterators()
   };
 
   mmap m(array+0, array + 6);
+
+  {
+    mmap::iterator ite(m.begin());
+    mmap::const_iterator cite(m.begin());
+    //test compare between const_iterator and iterator
+    CPPUNIT_ASSERT( ite == cite );
+    CPPUNIT_ASSERT( !(ite != cite) );
+    CPPUNIT_ASSERT( cite == ite );
+    CPPUNIT_ASSERT( !(cite != ite) );
+  }
 
   mmap::reverse_iterator ri = m.rbegin();
   CPPUNIT_ASSERT( ri != m.rend() );

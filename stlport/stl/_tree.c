@@ -38,7 +38,8 @@
 // fbp: these defines are for outline methods definitions.
 // needed for definitions to be portable. Should not be used in method bodies.
 # if defined  ( _STLP_NESTED_TYPE_PARAM_BUG )
-#  define __iterator__  _Rb_tree_iterator<_Value, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits > 
+#  define __iterator__  _Rb_tree_iterator<_Value, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, \
+                                                  _STLP_HEADER_TYPENAME _ConstTraits::container_type >
 #  define __size_type__ size_t
 #  define iterator __iterator__
 # else
@@ -383,7 +384,8 @@ _Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstTraits,_Alloc> ::insert_equal(co
 
 template <class _Key, class _Compare, 
           class _Value, class _KeyOfValue, class _ConstTraits, class _Alloc>
-pair< _Rb_tree_iterator<_Value, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits>, bool>
+pair< _Rb_tree_iterator<_Value, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, 
+                                _STLP_HEADER_TYPENAME _ConstTraits::container_type>, bool>
 _Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstTraits,_Alloc> ::insert_unique(const _Value& __val) {
   _Base_ptr __y = &this->_M_header._M_data;
   _Base_ptr __x = _M_root();

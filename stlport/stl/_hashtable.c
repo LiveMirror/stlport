@@ -73,8 +73,12 @@ size_t _Stl_prime<_Dummy>::_S_next_size(size_t __n) {
 #  define _Node           _Hashtable_node<_Val>
 #  define __reference__       _Val&
 
-#  define __iterator__        _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, _Key, _HF, _ExK, _EqK, _All>
-#  define __const_iterator__  _Ht_iterator<_Val, _ConstTraits, _Key, _HF, _ExK, _EqK, _All>
+#  define __iterator__        _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, \
+                                                 _STLP_HEADER_TYPENAME _ConstTraits::container_type, \
+                                           _Key, _HF, _ExK, _EqK, _All>
+#  define __const_iterator__  _Ht_iterator<_Val, _ConstTraits, \
+                                           _STLP_HEADER_TYPENAME _ConstTraits::container_type, \
+                                           _Key, _HF, _ExK, _EqK, _All>
 # else
 #  define __size_type__        _STLP_TYPENAME_ON_RETURN_TYPE hashtable<_Val, _Key, _HF, _ConstTraits, _ExK, _EqK, _All>::size_type
 #  define __reference__        _STLP_TYPENAME_ON_RETURN_TYPE  hashtable<_Val, _Key, _HF, _ConstTraits, _ExK, _EqK, _All>::reference
@@ -117,7 +121,10 @@ bool hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>::_M_equal(
 
 template <class _Val, class _Key, class _HF, 
           class _ConstTraits, class _ExK, class _EqK, class _All>
-pair<_Ht_iterator<_Val, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, _Key, _HF, _ExK, _EqK, _All>,
+pair<_Ht_iterator<_Val, 
+                  _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits,
+                  _STLP_HEADER_TYPENAME _ConstTraits::container_type, 
+                  _Key, _HF, _ExK, _EqK, _All>,
      bool>
 hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
   ::insert_unique_noresize(const value_type& __obj) {
@@ -190,8 +197,14 @@ hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
 
 template <class _Val, class _Key, class _HF, 
           class _ConstTraits, class _ExK, class _EqK, class _All>
-pair< _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, _Key, _HF, _ExK, _EqK, _All>,
-      _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, _Key, _HF, _ExK, _EqK, _All> > 
+pair< _Ht_iterator<_Val, 
+                   _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits,
+                   _STLP_HEADER_TYPENAME _ConstTraits::container_type,
+                   _Key, _HF, _ExK, _EqK, _All>,
+      _Ht_iterator<_Val, 
+                   _STLP_HEADER_TYPENAME _ConstTraits::_NonConstTraits, 
+                   _STLP_HEADER_TYPENAME _ConstTraits::container_type,
+                   _Key, _HF, _ExK, _EqK, _All> > 
 hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
   ::equal_range(const key_type& __key) {
   typedef pair<iterator, iterator> _Pii;
@@ -213,8 +226,12 @@ hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
 
 template <class _Val, class _Key, class _HF, 
           class _ConstTraits, class _ExK, class _EqK, class _All>
-pair<_Ht_iterator<_Val, _ConstTraits, _Key, _HF, _ExK, _EqK, _All>, 
-     _Ht_iterator<_Val, _ConstTraits, _Key, _HF, _ExK, _EqK, _All> > 
+pair<_Ht_iterator<_Val, _ConstTraits, 
+                  _STLP_HEADER_TYPENAME _ConstTraits::container_type,
+                  _Key, _HF, _ExK, _EqK, _All>, 
+     _Ht_iterator<_Val, _ConstTraits, 
+                  _STLP_HEADER_TYPENAME _ConstTraits::container_type,
+                  _Key, _HF, _ExK, _EqK, _All> > 
 hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>
   ::equal_range(const key_type& __key) const {
   typedef pair<const_iterator, const_iterator> _Pii;

@@ -421,7 +421,19 @@ struct _Nonconst_Const_traits {
   typedef _Nonconst_Const_traits<_Tp> _NonConstTraits;
 };
 
+/*
+ * dums: an iterator traits wrapper adding the container_type information
+ */
+template <class _Traits, class _Container>
+struct _Container_traits : public _Traits {
+  typedef _Container container_type;
 
+  typedef typename _Traits::_ConstTraits _WrapConstTraits;
+  typedef typename _Traits::_NonConstTraits _WrapNonConstTraits;
+
+  typedef _Container_traits<_WrapConstTraits, _Container> _ConstTraits;
+  typedef _Container_traits<_WrapNonConstTraits, _Container> _NonConstTraits;
+};
 
 /*
 #  if defined (_STLP_BASE_TYPEDEF_BUG)

@@ -89,7 +89,7 @@ struct _Hashtable_iterator {
 };
 
 
-template <class _Val, class _Traits, class _Key, class _HF,
+template <class _Val, class _Traits, class _Container, class _Key, class _HF,
           class _ExK, class _EqK, class _All>
 struct _Ht_iterator 
   : public _Hashtable_iterator< _Val, _Key, _HF, _STLP_HEADER_TYPENAME _Traits::_ConstTraits, _ExK, _EqK, _All> {
@@ -99,7 +99,7 @@ struct _Ht_iterator
 
   typedef _Hashtable_iterator<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All> _Base;
 
-  typedef _Ht_iterator<_Val,_Traits,_Key,_HF,_ExK,_EqK,_All> _Self;
+  typedef _Ht_iterator<_Val,_Traits,_Container,_Key,_HF,_ExK,_EqK,_All> _Self;
 
   typedef hashtable<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All> _Hashtable;
   typedef _Hashtable_node<_Val> _Node;
@@ -110,7 +110,7 @@ struct _Ht_iterator
   typedef size_t size_type;
   typedef typename _Traits::reference reference;
   typedef typename _Traits::pointer pointer;
-  typedef _Ht_iterator<_Val, _NonConstTraits, _Key, _HF, _ExK, _EqK, _All> iterator;
+  typedef _Ht_iterator<_Val,_NonConstTraits,_Container,_Key,_HF,_ExK,_EqK,_All> iterator;
 
   _Ht_iterator(const _Node* __n, const _Hashtable* __tab) :
     _Hashtable_iterator<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>(__CONST_CAST(_Node*,__n), 
@@ -137,52 +137,52 @@ struct _Ht_iterator
   }
 };
 
-template <class _Val, class _Traits1, class _Traits2, 
+template <class _Val, class _Traits1, class _Traits2, class _Container,
           class _Key, class _HF,class _ExK, class _EqK, class _All>
 inline bool 
-operator==(const _Ht_iterator<_Val, _Traits1,_Key,_HF,_ExK,_EqK,_All>& __x, 
-           const _Ht_iterator<_Val, _Traits2,_Key,_HF,_ExK,_EqK,_All>& __y) { 
+operator==(const _Ht_iterator<_Val,_Traits1,_Container,_Key,_HF,_ExK,_EqK,_All>& __x, 
+           const _Ht_iterator<_Val,_Traits2,_Container,_Key,_HF,_ExK,_EqK,_All>& __y) { 
   return __x._M_cur == __y._M_cur; 
 }
 
 #ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
-template <class _Val, class _Key, class _HF,
-          class _Traits, class _ExK, class _EqK, class _All>
+template <class _Val, class _Traits1, class _Traits2, class _Container,
+          class _Key, class _HF,class _ExK, class _EqK, class _All>
 inline bool 
-operator!=(const _Hashtable_iterator<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>& __x, 
-           const _Hashtable_iterator<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>& __y) { 
+operator!=(const _Ht_iterator<_Val,_Traits1,_Container,_Key,_HF,_ExK,_EqK,_All>& __x, 
+           const _Ht_iterator<_Val,_Traits2,_Container,_Key,_HF,_ExK,_EqK,_All>& __y) { 
   return __x._M_cur != __y._M_cur; 
 }
 #else
 
 # if (defined (__GNUC__) && (__GNUC_MINOR__ < 8))
-template <class _Val, class _Key, class _HF, class _Traits,
+template <class _Val, class _Key, class _HF, class _Traits, class _Container,
           class _ExK, class _EqK, class _All>
 inline bool
-operator!=(const _Ht_iterator<_Val, _Traits,_Key,_HF,_ExK,_EqK,_All>& __x,
-           const _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _Traits::_Non_Const_Traits,_Key,_HF,_ExK,_EqK,_All>& __y) {
+operator!=(const _Ht_iterator<_Val,_Traits,_Container,_Key,_HF,_ExK,_EqK,_All>& __x,
+           const _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _Traits::_Non_Const_Traits,_Container,_Key,_HF,_ExK,_EqK,_All>& __y) {
   return __x._M_cur != __y._M_cur;
 }
 # endif
 
-template <class _Val, class _Key, class _HF, class _Traits,
+template <class _Val, class _Key, class _HF, class _Traits, class _Container
           class _ExK, class _EqK, class _All>
 inline bool 
-operator!=(const _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _Traits::_Non_Const_Traits,_Key,_HF,_ExK,_EqK,_All>& __x, 
-           const _Ht_iterator<_Val, _Traits,_Key,_HF,_ExK,_EqK,_All>& __y) { 
+operator!=(const _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _Traits::_Non_Const_Traits,_Container,_Key,_HF,_ExK,_EqK,_All>& __x, 
+           const _Ht_iterator<_Val, _Traits,_Container,_Key,_HF,_ExK,_EqK,_All>& __y) { 
   return __x._M_cur != __y._M_cur; 
 }
 #endif
 
 # ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
-template <class _Val, class _Traits, class _Key, class _HF, class _ExK, class _EqK, class _All>
-inline _Val* value_type(const _Ht_iterator<_Val,_Traits,_Key,_HF,_ExK,_EqK,_All>&) 
+template <class _Val, class _Traits, class _Container, class _Key, class _HF, class _ExK, class _EqK, class _All>
+inline _Val* value_type(const _Ht_iterator<_Val,_Traits,_Container,_Key,_HF,_ExK,_EqK,_All>&) 
 { return (_Val*) 0; }
-template <class _Val, class _Traits, class _Key, class _HF, class _ExK, class _EqK, class _All>
-inline forward_iterator_tag iterator_category(const _Ht_iterator<_Val,_Traits,_Key,_HF,_ExK,_EqK,_All>&) 
+template <class _Val, class _Traits, class _Container, class _Key, class _HF, class _ExK, class _EqK, class _All>
+inline forward_iterator_tag iterator_category(const _Ht_iterator<_Val,_Traits,_Container,_Key,_HF,_ExK,_EqK,_All>&) 
 { return forward_iterator_tag(); }
-template <class _Val, class _Traits, class _Key, class _HF, class _ExK, class _EqK, class _All>
-inline ptrdiff_t* distance_type(const _Ht_iterator<_Val,_Traits,_Key,_HF,_ExK,_EqK,_All>&) 
+template <class _Val, class _Traits, class _Container, class _Key, class _HF, class _ExK, class _EqK, class _All>
+inline ptrdiff_t* distance_type(const _Ht_iterator<_Val,_Traits,_Container,_Key,_HF,_ExK,_EqK,_All>&) 
 { return (ptrdiff_t*) 0; }
 #endif
 
@@ -254,12 +254,13 @@ private:
   const _Node* _M_get_bucket(size_t __n) const { return (_Node*)_M_buckets[__n]; }
 
 public:
+  typedef typename _ConstTraits::container_type _Container;
   typedef typename _ConstTraits::_NonConstTraits _NonConstTraits;
-  typedef _Ht_iterator<_Val,_ConstTraits,_Key,_HF,_ExK,_EqK, _All> const_iterator;
-  typedef _Ht_iterator<_Val,_NonConstTraits,_Key,_HF,_ExK,_EqK,_All> iterator;
+  typedef _Ht_iterator<_Val,_ConstTraits,_Container,_Key,_HF,_ExK,_EqK, _All> const_iterator;
+  typedef _Ht_iterator<_Val,_NonConstTraits,_Container,_Key,_HF,_ExK,_EqK,_All> iterator;
   friend struct _Hashtable_iterator<_Val,_Key,_HF,_ConstTraits,_ExK,_EqK,_All>;
-  friend struct _Ht_iterator<_Val, _ConstTraits,_Key,_HF,_ExK,_EqK, _All>;
-  friend struct _Ht_iterator<_Val, _NonConstTraits,_Key,_HF,_ExK,_EqK,_All>;
+  friend struct _Ht_iterator<_Val,_ConstTraits,_Container,_Key,_HF,_ExK,_EqK, _All>;
+  friend struct _Ht_iterator<_Val,_NonConstTraits,_Container,_Key,_HF,_ExK,_EqK,_All>;
 
 public:
   hashtable(size_type __n,

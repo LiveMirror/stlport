@@ -117,13 +117,13 @@ public:
  
 template <class _Iterator>
 inline bool  _STLP_CALL operator==(const reverse_iterator<_Iterator>& __x, 
-                       const reverse_iterator<_Iterator>& __y) {
+                                   const reverse_iterator<_Iterator>& __y) {
   return __x.base() == __y.base();
 }
 
 template <class _Iterator>
 inline bool _STLP_CALL operator<(const reverse_iterator<_Iterator>& __x, 
-                      const reverse_iterator<_Iterator>& __y) {
+                                 const reverse_iterator<_Iterator>& __y) {
   return __y.base() < __x.base();
 }
 
@@ -131,25 +131,25 @@ inline bool _STLP_CALL operator<(const reverse_iterator<_Iterator>& __x,
 
 template <class _Iterator>
 inline bool _STLP_CALL operator!=(const reverse_iterator<_Iterator>& __x, 
-                       const reverse_iterator<_Iterator>& __y) {
+                                  const reverse_iterator<_Iterator>& __y) {
   return !(__x == __y);
 }
 
 template <class _Iterator>
 inline bool _STLP_CALL operator>(const reverse_iterator<_Iterator>& __x, 
-                      const reverse_iterator<_Iterator>& __y) {
+                                 const reverse_iterator<_Iterator>& __y) {
   return __y < __x;
 }
 
 template <class _Iterator>
 inline bool _STLP_CALL operator<=(const reverse_iterator<_Iterator>& __x, 
-                       const reverse_iterator<_Iterator>& __y) {
+                                  const reverse_iterator<_Iterator>& __y) {
   return !(__y < __x);
 }
 
 template <class _Iterator>
 inline bool _STLP_CALL operator>=(const reverse_iterator<_Iterator>& __x, 
-                      const reverse_iterator<_Iterator>& __y) {
+                                  const reverse_iterator<_Iterator>& __y) {
   return !(__x < __y);
 }
 
