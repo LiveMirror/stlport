@@ -30,7 +30,9 @@
 
 
 # if !defined(_STLP_DEBUG) && ! defined (_STLP_ASSERTIONS)
-# define _STLP_ASSERTIONS 1
+#  if !(defined(__APPLE__) && ((__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3))))
+#  define _STLP_ASSERTIONS 1
+#  endif
 # endif
 
 #include <utility>

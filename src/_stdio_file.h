@@ -271,6 +271,18 @@ inline char* _FILE_I_end(const FILE *__f)
 
 inline ptrdiff_t _FILE_I_avail(const FILE *__f) { return __f->_r; }
 
+#if ( defined(__GNUC__) && defined(__APPLE__) )
+inline char& _FILE_I_preincr(FILE *__f)
+{ --__f->_r; return *(char*) (++__f->_p); }
+inline char& _FILE_I_postincr(FILE *__f)
+{ --__f->_r; return *(char*) (__f->_p++); }
+inline char& _FILE_I_predecr(FILE *__f)
+{ ++__f->_r; return *(char*) (--__f->_p); }
+inline char& _FILE_I_postdecr(FILE *__f)
+{ ++__f->_r; return *(char*) (__f->_p--); }
+inline void _FILE_I_bump(FILE *__f, int __n)
+{ __f->_p += __n; __f->_r -= __n; }
+#else
 inline char& _FILE_I_preincr(FILE *__f)
 { --__f->_r; --__f->_bf._size; return *(char*) (++__f->_p); }
 inline char& _FILE_I_postincr(FILE *__f)
@@ -281,6 +293,7 @@ inline char& _FILE_I_postdecr(FILE *__f)
 { ++__f->_r; ++__f->_bf._size; return *(char*) (__f->_p--); }
 inline void _FILE_I_bump(FILE *__f, int __n)
 { __f->_p += __n; __f->_bf._size+=__n; __f->_r -= __n; }
+#endif
 
 inline void _FILE_I_set(FILE *__f, char* __begin, char* __next, char*
 			__end) {
@@ -296,6 +309,18 @@ inline char* _FILE_O_end(const FILE *__f)
 
 inline ptrdiff_t _FILE_O_avail(const FILE *__f) { return __f->_w; }
 
+#if ( defined(__GNUC__) && defined(__APPLE__) )
+inline char& _FILE_O_preincr(FILE *__f)
+{ --__f->_w; return *(char*) (++__f->_p); }
+inline char& _FILE_O_postincr(FILE *__f)
+{ --__f->_w; return *(char*) (__f->_p++); }
+inline char& _FILE_O_predecr(FILE *__f)
+{ ++__f->_w; return *(char*) (--__f->_p); }
+inline char& _FILE_O_postdecr(FILE *__f)
+{ ++__f->_w; return *(char*) (__f->_p--); }
+inline void _FILE_O_bump(FILE *__f, int __n)
+{ __f->_p += __n; __f->_w -= __n; }
+#else
 inline char& _FILE_O_preincr(FILE *__f)
 { --__f->_w; --__f->_bf._size; return *(char*) (++__f->_p); }
 inline char& _FILE_O_postincr(FILE *__f)
@@ -306,6 +331,7 @@ inline char& _FILE_O_postdecr(FILE *__f)
 { ++__f->_w; ++__f->_bf._size; return *(char*) (__f->_p--); }
 inline void _FILE_O_bump(FILE *__f, int __n)
 { __f->_p += __n; __f->_bf._size+=__n; __f->_w -= __n; }
+#endif
 
 inline void _FILE_O_set(FILE *__f, char* __begin, char* __next, char*
 			__end) {

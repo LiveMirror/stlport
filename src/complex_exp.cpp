@@ -187,7 +187,7 @@ _STLP_DECLSPEC complex<double> _STLP_CALL pow(const complex<double>& a, const co
   return complex<double>(x * _STLP_COS(y), x * _STLP_SIN(y));
 }
 
-
+# ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL pow(const long double& a,
                                                    const complex<long double>& b) {
   long double logr = _STLP_LOGL(a);
@@ -226,4 +226,7 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL pow(const complex<long double>& a
   return complex<long double>(x * _STLP_COSL(y), x * _STLP_SINL(y));
 }
 
+#endif
+
 _STLP_END_NAMESPACE
+
