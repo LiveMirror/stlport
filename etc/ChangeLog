@@ -1,3 +1,10 @@
+2005-03-06  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/cstdlib, stlport/cmath, stlport/stl/_cmath.h: define
+	overloaded functions in the scope of global namespace and than import
+	all in stlp_std with 'using' directive. This is better than
+	solution from 2005-03-04 below.
+
 2005-03-05  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_construct.h: Simplification of the _Copy_Construct
