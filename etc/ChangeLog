@@ -2,6 +2,9 @@
 
 	* stlport/stl/_istream.h, _ostream.h: Fix assignment operators prototypes
 	for the sentry struct. Thanks -Weffc++ feature of gcc.
+
+	* build/Makefiles/gmake/cygmin/rules-install-so.mak: Add missing folder
+	creation in the install process thanks Charlemagne report.
 	
 2005-03-28  Petr Ovtchenkov  <ptr@island...>
 

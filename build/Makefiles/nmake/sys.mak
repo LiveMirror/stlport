@@ -12,7 +12,7 @@ EXE = .exe
 
 # static library extention:
 ARCH = lib
-AR = lib.exe /nologo
+AR = lib /nologo
 AR_INS_R = 
 AR_EXTR = 
 AR_OUT = /OUT:$@

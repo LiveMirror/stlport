@@ -4,10 +4,18 @@
 #INCLUDES = -I$(SRCROOT)/include
 #INCLUDES =
 
-CXX = cl.exe
-CC = cl.exe
-LINK = link.exe
-RC = rc.exe
+!ifndef CXX
+CXX = cl
+!endif
+!ifndef CC
+CC = cl
+!endif
+!ifndef LINK
+LINK = link
+!endif
+!ifndef RC
+RC = rc
+!endif
 
 !ifdef DEFS
 DEFS_REL = $(DEFS) $(DEFS_REL)
