@@ -33,7 +33,7 @@
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
 #  define _STLP_FILE_UNIQUE_ID TEST_ALGO_CPP
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 # endif
 
 //

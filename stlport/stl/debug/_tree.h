@@ -39,7 +39,7 @@
 #include <stl/_alloc.h>
 
 #define _STLP_FILE_UNIQUE_ID TREE_H
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 
 #  undef _DBG_Rb_tree
 #  define _DBG_Rb_tree _Rb_tree

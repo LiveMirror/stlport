@@ -33,7 +33,7 @@
 #include <stl/debug/_iterator.h>
 
 #define _STLP_FILE_UNIQUE_ID VECTOR_H
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 
 # ifndef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
 #  undef  _DBG_vector

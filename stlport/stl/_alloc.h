@@ -70,7 +70,7 @@
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
 #  define _STLP_FILE_UNIQUE_ID ALLOC_H
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 # endif
 
 

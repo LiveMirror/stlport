@@ -64,7 +64,7 @@ inline void* __stlp_chunk_malloc(size_t __bytes) { return _STLP_STD::__stl_new(_
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
 #  define _STLP_FILE_UNIQUE_ID ALLOC_C
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 # endif
 
 _STLP_BEGIN_NAMESPACE

@@ -30,7 +30,7 @@
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
 #  define _STLP_FILE_UNIQUE_ID TEST_LIST_CPP
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 # endif
 
 typedef EH_STD::__list__<TestClass, eh_allocator(TestClass) > TestList;

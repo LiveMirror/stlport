@@ -39,7 +39,7 @@
 # include <stl/debug/_iterator.h>
 
 #define _STLP_FILE_UNIQUE_ID HASHTABLE_H
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 
 #  undef  hashtable
 #  undef  _DBG_hashtable

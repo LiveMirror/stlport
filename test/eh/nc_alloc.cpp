@@ -114,7 +114,7 @@ static bool using_alloc_set = false;
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
 #  define _STLP_FILE_UNIQUE_ID NC_ALLOC_CPP
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 # endif
 
 # if !defined (NO_FAST_ALLOCATOR)

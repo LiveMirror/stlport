@@ -35,7 +35,7 @@
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
 #  define _STLP_FILE_UNIQUE_ID TEST_BIT_VECTOR_CPP
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 # endif
 
 typedef EH_BIT_VECTOR BitVector;

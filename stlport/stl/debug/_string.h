@@ -25,7 +25,7 @@
 #include <stl/debug/_iterator.h>
 
 #define _STLP_FILE_UNIQUE_ID STRING_H
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 
 # define _STLP_DBG_STRING_BASE _Nondebug_string <_CharT, _Traits, _Alloc>
 

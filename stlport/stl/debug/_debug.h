@@ -35,14 +35,13 @@
 #   define _STLP_FILE__ __FILE__
 # endif
 
-# if !defined(_STLP_DEFINE_THIS_FILE)
+# if !defined(_STLP_INSTRUMENT_FILE)
 #  define _STLP_FILE_NAME _STLP_FILE_UNIQUE_ID
-#  define _STLP_DEFINE_THIS_FILE() static char const*const _STLP_FILE_UNIQUE_ID = _STLP_FILE__
-#  define _STLP_DEFINE_THIS_FILE2 static char const*const _STLP_FILE_NAME = _STLP_FILE__;
+#  define _STLP_INSTRUMENT_FILE() static char const*const _STLP_FILE_UNIQUE_ID = _STLP_FILE__
 # endif
  
 # define _STLP_FILE_UNIQUE_ID DEBUG_H
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 
 enum {
   _StlFormat_ERROR_RETURN,

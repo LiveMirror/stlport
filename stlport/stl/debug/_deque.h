@@ -37,7 +37,7 @@
 #include <stl/debug/_iterator.h>
 
 #define _STLP_FILE_UNIQUE_ID DEQUE_H
-_STLP_DEFINE_THIS_FILE();
+_STLP_INSTRUMENT_FILE();
 
 # if !defined (_STLP_USE_WRAPPER_FOR_ALLOC_PARAM) && !defined (_STLP_NO_DEFAULT_NON_TYPE_PARAM)
 #  undef  _DBG_deque
