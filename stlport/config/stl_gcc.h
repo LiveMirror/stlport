@@ -352,8 +352,6 @@ typedef unsigned int wint_t;
 #   define _STLP_STATIC_TEMPLATE_DATA 1
 # endif
 
-#define _STLP_USE_OWN_NAMESPACE
-
 
 
 
