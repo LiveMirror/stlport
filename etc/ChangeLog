@@ -5,6 +5,9 @@
 	* doc/evc_workaround.txt: Documentation file from Ulrich Eckhardt about the EVC 
 	workaround to avoid annoying warnings.
 
+	* stlport/typeinfo: Patch from Ulrich Eckhardt to fix missing type_info struct
+	under MSVC6 and EVC and also identation.
+
 2004-12-10  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_collate.h, _locale.h: fix of the __locale_do_operator_call internal
