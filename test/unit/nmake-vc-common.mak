@@ -1,7 +1,7 @@
 # -*- Makefile -*- Time-stamp: <04/03/30 14:53:15 ptr>
 # $Id$
 
-SRCROOT=../../src/explore
+SRCROOT=../../src
 STLPORT_DIR=../..
 
 !include Makefile.inc

@@ -1,7 +1,7 @@
 # -*- Makefile -*- Time-stamp: <04/03/14 18:55:49 ptr>
 # $Id$
 
-SRCROOT := ../../src/explore
+SRCROOT := ../../src
 COMPILER_NAME := icc
 
 ALL_TAGS := release-shared stldbg-shared
