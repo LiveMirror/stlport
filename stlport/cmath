@@ -93,42 +93,6 @@ inline long double log10l(long double v) { return __log10l(v); }
 }
 #endif // __sun && __GNUC__
 
-
-#ifdef _STLP_IMPORT_VENDOR_CSTD
-_STLP_BEGIN_NAMESPACE
-#  if ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
-#    ifdef _STLP_HAS_NATIVE_FLOAT_ABS
-using _STLP_VENDOR_CSTD::abs;
-#    endif
-using _STLP_VENDOR_CSTD::acos;
-using _STLP_VENDOR_CSTD::asin;
-using _STLP_VENDOR_CSTD::atan2;
-using _STLP_VENDOR_CSTD::atan;
-using _STLP_VENDOR_CSTD::ceil;
-using _STLP_VENDOR_CSTD::cos;
-using _STLP_VENDOR_CSTD::cosh;
-using _STLP_VENDOR_CSTD::exp;
-using _STLP_VENDOR_CSTD::fabs;
-using _STLP_VENDOR_CSTD::floor;
-using _STLP_VENDOR_CSTD::fmod;
-using _STLP_VENDOR_CSTD::frexp;
-using _STLP_VENDOR_CSTD::ldexp;
-using _STLP_VENDOR_CSTD::log10;
-using _STLP_VENDOR_CSTD::log;
-using _STLP_VENDOR_CSTD::modf;
-#if !defined(_STLP_MSVC) || (_STLP_MSVC > 1300)
-//The native pow has a bugged overload (double pow(int, int)):
-using _STLP_VENDOR_CSTD::pow;
-#endif
-using _STLP_VENDOR_CSTD::sin;
-using _STLP_VENDOR_CSTD::sinh;
-using _STLP_VENDOR_CSTD::sqrt;
-using _STLP_VENDOR_CSTD::tan;
-using _STLP_VENDOR_CSTD::tanh;
-#  endif /* BUG */
-_STLP_END_NAMESPACE
-#endif /* _STLP_IMPORT_VENDOR_CSTD */
-
 #ifndef _STLP_CMATH_H_HEADER
 #  include <stl/_cmath.h>
 #endif

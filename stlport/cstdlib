@@ -74,13 +74,12 @@ using _STLP_VENDOR_CSTD::wctomb;
 #     endif
 #    endif
 using _STLP_VENDOR_CSTD::qsort;
-// boris : if we do not have native float abs, we define ours; then we cannot do "using" for "other" abs 
-#    ifdef _STLP_HAS_NATIVE_FLOAT_ABS 
-using _STLP_VENDOR_CSTD::abs;
-#    endif
-using _STLP_VENDOR_CSTD::div;
 using _STLP_VENDOR_CSTD::labs;
 using _STLP_VENDOR_CSTD::ldiv;
+#  if defined ( _STLP_LONG_LONG )
+using _STLP_VENDOR_CSTD::llabs;
+using _STLP_VENDOR_CSTD::lldiv;
+#  endif
 using _STLP_VENDOR_CSTD::rand;
 using _STLP_VENDOR_CSTD::srand;
 #  endif /* _STLP_NO_CSTD_FUNCTION_IMPORTS */
@@ -89,16 +88,24 @@ _STLP_END_NAMESPACE
 
 _STLP_BEGIN_NAMESPACE
 
-#if defined(__cplusplus)
-#  if defined(_STLP_HAS_NO_NEW_C_HEADERS)
-#    if !defined ( _STLP_LABS )
-inline long   abs(long __x) { return _STLP_VENDOR_CSTD::labs(__x); }
-#    endif
-#    if !defined ( _STLP_LDIV )
+//#if defined(__cplusplus)
+//#  if defined(_STLP_HAS_NO_NEW_C_HEADERS)
+# if !defined(_MSC_EXTENSIONS) || (defined(_STLP_MSVC) && _STLP_MSVC > 1300)
+inline int abs(int __x ) { return _STLP_VENDOR_CSTD::abs(__x); }
+inline long abs(long __x) { return _STLP_VENDOR_CSTD::labs(__x); }
+# else
+#  pragma warning (push)
+#  pragma warning (disable: 4162)
+#  pragma function (abs)
+inline long abs(long __x) {return (labs(__x)); }
+#  pragma intrinsic (abs)
+#  pragma warning (pop)
+# endif
+inline div_t div(int __x, int __y) { return _STLP_VENDOR_CSTD::div(__x, __y); }
 inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); } 
-#    endif
-#  endif
+//#  endif
 
+#if 0
 #  if defined(_STLP_MSVC) && (_STLP_MSVC <= 1310)
 inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); }
 #    if defined (_MSC_EXTENSIONS) && (_STLP_MSVC <= 1300)
@@ -110,13 +117,12 @@ inline long abs(long __x) {return (labs(__x)); }
 #      pragma warning (pop)
 #    endif
 #  endif
-#endif /* __cplusplus */
+#endif
+//#endif /* __cplusplus */
 
-#  if defined ( _STLP_LLABS )
-_STLP_LONG_LONG   abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::_STLP_LLABS(__x); }
-#  endif
-#  if defined ( _STLP_LLDIV )
-_STLP_LLDIV_T div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDOR_CSTD::_STLP_LLDIV(__x, __y); } 
+#  if defined ( _STLP_LONG_LONG ) // may be more conditions should be here
+inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::llabs(__x); }
+inline lldiv_t div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDOR_CSTD::lldiv(__x, __y); } 
 #  endif
 
 _STLP_END_NAMESPACE
