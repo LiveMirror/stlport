@@ -1,4 +1,4 @@
-# -*- makefile -*- Time-stamp: <04/08/23 23:07:35 ptr>
+# -*- makefile -*- Time-stamp: <05/03/24 11:33:35 ptr>
 # $Id$
 
 
@@ -9,47 +9,91 @@
 
 OPT += -fPIC
 
+ifndef NOT_USE_NOSTDLIB
+
+ifeq ($(CXX_VERSION_MAJOR),2)
+# i.e. gcc before 3.x.x: 2.95, etc.
+# gcc before 3.x don't had libsupc++.a and libgcc_s.so
+# exceptions and operators new are in libgcc.a
+#  Unfortunatly gcc before 3.x has a buggy C++ language support outside stdc++, so definition of STDLIBS below is commented
+NOT_USE_NOSTDLIB := 1
+#STDLIBS := $(shell ${CXX} -print-file-name=libgcc.a) -lpthread -lc -lm
+endif
+
+ifeq ($(CXX_VERSION_MAJOR),3)
+# gcc before 3.3 (i.e. 3.0.x, 3.1.x, 3.2.x) has buggy libsupc++, so we should link with libstdc++ to avoid one
+ifeq ($(CXX_VERSION_MINOR),0)
+NOT_USE_NOSTDLIB := 1
+endif
+ifeq ($(CXX_VERSION_MINOR),1)
+NOT_USE_NOSTDLIB := 1
+endif
+ifeq ($(CXX_VERSION_MINOR),2)
+NOT_USE_NOSTDLIB := 1
+endif
+endif
+
+endif
+
+ifndef NOT_USE_NOSTDLIB
 ifeq ($(OSNAME),linux)
+_USE_NOSTDLIB := 1
+endif
+
+ifeq ($(OSNAME),openbsd)
+_USE_NOSTDLIB := 1
+endif
+
+ifeq ($(OSNAME),freebsd)
+_USE_NOSTDLIB := 1
+endif
+
+ifeq ($(OSNAME),netbsd)
 _USE_NOSTDLIB := 1
 endif
 
 ifeq ($(OSNAME),sunos)
 #_USE_NOSTDLIB := 1
 endif
+endif
 
 ifdef _USE_NOSTDLIB
 NOSTDLIB :=
 
-ifeq ($(CXX_VERSION_MAJOR),3)
-
-# gcc before 3.3 (i.e. 3.0.x, 3.1.x, 3.2.x) has buggy libsupc++, so we should link with libstdc++ to avoid one
-
-ifneq ($(CXX_VERSION_MINOR),0)
-ifneq ($(CXX_VERSION_MINOR),1)
-ifneq ($(CXX_VERSION_MINOR),2)
+# ifeq ($(CXX_VERSION_MAJOR),3)
+# Include whole language support archive (libsupc++.a) into libstlport:
+# all C++ issues are in libstlport now.
 ifeq ($(OSNAME),linux)
 START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
 #START_A_OBJ := $(shell for o in crt{i,beginT}.o; do ${CXX} -print-file-name=$$o; done)
 END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
+STDLIBS := -Wl,--whole-archive -lsupc++ -Wl,--no-whole-archive -lgcc_s -lpthread -lc -lm
+endif
+ifeq ($(OSNAME),openbsd)
+START_OBJ := $(shell for o in crtbeginS.o; do ${CXX} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtendS.o; do ${CXX} -print-file-name=$$o; done)
+STDLIBS := -Wl,--whole-archive -lsupc++ -Wl,--no-whole-archive -lpthread -lc -lm
+endif
+ifeq ($(OSNAME),freebsd)
+START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
+STDLIBS := -Wl,--whole-archive -lsupc++ -Wl,--no-whole-archive -lgcc_s -lpthread -lc -lm
+endif
+ifeq ($(OSNAME),netbsd)
+START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
+STDLIBS := -Wl,--whole-archive -lsupc++ -Wl,--no-whole-archive -lgcc_s -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),sunos)
 #START_OBJ := $(shell for o in crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
 #END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+#STDLIBS := -Wl,--whole-archive -lsupc++ -Wl,--no-whole-archive -lgcc_s -lpthread -lc -lm
 endif
 #END_A_OBJ := $(shell for o in crtn.o; do ${CXX} -print-file-name=$$o; done)
-STDLIBS := -Wl,--whole-archive -lsupc++ -Wl,--no-whole-archive -lgcc_s -lpthread -lc -lm
-NOSTDLIB := -nostdlib
-endif
-endif
-endif
 
-else
-# i.e. gcc before 3.x.x: 2.95, etc.
-# gcc before 3.x don't had libsupc++.a and libgcc_s.so
-# exceptions and operators new are in libgcc.a
-#  Unfortunatly gcc before 3.x has a buggy C++ language support outside stdc++, so line below is commented
-#STDLIBS := $(shell ${CXX} -print-file-name=libgcc.a) -lpthread -lc -lm
-endif
+NOSTDLIB := -nostdlib
+# endif
+
 endif
 
 ifeq ($(OSNAME),hp-ux)
@@ -108,9 +152,9 @@ release-static:	LDFLAGS += -staticlib ${LDSEARCH}
 endif
 
 ifeq ($(OSNAME),openbsd)
-dbg-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAME_DBGxx) ${LDSEARCH}
-stldbg-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAME_STLDBGxx) ${LDSEARCH}
-release-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAMExx) ${LDSEARCH}
+dbg-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAME_DBGxx) ${LDSEARCH} ${NOSTDLIB}
+stldbg-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAME_STLDBGxx) ${LDSEARCH} ${NOSTDLIB}
+release-shared:	LDFLAGS += -shared -Wl,-soname -Wl,$(SO_NAMExx) ${LDSEARCH} ${NOSTDLIB}
 dbg-static:	LDFLAGS += ${LDSEARCH}
 stldbg-static:	LDFLAGS += ${LDSEARCH}
 release-static:	LDFLAGS += ${LDSEARCH}
