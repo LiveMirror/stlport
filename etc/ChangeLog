@@ -13,6 +13,12 @@
 	and stl_msvc.h. Now all Windows CE specific defines are in stl_evc.h only.
 	Michael Fink contribution.
 
+	* stlport/stl/_codecvt.h, _ctype.h, _messages_facets.h, _monetary.h: add friend class
+	_Locale_impl.
+
+	* stlport/stl/_num_get.h, _num_put.h, _numpunct.h, _time_facets.h: ditto.
+
+
 
 2004-11-30  Petr Ovtchenkov  <ptr@island...>
 
