@@ -17,11 +17,13 @@ class LocaleTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE(LocaleTest);
   CPPUNIT_TEST(num_put_get);
   CPPUNIT_TEST(money_put_get);
+  CPPUNIT_TEST(time_put_get);
   CPPUNIT_TEST_SUITE_END();
 
 public:
   void num_put_get();
   void money_put_get();
+  void time_put_get();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LocaleTest);
@@ -157,5 +159,34 @@ void LocaleTest::money_put_get() {
   istr.str(str_res);
   fmg.get(istr, istreambuf_iterator<char>(), false, ostr, err, val);
   CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
-  CPPUNIT_ASSERT( val == -1234.56 );
+  CPPUNIT_ASSERT( val == -123456 );
+}
+
+void LocaleTest::time_put_get() {
+  auto_ptr<locale> floc;
+  try {
+    floc.reset(new locale("french"));
+  }
+  catch (runtime_error const&) {
+    /*
+     * No locale support or bad locale identification, 
+     * we do not test anything.
+     */
+    bool no_locale_support_or_wrong_locale_name = true;
+    CPPUNIT_ASSERT ( ! no_locale_support_or_wrong_locale_name );
+    return;
+  }
+
+  time_put<char> const&tmp = use_facet<time_put<char> >(*floc);
+  time_get<char> const&tmg = use_facet<time_get<char> >(*floc);
+
+  struct tm xmas = { 0, 0, 12, 25, 11, 93 };
+  ostringstream ostr;
+  ostr.imbue(*floc);
+  string format = "%a %d %b %y";
+
+  time_put<char>::iter_type ret = tmp.put(ostr, ostr, ' ', &xmas, format.data(), format.data() + format.size());
+  CPPUNIT_ASSERT( !ret.failed() );
+
+  string str_ret = ostr.str();
 }

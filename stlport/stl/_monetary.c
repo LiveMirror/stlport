@@ -147,38 +147,20 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
   return true;
 }
 
-//===== methods ======
-template <class _CharT, class _InputIter>
-_InputIter 
-money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  __intl,
-                                      ios_base&  __str, ios_base::iostate& __err,
-                                      _STLP_LONG_DOUBLE& __units) const {
-  string_type __buf;
-  __s = do_get(__s, __end, __intl, __str, __err, __buf);
 
-  if (__err == ios_base::goodbit || __err == ios_base::eofbit) {
-    __buf.push_back(0);
-    typename string_type::iterator __b = __buf.begin(), __e = __buf.end();
-    // Can't use atold, since it might be wchar_t. Don't get confused by name below :
-    // it's perfectly capable of reading long double.
-    __get_decimal_integer(__b, __e, __units);
-  }
-  if (__s == __end)
-    __err |= ios_base::eofbit;
-  return __s;
-}
-
-template <class _CharT, class _InputIter>
-_InputIter 
-money_get<_CharT, _InputIter>::do_get(iter_type __s, 
-                                      iter_type  __end, bool  __intl,
-                                      ios_base&  __str, ios_base::iostate&  __err,
-                                      string_type& __digits) const {
+template <class _CharT, class _InputIter, class _StrType>
+_InputIter _S_do_get(_InputIter __s, 
+                     _InputIter __end, bool  __intl,
+                     ios_base&  __str, ios_base::iostate&  __err,
+                     _StrType& __digits, bool &__is_positive) {
   if (__s == __end) {
     __err |= ios_base::eofbit;
     return __s;
   }
 
+  typedef _CharT char_type;
+  typedef _StrType string_type;
+  typedef _InputIter iter_type;
   typedef moneypunct<char_type, false> _Punct;
   typedef moneypunct<char_type, true>  _Punct_intl;
   typedef ctype<char_type>             _Ctype;
@@ -195,7 +177,6 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
   string_type __ps = __intl ? __punct_intl.positive_sign()
                             : __punct.positive_sign();
   int __i;
-  bool __is_positive = true;
   bool __symbol_required = (__str.flags() & ios_base::showbase) != 0;
   string_type __buf;
   back_insert_iterator<string_type> __out(__buf);
@@ -329,6 +310,42 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
     __err |= ios::eofbit;
 
   return __s;
+}
+
+//===== methods ======
+template <class _CharT, class _InputIter>
+_InputIter 
+money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  __intl,
+                                      ios_base&  __str, ios_base::iostate& __err,
+                                      _STLP_LONG_DOUBLE& __units) const {
+  string_type __buf;
+  bool __is_positive = true;
+  __s = _S_do_get<_CharT, _InputIter, string_type>(__s, __end, __intl, __str, __err, __buf, __is_positive);
+
+  if (__err == ios_base::goodbit || __err == ios_base::eofbit) {
+    typename string_type::iterator __b = __buf.begin(), __e = __buf.end();
+
+    if (!__is_positive) ++__b;
+    // Can't use atold, since it might be wchar_t. Don't get confused by name below :
+    // it's perfectly capable of reading long double.
+    __get_decimal_integer(__b, __e, __units);
+
+    if (!__is_positive) {
+      __units = -__units;
+    }
+  }
+
+  return __s;
+}
+
+template <class _CharT, class _InputIter>
+_InputIter 
+money_get<_CharT, _InputIter>::do_get(iter_type __s, 
+                                      iter_type  __end, bool  __intl,
+                                      ios_base&  __str, ios_base::iostate&  __err,
+                                      string_type& __digits) const {
+  bool __is_positive = true;
+  return _S_do_get<_CharT, _InputIter, string_type>(__s, __end, __intl, __str, __err, __digits, __is_positive);
 }
 
 // money_put facets
