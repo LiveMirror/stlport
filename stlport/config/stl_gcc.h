@@ -80,7 +80,9 @@
 #    define _STLP_USE_DECLSPEC 1
 // #   define _STLP_USE_TEMPLATE_EXPORT 1
 /* Using dynamic library in MinGW requires _STLP_NO_CUSTOM_IO */
-#    define _STLP_NO_CUSTOM_IO
+#    if !defined(_STLP_NO_CUSTOM_IO)
+#      define _STLP_NO_CUSTOM_IO
+#    endif
 #  endif /* _STLP_USE_DYNAMIC_LIB */
 
 #endif /* __MINGW32__ */

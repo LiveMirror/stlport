@@ -61,5 +61,3 @@ BOOST_DIR ?= ${SRCROOT}/../extern/boost
 STLPORT_DIR ?= e:/STLlab/STLport
 CoMT_DIR ?= ${SRCROOT}
 
-MSVC_DIR ?= c:/Program Files/Microsoft Visual Studio/VC98
-MSVC_LIB_DIR ?= $(MSVC_DIR)/Lib

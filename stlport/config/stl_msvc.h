@@ -230,10 +230,8 @@
 # endif /* UNDER_CE */
 
 #if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
-#  ifdef _DEBUG
-//Defined here to take into account Windows CE specificities about the _DEBUG macro.
+// defined for DEBUG and NDEBUG too, to allow user mix own debug build with STLP release library
 #    define _STLP_USE_ABBREVS
-#  endif
 #endif
 
 # if !( defined(_STLP_WINCE) )
