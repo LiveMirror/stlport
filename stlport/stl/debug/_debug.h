@@ -141,7 +141,7 @@ struct __stl_debug_engine {
 # endif /* _STLP_DEBUG */
 
   // debug messages and formats
-   _STLP_STATIC_MEMBER_DECLSPEC static const char* _Message_table[_StlMsg_MAX];
+  static _STLP_STATIC_MEMBER_DECLSPEC const char* _Message_table[_StlMsg_MAX];
 };
 
 
