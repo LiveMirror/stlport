@@ -99,6 +99,10 @@ echo    Sets target processor for given compiler; currently only used for
 echo    evc3 and evc4 compiler. The following keywords are available:
 echo    ARM     ARM processor
 echo    x86     x86 processor (Emulator)
+echo    MIPS    MIPS processor (evc3 only)
+echo    MIPS16  MIPS16 processor (evc4 only)
+echo    MIPSII  MIPS II processor (evc4 only)
+echo    MIPSIV  MIPS IV processor (evc4 only)
 echo.
 echo "-x"
 echo    Enables cross-compiling; the result is that all built files that are
@@ -109,7 +113,7 @@ echo "--rtl-static"
 echo "--rtl-dynamic"
 echo    Enables usage of static (libc.lib family) or dynamic (msvcrt.lib family)
 echo    C/C++ runtime library when linking with STLport. If you want your appli/dll
-echo    to link statically with STLport but using the dynamic C runtime use 
+echo    to link statically with STLport but using the dynamic C runtime use
 echo    --rtl-dynamic; if you want to link dynamicaly with STLport but using the
 echo    static C runtime use --rtl-static. See README.options for details.
 echo    Don't forget to signal the link method when building your appli or dll, in
@@ -126,7 +130,7 @@ REM *
 REM **************************************************************************
 :opt_comp
 
-set STLPORT_SELECTED_PROC=%2
+set STLPORT_SELECTED_CONFIG=%2
 
 if "%2" == "msvc6" goto oc_msvc6
 if "%2" == "msvc7" goto oc_msvc7
@@ -197,8 +201,8 @@ REM *
 REM **************************************************************************
 :opt_proc
 
-if "%STLPORT_SELECTED_PROC%" == "evc3" goto op_ok
-if "%STLPORT_SELECTED_PROC%" == "evc4" goto op_ok
+if "%STLPORT_SELECTED_CONFIG%" == "evc3" goto op_ok
+if "%STLPORT_SELECTED_CONFIG%" == "evc4" goto op_ok
 
 echo Error: Setting processor for compiler other than evc3 and evc4!
 goto op_end
@@ -212,6 +216,11 @@ if "%2" == "arm" goto op_arm
 if "%2" == "X86" goto op_x86
 if "%2" == "x86" goto op_x86
 
+if "%2" == "MIPS" goto op_mips
+if "%2" == "MIPS16" goto op_mips
+if "%2" == "MIPSII" goto op_mips
+if "%2" == "MIPSIV" goto op_mips
+
 echo Unknown processor: %2
 goto op_end
 
@@ -223,6 +232,23 @@ goto op_end
 :op_x86
 echo Setting processor: x86 (Emulator)
 echo TARGET_PROC=x86 >> ..\Makefiles\config.mak
+goto op_end
+
+:op_mips
+echo Setting processor: MIPS
+REM note, MIPSII (and all evc4 MIPS processors) are in the CE 4.0 SDK, so the
+REM version gets redefined here
+if "%STLPORT_SELECTED_CONFIG%" == "evc4" echo CEVERSION=400 >> ..\Makefiles\config.mak
+echo TARGET_PROC=mips >> ..\Makefiles\config.mak
+
+if "%2" == "MIPS16" echo DEFS_COMMON=/DMIPS16 >> ..\Makefiles\config.mak
+if "%2" == "MIPSII" echo DEFS_COMMON=/DMIPSII >> ..\Makefiles\config.mak
+if "%2" == "MIPSIV" echo DEFS_COMMON=/DMIPSIV >> ..\Makefiles\config.mak
+
+if "%2" == "MIPS16" echo MIPS_MACHINE_TYPE=MIPS16 >> ..\Makefiles\config.mak
+if "%2" == "MIPSII" echo MIPS_MACHINE_TYPE=MIPS >> ..\Makefiles\config.mak
+if "%2" == "MIPSIV" echo MIPS_MACHINE_TYPE=MIPSFPU >> ..\Makefiles\config.mak
+
 goto op_end
 
 :op_end
@@ -250,10 +276,10 @@ REM *
 REM **************************************************************************
 
 :opt_rtl
-if "%STLPORT_SELECTED_PROC%" == "msvc6" goto or_ok
-if "%STLPORT_SELECTED_PROC%" == "msvc7" goto or_ok
-if "%STLPORT_SELECTED_PROC%" == "msvc71" goto or_ok
-if "%STLPORT_SELECTED_PROC%" == "msvc8" goto or_ok
+if "%STLPORT_SELECTED_CONFIG%" == "msvc6" goto or_ok
+if "%STLPORT_SELECTED_CONFIG%" == "msvc7" goto or_ok
+if "%STLPORT_SELECTED_CONFIG%" == "msvc71" goto or_ok
+if "%STLPORT_SELECTED_CONFIG%" == "msvc8" goto or_ok
 
 echo Error: Setting C runtime library for compiler other than microsoft ones!
 goto or_end
@@ -288,5 +314,5 @@ echo and "bin" folder when done.
 echo.
 
 :skp_comp
-set STLPORT_SELECTED_PROC=
+set STLPORT_SELECTED_CONFIG=
 set STLPORT_COMPILE_COMMAND=

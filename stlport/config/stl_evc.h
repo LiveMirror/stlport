@@ -36,7 +36,7 @@
 
 
 // When compiling on evc4 / ARM, _MSC_VER is 1201; change that
-# if defined(_STLP_WCE_NET) && defined(_ARM_)
+# if defined(_STLP_WCE_NET) && (defined(_ARM_) || defined(_MIPS_))
 // pretend i am _MSC_VER 1200 not 1201
 #  undef _STLP_MSVC
 #  define _STLP_MSVC 1200
@@ -161,6 +161,24 @@
 #   define _STLP_NATIVE_CPP_C_HEADER(x) <../Armv4/##x>
 #   define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../Armv4/##x>
 #   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../Armv4/##header>
+#  elif defined(_MIPS_) && defined(MIPS16)
+#   define _STLP_NATIVE_HEADER(header) <../mips16/##header>
+#   define _STLP_NATIVE_C_HEADER(header) <../mips16/##header>
+#   define _STLP_NATIVE_CPP_C_HEADER(header) <../mips16/##header>
+#   define _STLP_NATIVE_OLD_STREAMS_HEADER(header) <../mips16/##header>
+#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../mips16/##header>
+#  elif defined(_MIPS_) && defined(MIPSII)
+#   define _STLP_NATIVE_HEADER(header) <../mipsII/##header>
+#   define _STLP_NATIVE_C_HEADER(header) <../mipsII/##header>
+#   define _STLP_NATIVE_CPP_C_HEADER(header) <../mipsII/##header>
+#   define _STLP_NATIVE_OLD_STREAMS_HEADER(header) <../mipsII/##header>
+#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../mipsII/##header>
+#  elif defined(_MIPS_) && defined(MIPSIV)
+#   define _STLP_NATIVE_HEADER(header) <../mipsIV/##header>
+#   define _STLP_NATIVE_C_HEADER(header) <../mipsIV/##header>
+#   define _STLP_NATIVE_CPP_C_HEADER(header) <../mipsIV/##header>
+#   define _STLP_NATIVE_OLD_STREAMS_HEADER(header) <../mipsIV/##header>
+#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../mipsIV/##header>
 #  endif
 # endif /* _STLP_WCE_NET */
 

@@ -1,3 +1,7 @@
+2005-01-28  Francois Dumont  <dums@stlport...>
+
+	* Application of a patch from Michael Fink for EVC MIPSS.
+
 2005-01-27  Francois Dumont  <dums@stlport...>
 
 	* stlport/deque, list, map, set, slist, stack, valarray: _STLP_WHOLE_VENDOR_STD
@@ -84,7 +88,7 @@
 
 	* stlport/stl/_algo.c: Modification of the stable_partition implementation
 	to limit the size of the allocated temporary buffer of the begin and end
-	of the range are already at the right place.
+	of the range are already at the right place thanks an Stephen Howe idear.
 	
 	* build/test/unit/nmake-vc-common.mak, nmake-evc-common.mak: Removal of the 
 	_STLP_USE_AUTO_LINK macro which is now the default.

@@ -1,7 +1,7 @@
 # Time-stamp: <04/04/30 23:36:48 ptr>
 # $Id$
 
-DEFS_COMMON = /D _WIN32_WCE=$(CEVERSION) /D UNDER_CE=$(CEVERSION) /D "UNICODE"
+DEFS_COMMON = $(DEFS_COMMON) /D _WIN32_WCE=$(CEVERSION) /D UNDER_CE=$(CEVERSION) /D "UNICODE"
 
 !if "$(TARGET_PROC)" == ""
 !error No target processor configured! Please rerun configure.bat!
@@ -18,6 +18,13 @@ OPT_COMMON =
 CXX = cl.exe
 CC = cl.exe
 DEFS_COMMON = $(DEFS_COMMON) /D "x86" /D "_X86_"
+OPT_COMMON =
+!endif
+
+!if "$(TARGET_PROC)" == "mips"
+CXX = clmips.exe
+CC = clmips.exe
+DEFS_COMMON = $(DEFS_COMMON) /D "MIPS" /D "_MIPS_"
 OPT_COMMON =
 !endif
 

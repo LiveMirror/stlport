@@ -11,4 +11,8 @@ LDFLAGS_COMMON = $(LDFLAGS_COMMON) /MACHINE:ARM
 LDFLAGS_COMMON = $(LDFLAGS_COMMON) $(CEx86Corelibc) /nodefaultlib:"OLDNAMES.lib" /MACHINE:X86
 !endif
 
+!if "$(TARGET_PROC)" == "mips"
+LDFLAGS_COMMON = $(LDFLAGS_COMMON) /MACHINE:MIPS
+!endif
+
 !include evc-common.mak
