@@ -1,7 +1,12 @@
+2005-03-07  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_bitset.h, _bitset.c: Avoid include of istream when
+	NO_IOSTREAMS mode thanks Bruno report.
+
 2005-03-06  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/cstdlib, stlport/cmath, stlport/stl/_cmath.h: define
-	overloaded functions in the scope of global namespace and than import
+	overloaded functions in the scope of global namespace and then import
 	all in stlp_std with 'using' directive. This is better than
 	solution from 2005-03-04 below.
 

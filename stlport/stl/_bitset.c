@@ -164,7 +164,15 @@ _Base_bitset<_Nw>::_M_do_find_next(size_t __prev,
 
 #if !defined (_STLP_NON_TYPE_TMPL_PARAM_BUG)
 
-#  if !defined ( _STLP_USE_NO_IOSTREAMS)
+#  if !defined (_STLP_USE_NO_IOSTREAMS)
+
+_STLP_END_NAMESPACE
+
+#ifndef _STLP_STRING_IO_H
+#  include <stl/_string_io.h> //includes _istream.h and _ostream.h
+#endif
+
+_STLP_BEGIN_NAMESPACE
 
 template <class _CharT, class _Traits, size_t _Nb>
 basic_istream<_CharT, _Traits>& _STLP_CALL
@@ -351,7 +359,7 @@ unsigned char _Bs_G<_Dummy>::_S_first_one(unsigned char __byte) {
 
 _STLP_END_NAMESPACE
 
-#  undef __BITS_PER_WORD
-#  undef bitset
+#undef __BITS_PER_WORD
+#undef bitset
 
 #endif /*  _STLP_BITSET_C */
