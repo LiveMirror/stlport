@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 
+// #include <iostream>
+
 #include "cppunit/cppunit_proxy.h"
 
 #if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
@@ -142,6 +144,41 @@ void FloatIOTest::float_input_test()
   CPPUNIT_ASSERT(istr.eof());
   CPPUNIT_ASSERT(check_float(in_val, 12345.0f));
   istr.clear();
+
+  double in_val_d;
+  {
+    stringstream str;
+
+    str << "1E+" << numeric_limits<double>::max_exponent10;
+
+    str >> in_val_d;
+    CPPUNIT_ASSERT(!str.fail());
+    CPPUNIT_ASSERT(str.eof());
+    CPPUNIT_ASSERT( in_val_d != numeric_limits<double>::infinity() );
+    // CPPUNIT_ASSERT(in_val_d == 1E+308);
+    // cerr << "#####" << in_val_d << endl;
+    str.clear();
+  }
+  {
+    stringstream str;
+
+    str << "1E+" << (numeric_limits<double>::max_exponent10 + 1);
+
+    str >> in_val_d;
+    CPPUNIT_ASSERT(!str.fail());
+    CPPUNIT_ASSERT(str.eof());
+    CPPUNIT_ASSERT( in_val_d == numeric_limits<double>::infinity() );
+    // CPPUNIT_ASSERT(in_val_d == 1E+308);
+    // cerr << "#####" << in_val_d << endl;
+    str.clear();
+  }
+
+  istr.str("1E+2048");
+  istr >> in_val_d;
+  CPPUNIT_ASSERT(!istr.fail());
+  CPPUNIT_ASSERT(istr.eof());
+  CPPUNIT_ASSERT(in_val_d == 1E+2048);
+  // cerr << "#####" << in_val_d << endl;
 }
 
 /*
