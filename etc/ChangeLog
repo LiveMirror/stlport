@@ -1,9 +1,13 @@
+2004-08-27  Petr Ovtchenkov  <ptr@Island...>
+
+	* src/explore/Makefiles/gmake/gcc.mak, app/gcc.mak, lib/gcc.mak: buggy C++
+	language support in libsupc++ in gcc before 3.3 not allow to use it;
+	link with libstdc++ instead.
+
 2004-08-24  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_gcc.h, stl_msvc.h: fixing of configuration concerning
 	uncaught_exception and exception handling in general thanks John Roberts.
-
-2004-08-24  Francois Dumont  <dums@...>
 
 	* stlport/stl/_tree.h, _tree.c: Modification of the _Rb_tree_iterator	struct
 	to be able to distiguish iterator types from different tree based containers
