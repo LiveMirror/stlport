@@ -921,7 +921,7 @@ void _Catalog_locale_map::insert(nl_catd_type key, const locale& L) {
 #if defined(__SC__)
       if (!M) delete M;
 #endif
-      M->insert(pair<long, locale>((long)key, L));
+      M->insert(map_type::value_type((long)key, L));
 #if !defined(_STLP_NO_TYPEINFO) && !defined(_STLP_NO_RTTI)
     }
 # endif /* _STLP_NO_TYPEINFO */
