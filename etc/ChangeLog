@@ -1,3 +1,11 @@
+2004-12-21  Petr Ovtchenkov  <ptr@island...>
+
+	* src: untested (lost support) .mak and installation files moved into
+	initial_mak catalog.
+
+	* explore, src: explore catalog moved into src catalog. Makefiles from
+	explore catalog became main makesystem of STLport.
+
 2004-12-20  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.h: Fix of the const begin and end methods of the
@@ -10,9 +18,9 @@
 
 2004-12-17  Boris Fomitchev  <boris@stlport...>
 
-	* char_traits.h : fixed _STLP_NO_WCHAR_T case
+	* char_traits.h: fixed _STLP_NO_WCHAR_T case
 	
-	* src/common_macros.mak : deleted locale.cpp
+	* src/common_macros.mak: deleted locale.cpp
 	
 2004-12-17  Francois Dumont  <dums@stlport...>
 
