@@ -42,7 +42,7 @@ _STLP_BEGIN_NAMESPACE
 
 class messages_base {
 public:
-  typedef long catalog;
+  typedef int catalog;
 };
 
 template <class _CharT> class messages {};

@@ -1,3 +1,8 @@
+2004-12-09  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_messages_facets.h: fixed messages_base::catalog from long typedef
+	to int thanks Ulrich Eckhardt report.
+
 2004-12-01  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stdexcept: removes some warnings regarding the exception class being derived
