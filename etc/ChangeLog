@@ -1,3 +1,13 @@
+2004-07-29  Francois Dumont <dums@...>
+
+	* test/unit/locale_test.cpp: Fix bad macro _STLP_NO_EXCEPTIONS spelling 
+	and add of a check for real locale implementation. Patch done by
+	Michael Fink.
+
+	* stlport/stl/debug/_debug.h, _debug.c, _iterator.h: Modification of the
+	__check_same_owner_or_null function name to the more intuitive 
+	__check_same_or_null_owner thanks a Aleksey Sanin remark.
+
 2004-07-26  Petr Ovtchenkov <ptr@Island...>
 
 	* src/explore/Makefiles/gmake/lib/gcc.mak: avoid linkage with libstd++
