@@ -165,8 +165,7 @@ public:                         // Buffer positioning and manipulation.
     public:
       explicit sentry(basic_ostream<_CharT, _Traits>& __str)
         : _M_str(__str), /* _M_buf(__str.rdbuf()), */ _M_ok(_M_init(__str))
-      {
-      }
+      {}
       
       ~sentry() {
         if (_M_str.flags() & ios_base::unitbuf)
@@ -178,8 +177,9 @@ public:                         // Buffer positioning and manipulation.
 
       operator bool() const { return _M_ok; }
     private:                        // Disable assignment and copy constructor.
-      sentry(const _Self& __s) : _M_str (__s._M_str) {};
-      void operator=(const _Self&) {};
+      //Implementation is here only to avoid warning with some compilers.
+      sentry(const _Self& __s) : _M_str(__s._M_str) {}
+      _Self& operator=(const _Self&) { return *this; }
     };
 # if defined (_STLP_USE_TEMPLATE_EXPORT)
 #  undef sentry

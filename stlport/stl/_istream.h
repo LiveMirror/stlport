@@ -214,8 +214,9 @@ class _Isentry {
     operator bool() const { return _M_ok; }
     
   private:                        // Disable assignment and copy constructor.
+    //Implementation is here only to avoid warning with some compilers.
     sentry(const _Self&) : _M_ok(false) {}
-    void operator=(const _Self&) {}
+    _Self& operator=(const _Self&) { return *this; }
   };
   
 # if defined (_STLP_USE_TEMPLATE_EXPORT)

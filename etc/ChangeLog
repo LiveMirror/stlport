@@ -1,10 +1,15 @@
+2005-03-28  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_istream.h, _ostream.h: Fix assignment operators prototypes
+	for the sentry struct. Thanks -Weffc++ feature of gcc.
+	
 2005-03-28  Petr Ovtchenkov  <ptr@island...>
 
 	* src/num_put_float.cpp: in FreeBSD no *cvt* functions now, use sprintf;
 
 	* stlport/config/stl_gcc.h: in FreeBSD no math *l functions and llabs.
 
-	* test/unit/string_test.cpp: more test with assinment.
+	* test/unit/string_test.cpp: more test with assignment.
 
 2005-03-25  Petr Ovtchenkov  <ptr@island...>
 
