@@ -8,6 +8,13 @@
  *   
  */
 
+/*
+ * Indeed this code is wrong: 1. explicit template specialization
+ * have to appear out-of-class; 2. specialized struct C have to
+ * have function f.
+ *
+ */
+
 struct A
 {
   private:
