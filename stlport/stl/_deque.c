@@ -66,9 +66,9 @@ void _Deque_base<_Tp,_Alloc>::_M_initialize_map(size_t __num_elements) {
 template <class _Tp, class _Alloc >
 void _Deque_base<_Tp,_Alloc>::_M_create_nodes(_Tp** __nstart,
                                               _Tp** __nfinish) {
-  _Tp** __cur;
+  _Tp** __cur = __nstart;
   _STLP_TRY {
-    for (__cur = __nstart; __cur < __nfinish; ++__cur)
+    for (; __cur < __nfinish; ++__cur)
       *__cur = _M_map_size.allocate(this->buffer_size());
   }
   _STLP_UNWIND(_M_destroy_nodes(__nstart, __cur))
