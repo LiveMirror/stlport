@@ -393,7 +393,11 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 #  ifdef _STLP_UITHREADS
         ,_id( __STATIC_CAST(thread_t,-1) )
 #  elif defined(_STLP_PTHREADS)
+#   ifndef __FreeBSD__
         ,_id( __STATIC_CAST(pthread_t,-1) )
+#   else
+        ,_id( __STATIC_CAST(pthread_t,0) )
+#   endif
 #  elif defined(__FIT_NOVELL_THREADS)
         ,_id( -1 )
 #  elif defined(_STLP_WIN32THREADS)
@@ -428,7 +432,11 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 #  ifdef _STLP_UITHREADS
         _id = __STATIC_CAST(thread_t,-1);
 #  elif defined(_STLP_PTHREADS)
+#   ifndef __FreeBSD__
         _id =  __STATIC_CAST(pthread_t,-1);
+#   else
+        _id =  __STATIC_CAST(pthread_t,0);
+#   endif
 #  elif defined(__FIT_NOVELL_THREADS)
         _id = -1;
 #  elif defined(_STLP_WIN32THREADS)
