@@ -51,8 +51,8 @@ __locale_do_operator_call (const locale* __that,
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __x,
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __y);
 
-_Locale_impl * _STLP_DECLSPEC _STLP_CALL _get_Locale_impl( _Locale_impl *locimpl );
-_Locale_impl * _STLP_DECLSPEC _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl *locimpl );
+_STLP_DECLSPEC _Locale_impl * _STLP_CALL _get_Locale_impl( _Locale_impl *locimpl );
+_STLP_DECLSPEC _Locale_impl * _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl *locimpl );
 
 class _STLP_CLASS_DECLSPEC locale {
 public:

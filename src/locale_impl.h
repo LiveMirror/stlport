@@ -101,10 +101,10 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
     friend class locale;
 };
 
-_Locale_impl * _STLP_CALL _get_Locale_impl( _Locale_impl *loc );
+_STLP_DECLSPEC _Locale_impl * _STLP_CALL _get_Locale_impl( _Locale_impl *loc );
 void _STLP_CALL _release_Locale_impl( _Locale_impl *& loc );
 _Locale_impl * _STLP_CALL _copy_Locale_impl( _Locale_impl *loc );
-_Locale_impl * _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl * );
+_STLP_DECLSPEC _Locale_impl * _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl * );
 
 _STLP_END_NAMESPACE
 

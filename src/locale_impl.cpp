@@ -755,7 +755,7 @@ _STLP_STATIC_MEMBER_DECLSPEC locale::id numpunct<wchar_t>::id = { 25 };
 _STLP_STATIC_MEMBER_DECLSPEC locale::id messages<wchar_t>::id = { 26 };
 # endif
 
-_Locale_impl * _STLP_DECLSPEC _STLP_CALL _get_Locale_impl( _Locale_impl *loc )
+_STLP_DECLSPEC _Locale_impl * _STLP_CALL _get_Locale_impl( _Locale_impl *loc )
 {
   _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
@@ -781,7 +781,7 @@ _Locale_impl * _STLP_CALL _copy_Locale_impl( _Locale_impl *loc )
   return loc_new;
 }
 
-_Locale_impl * _STLP_DECLSPEC _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl *loc )
+_STLP_DECLSPEC _Locale_impl * _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl *loc )
 {
    _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
