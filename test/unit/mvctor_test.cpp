@@ -224,14 +224,19 @@ void MoveConstructorTest::move_traits()
       CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
       CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
       CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 3 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 7);
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 7 );
 
-      vect.erase(vect.begin(), vect.begin() + 2);
+      vect.erase(vect.begin(), vect.begin() + 2 );
 
       CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 5 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call ==11);
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call ==11 );
+
+      vect.erase(vect.begin());
+
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 6 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 13 );
     }
-    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 13);
+    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 14);
   }
 
   {
@@ -250,6 +255,10 @@ void MoveConstructorTest::move_traits()
       vect.erase(vect.begin(), vect.begin() + 2);
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 5 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 6);
+
+      vect.erase(vect.begin());
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 6 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 7);
     }
     CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 8);
   }
