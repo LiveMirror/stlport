@@ -41,6 +41,8 @@ inline bool is_C_locale_name (const char* name) {
   return ((name[0] == 'C') && (name[1] == 0));
 }
 
+size_t locale::id::_S_max = 39;
+
 static void _Stl_loc_assign_ids();
 
 static _Stl_aligned_buffer<_Locale_impl::Init> __Loc_init_buf;
@@ -60,8 +62,10 @@ _Locale_impl::Init::~Init() {
 
 _Locale_impl::_Locale_impl(const char* s) :
     _Refcount_Base(0),
-    name(s)
+    name(s),
+    facets_vec()
 {
+  facets_vec.reserve( locale::id::_S_max );
   new (&__Loc_init_buf) Init();
 }
 
@@ -124,7 +128,7 @@ locale::facet* _Locale_impl::insert(locale::facet *f, size_t index)
     return 0;
 
   if (index >= facets_vec.size()) {
-    facets_vec.insert(facets_vec.end(), index - facets_vec.size() + 1, 0);
+    facets_vec.resize( index + 1 );
   }
   _release_facet( facets_vec[index] );
   facets_vec[index] = _get_facet( f );
@@ -724,10 +728,8 @@ void _Locale_impl::free_classic_locale() {
 
 #endif // _STLP_LEAKS_PEDANTIC
 
-//----------------------------------------------------------------------
-
 // Declarations of (non-template) facets' static data members
-size_t locale::id::_S_max = 39;
+// size_t locale::id::_S_max = 39; // made before
 
 _STLP_STATIC_MEMBER_DECLSPEC locale::id collate<char>::id = { 1 };
 _STLP_STATIC_MEMBER_DECLSPEC locale::id ctype<char>::id = { 2 };
@@ -754,6 +756,7 @@ _STLP_STATIC_MEMBER_DECLSPEC locale::id moneypunct<wchar_t, false>::id = { 24 } 
 _STLP_STATIC_MEMBER_DECLSPEC locale::id numpunct<wchar_t>::id = { 25 };
 _STLP_STATIC_MEMBER_DECLSPEC locale::id messages<wchar_t>::id = { 26 };
 # endif
+
 
 _STLP_DECLSPEC _Locale_impl * _STLP_CALL _get_Locale_impl( _Locale_impl *loc )
 {
