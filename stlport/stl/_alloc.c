@@ -47,7 +47,7 @@
 
 // Specialised debug form of malloc which does not provide "false"
 // memory leaks when run with debug CRT libraries.
-#if defined(_STLP_MSVC) && (_STLP_MSVC>=1020 && defined(_STLP_DEBUG_ALLOC)) && ! defined (_STLP_WINCE)
+#if defined(_STLP_MSVC) && (_STLP_MSVC>=1020 && defined(_STLP_DEBUG_ALLOC)) && !defined (_STLP_WINCE) && !defined (_STLP_WCE)
 #  include <crtdbg.h>
 inline void* __stlp_chunk_malloc(size_t __bytes) { _STLP_CHECK_NULL_ALLOC(_malloc_dbg(__bytes, _CRT_BLOCK, __FILE__, __LINE__)); }
 #else	// !_DEBUG
