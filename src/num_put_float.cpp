@@ -197,7 +197,7 @@ extern "C" char *_ldfcvt(long_double, int, int *, int *);
 _STLP_BEGIN_NAMESPACE
 
 #if defined (__MWERKS__) || defined(__BEOS__)
-#  define USE_SPRINTF_INSTEAD
+# define USE_SPRINTF_INSTEAD
 #endif
 
 # if defined (_AIX)
@@ -252,7 +252,7 @@ bool _Stl_is_nan_or_inf(double x) { return isnan(x) || !isfinite(x); }
 bool _Stl_is_inf(double x)        { return !isfinite(x); }
 bool _Stl_is_neg_inf(double x)    { return !isfinite(x) && signbit(x); }
 bool _Stl_is_neg_nan(double x)    { return isnan(x) && signbit(x); }
-#elif /* defined (__FreeBSD__) || */ ( defined (__GNUC__) && defined (__APPLE__) )
+#elif /* defined(__FreeBSD__) || defined(__OpenBSD__) || */ (defined(__GNUC__) && defined(__APPLE__))
 inline bool _Stl_is_nan_or_inf(double x) { return !finite(x); }
 inline bool _Stl_is_inf(double x)        {   return _Stl_is_nan_or_inf(x) && ! isnan(x); }
 inline bool _Stl_is_neg_inf(double x)    {   return _Stl_is_inf(x) && x < 0 ; }
@@ -269,18 +269,18 @@ inline bool _Stl_is_inf         (double x) { return _fp_isINF(x); }
 inline bool _Stl_is_neg_inf     (double x) { return _fp_isINF(x) && x < 0; }
 inline bool _Stl_is_neg_nan     (double x) { return _fp_isNAN(x) && x < 0; }
 #elif defined(_CRAY)
- #if defined(_CRAYIEEE)
+# if defined(_CRAYIEEE)
 inline bool _Stl_is_nan_or_inf(double x) { return isnan(x) || isinf(x); }
 inline bool _Stl_is_inf(double x)        { return isinf(x); }
 inline bool _Stl_is_neg_inf(double x)    { return isinf(x) && signbit(x); }
 inline bool _Stl_is_neg_nan(double x)    { return isnan(x) && signbit(x); }
- #else
+# else
 inline bool _Stl_is_nan_or_inf(double x) { return false; }
 inline bool _Stl_is_inf(double x)        { return false; }
 inline bool _Stl_is_neg_inf(double x)    { return false; }
 inline bool _Stl_is_neg_nan(double x)    { return false; }
- #endif
-#elif ! defined (USE_SPRINTF_INSTEAD)
+# endif
+#elif !defined(USE_SPRINTF_INSTEAD)
 # define USE_SPRINTF_INSTEAD
 #endif
 
@@ -697,11 +697,17 @@ size_t  _STLP_CALL
 __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
               double x) {
 #ifdef USE_SPRINTF_INSTEAD
+  /* If we want 'abitrary' precision, we should use 'abitrary' buffer size
+   * below. - ptr
+   */
   char static_buf[128];
+  // char *static_buf = new char [128+precision];
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
+  // snprintf(static_buf, 128+precision, fmtbuf, precision, x);
   snprintf(static_buf, 128, fmtbuf, precision, x);
   buf = static_buf;
+  // delete [] static_buf;
   return find_if(buf.begin(), buf.end(), GroupPos()) - buf.begin();
 #else
   char cvtbuf[NDIG+2];
@@ -728,12 +734,18 @@ size_t _STLP_CALL
 __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
               long double x) {
 #  ifdef USE_SPRINTF_INSTEAD
+  /* If we want 'abitrary' precision, we should use 'abitrary' buffer size
+   * below. - ptr
+   */
   char static_buf[128];
+  // char *static_buf = new char [128+precision];
   char fmtbuf[64];
   int i = fill_fmtbuf(fmtbuf, flags, 'L');
+  // snprintf(static_buf, 128+precision, fmtbuf, precision, x);
   snprintf(static_buf, 128, fmtbuf, precision, x);    
   // we should be able to return buf + sprintf(), but we do not trust'em...
   buf = static_buf;
+  // delete [] static_buf;
   return find_if(buf.begin(), buf.end(), GroupPos()) - buf.begin();
 #  else
   char cvtbuf[NDIG+2];
@@ -757,6 +769,20 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
 #endif /* _STLP_NO_LONG_DOUBLE */
 
 void _STLP_CALL __get_floor_digits(__iostring &out, _STLP_LONG_DOUBLE __x) {
+#ifdef USE_SPRINTF_INSTEAD
+  char cvtbuf[128];
+# ifndef _STLP_NO_LONG_DOUBLE
+  snprintf( cvtbuf, 128, "%Lf", __x ); // check for 1234.56!
+# else
+  snprintf( cvtbuf, 128, "%f", __x );  // check for 1234.56!
+# endif
+  char *p = strchr( cvtbuf, '.' );
+  if ( p == 0 ) {
+    out.append( cvtbuf );
+  } else {
+    out.append( cvtbuf, p );
+  }
+#else
   char cvtbuf[NDIG+2];
   char * bp;
   int decpt, sign;
@@ -770,6 +796,7 @@ void _STLP_CALL __get_floor_digits(__iostring &out, _STLP_LONG_DOUBLE __x) {
     out += '-';
   }
   out.append(bp, bp + decpt);
+#endif // USE_PRINTF_INSTEAD
 }
 
 
