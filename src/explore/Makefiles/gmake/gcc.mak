@@ -46,9 +46,6 @@ ifeq ($(OSNAME),cygwin)
 CCFLAGS = $(OPT)
 CFLAGS = $(OPT)
 CXXFLAGS = -fexceptions -fident $(OPT)
-#release-shared : DEFS += -D_STLP_USE_DYNAMIC_LIB
-#dbg-shared : DEFS += -D_STLP_USE_DYNAMIC_LIB
-#stldbg-shared : DEFS += -D_STLP_USE_DYNAMIC_LIB
 COMPILE.rc = $(RC) $(RCFLAGS)
 endif
 
