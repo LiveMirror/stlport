@@ -95,7 +95,7 @@ size_t _Base_bitset<_Nw>::_M_do_find_first(size_t __not_found) const {
           = __STATIC_CAST(unsigned char,(__thisword & (~(unsigned char)0)));
         if ( __this_byte )
           return __i*__BITS_PER_WORD + __j*CHAR_BIT +
-            _Bs_G<bool>::_S_first_one[__this_byte];
+            _Bs_G<bool>::_S_first_one(__this_byte);
 
         __thisword >>= CHAR_BIT;
       }
@@ -132,7 +132,7 @@ _Base_bitset<_Nw>::_M_do_find_next(size_t __prev,
         = __STATIC_CAST(unsigned char,(__thisword & (~(unsigned char)0)));
       if ( __this_byte )
         return __i*__BITS_PER_WORD + __j*CHAR_BIT +
-          _Bs_G<bool>::_S_first_one[__this_byte];
+          _Bs_G<bool>::_S_first_one(__this_byte);
 
       __thisword >>= CHAR_BIT;
     }
@@ -149,7 +149,7 @@ _Base_bitset<_Nw>::_M_do_find_next(size_t __prev,
           = __STATIC_CAST(unsigned char,(__thisword & (~(unsigned char)0)));
         if ( __this_byte )
           return __i*__BITS_PER_WORD + __j*CHAR_BIT +
-            _Bs_G<bool>::_S_first_one[__this_byte];
+            _Bs_G<bool>::_S_first_one(__this_byte);
 
         __thisword >>= CHAR_BIT;
       }
