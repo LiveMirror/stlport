@@ -1,4 +1,4 @@
-# -*- Makefile -*- Time-stamp: <04/03/14 23:50:57 ptr>
+# -*- Makefile -*- Time-stamp: <05/03/10 17:51:53 ptr>
 # $Id$
 
 SRCROOT := ../..
@@ -22,9 +22,15 @@ ifdef STLP_BUILD_BOOST_PATH
 INCLUDES += -I${STLP_BUILD_BOOST_PATH}
 endif
 
+ifndef TARGET_OS
 release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
+else
+release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
+dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
+stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
+endif
 
 dbg-shared:	DEFS += -D_STLP_DEBUG_UNINITIALIZED 
 stldbg-shared:	DEFS += -D_STLP_DEBUG_UNINITIALIZED 
