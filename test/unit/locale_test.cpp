@@ -67,11 +67,13 @@ LColl::LColl( const char *loc_dir )
   _m[string("C")] = true;
 }
 
-# if defined(__FreeBSD__) || defined(__OpenBSD__)
+# if !defined(__GNUC__) || (__GNUC__ > 2)
+#  if defined(__FreeBSD__) || defined(__OpenBSD__)
 static LColl loc_ent( "/usr/share/locale" );
-# else
+#  else
 static LColl loc_ent( "/usr/lib/locale" );
-# endif
+#  endif
+# endif // !__GNUC__ || __GNUC__ > 2
 
 struct ref_locale {
   const char *name;
@@ -311,6 +313,14 @@ void LocaleTest::_collate_facet( const locale& loc, const ref_locale& rl )
 
 template <class _Tp>
 void test_supported_locale(LocaleTest inst, _Tp __test) {
+# if defined(__GNUC__) && (__GNUC__ < 3) // workaround for gcc 2.95.x
+#  if defined(__FreeBSD__) || defined(__OpenBSD__)
+   LColl loc_ent( "/usr/share/locale" );
+#  else
+   LColl loc_ent( "/usr/lib/locale" );
+#  endif
+# endif // __GNUC__ || __GNUC__ < 3
+
   int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
   for ( int i = 0; i < n; ++i ) {
     if ( loc_ent[string( tested_locales[i].name )] ) {
