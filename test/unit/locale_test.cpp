@@ -9,6 +9,82 @@
 using namespace std;
 #endif
 
+#if defined(__unix) || defined(__unix__)
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <unistd.h>
+# include <cstring>
+# include <iostream>
+#endif
+
+#include <string>
+#include <map>
+
+
+class LColl {
+  public:
+    LColl( const char * );
+
+    bool operator[]( const string& _s )
+     { return _m[_s]; }
+
+  private:
+    map<string,bool> _m;
+};
+
+LColl::LColl( const char *loc_dir )
+{
+# if defined(__unix) || defined(__unix__)
+  /* Iterate through catalog that contain catalogs with locale definitions, installed on system
+   * (this is expected /usr/lib/locale for most linuxes and /usr/share/locale for *BSD).
+   * The names of catalogs here will give supported locales.
+   */
+  string base( loc_dir );
+  DIR *d = opendir( base.c_str() );
+  struct dirent *ent;
+  while ( (ent = readdir( d )) != 0 ) {
+    if ( strcmp( ent->d_name, "." ) == 0 || strcmp( ent->d_name, ".." ) == 0 ) {
+      continue;
+    }
+    string f = base;
+    f += '/';
+    f += ent->d_name;
+    struct stat s;
+    stat( f.c_str(), &s );
+    if ( S_ISDIR( s.st_mode ) ) {
+      _m[string(ent->d_name)] = true;
+      // cout << ent->d_name << endl;
+    }
+  }
+# endif
+# ifdef WIN32
+  // real list of installed locales should be here...
+  _m[string("french")] = true;
+# endif
+}
+
+# if defined(__FreeBSD__) || defined(__OpenBSD__)
+static LColl loc_ent( "/usr/share/locale" );
+# else
+static LColl loc_ent( "/usr/lib/locale" );
+# endif
+
+struct ref_locale {
+  const char *name;
+  const char *decimal_point;
+  const char *thousands_sep;
+  const char *money_prefix;
+  const char *money_suffix;
+};
+
+static ref_locale tested_locales[] = {
+  { "french", ",", ".", "", " EUR" },
+  { "ru_RU.koi8r", ",", " ", "", " RUR" },
+  { "en_GB", ".", "'", "GBP ", "" },
+  { "en_US", ".", "'", "USD ", "" }
+};
+
 //
 // TestCase class
 //
@@ -24,6 +100,10 @@ public:
   void num_put_get();
   void money_put_get();
   void time_put_get();
+private:
+  void _num_put_get( const locale&, const ref_locale& );
+  void _money_put_get( const locale&, const ref_locale& );
+  void _time_put_get( const locale&, const ref_locale& );
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LocaleTest);
@@ -31,29 +111,16 @@ CPPUNIT_TEST_SUITE_REGISTRATION(LocaleTest);
 //
 // tests implementation
 //
-void LocaleTest::num_put_get() {
-  auto_ptr<locale> sploc;
-  try {
-    sploc.reset(new locale("french"));
-  }
-  catch (runtime_error const&) {
-    /*
-     * No locale support or bad locale identification, 
-     * we do not test anything.
-     */
-    bool no_locale_support_or_wrong_locale_name = true;
-    CPPUNIT_ASSERT ( ! no_locale_support_or_wrong_locale_name );
-    return;
-  }
 
+void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   float val = 1234.56f;
   ostringstream ostr;
   ostr << val;
   CPPUNIT_ASSERT( ostr.str() == "1234.56" );
 
-  numpunct<char> const& npct = use_facet<numpunct<char> >(*sploc);
+  numpunct<char> const& npct = use_facet<numpunct<char> >(loc);
   ostringstream fostr;
-  fostr.imbue(*sploc);
+  fostr.imbue(loc);
   fostr << val;
 
   string ref = "1";
@@ -68,9 +135,12 @@ void LocaleTest::num_put_get() {
   ostr << val;
   CPPUNIT_ASSERT( ostr.str() == "1.23457e+07" );
 
+  ref = "1";
+  ref += rl.decimal_point;
+  ref += "23457e+07";
   fostr.str("");
   fostr << val;
-  CPPUNIT_ASSERT( fostr.str() == "1,23457e+07" );
+  CPPUNIT_ASSERT( fostr.str() == ref );
 
   val = 1000000000.0f;
   ostr.str("");
@@ -82,27 +152,14 @@ void LocaleTest::num_put_get() {
   CPPUNIT_ASSERT( fostr.str() == "1e+09" );
 }
 
-void LocaleTest::money_put_get() {
-  auto_ptr<locale> floc;
-  try {
-    floc.reset(new locale("french"));
-  }
-  catch (runtime_error const&) {
-    /*
-     * No locale support or bad locale identification, 
-     * we do not test anything.
-     */
-    bool no_locale_support_or_wrong_locale_name = true;
-    CPPUNIT_ASSERT ( ! no_locale_support_or_wrong_locale_name );
-    return;
-  }
-
-  money_put<char> const&fmp = use_facet<money_put<char> >(*floc);
-  money_get<char> const&fmg = use_facet<money_get<char> >(*floc);
-  moneypunct<char, true> const&intl_fmp = use_facet<moneypunct<char, true> >(*floc);
+void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
+{
+  money_put<char> const& fmp = use_facet<money_put<char> >(loc);
+  money_get<char> const& fmg = use_facet<money_get<char> >(loc);
+  moneypunct<char, true> const& intl_fmp = use_facet<moneypunct<char, true> >(loc);
 
   ostringstream ostr;
-  ostr.imbue(*floc);
+  ostr.imbue(loc);
   ostr << showbase;
   ostreambuf_iterator<char> res = fmp.put(ostr, true, ostr, ' ', 123456);
 
@@ -110,12 +167,13 @@ void LocaleTest::money_put_get() {
   //The result is '1 234,56 EUR'
   string str_res = ostr.str();
 
+  // cout << "code " << hex << int(str_res[0]) << dec << ' ' << str_res << endl;
   CPPUNIT_ASSERT( str_res[0] == '1' );
-  CPPUNIT_ASSERT( str_res[1] == intl_fmp.thousands_sep() );
+  CPPUNIT_ASSERT( str_res[1] == /* intl_fmp.thousands_sep() */ *rl.thousands_sep );
   CPPUNIT_ASSERT( str_res[2] == '2' );
   CPPUNIT_ASSERT( str_res[3] == '3' );
   CPPUNIT_ASSERT( str_res[4] == '4' );
-  CPPUNIT_ASSERT( str_res[5] == intl_fmp.decimal_point() );
+  CPPUNIT_ASSERT( str_res[5] == /* intl_fmp.decimal_point() */ *rl.decimal_point );
   CPPUNIT_ASSERT( str_res[6] == '5' );
   CPPUNIT_ASSERT( str_res[7] == '6' );
   CPPUNIT_ASSERT( str_res[8] == ' ' );
@@ -131,7 +189,7 @@ void LocaleTest::money_put_get() {
   CPPUNIT_ASSERT( digits == "123456" );
 
   ostr.str("");
-  moneypunct<char, false> const&dom_fmp = use_facet<moneypunct<char, false> >(*floc);
+  moneypunct<char, false> const& dom_fmp = use_facet<moneypunct<char, false> >(loc);
   res = fmp.put(ostr, false, ostr, ' ', -123456);
 
   CPPUNIT_ASSERT( !res.failed() );
@@ -162,31 +220,51 @@ void LocaleTest::money_put_get() {
   CPPUNIT_ASSERT( val == -123456 );
 }
 
-void LocaleTest::time_put_get() {
-  auto_ptr<locale> floc;
-  try {
-    floc.reset(new locale("french"));
-  }
-  catch (runtime_error const&) {
-    /*
-     * No locale support or bad locale identification, 
-     * we do not test anything.
-     */
-    bool no_locale_support_or_wrong_locale_name = true;
-    CPPUNIT_ASSERT ( ! no_locale_support_or_wrong_locale_name );
-    return;
-  }
-
-  time_put<char> const&tmp = use_facet<time_put<char> >(*floc);
-  time_get<char> const&tmg = use_facet<time_get<char> >(*floc);
+void LocaleTest::_time_put_get( const locale& loc, const ref_locale& rl )
+{
+  time_put<char> const&tmp = use_facet<time_put<char> >(loc);
+  time_get<char> const&tmg = use_facet<time_get<char> >(loc);
 
   struct tm xmas = { 0, 0, 12, 25, 11, 93 };
   ostringstream ostr;
-  ostr.imbue(*floc);
+  ostr.imbue(loc);
   string format = "%a %d %b %y";
 
   time_put<char>::iter_type ret = tmp.put(ostr, ostr, ' ', &xmas, format.data(), format.data() + format.size());
   CPPUNIT_ASSERT( !ret.failed() );
 
   string str_ret = ostr.str();
+}
+
+void LocaleTest::num_put_get() {
+  int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
+  for ( int i = 0; i < n; ++i ) {
+    if ( loc_ent[string( tested_locales[i].name )] ) {
+      cout << '\t' << tested_locales[i].name << endl;
+      locale loc( tested_locales[i].name );
+      _num_put_get( loc, tested_locales[i] );
+    }
+  }
+}
+
+void LocaleTest::money_put_get() {
+  int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
+  for ( int i = 0; i < n; ++i ) {
+    if ( loc_ent[string( tested_locales[i].name )] ) {
+      cout << '\t' << tested_locales[i].name << endl;
+      locale loc( tested_locales[i].name );
+      _money_put_get( loc, tested_locales[i] );
+    }
+  }
+}
+
+void LocaleTest::time_put_get() {
+  int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
+  for ( int i = 0; i < n; ++i ) {
+    if ( loc_ent[string( tested_locales[i].name )] ) {
+      cout << '\t' << tested_locales[i].name << endl;
+      locale loc( tested_locales[i].name );
+      _time_put_get( loc, tested_locales[i] );
+    }
+  }
 }
