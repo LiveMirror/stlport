@@ -1,7 +1,10 @@
 2004-09-05  Francois Dumont  <dums@...>
 
 	* stlport/stl/_string_hash.h: Performance improvement, multiplication
-	replaced by shift operations thanks Greg S
+	replaced by shift operations thanks Greg S.
+	
+	* stlport/config/stl_wince_4.h: removed, never used, stl_evc.h has been 
+	prefered.
 	
 2004-09-03  Francois Dumont  <dums@...>
 
