@@ -22,8 +22,8 @@
 #ifndef _STLP_CMATH
 #include <cmath>
 #endif
-#ifndef _STLP_NEW_HEADER
-#include <new>
+#ifndef _STLP_INTERNAL_NEW_HEADER
+#include <stl/_new.h>
 #endif
 #ifndef _STLP_INTERNAL_ALGO_H
 #include <stl/_algo.h>
