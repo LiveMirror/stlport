@@ -114,8 +114,8 @@ echo    --rtl-dynamic; if you want to link dynamicaly with STLport but using the
 echo    static C runtime use --rtl-static. See README.options for details.
 echo    Don't forget to signal the link method when building your appli or dll, in
 echo    _site_config.h set the following macro depending on the configure option:
-echo    --rtl-dynamic -> _STLP_USE_DYNAMIC_LIB
-echo    --rtl-static  -> _STLP_USE_STATIC_LIB
+echo    "--rtl-dynamic -> _STLP_USE_DYNAMIC_LIB"
+echo    "--rtl-static  -> _STLP_USE_STATIC_LIB"
 echo    This is a Microsoft-only option.
 goto skp_comp
 
