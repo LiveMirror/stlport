@@ -27,16 +27,8 @@
 #  include <cstddef>
 # endif
 
-# if !defined (_STLP_CWCHAR)
-#  include <stl/_cwchar.h>
-# endif			
-
 #if ! defined (_STLP_CSTRING)
 #  include <cstring>
-#endif
-
-#ifndef __TYPE_TRAITS_H
-# include <stl/type_traits.h>
 #endif
 
 #if defined (_STLP_UNIX) && defined (_STLP_HAS_NO_NEW_C_HEADERS)
@@ -49,6 +41,14 @@
 # include <_stddef.h>
 // class mbstate_t;
 #endif
+
+#ifndef __TYPE_TRAITS_H
+# include <stl/type_traits.h>
+#endif
+
+# if !defined (_STLP_CWCHAR)
+#  include <stl/_cwchar.h>
+# endif			
 
 _STLP_BEGIN_NAMESPACE
 
