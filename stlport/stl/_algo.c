@@ -158,8 +158,10 @@ _ForwardIter search_n(_ForwardIter __first, _ForwardIter __last,
       }
       if (__n == 0)
         return __first;
+      else if (__i != __last)
+        __first = find(++__i, __last, __val);
       else
-        __first = find(__i, __last, __val);
+        break;
     }
     return __last;
   }
