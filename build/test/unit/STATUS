@@ -65,12 +65,12 @@ Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
-Date:                           2005-03-11
+Date:                           2005-03-15
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
-Status (release-shared):        All pass (319 tests)
+Status (release-shared):        All pass (320 tests)
 Notes:				
-Status (stldbg-shared):         All pass (319 tests)
+Status (stldbg-shared):         All pass (320 tests)
 Notes:				
 
 -----------------------------------------------------------------------
@@ -171,21 +171,21 @@ Operational environment:        Windows 2000
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 6 SP5
 -----------------------------------------------------------------------
-Date:                           2005-03-11
+Date:                           2005-03-15
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
-Status (release-shared):        All pass (316 tests)
+Status (release-shared):        All pass (317 tests)
 Notes:                          still some inconveniences with 'using' and
                                 math functions, see comment in test/unit/resolve_name.cpp
-Status (dbg-shared):            All pass (316 tests)
+Status (dbg-shared):            All pass (317 tests)
 Notes:
-Status (stldbg-shared):         All pass (316 tests)
+Status (stldbg-shared):         All pass (317 tests)
 Notes:
-Status (release-static):        All pass (316 tests)
+Status (release-static):        All pass (317 tests)
 Notes:                          
-Status (dbg-static):            All pass (316 tests)
+Status (dbg-static):            All pass (317 tests)
 Notes:
-Status (stldbg-static):         All pass (316 tests)
+Status (stldbg-static):         All pass (317 tests)
 Notes:
 
 =======================================================================
