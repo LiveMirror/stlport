@@ -146,7 +146,7 @@ public:
 #  else /* !_STLP_SGI_THREADS */
     if (__threads)
 #  endif
-        _S_lock._M_release_lock(); 
+      _S_lock._M_release_lock(); 
   }
   
   static _STLP_STATIC_MUTEX _S_lock;
@@ -586,6 +586,9 @@ void _STLP_CALL
 __node_alloc<__threads, __inst>::_S_dealloc_call() {
   size_t *pcounter = &_S_alloc_call(0);
   _STLP_ATOMIC_DECREMENT(pcounter);
+  //As we are only releasing memory on shared library unload, counter
+  //can only reach 0 once threads has been stoped so we do not have to
+  //check atomic_decrement result.
   if (*pcounter == 0) {
     _S_chunk_dealloc();
   }

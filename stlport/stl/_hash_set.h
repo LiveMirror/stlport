@@ -221,10 +221,6 @@ public:
   size_type max_bucket_count() const { return _M_ht.max_bucket_count(); }
   size_type elems_in_bucket(size_type __n) const
     { return _M_ht.elems_in_bucket(__n); }
-
-  static bool _STLP_CALL _M_equal (const _Self& __x, const _Self& __y) {
-    return _Ht::_M_equal(__x._M_ht,__y._M_ht);
-  }
 };
 
 //Specific iterator traits creation
@@ -411,9 +407,6 @@ public:
   size_type max_bucket_count() const { return _M_ht.max_bucket_count(); }
   size_type elems_in_bucket(size_type __n) const
     { return _M_ht.elems_in_bucket(__n); }
-  static bool _STLP_CALL _M_equal (const _Self& __x, const _Self& __y) {
-    return _Ht::_M_equal(__x._M_ht,__y._M_ht);
-  }
 };
 
 #define _STLP_TEMPLATE_HEADER template <class _Value, class _HashFcn, class _EqualKey, class _Alloc>

@@ -121,9 +121,11 @@ struct __stl_debug_engine {
 
   static void _STLP_CALL  _Verify(const __owned_list*);
   
-  static void _STLP_CALL  _Swap_owners(__owned_list&, __owned_list& /*, bool __swap_roots */ );
+  static void _STLP_CALL  _Swap_owners(__owned_list&, __owned_list&);
  
   static void _STLP_CALL  _Invalidate_all(__owned_list*);
+  
+  static void _STLP_CALL  _Set_owner(__owned_list& /*src*/, __owned_list& /*dst*/);
   
   static void _STLP_CALL  _Stamp_all(__owned_list*, __owned_list*);
 
@@ -358,6 +360,10 @@ public:
   void _Invalidate_all() { 
     __stl_debugger::_Invalidate_all(this);
   }
+
+  void _Set_owner(__owned_list& __y) {
+    __stl_debugger::_Set_owner(*this, __y);
+  }
   
   mutable __owned_link _M_node; 
   mutable _STLP_mutex  _M_lock;
@@ -388,14 +394,24 @@ bool _STLP_CALL __check_range(const _Iterator&, const _Iterator& ,
 template <class _Tp>
 bool _STLP_CALL __check_ptr_range(const _Tp*, const _Tp*);
 
-template <class _Iterator>
-void _STLP_CALL  __invalidate_range(const __owned_list* __base, 
-                                    const _Iterator& __first,
-                                    const _Iterator& __last);
 
 template <class _Iterator>
-void  _STLP_CALL __invalidate_iterator(const __owned_list* __base, 
-                                       const _Iterator& __it);
+void _STLP_CALL __invalidate_range(const __owned_list* __base, 
+                                   const _Iterator& __first,
+                                   const _Iterator& __last);
+
+template <class _Iterator>
+void _STLP_CALL __invalidate_iterator(const __owned_list* __base, 
+                                      const _Iterator& __it);
+
+template <class _Iterator>
+void _STLP_CALL __change_range_owner(const _Iterator& __first,
+                                     const _Iterator& __last,
+                                     const __owned_list* __dst);
+
+template <class _Iterator>
+void  _STLP_CALL __change_ite_owner(const _Iterator& __it,
+                                    const __owned_list* __dst);
                                        
 
 //============================================================

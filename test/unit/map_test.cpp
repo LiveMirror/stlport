@@ -68,6 +68,8 @@ void MapTest::mmap1()
 
   m.insert(pair<const char, int>('Y', 32));	// jbuck: standard way
   mmap::iterator i = m.find('X'); // Find first match.
+  pair<const char, int> p('X', 10);
+  CPPUNIT_ASSERT(*i == p);
   CPPUNIT_ASSERT((*i).first=='X');
   CPPUNIT_ASSERT((*i).second==10);
   i++;

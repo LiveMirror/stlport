@@ -26,13 +26,8 @@
 #ifndef _STLP_VECTOR_C
 #define _STLP_VECTOR_C
 
-# if !defined (_STLP_INTERNAL_VECTOR_H)
+#if !defined (_STLP_INTERNAL_VECTOR_H)
 #  include <stl/_vector.h>
-# endif
-
-#ifdef _STLP_DEBUG
-#  undef  vector
-#  define vector __WORKAROUND_DBG_RENAME(vector)
 #endif
 
 #include <stl/_range_errors.h>
@@ -47,12 +42,12 @@ _STLP_BEGIN_NAMESPACE
 
 template <class _Tp, class _Alloc> 
 void _Vector_base<_Tp,_Alloc>::_M_throw_length_error() const {
-    __stl_throw_length_error("vector");
+  __stl_throw_length_error("vector");
 }
 
 template <class _Tp, class _Alloc> 
 void _Vector_base<_Tp, _Alloc>::_M_throw_out_of_range() const {
-    __stl_throw_out_of_range("vector");
+  __stl_throw_out_of_range("vector");
 }
 
 template <class _Tp, class _Alloc>
@@ -228,10 +223,6 @@ _VECTOR_IMPL<_Tp, _Alloc>::insert(iterator __pos, const _Tp& __x) {
 #undef __iterator__
 
 _STLP_END_NAMESPACE
-
-#ifdef _STLP_DEBUG
-# undef vector
-#endif
 
 #endif /*  _STLP_VECTOR_C */
 

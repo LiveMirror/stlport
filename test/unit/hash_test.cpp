@@ -26,6 +26,7 @@ class HashTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(hmmap1);
   CPPUNIT_TEST(hmset1);
   CPPUNIT_TEST(hset2);
+  //CPPUNIT_TEST(equality);
   CPPUNIT_TEST_SUITE_END();
 
   typedef hash_multiset<char, hash<char>, equal_to<char> > hmset;
@@ -35,6 +36,7 @@ protected:
   void hmmap1();
   void hmset1();
   void hset2();
+  //void equality();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(HashTest);
@@ -136,3 +138,28 @@ void HashTest::hset2()
   p = s.insert(42);
   CPPUNIT_ASSERT(!p.second);
 }
+
+/*
+ * Here is the test showing why equality operator on hash containers
+ * has no meaning:
+
+struct equality_hash_func {
+  size_t operator () (size_t val) const {
+    return val % 10;
+  }
+};
+
+void HashTest::equality()
+{
+  hash_set<size_t, equality_hash_func, equal_to<size_t> > s1, s2;
+
+  s1.insert(10);
+  s1.insert(20);
+
+  s2.insert(20);
+  s2.insert(10);
+
+  //s1 and s2 contains both 10 and 20:
+  CPPUNIT_ASSERT( s1 == s2 );
+}
+*/

@@ -92,6 +92,7 @@ SRC_CPP = cppunit/test_main.cpp \
 	type_traits_test.cpp \
 	unary_test.cpp \
 	unique_test.cpp \
+	unordered_test.cpp \
 	vector_test.cpp \
 	sstream_test.cpp \
 	fstream_test.cpp \

@@ -307,10 +307,12 @@ public:
   void splice(iterator __pos, _Self& __x) {
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _Base::splice(__pos._M_iterator, __x);
-# if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
+#if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     // Std: 23.2.2.4:4
     __x._Invalidate_all();
-# endif
+#else
+    __x._M_iter_list._Set_owner(_M_iter_list);
+#endif
   }
 
   void splice(iterator __pos, _Self& __x, iterator __i) {
@@ -318,10 +320,12 @@ public:
     _STLP_DEBUG_CHECK(_Dereferenceable(__i))
     _STLP_DEBUG_CHECK(__check_if_owner(&(__x._M_iter_list),__i))
     _Base::splice(__pos._M_iterator, __x, __i._M_iterator);
-# if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
+#if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     // Std: 23.2.2.4:7
     __x._Invalidate_iterator(__i);
-# endif
+#else
+    __change_ite_owner(__i, &_M_iter_list);
+#endif
   }
 
   void splice(iterator __pos, _Self& __x, iterator __first, iterator __last) {
@@ -329,16 +333,19 @@ public:
     _STLP_DEBUG_CHECK(__check_range(__first, __last, __x.begin(), __x.end()))
     _STLP_DEBUG_CHECK(this == &__x ? !__check_range(__pos, __first, __last) : true)
     _Base::splice(__pos._M_iterator, __x, __first._M_iterator, __last._M_iterator);
-# if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
+#if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     // Std: 23.2.2.4:12
     __x._Invalidate_iterators(__first, __last);
-# endif
+#else
+    __change_range_owner(__first, __last, &_M_iter_list);
+#endif
   }
 
   void merge(_Self& __x) {
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(this->begin()._M_iterator, this->end()._M_iterator))
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(__x.begin()._M_iterator, __x.end()._M_iterator))
     _Base::merge(__x);
+    __x._M_iter_list._Set_owner(_M_iter_list);
   }
   void reverse() {
     _Base::reverse();
@@ -397,6 +404,7 @@ public:
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(_Base::begin(), _Base::end(), __comp))
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(__x.begin()._M_iterator, __x.end()._M_iterator, __comp))
     _Base::merge(__x, __comp);
+    __x._M_iter_list._Set_owner(_M_iter_list);
   }
 
   template <class _StrictWeakOrdering>
@@ -404,7 +412,6 @@ public:
     _Base::sort(__comp);
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
-
 };
 
 

@@ -47,7 +47,7 @@
 #endif
 
 #if defined(__SC__) && !defined(__DMC__)		//*ty 12/07/2001 - since "comp" is a built-in type and reserved under SCpp
-#define comp _Comp
+#  define comp _Comp
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -105,24 +105,22 @@ public:
   const _Sequence& _Get_s() const { return c; }
 };
 
-# ifndef _STLP_QUEUE_ARGS
+#ifndef _STLP_QUEUE_ARGS
 #  define _STLP_QUEUE_ARGS _Tp, _Sequence
 #  define _STLP_QUEUE_HEADER_ARGS class _Tp, class _Sequence
-# else
+#else
 #  define _STLP_QUEUE_HEADER_ARGS class _Tp
-# endif
+#endif
 
 template < _STLP_QUEUE_HEADER_ARGS >
 inline bool _STLP_CALL 
-operator==(const queue<_STLP_QUEUE_ARGS >& __x, const queue<_STLP_QUEUE_ARGS >& __y)
-{
+operator==(const queue<_STLP_QUEUE_ARGS >& __x, const queue<_STLP_QUEUE_ARGS >& __y) {
   return __x._Get_s() == __y._Get_s();
 }
 
 template < _STLP_QUEUE_HEADER_ARGS >
 inline bool _STLP_CALL
-operator<(const queue<_STLP_QUEUE_ARGS >& __x, const queue<_STLP_QUEUE_ARGS >& __y)
-{
+operator<(const queue<_STLP_QUEUE_ARGS >& __x, const queue<_STLP_QUEUE_ARGS >& __y) {
   return __x._Get_s() < __y._Get_s();
 }
 
@@ -245,8 +243,9 @@ struct __move_traits<priority_queue<_Tp, _Sequence, _Compare> > :
 
 _STLP_END_NAMESPACE
 
-#  undef _STLP_QUEUE_ARGS
-#  undef _STLP_QUEUE_HEADER_ARGS
+#undef _STLP_QUEUE_ARGS
+#undef _STLP_QUEUE_HEADER_ARGS
+#undef comp
 
 #endif /* _STLP_INTERNAL_QUEUE_H */
 

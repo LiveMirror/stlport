@@ -261,6 +261,10 @@
 // the stlport namespace and called without scope (:: or std::)
 // #  define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
 
+// uncomment this if your compiler has problem with the import of a namespace in
+// an other one with the using namespace directive
+// #  define _STLP_USING_NAMESPACE_BUG 1
+
 // uncomment this if your compiler implement full ADL (Argument Dependent Lookup)
 // # define _STLP_FULL_ADL_IMPLEMENTED 1
 

@@ -493,10 +493,13 @@ template <class _T1, class _T2> inline bool  _STLP_CALL operator==(const allocat
 template <class _T1, class _T2> inline bool  _STLP_CALL operator!=(const allocator<_T1>&, const allocator<_T2>&) _STLP_NOTHROW { return false; }
 #endif
 
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
+#if defined (_STLP_USE_TEMPLATE_EXPORT)
 _STLP_EXPORT_TEMPLATE_CLASS allocator<char>;
 #  if defined (_STLP_HAS_WCHAR_T)
 _STLP_EXPORT_TEMPLATE_CLASS allocator<wchar_t>;
+#  endif
+#  if !defined (_STLP_DONT_USE_PTR_SPECIALIZATIONS)
+_STLP_EXPORT_TEMPLATE_CLASS allocator<void*>;
 #  endif
 # endif /* _STLP_USE_TEMPLATE_EXPORT */
 
@@ -578,12 +581,15 @@ public:
 #endif /* _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE */
 };
 
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
-_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<char*, char,allocator<char> >;
+#if defined (_STLP_USE_TEMPLATE_EXPORT)
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<char*, char, allocator<char> >;
 #  if defined (_STLP_HAS_WCHAR_T)
-_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<wchar_t*, wchar_t,allocator<wchar_t> >;
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<wchar_t*, wchar_t, allocator<wchar_t> >;
 #  endif
-# endif /* _STLP_USE_TEMPLATE_EXPORT */
+#  if !defined (_STLP_DONT_USE_PTR_SPECIALIZATIONS)
+_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<void**, void*, allocator<void*> >;
+#  endif
+#endif /* _STLP_USE_TEMPLATE_EXPORT */
 
 # undef _STLP_NODE_ALLOCATOR_THREADS
 
@@ -605,9 +611,9 @@ struct __move_traits<_STLP_alloc_proxy<_Value, _Tp, _Alloc> > :
 
 _STLP_END_NAMESPACE
 
-# if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_alloc.c>
-# endif
+#endif
 
 #undef _STLP_DO_CLEAN_NODE_ALLOC
 

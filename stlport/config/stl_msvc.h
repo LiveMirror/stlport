@@ -4,7 +4,7 @@
 
 
 // Common features for VC++ 4.0 and higher
-#ifdef _M_IA64
+#if defined (_M_IA64)
 #  define _STLP_NATIVE_HEADER(x) <../crt/##x>
 #  define _STLP_NATIVE_C_HEADER(x) <../crt/##x>
 #  define _STLP_NATIVE_CPP_C_HEADER(x) <../crt/##x>
@@ -46,7 +46,7 @@
 
 #define _STLP_MINIMUM_IMPORT_STD
 
-#ifdef _STLP_MSVC
+#if defined (_STLP_MSVC)
 
 #  ifndef _CPPRTTI
 #    define _STLP_NO_RTTI 1
@@ -112,7 +112,7 @@
  * later in this config file.
  */
 /*
-#    ifdef _DLL
+#    if defined (_DLL)
 #      define _STLP_NO_MEMBER_TEMPLATES 1
 #    endif
 */
@@ -181,7 +181,7 @@ typedef char __stl_char;
 #  endif
 // #  define _STLP_NESTED_TYPE_PARAM_BUG 1
 // Debug mode does not work for 4.2
-#  ifdef _STLP_DEBUG
+#  if defined (_STLP_DEBUG)
 #    pragma message ("STLport debug mode does not work for VC++ 4.2, turning _STLP_DEBUG off ...")
 #    undef _STLP_DEBUG
 #  endif
@@ -266,11 +266,11 @@ typedef char __stl_char;
 #  endif
 #endif
 
-#ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
+#if !defined (_STLP_IMPORT_TEMPLATE_KEYWORD)
 #  if !defined (_MSC_EXTENSIONS) || defined(_STLP_MSVC) && _STLP_MSVC >= 1300
 #    define _STLP_IMPORT_TEMPLATE_KEYWORD
 #  else
-#    define _STLP_IMPORT_TEMPLATE_KEYWORD  extern
+#    define _STLP_IMPORT_TEMPLATE_KEYWORD extern
 #  endif
 #endif
 #define _STLP_EXPORT_TEMPLATE_KEYWORD
@@ -306,7 +306,7 @@ typedef char __stl_char;
 
 #  define _STLP_STLPORT_LIB "stlport_"_STLP_LIB_TYPE""_STLP_LIB_OPTIM_MODE""_STLP_VERSION_STR".lib"
 
-#  ifdef _STLP_VERBOSE_AUTO_LINK
+#  if defined (_STLP_VERBOSE_AUTO_LINK)
 #    pragma message ("STLport: Auto linking to "_STLP_STLPORT_LIB)
 #  endif
 #  pragma comment (lib , _STLP_STLPORT_LIB)

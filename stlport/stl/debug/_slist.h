@@ -375,25 +375,6 @@ public:
   }
 
 public:
-  // Moves the range [__before_first + 1, __before_last + 1) to *this,
-  //  inserting it immediately after __pos.  This is constant time.
-  void splice_after(iterator __pos, 
-                    iterator __before_first, iterator __before_last) {
-    _STLP_DEBUG_CHECK(_Dereferenceable(__pos))
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
-    _STLP_DEBUG_CHECK(__check_range(__before_first, __before_last))
-    _Base::splice_after(__pos._M_iterator, 
-                        __before_first._M_iterator, __before_last._M_iterator);
-  }
-
-  // Moves the element that follows __prev to *this, inserting it immediately
-  //  after __pos.  This is constant time.
-  void splice_after(iterator __pos, iterator __prev) {
-    _STLP_DEBUG_CHECK(_Dereferenceable(__pos))
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
-    _Base::splice_after(__pos._M_iterator, __prev._M_iterator);
-  }
-
   // Removes all of the elements from the list __x to *this, inserting
   // them immediately after __pos.  __x must not be *this.  Complexity:
   // linear in __x.size().
@@ -402,6 +383,30 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_VERBOSE_ASSERT(!(&__x==this), _StlMsg_INVALID_ARGUMENT)
     _Base::splice_after(__pos._M_iterator, __x);
+    __x._M_iter_list._Set_owner(_M_iter_list);
+  }
+
+  // Moves the element that follows __prev to *this, inserting it immediately
+  //  after __pos.  This is constant time.
+  void splice_after(iterator __pos, iterator __prev) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
+    _STLP_DEBUG_CHECK(_Dereferenceable(__prev))
+    iterator __elem = __prev; ++__elem;
+    _Base::splice_after(__pos._M_iterator, __prev._M_iterator);
+    __change_ite_owner(__elem, &_M_iter_list);
+  }
+
+  // Moves the range [__before_first + 1, __before_last + 1) to *this,
+  //  inserting it immediately after __pos.  This is constant time.
+  void splice_after(iterator __pos,
+                    iterator __before_first, iterator __before_last) {
+    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
+    _STLP_DEBUG_CHECK(__check_range(__before_first, __before_last))
+    iterator __first = __before_first; ++__first;
+    iterator __last = __before_last; ++__last;
+    _Base::splice_after(__pos._M_iterator,
+                        __before_first._M_iterator, __before_last._M_iterator);
+    __change_range_owner(__first, __last, &_M_iter_list);
   }
 
   // Linear in distance(begin(), __pos), and linear in __x.size().
@@ -409,6 +414,7 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_VERBOSE_ASSERT(!(&__x==this), _StlMsg_INVALID_ARGUMENT)
     _Base::splice(__pos._M_iterator, __x);
+    __x._M_iter_list._Set_owner(_M_iter_list);
   }
 
   // Linear in distance(begin(), __pos), and in distance(__x.begin(), __i).
@@ -417,6 +423,7 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&__x._M_iter_list ,__i))
     _STLP_VERBOSE_ASSERT(&__x!=this, _StlMsg_INVALID_ARGUMENT)
     _Base::splice(__pos._M_iterator, __x, __i._M_iterator);
+    __change_ite_owner(__i, &_M_iter_list);
   }
 
   // Linear in distance(begin(), __pos), in distance(__x.begin(), __first),
@@ -425,7 +432,8 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     _STLP_VERBOSE_ASSERT(&__x!=this, _StlMsg_INVALID_ARGUMENT)
     _STLP_DEBUG_CHECK(__check_range(__first, __last, __x.begin(), __x.end()))
-    _Base::splice(__pos._M_iterator, __x, __first._M_iterator, __last._M_iterator);      
+    _Base::splice(__pos._M_iterator, __x, __first._M_iterator, __last._M_iterator);
+    __change_range_owner(__first, __last, &_M_iter_list);
   }
 
 public:
@@ -464,6 +472,7 @@ public:
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(_Base::begin(), _Base::end()))
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(__x.begin()._M_iterator, __x.end()._M_iterator))
     _Base::merge(__x);
+    __x._M_iter_list._Set_owner(_M_iter_list);
   }
   void sort() {
     _Base::sort();
@@ -509,6 +518,7 @@ public:
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(_Base::begin(), _Base::end(), __ord))
     _STLP_DEBUG_CHECK( /* _STLP_STD:: */ is_sorted(__x.begin()._M_iterator, __x.end()._M_iterator, __ord))
     _Base::merge(__x, __ord);
+    __x._M_iter_list._Set_owner(_M_iter_list);
   }
 
   template <class _StrictWeakOrdering>
@@ -516,7 +526,6 @@ public:
     _Base::sort(__comp);
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
-
 };
 
 #define _STLP_TEMPLATE_HEADER template <class _Tp, class _Alloc>

@@ -116,16 +116,14 @@ bool _STLP_CALL __check_ptr_range(const _Tp* __first, const _Tp* __last) {
 }
 
 //===============================================================
-
 template <class _Iterator>
 void  _STLP_CALL __invalidate_range(const __owned_list* __base, 
                                     const _Iterator& __first,
                                     const _Iterator& __last) {
-  typedef _Iterator* _Safe_iterator_ptr;
   typedef __owned_link _L_type;
   _STLP_ACQUIRE_LOCK(__base->_M_lock)
-  _L_type* __prev = (_L_type*)&__base->_M_node;
-  _L_type* __pos = (_L_type*)__prev->_M_next;
+  _L_type* __prev = __CONST_CAST(_L_type*, &__base->_M_node);
+  _L_type* __pos = __prev->_M_next;
 
   while ( __pos != 0 ) {         
     if ((!(&__first == (_Iterator*)__pos || &__last == (_Iterator*)__pos)) &&
@@ -133,12 +131,12 @@ void  _STLP_CALL __invalidate_range(const __owned_list* __base,
                        __first._M_iterator, __last._M_iterator,
                        _STLP_ITERATOR_CATEGORY(__first, _Iterator))) {
       __pos->_M_owner = 0;
-      __pos = (_L_type*) (__prev->_M_next = __pos->_M_next);
+      __prev->_M_next = __pos->_M_next;
     }
     else {
       __prev = __pos;
-      __pos=(_L_type*)__pos->_M_next;
     }
+    __pos = __prev->_M_next;
   }
   _STLP_RELEASE_LOCK(__base->_M_lock)    
 }
@@ -148,20 +146,87 @@ void  _STLP_CALL __invalidate_iterator(const __owned_list* __base,
                                        const _Iterator& __it) {
   typedef __owned_link   _L_type;
   _STLP_ACQUIRE_LOCK(__base->_M_lock)
-  _L_type* __prev = (_L_type*)&__base->_M_node;
-  _L_type* __position = (_L_type*)__prev->_M_next;
-  while ( __position != 0 ) {
+  _L_type* __prev = __CONST_CAST(_L_type*, &__base->_M_node);
+  _L_type* __pos = __prev->_M_next;
+  while ( __pos != 0 ) {
     // this requires safe iterators to be derived from __owned_link
-    if ((__position != (_L_type*)&__it) && ((_Iterator*)__position)->_M_iterator == __it._M_iterator ) {
-      __position->_M_owner = 0;
-      __position = (_L_type*) (__prev->_M_next = __position->_M_next);
+    if ((__pos != (_L_type*)&__it) && ((_Iterator*)__pos)->_M_iterator == __it._M_iterator ) {
+      __pos->_M_owner = 0;
+      __prev->_M_next = __pos->_M_next;
     }
     else {
-      __prev = __position;
-      __position=(_L_type*)__position->_M_next;
+      __prev = __pos;
     }
+    __pos = __prev->_M_next;
   }
   _STLP_RELEASE_LOCK(__base->_M_lock)
+}
+
+template <class _Iterator>
+void _STLP_CALL  __change_range_owner(const _Iterator& __first,
+                                      const _Iterator& __last,
+                                      const __owned_list* __dst) {
+  if (__first._Owner() == __dst)
+    return;
+
+  typedef __owned_link _L_type;
+  // Check __stl_debug_engine<_Dummy>::_Swap_owners comments to see why there is no lock here
+  //_STLP_ACQUIRE_LOCK(__base->_M_lock)
+  __owned_list *__base = __CONST_CAST(__owned_list*, __first._Owner());
+  _L_type* __src_prev = &__base->_M_node;
+  _L_type* __pos = __src_prev->_M_next;
+  _L_type* __dst_prev = __CONST_CAST(_L_type*, &__dst->_M_node);
+
+  while (__pos != 0) {         
+    if ((!(&__first == (_Iterator*)__pos || &__last == (_Iterator*)__pos)) &&
+        __in_range_aux(((_Iterator*)__pos)->_M_iterator,
+                       __first._M_iterator, __last._M_iterator,
+                       _STLP_ITERATOR_CATEGORY(__first, _Iterator))) {
+      __pos->_M_owner = __CONST_CAST(__owned_list*, __dst);
+      //remove __pos from __base:
+      __src_prev->_M_next = __pos->_M_next;
+      //add __pos to __dst:
+      __pos->_M_next = __dst_prev->_M_next;
+      __dst_prev->_M_next = __pos;
+    }
+    else {
+      __src_prev = __pos;
+    }
+    __pos = __src_prev->_M_next;
+  }
+  //_STLP_RELEASE_LOCK(__base->_M_lock)    
+}
+
+template <class _Iterator>
+void  _STLP_CALL __change_ite_owner(const _Iterator& __it,
+                                    const __owned_list* __dst) {
+  if (__it._Owner() == __dst)
+    return;
+
+  typedef __owned_link _L_type;
+  // Check __stl_debug_engine<_Dummy>::_Swap_owners comments to see why there is no lock here
+  //_STLP_ACQUIRE_LOCK(__base->_M_lock)
+  __owned_list *__base = __CONST_CAST(__owned_list*, __it._Owner());
+  _L_type* __prev = &__base->_M_node;
+  _L_type* __pos = __prev->_M_next;
+  _L_type* __dst_prev = __CONST_CAST(_L_type*, &__dst->_M_node);
+
+  while (__pos != 0) {
+    // this requires safe iterators to be derived from __owned_link
+    if ((__pos != (_L_type*)&__it) && ((_Iterator*)__pos)->_M_iterator == __it._M_iterator ) {
+      __pos->_M_owner = __CONST_CAST(__owned_list*, __dst);
+      //remove __pos from __base:
+      __prev->_M_next = __pos->_M_next;
+      //add __pos to __dst:
+      __pos->_M_next = __dst_prev->_M_next;
+      __dst_prev->_M_next = __pos;
+    }
+    else {
+      __prev = __pos;
+    }
+    __pos = __prev->_M_next;
+  }
+  //_STLP_RELEASE_LOCK(__base->_M_lock)
 }
 
 _STLP_END_NAMESPACE
@@ -369,10 +434,10 @@ void  _STLP_CALL
 __stl_debug_engine<_Dummy>::_Stamp_all(__owned_list* __l, __owned_list* __o) {
   // crucial
   if (__l->_M_node._M_owner) {
-    for (__owned_link*  __position = (__owned_link*)__l->_M_node._M_next; 
-      __position != 0; __position= (__owned_link*)__position->_M_next) {
-      _STLP_ASSERT(__position->_Owner()== __l)
-      __position->_M_owner=__o;
+    for (__owned_link*  __pos = (__owned_link*)__l->_M_node._M_next; 
+      __pos != 0; __pos = (__owned_link*)__pos->_M_next) {
+      _STLP_ASSERT(__pos->_Owner()== __l)
+      __pos->_M_owner=__o;
     }
   }
 }
@@ -383,9 +448,9 @@ __stl_debug_engine<_Dummy>::_Verify(const __owned_list* __l) {
   _STLP_ACQUIRE_LOCK(__l->_M_lock);
   if (__l) {
     _STLP_ASSERT(__l->_M_node._Owner() != 0)
-    for (__owned_link* __position = (__owned_link*)__l->_M_node._M_next; 
-         __position != 0; __position= (__owned_link*)__position->_M_next) {
-      _STLP_ASSERT(__position->_Owner()== __l)
+    for (__owned_link* __pos = (__owned_link*)__l->_M_node._M_next; 
+         __pos != 0; __pos = (__owned_link*)__pos->_M_next) {
+      _STLP_ASSERT(__pos->_Owner()== __l)
     }
   }
   _STLP_RELEASE_LOCK(__l->_M_lock);
@@ -414,6 +479,27 @@ __stl_debug_engine<_Dummy>::_Swap_owners(__owned_list& __x, __owned_list& __y) {
 
   __x._M_node._M_next = __y._M_node._M_next;
   __y._M_node._M_next = __tmp;
+}
+
+template <class _Dummy>
+void _STLP_CALL  
+__stl_debug_engine<_Dummy>::_Set_owner(__owned_list& __src, __owned_list& __dst) {
+  if (&__src == &__dst)
+    return;
+
+  // Check __stl_debug_engine<_Dummy>::_Swap_owners comments to see why there is no lock here
+  typedef __owned_link _L_type;
+  _L_type* __prev = &__src._M_node;
+  _L_type* __pos = __prev->_M_next;
+
+  while (__pos != 0) {
+    __pos->_M_owner = &__dst;
+    __prev = __pos;
+    __pos = __prev->_M_next;
+  }
+  __prev->_M_next = __dst._M_node._M_next;
+  __dst._M_node._M_next = __src._M_node._M_next;
+  __src._M_node._M_next = 0;
 }
 
 template <class _Dummy>

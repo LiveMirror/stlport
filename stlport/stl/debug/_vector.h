@@ -367,12 +367,6 @@ struct __move_traits<vector<_Tp, _Alloc> > :
 {};
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
-
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
-_STLP_EXPORT_TEMPLATE_CLASS __construct_checker<__WORKAROUND_DBG_RENAME(vector) <void*, allocator<void*> > >;
-_STLP_EXPORT_TEMPLATE_CLASS _DBG_vector <void*,allocator<void*> >;
-#  endif /* _STLP_USE_TEMPLATE_EXPORT */
-
 _STLP_END_NAMESPACE
 
 #undef _STLP_DBG_VECTOR_BASE

@@ -517,7 +517,7 @@
 #endif
 #define __FULL_NAME(X) __WORKAROUND_RENAME(X)
 
-#if defined ( _STLP_DEBUG )
+#if defined (_STLP_DEBUG)
 #  define __WORKAROUND_DBG_RENAME(X) _STLP_NON_DBG_NAME(X)
 #else
 #  define __WORKAROUND_DBG_RENAME(X) __WORKAROUND_RENAME(X)
@@ -604,9 +604,9 @@ namespace __std_alias = std;
 #  if defined (_STLP_USE_OWN_NAMESPACE)
 #    if !defined (_STLP_DEBUG)
 #      if !defined (_STLP_USING_CROSS_NATIVE_RUNTIME_LIB)
-#        define _STLP_STD  stlp_std
+#        define _STLP_STD_NAME  stlp_std
 #      else
-#        define _STLP_STD  stlpx_std
+#        define _STLP_STD_NAME  stlpx_std
 #      endif
 #    else
 /*
@@ -615,36 +615,48 @@ namespace __std_alias = std;
  * than runtime.
  */
 #      if !defined (_STLP_USING_CROSS_NATIVE_RUNTIME_LIB)
-#        define _STLP_STD  stlpd_std
+#        define _STLP_STD_NAME  stlpd_std
 #      else
-#        define _STLP_STD  stlpdx_std
+#        define _STLP_STD_NAME  stlpdx_std
 #      endif
 #    endif
-namespace _STLP_STD { }
+namespace _STLP_STD_NAME { }
 #  else
 #    ifdef _STLP_DEBUG
 namespace stdD = std;
 #    endif
-#  define _STLP_STD      std
+#    define _STLP_STD_NAME      std
 #  endif /* _STLP_USE_OWN_NAMESPACE */
 
-#  define _STLP_PRIV     stlp_private
-namespace _STLP_PRIV {
-  using namespace _STLP_STD;
+#  if !defined (_STLP_USING_NAMESPACE_BUG)
+#    define _STLP_PRIV_NAME stlp_priv
+namespace _STLP_PRIV_NAME {
+  using namespace _STLP_STD_NAME;
 }
+#  else
+#    define _STLP_PRIV_NAME priv
+#  endif
 
-#  define _STLP_BEGIN_NAMESPACE namespace _STLP_STD {
+#  define _STLP_BEGIN_NAMESPACE namespace _STLP_STD_NAME {
 #  define _STLP_END_NAMESPACE }
-#  define _STLP_MOVE_TO_PRIV_NAMESPACE } namespace _STLP_PRIV {
-#  define _STLP_MOVE_TO_STD_NAMESPACE } namespace _STLP_STD {
+#  if !defined (_STLP_USING_NAMESPACE_BUG)
+//We prefer to make private namespace a totaly seperated namespace...
+#    define _STLP_PRIV ::_STLP_PRIV_NAME
+#    define _STLP_MOVE_TO_PRIV_NAMESPACE } namespace _STLP_PRIV_NAME {
+#    define _STLP_MOVE_TO_STD_NAMESPACE } namespace _STLP_STD_NAME {
+#  else
+//but sometimes we can't:
+#    define _STLP_PRIV _STLP_STD_NAME::_STLP_PRIV_NAME
+#    define _STLP_MOVE_TO_PRIV_NAMESPACE namespace _STLP_PRIV_NAME {
+#    define _STLP_MOVE_TO_STD_NAMESPACE }
+#  endif
 
 // _STLP_BEGIN_NAMESPACE _STLP_END_NAMESPACE
 
 //Backward compatibility:
-namespace _STL = _STLP_STD;
-// backward compatibility 
+namespace _STL = _STLP_STD_NAME;
 # undef __STLPORT_NAMESPACE
-# define __STLPORT_NAMESPACE _STLP_STD
+# define __STLPORT_NAMESPACE _STLP_STD_NAME
 
 /* decide whether or not we use separate namespace for rel ops */
 #   if defined(_STLP_NO_RELOPS_NAMESPACE)
@@ -656,6 +668,8 @@ namespace _STL = _STLP_STD;
 #     define _STLP_END_RELOPS_NAMESPACE } }
 #     define _STLP_USE_SEPARATE_RELOPS_NAMESPACE
 #   endif /* Use std::rel_ops namespace */
+
+#  define _STLP_STD ::_STLP_STD_NAME
 
 # else /* _STLP_USE_NAMESPACES */
 /* STLport is being put into global namespace */
@@ -678,7 +692,7 @@ namespace _STL = _STLP_STD;
 # endif  /* _STLP_USE_NAMESPACES */
 
 # define STLPORT_CSTD _STLP_VENDOR_CSTD
-# define STLPORT      _STLP_STD
+# define STLPORT      _STLP_STD_NAME
 
 #if defined(_STLP_BOGUS_TEMPLATE_TYPE_MATCHING_BUG)
 #  define _STLP_SIMPLE_TYPE(T) _stl_trivial_proxy<T>
@@ -689,10 +703,6 @@ namespace _STL = _STLP_STD;
 # ifndef _STLP_RAND48
 # define _STLP_NO_DRAND48
 # endif
-
-/* backwards compatibility */
-# define __STL_NAMESPACE _STLP_STD
-# define __STL_NAME(name) _STLP_STD::name
 
 /* advanced keywords usage */
 #  ifndef  _STLP_NO_NEW_STYLE_CASTS

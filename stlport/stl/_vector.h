@@ -30,8 +30,6 @@
 #ifndef _STLP_INTERNAL_VECTOR_H
 #define _STLP_INTERNAL_VECTOR_H
 
-
-
 # ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h>
 # endif
@@ -52,10 +50,8 @@
 #  include <stl/_range_errors.h>
 # endif
 
-#ifdef _STLP_DEBUG
-#  undef  vector
-#  define vector __WORKAROUND_DBG_RENAME(vector)
-#endif
+#undef  vector
+#define vector __WORKAROUND_DBG_RENAME(vector)
 
 _STLP_BEGIN_NAMESPACE 
 
@@ -639,15 +635,15 @@ protected:
 #endif /* _STLP_MEMBER_TEMPLATES */
 };
 
-# ifndef _STLP_DONT_USE_PTR_SPECIALIZATIONS
+#ifndef _STLP_DONT_USE_PTR_SPECIALIZATIONS
 #  include <stl/pointers/_vector.h>
-# endif /* _STLP_DONT_USE_PTR_SPECIALIZATIONS */
+#endif /* _STLP_DONT_USE_PTR_SPECIALIZATIONS */
 
-# define _STLP_TEMPLATE_HEADER    template <class _Tp, class _Alloc>
-# define _STLP_TEMPLATE_CONTAINER vector<_Tp, _Alloc>
-# include <stl/_relops_cont.h>
-# undef _STLP_TEMPLATE_CONTAINER
-# undef _STLP_TEMPLATE_HEADER
+#define _STLP_TEMPLATE_HEADER    template <class _Tp, class _Alloc>
+#define _STLP_TEMPLATE_CONTAINER vector<_Tp, _Alloc>
+#include <stl/_relops_cont.h>
+#undef _STLP_TEMPLATE_CONTAINER
+#undef _STLP_TEMPLATE_HEADER
 
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 template <class _Tp, class _Alloc>
@@ -658,48 +654,29 @@ struct __move_traits<vector<_Tp, _Alloc> > {
 };
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
-
-# if defined (_STLP_USE_TEMPLATE_EXPORT)
-_STLP_EXPORT_TEMPLATE_CLASS allocator<void*>;
-_STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<void**, void*, allocator<void*> >;
-_STLP_EXPORT_TEMPLATE_CLASS _Vector_base<void*,allocator<void*> >;
-
-# ifndef _STLP_DONT_USE_PTR_SPECIALIZATIONS
-_STLP_EXPORT_TEMPLATE_CLASS _Vector_impl<void*,allocator<void*> >;
-# endif
-
-_STLP_EXPORT_TEMPLATE_CLASS vector<void*,allocator<void*> >;
-# endif
-
-#ifdef _STLP_DEBUG
-# undef  vector
-#endif
-// #  undef  __vector__
-// #  define __vector__ __WORKAROUND_RENAME(vector)
-
 _STLP_END_NAMESPACE
 
-# if !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_vector.c>
-# endif
-
-# undef _VECTOR_IMPL
-
-#ifndef _STLP_INTERNAL_BVECTOR_H
-# include <stl/_bvector.h>
 #endif
 
-# if defined (_STLP_DEBUG)
-#  include <stl/debug/_vector.h>
-# endif
+#undef _VECTOR_IMPL
+#undef  vector
 
-# if defined (_STLP_USE_WRAPPER_FOR_ALLOC_PARAM)
+#ifndef _STLP_INTERNAL_BVECTOR_H
+#  include <stl/_bvector.h>
+#endif
+
+#if defined (_STLP_DEBUG)
+#  include <stl/debug/_vector.h>
+#endif
+
+#if defined (_STLP_USE_WRAPPER_FOR_ALLOC_PARAM)
 #  include <stl/wrappers/_vector.h>
-# endif
+#endif
 
 #endif /* _STLP_VECTOR_H */
 
 // Local Variables:
 // mode:C++
 // End:
-

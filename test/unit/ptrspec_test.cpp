@@ -103,7 +103,6 @@ void PtrSpecTest::ptr_specialization_test()
   pcint_vect.assign(int_array, int_array + 3);
   pcint_vect.assign(cint_array, cint_array + 3);
   copy(int_array, int_array + 3, back_inserter(pint_vect));
-  return;
 
 #ifdef _STLP_MEMBER_TEMPLATES
   pint_list.sort(binary_pred<int>());
