@@ -1,3 +1,7 @@
+2004-11-29  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_cmath.h: patch from Michael Fink aplied.
+
 2004-11-27  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_threads.h: direct access to _M_ref_count isn't MT-safe;

@@ -120,6 +120,10 @@ _STLP_END_NAMESPACE
 #  if !defined (_STLP_USE_NEW_C_HEADERS) 
 
 _STLP_BEGIN_NAMESPACE
+#    ifdef _STLP_WCE
+#      pragma warning(disable: 4162 4163) // "no function with C linkage found", "not available as an intrinsic function"
+#      pragma function (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh, ceil, floor)
+#    endif
 
 #    ifndef _STLP_HAS_NATIVE_FLOAT_ABS
 inline double abs(double __x)                 { return _STLP_DO_ABS(double)(__x); }
@@ -211,6 +215,11 @@ inline long double tanh (long double __x)                 { return _STLP_DO_TANH
 
 #    endif /* ! _STLP_NO_LONG_DOUBLE || _STLP_VENDOR_LONG_DOUBLE_MATH */
 
+#    ifdef _STLP_WCE
+#      pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh, ceil, floor)
+#      pragma warning(default: 4162)
+#    endif
+
 _STLP_END_NAMESPACE
 
 #  endif /* _STLP_USE_NEW_C_HEADERS */
@@ -218,7 +227,7 @@ _STLP_END_NAMESPACE
 #  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200) && !defined(_STLP_WCE)
 _STLP_BEGIN_NAMESPACE
 
-#    if defined (_MSC_EXTENSIONS) && !defined(_STLP_WCE_NET)
+#    if defined (_MSC_EXTENSIONS) /* && !defined(_STLP_WCE_NET) */
 /*
  * dums: VC6 has all the required C++ functions but only define them if
  * _MSC_EXTENSIONS is not defined (a bug?). STLport just do the same
