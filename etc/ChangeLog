@@ -1,3 +1,16 @@
+2004-10-29  Petr Ovtchenkov  <ptr@island...>
+
+	* src/explore/Makefiles/gmake/app/gcc.mak: use -fPIC for gcc 2.95.x when build
+	application---this is a workaround for bug with running code in static constructors.
+
+	* stlport/config/stl_gcc.h, stlport/stl/_config.h: force usage of mutex instead
+	of spinlock for gcc 2.95.x, due to problems with initialization of statics.
+	Initialization of mutex has variant with structure filling, while for spinlock
+	initialization function call required.
+
+	* test/unit/locale_test.cpp: avoid static object for gcc 2.95.x, due to problems
+	with initialization of statics.
+
 2004-10-27  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config.h, _fstream.h, _ios.h, _istream.h, _monetary.h, _num_get.h,
