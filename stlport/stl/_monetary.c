@@ -489,10 +489,9 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
     //    __format.field[2] = (char) money_base::none;
     //  }
     //}
-    //space can only be second or third (22.2.6.3-1):
-    if (__format.field[1] == (char) money_base::space)
-      ++__length;
-    if (__format.field[2] == (char) money_base::space)
+    //space can only be second or third and only once (22.2.6.3-1):
+    if ((__format.field[1] == (char) money_base::space) ||
+        (__format.field[2] == (char) money_base::space))
       ++__length;
   }
 
