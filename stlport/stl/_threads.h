@@ -75,10 +75,71 @@ using namespace _STLP_VENDOR_CSTD;
 #  define _STLP_ATOMIC_INCREMENT(__x) __add_and_fetch(__x, 1)
 #  define _STLP_ATOMIC_DECREMENT(__x) __add_and_fetch(__x, (size_t) -1)
 
+# elif defined (__GNUC__) && defined (__i386__) && defined (__unix__) && defined (_STLP_USE_INLINE_X86_SPINLOCK) 
+
+// gcc on i386 linux, freebsd, etc. 
+
+// This enables the memory caching on x86 linux.  It is critical for SMP
+// without it the performace is DISMAL!
+static inline unsigned long __xchg(volatile __stl_atomic_t* target, int source)
+{
+
+  // The target is refernce in memory rather than the register
+  // because making a copy of it from memory to the register and
+  // back again would ruin the atomic nature of the call.
+  // the source does not need to be delt with atomicly so it can
+  // be copied about as needed.
+  //
+  // The casting of the source is used to prevent gcc from optimizing 
+  // in such a way that breaks the atomic nature of this call.
+  //
+  __asm__ __volatile__("xchgl %1,%0"
+		       :"=m" (*(volatile long *) target), "=r" (source)
+		       :"m" (*(volatile long *) target), "r" (source) );
+  return source;
+
+  //  The assembly above does the following atomicly:
+  //   int temp=source;
+  //   source=(int)(*target);
+  //   (int)(*target)=temp;
+  // return source
+}
+
+static inline void __inc_and_fetch(volatile __stl_atomic_t* __x)
+{
+  // Referenced in memory rather than register to preserve the atomic nature.
+  //
+  __asm__ __volatile__(
+      "lock; incl %0"
+      :"=m" (*__x)
+      :"m" (*__x) );
+
+  //  The assembly above does the following atomicly:
+  //   ++(int)(*__x);
+
+}
+static inline void __dec_and_fetch(volatile __stl_atomic_t* __x)
+{
+  // Referenced in memory rather than register to preserve the atomic nature.
+  //
+  __asm__ __volatile__(
+      "lock; decl %0"
+      :"=m" (*__x)
+      :"m" (*__x) );
+
+  //  The assembly above does the following atomicly:
+  //   --(int)(*__x);
+}
+
+#  define _STLP_ATOMIC_EXCHANGE(target, newValue) ((__xchg(target, newValue)))
+#  define _STLP_ATOMIC_INCREMENT(__x) __inc_and_fetch(__x)
+#  define _STLP_ATOMIC_DECREMENT(__x) __dec_and_fetch(__x)
+
 # elif defined(_STLP_PTHREADS)
+
 #  include <pthread.h>
 #  ifndef _STLP_USE_PTHREAD_SPINLOCK
-#   if defined(PTHREAD_MUTEX_INITIALIZER) && !defined(_STLP_MUTEX_INITIALIZER) && defined(_REENTRANT)
+#   if defined(PTHREAD_MUTEX_INITIALIZER) && !defined(_STLP_MUTEX_INITIALIZER)
 #    define _STLP_MUTEX_INITIALIZER = { PTHREAD_MUTEX_INITIALIZER }
 #   endif
 
@@ -204,11 +265,15 @@ using _STLP_VENDOR_CSTD::time_t;
 
 # ifndef _STLP_MUTEX_INITIALIZER
 #   if defined(_STLP_ATOMIC_EXCHANGE)
+// we are using our own spinlock. 
 #     define _STLP_MUTEX_INITIALIZER = { 0 }
 #   elif defined(_STLP_UITHREADS)
+// known case
 #     define _STLP_MUTEX_INITIALIZER = { DEFAULTMUTEX }
 #   else
+// we do not have static initializer available. therefore, on-demand synchronization is needed.
 #     define _STLP_MUTEX_INITIALIZER
+#     define _STLP_MUTEX_NEEDS_ONDEMAND_INITIALIZATION
 #   endif
 # endif
 
@@ -251,6 +316,7 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 #endif
 
 #ifdef _STLP_THREADS
+
 # ifdef _STLP_ATOMIC_EXCHANGE
   inline void _M_initialize() { _M_lock=0; }
   inline void _M_destroy() {}
@@ -286,32 +352,37 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
   inline void _M_initialize() { pthread_spin_init( &_M_lock, 0 ); }
   inline void _M_destroy() { pthread_spin_destroy( &_M_lock ); }
 
-  // sorry, but no static initializer for pthread_spinlock_t;
-  // this will not work for compilers that has problems with call
-  // constructor of static object...
+  inline void _M_acquire_lock() { 
+    // we do not care about race conditions here : there is only one thread at this point 
+    if(!_M_lock) pthread_spin_init( &_M_lock, 0 );
 
-  // _STLP_mutex_base()
-  //   { pthread_spin_init( &_M_lock, 0 ); }
+    // fbp: here, initialization on demand should happen before the lock
+    // we use simple strategy as we are sure this only happens on initialization
+    pthread_spin_lock( &_M_lock );
+  }
 
-  // ~_STLP_mutex_base()
-  //   { pthread_spin_destroy( &_M_lock ); }
-
-  inline void _M_acquire_lock() { pthread_spin_lock( &_M_lock ); }
+  inline void _M_acquire_lock_nodemand() { 
+    pthread_spin_lock( &_M_lock ); 
+  }
   inline void _M_release_lock() { pthread_spin_unlock( &_M_lock ); }
 #  else // !_STLP_USE_PTHREAD_SPINLOCK
   pthread_mutex_t _M_lock;
+
   inline void _M_initialize() {
     pthread_mutex_init(&_M_lock,_STLP_PTHREAD_ATTR_DEFAULT);
   }
   inline void _M_destroy() {
     pthread_mutex_destroy(&_M_lock);
   }
-  inline void _M_acquire_lock() { 
+  inline void _M_acquire_lock_nodemand() { 
+    pthread_mutex_lock(&_M_lock);
+  }
 
-#   if defined ( __hpux ) && ! defined (PTHREAD_MUTEX_INITIALIZER)
-    if (!_M_lock.field1)  _M_initialize();
-#   endif
-    pthread_mutex_lock(&_M_lock); 
+  inline void _M_acquire_lock() { 
+#    if defined (__hpux) && !defined (PTHREAD_MUTEX_INITIALIZER)
+      if (!_M_lock.field1)  _M_initialize();
+#    endif
+      // pthread_mutex_lock(&_M_lock);
   }
   inline void _M_release_lock() { pthread_mutex_unlock(&_M_lock); }
 #  endif // !_STLP_USE_PTHREAD_SPINLOCK
@@ -331,6 +402,9 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
   HMTX _M_lock;
   inline void _M_initialize() { DosCreateMutexSem(NULL, &_M_lock, 0, false); }
   inline void _M_destroy() { DosCloseMutexSem(_M_lock); }
+  inline void _M_acquire_lock_nodemand() {
+    DosRequestMutexSem(_M_lock, SEM_INDEFINITE_WAIT);
+  }  
   inline void _M_acquire_lock() {
     if(!_M_lock) _M_initialize();
     DosRequestMutexSem(_M_lock, SEM_INDEFINITE_WAIT);
@@ -347,6 +421,12 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
   {
      int t = delete_sem(sem);
      assert(t == B_NO_ERROR);
+  }
+  inline void _M_acquire_lock_nodemand()
+  {
+    status_t t;
+    t = acquire_sem(sem);
+    assert(t == B_NO_ERROR);
   }
   inline void _M_acquire_lock();
   inline void _M_release_lock() 
@@ -365,10 +445,24 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 #endif // _STLP_PTHREADS
 };
 
+
+
+#if defined (_STLP_MUTEX_NEEDS_ONDEMAND_INITIALIZATION)
+// for use in _STLP_mutex, our purposes do not require ondemand initialization
+// also, mutex_base may use some hacks to determine uninitialized state by zero data, which only works for globals.
+class _STLP_CLASS_DECLSPEC _STLP_mutex_nodemand : public _STLP_mutex_base {
+  inline void _M_acquire_lock() { 
+    _M_acquire_lock_nodemand();
+  }
+};
+#else
+typedef _STLP_mutex_base _STLP_mutex_nodemand;
+#endif
+
+
 // Locking class.  The constructor initializes the lock, the destructor destroys it.
 // Well - behaving class, does not need static initializer
-
-class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
+class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_nodemand {
   public:
     inline _STLP_mutex () { _M_initialize(); }
     inline ~_STLP_mutex () { _M_destroy(); }
@@ -377,7 +471,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
     void operator=(const _STLP_mutex&);
 };
 
-#ifdef _STLP_DEBUG
+#if 0 /* def _STLP_DEBUG */
 /*
  * Recursive Safe locking class.
 */
@@ -464,7 +558,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 
 # endif /* _STLP_THREADS */
 
-#endif /* _STLP_DEBUG */
+#endif /* OBSOLETE, _STLP_DEBUG */
 
 
 /*
@@ -547,8 +641,6 @@ _Atomic_swap(volatile __stl_atomic_t * __p, __stl_atomic_t __q) {
 // A locking class that uses _STLP_STATIC_MUTEX.  The constructor takes
 // a reference to an _STLP_STATIC_MUTEX, and acquires a lock.  The destructor
 // releases the lock.
-// It's not clear that this is exactly the right functionality.
-// It will probably change in the future.
 
 struct _STLP_CLASS_DECLSPEC _STLP_auto_lock
 {
@@ -610,10 +702,8 @@ inline void _STLP_mutex_base::_M_acquire_lock()
 			// ONLY active at this point.
 			_M_initialize();
 		}
-    }
-	status_t t;
-    t = acquire_sem(sem);
-    assert(t == B_NO_ERROR);
+	}
+	_M_acquire_lock_nodemand();
 }
 
 #endif
@@ -629,3 +719,4 @@ _STLP_END_NAMESPACE
 // Local Variables:
 // mode:C++
 // End:
+

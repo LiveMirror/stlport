@@ -243,6 +243,10 @@
 
 # if !defined(_NOTHREADS) && ! defined (_STLP_THREADS_DEFINED)
 
+#  ifndef _REENTRANT
+#     define _REENTRANT
+#  endif
+
 #  if defined(_PTHREADS)
 #     define _STLP_PTHREADS
 #     define _STLP_THREADS
@@ -275,12 +279,11 @@
 #   define _STLP_THREADS
 #  endif /* _REENTRANT */
 
-# if defined(__linux__) && defined(_STLP_PTHREADS)
+// warning : pthread_spinlock code was reported not to work on RedHat 3
+# if defined(__linux__) && !defined(_STLP_USE_PTHREAD_SPINLOCK)
 #  include <features.h>
-
-#  ifdef __USE_XOPEN2K
-#   define _STLP_USE_PTHREAD_SPINLOCK
-#   define _STLP_STATIC_MUTEX _STLP_mutex
+#  ifndef __USE_XOPEN2K
+#   undef _STLP_USE_PTHREAD_SPINLOCK
 #  endif /* __USE_XOPEN2K */
 # endif /* __linux__ && _STLP_PTHREADS */
 
