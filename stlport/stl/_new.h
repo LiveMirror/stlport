@@ -4,11 +4,15 @@
 
 # ifdef _STLP_NO_BAD_ALLOC
 
+# ifndef _STLP_NEW_DONT_THROW
+#   define _STLP_NEW_DONT_THROW 1
+# endif /* _STLP_NEW_DONT_THROW */
+
 #  include <exception>
 
 _STLP_BEGIN_NAMESPACE
 
-class nothrow_t {};
+struct nothrow_t {};
 
 # ifdef _STLP_OWN_IOSTREAMS
 extern _STLP_DECLSPEC const nothrow_t nothrow;
@@ -41,7 +45,7 @@ inline void _STLP_CALL __stl_delete(void* __p) {
 }
 _STLP_END_NAMESPACE
 
-#else
+#else /* _STLP_WINCE */
 
 #include <new>
 
@@ -67,8 +71,8 @@ _STLP_END_NAMESPACE
 
 # endif /* _STLP_NO_BAD_ALLOC */
 
-# if defined (_STLP_NO_NEW_NEW_HEADER) || defined (_STLP_NO_BAD_ALLOC) && ! defined (_STLP_CHECK_NULL_ALLOC)
-#  define _STLP_CHECK_NULL_ALLOC(__x) void* __y = __x; if (__y == 0) _STLP_THROW(bad_alloc()); return __y
+# if defined (_STLP_NO_NEW_NEW_HEADER) || defined (_STLP_NEW_DONT_THROW) && ! defined (_STLP_CHECK_NULL_ALLOC)
+#  define _STLP_CHECK_NULL_ALLOC(__x) void* __y = __x;if (__y == 0){_STLP_THROW(bad_alloc());}return __y
 # else
 #  define _STLP_CHECK_NULL_ALLOC(__x) return __x
 # endif
@@ -84,5 +88,6 @@ inline void   _STLP_CALL __stl_delete(void* __p) { ::operator delete(__p); }
 #endif
 _STLP_END_NAMESPACE
 
-# endif /* WINCE */
-#endif /* INTERNAL */
+# endif /* _STLP_WINCE */
+
+#endif /* _STLP_NEW_H_HEADER */
