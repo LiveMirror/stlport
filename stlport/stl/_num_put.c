@@ -86,7 +86,7 @@ __put_float(char* __ibuf, char* __iend, _OutputIter __out,
   wchar_t __wbuf[128];
   wchar_t* __eend = __convert_float_buffer(__ibuf, __iend, __wbuf,
                                            __ct, __decimal_point);
-  if (__grouping.size() != 0) {
+  if (!__grouping.empty()) {
     // In order to do separator-insertion only to the left of the
     // decimal point, we adjust the size of the first (right-most)
     // group.  We need to be careful if there is only one entry in
@@ -122,7 +122,7 @@ __put_float(char* __ibuf, char* __iend, _OutputIter __out,
             char __sep, const string& __grouping)
 {
   __adjust_float_buffer(__ibuf, __iend, __decimal_point);
-  if (__grouping.size() != 0) {
+  if (!__grouping.empty()) {
     string __new_grouping = __grouping;
     const char * __decimal_pos = find(__ibuf, __iend, __decimal_point);
     if (__grouping.size() == 1)
@@ -142,15 +142,17 @@ _OutputIter _STLP_CALL
 _M_do_put_float(_OutputIter __s, ios_base& __f,
                 _CharT __fill, _Float __x)
 {
-  char   __buf[128];
-  char* __iend = __write_float(__buf, __f.flags(), (int)__f.precision(), __x);
+  string __buf;
+  __buf.reserve(128);
+  __write_float(__buf, __f.flags(), (int)__f.precision(), __x);
 
-  //  locale __loc = __f.getloc();
   const numpunct<_CharT>& __np = *(const numpunct<_CharT>*)__f._M_numpunct_facet();
   
-  return __put_float(__buf, __iend, __s, __f, __fill,
+  return __put_float(__CONST_CAST(char*, __buf.c_str()), 
+                     __CONST_CAST(char*, __buf.c_str()) + __buf.size(),
+                     __s, __f, __fill,
                      __np.decimal_point(),
-		     __np.thousands_sep(), __f._M_grouping());
+		                 __np.thousands_sep(), __f._M_grouping());
 }
 
 // _M_do_put_integer and its helper functions.
@@ -292,15 +294,13 @@ template <class _Integer>
 inline char* _STLP_CALL
 __write_decimal_backward(char* __ptr, _Integer __x, ios_base::fmtflags __flags, const __true_type& /* is_signed */)
 {
-  __max_int_t __temp = __x;
-
   const bool __negative = __x < 0 ;
+  __max_int_t __temp = __x;
+  __umax_int_t __utemp = __negative?-__temp:__temp;
 
-  if (__negative) __temp = -__temp;
-
-  for (; __temp != 0; __temp /= 10)
-    *--__ptr = (int)(__temp % 10) + '0';	  
-  // put sign if requested
+  for (; __utemp != 0; __utemp /= 10)
+    *--__ptr = (int)(__utemp % 10) + '0';	  
+  // put sign if needed or requested
   if (__negative)
     *--__ptr = '-';
   else if (__flags & ios_base::showpos)
@@ -310,10 +310,13 @@ __write_decimal_backward(char* __ptr, _Integer __x, ios_base::fmtflags __flags, 
 
 template <class _Integer>
 inline char* _STLP_CALL
-__write_decimal_backward(char* __ptr, _Integer __x, ios_base::fmtflags, const __false_type& /* is_signed */)
+__write_decimal_backward(char* __ptr, _Integer __x, ios_base::fmtflags __flags, const __false_type& /* is_signed */)
 {
   for (; __x != 0; __x /= 10)
     *--__ptr = (int)(__x % 10) + '0';
+  // put sign if requested
+  if (__flags & ios_base::showpos)
+    *--__ptr = '+';
   return __ptr;
 }
 
