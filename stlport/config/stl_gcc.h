@@ -203,6 +203,13 @@ typedef unsigned int wint_t;
 //# endif
 #endif
 
+#ifdef __OpenBSD__
+#  define _STLP_NO_VENDOR_MATH_L
+#  define _STLP_NO_VENDOR_STDLIB_L /* no llabs */
+#  ifndef __unix
+#    define __unix
+#  endif
+#endif
 
 #if (__GNUC__ >= 3)
 #  ifndef _STLP_HAS_NO_NEW_C_HEADERS
