@@ -17,7 +17,20 @@
 #ifndef _STLP_BOOST_TYPE_TRAITS_H
 #define _STLP_BOOST_TYPE_TRAITS_H
 
-# include <boost/type_traits.hpp>
+#ifndef BOOST_STDLIB_CONFIG
+#  define BOOST_STDLIB_CONFIG <boost/config/stdlib/stlport.hpp>
+#endif
+
+#include <boost/type_traits/is_integral.hpp>
+#include <boost/type_traits/is_float.hpp>
+#include <boost/type_traits/has_trivial_constructor.hpp>
+#include <boost/type_traits/has_trivial_copy.hpp>
+#include <boost/type_traits/has_trivial_assign.hpp>
+#include <boost/type_traits/has_trivial_destructor.hpp>
+#include <boost/type_traits/is_pod.hpp>
+#include <boost/type_traits/is_pointer.hpp>
+#include <boost/type_traits/remove_cv.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 _STLP_BEGIN_NAMESPACE
 

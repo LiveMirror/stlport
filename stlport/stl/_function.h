@@ -30,8 +30,12 @@
 #ifndef _STLP_INTERNAL_FUNCTION_H
 #define _STLP_INTERNAL_FUNCTION_H
 
+#ifndef _STLP_TYPE_TRAITS_H
+#  include <stl/type_traits.h>
+#endif
+
 #ifndef _STLP_INTERNAL_FUNCTION_BASE_H
-#include <stl/_function_base.h>
+#  include <stl/_function_base.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -82,50 +86,54 @@ struct __binary_fun_aux  : private _Operation
 # endif
 
 template <class _Predicate>
-class unary_negate : 
-    public unary_function<typename __UNARY_ARG(_Predicate,argument_type), bool> {
+class unary_negate 
+    : public unary_function<typename __UNARY_ARG(_Predicate,argument_type), bool> {
+  typedef unary_function<typename __UNARY_ARG(_Predicate,argument_type), bool> _Base;
+public:
+  typedef typename _Base::argument_type argument_type;
+private:
+  typedef typename __call_traits<argument_type>::param_type _ArgParamType;
 protected:
   _Predicate _M_pred;
 public:
   explicit unary_negate(const _Predicate& __x) : _M_pred(__x) {}
-  bool operator()(const typename _Predicate::argument_type& __x) const {
-    return !_M_pred(__x);
-  }
-  bool operator()(typename _Predicate::argument_type& __x) const {
+  bool operator()(_ArgParamType __x) const {
     return !_M_pred(__x);
   }
 };
 
 template <class _Predicate>
 inline unary_negate<_Predicate> 
-not1(const _Predicate& __pred)
-{
+not1(const _Predicate& __pred) {
   return unary_negate<_Predicate>(__pred);
 }
 
 template <class _Predicate> 
 class binary_negate 
     : public binary_function<typename __BINARY_ARG(_Predicate,first_argument_type),
-			     typename __BINARY_ARG(_Predicate,second_argument_type), 
+			                       typename __BINARY_ARG(_Predicate,second_argument_type), 
                              bool> {
+  typedef binary_function<typename __BINARY_ARG(_Predicate,first_argument_type),
+			                    typename __BINARY_ARG(_Predicate,second_argument_type), 
+                          bool> _Base;
+public:
+  typedef typename _Base::first_argument_type first_argument_type;
+  typedef typename _Base::second_argument_type second_argument_type;
+private:
+  typedef __call_traits<first_argument_type>::param_type _FstArgParamType;
+  typedef __call_traits<second_argument_type>::param_type _SndArgParamType;
 protected:
   _Predicate _M_pred;
 public:
   explicit binary_negate(const _Predicate& __x) : _M_pred(__x) {}
-  bool operator()(const typename _Predicate::first_argument_type& __x, 
-                  const typename _Predicate::second_argument_type& __y) const {
-    return !_M_pred(__x, __y); 
-  }
-  bool operator()(typename _Predicate::first_argument_type& __x, 
-                  typename _Predicate::second_argument_type& __y) const {
+  bool operator()(_FstArgParamType __x, _SndArgParamType __y) const {
     return !_M_pred(__x, __y); 
   }
 };
 
 template <class _Predicate>
 inline binary_negate<_Predicate> 
-not2(const _Predicate& __pred)
-{
+not2(const _Predicate& __pred) {
   return binary_negate<_Predicate>(__pred);
 }
 
@@ -133,29 +141,29 @@ template <class _Operation>
 class binder1st : 
     public unary_function<typename __BINARY_ARG(_Operation,second_argument_type),
                           typename __BINARY_ARG(_Operation,result_type) > {
+  typedef unary_function<typename __BINARY_ARG(_Operation,second_argument_type),
+                         typename __BINARY_ARG(_Operation,result_type) > _Base;
+public:
+  typedef typename _Base::argument_type argument_type;
+  typedef typename _Base::result_type result_type;
+private:
+  typedef typename __call_traits<argument_type>::param_type _ArgParamType;
+  typedef typename __call_traits<typename _Operation::first_argument_type>::param_type _ValueParamType;
 protected:
   _Operation _M_op;
   typename _Operation::first_argument_type _M_value;
 public:
-  binder1st(const _Operation& __x,
-            const typename _Operation::first_argument_type& __y)
+  binder1st(const _Operation& __x, _ValueParamType __y)
       : _M_op(__x), _M_value(__y) {}
 
-  typename _Operation::result_type
-  operator()(const typename _Operation::second_argument_type& __x) const {
-    return _M_op(_M_value, __x); 
-  }
-
-  typename _Operation::result_type
-  operator()(typename _Operation::second_argument_type& __x) const {
+  result_type operator()(_ArgParamType __x) const {
     return _M_op(_M_value, __x); 
   }
 };
 
 template <class _Operation, class _Tp>
 inline binder1st<_Operation> 
-bind1st(const _Operation& __fn, const _Tp& __x) 
-{
+bind1st(const _Operation& __fn, const _Tp& __x) {
   typedef typename _Operation::first_argument_type _Arg1_type;
   return binder1st<_Operation>(__fn, _Arg1_type(__x));
 }
@@ -164,29 +172,29 @@ template <class _Operation>
 class binder2nd
   : public unary_function<typename __BINARY_ARG(_Operation,first_argument_type),
                           typename __BINARY_ARG(_Operation,result_type)> {
+  typedef unary_function<typename __BINARY_ARG(_Operation,first_argument_type),
+                         typename __BINARY_ARG(_Operation,result_type)> _Base;
+public:
+  typedef typename _Base::argument_type argument_type;
+  typedef typename _Base::result_type result_type;
+private:
+  typedef typename __call_traits<argument_type>::param_type _ArgParamType;
+  typedef typename __call_traits<typename _Operation::second_argument_type>::param_type _ValueParamType;
 protected:
   _Operation _M_op;
   typename _Operation::second_argument_type value;
 public:
-  binder2nd(const _Operation& __x,
-            const typename _Operation::second_argument_type& __y) 
+  binder2nd(const _Operation& __x, _ValueParamType __y) 
       : _M_op(__x), value(__y) {}
 
-  typename _Operation::result_type
-  operator()(const typename _Operation::first_argument_type& __x) const {
-    return _M_op(__x, value); 
-  }
-
-  typename _Operation::result_type
-  operator()(typename _Operation::first_argument_type& __x) const {
+  result_type operator()(_ArgParamType __x) const {
     return _M_op(__x, value); 
   }
 };
 
 template <class _Operation, class _Tp>
 inline binder2nd<_Operation> 
-bind2nd(const _Operation& __fn, const _Tp& __x) 
-{
+bind2nd(const _Operation& __fn, const _Tp& __x) {
   typedef typename _Operation::second_argument_type _Arg2_type;
   return binder2nd<_Operation>(__fn, _Arg2_type(__x));
 }
@@ -198,6 +206,13 @@ template <class _Operation1, class _Operation2>
 class unary_compose : 
   public unary_function<typename __UNARY_ARG(_Operation2,argument_type),
                         typename __UNARY_ARG(_Operation1,result_type)> {
+  typedef unary_function<typename __UNARY_ARG(_Operation2,argument_type),
+                         typename __UNARY_ARG(_Operation1,result_type)> _Base;
+public:
+  typedef typename _Base::argument_type argument_type;
+  typedef typename _Base::result_type result_type;
+private:
+  typedef __call_traits<argument_type>::param_type _ArgParamType;
 protected:
   _Operation1 _M_fn1;
   _Operation2 _M_fn2;
@@ -205,21 +220,14 @@ public:
   unary_compose(const _Operation1& __x, const _Operation2& __y) 
     : _M_fn1(__x), _M_fn2(__y) {}
 
-  typename _Operation1::result_type
-  operator()(const typename _Operation2::argument_type& __x) const {
-    return _M_fn1(_M_fn2(__x));
-  }
-
-  typename _Operation1::result_type
-  operator()(typename _Operation2::argument_type& __x) const {
+  result_type operator()(_ArgParamType __x) const {
     return _M_fn1(_M_fn2(__x));
   }
 };
 
 template <class _Operation1, class _Operation2>
 inline unary_compose<_Operation1,_Operation2> 
-compose1(const _Operation1& __fn1, const _Operation2& __fn2)
-{
+compose1(const _Operation1& __fn1, const _Operation2& __fn2) {
   return unary_compose<_Operation1,_Operation2>(__fn1, __fn2);
 }
 
@@ -227,6 +235,13 @@ template <class _Operation1, class _Operation2, class _Operation3>
 class binary_compose : 
     public unary_function<typename __UNARY_ARG(_Operation2,argument_type),
                           typename __BINARY_ARG(_Operation1,result_type)> {
+  typedef unary_function<typename __UNARY_ARG(_Operation2,argument_type),
+                         typename __BINARY_ARG(_Operation1,result_type)> _Base;
+public:
+  typedef typename _Base::argument_type argument_type;
+  typedef typename _Base::result_type result_type;
+private:
+  typedef __call_traits<argument_type>::param_type _ArgParamType;
 protected:
   _Operation1 _M_fn1;
   _Operation2 _M_fn2;
@@ -236,13 +251,7 @@ public:
                  const _Operation3& __z) 
     : _M_fn1(__x), _M_fn2(__y), _M_fn3(__z) { }
 
-  typename _Operation1::result_type
-  operator()(const typename _Operation2::argument_type& __x) const {
-    return _M_fn1(_M_fn2(__x), _M_fn3(__x));
-  }
-
-  typename _Operation1::result_type
-  operator()(typename _Operation2::argument_type& __x) const {
+  result_type operator()(_ArgParamType __x) const {
     return _M_fn1(_M_fn2(__x), _M_fn3(__x));
   }
 };
@@ -250,8 +259,7 @@ public:
 template <class _Operation1, class _Operation2, class _Operation3>
 inline binary_compose<_Operation1, _Operation2, _Operation3> 
 compose2(const _Operation1& __fn1, const _Operation2& __fn2, 
-         const _Operation3& __fn3)
-{
+         const _Operation3& __fn3) {
   return binary_compose<_Operation1,_Operation2,_Operation3>
     (__fn1, __fn2, __fn3);
 }
@@ -293,36 +301,31 @@ struct constant_void_fun : public _Constant_void_fun<_Result> {
 };  
 
 template <class _Result, __DFL_TMPL_PARAM( _Argument , _Result) >
-struct constant_unary_fun : public _Constant_unary_fun<_Result, _Argument>
-{
+struct constant_unary_fun : public _Constant_unary_fun<_Result, _Argument> {
   constant_unary_fun(const _Result& __v)
     : _Constant_unary_fun<_Result, _Argument>(__v) {}
 };
 
 template <class _Result, __DFL_TMPL_PARAM( _Arg1 , _Result), __DFL_TMPL_PARAM( _Arg2 , _Arg1) >
 struct constant_binary_fun
-  : public _Constant_binary_fun<_Result, _Arg1, _Arg2>
-{
+  : public _Constant_binary_fun<_Result, _Arg1, _Arg2> {
   constant_binary_fun(const _Result& __v)
     : _Constant_binary_fun<_Result, _Arg1, _Arg2>(__v) {}
 };
 
 template <class _Result>
-inline constant_void_fun<_Result> constant0(const _Result& __val)
-{
+inline constant_void_fun<_Result> constant0(const _Result& __val) {
   return constant_void_fun<_Result>(__val);
 }
 
 template <class _Result>
-inline constant_unary_fun<_Result,_Result> constant1(const _Result& __val)
-{
+inline constant_unary_fun<_Result,_Result> constant1(const _Result& __val) {
   return constant_unary_fun<_Result,_Result>(__val);
 }
 
 template <class _Result>
 inline constant_binary_fun<_Result,_Result,_Result> 
-constant2(const _Result& __val)
-{
+constant2(const _Result& __val) {
   return constant_binary_fun<_Result,_Result,_Result>(__val);
 }
 
@@ -341,8 +344,7 @@ public:
     return _M_table[_M_index1] % __limit;
   }
 
-  void _M_initialize(_STLP_UINT32_T __seed)
-  {
+  void _M_initialize(_STLP_UINT32_T __seed) {
     _STLP_UINT32_T __k = 1;
     _M_table[54] = __seed;
     _STLP_UINT32_T __i;
