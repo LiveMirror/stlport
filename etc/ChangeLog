@@ -1,7 +1,11 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * Support of the Linux Intel C++ support thanks Blaine Kubesh
+  
+  ----
+
   * _bvector.h: Modification of the __WORD_BIT macro name to avoid a FreeBSD clash 
-                (thanks ).
+                (thanks Guy Middleton).
   
   ----
 
