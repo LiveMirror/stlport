@@ -26,7 +26,19 @@
 #ifndef _STLP_VALARRAY_C
 #define _STLP_VALARRAY_C
 
+#ifndef _STLP_VALARRAY_H
+# include <stl/_valarray.h>
+#endif
+
 _STLP_BEGIN_NAMESPACE
+
+template <class _Tp>
+_Valarray_bool valarray<_Tp>:: operator!() const {
+  _Valarray_bool __tmp(this->size(), _Valarray_bool::_NoInit());
+  for (size_t __i = 0; __i < this->size(); ++__i)
+    __tmp[__i] = !(*this)[__i];
+  return __tmp;
+}
 
 // Behavior is undefined if __x and *this have different sizes
 template <class _Tp>
@@ -85,7 +97,7 @@ valarray<_Tp>& valarray<_Tp>::operator=(const gslice_array<_Tp>& __x)
 }
 
 template <class _Tp>
-valarray<_Tp> valarray<_Tp>::operator[](gslice __slice) const
+valarray<_Tp> valarray<_Tp>::operator[](const gslice& __slice) const
 {
   valarray<_Tp> __tmp(__slice._M_size(), _NoInit());
   if (__tmp.size() != 0) {

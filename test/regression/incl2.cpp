@@ -25,7 +25,7 @@ char* names[] = {  "Todd", "Mike", "Graham", "Jack", "Brett"};
 
   const unsigned nameSize = sizeof(names)/sizeof(names[0]);
   vector <char*> v1(nameSize);
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
   {
     v1[i] = names[i];
   }

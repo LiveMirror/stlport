@@ -9,7 +9,7 @@
 #endif
 static bool odd(int a_)
 {
-  return a_ % 2;
+  return (a_ % 2) != 0;
 }
 
 #if !defined (STLPORT) || defined(__STL_USE_NAMESPACES)

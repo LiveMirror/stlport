@@ -51,7 +51,7 @@ public:
     __IMPORT_WITH_ITERATORS(_Super)
     __IMPORT_SUPER_COPY_ASSIGNMENT(slist, slist<_Tp>, __SL_SUPER)
     slist() { }
-    explicit slist(size_type __n, const _Tp& __value) : __SL_SUPER(__n, __value) { }
+    explicit slist(size_type __n, const _Tp& __val) : __SL_SUPER(__n, __val) { }
     explicit slist(size_type __n) :  __SL_SUPER(__n) { } 
     slist(const _Tp* __first, const _Tp* __last) : __SL_SUPER(__first, __last) { } 
     slist(const_iterator __first, const_iterator __last) : __SL_SUPER(__first, __last) { }

@@ -452,7 +452,7 @@ ctype<wchar_t>::do_tolower(wchar_t* low, const wchar_t* high) const
 
 wchar_t ctype<wchar_t>::do_widen(char c) const 
 {
-  return (wchar_t) c;
+  return (wchar_t)(unsigned char)c;
 }
 
 const char* 
@@ -460,13 +460,13 @@ ctype<wchar_t>::do_widen(const char* low, const char* high,
                          wchar_t* dest) const
 {
   while (low != high)
-    *dest++ = (wchar_t) *low++;
+    *dest++ = (wchar_t)(unsigned char)*low++;
   return high;
 }
 
 char ctype<wchar_t>::do_narrow(wchar_t c, char dfault) const 
 {
-  return (char) c == c ? c : dfault;
+  return (unsigned char) c == c ? c : dfault;
 }
 
 const wchar_t* ctype<wchar_t>::do_narrow(const wchar_t* low,
@@ -475,7 +475,7 @@ const wchar_t* ctype<wchar_t>::do_narrow(const wchar_t* low,
 {
   while (low != high) {
     wchar_t c = *low++;
-    *dest++ = (char) c == c ? c : dfault;
+    *dest++ = (unsigned char) c == c ? c : dfault;
   }
 
   return high;

@@ -277,7 +277,8 @@ void _Stl_loc_combine_names(_Locale* L,
     char composite_buf[_Locale_MAX_COMPOSITE_NAME];
     _Locale_compose_name(composite_buf,
                          ctype_buf, numeric_buf, time_buf,
-                         collate_buf, monetary_buf, messages_buf);
+                         collate_buf, monetary_buf, messages_buf,
+                         name1);
     L->name = composite_buf;
   }
 }
@@ -425,10 +426,14 @@ void _Locale::insert_ctype_facets(const char* pname)
 
   if (pname == 0 || pname[0] == 0 || strcmp(pname, "C") == 0) {
     this->insert(i2, ctype<char>::id);
+# ifndef _STLP_NO_MBSTATE_T
     this->insert(i2, codecvt<char, char, mbstate_t>::id);
+# endif
 # ifndef _STLP_NO_WCHAR_T
     this->insert(i2, ctype<wchar_t>::id);
+# ifndef _STLP_NO_MBSTATE_T
     this->insert(i2, codecvt<wchar_t, char, mbstate_t>::id);
+# endif
 # endif
   }
   else {

@@ -29,7 +29,7 @@ int inrprod2_test(int, char**)
 
   vector <int> v1(3);
   vector <int> v2(v1.size());
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
   {
     v1[i] = i + 1;
     v2[i] = v1.size() - i;

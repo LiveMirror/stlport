@@ -22,8 +22,8 @@ int insert2_test(int, char**)
   deque<char*> names(array1, array1 + 3);
   deque<char*>::iterator i = names.begin() + 2;
   copy(array2, array2 + 3, inserter(names, i));
-  std::deque<char*>::iterator j;
+  deque<char*>::iterator j;
   for(j = names.begin(); j != names.end(); j++)
-    std::cout << *j << std::endl;
+    cout << *j << endl;
   return 0;
 }

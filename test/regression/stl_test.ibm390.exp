@@ -859,11 +859,20 @@ Results of string1_test:
 Hello, World!
 v[0] = H
 v[1] = !
-
 Hello, World!
+This is teis test string st string for string calls
+This is test stis test string for stringring for string calls
+allsThis is test string for string calls
+ng for string callsThis is test string for string calls
+This This is tefor string calls
+This This is test string for string calls
+
 Results of bitset1_test:
 b1 size = 13
 b1 = 1111111111111
 b2 size = 13
 b2 = 1000100010001
 b1 = 1101110111011
+b1 nb bits set = 10
+b2 nb bits set = 4
+

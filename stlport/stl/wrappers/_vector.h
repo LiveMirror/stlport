@@ -52,7 +52,7 @@ public:
     __IMPORT_WITH_REVERSE_ITERATORS(_Super)
     __IMPORT_SUPER_COPY_ASSIGNMENT(vector, vector<_Tp>, _VEC_SUPER)
     vector() {}
-    explicit vector(size_type __n, const _Tp& __value) : _VEC_SUPER(__n, __value) { }
+    explicit vector(size_type __n, const _Tp& __val) : _VEC_SUPER(__n, __val) { }
     explicit vector(size_type __n) : _VEC_SUPER(__n) { }
     vector(const_iterator __first, const_iterator __last) : _VEC_SUPER(__first,__last) { }
 # ifdef _STLP_DEBUG

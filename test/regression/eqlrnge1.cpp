@@ -18,7 +18,7 @@ int eqlrnge1_test(int, char**)
   cout<<"Results of eqlrnge1_test:"<<endl;
   typedef vector <int> IntVec;
   IntVec v(10);
-  for(int i = 0; i < v.size(); i++)
+  for(size_t i = 0; i < v.size(); i++)
     v[i] = i / 3;
   ostream_iterator<int> iter(cout, " ");
   cout << "Within the collection:\n\t";

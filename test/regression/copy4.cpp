@@ -18,7 +18,7 @@ int copy4_test(int, char**)
   cout<<"Results of copy4_test:"<<endl;
   typedef vector<int> IVec;
   vector<int> v1(10);
-  for(int loc = 0; loc < v1.size(); loc++)
+  for(size_t loc = 0; loc < v1.size(); loc++)
     v1[loc] = loc;
   vector<int> v2;
   insert_iterator<IVec> i(v2, v2.begin());

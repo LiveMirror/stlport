@@ -18,7 +18,7 @@ int parsrtc1_test(int, char**)
 {
   cout<<"Results of parsrtc1_test:"<<endl;
   vector <int> v1(10);
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
     v1[i] = rand() % 10;
   vector <int> result(5);
   ostream_iterator<int> iter(cout, " ");

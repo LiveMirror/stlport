@@ -10,7 +10,7 @@
 #endif
 static bool odd(int a_)
 {
-  return a_ % 2;
+  return (a_ % 2) != 0;
 }
 
 #if !defined (STLPORT) || defined(__STL_USE_NAMESPACES)
@@ -21,7 +21,7 @@ int replif1_test(int, char**)
   cout<<"Results of replif1_test:"<<endl;
 
   vector <int> v1(10);
-  int i;
+  size_t i;
   for(i = 0; i < v1.size(); i++)
   {
     v1[i] = i % 5;

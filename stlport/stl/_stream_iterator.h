@@ -170,8 +170,8 @@ public:
   ostream_iterator(ostream_type& __s) : _M_stream(&__s), _M_string(0) {}
   ostream_iterator(ostream_type& __s, const _CharT* __c) 
     : _M_stream(&__s), _M_string(__c)  {}
-  _Self& operator=(const _TpP& __value) { 
-    *_M_stream << __value;
+  _Self& operator=(const _TpP& __val) { 
+    *_M_stream << __val;
     if (_M_string) *_M_stream << _M_string;
     return *this;
   }
@@ -269,8 +269,8 @@ public:
   ostream_iterator(ostream& __s) : _M_stream(&__s), _M_string(0) {}
   ostream_iterator(ostream& __s, const char* __c) 
     : _M_stream(&__s), _M_string(__c)  {}
-  ostream_iterator<_Tp>& operator=(const _Tp& __value) { 
-    *_M_stream << __value;
+  ostream_iterator<_Tp>& operator=(const _Tp& __val) { 
+    *_M_stream << __val;
     if (_M_string) *_M_stream << _M_string;
     return *this;
   }

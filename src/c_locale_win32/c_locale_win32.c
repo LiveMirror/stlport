@@ -705,8 +705,11 @@ extern "C" {
   char* _Locale_compose_name(char* buf,
 			     const char* _ctype, const char* numeric,
 			     const char* time, const char* _collate,
-			     const char* monetary, const char* messages)
+			     const char* monetary, const char* messages,
+			     const char* default_name)
   {
+    (void) default_name;
+
     if(!strcmp(_ctype, numeric) &&\
        !strcmp(_ctype, time) &&\
        !strcmp(_ctype, _collate) &&\
@@ -726,9 +729,9 @@ extern "C" {
 
   /* ctype */
 
-  _Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* ltype)
+ const  _Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* ltype)
   {
-    return (_Locale_mask_t*)ltype->ctable;
+    return (const _Locale_mask_t*)ltype->ctable;
   }
 
   int _Locale_toupper(struct _Locale_ctype* ltype, int c)
@@ -778,14 +781,15 @@ extern "C" {
   }
 
 # ifndef _STLP_NO_WCHAR_T
-  _Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype* ltype, wint_t c)
+  _Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype* ltype, wint_t c,
+    _Locale_mask_t which_bits)
   {
     wchar_t buf[2];
     WORD out[2];
     buf[0] = c; buf[1] = 0;
     GetStringTypeW(CT_CTYPE1, buf, -1, out);
 
-    return (_Locale_mask_t)out[0];
+    return (_Locale_mask_t)out[0] & which_bits;
     //	ltype;
   }
 
@@ -1156,24 +1160,28 @@ extern "C" {
 
 
   /* Time */
-  const char ** _Locale_full_monthname(struct _Locale_time * ltime)
+  const char * _Locale_full_monthname(struct _Locale_time * ltime, int month)
   {
-    return (const char**)ltime->month;
+    const char **names = (const char**)ltime->month;
+    return names[month];
   }
 
-  const char ** _Locale_abbrev_monthname(struct _Locale_time * ltime)
+  const char * _Locale_abbrev_monthname(struct _Locale_time * ltime, int month)
   {
-    return (const char**)ltime->abbrev_month;
+    const char **names = (const char**)ltime->abbrev_month;
+    return names[month];
   }
 
-  const char ** _Locale_full_dayofweek(struct _Locale_time * ltime)
+  const char * _Locale_full_dayofweek(struct _Locale_time * ltime, int day)
   {
-    return (const char**)ltime->dayofweek;
+    const char **names = (const char**)ltime->dayofweek;
+    return names[day];
   }
 
-  const char ** _Locale_abbrev_dayofweek(struct _Locale_time * ltime)
+  const char * _Locale_abbrev_dayofweek(struct _Locale_time * ltime, int day)
   {
-    return (const char**)ltime->abbrev_dayofweek;
+    const char **names = (const char**)ltime->abbrev_dayofweek;
+    return names[day];
   }
 
   const char* _Locale_d_t_fmt(struct _Locale_time* ltime)
