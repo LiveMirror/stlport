@@ -49,12 +49,12 @@ Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 -----------------------------------------------------------------------
 Compiler:			gcc 3.4.1
 -----------------------------------------------------------------------
-Date:				2004-10-12
+Date:				2004-10-18
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (296 tests)
+Status (release-shared):	All pass (298 tests)
 Notes:
-Status (stldbg-shared):         All pass (296 tests)
+Status (stldbg-shared):         All pass (298 tests)
 Notes:
 
 -----------------------------------------------------------------------
