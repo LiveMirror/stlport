@@ -4,6 +4,8 @@
 	char* and const char*. Now the overload is on the __find underlying
 	function.
 
+	* test/unit/alg_test.cpp: Add a test case for the search_n algo.
+
 2005-02-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_slist.h: Fix _M_splice_after method.
