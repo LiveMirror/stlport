@@ -298,14 +298,14 @@ public:
 template <class _Container>
 inline bool 
 operator==(const _DBG_iter_base<_Container>& __x, const _DBG_iter_base<_Container>& __y) {
-  _STLP_DEBUG_CHECK(__check_same_owner_or_null(__x, __y))
+  _STLP_DEBUG_CHECK(__check_same_or_null_owner(__x, __y))
   return __x._M_iterator==__y._M_iterator;
 }
 
 template <class _Container>
 inline bool 
 operator<(const _DBG_iter_base<_Container>& __x, const _DBG_iter_base<_Container>& __y) {
-  _STLP_DEBUG_CHECK(__check_same_owner_or_null(__x, __y))
+  _STLP_DEBUG_CHECK(__check_same_or_null_owner(__x, __y))
   typedef typename _DBG_iter_base<_Container>::_Iterator_category _Category;
   return _CompareIt(__x._M_iterator , __y._M_iterator, _Category());
 }
@@ -321,7 +321,7 @@ operator>(const _DBG_iter_base<_Container>& __x,
 template <class _Container>
 inline bool 
 operator>=(const _DBG_iter_base<_Container>& __x, const _DBG_iter_base<_Container>& __y) {
-  _STLP_DEBUG_CHECK(__check_same_owner_or_null(__x, __y))
+  _STLP_DEBUG_CHECK(__check_same_or_null_owner(__x, __y))
   typedef typename _DBG_iter_base<_Container>::_Iterator_category _Category;
   return !_CompareIt(__x._M_iterator , __y._M_iterator, _Category());
 }
@@ -338,7 +338,7 @@ template <class _Container>
 inline bool 
 operator!=(const _DBG_iter_base<_Container>& __x, 
 		    const _DBG_iter_base<_Container>& __y) {
-  _STLP_DEBUG_CHECK(__check_same_owner_or_null(__x, __y))
+  _STLP_DEBUG_CHECK(__check_same_or_null_owner(__x, __y))
   return __x._M_iterator != __y._M_iterator;
 }
 

@@ -112,7 +112,7 @@ struct __stl_debug_engine {
 
   static bool _STLP_CALL  _Check_same_owner( const __owned_link& __i1, 
                                              const __owned_link& __i2);
-  static bool _STLP_CALL  _Check_same_owner_or_null( const __owned_link& __i1, 
+  static bool _STLP_CALL  _Check_same_or_null_owner( const __owned_link& __i1, 
                                                      const __owned_link& __i2);
   static bool  _STLP_CALL _Check_if_owner( const __owned_list*, const __owned_link&);
 
@@ -201,45 +201,45 @@ _STLP_BEGIN_NAMESPACE
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2, 
                                       const random_access_iterator_tag&) { 
-    return (__i1 < __i2) || (__i1 == __i2);
+  return (__i1 < __i2) || (__i1 == __i2);
 }
 
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2,
                                       const bidirectional_iterator_tag&) { 
-    // check if comparable
-    bool __dummy(__i1==__i2);
-    return (__dummy==__dummy);
+  // check if comparable
+  bool __dummy(__i1==__i2);
+  return (__dummy==__dummy);
 }
 
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2, const forward_iterator_tag&) { 
-    // check if comparable
-    bool __dummy(__i1==__i2);
-    return (__dummy==__dummy);
+  // check if comparable
+  bool __dummy(__i1==__i2);
+  return (__dummy==__dummy);
 }
 
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator&,const _Iterator&, const input_iterator_tag&) { 
-    return true; 
+  return true; 
 }
 
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator&,const _Iterator&, const output_iterator_tag&) { 
-    return true; 
+  return true; 
 }
 
 template <class _Iterator>
 inline bool  _STLP_CALL __valid_range(const _Iterator& __i1, const _Iterator& __i2) { 
-    return __valid_range(__i1,__i2,_STLP_ITERATOR_CATEGORY(__i1, _Iterator));
+  return __valid_range(__i1,__i2,_STLP_ITERATOR_CATEGORY(__i1, _Iterator));
 }
 
 // Note : that means in range [i1, i2].
 template <class _Iterator>
 inline bool  _STLP_CALL __in_range(const _Iterator& _It, const _Iterator& __i1,
                                    const _Iterator& __i2) { 
-    return __valid_range(__i1,_It,_STLP_ITERATOR_CATEGORY(__i1, _Iterator)) && 
-        __valid_range(_It,__i2,_STLP_ITERATOR_CATEGORY(_It, _Iterator));
+  return __valid_range(__i1,_It,_STLP_ITERATOR_CATEGORY(__i1, _Iterator)) && 
+         __valid_range(_It,__i2,_STLP_ITERATOR_CATEGORY(_It, _Iterator));
 }
 
 template <class _Iterator>
@@ -429,8 +429,8 @@ __check_same_owner( const __owned_link& __i1, const __owned_link& __i2) {
   return __stl_debugger::_Check_same_owner(__i1,__i2);
 }
 inline bool _STLP_CALL  
-__check_same_owner_or_null( const __owned_link& __i1, const __owned_link& __i2) {
-  return __stl_debugger::_Check_same_owner_or_null(__i1,__i2);
+__check_same_or_null_owner( const __owned_link& __i1, const __owned_link& __i2) {
+  return __stl_debugger::_Check_same_or_null_owner(__i1,__i2);
 }
 
 template <class _Iterator>

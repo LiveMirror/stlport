@@ -445,8 +445,8 @@ __stl_debug_engine<_Dummy>::_Get_container_ptr(const __owned_link* __l) {
 
 template <class _Dummy>
 bool _STLP_CALL
-__stl_debug_engine<_Dummy>::_Check_same_owner( const __owned_link& __i1, 
-                                               const __owned_link& __i2) {
+__stl_debug_engine<_Dummy>::_Check_same_owner(const __owned_link& __i1, 
+                                              const __owned_link& __i2) {
   _STLP_VERBOSE_RETURN(__i1._Valid(), _StlMsg_INVALID_LEFTHAND_ITERATOR)
   _STLP_VERBOSE_RETURN(__i2._Valid(), _StlMsg_INVALID_RIGHTHAND_ITERATOR)
   _STLP_VERBOSE_RETURN((__i1._Owner()==__i2._Owner()), _StlMsg_DIFFERENT_OWNERS)
@@ -455,8 +455,8 @@ __stl_debug_engine<_Dummy>::_Check_same_owner( const __owned_link& __i1,
 
 template <class _Dummy>
 bool  _STLP_CALL
-__stl_debug_engine<_Dummy>::_Check_same_owner_or_null( const __owned_link& __i1, 
-                                     const __owned_link& __i2) {
+__stl_debug_engine<_Dummy>::_Check_same_or_null_owner(const __owned_link& __i1, 
+                                                      const __owned_link& __i2) {
   _STLP_VERBOSE_RETURN(__i1._Owner()==__i2._Owner(), _StlMsg_DIFFERENT_OWNERS)
   return true;
 }
