@@ -545,3 +545,7 @@ _STLP_END_NAMESPACE
 # endif /* EXPOSE */
 
 #endif /* _STLP_SSTREAM_C */
+
+// Local Variables:
+// mode:C++
+// End:
