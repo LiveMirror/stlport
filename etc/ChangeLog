@@ -1,3 +1,11 @@
+2005-03-30  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/assert.h, float.h, iso646.h, limits.h: added in accordance
+	with Standard D.5 [compatibility with standard C library] to prevent
+	wrong std interpretation in ill-formed native headers [definition
+	of namespace std in C headers].
+	
+
 2005-03-29  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/app/rules.mak, freebsd/rules-so.mak,
