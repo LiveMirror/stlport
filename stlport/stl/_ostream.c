@@ -138,7 +138,7 @@ struct _SPutBackC {
     : __pfrom(pfrom), __c(0), __do_guard(false) {}
   ~_SPutBackC() {
     if (__do_guard) {
-      __pfrom->sputbackc(__c);
+      __pfrom->sputbackc(_Traits::to_char_type(__c));
     }
   }
 
@@ -179,7 +179,7 @@ bool basic_ostream<_CharT, _Traits>
         return __any_inserted;
 
       __cguard.guard(__c);
-      if ( this->_S_eof( __to->sputc(__c) ) ) {
+      if ( this->_S_eof( __to->sputc(_Traits::to_char_type(__c)) ) ) {
         return __any_inserted;
       }
 

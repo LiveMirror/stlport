@@ -450,9 +450,7 @@ basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::unget() {
     //     if (!__buf || _Traits::eq_int_type(__buf->sungetc(), _Traits::eof()))
     if (__buf) {
       _STLP_TRY {
-        _CharT __tmp;
-        __tmp = __buf->sungetc();
-        if (this->_S_eof(__tmp))
+        if (this->_S_eof(__buf->sungetc()))
           this->setstate(ios_base::badbit);
       }
       _STLP_CATCH_ALL {
@@ -590,7 +588,7 @@ _M_read_unbuffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_Char
         if (__n < _Num || __is_getline)
           __status |= ios_base::eofbit;
         break;
-      } else if (__is_delim(__c)) {
+      } else if (__is_delim(_Traits::to_char_type(__c))) {
         if (__extract_delim) { // Extract and discard current character.
           ++__n;
         } else if ( !__pushback(__buf, _Traits::to_char_type(__c)) ) { // leave delimiter
@@ -883,10 +881,9 @@ void basic_istream<_CharT, _Traits>::_M_formatted_get(_CharT* __s)
 template < class _CharT, class _Traits, class _Is_Delim>
 void _STLP_CALL 
 _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that, 
-		     basic_streambuf<_CharT, _Traits>* __buf,
-		     _Is_Delim __is_delim,
-		     bool __extract_delim, bool __set_failbit)
-{
+		                 basic_streambuf<_CharT, _Traits>* __buf,
+		                 _Is_Delim __is_delim,
+		                 bool __extract_delim, bool __set_failbit) {
   bool __done = false;
   ios_base::iostate __status = 0;
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
@@ -901,7 +898,7 @@ _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
                                   : ios_base::eofbit;
       }
 
-      else if (__is_delim(__c)) {
+      else if (__is_delim(_Traits::to_char_type(__c))) {
         __done = true;
         if (!__extract_delim)
           if (__that->_S_eof(__buf->sputbackc(_Traits::to_char_type(__c))))
@@ -924,10 +921,9 @@ _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
 template < class _CharT, class _Traits, class _Is_Delim, class _Scan_Delim>
 void _STLP_CALL 
 _M_ignore_buffered(basic_istream<_CharT, _Traits>* __that, 
-		   basic_streambuf<_CharT, _Traits>* __buf,
-		   _Is_Delim __is_delim, _Scan_Delim __scan_delim,
-		   bool __extract_delim, bool __set_failbit)
-{
+		               basic_streambuf<_CharT, _Traits>* __buf,
+		               _Is_Delim __is_delim, _Scan_Delim __scan_delim,
+		               bool __extract_delim, bool __set_failbit) {
   bool __at_eof      = false;
   bool __found_delim = false;
 
@@ -980,11 +976,10 @@ _M_ignore_buffered(basic_istream<_CharT, _Traits>* __that,
 template < class _CharT, class _Traits, class _Max_Chars, class _Is_Delim>
 streamsize _STLP_CALL 
 _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
-		     basic_streambuf<_CharT, _Traits>* __buf,
-		     streamsize _Num, _Max_Chars __max_chars,
-		     _Is_Delim __is_delim,
-		     bool __extract_delim, bool __set_failbit)
-{
+		                 basic_streambuf<_CharT, _Traits>* __buf,
+		                 streamsize _Num, _Max_Chars __max_chars,
+		                 _Is_Delim __is_delim,
+		                 bool __extract_delim, bool __set_failbit) {
   streamsize __n = 0;
   ios_base::iostate __status = 0;
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
@@ -999,7 +994,7 @@ _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
         break;
       }
 
-      else if (__is_delim(__c)) {
+      else if (__is_delim(_Traits::to_char_type(__c))) {
         if (__extract_delim)
           ++__n;
         else if (__that->_S_eof(__buf->sputbackc(_Traits::to_char_type(__c))))
@@ -1023,12 +1018,11 @@ _M_ignore_unbuffered(basic_istream<_CharT, _Traits>* __that,
 template < class _CharT, class _Traits, class _Max_Chars, class _Is_Delim, class _Scan_Delim>
 streamsize _STLP_CALL 
 _M_ignore_buffered(basic_istream<_CharT, _Traits>* __that,
-		   basic_streambuf<_CharT, _Traits>* __buf,
-		   streamsize _Num,
-		   _Max_Chars __max_chars,
-		   _Is_Delim __is_delim, _Scan_Delim __scan_delim,
-		   bool __extract_delim, bool __set_failbit)
-{
+		               basic_streambuf<_CharT, _Traits>* __buf,
+		               streamsize _Num,
+		               _Max_Chars __max_chars,
+		               _Is_Delim __is_delim, _Scan_Delim __scan_delim,
+		               bool __extract_delim, bool __set_failbit) {
   streamsize __n = 0;
   bool __at_eof = false;
   bool __done   = false;
@@ -1216,20 +1210,17 @@ void basic_istream<_CharT, _Traits>::_M_skip_whitespace(bool __set_failbit)
 
 template < class _CharT, class _Traits, class _Is_Delim>
 streamsize _STLP_CALL 
-_M_copy_unbuffered( basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT, _Traits>* __src,
-		    basic_streambuf<_CharT, _Traits>* __dest,
-		    _Is_Delim __is_delim,
-		    bool __extract_delim, bool __rethrow)
-{
+_M_copy_unbuffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT, _Traits>* __src,
+		               basic_streambuf<_CharT, _Traits>* __dest,
+		               _Is_Delim __is_delim,
+		               bool __extract_delim, bool __rethrow) {
   streamsize __extracted = 0;
   ios_base::iostate __status = 0;
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
   int_type __c;
 
   _STLP_TRY {
-  
     for (;;) {
-  
       // Get a character. If there's an exception, catch and (maybe) rethrow it.
       __c = __src->sbumpc();
       
@@ -1239,18 +1230,16 @@ _M_copy_unbuffered( basic_istream<_CharT, _Traits>* __that, basic_streambuf<_Cha
         break;
       }  
       // If it's the delimiter, then quit.
-      else if (__is_delim(__c)) {
+      else if (__is_delim(_Traits::to_char_type(__c))) {
         if (!__extract_delim && !__pushback(__src, _Traits::to_char_type(__c)))
           __status |= ios_base::failbit;
         break;
       }
-      
       else {
-      
         // Try to put the character in the output streambuf.
         bool __failed = false;
         _STLP_TRY {
-          if (!__that->_S_eof(__dest->sputc(__c)))
+          if (!__that->_S_eof(__dest->sputc(_Traits::to_char_type(__c))))
             ++__extracted;
           else
             __failed = true;

@@ -128,7 +128,7 @@ __get_integer(_InputIter& __first, _InputIter& __last,
   _Integer __result = 0;
   bool __is_group = !__grouping.empty();
   char __group_sizes[64];
-  int __current_group_size = 0;
+  char __current_group_size = 0;
   char* __group_sizes_end = __group_sizes;
   
   _Integer __over_base = (numeric_limits<_Integer>::min)() / __STATIC_CAST(_Integer, __base);
@@ -188,7 +188,7 @@ __get_integer(_InputIter& __first, _InputIter& __last,
   _Integer __result = 0;
   bool __is_group = !__grouping.empty();
   char __group_sizes[64];
-  int __current_group_size = 0;
+  char __current_group_size = 0;
   char* __group_sizes_end = __group_sizes;
 
   _Integer  __over_base = (numeric_limits<_Integer>::max)() / __STATIC_CAST(_Integer, __base);

@@ -60,13 +60,6 @@ _STLP_DECLSPEC locale::id money_put<char, ostreambuf_iterator<char, char_traits<
 template <>
 _STLP_DECLSPEC locale::id money_put<char, char*>::id;
 
-/*
-template<>
-_STLP_DECLSPEC locale::id moneypunct<char, true>::id;
-template<>
-_STLP_DECLSPEC locale::id moneypunct<char, false>::id;
-*/
-
 #    if !defined (_STLP_NO_WCHAR_T)
 template <>
 _STLP_DECLSPEC locale::id money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id;
@@ -77,13 +70,6 @@ template <>
 _STLP_DECLSPEC locale::id money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id;
 template <>
 _STLP_DECLSPEC locale::id money_put<wchar_t, wchar_t*>::id;
-
-/*
-template<>
-_STLP_DECLSPEC locale::id moneypunct<wchar_t, true>::id;
-template<>
-_STLP_DECLSPEC locale::id moneypunct<wchar_t, false>::id;
-*/
 #    endif
 
 #  endif
@@ -121,8 +107,7 @@ __DECLARE_INSTANCE(locale::id, money_put_wchar_t_2::id, );
 // helper functions for do_get
 template <class _InIt1, class _InIt2>
 pair<_InIt1, bool> __get_string( _InIt1 __first, _InIt1 __last,
-                                 _InIt2 __str_first, _InIt2 __str_last)
-{
+                                 _InIt2 __str_first, _InIt2 __str_last) {
   while ( __first != __last && __str_first != __str_last && *__first == *__str_first ) {
     ++__first;
     ++__str_first;
@@ -134,11 +119,8 @@ template <class _InIt, class _OuIt, class _CharT>
 bool
 __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
                      const ctype<_CharT>& _c_type,
-                     _CharT   __point,
-                     int      __frac_digits,
-                     _CharT __sep,
-                     const string& __grouping,
-                     bool&         __syntax_ok) {
+                     _CharT __point, int __frac_digits, _CharT __sep,
+                     const string& __grouping, bool &__syntax_ok) {
   if (__first == __last || !_c_type.is(ctype_base::digit, *__first))
     return false;
 
@@ -181,7 +163,7 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
 
   ++__first;
 
-  size_t __digits = 0;
+  int __digits = 0;
 
   while (__first != __last && _c_type.is(ctype_base::digit, *__first)) {
       *__out++ = *__first++;
@@ -195,8 +177,7 @@ __get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
 
 
 template <class _CharT, class _InputIter, class _StrType>
-_InputIter _S_do_get(_InputIter __s, 
-                     _InputIter __end, bool  __intl,
+_InputIter _S_do_get(_InputIter __s, _InputIter __end, bool  __intl,
                      ios_base&  __str, ios_base::iostate&  __err,
                      _StrType& __digits, bool &__is_positive, _CharT* /*__dummy*/) {
   if (__s == __end) {
@@ -386,8 +367,7 @@ money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  _
 
 template <class _CharT, class _InputIter>
 _InputIter 
-money_get<_CharT, _InputIter>::do_get(iter_type __s, 
-                                      iter_type  __end, bool  __intl,
+money_get<_CharT, _InputIter>::do_get(iter_type __s, iter_type  __end, bool  __intl,
                                       ios_base&  __str, ios_base::iostate&  __err,
                                       string_type& __digits) const {
   bool __is_positive = true;
@@ -569,24 +549,18 @@ template <class _CharT, class _OutputIter>
 _OutputIter
 money_put<_CharT, _OutputIter>
  ::do_put(_OutputIter __s, bool __intl, ios_base& __str,
-          char_type __fill,
-          _STLP_LONG_DOUBLE __units) const {
-  
+          char_type __fill, _STLP_LONG_DOUBLE __units) const {
   _STLP_BASIC_IOSTRING(char_type) __digits;
   __get_money_digits(__digits, __str, __units);
-
-  string_type *__pdummy = 0;
-  return _S_do_put(__s, __intl, __str, __fill, __digits, false, __pdummy);
+  return _S_do_put(__s, __intl, __str, __fill, __digits, false, (string_type*)0);
 }
 
 template <class _CharT, class _OutputIter>
 _OutputIter
 money_put<_CharT, _OutputIter>
  ::do_put(_OutputIter __s, bool __intl, ios_base& __str,
-          char_type __fill,
-          const string_type& __digits) const {
-  string_type *__pdummy = 0;
-  return _S_do_put(__s, __intl, __str, __fill, __digits, true, __pdummy);
+          char_type __fill, const string_type& __digits) const {
+  return _S_do_put(__s, __intl, __str, __fill, __digits, true, (string_type*)0);
 }
 
 _STLP_END_NAMESPACE

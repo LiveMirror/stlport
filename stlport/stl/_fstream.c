@@ -220,7 +220,7 @@ basic_filebuf<_CharT, _Traits>::overflow(int_type __c)
 
   // Put __c at the end of the internal buffer.
   if (!traits_type::eq_int_type(__c, traits_type::eof()))
-    *__iend++ = __c;
+    *__iend++ = _Traits::to_char_type(__c);
 
   // For variable-width encodings, output may take more than one pass.
   while (__ibegin != __iend) {

@@ -349,7 +349,7 @@ public:
   /* by this node.                            */
   /* In the case of a leaf, this may point to */
   /* the same memory as the data field.       */
-  _Rope_RopeRep(_Tag __t, int __d, bool __b, size_t _p_size,
+  _Rope_RopeRep(_Tag __t, unsigned char __d, bool __b, size_t _p_size,
                 allocator_type __a) :
     _Refcount_Base(1),
     _M_tag(__t), _M_is_balanced(__b), _M_depth(__d), _M_c_string(0), _M_size(__a, _p_size)
