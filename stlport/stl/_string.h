@@ -567,7 +567,7 @@ public:
     !defined (_STLP_NO_METHOD_SPECIALIZATION) && !defined (_STLP_NO_EXTENSIONS)
 #  if !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
   _Self& append(const _CharT* __first, const _CharT* __last) {
-    _STLP_FIX_LITERAL_BUG(__f)_STLP_FIX_LITERAL_BUG(__l)
+    _STLP_FIX_LITERAL_BUG(__first)_STLP_FIX_LITERAL_BUG(__last)
     return _M_append(__first, __last); 
   }
 #  endif
@@ -874,7 +874,7 @@ protected:  // Helper functions for insert.
 
   template <class _InputIterator>
   void _M_copyT(_InputIterator __first, _InputIterator __last, pointer __result) {
-    _STLP_FIX_LITERAL_BUG(__p)
+    _STLP_FIX_LITERAL_BUG(__result)
     for ( ; __first != __last; ++__first, ++__result)
       _Traits::assign(*__result, *__first);
   }
