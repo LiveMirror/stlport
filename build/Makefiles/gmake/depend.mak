@@ -1,4 +1,4 @@
-# Time-stamp: <03/07/15 12:20:52 ptr>
+# Time-stamp: <05/03/02 18:57:44 ptr>
 # $Id$
 
 PHONY += release-static-dep release-shared-dep dbg-static-dep dbg-shared-dep \
@@ -10,7 +10,7 @@ dbg-static-dep dbg-shared-dep:	$(DEP_DBG)
 
 stldbg-static-dep stldbg-shared-dep:	$(DEP_STLDBG)
 
-depend:	dirs release-shared-dep dbg-shared-dep stldbg-shared-dep
+depend:	$(OUTPUT_DIRS) release-shared-dep dbg-shared-dep stldbg-shared-dep
 	@cat -s $(DEP) $(DEP_DBG) $(DEP_STLDBG) /dev/null > $(DEPENDS_COLLECTION)
 
 -include $(DEPENDS_COLLECTION)

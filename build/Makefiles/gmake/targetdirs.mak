@@ -1,4 +1,4 @@
-# Time-stamp: <04/03/16 17:18:08 ptr>
+# Time-stamp: <05/03/02 18:44:41 ptr>
 # $Id$
 
 ifdef TARGET_OS
@@ -52,19 +52,20 @@ INSTALL_LIB_DIRS := $(sort $(INSTALL_LIB_DIRS))
 INSTALL_BIN_DIRS := $(sort $(INSTALL_BIN_DIRS))
 INSTALL_DIRS := $(sort $(INSTALL_LIB_DIRS) $(INSTALL_BIN_DIRS))
 
-PHONY += dirs $(OUTPUT_DIRS) $(INSTALL_LIB_DIRS) $(INSTALL_BIN_DIRS) $(INSTALL_DIRS)
-
-dirs:	$(OUTPUT_DIRS)
-
-install-lib-dirs:	$(INSTALL_LIB_DIRS)
-install-bin-dirs:	$(INSTALL_BIN_DIRS)
+PHONY += $(OUTPUT_DIRS) $(INSTALL_DIRS)
 
 $(OUTPUT_DIRS):
-	@if [ ! -d $@ ] ; then \
+	@if [ -e $@ -a -f $@ ] ; then \
+	  echo "ERROR: Regular file $@ present, directory instead expected" ; \
+	  exit 1; \
+	elif [ ! -d $@ ] ; then \
 	  mkdir -p $@ ; \
 	fi
 
 $(INSTALL_DIRS):
-	@if [ ! -d $@ ] ; then \
+	@if [ -e $@ -a -f $@ ] ; then \
+	  echo "ERROR: Regular file $@ present, directory instead expected" ; \
+	  exit 1; \
+	elif [ ! -d $@ ] ; then \
 	  mkdir -p $@ ; \
 	fi
