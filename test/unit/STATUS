@@ -1,7 +1,10 @@
------------------------------------------------------------------------
+=======================================================================
 Operational environment:	Linux 2.4.26/SMP glibc 2.2.5
+=======================================================================
 
+-----------------------------------------------------------------------
 Compiler:			gcc 3.4.1
+-----------------------------------------------------------------------
 Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
@@ -10,7 +13,9 @@ Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
+-----------------------------------------------------------------------
 Compiler:			gcc 3.3.3
+-----------------------------------------------------------------------
 Date:				2004-08-26
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
@@ -19,7 +24,9 @@ Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
+-----------------------------------------------------------------------
 Compiler:			gcc 3.3.1
+-----------------------------------------------------------------------
 Date:				2004-08-26
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
@@ -28,7 +35,9 @@ Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
+-----------------------------------------------------------------------
 Compiler:			gcc 3.2.3
+-----------------------------------------------------------------------
 Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
@@ -37,7 +46,9 @@ Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
+-----------------------------------------------------------------------
 Compiler:			gcc 3.1.1
+-----------------------------------------------------------------------
 Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
@@ -46,16 +57,41 @@ Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
+-----------------------------------------------------------------------
 Compiler:			gcc 2.95.4 20011002 (Debian prerelease)
+-----------------------------------------------------------------------
 Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
 Status (release-shared):	runtime fail
-Notes:
-                                sstream_test.cpp(68) : CPPUNIT_ASSERT(s.good());
+Notes:                          sstream_test.cpp(68) : CPPUNIT_ASSERT(s.good());
                                 sstream_test.cpp(97) : CPPUNIT_ASSERT(str == "abcd");
                                 fstream_test.cpp(65) : CPPUNIT_ASSERT(f.good());
                                 fstream_test.cpp(98) : CPPUNIT_ASSERT(f.good());
                                 segmentation fault during locale test.
 Status (stldbg-shared):         runtime fail during load
-Notes:
-                                problem with order of static member initialization
+Notes:                          problem with order of static member initialization
+
+-----------------------------------------------------------------------
+Compiler:                       Intel(R) C++ Compiler/32-bit 7.1 Build 20030307Z
+-----------------------------------------------------------------------
+Date:                           2004-08-27
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        run time fail
+Notes:                          stack corruption in queue test, due to compiler's
+                                bad code
+Status (stldbg-shared):         partially pass (282 tests, 1 fail)
+Notes:                          exception_test.cpp(58) : CPPUNIT_ASSERT(false);
+
+-----------------------------------------------------------------------
+Compiler:                       Intel(R) C++ Compiler/32-bit 8.0 Build 20031016Z
+-----------------------------------------------------------------------
+Date:                           2004-08-27
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        compile-time fail
+Notes:                          compiler crash; was report that commercial compiler
+                                free of this bug, but this was not tested
+Status (stldbg-shared):         compile-time fail
+Notes:                          see notes above
+
