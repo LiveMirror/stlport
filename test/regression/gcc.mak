@@ -113,7 +113,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	unique1.cpp unique2.cpp \
 	uprbnd1.cpp uprbnd2.cpp \
 	vec1.cpp vec2.cpp vec3.cpp vec4.cpp vec5.cpp vec6.cpp vec7.cpp vec8.cpp \
-        hmmap1.cpp hset2.cpp hmset1.cpp slist1.cpp hmap1.cpp string1.cpp bitset1.cpp
+  hmmap1.cpp hset2.cpp hmset1.cpp slist1.cpp hmap1.cpp string1.cpp bitset1.cpp
 
 
 # STAT_MODULE=stat.o
@@ -126,12 +126,12 @@ TEST  = stl_test.out
 CC = c++
 CXX = $(CC)
 
-DEBUG_FLAGS= -D_STLP_DEBUG
+DEBUG_FLAGS= -g -D_STLP_DEBUG
 
-CXXFLAGS = -Wall -D_STLP_NO_OWN_IOSTREAMS ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
+CXXFLAGS = -pthread -Wall ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
 # CXXFLAGS = -Wall ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS} 
 
-# LIBS = -L../../lib -lstlport_gcc_stldebug -lm 
+LIBS = -L../../lib -Wl,--rpath=../../lib -lstlport_gcc_stldebug -lm 
 LIBSTDCXX = 
 
 check: $(TEST)
