@@ -1,46 +1,51 @@
+2004-06-13  Petr Ovtchenkov  <ptr@Island...>
+
+	* src/c_locale_glibc/c_locale_glibc2.c:	locale_data for glibc 2.3 is differ
+	from one for glibc 2.2.
+
 2004-06-11  Francois Dumont  <dums@...>
 
-  * test/unit: Modification of some tests to make the assertion
-  clearer. Mainly add of check of the streams state before check
-  of the stream content.
+	* test/unit: Modification of some tests to make the assertion
+	clearer. Mainly add of check of the streams state before check
+	of the stream content.
 
-  * test/unit/LocaleTest.cpp: fix of the thousand seperator which is
-  0xa0 under Win32 and not a simple ' ' for the french locale.
+	* test/unit/locale_test.cpp: fix of the thousands separator which is
+	0xa0 under Win32 and not a simple ' ' for the french locale.
 
 2004-06-07  Francois Dumont  <dums@...>
 
-  * stlport/stl/_algo.c: rollback of the sort algo implementation
-  to the 4.5.3 version.
+	* stlport/stl/_algo.c: rollback of the sort algo implementation
+	to the 4.5.3 version.
 
 2004-06-03  Francois Dumont  <dums@...>
 
-  * stlport/stl/pointers/README, doc/pointer_specialization.txt: move and
-  rename of the doc about pointer partial template specialization feature.
+	* stlport/stl/pointers/README, doc/pointer_specialization.txt: move and
+	rename of the doc about pointer partial template specialization feature.
 
-  * doc/README.ecv4: Creation of a documentation about the install and use
-  of STLport within Embedded Visual C++ 4 thanks Zdenek Nemec.
+	* doc/README.ecv4: Creation of a documentation about the install and use
+	of STLport within Embedded Visual C++ 4 thanks Zdenek Nemec.
 
-  * doc/README.ecv3: Creation of a documentation about the process installment
-  with the Embedded Visual C++ 3 thanks Michael Fink.
+	* doc/README.ecv3: Creation of a documentation about the process installment
+	with the Embedded Visual C++ 3 thanks Michael Fink.
 
-  * stlport/stl/_slist.h: fix of an invalid reference to a _M_node member data
-  on a _Slist_node_base struct (thanks gcc 3.4.0).
+	* stlport/stl/_slist.h: fix of an invalid reference to a _M_node member data
+	on a _Slist_node_base struct (thanks gcc 3.4.0).
   
-  * stlport/stl/_string.c, stlport/stl/_string.h: fix of missing scopes to 
-  access the base template class _String_base _DEFAULT_SIZE enum member.
-  (thanks gcc 3.4.0)
+	* stlport/stl/_string.c, stlport/stl/_string.h: fix of missing scopes to 
+	access the base template class _String_base _DEFAULT_SIZE enum member.
+	(thanks gcc 3.4.0)
   
-  * stlport/stl/_string_base.h: fix of the anonymous union used as a parameter
-  of the template function swap. (thanks gcc 3.4.0)
+	* stlport/stl/_string_base.h: fix of the anonymous union used as a parameter
+	of the template function swap. (thanks gcc 3.4.0)
   
-  * stlport/stl/_ostream.h: fixes of the missing scopes to access the basefield enum
-  within the base template class basic_ios from the basic_ostream. (thanks gcc 3.4.0)
+	* stlport/stl/_ostream.h: fixes of the missing scopes to access the basefield enum
+	within the base template class basic_ios from the basic_ostream. (thanks gcc 3.4.0)
   
-  * stlport/stl/_debug.c: clean up of a no more use template function. 
-  (thanks gcc 3.4.0)
+	* stlport/stl/_debug.c: clean up of a no more use template function. 
+	(thanks gcc 3.4.0)
   
-  * stlport/stl/_rope.h: fix of the missing scope to access base template class 
-  data member. (thanks gcc 3.4.0)
+	* stlport/stl/_rope.h: fix of the missing scope to access base template class 
+	data member. (thanks gcc 3.4.0)
   
 2004-06-02  Petr Ovtchenkov  <ptr@island...>
 
