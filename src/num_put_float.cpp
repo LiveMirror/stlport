@@ -652,12 +652,10 @@ static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifie
       break;
     case ios_base::fixed:
 #if defined (__FreeBSD__)
-      fmtbuf = 'f';
+      fmtbuf[i++] = 'f';
 #else
-      fmtbuf = (flags & ios_base::uppercase) ? 'F' : 'f'; 
+      fmtbuf[i++] = (flags & ios_base::uppercase) ? 'F' : 'f'; 
 #endif
-
-      fmtbuf[i++] = (flags & ios_base::uppercase) ?  'F' : 'f';      
       break;
     default:
       fmtbuf[i++] = (flags & ios_base::uppercase) ?  'G' : 'g';      
@@ -678,7 +676,7 @@ __write_float(string &buf, ios_base::fmtflags flags, int precision,
   char static_buf[128];
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
-  snprintf(static_buf, fmtbuf, precision, x);    
+  snprintf(static_buf, 128, fmtbuf, precision, x);    
   buf = static_buf;
 # else
   char cvtbuf[NDIG+2];
