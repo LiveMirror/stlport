@@ -1,3 +1,20 @@
+2004-09-03  Francois Dumont  <dums@...>
+
+	* stlport/exception: restauration of some modification removed after the
+	rollback of the 2004-09-01.
+	
+	* stlport/config/stl_gcc.h: homogeneification of the coding standard used
+	within STLport, 2 spaces indentations even for preprocessor directives.
+	Doing so, discovered a weird configuration for Mac OS platform (__APPLE__)
+	concerning the _STLP_NATIVE_INCLUDE_PATH macro definition, fixed.
+	
+	* stlport/stl/config/stl_*.mak: removal of all references to the 
+	_STLP_REDEFINED_STD	macro as it is now the default and only way STLport 
+	use to replace native	Standard library.
+	
+	* test/unit/nmake-vc-common.mak: add inclusion of the vc_warning_disable.h
+	file to avoid warnings during build process thanks Michael Fink.
+
 2004-09-03  Petr Ovtchenkov  <ptr@Island...>
 
 	* stlport/stl/_ostream.c: removed infinite loop in case when outgoing stream

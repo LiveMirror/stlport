@@ -134,22 +134,13 @@
 
 # endif /* _STLP_MSVC */
 
-# if (_MSC_VER <= 1310) 
+#if (_MSC_VER <= 1310) 
 #  define _STLP_VENDOR_GLOBAL_CSTD
-#  if !defined(_STLP_WHOLE_NATIVE_STD) && !defined(_STLP_REDEFINE_STD)
-/*
- * All VC compilers has a problem with import whole namespace, i.e. sentence
- *   namespace std { using namespace _STL; }
- * has no effect.
- * The only way is to redefine name 'std'.
- */
-#    define _STLP_REDEFINE_STD
-#  endif
-# endif /* (_MSC_VER <= 1310) */
+#endif /* (_MSC_VER <= 1310) */
 
-# if (_MSC_VER <= 1200)
+#if (_MSC_VER <= 1200)
 #  define _STLP_NO_IEC559_SUPPORT 1
-# endif
+#endif
 
 # if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
 //  these work, as long they are inline

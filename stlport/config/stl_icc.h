@@ -18,11 +18,6 @@
 # define _STLP_NATIVE_C_INCLUDE_PATH ../include
 # define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
 
-# ifndef __GNUC__
-//  If GCC compatability is diabled (-no-gcc is specified) STD needs to be redefined.
-#  define _STLP_REDEFINE_STD 1
-# endif /* __GNUC__ */
-
 #endif /* __INTEL_COMPILER >= 800 */
 
 #define _STLP_HAS_NO_NEW_C_HEADERS 1
