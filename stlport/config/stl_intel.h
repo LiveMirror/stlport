@@ -16,3 +16,6 @@
 # undef  _STLP_LONG_LONG
 # define _STLP_LONG_LONG long long
 
+# if (__ICL >= 800)
+#   define _STLP_STATIC_CONST_INIT_BUG 1
+# endif 

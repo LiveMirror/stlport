@@ -1,3 +1,8 @@
+2004-09-11  Francois Dumont  <dums@...>
+
+	* stlport/config/stl_intel.h: Configuration update for Win32 Intel 8.0 
+	compiler thanks Charlemagne.
+	
 2004-09-10  Francois Dumont  <dums@...>
 
 	* stlport/stl/_config.h: The new official namespace is now stlp_std. _STL is
