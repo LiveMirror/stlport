@@ -22,6 +22,21 @@
 #include <numeric>
 #include "complex_impl.h"
 
+#ifdef _STLP_NO_VENDOR_MATH_F
+_STLP_MATH_INLINE2XX(float,atan2f,atan2)
+_STLP_MATH_INLINEX(float,cosf,cos)
+_STLP_MATH_INLINEX(float,coshf,cosh)
+_STLP_MATH_INLINEX(float,expf,exp)
+_STLP_MATH_INLINE2XX(float,hypotf,hypot)
+_STLP_MATH_INLINEX(float,logf,log)
+_STLP_MATH_INLINEX(float,log10f,log10)
+_STLP_MATH_INLINEX(float,sinf,sin)
+_STLP_MATH_INLINEX(float,sinhf,sinh)
+#elif defined(_STLP_MSVC)
+_STLP_MATH_INLINE2XX(float,hypotf,hypot)
+_STLP_MATH_INLINE2XX(long double,hypotl,hypot)
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------
