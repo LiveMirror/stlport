@@ -358,7 +358,7 @@ void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
     if ((__n + 1) > __old_n) {
       _ElemsCont __tmp_elems(_M_elems.get_allocator());
       _BucketVector __tmp(__n + 1, __STATIC_CAST(_BucketType*, 0), _M_buckets.get_allocator());
-      _ElemsIte __cur, __end(_M_elems.end());
+      _ElemsIte __cur;
       while (!_M_elems.empty()) {
         __cur = _M_elems.begin();
         size_type __new_bucket = _M_bkt_num(*__cur, __n);
