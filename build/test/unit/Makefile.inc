@@ -93,6 +93,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/unary_test.cpp \
 	../../../test/unit/unique_test.cpp \
 	../../../test/unit/unordered_test.cpp \
+	../../../test/unit/valarray_test.cpp \
 	../../../test/unit/vector_test.cpp \
 	../../../test/unit/sstream_test.cpp \
 	../../../test/unit/fstream_test.cpp \

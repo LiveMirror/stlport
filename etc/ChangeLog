@@ -1,3 +1,24 @@
+2005-03-14  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_msvc.h: _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG notion
+	removed, impossible to reproduce, maybe fixed by the #pragma intrinsic/function
+	directives.
+	
+	* stlport/stl/_cmath.h, cstdlib: Fix .Net 2003 and .Net 2005 beta support.
+	
+	* stlport/stl/_cmath.h: Removed _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG notion,
+	no more _STLP_DO_* macros.
+	
+	* test/unit/valarray_test.cpp: New tests to check right compilation of 
+	transcendentals valarray functions.
+	
+	* stlport/stl/_valarray.h: Replaced all the _STLP_DO_* macros by real 
+	function calls.
+	
+	* src/fstream.cpp: Add INVALID_SET_FILE_POINTER definition when missing for
+	Win32 IO implementation thanks Micheal Fink report. Add compilation check 
+	of right STLport file descriptor definition.
+	
 2005-03-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_tree.h: Fix equal_range_unique bug thanks Gunter.

@@ -22,9 +22,9 @@
 #  include <stl/_complex.h>
 #endif
 
-#include <istream>
-
 #if !defined (_STLP_USE_NO_IOSTREAMS)
+#  include <istream>
+
 #  include <sstream>
 
 #  ifndef _STLP_STRING_IO_H
@@ -133,7 +133,7 @@ operator>>(basic_istream<_CharT, _Traits>& __is, complex<_Tp>& __z) {
   return __is;
 }
 
-#endif /* _STLP_USE_NEW_IOSTREAMS */
+#endif /* _STLP_USE_NO_IOSTREAMS */
 
 _STLP_END_NAMESPACE
 

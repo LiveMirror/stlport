@@ -35,20 +35,17 @@ _STLP_BEGIN_NAMESPACE
 
 // Absolute value
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC float _STLP_CALL abs(const complex<float>& __z)
-{
+_STLP_DECLSPEC float _STLP_CALL abs(const complex<float>& __z) {
   return ::hypotf(__z._M_re, __z._M_im);
 }
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC double _STLP_CALL abs(const complex<double>& __z)
-{
+_STLP_DECLSPEC double _STLP_CALL abs(const complex<double>& __z) {
   return ::hypot(__z._M_re, __z._M_im);
 }
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z)
-{
+_STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z) {
   return ::hypotl(__z._M_re, __z._M_im);
 }
 #endif
@@ -56,41 +53,35 @@ _STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z)
 // Phase
 
 _STLP_TEMPLATE_NULL 
-_STLP_DECLSPEC float _STLP_CALL arg(const complex<float>& __z) 
-{
+_STLP_DECLSPEC float _STLP_CALL arg(const complex<float>& __z) {
   return ::atan2f(__z._M_im, __z._M_re);
 }
 
 _STLP_TEMPLATE_NULL 
-_STLP_DECLSPEC double _STLP_CALL arg(const complex<double>& __z) 
-{
+_STLP_DECLSPEC double _STLP_CALL arg(const complex<double>& __z) {
   return ::atan2(__z._M_im, __z._M_re);
 }
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC long double _STLP_CALL arg(const complex<long double>& __z) 
-{
+_STLP_DECLSPEC long double _STLP_CALL arg(const complex<long double>& __z) {
   return ::atan2l(__z._M_im, __z._M_re);
 }
 #endif
 
 // Construct a complex number from polar representation
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC complex<float> _STLP_CALL polar(const float& __rho, const float& __phi) 
-{
+_STLP_DECLSPEC complex<float> _STLP_CALL polar(const float& __rho, const float& __phi) {
   return complex<float>(__rho * ::cosf(__phi), __rho * ::sinf(__phi));
 }
 _STLP_TEMPLATE_NULL
-_STLP_DECLSPEC complex<double> _STLP_CALL polar(const double& __rho, const double& __phi) 
-{
+_STLP_DECLSPEC complex<double> _STLP_CALL polar(const double& __rho, const double& __phi) {
   return complex<double>(__rho * ::cos(__phi), __rho * ::sin(__phi));
 }
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL 
-_STLP_DECLSPEC complex<long double> _STLP_CALL polar(const long double& __rho, const long double& __phi)
-{
+_STLP_DECLSPEC complex<long double> _STLP_CALL polar(const long double& __rho, const long double& __phi) {
   return complex<long double>(__rho * ::cosl(__phi), __rho * ::sinl(__phi));
 }
 #endif
@@ -99,8 +90,8 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL polar(const long double& __rho, c
 
 void  _STLP_CALL
 complex<float>::_div(const float& __z1_r, const float& __z1_i,
-         const float& __z2_r, const float& __z2_i,
-         float& __res_r, float& __res_i) {
+                     const float& __z2_r, const float& __z2_i,
+                     float& __res_r, float& __res_i) {
   float __ar = __z2_r >= 0 ? __z2_r : -__z2_r;
   float __ai = __z2_i >= 0 ? __z2_i : -__z2_i;
 

@@ -27,10 +27,8 @@
 // std, as called for by the draft C++ standard.  
 
 #ifndef _STLP_CMATH
-# include <cmath>
+#  include <cmath>
 #endif
-
-#include <iosfwd>
 
 _STLP_BEGIN_NAMESPACE
 
@@ -825,6 +823,12 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL polar(const long double&, const l
 
 #ifndef _STLP_USE_NO_IOSTREAMS
 
+_STLP_END_NAMESPACE
+
+#include <iosfwd>
+
+_STLP_BEGIN_NAMESPACE
+
 // Complex output, in the form (re,im).  We use a two-step process 
 // involving stringstream so that we get the padding right.  
 template <class _Tp, class _CharT, class _Traits>
@@ -883,14 +887,6 @@ _STLP_EXPORT_TEMPLATE basic_ostream<wchar_t, char_traits<wchar_t> >& _STLP_CALL 
 #    endif
 
 #  endif /* USE_TEMPLATE_EXPORT */
-
-#else /* _STLP_USE_NO_IOSTREAMS */
-
-//template <class _Tp>
-//ostream& _STLP_CALL operator<<(ostream& s, const complex<_Tp>& __z);
-//
-//template <class _Tp>
-//istream& _STLP_CALL  operator>>(istream& s, complex<_Tp>& a);
 
 #endif /* _STLP_USE_NEW_IOSTREAMS */
 

@@ -93,7 +93,6 @@
 #    define _STLP_NO_QUALIFIED_FRIENDS    1
 #    define _STLP_NO_FRIEND_TEMPLATES
 // fails to properly resolve call to sin() from within sin()
-#    define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
 #  endif /* _STLP_MSVC <= 1300 */
 
 #  if (_STLP_MSVC >= 1200)
