@@ -39,7 +39,7 @@ endif
 
 ifeq ($(OSNAME),sunos)
 release-shared : LDLIBS = -lstlport -lrt
-stldbg-shared  : LDLIBS = -lstlportg -lrt
-dbg-shared     : LDLIBS = -lstlportstlg -lrt
+stldbg-shared  : LDLIBS = -lstlportstlg -lrt
+dbg-shared     : LDLIBS = -lstlportg -lrt
 endif
 
