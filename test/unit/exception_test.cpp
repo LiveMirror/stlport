@@ -51,7 +51,7 @@ void ExceptionTest::unexpected_except()
   try {
     throw_except_func();
   }
-  catch (std::bad_exception const& except) {
+  catch (std::bad_exception const&) {
     CPPUNIT_ASSERT( true );
   }
   catch (special_except) {
