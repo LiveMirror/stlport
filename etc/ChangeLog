@@ -1,5 +1,14 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * stl_solaris.h : v8plus compilation fix (Thanks Mukesh Kapoor)
+
+  * num_put_float.cpp : FreeBSD fix 
+
+  * _construct.h : fixed case for compilers with default integer
+  constructor bug
+	
+  ---
+	
   * fstream.cpp : text file stream position bug correction (thanks Christopher Kohlert)
   ---
   * _num_put.c : Correction of the display of the min 64 bits signed integer values

@@ -38,7 +38,10 @@
 #   define _REENTRANT 1
 # endif
 
-# define _STLP_WCHAR_T_IS_USHORT      1
+# if !defined (_NATIVE_WCHAR_T_DEFINED)
+# define _STLP_WCHAR_T_IS_USHORT 1
+# endif
+
 # define _STLP_MINIMUM_IMPORT_STD
 
 # ifdef _STLP_MSVC
@@ -47,61 +50,51 @@
 #  define _STLP_MSVC50_COMPATIBILITY   1
 # endif
 
-// # define _STLP_STATIC_CONST_INIT_BUG   1
 #  define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
 
 // # ifndef __BUILDING_STLPORT
 // #  define _STLP_USE_TEMPLATE_EXPORT 1
 // # endif
 
-#  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
+# if (_STLP_MSVC >= 1310)
+# define _STLP_NO_METHOD_SPECIALIZATION 1
+# endif	//	(_STLP_MSVC >= 1310)
 
 #  if (_STLP_MSVC > 1100)
      typedef char __stl_char;
 #   define _STLP_DEFAULTCHAR __stl_char
 #  endif /* (_STLP_MSVC < 1100 ) */
 
-# if (_STLP_MSVC==1310)
-# define _STLP_NO_METHOD_SPECIALIZATION 1
-# endif
+# if (_STLP_MSVC <= 1310)
+# define _STLP_STATIC_CONST_INIT_BUG   1
+# endif	//	(_STLP_MSVC <= 1310)
 
-// MSVC 7.1 (_.NET_2003)
-# if (_STLP_MSVC <= 1310) 
+# if (_STLP_MSVC <= 1300) 
 #  define _STLP_DEFAULT_CONSTRUCTOR_BUG 1
-#  define _STLP_NO_TYPENAME_ON_RETURN_TYPE 1 
-//  using ::func_name results in ambiguity
+#  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
 #  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
 // fails to properly resolve call to sin() from within sin()
 #  define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
-# endif
-
-# if (_STLP_MSVC <= 1300) 
-
+#  define _STLP_NO_TYPENAME_ON_RETURN_TYPE 1
 // boris : not defining this macro for SP5 causes other problems
 // #  if !defined (_MSC_FULL_VER) || (_MSC_FULL_VER < 12008804 )
-#   define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
+#  define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
 //#  endif
 #  define _STLP_NO_FUNCTION_TMPL_PARTIAL_ORDER 1
 #  define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1
 #  define _STLP_NO_FRIEND_TEMPLATES
-#  define _STLP_STATIC_CONST_INIT_BUG   1
-
 // VC++ cannot handle default allocator argument in template constructors
-#   define _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
+#  define _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
 // there is no partial spec, and MSVC breaks on simulating it for iterator_traits queries
-#   define _STLP_USE_OLD_HP_ITERATOR_QUERIES
-# endif
-
+#  define _STLP_USE_OLD_HP_ITERATOR_QUERIES
 // #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
-
 #  define _STLP_NO_QUALIFIED_FRIENDS    1
 #  define _STLP_DONT_USE_BOOL_TYPEDEF 1
+# endif
 
 # endif /* _STLP_MSVC */
 
-
-# if (_MSC_VER <= 1300) 
-
+# if (_MSC_VER <= 1310) 
 #  define _STLP_VENDOR_GLOBAL_CSTD
 // They included the necessary coding,
 // but the beta still has an issue with template classes
@@ -110,7 +103,7 @@
 #  if !defined (_STLP_WHOLE_NATIVE_STD) && ! defined (_STLP_REDEFINE_STD)
 #    define _STLP_REDEFINE_STD
 #  endif
-# endif /* (_MSC_VER <= 1300) */
+# endif /* (_MSC_VER <= 1310) */
 
 # if (_MSC_VER <= 1200)  // including MSVC 6.0
 //  these work, as long they are inline
@@ -211,7 +204,3 @@
 #    endif
 
 #   include <config/vc_select_lib.h>
-
-
-
-

@@ -651,6 +651,12 @@ static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifie
       fmtbuf[i++] = (flags & ios_base::uppercase) ?  'E' : 'e';      
       break;
     case ios_base::fixed:
+#if defined (__FreeBSD__)
+      fmtbuf = 'f';
+#else
+      fmtbuf = (flags & ios_base::uppercase) ? 'F' : 'f'; 
+#endif
+
       fmtbuf[i++] = (flags & ios_base::uppercase) ?  'F' : 'f';      
       break;
     default:
