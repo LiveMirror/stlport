@@ -34,10 +34,6 @@
 #  include <stl/_algobase.h>
 # endif
 
-# ifndef _STLP_INTERNAL_TEMPBUF_H
-#  include <stl/_tempbuf.h>
-# endif
-
 # ifndef _STLP_INTERNAL_HEAP_H
 #  include <stl/_heap.h>
 # endif
