@@ -18,6 +18,9 @@
 	for wchar_t removed, already exists in _streambuf.h thanks
 	Charlemagne report.
 
+	* stlport/stl/char_traits.h: Setup modification, Windows platform now
+	use ptrdiff_t to define streamoff, make the code more portable.
+
 2005-03-04  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_cmath.h: removed recursive include of cmath header
