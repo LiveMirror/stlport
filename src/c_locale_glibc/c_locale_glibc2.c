@@ -7,7 +7,56 @@
 #include <wctype.h>
 #include <string.h>
 
+#include <stdint.h>
+
 /* Structure describing locale data in core for a category.  */
+/* GLIBC internal, see <glibc catalog>/locale/localeinfo.h */
+#if (__GLIBC__ > 2) || ((__GLIBC__ == 2) && (__GLIBC_MINOR__ > 2))
+
+/* GLIBC 2.3.x */
+struct locale_data
+{
+  const char *name;
+  const char *filedata;         /* Region mapping the file data.  */
+  off_t filesize;               /* Size of the file (and the region).  */
+  enum                          /* Flavor of storage used for those.  */
+  {
+    ld_malloced,                /* Both are malloc'd.  */
+    ld_mapped,                  /* name is malloc'd, filedata mmap'd */
+    ld_archive                  /* Both point into mmap'd archive regions.  */
+  } alloc;
+
+  /* This provides a slot for category-specific code to cache data computed
+     about this locale.  That code can set a cleanup function to deallocate
+     the data.  */
+  struct
+  {
+    void (*cleanup) (struct locale_data *) internal_function;
+    union
+    {
+      void *data;
+      struct lc_time_data *time;
+      const struct gconv_fcts *ctype;
+    };
+  } private;
+
+  unsigned int usage_count;     /* Counter for users.  */
+
+  int use_translit;             /* Nonzero if the mb*towv*() and wc*tomb()
+                                   functions should use transliteration.  */
+
+  unsigned int nstrings;        /* Number of strings below.  */
+  union locale_data_value
+  {
+    const uint32_t *wstr;
+    const char *string;
+    unsigned int word;          /* Note endian issues vs 64-bit pointers.  */
+  }
+  values[1];     /* Items, usually pointers into `filedata'.  */
+};
+
+#else /* GLIBC 2.2.x */
+
 struct locale_data
 {
   const char *name;
@@ -25,12 +74,15 @@ struct locale_data
   unsigned int nstrings;        /* Number of strings below.  */
   union locale_data_value
   {
-    const unsigned int *str;
+    const uint32_t *wstr;
     const char *string;
     unsigned int word;
   }
   values[1];     /* Items, usually pointers into `filedata'.  */
 };
+
+#endif
+
 
 typedef __locale_t __c_locale;
 
@@ -245,13 +297,11 @@ char *_Locale_compose_name(char*__DUMMY_PAR1, const char*__DUMMY_PAR2, const cha
 
 /* ctype */
 
-const _Locale_mask_t *_Locale_ctype_table( struct _Locale_ctype* __loc )
+const _Locale_mask_t *_Locale_ctype_table( struct _Locale_ctype *__loc )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
   /* return table with masks (upper, lower, alpha, etc.) */
-  return ((__c_locale)__loc)->__locales[LC_CTYPE]->values[_NL_ITEM_INDEX (_NL_CTYPE_CLASS)].string + 128;
-  /* return 0; */
+  /* return ((__c_locale)__loc)->__locales[LC_CTYPE]->values[_NL_ITEM_INDEX (_NL_CTYPE_CLASS)].string + 128; */
+  return ((__c_locale)__loc)->__ctype_b;
 }
 
 int _Locale_toupper( struct _Locale_ctype *__loc, int c )
@@ -455,11 +505,13 @@ const char *_Locale_false(struct _Locale_numeric *__loc)
 
 const char *_Locale_int_curr_symbol(struct _Locale_monetary *__loc)
 {
+  printf( "%xd %s:%d\n", __loc, __FILE__, __LINE__ );
   return __loc != 0 ? __nl_langinfo_l(INT_CURR_SYMBOL, (__c_locale)__loc) : 0;
 }
 
 const char *_Locale_currency_symbol(struct _Locale_monetary *__loc)
 {
+  printf( "%xd %s:%d\n", __loc, __FILE__, __LINE__ );
   return __loc != 0 ? __nl_langinfo_l(CURRENCY_SYMBOL, (__c_locale)__loc) : 0;
 }
 
