@@ -25,6 +25,11 @@
   inline __type func (__type x) { return __STATIC_CAST(__type,::cfunc((double)x)); }
 #define _STLP_MATH_INLINE2X(__type1,__type2,func,cfunc) \
   inline __type1 func (__type1 x, __type2 y) { return __STATIC_CAST(__type1,::cfunc((double)x,y)); }
+#define _STLP_MATH_INLINE2PX(__type1,__type2,func,cfunc) \
+  inline __type1 func (__type1 x, __type2 *y) { \
+     double tmp1, tmp2; \
+     tmp1 = ::cfunc(__STATIC_CAST(double,x),&tmp2); *y = __STATIC_CAST(__type2,tmp2); \
+     return __STATIC_CAST(__type1,tmp1); }
 #define _STLP_MATH_INLINE2XX(__type1,func,cfunc) \
   inline __type1 func (__type1 x, __type1 y) { return __STATIC_CAST(__type1,::cfunc((double)x,(double)y)); }
 
@@ -62,7 +67,7 @@
 #    define _STLP_DEF_MATH_INLINE2(func,cf) \
     _STLP_MATH_INLINE2XX(float,func,cf)
 #    define _STLP_DEF_MATH_INLINE2P(func,cf) \
-    _STLP_MATH_INLINE2X(float,float *,func,cf)
+    _STLP_MATH_INLINE2PX(float,float,func,cf)
 #    define _STLP_DEF_MATH_INLINE2PI(func,cf) \
     _STLP_MATH_INLINE2X(float,int *,func,cf)
 #    define _STLP_DEF_MATH_INLINE2I(func,cf) \
@@ -95,6 +100,17 @@ _STLP_DEF_MATH_INLINE(abs,fabs)
 #  else // __MVS__ has native long double abs?
 inline float abs(float __x) { return ::fabsf(__x); }
 #  endif
+
+# ifdef _STLP_USE_UCLIBC // gcc/uClibc cross
+extern "C" {
+  inline float expf( float x ) { return __STATIC_CAST(float,::exp((double)x));};
+  inline float logf( float x ) { return __STATIC_CAST(float,::log((double)x));};
+  inline float sinf( float x ) { return __STATIC_CAST(float,::sin((double)x));};
+  inline float cosf( float x ) { return __STATIC_CAST(float,::cos((double)x));};
+}
+# endif
+
+
 _STLP_DEF_MATH_INLINE(acos,acos)
 _STLP_DEF_MATH_INLINE(asin,asin)
 _STLP_DEF_MATH_INLINE(atan,atan)
