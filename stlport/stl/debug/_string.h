@@ -712,7 +712,7 @@ public:                        // Helper functions for compare.
    */
 public:                         // find.
   size_type find(const _Self& __s, size_type __pos = 0) const 
-  { return find(__s, __pos); }
+  { return _Base::find(__s, __pos); }
   size_type find(const _CharT* __s, size_type __pos = 0) const {
     _STLP_FIX_LITERAL_BUG(__s)
     _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
@@ -729,9 +729,9 @@ public:                         // find.
   { return _Base::find(__c, __pos); }
 
 public:                         // rfind.
-  size_type rfind(const _Self& __s, size_type __pos = npos) const 
+  size_type rfind(const _Self& __s, size_type __pos = _Base::npos) const 
   { return _Base::rfind(__s, __pos); }
-  size_type rfind(const _CharT* __s, size_type __pos = npos) const {
+  size_type rfind(const _CharT* __s, size_type __pos = _Base::npos) const {
     _STLP_FIX_LITERAL_BUG(__s)
     _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return _Base::rfind(__s, __pos); 
@@ -741,7 +741,7 @@ public:                         // rfind.
     _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return _Base::rfind(__s, __pos, __n); 
   }
-  size_type rfind(_CharT __c, size_type __pos = npos) const
+  size_type rfind(_CharT __c, size_type __pos = _Base::npos) const
   { return _Base::rfind(__c, __pos); }
 
 public:                         // find_first_of
@@ -763,9 +763,9 @@ public:                         // find_first_of
 
 public:                         // find_last_of
 
-  size_type find_last_of(const _Self& __s, size_type __pos = npos) const
+  size_type find_last_of(const _Self& __s, size_type __pos = _Base::npos) const
   { return _Base::find_last_of(__s, __pos); }
-  size_type find_last_of(const _CharT* __s, size_type __pos = npos) const {
+  size_type find_last_of(const _CharT* __s, size_type __pos = _Base::npos) const {
     _STLP_FIX_LITERAL_BUG(__s)
     _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return _Base::find_last_of(__s, __pos); 
@@ -775,7 +775,7 @@ public:                         // find_last_of
     _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return _Base::find_last_of(__s, __pos, __n);
   }
-  size_type find_last_of(_CharT __c, size_type __pos = npos) const {
+  size_type find_last_of(_CharT __c, size_type __pos = _Base::npos) const {
     return _Base::rfind(__c, __pos);
   }
 
@@ -798,9 +798,9 @@ public:                         // find_first_not_of
 
 public:                         // find_last_not_of
 
-  size_type find_last_not_of(const _Self& __s, size_type __pos = npos) const
+  size_type find_last_not_of(const _Self& __s, size_type __pos = _Base::npos) const
   { return _Base::find_last_not_of(__s, __pos); }
-  size_type find_last_not_of(const _CharT* __s, size_type __pos = npos) const {
+  size_type find_last_not_of(const _CharT* __s, size_type __pos = _Base::npos) const {
     _STLP_FIX_LITERAL_BUG(__s)
     _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return _Base::find_last_not_of(__s, __pos); 
@@ -810,7 +810,7 @@ public:                         // find_last_not_of
     _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return _Base::find_last_not_of(__s, __pos, __n);
   }
-  size_type find_last_not_of(_CharT __c, size_type __pos = npos) const
+  size_type find_last_not_of(_CharT __c, size_type __pos = _Base::npos) const
   { return _Base::find_last_not_of(__c, __pos); }
 };
 

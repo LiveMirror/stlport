@@ -752,10 +752,10 @@ protected:  // Helper functions for insert.
                  
   pointer _M_insert_aux(pointer, _CharT);
 
-  void _M_copy(const _CharT* __f, const _CharT* __l, _CharT* __out) {
+  void _M_copy(const _CharT* __f, const _CharT* __l, _CharT* __res) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-    _STLP_FIX_LITERAL_BUG(__out)
-    _Traits::copy(__out, __f, __l - __f);
+    _STLP_FIX_LITERAL_BUG(__res)
+    _Traits::copy(__res, __f, __l - __f);
   }
 
   void _M_move(const _CharT* __f, const _CharT* __l, _CharT* __res) {
@@ -887,10 +887,10 @@ protected:  // Helper functions for insert.
   }
 
 #    if !defined (_STLP_NO_METHOD_SPECIALIZATION)
-  void _M_copyT(const _CharT* __f, const _CharT* __l, _CharT* __out) {
+  void _M_copyT(const _CharT* __f, const _CharT* __l, _CharT* __res) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-    _STLP_FIX_LITERAL_BUG(__out)
-    _Traits::copy(__out, __f, __l - __f);
+    _STLP_FIX_LITERAL_BUG(__res)
+    _Traits::copy(__res, __f, __l - __f);
   }
 #    endif
 

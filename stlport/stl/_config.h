@@ -476,13 +476,6 @@
 #  endif
 #endif
 
-/* member template support workaround */
-#if defined ( _STLP_MEMBER_TEMPLATES )
-#  define _STLP_NO_MEM_T_NAME(X) _NoMemT_##X
-#else
-#  define _STLP_NO_MEM_T_NAME(X) X
-#endif
-
 /* debug mode tool */
 #if defined ( _STLP_DEBUG )
 #  define _STLP_NON_DBG_NAME(X) _NonDbg_##X
@@ -490,21 +483,10 @@
 #  define _STLP_NON_DBG_NAME(X) X
 #endif
 
-/* The following macro could be the mix of the 2 previous one but we would
- * be dependant on a good preprocessor behavior to handle macro call recursivity.
- * To avoid it the following macro will be prefered
- */
-#if defined ( _STLP_DEBUG )
-#  if defined ( _STLP_MEMBER_TEMPLATES )
+#if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#  define _STLP_NO_MEM_T_NAME(X) _NoMemT_##X
+#  if defined (_STLP_DEBUG)
 #    define _STLP_NON_DBG_NO_MEM_T_NAME(X) _NonDbg_NoMemT_##X
-#  else
-#    define _STLP_NON_DBG_NO_MEM_T_NAME(X) _NonDbg_##X
-#  endif
-#else
-#  if defined ( _STLP_MEMBER_TEMPLATES )
-#    define _STLP_NON_DBG_NO_MEM_T_NAME(X) _NoMemT_##X
-#  else
-#    define _STLP_NON_DBG_NO_MEM_T_NAME(X) X
 #  endif
 #endif
 
@@ -524,9 +506,9 @@
 #endif
 
 /* this always mean the C library is in global namespace */
-# if defined (_STLP_HAS_NO_NEW_C_HEADERS) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
+#if defined (_STLP_HAS_NO_NEW_C_HEADERS) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
 #  define _STLP_VENDOR_GLOBAL_CSTD 1
-# endif
+#endif
 
 /* Depending of whether compiler supports namespaces,
  * tune the parameters for vendor-supplied libraries.
@@ -534,7 +516,7 @@
  * since it depends only on the native features, not on user's preference whether
  * to use namespace for STLport or not.
  */
-# if !defined (_STLP_HAS_NO_NAMESPACES)
+#if !defined (_STLP_HAS_NO_NAMESPACES)
 /* Import some vendor's headers into corresponding STLport ones if they might be needed
  * (if we wrap native iostreams and use namepace other than std::) */
 #  if defined (_STLP_WHOLE_NATIVE_STD)
@@ -549,47 +531,47 @@
 #    define  _STLP_IMPORT_VENDOR_CSTD 1
 #  endif
 
-# if defined (_STLP_NO_USING_FOR_GLOBAL_FUNCTIONS) && !defined (_STLP_DO_IMPORT_CSTD_FUNCTIONS)
-#  define _STLP_NO_CSTD_FUNCTION_IMPORTS
-# endif
+#  if defined (_STLP_NO_USING_FOR_GLOBAL_FUNCTIONS) && !defined (_STLP_DO_IMPORT_CSTD_FUNCTIONS)
+#    define _STLP_NO_CSTD_FUNCTION_IMPORTS
+#  endif
 
-#define _STLP_USING_NAMESPACE(x) using namespace x ;
+#  define _STLP_USING_NAMESPACE(x) using namespace x ;
 
 namespace std { }
 namespace __std_alias = std;
 
 /* assume std:: namespace for C++ std library if not being told otherwise */
-#  ifdef _STLP_VENDOR_GLOBAL_STD
-#   define _STLP_VENDOR_STD
-#   define _STLP_USING_VENDOR_STD
+#  if defined (_STLP_VENDOR_GLOBAL_STD)
+#    define _STLP_VENDOR_STD
+#    define _STLP_USING_VENDOR_STD
 #  else
-#   define _STLP_VENDOR_STD __std_alias
-#   define _STLP_USING_VENDOR_STD _STLP_USING_NAMESPACE(_STLP_VENDOR_STD)
-// #   define _STLP_USING_VENDOR_STD
+#    define _STLP_VENDOR_STD __std_alias
+#    define _STLP_USING_VENDOR_STD _STLP_USING_NAMESPACE(_STLP_VENDOR_STD)
+//#    define _STLP_USING_VENDOR_STD
 #  endif
 
 /* tune things that come from C library */
 #  if  defined (_STLP_VENDOR_GLOBAL_CSTD) || !defined(_STLP_USE_NEW_C_HEADERS)
 /*  in old-style headers, C functions go to global scope. */
-#   define _STLP_VENDOR_CSTD
-#   define _STLP_USING_VENDOR_CSTD
+#    define _STLP_VENDOR_CSTD
+#    define _STLP_USING_VENDOR_CSTD
 #  else
-#   define _STLP_VENDOR_CSTD  _STLP_VENDOR_STD
-#   define _STLP_USING_VENDOR_CSTD _STLP_USING_NAMESPACE(_STLP_VENDOR_CSTD)
+#    define _STLP_VENDOR_CSTD  _STLP_VENDOR_STD
+#    define _STLP_USING_VENDOR_CSTD _STLP_USING_NAMESPACE(_STLP_VENDOR_CSTD)
 #  endif /* _STLP_VENDOR_CSTD */
 /* exception, typeinfo, new - always come from the vendor */
-#  ifndef _STLP_VENDOR_EXCEPT_STD
-#   ifdef _STLP_VENDOR_GLOBAL_EXCEPT_STD
-#    define _STLP_VENDOR_EXCEPT_STD
-#   else
-#    define _STLP_VENDOR_EXCEPT_STD _STLP_VENDOR_STD
-#   endif
+#  if !defined (_STLP_VENDOR_EXCEPT_STD)
+#    if defined (_STLP_VENDOR_GLOBAL_EXCEPT_STD)
+#      define _STLP_VENDOR_EXCEPT_STD
+#    else
+#      define _STLP_VENDOR_EXCEPT_STD _STLP_VENDOR_STD
+#    endif
 #  endif
-# define _STLP_OLD_IO_NAMESPACE
-# ifndef _STLP_VENDOR_MB_NAMESPACE
-#  define _STLP_VENDOR_MB_NAMESPACE _STLP_VENDOR_CSTD
-# endif
-# else 
+#  define _STLP_OLD_IO_NAMESPACE
+#  if !defined (_STLP_VENDOR_MB_NAMESPACE)
+#    define _STLP_VENDOR_MB_NAMESPACE _STLP_VENDOR_CSTD
+#  endif
+#else 
 /* compiler has no namespace support */
 #  define _STLP_VENDOR_STD 
 #  define _STLP_VENDOR_CSTD
@@ -597,7 +579,7 @@ namespace __std_alias = std;
 #  define _STLP_USING_VENDOR_CSTD
 #  define _STLP_USING_VENDOR_STD 
 #  define _STLP_VENDOR_EXCEPT_STD
-# endif
+#endif
 
 #if defined (_STLP_USE_NAMESPACES)
 
@@ -622,7 +604,7 @@ namespace __std_alias = std;
 #    endif
 namespace _STLP_STD_NAME { }
 #  else
-#    ifdef _STLP_DEBUG
+#    if defined (_STLP_DEBUG)
 namespace stdD = std;
 #    endif
 #    define _STLP_STD_NAME      std
@@ -646,7 +628,7 @@ namespace _STLP_PRIV_NAME {
 #    define _STLP_MOVE_TO_STD_NAMESPACE } namespace _STLP_STD_NAME {
 #  else
 //but sometimes we can't:
-#    define _STLP_PRIV _STLP_STD_NAME::_STLP_PRIV_NAME
+#    define _STLP_PRIV _STLP_PRIV_NAME
 #    define _STLP_MOVE_TO_PRIV_NAMESPACE namespace _STLP_PRIV_NAME {
 #    define _STLP_MOVE_TO_STD_NAMESPACE }
 #  endif
@@ -655,23 +637,23 @@ namespace _STLP_PRIV_NAME {
 
 //Backward compatibility:
 namespace _STL = _STLP_STD_NAME;
-# undef __STLPORT_NAMESPACE
-# define __STLPORT_NAMESPACE _STLP_STD_NAME
+#undef __STLPORT_NAMESPACE
+#define __STLPORT_NAMESPACE _STLP_STD_NAME
 
 /* decide whether or not we use separate namespace for rel ops */
-#   if defined(_STLP_NO_RELOPS_NAMESPACE)
-#     define _STLP_BEGIN_RELOPS_NAMESPACE _STLP_BEGIN_NAMESPACE namespace rel_ops {}
-#     define _STLP_END_RELOPS_NAMESPACE }
-#   else
+#  if defined(_STLP_NO_RELOPS_NAMESPACE)
+#    define _STLP_BEGIN_RELOPS_NAMESPACE _STLP_BEGIN_NAMESPACE namespace rel_ops {}
+#    define _STLP_END_RELOPS_NAMESPACE }
+#  else
 /* Use std::rel_ops namespace */
-#     define _STLP_BEGIN_RELOPS_NAMESPACE _STLP_BEGIN_NAMESPACE namespace rel_ops {
-#     define _STLP_END_RELOPS_NAMESPACE } }
-#     define _STLP_USE_SEPARATE_RELOPS_NAMESPACE
-#   endif /* Use std::rel_ops namespace */
+#    define _STLP_BEGIN_RELOPS_NAMESPACE _STLP_BEGIN_NAMESPACE namespace rel_ops {
+#    define _STLP_END_RELOPS_NAMESPACE } }
+#    define _STLP_USE_SEPARATE_RELOPS_NAMESPACE
+#  endif /* Use std::rel_ops namespace */
 
 #  define _STLP_STD ::_STLP_STD_NAME
 
-# else /* _STLP_USE_NAMESPACES */
+#else /* _STLP_USE_NAMESPACES */
 /* STLport is being put into global namespace */
 #  define _STLP_STD
 #  define _STLP_PRIV
@@ -683,16 +665,16 @@ namespace _STL = _STLP_STD_NAME;
 /* boris : it was found out that _STLP_USE_SEPARATE_RELOPS_NAMESPACE 
    causes less problems than having relational operator templates in global namespace
    Please define _STLP_NO_RELOPS_NAMESPACE in stl_user_config.h if your code rely on them. */
-#  ifndef _STLP_NO_RELOPS_NAMESPACE
-#   define _STLP_USE_SEPARATE_RELOPS_NAMESPACE
+#  if !defined (_STLP_NO_RELOPS_NAMESPACE)
+#    define _STLP_USE_SEPARATE_RELOPS_NAMESPACE
 #  endif
 #  define _STLP_BEGIN_RELOPS_NAMESPACE 
 #  define _STLP_END_RELOPS_NAMESPACE 
 #  undef  _STLP_USE_OWN_NAMESPACE
-# endif  /* _STLP_USE_NAMESPACES */
+#endif  /* _STLP_USE_NAMESPACES */
 
-# define STLPORT_CSTD _STLP_VENDOR_CSTD
-# define STLPORT      _STLP_STD_NAME
+#define STLPORT_CSTD _STLP_VENDOR_CSTD
+#define STLPORT      _STLP_STD_NAME
 
 #if defined(_STLP_BOGUS_TEMPLATE_TYPE_MATCHING_BUG)
 #  define _STLP_SIMPLE_TYPE(T) _stl_trivial_proxy<T>

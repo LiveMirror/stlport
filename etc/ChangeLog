@@ -1,3 +1,8 @@
+2004-12-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/debug/_string.h: Fix of missing scopes thanks arabesc and
+	Benjamin Redelings
+	
 2004-12-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.c: Fix copy method thanks KL report.
