@@ -56,7 +56,7 @@ using _STLP_VENDOR_CSTD::_streams;
 
 // Definitions of the eight global I/O objects that are declared in 
 // <iostream>. For VC++ we use the init_seg pragma to put the global I/O
-// objects into an intitialization segement that will not
+// objects into an initialization segment that will not
 // be executed. We then explicitly invoke the constructors
 // with placement new in ios_base::_S_initialize() 
 
