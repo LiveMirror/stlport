@@ -1,7 +1,3 @@
-// Local Variables:
-// mode:C++
-// End:
-
 /*
  *
  * Copyright (c) 1997
@@ -504,4 +500,3 @@ _STLP_END_NAMESPACE
 // Local Variables:
 // mode:C++
 // End:
-

@@ -44,31 +44,37 @@ using _STLP_VENDOR_CSTD::time_t;
 
 _STLP_BEGIN_NAMESPACE
 
-# if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
+# if (_STLP_STATIC_TEMPLATE_DATA > 0)
  
-#  if !defined ( _STLP_ATOMIC_EXCHANGE ) && (defined (_STLP_PTHREADS) || defined (_STLP_UITHREADS) || defined (_STLP_OS2THREADS))
+#  if !defined(_STLP_ATOMIC_EXCHANGE) && (defined(_STLP_PTHREADS) || defined(_STLP_UITHREADS) || defined(_STLP_OS2THREADS) || defined(_STLP_USE_PTHREAD_SPINLOCK))
 template<int __dummy>
 _STLP_STATIC_MUTEX
 _Swap_lock_struct<__dummy>::_S_swap_lock _STLP_MUTEX_INITIALIZER;
 #  endif
 
+#  ifndef _STLP_USE_PTHREAD_SPINLOCK
 template <int __inst>
 unsigned _STLP_mutex_spin<__inst>::__max = _STLP_mutex_spin<__inst>::__low_max;
 
 template <int __inst>
 unsigned _STLP_mutex_spin<__inst>::__last = 0;
+#  endif // _STLP_USE_PTHREAD_SPINLOCK
 
 # else /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
 
-#  if defined (_STLP_PTHREADS) || defined (_STLP_UITHREADS)  || defined (_STLP_OS2THREADS)
+#  if defined(_STLP_PTHREADS) || defined(_STLP_UITHREADS) || defined(_STLP_OS2THREADS)
 __DECLARE_INSTANCE(_STLP_STATIC_MUTEX, _Swap_lock_struct<0>::_S_swap_lock, 
                    _STLP_MUTEX_INITIALIZER  );
 #  endif /* _STLP_PTHREADS */
 
+#  ifndef _STLP_USE_PTHREAD_SPINLOCK
 __DECLARE_INSTANCE(unsigned, _STLP_mutex_spin<0>::__max,  =30);
 __DECLARE_INSTANCE(unsigned, _STLP_mutex_spin<0>::__last, =0);
+#  endif // _STLP_USE_PTHREAD_SPINLOCK
 
 # endif /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
+
+#ifndef _STLP_USE_PTHREAD_SPINLOCK
 
 #ifdef _STLP_SPARC_SOLARIS_THREADS
 // underground function in libc.so; we do not want dependance on librt
@@ -147,6 +153,7 @@ _STLP_mutex_spin<__inst>::_M_do_lock(volatile __stl_atomic_t* __lock)
   } /* first _Atomic_swap */
 # endif
 }
+#endif // _STLP_USE_PTHREAD_SPINLOCK
 
 _STLP_END_NAMESPACE
 

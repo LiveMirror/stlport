@@ -275,7 +275,19 @@
 #   define _STLP_THREADS
 #  endif /* _REENTRANT */
 
-# define _STLP_STATIC_MUTEX _STLP_mutex_base
+# if defined(__linux__) && defined(_STLP_PTHREADS)
+#  include <features.h>
+
+#  ifdef __USE_XOPEN2K
+#   define _STLP_USE_PTHREAD_SPINLOCK
+#   define _STLP_STATIC_MUTEX _STLP_mutex
+#  endif /* __USE_XOPEN2K */
+# endif /* __linux__ && _STLP_PTHREADS */
+
+# ifndef _STLP_STATIC_MUTEX
+#  define _STLP_STATIC_MUTEX _STLP_mutex_base
+# endif
+
 
 # if defined (_MFC_VER) && !defined (_STLP_USE_MFC)
 #  define _STLP_USE_MFC 1
@@ -1035,7 +1047,8 @@ _TMPL inline bool _STLP_CALL operator>=(const _TP& __x, const _TP& __y) { return
 
 #endif /* _STLP_CONFIG_H */
 
-/* Local Variables:
- * mode:C++
- * End:
- */
+/*
+ Local Variables:
+ mode:C++
+ End:
+*/
