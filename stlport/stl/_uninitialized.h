@@ -293,7 +293,7 @@ __uninitialized_fill_copy(_ForwardIter __result, _ForwardIter __mid, const _Tp& 
   typedef typename _TrivialUCopy<_Tp>::_Ret _Trivial_UCopy;
   __uninitialized_fill(__result, __mid, __x, _Is_POD());
   _STLP_TRY {
-    return __uninitialized_copy(__first, __last, __mid, _Trivial_UCpy());
+    return __uninitialized_copy(__first, __last, __mid, _Trivial_UCopy());
   }
   _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __mid))
   _STLP_RET_AFTER_THROW(__result)
