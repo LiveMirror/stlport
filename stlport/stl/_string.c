@@ -356,8 +356,9 @@ basic_string<_CharT,_Traits,_Alloc> ::replace(iterator __first, iterator __last,
 
 template <class _CharT, class _Traits, class _Alloc> 
 basic_string<_CharT,_Traits,_Alloc>& 
-basic_string<_CharT,_Traits,_Alloc> ::replace(iterator __first, iterator __last,
-                                              const _CharT* __f, const _CharT* __l)
+basic_string<_CharT,_Traits,_Alloc> ::_M_replace(iterator __first, iterator __last,
+                                                 const_iterator __f, const_iterator __l,
+                                                 const random_access_iterator_tag&)
 {
   const ptrdiff_t       __n = __l - __f;
   const difference_type __len = __last - __first;
