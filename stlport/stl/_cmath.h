@@ -219,7 +219,7 @@ _STLP_DEF_MATH_INLINE(tanh,tanh)
 
 #endif
 
-#if defined (_STLP_MSVC) && !defined (_STLP_WCE)
+#if (defined (_STLP_MSVC) && !defined (_STLP_WCE)) || defined (__ICL)
 _STLP_MATH_INLINE2XX(float,hypot,hypot)
 _STLP_MATH_INLINE2XX(long double,hypot,hypot)
 #else
