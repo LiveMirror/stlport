@@ -130,7 +130,7 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	uprbnd1.obj uprbnd2.obj \
 	vec1.obj vec2.obj vec3.obj vec4.obj vec5.obj vec6.obj vec7.obj vec8.obj \
   hmap1.obj hmmap1.obj hset2.obj hmset1.obj slist1.obj string1.obj bitset1.obj \
-  move_constructor.obj
+  move_constructor.obj ioiter.obj
 
 LINK32=link.exe
 
