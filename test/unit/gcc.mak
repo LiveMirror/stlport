@@ -38,8 +38,8 @@ stldbg-shared  : LDLIBS = -lstlport_gcc_stldebug
 endif
 
 ifeq ($(OSNAME),sunos)
-release-shared : LDLIBS += -lrt
-stldbg-shared  : LDLIBS += -lrt
-dbg-shared     : LDLIBS += -lrt
+release-shared : LDLIBS = -lstlport_gcc -lrt
+stldbg-shared  : LDLIBS = -lstlport_gcc_debug -lrt
+dbg-shared     : LDLIBS = -lstlport_gcc_stldebug -lrt
 endif
 

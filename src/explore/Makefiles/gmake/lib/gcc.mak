@@ -9,24 +9,16 @@
 
 OPT += -fPIC
 
-ifeq ($(OSNAME),hp-ux)
-dbg-shared:	LDFLAGS += -shared -Wl,-C20 -Wl,-dynamic  -Wl,+h$(SO_NAME_DBGxx) ${LDSEARCH}
-stldbg-shared:	LDFLAGS += -shared -Wl,-C20 -Wl,-dynamic  -Wl,+h$(SO_NAME_STLDBGxx) ${LDSEARCH}
-release-shared:	LDFLAGS += -shared -Wl,-C20 -Wl,-dynamic -Wl,+h$(SO_NAMExx) ${LDSEARCH}
+ifeq ($(OSNAME),linux)
+_USE_NOSTDLIB := 1
 endif
 
 ifeq ($(OSNAME),sunos)
-dbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_DBGxx) ${LDSEARCH}
-stldbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_STLDBGxx) ${LDSEARCH}
-release-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAMExx) ${LDSEARCH}
-dbg-static:	LDFLAGS += ${LDSEARCH}
-stldbg-static:	LDFLAGS += ${LDSEARCH}
-release-static:	LDFLAGS += ${LDSEARCH}
+#_USE_NOSTDLIB := 1
 endif
 
-ifeq ($(OSNAME),linux)
-
-NOSTDLIB := 
+ifdef _USE_NOSTDLIB
+NOSTDLIB :=
 
 ifeq ($(CXX_VERSION_MAJOR),3)
 
@@ -35,9 +27,15 @@ ifeq ($(CXX_VERSION_MAJOR),3)
 ifneq ($(CXX_VERSION_MINOR),0)
 ifneq ($(CXX_VERSION_MINOR),1)
 ifneq ($(CXX_VERSION_MINOR),2)
+ifeq ($(OSNAME),linux)
 START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
 #START_A_OBJ := $(shell for o in crt{i,beginT}.o; do ${CXX} -print-file-name=$$o; done)
 END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
+endif
+ifeq ($(OSNAME),sunos)
+#START_OBJ := $(shell for o in crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
+#END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+endif
 #END_A_OBJ := $(shell for o in crtn.o; do ${CXX} -print-file-name=$$o; done)
 STDLIBS := -lsupc++ -lgcc_s -lpthread -lc -lm
 NOSTDLIB := -nostdlib
@@ -52,7 +50,24 @@ else
 #  Unfortunatly gcc before 3.x has a buggy C++ language support outside stdc++, so line below is commented
 #STDLIBS := $(shell ${CXX} -print-file-name=libgcc.a) -lpthread -lc -lm
 endif
+endif
 
+ifeq ($(OSNAME),hp-ux)
+dbg-shared:	LDFLAGS += -shared -Wl,-C20 -Wl,-dynamic  -Wl,+h$(SO_NAME_DBGxx) ${LDSEARCH}
+stldbg-shared:	LDFLAGS += -shared -Wl,-C20 -Wl,-dynamic  -Wl,+h$(SO_NAME_STLDBGxx) ${LDSEARCH}
+release-shared:	LDFLAGS += -shared -Wl,-C20 -Wl,-dynamic -Wl,+h$(SO_NAMExx) ${LDSEARCH}
+endif
+
+ifeq ($(OSNAME),sunos)
+dbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_DBGxx) ${LDSEARCH} ${NOSTDLIB}
+stldbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_STLDBGxx) ${LDSEARCH} ${NOSTDLIB}
+release-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAMExx) ${LDSEARCH} ${NOSTDLIB}
+dbg-static:	LDFLAGS += ${LDSEARCH}
+stldbg-static:	LDFLAGS += ${LDSEARCH}
+release-static:	LDFLAGS += ${LDSEARCH}
+endif
+
+ifeq ($(OSNAME),linux)
 dbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_DBGxx) ${LDSEARCH} ${NOSTDLIB}
 stldbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_STLDBGxx) ${LDSEARCH} ${NOSTDLIB}
 release-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAMExx) ${LDSEARCH} ${NOSTDLIB}

@@ -2,6 +2,14 @@
 # $Id$
 
 ifeq ($(OSNAME),linux)
+_USE_NOSTDLIB := 1
+endif
+
+ifeq ($(OSNAME),sunos)
+#_USE_NOSTDLIB := 1
+endif
+
+ifdef _USE_NOSTDLIB
 
 ifeq ($(CXX_VERSION_MAJOR),3)
 
@@ -10,9 +18,15 @@ ifeq ($(CXX_VERSION_MAJOR),3)
 ifneq ($(CXX_VERSION_MINOR),0)
 ifneq ($(CXX_VERSION_MINOR),1)
 ifneq ($(CXX_VERSION_MINOR),2)
+ifeq ($(OSNAME),linux)
 START_OBJ := $(shell for o in crt{1,i,begin}.o; do ${CXX} -print-file-name=$$o; done)
-LDFLAGS += -nostdlib
 END_OBJ := $(shell for o in crt{end,n}.o; do ${CXX} -print-file-name=$$o; done)
+endif
+ifeq ($(OSNAME),sunos)
+START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+endif
+LDFLAGS += -nostdlib
 STDLIBS := -lsupc++ -lgcc_s -lpthread -lc -lm
 endif
 endif
