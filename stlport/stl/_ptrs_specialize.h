@@ -1,29 +1,29 @@
 #ifndef _STLP_PTRS_SPECIALIZE_H
-# define _STLP_PTRS_SPECIALIZE_H
+#define _STLP_PTRS_SPECIALIZE_H
 
 // the following is a workaround for arrow operator problems
-#  if defined  ( _STLP_NO_ARROW_OPERATOR ) 
+#if defined  ( _STLP_NO_ARROW_OPERATOR ) 
 // User wants to disable proxy -> operators
-#    define _STLP_DEFINE_ARROW_OPERATOR
-#    define _STLP_ARROW_SPECIALIZE_WITH_PTRS(_Tp)
-# else
+#  define _STLP_DEFINE_ARROW_OPERATOR
+#  define _STLP_ARROW_SPECIALIZE_WITH_PTRS(_Tp)
+#else
 // Compiler can handle generic -> operator.
 #  define _STLP_ARROW_SPECIALIZE_WITH_PTRS(_Tp)
-#  ifdef __BORLANDC__
-#   define _STLP_DEFINE_ARROW_OPERATOR  pointer operator->() const { return &(*(*this)); }
+#  if defined (__BORLANDC__)
+#    define _STLP_DEFINE_ARROW_OPERATOR  pointer operator->() const { return &(*(*this)); }
 #  elif defined ( _STLP_WINCE ) || defined(__WATCOMC__)
-#   define _STLP_DEFINE_ARROW_OPERATOR pointer operator->() const { reference x = operator*(); return &x; }
+#    define _STLP_DEFINE_ARROW_OPERATOR pointer operator->() const { reference x = operator*(); return &x; }
 #  else
-#   define _STLP_DEFINE_ARROW_OPERATOR  pointer operator->() const { return &(operator*()); }
+#    define _STLP_DEFINE_ARROW_OPERATOR  pointer operator->() const { return &(operator*()); }
 #  endif
-# endif /* _STLP_NO_ARROW_OPERATOR */
+#endif /* _STLP_NO_ARROW_OPERATOR */
 
 // Important pointers specializations
 
-# ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
+#ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
 #  define _STLP_TYPE_TRAITS_POD_SPECIALIZE_V(_Type)
 #  define _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type)
-# else
+#else
 #  define _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type) _STLP_TEMPLATE_NULL struct __type_traits<_Type> : __type_traits_aux<true> {};
 #  define _STLP_TYPE_TRAITS_POD_SPECIALIZE_V(_Type) \
 _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type*) \
@@ -33,7 +33,7 @@ _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type* const *) \
 _STLP_TYPE_TRAITS_POD_SPECIALIZE(const _Type**) \
 _STLP_TYPE_TRAITS_POD_SPECIALIZE(_Type***) \
 _STLP_TYPE_TRAITS_POD_SPECIALIZE(const _Type***)
-# endif
+#endif
 
 # define _STLP_POINTERS_SPECIALIZE(_Type) _STLP_TYPE_TRAITS_POD_SPECIALIZE_V(_Type) _STLP_ARROW_SPECIALIZE_WITH_PTRS(_Type)
 

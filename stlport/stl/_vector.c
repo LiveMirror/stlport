@@ -39,6 +39,12 @@
 
 _STLP_BEGIN_NAMESPACE
 
+#if defined ( _STLP_NESTED_TYPE_PARAM_BUG )
+#  define __iterator__        _Tp*
+#else
+#  define __iterator__        _STLP_TYPENAME_ON_RETURN_TYPE _VECTOR_IMPL<_Tp, _Alloc>::iterator
+#endif
+
 template <class _Tp, class _Alloc> 
 void _Vector_base<_Tp,_Alloc>::_M_throw_length_error() const {
     __stl_throw_length_error("vector");
@@ -195,7 +201,8 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_assign(size_t __n, const _Tp& __val) {
 }
 
 template <class _Tp, class _Alloc>
-typename _VECTOR_IMPL<_Tp, _Alloc>::iterator _VECTOR_IMPL<_Tp, _Alloc>::insert(iterator __pos, const _Tp& __x) {
+__iterator__
+_VECTOR_IMPL<_Tp, _Alloc>::insert(iterator __pos, const _Tp& __x) {
   size_type __n = __pos - begin();
   if (this->_M_finish != this->_M_end_of_storage._M_data) {
     if (__pos == end()) {
@@ -217,6 +224,8 @@ typename _VECTOR_IMPL<_Tp, _Alloc>::iterator _VECTOR_IMPL<_Tp, _Alloc>::insert(i
     _M_insert_overflow(__pos, __x, _TrivialCpy(), 1UL);
   return begin() + __n;
 }
+
+#undef __iterator__
 
 _STLP_END_NAMESPACE
 

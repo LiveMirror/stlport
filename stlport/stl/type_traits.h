@@ -387,11 +387,16 @@ template <class _Tp> struct __type_traits<_Tp*> : __type_traits_aux<1> {};
 // Provide some specializations.  This is harmless for compilers that
 //  have built-in __types_traits support, and essential for compilers
 //  that don't.
-#define _STLP_DEFINE_TYPE_TRAITS_FOR(Type) \
+#if !defined (_STLP_QUALIFIED_SPECIALIZATION_BUG)
+#  define _STLP_DEFINE_TYPE_TRAITS_FOR(Type) \
 _STLP_TEMPLATE_NULL struct __type_traits< Type > : __type_traits_aux<1> {}; \
 _STLP_TEMPLATE_NULL struct __type_traits< const Type > : __type_traits_aux<1> {}; \
 _STLP_TEMPLATE_NULL struct __type_traits< volatile Type > : __type_traits_aux<1> {}; \
 _STLP_TEMPLATE_NULL struct __type_traits< const volatile Type > : __type_traits_aux<1> {}
+#else
+#  define _STLP_DEFINE_TYPE_TRAITS_FOR(Type) \
+_STLP_TEMPLATE_NULL struct __type_traits< Type > : __type_traits_aux<1> {};
+#endif
 
 #  ifndef _STLP_NO_BOOL
 _STLP_DEFINE_TYPE_TRAITS_FOR(bool);

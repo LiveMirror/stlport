@@ -153,6 +153,9 @@
 // of itself for method declarations
 // #  define _STLP_PARTIAL_SPEC_NEEDS_TEMPLATE_ARGS
 
+// Compiler has problem with qualified specializations (cont int, volatile int...)
+// #  define _STLP_QUALIFIED_SPECIALIZATION_BUG
+
 // Compiler has problems specializing members of partially 
 // specialized class
 // #  define _STLP_MEMBER_SPECIALIZATION_BUG

@@ -65,7 +65,7 @@ size_t _Stl_prime<_Dummy>::_S_next_size(size_t __n) {
 // fbp: these defines are for outline methods definitions.
 // needed to definitions to be portable. Should not be used in method bodies.
 
-# if defined ( _STLP_NESTED_TYPE_PARAM_BUG )
+#if defined ( _STLP_NESTED_TYPE_PARAM_BUG )
 #  define __size_type__       size_t
 #  define size_type           size_t
 #  define value_type          _Val
@@ -77,12 +77,12 @@ size_t _Stl_prime<_Dummy>::_S_next_size(size_t __n) {
                                            _Key, _HF, _ExK, _EqK, _All>
 #  define __iterator__        _Ht_iterator<_Val, _STLP_HEADER_TYPENAME _Traits::_ConstTraits, \
                                            _Key, _HF, _ExK, _EqK, _All>
-# else
+#else
 #  define __size_type__       _STLP_TYPENAME_ON_RETURN_TYPE hashtable<_Val, _Key, _HF, _Traits, _ExK, _EqK, _All>::size_type
 #  define __reference__       _STLP_TYPENAME_ON_RETURN_TYPE  hashtable<_Val, _Key, _HF, _Traits, _ExK, _EqK, _All>::reference
 #  define __iterator__        _STLP_TYPENAME_ON_RETURN_TYPE hashtable<_Val, _Key, _HF, _Traits, _ExK, _EqK, _All>::iterator
 #  define __const_iterator__  _STLP_TYPENAME_ON_RETURN_TYPE hashtable<_Val, _Key, _HF, _Traits, _ExK, _EqK, _All>::const_iterator
-# endif
+#endif
 
 template <class _Val, class _Key, class _HF, 
           class _Traits, class _ExK, class _EqK, class _All>

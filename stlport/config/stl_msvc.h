@@ -38,7 +38,7 @@
 #define _STLP_CALL __cdecl
 
 #ifndef _STLP_LONG_LONG
-#  define _STLP_LONG_LONG  __int64
+#  define _STLP_LONG_LONG __int64
 #endif
 
 #define _STLP_PRAGMA_ONCE
@@ -173,6 +173,9 @@ typedef char __stl_char;
 #if defined (_STLP_MSVC) && (_STLP_MSVC < 1200) /* before VC++ 6.0 */
 // #  define _STLP_NO_MEMBER_TEMPLATES 1
 // #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
+#  define _STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS 1
+#  define _STLP_DONT_USE_PARTIAL_SPEC_WRKD 1
+#  define _STLP_QUALIFIED_SPECIALIZATION_BUG 1
 #  define _STLP_NON_TYPE_TMPL_PARAM_BUG 1 
 #  define _STLP_THROW_RETURN_BUG 1
 #  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
@@ -200,7 +203,7 @@ typedef char __stl_char;
 #  define _STLP_VENDOR_GLOBAL_STD
 #  define _STLP_NONTEMPL_BASE_MATCH_BUG 1
 #  define _STLP_BROKEN_USING_DIRECTIVE  1
-#  define _STLP_NO_ARROW_OPERATOR
+#  define _STLP_NO_ARROW_OPERATOR 1
 #  define _STLP_NO_SIGNED_BUILTINS 1
 #  define _STLP_NO_EXCEPTION_SPEC 1
 #  undef  _STLP_DEFAULT_TYPE_PARAM
@@ -210,8 +213,8 @@ typedef char __stl_char;
 #  undef  _STLP_NO_MEMBER_TEMPLATE_CLASSES
 #  define  _STLP_HAS_NO_NAMESPACES 1
 #  define  _STLP_NO_AT_MEMBER_FUNCTION 1
-#  define  _STLP_NO_MEMBER_TEMPLATES
-#  define  _STLP_NO_MEMBER_TEMPLATE_CLASSES
+#  define  _STLP_NO_MEMBER_TEMPLATES 1
+#  define  _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 #endif /* 1100 */
 
 // If we are under Windows CE, include appropriate config
