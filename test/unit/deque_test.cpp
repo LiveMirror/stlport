@@ -92,7 +92,7 @@ void DequeTest::at() {
 
 void DequeTest::auto_ref()
 {
-  size_t i;
+  int i;
   deque<int> ref;
   for (i = 0; i < 5; ++i) {
     ref.push_back(i);

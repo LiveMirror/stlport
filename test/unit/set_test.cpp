@@ -48,7 +48,7 @@ void SetTest::set1()
   CPPUNIT_ASSERT (s.count(42) == 1);
   s.insert(42);
   CPPUNIT_ASSERT (s.count(42) == 1);
-  int count = s.erase(42);
+  size_t count = s.erase(42);
   CPPUNIT_ASSERT (count == 1);
 }
 
@@ -85,7 +85,7 @@ void SetTest::erase()
   s.erase(s.begin());
   CPPUNIT_ASSERT( s.empty() );
   
-  unsigned int nb = s.erase(1);
+  size_t nb = s.erase(1);
   CPPUNIT_ASSERT(nb == 0);
 }
 

@@ -863,8 +863,12 @@ extern "C" {
 
     if ((size_t)size > n) return (size_t)-2;
 
+    if (n > INT_MAX)
+      //Limiting the output buf size to INT_MAX seems like reasonable to transform a single wchar_t.
+      n = INT_MAX;
+
     size = \
-      WideCharToMultiByte(ltype->cp,  WC_COMPOSITECHECK | WC_SEPCHARS, &c, 1, to, n, NULL, NULL);
+      WideCharToMultiByte(ltype->cp,  WC_COMPOSITECHECK | WC_SEPCHARS, &c, 1, to, (int)n, NULL, NULL);
 
     if (size == 0) return (size_t)-1;
 
@@ -896,13 +900,33 @@ extern "C" {
 #  define CSTR_LESS_THAN 1
 #endif
 
+  DWORD max_DWORD = 0xffffffff;
+  DWORD trim_size_t_to_DWORD(size_t n) { return n < (size_t)max_DWORD ? (DWORD)n : max_DWORD; }
+
   /* Collate */
+  //This function takes care of the potential size_t DWORD different size.
+  int _Locale_strcmp_auxA(struct _Locale_collate* lcol,
+		                      const char* s1, size_t n1,
+		                      const char* s2, size_t n2) {
+    int result = CSTR_EQUAL;
+    while (n1 > 0 || n2 > 0) {
+      DWORD size1 = trim_size_t_to_DWORD(n1);
+      DWORD size2 = trim_size_t_to_DWORD(n2);
+      result = CompareStringA(lcol->lcid, 0, s1, size1, s2, size2);
+      if (result != CSTR_EQUAL)
+        break;
+      n1 -= size1;
+      n2 -= size2;
+    }
+    return result;
+  }
+
   int _Locale_strcmp(struct _Locale_collate* lcol,
 		                 const char* s1, size_t n1,
 		                 const char* s2, size_t n2) {
     int result;
-    if(__GetDefaultCP(lcol->lcid) == atoi(lcol->cp)) {
-	    result=CompareStringA(lcol->lcid, 0, s1, n1, s2, n2);
+    if (__GetDefaultCP(lcol->lcid) == atoi(lcol->cp)) {
+	    result = _Locale_strcmp_auxA(lcol, s1, n1, s2, n2);
     }
     else {
 	    char *buf1, *buf2;
@@ -910,50 +934,86 @@ extern "C" {
 	    buf1 = __ConvertToCP(atoi(lcol->cp), __GetDefaultCP(lcol->lcid), s1, n1, &size1);
 	    buf2 = __ConvertToCP(atoi(lcol->cp), __GetDefaultCP(lcol->lcid), s2, n2, &size2);
 
-	    result=CompareStringA(lcol->lcid, 0, buf1, size1, buf2, size2);
+	    result = _Locale_strcmp_auxA(lcol, buf1, size1, buf2, size2);
 	    free(buf1); free(buf2);
     }
     return (result == CSTR_EQUAL) ? 0 : (result == CSTR_LESS_THAN) ? -1 : 1;
   }
 
 #if !defined (_STLP_NO_WCHAR_T)
+  //This function takes care of the potential size_t DWORD different size.
+  int _Locale_strcmp_auxW(struct _Locale_collate* lcol,
+		                      const wchar_t* s1, size_t n1,
+		                      const wchar_t* s2, size_t n2) {
+    int result = CSTR_EQUAL;
+    while (n1 > 0 || n2 > 0) {
+      DWORD size1 = trim_size_t_to_DWORD(n1);
+      DWORD size2 = trim_size_t_to_DWORD(n2);
+      result = CompareStringW(lcol->lcid, 0, s1, size1, s2, size2);
+      if (result != CSTR_EQUAL)
+        break;
+      n1 -= size1;
+      n2 -= size2;
+    }
+    return result;
+  }
 
   int _Locale_strwcmp(struct _Locale_collate* lcol,
                       const wchar_t* s1, size_t n1,
                       const wchar_t* s2, size_t n2) {
     int result;
-    result=CompareStringW(lcol->lcid, 0, s1, n1, s2, n2);
+    result = _Locale_strcmp_auxW(lcol, s1, n1, s2, n2);
     return (result == CSTR_EQUAL) ? 0 : (result == CSTR_LESS_THAN) ? -1 : 1;
   }
-
 #endif
 
   size_t _Locale_strxfrm(struct _Locale_collate* lcol,
 	  	                   char* dst, size_t dst_size,
 			                   const char* src, size_t src_size) {
-    if(__GetDefaultCP(lcol->lcid) == atoi(lcol->cp))
-      return LCMapStringA(lcol->lcid, LCMAP_SORTKEY, src, src_size, dst, dst_size);
+    //The Windows API do not support transformation of very long strings (src_size > INT_MAX)
+    //In this case the result will just be the input string:
+    if (src_size > INT_MAX) {
+      if (dst != 0) {
+        strncpy(dst, src, src_size);
+      }
+      return src_size;
+    }
+    if (dst_size > INT_MAX) {
+      //now that we know that src_size <= INT_MAX we can safely decrease dst_size to INT_MAX.
+      dst_size = INT_MAX;
+    }
+
+    if (__GetDefaultCP(lcol->lcid) == atoi(lcol->cp))
+      return LCMapStringA(lcol->lcid, LCMAP_SORTKEY, src, (int)src_size, dst, (int)dst_size);
     else {
 	    int result;
 	    char *buf;
 	    size_t size;
 	    buf = __ConvertToCP(atoi(lcol->cp), __GetDefaultCP(lcol->lcid), src, src_size, &size);
 
-	    result=LCMapStringA(lcol->lcid, LCMAP_SORTKEY, buf, size, dst, dst_size);
+	    result = LCMapStringA(lcol->lcid, LCMAP_SORTKEY, buf, (int)size, dst, (int)dst_size);
 	    free(buf);
 	    return result;
     }
   }
 
-# ifndef _STLP_NO_WCHAR_T
-
+#if !defined (_STLP_NO_WCHAR_T)
   size_t _Locale_strwxfrm(struct _Locale_collate* lcol,
                           wchar_t* dst, size_t dst_size,
                           const wchar_t* src, size_t src_size) {
-    return LCMapStringW(lcol->lcid, LCMAP_SORTKEY, src, src_size, dst, dst_size);
+    //see _Locale_strxfrm:
+    if (src_size > INT_MAX) {
+      if (dst != 0) {
+        wcsncpy(dst, src, src_size);
+      }
+      return src_size;
+    }
+    if (dst_size > INT_MAX) {
+      dst_size = INT_MAX;
+    }
+    return LCMapStringW(lcol->lcid, LCMAP_SORTKEY, src, (int)src_size, dst, (int)dst_size);
   }
-
-# endif
+#endif
 
   /* Numeric */
 
@@ -1548,21 +1608,68 @@ int __GetDefaultCP(LCID lcid) {
   else return cp;
 }
 
+int trim_size_t_to_int(size_t n) { return n < (size_t)INT_MAX ? (int)n : INT_MAX; }
+
 char* __ConvertToCP(int from_cp, int to_cp, const char *from, size_t size, size_t *ret_buf_size) {
-  int wbuffer_size, buffer_size;
+  size_t wbuffer_size, buffer_size, from_offset, wbuf_offset;
+  int from_size, to_size, wbuf_size;
   wchar_t *wbuffer;
   char* buffer;
 
-  wbuffer_size = MultiByteToWideChar(from_cp, MB_PRECOMPOSED, from, size, NULL, 0);
-  wbuffer = (wchar_t*)malloc(sizeof(wchar_t)*wbuffer_size);
-  MultiByteToWideChar(from_cp, MB_PRECOMPOSED, from, size, wbuffer, wbuffer_size);
+  size_t orig_size = size;
 
-  buffer_size = WideCharToMultiByte(to_cp, WC_COMPOSITECHECK | WC_SEPCHARS, wbuffer, wbuffer_size, NULL, 0, NULL, FALSE);
+  wbuffer_size = 0;
+  from_offset = 0;
+  while (size > 0) {
+    from_size = trim_size_t_to_int(size);
+    wbuffer_size += MultiByteToWideChar(from_cp, MB_PRECOMPOSED, 
+                                        from + from_offset, from_size, NULL, 0);
+    from_offset += from_size;
+    size -= from_size;
+  }
+
+  wbuffer = (wchar_t*)malloc(sizeof(wchar_t)*wbuffer_size);
+
+  size = orig_size;
+  wbuf_offset = 0;
+  from_offset = 0;
+  while (size > 0) {
+    from_size = trim_size_t_to_int(size);
+    wbuf_size = trim_size_t_to_int(wbuffer_size - wbuf_offset);
+    wbuf_offset += MultiByteToWideChar(from_cp, MB_PRECOMPOSED, 
+                                       from + from_offset, from_size, wbuffer + wbuf_offset, wbuf_size);
+    from_offset += from_size;
+    size -= from_size;
+  }
+
+  buffer_size = 0;
+  wbuf_offset = 0;
+  size = wbuffer_size;
+  while (size > 0) {
+    wbuf_size = trim_size_t_to_int(size);
+    buffer_size += WideCharToMultiByte(to_cp, WC_COMPOSITECHECK | WC_SEPCHARS, 
+                                       wbuffer + wbuf_offset, wbuf_size, 
+                                       NULL, 0, NULL, FALSE);
+    wbuf_offset += wbuf_size;
+    size -= wbuf_size;
+  }
+
   buffer = (char*)malloc(buffer_size);
-  WideCharToMultiByte(to_cp, WC_COMPOSITECHECK | WC_SEPCHARS, wbuffer, wbuffer_size, buffer, buffer_size, NULL, FALSE);
+  *ret_buf_size = buffer_size;
+
+  size = wbuffer_size;
+  wbuf_offset = 0;
+  while (size > 0) {
+    wbuf_size = trim_size_t_to_int(size);
+    to_size = trim_size_t_to_int(buffer_size);
+    buffer_size -= WideCharToMultiByte(to_cp, WC_COMPOSITECHECK | WC_SEPCHARS, 
+                                       wbuffer + wbuf_offset, wbuf_size, 
+                                       buffer, to_size, NULL, FALSE);
+    wbuf_offset += wbuf_size;
+    size -= wbuf_size;
+  }
 
   free(wbuffer);
-  *ret_buf_size = buffer_size;
   return buffer;
 }
 

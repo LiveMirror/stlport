@@ -81,7 +81,7 @@ void MapTest::mmap1()
   i++;
   CPPUNIT_ASSERT(i==m.end());
 
-  int count = m.erase('X');
+  size_t count = m.erase('X');
   CPPUNIT_ASSERT(count==2);
 }
 void MapTest::mmap2()

@@ -1,3 +1,9 @@
+2005-03-05  Francois Dumont  <dums@stlport...>
+
+	* test/unit: Fixing 64 bits warnings in many tests.
+
+	* src/c_locale_win32/c_locale_win32.c: Fixing 64 bits warnings.
+
 2005-03-04  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_cmath.h: removed recursive include of cmath header

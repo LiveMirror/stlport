@@ -78,6 +78,12 @@ void UnorderedTest::uset()
     }
   }
 
+  //A compilation time check to uncomment from time to time
+  {
+    //usettype::iterator it;
+    //CPPUNIT_ASSERT( it != lit );
+  }
+
   sort(us_val.begin(), us_val.end());
   for (i = 0; i < NB_ELEMS; ++i) {
     CPPUNIT_ASSERT( us_val[i] == i );
@@ -261,7 +267,7 @@ void UnorderedTest::hash_policy()
   CPPUNIT_ASSERT( int_uset.load_factor() == 0.0f );
 
   size_t nbInserts = int_uset.bucket_count() - 1;
-  for (size_t i = 0; i < nbInserts; ++i) {
+  for (int i = 0; (size_t)i < nbInserts; ++i) {
     int_uset.insert(i);
   }
   CPPUNIT_ASSERT( int_uset.size() == nbInserts );
@@ -281,16 +287,16 @@ void UnorderedTest::buckets()
 
   CPPUNIT_ASSERT( int_uset.bucket_count() < int_uset.max_bucket_count() );
 
-  size_t i;
+  int i;
   size_t nbBuckets = int_uset.bucket_count();
   size_t nbInserts = int_uset.bucket_count() - 1;
-  for (i = 0; i < nbInserts; ++i) {
+  for (i = 0; (size_t)i < nbInserts; ++i) {
     int_uset.insert(i);
   }
   CPPUNIT_ASSERT( nbBuckets == int_uset.bucket_count() );
 
   size_t bucketSizes = 0;
-  for (i = 0; i < nbBuckets; ++i) {
+  for (i = 0; (size_t)i < nbBuckets; ++i) {
     bucketSizes += int_uset.bucket_size(i);
   }
   CPPUNIT_ASSERT( bucketSizes == int_uset.size() );

@@ -103,7 +103,7 @@ void HashTest::hmmap1()
   i++;
   CPPUNIT_ASSERT(i==m.end());
 
-  int count = m.erase('X');
+  size_t count = m.erase('X');
   CPPUNIT_ASSERT(count==2);
 
   //Some iterators compare check, really compile time checks
@@ -128,7 +128,7 @@ void HashTest::hmset1()
   i = s.find(star);
   CPPUNIT_ASSERT(i != s.end())
   CPPUNIT_ASSERT(*i=='*');
-  int count = s.erase(star);
+  size_t count = s.erase(star);
   CPPUNIT_ASSERT(count==2);
 }
 void HashTest::hset2()

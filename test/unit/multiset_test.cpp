@@ -55,7 +55,7 @@ void MultisetTest::mset1()
 
   i = s.find(42);
   CPPUNIT_ASSERT(i != s.end());
-  int count = s.erase(42);
+  size_t count = s.erase(42);
   CPPUNIT_ASSERT(count == 2);
 }
 void MultisetTest::mset3()

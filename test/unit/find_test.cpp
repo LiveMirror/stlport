@@ -64,7 +64,7 @@ void FindTest::findif1()
 {
   typedef vector <int> IntVec;
   IntVec v(10);
-  for(size_t i = 0; i < v.size(); i++)
+  for(int i = 0; (size_t)i < v.size(); ++i)
     v[i] =(i + 1) *(i + 1);
   IntVec::iterator iter;
   iter = find_if(v.begin(), v.end(), div_3);

@@ -46,8 +46,8 @@ void CopyTest::copy1()
 }
 void CopyTest::copy2()
 {
-  vector <int> v(10);
-  for(size_t i = 0; i < v.size(); i++)
+  vector<int> v(10);
+  for (int i = 0; (size_t)i < v.size(); ++i)
     v[i] = i;
   
   ostringstream os;
@@ -58,11 +58,11 @@ void CopyTest::copy2()
 }
 void CopyTest::copy3()
 {
-  vector <int> v1(10);
-  for(size_t i = 0; i < v1.size(); i++)
+  vector<int> v1(10);
+  for (int i = 0; (size_t)i < v1.size(); ++i)
     v1[i] = i;
 
-  vector <int> v2(10);
+  vector<int> v2(10);
   copy(v1.begin(), v1.end(), v2.begin());
 
   ostringstream os;
@@ -73,7 +73,7 @@ void CopyTest::copy3()
 }
 void CopyTest::copy4() {
   vector<int> v1(10);
-  for(size_t loc = 0; loc < v1.size(); loc++)
+  for (int loc = 0; (size_t)loc < v1.size(); ++loc)
     v1[loc] = loc;
   vector<int> v2;
   insert_iterator<vector<int> > i(v2, v2.begin());
@@ -87,8 +87,8 @@ void CopyTest::copy4() {
 }
 void CopyTest::copyb()
 {
-  vector <int> v1(10);
-  for(size_t i = 0; i < v1.size(); i++)
+  vector<int> v1(10);
+  for (int i = 0; (size_t)i < v1.size(); ++i)
     v1[i] = i;
   vector <int> v2(v1.size());
   copy_backward(v1.begin(), v1.end(), v2.end());

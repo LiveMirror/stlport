@@ -26,16 +26,13 @@ protected:
   void trnsfrm2();
   void self_str();
 
-  static int negate_int(int a_)
-  {
+  static int negate_int(int a_) {
     return -a_;
   }
-  static char map_char(char a_, int b_)
-  {
+  static char map_char(char a_, int b_) {
     return char(a_ + b_);
   }
-  static char shift( char c )
-  {
+  static char shift( char c ) {
     return char(((int)c + 1) % 256);
   }
 };
@@ -67,10 +64,10 @@ void TransformTest::trnsfrm2()
   int trans[] = {-4, 4, -6, -6, -10, 0, 10, -6, 6, 0, -1, -77};
 #endif
   char n[] = "Larry Mullen";
-  const unsigned count = ::strlen(n);
+  const size_t count = ::strlen(n);
 
   ostringstream os;
-  ostream_iterator <char> iter(os);
+  ostream_iterator<char> iter(os);
 
   transform(n, n + count, trans, iter, map_char);
 
