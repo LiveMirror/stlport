@@ -4,7 +4,35 @@ The following changes were made in 5.0 since 4.5.3 release:
 	C++ runtime support headers modev to "cpp_runtime" subdirectory; 
   	classic iostreams headers moved to "classic_iostreams" subdirectory
 
+	* version numbers bumped
+	
 	* stl_sunpro.h : fixed mbstate definition for SUN 4.2 (thanks  lengzq)
+
+	* complex.cpp, _complex.h : template<> used for specializations
+
+	* _num_put.c : unised locale variable removed (thanks Petr Ovchenkov)
+
+	* _algo.h : __reverse beautified (thanks Kabanov)
+
+	* dl_main.cpp : force_link() forced to be linked in
+
+	* stl_msvc.h : config changes for .NET
+
+	* _auto_ptr.h : "struct" changed to "class"
+
+	* _istream.c : M_read_unbuffered fixed (thanks  Stefan Schwarzer )
+ 	
+	* stl_gcc.h : added missing inclusion for SCO platform (thanks Emmanuel Soden)
+
+	* _tree.c : optimized insert_unique (thanks Timothy)
+
+	* _algo.c : relaxed type requirements for lower_bound, upper_bound, binary_search
+
+	* _algo.h : adjacent_find() expressed with compare-function flavour
+
+	* cpp_runtime/typeinfo : made adjustments for .NET (Thanks Daniel)
+
+	* cstd/cassert : guard removed (thanks Evan Cheng)
 	
 The following changes were made in 4.5.3 since 4.5.1 release:
 
