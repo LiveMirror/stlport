@@ -228,6 +228,7 @@ _OutputIter _STLP_CALL
 __put_integer(char* __buf, char* __iend, _OutputIter __s,
               ios_base& __f, ios_base::fmtflags __flags, char __fill)
 {
+  char __grpbuf[64];
   ptrdiff_t __len = __iend - __buf;
 
   //  const numpunct<char>& __np = use_facet<numpunct<char> >(__f.getloc());
@@ -240,16 +241,15 @@ __put_integer(char* __buf, char* __iend, _OutputIter __s,
     int __basechars;
     if (__flags & ios_base::showbase)
       switch (__flags & ios_base::basefield) {
-	case ios_base::hex: __basechars = 2; break;
-	case ios_base::oct: __basechars = 1; break;
-	default: __basechars = 0;
+        case ios_base::hex: __basechars = 2; break;
+        case ios_base::oct: __basechars = 1; break;
+        default: __basechars = 0;
       }
     else
       __basechars = 0;
  
      // make sure there is room at the end of the buffer
      // we pass to __insert_grouping
-    char __grpbuf[64];
     copy(__buf, __iend, (char *) __grpbuf);
     __buf = __grpbuf;
     __iend = __grpbuf + __len; 
