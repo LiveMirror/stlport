@@ -28,6 +28,7 @@
 
 # include "stlport_prefix.h"
 
+
 # if !defined(_STLP_DEBUG) && ! defined (_STLP_ASSERTIONS)
 # define _STLP_ASSERTIONS 1
 # endif

@@ -683,7 +683,7 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
   char static_buf[128];
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
-  sprintf(static_buf, fmtbuf, precision, x);
+  snprintf(static_buf, 128, fmtbuf, precision, x);
   buf = static_buf;
 # else
   char cvtbuf[NDIG+2];
@@ -714,7 +714,7 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
   char static_buf[128];
   char fmtbuf[64];
   int i = fill_fmtbuf(fmtbuf, flags, 'L');
-  sprintf(static_buf, fmtbuf, precision, x);    
+  snprintf(static_buf, 128, fmtbuf, precision, x);    
   // we should be able to return buf + sprintf(), but we do not trust'em...
   buf = static_buf;
 # else
