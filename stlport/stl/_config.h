@@ -306,9 +306,11 @@
 #   define _STLP_THREADS_DEFINED
 # endif
 
-#  if defined (_REENTRANT) && ! defined (_STLP_THREADS)
-#   define _STLP_THREADS
-#  endif /* _REENTRANT */
+# if (defined(_REENTRANT) || defined(_THREAD_SAFE) || \
+      (defined(_POSIX_THREADS) && defined(__OpenBSD__))) \
+     && !defined (_STLP_THREADS)
+#  define _STLP_THREADS
+# endif /* _REENTRANT */
 
 # if defined(__linux__) && defined(_STLP_PTHREADS)
 #  include <features.h>
@@ -318,6 +320,11 @@
 #   define _STLP_STATIC_MUTEX _STLP_mutex
 #  endif /* __USE_XOPEN2K */
 # endif /* __linux__ && _STLP_PTHREADS */
+
+# if defined(__OpenBSD__) && defined(_POSIX_THREADS)
+#  define _STLP_USE_PTHREAD_SPINLOCK
+#  define _STLP_STATIC_MUTEX _STLP_mutex
+# endif
 
 # ifndef _STLP_STATIC_MUTEX
 #  define _STLP_STATIC_MUTEX _STLP_mutex_base
