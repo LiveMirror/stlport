@@ -10,6 +10,9 @@
 
 	* stlport/config/stl_bc.h, stl_dmc.h, stl_solaris.h: Removal of all references
 	to the deprecated _STLP_NO_OWN_IOSTREAMS and _STLP_NO_NEW_IOSTREAMS macros.
+
+	* stlport/cmath, stl/_cmath.h: Modification of the import of the pow function
+	for MSVC6 that has a bugged overload thanks Michael Fink report.
 	 
 2004-11-09  Francois Dumont  <dums@stlport...>
 
