@@ -1,3 +1,7 @@
+2004-09-01  Petr Ovtchenkov  <ptr@Island...>
+
+	* Rollback include schema: code is broken.
+
 2004-08-31  Francois Dumont  <dums@...>
 
 	* _STLP_INCOMPLETE_EXCEPTION_HEADER replace by the more intuitive
