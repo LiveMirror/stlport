@@ -37,9 +37,9 @@
 #  undef stdout
 #  undef stderr
 
-#  define stdin  	(&_STLP_VENDOR_CSTD::__files[0])
-#  define stdout	(&_STLP_VENDOR_CSTD::__files[1])
-#  define stderr	(&_STLP_VENDOR_CSTD::__files[2])
+#  define stdin   (&_STLP_VENDOR_CSTD::__files[0])
+#  define stdout  (&_STLP_VENDOR_CSTD::__files[1])
+#  define stderr  (&_STLP_VENDOR_CSTD::__files[2])
 # endif
 
 # endif /* WINCE */
