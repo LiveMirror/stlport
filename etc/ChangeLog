@@ -1,3 +1,11 @@
+2005-03-23  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/gmake/app/gcc.mak, build/Makefiles/gmake/lib/gcc.mak:
+	incorporate gcc language support library into libstlport.so
+	[add ~100k to library],	but libsup++ don't required more in link stage
+	for applications and libraries that use stlport, as in case with
+	libstd++.
+
 2005-03-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_io.c: Fix basic_string stream output operator 
