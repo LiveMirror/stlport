@@ -1,3 +1,13 @@
+2005-03-21  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_cmath.h: removed logf, expf, sinf, cosf; option
+	-fno-builtin passed to gcc compiler solve the problem with uClibc;
+	this imply same option in building uClibc, as it is in normal uClibc build.
+	This is partial	rollback of changes 2005-03-16.
+
+	* build/lib/configure, build/Makefiles/gmake/gcc.mak: add ability to pass
+	extra flags to C++ compiler
+
 2005-03-18  Francois Dumont  <dums@stlport...>
 
 	* test/unit: Modified some test in order to check the _STLP_NO_IOSTREAMS
