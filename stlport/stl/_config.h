@@ -1004,7 +1004,7 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define _STLP_IMPORT_TEMPLATE_KEYWORD
 # endif
 
-#ifdef __STLP_USE_NO_IOSTREAMS
+#ifdef _STLP_USE_NO_IOSTREAMS
 /*
  * If we do not use own iostream there is no reason to use the export/import
  * techniques as there is no library to link with.
