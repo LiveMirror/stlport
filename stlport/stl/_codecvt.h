@@ -169,7 +169,7 @@ public:
     return do_unshift(__state, __to, __to_limit, __to_next);
   }
     
-  result in(mbstate_t    __state,
+  result in(mbstate_t&   __state,
             const char*  __from,
             const char*  __from_end,  
             const char*& __from_next,
@@ -178,17 +178,16 @@ public:
             wchar_t*&    __to_next) const {
     return do_in(__state, 
                  __from, __from_end, __from_next,
-                 __to,  __to_limit, __to_next);
+                 __to,   __to_limit, __to_next);
   }
 
   int encoding() const _STLP_NOTHROW { return do_encoding(); }
 
   bool always_noconv() const _STLP_NOTHROW { return do_always_noconv(); }
 
-  int length(const mbstate_t&        __state,
-             const char* __from,
-             const char* __end,
-             size_t             __max) const
+  int length(const mbstate_t& __state,
+             const char* __from, const char* __end,
+             size_t __max) const
     { return do_length(__state, __from, __end, __max); }
   
   int max_length() const _STLP_NOTHROW { return do_max_length(); }
