@@ -57,6 +57,7 @@ LColl::LColl( const char *loc_dir )
       // cout << ent->d_name << endl;
     }
   }
+  closedir( d );
 # endif
 # ifdef WIN32
   // real list of installed locales should be here...
