@@ -1,4 +1,4 @@
-# Time-stamp: <04/07/02 23:33:15 ptr>
+# Time-stamp: <04/08/23 22:49:14 ptr>
 # $Id$
 
 
@@ -17,10 +17,10 @@ CXX := ${TARGET_OS}-${CXX}
 CC := ${TARGET_OS}-${CC}
 endif
 
-CXX_VERSION := $(shell ${CXX} gcc --version | grep gcc | awk '{ print $3; }')
-CXX_VERSION_MAJOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $1; }')
-CXX_VERSION_MINOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $2; }')
-CXX_VERSION_PATCH := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $3; }')
+CXX_VERSION := $(shell ${CXX} --version | grep ${CXX} | awk '{ print $$3; }')
+CXX_VERSION_MAJOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $$1; }')
+CXX_VERSION_MINOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $$2; }')
+CXX_VERSION_PATCH := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $$3; }')
 
 DEFS ?=
 OPT ?=
