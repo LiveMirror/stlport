@@ -52,10 +52,8 @@ template <class _charT, __DFL_NON_TYPE_PARAM(bool, _International, false) > clas
 
 template <class _CharT, __DFL_TMPL_PARAM(_InputIter , istreambuf_iterator<_CharT>) >
 class money_get : public locale::facet {
-  //friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
+
 public:
   typedef _CharT               char_type;
   typedef _InputIter           iter_type;

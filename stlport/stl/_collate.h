@@ -43,10 +43,8 @@ template <class _CharT> class collate_byname {};
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC collate<char> : public locale::facet 
 {
-  // friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
+
 public:
   typedef char   char_type;
   typedef string string_type;
@@ -84,10 +82,8 @@ private:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC collate<wchar_t> : public locale::facet 
 {
-  // friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
+
 public:
   typedef wchar_t char_type;
   typedef wstring string_type;

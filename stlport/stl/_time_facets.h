@@ -100,10 +100,8 @@ public:
 template <class _Ch, __DFL_TMPL_PARAM( _InIt , istreambuf_iterator<_Ch>) >
 class time_get : public locale::facet, public time_base 
 {
-    // friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
     friend class _Locale_impl;
-#endif
+
 public:
   typedef _Ch   char_type;
   typedef _InIt iter_type;

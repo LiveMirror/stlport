@@ -47,10 +47,8 @@ template <class _Ch, class _InIt> class num_get;
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct<char> : public locale::facet
 {
-  // friend class _Locale;
-#ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
-#endif
+
 #ifndef _STLP_NO_FRIEND_TEMPLATES
   template <class _Ch, class _InIt> friend class num_get;
 #endif
