@@ -59,7 +59,7 @@ LColl::LColl( const char *loc_dir )
   }
   closedir( d );
 # endif
-# ifdef WIN32
+# if defined (WIN32) && !defined (_STLP_WCE)
   // real list of installed locales should be here...
   _m[string("french")] = true;
 # endif
