@@ -66,8 +66,8 @@ public:
     virtual ~facet();
     friend class locale;
     friend class _Locale_impl;
-    friend locale::facet *_get_facet( locale::facet * );
-    friend void _release_facet( locale::facet *& );
+    friend facet *_get_facet( facet * );
+    friend void _release_facet( facet *& );
     
   private:                        // Invalidate assignment and copying.
     facet(const facet& __f) : _Refcount_Base(1), _M_delete(false) {};
