@@ -6,6 +6,7 @@
  * It is known that this code compiled by following compilers:
  *   gcc 3.3.3
  *   gcc 3.4.1
+ *   MSVC 8 Beta
  */
 
 struct A
