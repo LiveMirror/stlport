@@ -1,3 +1,10 @@
+2004-11-02  Francois Dumont  <dums@stlport...>
+
+  * stlport/stl/pointers/_deque.h: Fix for the problem of the deque<void*>
+  instanciation thanks Alexey Gotuyov
+
+  * test/unit/ptrspec_test.cpp: Add of a test for the previous problem.
+
 2004-10-31  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_rope.h: Fix of the apply_to_pieces qualification thanks Leeya.

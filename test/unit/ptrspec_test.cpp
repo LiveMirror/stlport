@@ -60,7 +60,13 @@ void PtrSpecTest::ptr_specialization_test()
 {
   int *int_array[] = {0, 0, 0};
   int const* cint_array[] = {0, 0, 0};
-  
+
+  {
+    vector<void*> void_vect;
+    deque<void*> void_deque;
+    list<void*> void_list;
+    slist<void*> void_slist;
+  }
   vector<int*> pint_vect;
   vector<int*> pint_vect2;
   vector<int const*> pcint_vect;
