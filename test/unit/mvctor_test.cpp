@@ -21,12 +21,14 @@ class MoveConstructorTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE(MoveConstructorTest);
   CPPUNIT_TEST(move_construct_test);
   CPPUNIT_TEST(deque_test);
+  CPPUNIT_TEST(vector_test);
   CPPUNIT_TEST(move_traits);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void move_construct_test();
   void deque_test();
+  void vector_test();
   void move_traits();
 
   /*
@@ -369,6 +371,206 @@ void MoveConstructorTest::deque_test()
       CPPUNIT_ASSERT( vect_deque.size() == 26 );
       CPPUNIT_ASSERT( &ret->front() == bufs[23] );
       deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+  }
+}
+
+void MoveConstructorTest::vector_test()
+{
+  //Check the insert range method.
+  //To the front:
+  {
+    vector<vector<int> > vect_vector;
+    vector<int*> bufs;
+    vect_vector.assign(3, vector<int>(10));
+    bufs.push_back(&vect_vector[0].front());
+    bufs.push_back(&vect_vector[1].front());
+    bufs.push_back(&vect_vector[2].front());
+
+    int nb_insert = 5;
+    int pos = 1;
+    while (nb_insert--) {
+      vector<vector<int> > vect_vect(2, vector<int>(10));
+      vect_vector.insert(vect_vector.begin() + pos, vect_vect.begin(), vect_vect.end());
+      bufs.insert(bufs.begin() + pos, &vect_vector[pos].front());
+      bufs.insert(bufs.begin() + pos + 1, &vect_vector[pos + 1].front());
+      ++pos;
+    }
+    CPPUNIT_ASSERT( vect_vector.size() == 13 );
+    for (int i = 0; i < 5; ++i) {
+      CPPUNIT_ASSERT( bufs[i] == &vect_vector[i].front() );
+      CPPUNIT_ASSERT( bufs[11 - i] == &vect_vector[11 - i].front() );
+    }
+  }
+
+  //To the back
+  {
+    vector<vector<int> > vect_vector;
+    vector<int*> bufs;
+    vect_vector.assign(3, vector<int>(10));
+    bufs.push_back(&vect_vector[0].front());
+    bufs.push_back(&vect_vector[1].front());
+    bufs.push_back(&vect_vector[2].front());
+
+    int nb_insert = 5;
+    //Initialize to 2 to generate a back insertion:
+    int pos = 2;
+    while (nb_insert--) {
+      vector<vector<int> > vect_vect(2, vector<int>(10));
+      vect_vector.insert(vect_vector.begin() + pos, vect_vect.begin(), vect_vect.end());
+      bufs.insert(bufs.begin() + pos, &vect_vector[pos].front());
+      bufs.insert(bufs.begin() + pos + 1, &vect_vector[pos + 1].front());
+      ++pos;
+    }
+    CPPUNIT_ASSERT( vect_vector.size() == 13 );
+    for (int i = 0; i < 5; ++i) {
+      CPPUNIT_ASSERT( bufs[i + 1] == &vect_vector[i + 1].front() );
+      CPPUNIT_ASSERT( bufs[12 - i] == &vect_vector[12 - i].front() );
+    }
+  }
+
+  //Check the different erase methods.
+  {
+    vector<vector<int> > vect_vector;
+    vect_vector.assign(20, vector<int>(10));
+    vector<vector<int> >::iterator vdit(vect_vector.begin()), vditEnd(vect_vector.end());
+    vector<int*> bufs;
+    for (; vdit != vditEnd; ++vdit) {
+      bufs.push_back(&vdit->front());
+    }
+
+    {
+      // This check, repeated after each operation, check the vector consistency:
+      vector<vector<int> >::iterator it = vect_vector.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_vector.end() && nb_incr <= 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //erase in front:
+      vect_vector.erase(vect_vector.begin() + 2);
+      bufs.erase(bufs.begin() + 2);
+      CPPUNIT_ASSERT( vect_vector.size() == 19 );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      vector<vector<int> >::iterator it = vect_vector.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_vector.end() && nb_incr <= 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //erase in the back:
+      vect_vector.erase(vect_vector.end() - 2);
+      bufs.erase(bufs.end() - 2);
+      CPPUNIT_ASSERT( vect_vector.size() == 18 );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      vector<vector<int> >::iterator it = vect_vector.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_vector.end() && nb_incr < 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //range erase in front
+      vect_vector.erase(vect_vector.begin() + 3, vect_vector.begin() + 5);
+      bufs.erase(bufs.begin() + 3, bufs.begin() + 5);
+      CPPUNIT_ASSERT( vect_vector.size() == 16 );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      vector<vector<int> >::iterator it = vect_vector.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_vector.end() && nb_incr <= 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //range erase in back
+      vect_vector.erase(vect_vector.end() - 5, vect_vector.end() - 3);
+      bufs.erase(bufs.end() - 5, bufs.end() - 3);
+      CPPUNIT_ASSERT( vect_vector.size() == 14 );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+  }
+
+  //Check the insert value(s)
+  {
+    vector<vector<int> > vect_vector;
+    vect_vector.assign(20, vector<int>(10));
+    vector<vector<int> >::iterator vdit(vect_vector.begin()), vditEnd(vect_vector.end());
+    vector<int*> bufs;
+    for (; vdit != vditEnd; ++vdit) {
+      bufs.push_back(&vdit->front());
+    }
+
+    {
+      //2 values in front:
+      vect_vector.insert(vect_vector.begin() + 2, 2, vector<int>(10));
+      bufs.insert(bufs.begin() + 2, &vect_vector[2].front());
+      bufs.insert(bufs.begin() + 3, &vect_vector[3].front());
+      CPPUNIT_ASSERT( vect_vector.size() == 22 );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      //2 values in back:
+      vect_vector.insert(vect_vector.end() - 2, 2, vector<int>(10));
+      bufs.insert(bufs.end() - 2, &vect_vector[20].front());
+      bufs.insert(bufs.end() - 2, &vect_vector[21].front());
+      CPPUNIT_ASSERT( vect_vector.size() == 24 );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      //1 value in front:
+      vector<vector<int> >::iterator ret;
+      ret = vect_vector.insert(vect_vector.begin() + 2, vector<int>(10));
+      bufs.insert(bufs.begin() + 2, &vect_vector[2].front());
+      CPPUNIT_ASSERT( vect_vector.size() == 25 );
+      CPPUNIT_ASSERT( &ret->front() == bufs[2] );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      //1 value in back:
+      vector<vector<int> >::iterator ret;
+      ret = vect_vector.insert(vect_vector.end() - 2, vector<int>(10));
+      bufs.insert(bufs.end() - 2, &vect_vector[23].front());
+      CPPUNIT_ASSERT( vect_vector.size() == 26 );
+      CPPUNIT_ASSERT( &ret->front() == bufs[23] );
+      vector<vector<int> >::iterator dit(vect_vector.begin()), ditEnd(vect_vector.end());
       for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
         CPPUNIT_ASSERT( bufs[i] == &dit->front() );
       }

@@ -96,7 +96,6 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow_aux(pointer __pos, const _Tp&
 
 template <class _Tp, class _Alloc>
 void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow(pointer __pos, const _Tp& __x, const __true_type& /*_TrivialCpy*/,
-
                                                    size_type __fill_len, bool __atend ) {
   const size_type __old_size = size();
   const size_type __len = __old_size + (max)(__old_size, __fill_len);
@@ -119,13 +118,14 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __
     _M_fill_insert_aux(__pos, __n, __x_copy, __true_type());
     return;
   }
-  iterator __src = this->_M_finish;
+  iterator __src = this->_M_finish - 1;
   iterator __dst = __src + __n;
-  for (; __src != __pos; --__dst, --__src) {
+  for (; __src >= __pos; --__dst, --__src) {
     _STLP_STD::_Move_Construct(__dst, *__src);
     _STLP_STD::_Destroy_Moved(__src);
   }
   _STLP_STD::fill(__pos, __dst, __x);
+  this->_M_finish += __n;
 }
 template <class _Tp, class _Alloc>
 void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __n, 
@@ -200,24 +200,7 @@ template <class _Tp, class _Alloc>
 __iterator__
 _VECTOR_IMPL<_Tp, _Alloc>::insert(iterator __pos, const _Tp& __x) {
   size_type __n = __pos - begin();
-  if (this->_M_finish != this->_M_end_of_storage._M_data) {
-    if (__pos == end()) {
-      _Copy_Construct(this->_M_finish, __x);
-      ++this->_M_finish;
-    } else {
-      if (_M_is_inside(__x)) {
-        _Tp __x_copy = __x;
-        insert(__pos, __x_copy);
-      }
-      else {
-        _Copy_Construct(this->_M_finish, *(this->_M_finish - 1));
-        ++this->_M_finish;
-        __copy_backward_ptrs(__pos, this->_M_finish - 2, this->_M_finish - 1, _TrivialAss());
-        *__pos = __x;
-      }
-    }
-  } else
-    _M_insert_overflow(__pos, __x, _TrivialCpy(), 1UL);
+  _M_fill_insert(__pos, 1, __x);
   return begin() + __n;
 }
 

@@ -18,6 +18,11 @@
 	is not in the set.
 
 	* stlport/stl/_tree.h: Fix equal_range implementation thanks Grisha Spivak report.
+
+	* stlport/stl/_vector.h, _vector.c: Fix of the movable types implementation thanks
+	Mike Roberts report.
+
+	* test/unit/mvctor_test.cpp: Add of a test case for vector class.
 	
 2005-01-25  Francois Dumont  <dums@stlport...>
 

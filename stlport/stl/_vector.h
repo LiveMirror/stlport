@@ -418,9 +418,9 @@ private:
                            const_iterator __first, const_iterator __last,
 #endif /* _STLP_MEMBER_TEMPLATES */
                            size_type __n, const __true_type& /*_Movable*/) {
-    iterator __src = this->_M_finish;
+    iterator __src = this->_M_finish - 1;
     iterator __dst = __src + __n;
-    for (; __src != __pos; --__dst, --__src) {
+    for (; __src >= __pos; --__dst, --__src) {
       _STLP_STD::_Move_Construct(__dst, *__src);
       _STLP_STD::_Destroy_Moved(__src);
     }
