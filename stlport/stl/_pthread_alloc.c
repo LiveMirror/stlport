@@ -101,7 +101,7 @@ _Pthread_alloc<_Max_size>::_S_get_per_thread_state()
 /* We assume that size is properly aligned.                             */
 template <size_t _Max_size>
 char *_Pthread_alloc<_Max_size>
-::_S_chunk_alloc(size_t __p_size, int &__nobjs)
+::_S_chunk_alloc(size_t __p_size, size_t &__nobjs)
 {
   {
     char * __result;
@@ -168,7 +168,7 @@ template <size_t _Max_size>
 void *_Pthread_alloc_per_thread_state<_Max_size>
 ::_M_refill(size_t __n)
 {
-    int __nobjs = 128;
+    size_t __nobjs = 128;
     char * __chunk =
 	_Pthread_alloc<_Max_size>::_S_chunk_alloc(__n, __nobjs);
     __obj * volatile * __my_free_list;

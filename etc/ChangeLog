@@ -38,6 +38,10 @@ The following changes were made in 4.5.2 since 4.5.1 release:
 	* A bunch of fixes for HP aCC compilation with -AA option (thanks  John Bossom)
 
 	* *.c files : added conditional inclusion of corresponding *.h file to fix xlC issues with -tempinc option (thanks Alla Bogolyubov for the report)
+
+	* _num_put.c : do_put(const void*) changed to output pointers in hex format (thanks  Alex Rosenberg)
+
+	
 	
 The following changes were made in 4.5.1 beta 1 since 4.5 release:
 

@@ -85,7 +85,7 @@ struct _Pthread_alloc_per_thread_state {
   // this data member is only to be used by per_thread_allocator, which returns memory to the originating thread.
   _STLP_mutex _M_lock;
 
-};
+ };
 
 // Pthread-specific allocator.
 // The argument specifies the largest object size allocated from per-thread
@@ -102,7 +102,7 @@ public: // but only for internal use:
 
   // Allocates a chunk for nobjs of size size.  nobjs may be reduced
   // if it is inconvenient to allocate the requested number.
-  static char *_S_chunk_alloc(size_t __size, int &__nobjs);
+  static char *_S_chunk_alloc(size_t __size, size_t &__nobjs);
 
   enum {_S_ALIGN = _STLP_DATA_ALIGNMENT};
 

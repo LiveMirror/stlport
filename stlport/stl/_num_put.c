@@ -516,16 +516,29 @@ num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT __fi
 
 #endif /* _STLP_LONG_LONG */
 
-template <class _CharT, class _OutputIter>  
-_OutputIter 
-num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT __fill,
-                                     const void* __val) const {
-# if defined(_STLP_LONG_LONG) && !defined(__MRC__)		//*ty 11/24/2001 - MrCpp can not cast from void* to long long
-  return this->do_put(__s, __f, __fill, __REINTERPRET_CAST(unsigned _STLP_LONG_LONG,__val));
+
+// lib.facet.num.put.virtuals "12 For conversion from void* the specifier is %p."
+template <class _CharT, class _OutputIter>
+_OutputIter
+num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT /*__fill*/,
+				     const void* __val) const {
+  locale& __loc = __f.getloc();
+  const ctype<_CharT>& __c_type = *(const ctype<_CharT>*)__f._M_ctype_facet();
+  ios_base::fmtflags __save_flags = __f.flags();
+
+  __f.setf(ios_base::hex, ios_base::basefield);
+  __f.setf(ios_base::showbase);
+  __f.setf(ios_base::internal, ios_base::adjustfield);
+  __f.width((sizeof(void*) * 2) + 2); // digits in pointer type plus '0x' prefix
+# if defined(_STLP_LONG_LONG) && !defined(__MRC__) //*ty 11/24/2001 - MrCpp can not cast from void* to long long
+  _OutputIter result = this->do_put(__s, __f, __c_type.widen('0'), __REINTERPRET_CAST(unsigned _STLP_LONG_LONG,__val));
 # else
-  return this->do_put(__s, __f, __fill, __REINTERPRET_CAST(unsigned long,__val));
+  _OutputIter result = this->do_put(__s, __f, __c_type.widen('0'), __REINTERPRET_CAST(unsigned long,__val));
 # endif
+  __f.flags(__save_flags);
+  return result;
 }
+
 _STLP_END_NAMESPACE
 
 # endif /* _STLP_EXPOSE_STREAM_IMPLEMENTATION */
