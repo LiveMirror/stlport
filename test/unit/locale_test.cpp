@@ -100,6 +100,7 @@ class LocaleTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(num_put_get);
   CPPUNIT_TEST(money_put_get);
   CPPUNIT_TEST(time_put_get);
+  CPPUNIT_TEST(collate_facet);
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -108,11 +109,13 @@ public:
   void num_put_get();
   void money_put_get();
   void time_put_get();
+  void collate_facet();
 private:
   void _loc_has_facet( const locale&, const ref_locale& );
   void _num_put_get( const locale&, const ref_locale& );
   void _money_put_get( const locale&, const ref_locale& );
   void _time_put_get( const locale&, const ref_locale& );
+  void _collate_facet( const locale&, const ref_locale& );
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LocaleTest);
@@ -262,12 +265,23 @@ void LocaleTest::_time_put_get( const locale& loc, const ref_locale& rl )
   string str_ret = ostr.str();
 }
 
+void LocaleTest::_collate_facet( const locale& loc, const ref_locale& rl )
+{
+  CPPUNIT_ASSERT( has_facet<collate<char> >(loc) );
+  collate<char> const& col = use_facet<collate<char> >(loc);
+
+  char const str1[] = "françois";
+  char const str2[] = "francois";
+
+  CPPUNIT_ASSERT( col.compare(str1, str1 + sizeof(str1) / sizeof(str1[0]), str2, str2 + sizeof(str2) / sizeof(str2[0])) );
+}
+
 template <class _Tp>
 void test_supported_locale(LocaleTest inst, _Tp __test) {
   int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
   for ( int i = 0; i < n; ++i ) {
     if ( loc_ent[string( tested_locales[i].name )] ) {
-      cout << '\t' << tested_locales[i].name << endl;
+      // cout << '\t' << tested_locales[i].name << endl;
       locale loc( tested_locales[i].name );
       (inst.*__test)(loc, tested_locales[i] );
     }
@@ -276,7 +290,9 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
 
 void LocaleTest::locale_by_name() {
   /*
-   * Check of the 22.1.1.2.7 standard point.
+   * Check of the 22.1.1.2.7 standard point. Construction of a locale
+   * instance from a null pointer or an unknown name should result in 
+   * a runtime_error exception.
    */
   try {
     locale loc(static_cast<char const*>(0));
@@ -300,10 +316,10 @@ void LocaleTest::locale_by_name() {
 }
 
 void LocaleTest::loc_has_facet() {
-  /*
   locale loc("C");
   typedef numpunct<char> implemented_facet;
   CPPUNIT_ASSERT( has_facet<implemented_facet>(loc) );
+  /*
   typedef num_put<char, back_insert_iterator<string> > not_implemented_facet;
   CPPUNIT_ASSERT( !has_facet<not_implemented_facet>(loc) );
   */
@@ -319,4 +335,8 @@ void LocaleTest::money_put_get() {
 
 void LocaleTest::time_put_get() {
   test_supported_locale(*this, &LocaleTest::_time_put_get);
+}
+
+void LocaleTest::collate_facet() {
+  test_supported_locale(*this, &LocaleTest::_collate_facet);
 }
