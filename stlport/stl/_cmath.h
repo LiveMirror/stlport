@@ -138,12 +138,21 @@ inline float fmod (float __x, float __y)      { return _STLP_DO_FMOD(float)(__x,
 inline float frexp(float __x, int* __y)       { return _STLP_DO_FREXP(float)(__x, __y); }
 inline float ldexp(float __x, int __y)        { return _STLP_DO_LDEXP(float)(__x, __y); }
 // fbp : float versions are not always available
+#if !defined(_STLP_VENDOR_LONG_DOUBLE_MATH)		//*ty 11/25/2001 - 
 inline float modf (float __x, float* __y)     { 
   double __dd[2]; 
   double __res = _STLP_DO_MODF(double)((double)__x, __dd); 
   __y[0] = (float)__dd[0] ; __y[1] = (float)__dd[1]; 
   return (float)__res; 
 }
+#else		//*ty 11/25/2001 - i.e. for apple SCpp
+inline float modf (float __x, float* __y)     { 
+  long double __dd[2]; 
+  long double __res = _STLP_DO_MODF(long double)((long double)__x, __dd); 
+  __y[0] = (float)__dd[0] ; __y[1] = (float)__dd[1]; 
+  return (float)__res; 
+}
+#endif		//*ty 11/25/2001 - 
 
 inline float log (float __x)                  { return _STLP_DO_LOG(float)(__x); }
 inline float log10(float __x)                 { return _STLP_DO_LOG10(float)(__x); }

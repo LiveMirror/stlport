@@ -598,42 +598,53 @@ public:                         // Assign
 
 #ifdef _STLP_MEMBER_TEMPLATES
 
+private:                        // Helper functions for assign.
+
+  template <class _Integer> 
+  _Self& _M_assign_dispatch(_Integer __n, _Integer __x, const __true_type&) {
+    return assign((size_type) __n, (_CharT) __x);
+  }
+
+  template <class _InputIter> 
+  _Self& _M_assign_dispatch(_InputIter __f, _InputIter __l,
+			    const __false_type&)  {
+    pointer __cur = this->_M_start;
+    while (__f != __l && __cur != this->_M_finish) {
+      _Traits::assign(*__cur, *__f);
+      ++__f;
+      ++__cur;
+    }
+    if (__f == __l)
+      erase(__cur, end());
+    else
+      append(__f, __l);
+    return *this;
+  }
+  
+public:
   // Check to see if _InputIterator is an integer type.  If so, then
   // it can't be an iterator.
   template <class _InputIter> _Self& assign(_InputIter __first, _InputIter __last) {
     typedef typename _Is_integer<_InputIter>::_Integral _Integral;
     return _M_assign_dispatch(__first, __last, _Integral());
   }
-#else
-
-  _Self& assign(const _CharT* __f, const _CharT* __l);
 #endif  /* _STLP_MEMBER_TEMPLATES */
 
-private:                        // Helper functions for assign.
-
-#ifdef _STLP_MEMBER_TEMPLATES
-
-  template <class _Integer> _Self& _M_assign_dispatch(_Integer __n, _Integer __x, const __true_type&) {
-    return assign((size_type) __n, (_CharT) __x);
+  // if member templates are on, this works as specialization 
+  _Self& assign(const _CharT* __f, const _CharT* __l)
+  {
+    ptrdiff_t __n = __l - __f;
+    if (__STATIC_CAST(size_type,__n) <= size()) {
+      _Traits::copy(this->_M_start, __f, __n);
+      erase(begin() + __n, end());
+    }
+    else {
+      _Traits::copy(this->_M_start, __f, size());
+      append(__f + size(), __l);
+    }
+    return *this;
   }
-
-  template <class _InputIter> _Self& _M_assign_dispatch(_InputIter __f, _InputIter __l,
-                                   const __false_type&)  {
-          pointer __cur = this->_M_start;
-	  while (__f != __l && __cur != this->_M_finish) {
-	    _Traits::assign(*__cur, *__f);
-	    ++__f;
-	    ++__cur;
-	  }
-	  if (__f == __l)
-	    erase(__cur, end());
-	  else
-	    append(__f, __l);
-	  return *this;
-	}
-
-#endif  /* _STLP_MEMBER_TEMPLATES */
-
+  
 public:                         // Insert
 
   _Self& insert(size_type __pos, const _Self& __s) {
@@ -1392,6 +1403,13 @@ template <class _CharT, class _Traits, class _Alloc> void  _STLP_CALL _S_string_
                     size_t __n);
 
 # undef basic_string
+
+#if defined(_STLP_WINCE)
+// A couple of functions to transfer between ASCII/Unicode
+
+wstring __ASCIIToWide(const char *ascii);
+string __WideToASCII(const wchar_t *wide);
+#endif
 
 _STLP_END_NAMESPACE
 

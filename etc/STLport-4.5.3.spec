@@ -2,7 +2,7 @@
 
 Summary: Complete C++ standard library
 Name: STLport
-Version: 4.5.1
+Version: 4.5.3
 Release: 1
 Copyright: free (see license), see /usr/share/doc/%{name}-%{version}/license.html
 URL: http://www.stlport.org/
@@ -10,7 +10,7 @@ Packager: Levente Farkas <lfarkas@mindmaker.hu>
 Group: System Environment/Languages
 Icon: stlport_powered_white.gif
 Source0: http://www.stlport.org/archive/%{name}-%{version}.tar.gz
-Patch0: STLport-rename.patch
+#Patch0: STLport-rename.patch
 #Patch1: STLport-rules.patch
 #Patch2: STLport-install-dir.patch
 Buildroot: %{_tmppath}/%{name}-%{version}-%(id -u -n)

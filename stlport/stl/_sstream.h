@@ -97,6 +97,7 @@ protected:                      // Overridden virtual member functions.
 private:                        // Helper functions.
   // Append the internal buffer to the string if necessary.
   void _M_append_buffer() const;
+  void _M_set_ptrs();
 
 private:
   ios_base::openmode _M_mode;

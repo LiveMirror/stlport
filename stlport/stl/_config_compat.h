@@ -24,8 +24,8 @@
 # if defined (__STL_NO_EXTENSIONS) && ! defined ( _STLP_NO_EXTENSIONS )
 #  define _STLP_NO_EXTENSIONS __STL_NO_EXTENSIONS
 # endif
-# if defined (__STL_NO_EXCEPTIOINS) && ! defined ( _STLP_NO_EXCEPTIOINS )
-#  define _STLP_NO_EXCEPTIOINS __STL_NO_EXCEPTIOINS
+# if defined (__STL_NO_EXCEPTIONS) && ! defined ( _STLP_NO_EXCEPTIONS )
+#  define _STLP_NO_EXCEPTIONS __STL_NO_EXCEPTIONS
 # endif
 # if defined (__STL_NO_NAMESPACES) && ! defined ( _STLP_NO_NAMESPACES )
 #  define _STLP_NO_NAMESPACES __STL_NO_NAMESPACES

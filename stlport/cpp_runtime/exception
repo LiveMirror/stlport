@@ -69,9 +69,6 @@
 #      include <config/_msvc_warnings_off.h>
 #    endif
 
-# if !defined(_STLP_EXCEPTION_BASE) && !defined(_STLP_BROKEN_EXCEPTION_CLASS)
-#  define _STLP_EXCEPTION_BASE _STLP_VENDOR_EXCEPT_STD::exception
-# endif
 
 #  ifdef _STLP_USE_OWN_NAMESPACE
 
@@ -164,8 +161,6 @@ _STLP_BEGIN_NAMESPACE
 	  const char* what() const _STLP_NOTHROW {return "class bad_exception";}
 # endif
 	};
-
-# define _STLP_EXCEPTION_BASE exception
 
 _STLP_END_NAMESPACE
 

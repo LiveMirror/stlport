@@ -19,6 +19,10 @@
 #ifndef _STLP_BITSET_C
 # define  _STLP_BITSET_C
 
+# ifndef _STLP_BITSET_H
+#  include <stl/_bitset.h>
+# endif
+
 # define __BITS_PER_WORD (CHAR_BIT*sizeof(unsigned long))
 
 _STLP_BEGIN_NAMESPACE

@@ -23,6 +23,11 @@
  * modified is included with the above copyright notice.
  *
  */
+
+#ifndef _STLP_STRING_FWD_H
+# include <stl/_string_fwd.h>
+#endif
+
 #if !defined ( _STLP_STRING_FWD_C) && ! defined (_STLP_OWN_IOSTREAMS)
 #define _STLP_STRING_FWD_C
 

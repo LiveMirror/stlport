@@ -454,8 +454,8 @@ public:
   insert_iterator(_Container& __x, typename _Container::iterator)
     : container(&__x) {}
   insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    container->insert(__value);
+  operator=(const typename _Container::value_type& __val) { 
+    container->insert(__val);
     return *this;
   }
   insert_iterator<_Container>& operator*() { return *this; }
@@ -481,8 +481,8 @@ public:
   insert_iterator(_Container& __x, typename _Container::iterator)
     : container(&__x) {}
   insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    container->insert(__value);
+  operator=(const typename _Container::value_type& __val) { 
+    container->insert(__val);
     return *this;
   }
   insert_iterator<_Container>& operator*() { return *this; }

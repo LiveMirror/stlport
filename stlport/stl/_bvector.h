@@ -458,13 +458,13 @@ public:
   explicit __BVECTOR(const allocator_type& __a = allocator_type())
     : _Bvector_base<_Alloc >(__a) {}
 
-  __BVECTOR(size_type __n, bool __value,
+  __BVECTOR(size_type __n, bool __val,
             const allocator_type& __a = 
 	    allocator_type())
     : _Bvector_base<_Alloc >(__a)
   {
     _M_initialize(__n);
-    fill(this->_M_start._M_p, (__chunk_type*)(this->_M_end_of_storage._M_data), __value ? ~0 : 0);
+    fill(this->_M_start._M_p, (__chunk_type*)(this->_M_end_of_storage._M_data), __val ? ~0 : 0);
   }
 
   explicit __BVECTOR(size_type __n)
@@ -628,7 +628,7 @@ public:
   void swap(__BVECTOR_QUALIFIED& __x) {
     _STLP_STD::swap(this->_M_start, __x._M_start);
     _STLP_STD::swap(this->_M_finish, __x._M_finish);
-    _STLP_STD::swap(this->_M_end_of_storage._M_data, __x._M_end_of_storage._M_data);
+    _STLP_STD::swap(this->_M_end_of_storage, __x._M_end_of_storage);
   }
   iterator insert(iterator __position, bool __x = bool()) {
     difference_type __n = __position - begin();

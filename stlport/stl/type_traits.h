@@ -65,7 +65,9 @@ struct __true_type {};
 struct __false_type {};
 
 
-template <int _Is> struct __bool2type { };
+template <int _Is> struct __bool2type {
+  typedef __false_type _Ret; 
+};
 
 _STLP_TEMPLATE_NULL
 struct __bool2type<1> { typedef __true_type _Ret; };
@@ -133,6 +135,17 @@ struct _PointerShim {
 
 char _STLP_CALL _IsP(bool, _PointerShim); // no implementation is required
 char* _STLP_CALL _IsP(bool, ...);          // no implementation is required
+
+template <class _Tp>
+char _STLP_CALL _IsSameFun(bool, _Tp*, _Tp*); // no implementation is required
+char* _STLP_CALL _IsSameFun(bool, ...);          // no implementation is required
+
+template <class _Tp1, class _Tp2>
+struct _IsSame {
+  static _Tp1& __null_rep1();
+  static _Tp2& __null_rep2();
+  enum { _Ret = (sizeof(_IsSameFun(false,__null_rep1(),__null_rep2())) == sizeof(char)) };
+};
 
 template <class _Tp>
 struct _IsPtr {
@@ -205,6 +218,12 @@ template <class _Tp1, class _Tp2>  struct _BothPtrType {
   static __false_type _Ret() { return __false_type();} 
 };
 
+template <class _Tp1, class _Tp2>
+struct _IsSame { enum { _Ret = 0 }; };
+
+// template <class _Tp1, class _Tp2>
+// struct _IsSameType {   static __false_type _Ret() { return __false_type(); }  };
+
 #  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 template <class _Tp>  struct _IsPtr<_Tp*> { enum { _Ret = 1 }; };
 template <class _Tp>  struct _IsPtrType<_Tp*> { 
@@ -213,6 +232,8 @@ template <class _Tp>  struct _IsPtrType<_Tp*> {
 template <class _Tp1, class _Tp2>  struct _BothPtrType<_Tp1*, _Tp2*> { 
   static __true_type _Ret() { return __true_type();} 
 };
+template <class _Tp>
+struct _IsSame<_Tp, _Tp> { enum { _Ret = 1 }; };
 #  endif
 
 # endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
@@ -331,10 +352,10 @@ _STLP_TEMPLATE_NULL struct _Is_integer<unsigned _STLP_LONG_LONG> {
 
 template <class _Tp1, class _Tp2>
 struct _OKToMemCpy {
-  enum { _SameSize = (sizeof(_Tp1) == sizeof(_Tp2)) } ;
+  enum { _Same = _IsSame<_Tp1,_Tp2>::_Ret } ;
   typedef typename __type_traits<_Tp1>::has_trivial_assignment_operator _Tr1;
   typedef typename __type_traits<_Tp2>::has_trivial_assignment_operator _Tr2;
-  typedef typename __bool2type< _SameSize >::_Ret _Tr3;
+  typedef typename __bool2type< _Same >::_Ret _Tr3;
   typedef typename _Land3<_Tr1, _Tr2, _Tr3>::_Ret _Type;
   static _Type _Ret() { return _Type(); }
 };

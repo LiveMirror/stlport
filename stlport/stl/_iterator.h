@@ -186,8 +186,8 @@ public:
 
   explicit back_insert_iterator(_Container& __x) : container(&__x) {}
   back_insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    container->push_back(__value);
+  operator=(const typename _Container::value_type& __val) { 
+    container->push_back(__val);
     return *this;
   }
   back_insert_iterator<_Container>& operator*() { return *this; }
@@ -211,8 +211,8 @@ public:
   typedef output_iterator_tag iterator_category;
   explicit front_insert_iterator(_Container& __x) : container(&__x) {}
   front_insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    container->push_front(__value);
+  operator=(const typename _Container::value_type& __val) { 
+    container->push_front(__val);
     return *this;
   }
   front_insert_iterator<_Container>& operator*() { return *this; }
@@ -238,8 +238,8 @@ public:
   insert_iterator(_Container& __x, typename _Container::iterator __i) 
     : container(&__x), iter(__i) {}
   insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    iter = container->insert(iter, __value);
+  operator=(const typename _Container::value_type& __val) { 
+    iter = container->insert(iter, __val);
     ++iter;
     return *this;
   }

@@ -369,10 +369,10 @@ public:
     iterator __tmp = end();
     erase(--__tmp);
   }
-  list(size_type __n, const _Tp& __value,
+  list(size_type __n, const _Tp& __val,
        const allocator_type& __a = allocator_type())
     : _List_base<_Tp, _Alloc>(__a)
-    { this->insert(begin(), __n, __value); }
+    { this->insert(begin(), __n, __val); }
   explicit list(size_type __n)
     : _List_base<_Tp, _Alloc>(allocator_type())
     { this->insert(begin(), __n, _Tp()); }
@@ -464,13 +464,13 @@ public:
       _List_global_inst::_Transfer(__position._M_node, __first._M_node, __last._M_node);
   }
 
-  void remove(const _Tp& __value) {
+  void remove(const _Tp& __val) {
     iterator __first = begin();
     iterator __last = end();
     while (__first != __last) {
       iterator __next = __first;
       ++__next;
-      if (__value == *__first) erase(__first);
+      if (__val == *__first) erase(__first);
       __first = __next;
     }
   }

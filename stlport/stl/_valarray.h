@@ -22,8 +22,8 @@
 #ifndef _STLP_CMATH
 #include <cmath>
 #endif
-#ifndef _STLP_NEW_HEADER
-#include <new>
+#ifndef _STLP_INTERNAL_NEW_HEADER
+#include <stl/_new.h>
 #endif
 #ifndef _STLP_INTERNAL_ALGO_H
 #include <stl/_algo.h>
@@ -41,7 +41,6 @@ class slice;
 class gslice;
 
 template <class _Tp> class valarray;
-// fbp : those are for MSVC
 typedef valarray<bool>    _Valarray_bool;
 typedef valarray<size_t>  _Valarray_size_t;
 
@@ -188,12 +187,7 @@ public:                         // Unary operators.
     return __tmp;
   }
 
-  _Valarray_bool operator!() const {
-    _Valarray_bool __tmp(this->size(), _Valarray_bool::_NoInit());
-    for (size_t __i = 0; __i < this->size(); ++__i)
-      __tmp[__i] = !(*this)[__i];
-    return __tmp;
-  }
+  _Valarray_bool operator!() const;
 
 public:                         // Scalar computed assignment.
   valarray<_Tp>& operator*= (const value_type& __x) {
@@ -1256,7 +1250,10 @@ public:
       : 0;
   }
 
+# ifndef __HP_aCC
 private:
+# endif
+
   size_t _M_start;
   _Valarray_size_t _M_lengths;
   _Valarray_size_t _M_strides;

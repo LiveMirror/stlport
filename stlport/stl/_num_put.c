@@ -18,6 +18,10 @@
 #ifndef _STLP_NUM_PUT_C
 #define _STLP_NUM_PUT_C
 
+#ifndef _STLP_INTERNAL_NUM_PUT_H
+# include <stl/_num_put.h>
+#endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_LIMITS_H
@@ -44,7 +48,7 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
                       _OutputIter __out,
                       ios_base::fmtflags __flags,
                       streamsize __width, _CharT __fill,
-                      _CharT __plus, _CharT __minus) {
+                      _CharT __xplus, _CharT __xminus) {
   if (__width <= __last - __first)
     return copy(__first, __last, __out);
   else {
@@ -56,7 +60,7 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
       return fill_n(__out, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __first != __last &&
-             (*__first == __plus || *__first == __minus)) {
+             (*__first == __xplus || *__first == __xminus)) {
       *__out++ = *__first++;
       __out = fill_n(__out, __pad, __fill);
       return copy(__first, __last, __out);
@@ -156,7 +160,7 @@ _OutputIter _STLP_CALL
 __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
                         _OutputIter __out,
                         ios_base::fmtflags __flg, streamsize __wid, _CharT __fill,
-                        _CharT __plus, _CharT __minus)
+                        _CharT __xplus, _CharT __xminus)
 {
   if (__len >= __wid)
     return copy(__buf, __buf + __len, __out);
@@ -169,7 +173,7 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
       return fill_n(__out, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __len != 0 &&
-             (__buf[0] == __plus || __buf[0] == __minus)) {
+             (__buf[0] == __xplus || __buf[0] == __xminus)) {
       *__out++ = __buf[0];
       __out = fill_n(__out, __pad, __fill);
       return copy(__buf + 1, __buf + __len, __out);
@@ -201,8 +205,8 @@ __put_integer(char* __buf, char* __iend, _OutputIter __s,
   //  const ctype<wchar_t>& __ct = use_facet<ctype<wchar_t> >(__loc);
   const ctype<wchar_t>& __ct = *(const ctype<wchar_t>*)__f._M_ctype_facet();
 
-  wchar_t __plus  = __ct.widen('+');
-  wchar_t __minus = __ct.widen('-');
+  wchar_t __xplus  = __ct.widen('+');
+  wchar_t __xminus = __ct.widen('-');
 
   wchar_t __wbuf[64];
   __ct.widen(__buf, __iend, __wbuf);
@@ -227,11 +231,11 @@ __put_integer(char* __buf, char* __iend, _OutputIter __s,
       __basechars = 0;
 
     __len = __insert_grouping(__wbuf, __eend, __grouping, __np.thousands_sep(),
-			      __plus, __minus, __basechars);
+			      __xplus, __xminus, __basechars);
   }
 
   return __copy_integer_and_fill((wchar_t*)__wbuf, __len, __s,
-                                 __flags, __f.width(0), __fill, __plus, __minus);
+                                 __flags, __f.width(0), __fill, __xplus, __xminus);
 }
 #endif
 
@@ -512,16 +516,29 @@ num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT __fi
 
 #endif /* _STLP_LONG_LONG */
 
-template <class _CharT, class _OutputIter>  
-_OutputIter 
-num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT __fill,
-                                     const void* __val) const {
-# ifdef _STLP_LONG_LONG
-  return this->do_put(__s, __f, __fill, __REINTERPRET_CAST(unsigned _STLP_LONG_LONG,__val));
+
+// lib.facet.num.put.virtuals "12 For conversion from void* the specifier is %p."
+template <class _CharT, class _OutputIter>
+_OutputIter
+num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT /*__fill*/,
+				     const void* __val) const {
+  locale& __loc = __f.getloc();
+  const ctype<_CharT>& __c_type = *(const ctype<_CharT>*)__f._M_ctype_facet();
+  ios_base::fmtflags __save_flags = __f.flags();
+
+  __f.setf(ios_base::hex, ios_base::basefield);
+  __f.setf(ios_base::showbase);
+  __f.setf(ios_base::internal, ios_base::adjustfield);
+  __f.width((sizeof(void*) * 2) + 2); // digits in pointer type plus '0x' prefix
+# if defined(_STLP_LONG_LONG) && !defined(__MRC__) //*ty 11/24/2001 - MrCpp can not cast from void* to long long
+  _OutputIter result = this->do_put(__s, __f, __c_type.widen('0'), __REINTERPRET_CAST(unsigned _STLP_LONG_LONG,__val));
 # else
-  return this->do_put(__s, __f, __fill, __REINTERPRET_CAST(unsigned long,__val));
+  _OutputIter result = this->do_put(__s, __f, __c_type.widen('0'), __REINTERPRET_CAST(unsigned long,__val));
 # endif
+  __f.flags(__save_flags);
+  return result;
 }
+
 _STLP_END_NAMESPACE
 
 # endif /* _STLP_EXPOSE_STREAM_IMPLEMENTATION */

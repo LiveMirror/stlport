@@ -70,8 +70,8 @@ typedef unsigned _STLP_LONG_LONG uint64;
 // Multiplication of two 64-bit integers, giving a 128-bit result.
 // Taken from Algorithm M in Knuth section 4.3.1, with the loop 
 // hand-unrolled.
-inline void _Stl_mult64(const uint64 u, const uint64 v,
-                   uint64& high, uint64& low)
+void _Stl_mult64(const uint64 u, const uint64 v,
+		 uint64& high, uint64& low)
 {
   const uint64 low_mask = ULL(0xffffffff);
   const uint64 u0 = u & low_mask;

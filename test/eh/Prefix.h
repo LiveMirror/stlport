@@ -105,7 +105,7 @@
 # define EH_SLIST_IMPLEMENTED 1
 # define EH_SELECT1ST_HINT __select1st_hint
 // fbp : DEC cxx is unable to compile it for some reason
-# if !( defined (__DECCXX)  || (defined (__GNUC__) && (__GNUC_MINOR__ < 8)))
+# if !( defined (__DECCXX)  || defined (__amigaos__) || (defined (__GNUC__) && (__GNUC_MINOR__ < 8)))
 #  define EH_ROPE_IMPLEMENTED 1
 # endif
 # define EH_STRING_IMPLEMENTED 1

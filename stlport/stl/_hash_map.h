@@ -182,7 +182,10 @@ public:
   const_iterator find(const key_type& __key) const { return _M_ht.find(__key); }
 
   _Tp& operator[](const key_type& __key) {
-    return _M_ht.find_or_insert(_value_type(__key, _Tp())).second;
+    iterator __it = _M_ht.find(__key);
+    return (__it == _M_ht.end() ? 
+	    _M_ht._M_insert(_value_type(__key, _Tp())).second : 
+	    (*__it).second );
   }
 
   size_type count(const key_type& __key) const { return _M_ht.count(__key); }
@@ -449,8 +452,8 @@ public:
   insert_iterator(_Container& __x, typename _Container::iterator)
     : container(&__x) {}
   insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    container->insert(__value);
+  operator=(const typename _Container::value_type& __val) { 
+    container->insert(__val);
     return *this;
   }
   insert_iterator<_Container>& operator*() { return *this; }
@@ -476,8 +479,8 @@ public:
   insert_iterator(_Container& __x, typename _Container::iterator)
     : container(&__x) {}
   insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    container->insert(__value);
+  operator=(const typename _Container::value_type& __val) { 
+    container->insert(__val);
     return *this;
   }
   insert_iterator<_Container>& operator*() { return *this; }

@@ -48,7 +48,7 @@ typedef long double max_double_type;
 # endif
 
 //# if !(defined(_STLP_USE_GLIBC) || defined(__FreeBSD__) || defined(__NetBSD__) || defined (_AIX) || defined(__MVS__) || defined (__OS400__) || defined (__QNXNTO__) || defined (__APPLE__) || defined (__DJGPP))
-# if defined (__sun) || defined (__digital__) || defined (__sgi) || defined (_STLP_SCO_OPENSERVER)
+# if defined (__sun) || defined (__digital__) || defined (__sgi) || defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
 // DEC, SGI & Solaris need this
 #  include <values.h>
 #  include <nan.h>
@@ -67,7 +67,7 @@ typedef long double max_double_type;
 
 # include <cstdlib>
 
-#if defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__) || defined (__DJGPP)  || defined (_STLP_SCO_OPENSERVER)
+#if defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__) || defined (__DJGPP)  || defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
 # include <float.h>
 #endif
 
@@ -251,7 +251,8 @@ inline bool _Stl_is_neg_nan(double x)    { return isnan(x) && copysign(1., x) < 
 #elif defined( _AIX ) // JFA 11-Aug-2000
 bool _Stl_is_nan_or_inf(double x) { return isnan(x) || !finite(x); }
 bool _Stl_is_inf(double x)        { return !finite(x); }
-bool _Stl_is_neg_inf(double x)    { return _class(x) == FP_MINUS_INF; }
+// bool _Stl_is_neg_inf(double x)    { return _class(x) == FP_MINUS_INF; }
+bool _Stl_is_neg_inf(double x)    { return _Stl_is_inf(x) && ( copysign(1., x) < 0 );  }
 bool _Stl_is_neg_nan(double x)    { return isnan(x) && ( copysign(1., x) < 0 );  }
 #elif defined (__ISCPP__)
 inline bool _Stl_is_nan_or_inf  (double x) { return _fp_isINF(x) || _fp_isNAN(x); }
@@ -290,7 +291,7 @@ inline bool _Stl_is_neg_nan     (double x) { return _fp_isNAN(x) && x < 0; }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
     { return buf + qfcvt_r(x, n, pt, sign, buf, NDIG+2); }
 #  endif
-#elif defined (_STLP_SCO_OPENSERVER)
+#elif defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
     { return ecvt(x, n, pt, sign); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)

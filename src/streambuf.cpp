@@ -25,25 +25,14 @@
 // basic_streambuf<char, char_traits<char> >
 
 # if defined (__hpux)
-#  define FILE_CAST(x) (*__REINTERPRET_CAST(FILE*, &x))
+#  define FILE_CAST(x) (__REINTERPRET_CAST(FILE*, x))
 # else
 #  define FILE_CAST(x) x
 # endif
 
 _STLP_BEGIN_NAMESPACE
 
-#if !(defined(__MVS__) || defined(__OS400__))
-// The default constructor.
-basic_streambuf<char, char_traits<char> >::basic_streambuf()
-  : _M_get(FILE_CAST(_M_default_get)), 
-    _M_put(FILE_CAST(_M_default_put)), _M_locale()
-{
-  //  _M_lock._M_initialize();
-
-  _FILE_I_set(_M_get, 0, 0, 0);
-  _FILE_O_set(_M_put, 0, 0, 0);
-}
-# endif
+#if !defined(_STLP_WINCE)
 
 basic_streambuf<char, char_traits<char> >::~basic_streambuf() {}
 
@@ -51,15 +40,15 @@ basic_streambuf<char, char_traits<char> >::~basic_streambuf() {}
 // are synchronized with C stdio files.
 basic_streambuf<char, char_traits<char> >
   ::basic_streambuf(FILE* __get, FILE* __put)
-    : _M_get(__get ? *__get : FILE_CAST(_M_default_get)),
-      _M_put(__put ? *__put : FILE_CAST(_M_default_put)),
+    : _M_get(__get ? __get : FILE_CAST(&_M_default_get)),
+      _M_put(__put ? __put : FILE_CAST(&_M_default_put)),
       _M_locale()
 {
   _M_lock._M_initialize();
 
-  if (&_M_get == &FILE_CAST(_M_default_get))
+  if (_M_get == FILE_CAST(&_M_default_get))
     _FILE_I_set(_M_get, 0, 0, 0);
-  if (&_M_put == &FILE_CAST(_M_default_put))
+  if (_M_put == FILE_CAST(&_M_default_put))
     _FILE_O_set(_M_put, 0, 0, 0);      
 }
 
@@ -226,6 +215,14 @@ locale basic_streambuf<char, char_traits<char> >::pubimbue(const locale& loc)
   _M_locale = loc;
   return tmp;
 }
+
+#else
+
+#if !defined(_STLP_NO_FORCE_INSTANTIATE)
+template class basic_streambuf<char, char_traits<char> >;
+#endif
+
+#endif /* _STLP_WINCE */
 
 //----------------------------------------------------------------------
 // Force instantiation of basic_streambuf

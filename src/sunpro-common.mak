@@ -69,10 +69,11 @@ LDFLAGS_STLDEBUG_dynamic = ${CXXFLAGS_STLDEBUG_dynamic} -h${STLDEBUG_DYNLIB_SONA
 
 include common_percent_rules.mak
 
-#	for file in `cat ../etc/std_headers.txt ../etc/std_headers_classic_iostreams.txt ../etc/std_headers_cpp_runtime.txt ../etc/std_headers_cpp_runtime_h.txt`; \
+#	for file in `cat ../etc/std_headers.txt ../etc/std_headers_classic_iostreams.txt ../etc/std_headers_cpp_runtime.txt ../etc/std_headers_cpp_runtime_h.txt`;
+#	for file in `cat ../etc/std_headers.txt ../etc/std_headers_classic_iostreams.txt ../etc/std_headers_c.txt   ../etc/std_headers_cpp_runtime.txt ../etc/std_headers_c_h.txt  ../etc/std_headers_cpp_runtime_h.txt`;
 
 ../stlport/algorithm.SUNWCCh :
-	for file in `cat ../etc/std_headers.txt ../etc/std_headers_classic_iostreams.txt ../etc/std_headers_c.txt   ../etc/std_headers_cpp_runtime.txt ../etc/std_headers_c_h.txt  ../etc/std_headers_cpp_runtime_h.txt`; \
+	for file in `cat ../etc/std_headers.txt`; \
 	do \
 	  rm -f ../stlport/$$file.SUNWCCh ; \
 	  (cd ../stlport ; ln -s $$file $$file.SUNWCCh) ; \

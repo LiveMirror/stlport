@@ -2444,9 +2444,9 @@ inline void swap(rope<_CharT,_Alloc>& __x, rope<_CharT,_Alloc>& __y) {
 }
 #else
 
-inline void swap(crope __x, crope __y) { __x.swap(__y); }
+inline void swap(crope& __x, crope& __y) { __x.swap(__y); }
 # ifdef _STLP_HAS_WCHAR_T	// dwa 8/21/97
-inline void swap(wrope __x, wrope __y) { __x.swap(__y); }
+inline void swap(wrope& __x, wrope& __y) { __x.swap(__y); }
 # endif
 
 #endif /* _STLP_FUNCTION_TMPL_PARTIAL_ORDER */

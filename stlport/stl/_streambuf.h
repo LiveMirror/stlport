@@ -324,8 +324,8 @@ public:                         // Typedefs.
 
 private:                        // Data members.
 
-  FILE& _M_get;                 // Reference to the get area
-  FILE& _M_put;                 // Reference to the put area
+  FILE* _M_get;                 // Reference to the get area
+  FILE* _M_put;                 // Reference to the put area
 
 #if defined(__hpux)
   _FILEX  _M_default_get;          // Get area, unless we're syncing with stdio.
@@ -345,21 +345,16 @@ public:                         // Destructor.
 
 protected:                      // Constructors.
 
-  // The default constructor.
+  // The default constructor; defined here inline as some compilers require it
   basic_streambuf _STLP_PSPEC2(char, char_traits<char>) ()
-# if defined(__MVS__) || defined(__OS400__)
- : _M_get(_M_default_get),
-               _M_put(_M_default_put), _M_locale()
-               {
-               // _M_lock._M_initialize();
-
-               _FILE_I_set(_M_get, 0, 0, 0);
-               _FILE_O_set(_M_put, 0, 0, 0);
-               }
-# else
-;
-# endif
-
+    : _M_get(&_M_default_get),
+      _M_put(&_M_default_put), _M_locale()
+  {
+    // _M_lock._M_initialize();
+    _FILE_I_set(_M_get, 0, 0, 0);
+    _FILE_O_set(_M_put, 0, 0, 0);
+  }
+  
   // Extension: a constructor for streambufs synchronized with C stdio files.
   basic_streambuf _STLP_PSPEC2(char, char_traits<char>) (FILE* __get, FILE* __put);
 
