@@ -1,4 +1,4 @@
-# Time-stamp: <04/08/23 22:49:14 ptr>
+# Time-stamp: <05/03/21 10:42:37 ptr>
 # $Id$
 
 
@@ -105,6 +105,10 @@ endif
 #endif
 ifeq ($(CXX_VERSION_MAJOR),2)
 CXXFLAGS += -ftemplate-depth-32
+endif
+
+ifdef EXTRA_CXXFLAGS
+CXXFLAGS += ${EXTRA_CXXFLAGS}
 endif
 
 CDEPFLAGS = -E -M

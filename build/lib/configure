@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Time-stamp: <04/04/30 22:04:48 ptr>
+# Time-stamp: <05/03/21 10:39:01 ptr>
 # $Id$
 
 
@@ -17,6 +17,44 @@ write_option() {
   echo $2 := $target >> ${configmak}
 }
 
+print_help() {
+  cat <<EOF
+Configuration utility.
+
+Usage:
+
+  configure [options]
+
+Available options:
+
+  --target=<target>     target platform (cross-compiling)
+  --help                print this help message and exit
+  --with-stlport=<dir>  use STLport in catalog <dir>
+  --with-msvc=<dir>     use MS VC from this catalog
+  --with-mssdk=<dir>    use MS SDK from this catalog
+  --with-extra-cxxflags=<options>
+                        pass extra options to C++ compiler
+  --clean               remove custom settings (file ${configmak})
+                        and use default values
+
+EOF
+}
+
+case $# in
+  0)
+    exit 0
+    ;;
+esac
+
+case $1 in
+  --help)
+    print_help
+    exit 0
+    ;;
+esac
+
+rm -f ${configmak}
+
 while :
 do
   case $# in
@@ -27,26 +65,6 @@ do
   option=$1
   shift
   case $option in
-    --help)
-      cat <<EOF
-Configuration utility.
-
-Usage:
-
-  configure [options]
-
-Available options:
-
-  --target=<target>     target platform (cross-compiling)
-  --help                print this help message
-  --with-stlport=<dir>  use STLport in catalog <dir>
-  --with-msvc=<dir>     use MS VC from this catalog
-  --with-mssdk=<dir>    use MS SDK from this catalog
-  --clean               remove custom settings (file ${configmak})
-                        and use default values
-
-EOF
-      ;;
     --clean)
       rm -f ${configmak}
       ;; 
@@ -61,6 +79,9 @@ EOF
       ;;
     --with-mssdk=*)
       write_option "$option" MSSDK_DIR
+      ;;
+    --with-extra-cxxflags=*)
+      write_option "$option" EXTRA_CXXFLAGS
       ;;
   esac
 done
