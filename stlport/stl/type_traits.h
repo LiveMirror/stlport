@@ -137,7 +137,7 @@ char _STLP_CALL _IsP(bool, _PointerShim); // no implementation is required
 char* _STLP_CALL _IsP(bool, ...);          // no implementation is required
 
 template <class _Tp>
-char _STLP_CALL _IsSameFun(bool, T*, T*); // no implementation is required
+char _STLP_CALL _IsSameFun(bool, _Tp*, _Tp*); // no implementation is required
 char* _STLP_CALL _IsSameFun(bool, ...);          // no implementation is required
 
 template <class _Tp1, class _Tp2>
@@ -146,16 +146,6 @@ struct _IsSame {
   static _Tp2& __null_rep2();
   enum { _Ret = (sizeof(_IsSameFun(false,__null_rep1(),__null_rep2())) == sizeof(char)) };
 };
-
-# if 0
-template <class _Tp1, class _Tp2>
-struct _IsSameType {
-  enum { _Is =  _IsSame<_Tp1,_Tp2>::_Ret } ;
-  typedef __bool2type< _Is > _ST;
-  typedef typename _ST::_Ret _Tpe;
-  static _Tpe _Ret() { return _Tpe(); }
-};
-# endif
 
 template <class _Tp>
 struct _IsPtr {
@@ -244,8 +234,6 @@ template <class _Tp1, class _Tp2>  struct _BothPtrType<_Tp1*, _Tp2*> {
 };
 template <class _Tp>
 struct _IsSame<_Tp, _Tp> { enum { _Ret = 1 }; };
-// template <class _Tp1>
-// struct _IsSameType<_Tp, _Tp> {   static __true_type _Ret() { return __true_type(); }  };
 #  endif
 
 # endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
