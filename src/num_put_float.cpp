@@ -480,16 +480,29 @@ void __format_float_scientific(char * buf, const char * bp,
   // copy the suffix
   strcpy(buf, suffix);
 }
+
+static inline 
+void __flush_static_buf(string &buf, 
+                        char *sbeginbuf, char *sendbuf, char *&scurpos) {
+  if (scurpos == sendbuf) {
+    buf.append(sbeginbuf, sendbuf);
+    scurpos = sbeginbuf;
+  }
+}
   
-void __format_float_fixed(char * buf, const char * bp, 
+void __format_float_fixed(string &buf, const char * bp,
 			  int decpt, int sign, bool /* x */,
 			  ios_base::fmtflags flags,
 			  int precision, bool islong )
 {
+  char static_buf[128];
+  char *sbuf = static_buf;
+  char *sendbuf = static_buf + sizeof(static_buf);
+
   if (sign && decpt > -precision && *bp != 0)
-    *buf++ = '-';
+    *sbuf++ = '-';
   else if (flags & ios_base::showpos)
-    *buf++ = '+';
+    *sbuf++ = '+';
   
   int rzero   = 0;
   int nn      = decpt;
@@ -497,26 +510,33 @@ void __format_float_fixed(char * buf, const char * bp,
   int maxfsig = islong ? 2*MAXFSIG : MAXFSIG;
 
   do {
-    *buf++ = (char) ((nn <= 0 || *bp == 0 || k >= maxfsig) ?
+    *sbuf++ = (char) ((nn <= 0 || *bp == 0 || k >= maxfsig) ?
       '0' : (k++, *bp++));
+    __flush_static_buf(buf, static_buf, sendbuf, sbuf);
   } while (--nn > 0);
 
   // decimal point if needed
-  if (flags & ios_base::showpoint || precision > 0)
-    *buf++ = '.';
+  if (flags & ios_base::showpoint || precision > 0) {
+    *sbuf++ = '.';
+    __flush_static_buf(buf, static_buf, sendbuf, sbuf);
+  }
 
   // digits after decimal point if any
   nn = (min) (precision, MAXFCVT);
   if (precision > nn)
     rzero = precision - nn;
-  while (--nn >= 0)
-    *buf++ = (++decpt <= 0 || *bp == '\0' || k >= maxfsig)
+  while (--nn >= 0) {
+    *sbuf++ = (++decpt <= 0 || *bp == '\0' || k >= maxfsig)
       		? '0' : (k++, *bp++);
+    __flush_static_buf(buf, static_buf, sendbuf, sbuf);
+  }
 
   // trailing zeros if needed
-  while (rzero-- > 0)
-    *buf++ = '0';
-  *buf++ = '\0';
+  while (rzero-- > 0) {
+    *sbuf++ = '0';
+    __flush_static_buf(buf, static_buf, sendbuf, sbuf);
+  }
+  buf.append(static_buf, sbuf);
 }
 
 
@@ -545,20 +565,23 @@ void __format_nan_or_inf(char * buf, double x,
 
 template <class max_double_type>
 static inline 
-void __format_float(char * buf, const char * bp, 
+void __format_float(string &buf, const char * bp,
                     int decpt, int sign, max_double_type x,
                     ios_base::fmtflags flags,
                     int precision, bool islong)
 {
+  char static_buf[128];
   // Output of infinities and NANs does not depend on the format flags
   if (_Stl_is_nan_or_inf((double)x)) {       // Infinity or NaN
-    __format_nan_or_inf(buf, x, flags);
+    __format_nan_or_inf(static_buf, x, flags);
+    buf = static_buf;
   } 
   else {                        // representable number
     switch (flags & ios_base::floatfield) {
     case ios_base::scientific:
-      __format_float_scientific(buf, bp, decpt, sign, x == 0.0, flags,
+      __format_float_scientific(static_buf, bp, decpt, sign, x == 0.0, flags,
                                 precision, islong);
+      buf = static_buf;
       break;
       
     case ios_base::fixed:
@@ -589,8 +612,9 @@ void __format_float(char * buf, const char * bp,
       
       if (decpt < -3 || decpt > precision) {
         precision = kk - 1;
-        __format_float_scientific(buf, bp, decpt, sign, x == 0,
+        __format_float_scientific(static_buf, bp, decpt, sign, x == 0,
                                   flags, precision, islong);
+        buf = static_buf;
       }
       else {
         precision = kk - decpt;
@@ -640,16 +664,17 @@ static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifie
 # endif  /* USE_SPRINTF_INSTEAD */
 
 
-char*  _STLP_CALL
-__write_float(char* buf, ios_base::fmtflags flags, int precision,
+void  _STLP_CALL
+__write_float(string &buf, ios_base::fmtflags flags, int precision,
               double x)
 {
 # ifdef USE_SPRINTF_INSTEAD
+  char static_buf[128];
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
-  sprintf(buf, fmtbuf, precision, x);    
-  // we should be able to return buf + sprintf(), but we do not trust'em...
-  return buf + strlen(buf);
+  sprintf(static_buf, fmtbuf, precision, x);    
+  // we should be able to return static_buf + sprintf(), but we do not trust'em...
+  buf = static_buf;
 # else
   char cvtbuf[NDIG+2];
   char * bp;
@@ -667,22 +692,22 @@ __write_float(char* buf, ios_base::fmtflags flags, int precision,
     break;
   }
   __format_float(buf, bp, decpt, sign, x, flags, precision, false);
-  return buf + strlen(buf);
 # endif
 
 }
 
 # ifndef _STLP_NO_LONG_DOUBLE
-char*  _STLP_CALL
-__write_float(char* buf, ios_base::fmtflags flags, int precision,
+void _STLP_CALL
+__write_float(string &buf, ios_base::fmtflags flags, int precision,
               long double x)
 {
 # ifdef USE_SPRINTF_INSTEAD
+  char static_buf[128];
   char fmtbuf[64];
   int i = fill_fmtbuf(fmtbuf, flags, 'L');
-  sprintf(buf, fmtbuf, precision, x);    
+  sprintf(static_buf, fmtbuf, precision, x);    
   // we should be able to return buf + sprintf(), but we do not trust'em...
-  return buf + strlen(buf);
+  buf = static_buf;
 # else
   char cvtbuf[NDIG+2];
   char * bp;
@@ -700,7 +725,6 @@ __write_float(char* buf, ios_base::fmtflags flags, int precision,
     break;
   }
   __format_float(buf, bp, decpt, sign, x, flags, precision, true);
-  return buf + strlen(buf);
 # endif
 }
 # endif
@@ -713,7 +737,8 @@ __convert_float_buffer(const char* first, const char* last, wchar_t* out,
                        const ctype<wchar_t>& ct, wchar_t dot)
 {
   ct.widen(first, last, out);
-  replace(out, out + (last - first), ct.widen('.'), dot);
+  if (ct.widen('.') != dot)
+    replace(out, out + (last - first), ct.widen('.'), dot);
   return out + (last - first);
 }
 
@@ -722,7 +747,8 @@ __convert_float_buffer(const char* first, const char* last, wchar_t* out,
 void _STLP_CALL
 __adjust_float_buffer(char* first, char* last, char dot)
 {
-  replace(first, last, '.', dot);
+  if ('.' != dot)
+    replace(first, last, '.', dot);
 }
 
 _STLP_END_NAMESPACE
