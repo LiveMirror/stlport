@@ -1,3 +1,9 @@
+2005-03-16  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_cmath.h: added logf, expf, sinf, cosf---this fix
+	uClibc 0.9.27/gcc problem. Fix one macro for declaration math
+	functions in case of absent *f functions.
+
 2005-03-15  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_fstream.h: Fix _Noconv_input helper class default implementation.

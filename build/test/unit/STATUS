@@ -43,19 +43,23 @@ Notes:
 
 
 =======================================================================
-Operational environment:        cross for Linux 2.6.9 uClibc 0.9.26, IA32
+Operational environment:        cross for Linux 2.6.9 uClibc 0.9.27, IA32
 =======================================================================
 
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.3 (cross-compiler)
 -----------------------------------------------------------------------
-Date:                           2005-03-03
+Date:                           2005-03-16
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
-Status (release-shared):        Build library; fail link tests
-Notes:                          problem with cmath tests
-Status (stldbg-shared):         Build library; fail link tests
-Notes:                          problem with cmath tests
+Status (release-shared):        Run-time fail
+Notes:                          stalling, no responce; problem near log call in static initialization,
+                                see complex implementation
+Status (dbg-shared):		Most tests pass.
+Notes:                          Fail all tests with exceptions; fail one test
+                                in float io:
+                                FloatIOTest::float_output_test
+                                floatio_test.cpp(62) : CPPUNIT_ASSERT(output.substr(18) == ".000000");
 
 
 =======================================================================
