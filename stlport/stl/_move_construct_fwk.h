@@ -83,7 +83,7 @@ inline _STLP_TYPENAME_ON_RETURN_TYPE _MoveSourceTraits<_Tp>::_Type
 _AsMoveSource (_Tp &src) {
   typedef typename _MoveSourceTraits<_Tp>::_Type _SrcType;
   return _SrcType(src);
-};
+}
 
 struct __move_traits_POD {
   typedef __false_type implemented;

@@ -40,7 +40,7 @@
 _STLP_BEGIN_NAMESPACE
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(MapTraitsT, traits);
+_STLP_CREATE_ITERATOR_TRAITS(MapTraitsT, traits)
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
@@ -226,7 +226,7 @@ public:
 };
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(MultimapTraitsT, traits);
+_STLP_CREATE_ITERATOR_TRAITS(MultimapTraitsT, traits)
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >

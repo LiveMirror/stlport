@@ -40,7 +40,7 @@ _STLP_BEGIN_NAMESPACE
 # define  hash_multimap __WORKAROUND_RENAME(hash_multimap)
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashMapTraitsT, traits);
+_STLP_CREATE_ITERATOR_TRAITS(HashMapTraitsT, traits)
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
@@ -223,7 +223,7 @@ public:
 };
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashMultimapTraitsT, traits);
+_STLP_CREATE_ITERATOR_TRAITS(HashMultimapTraitsT, traits)
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),

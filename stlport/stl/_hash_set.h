@@ -40,7 +40,7 @@
 _STLP_BEGIN_NAMESPACE
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashSetTraitsT, Const_traits);
+_STLP_CREATE_ITERATOR_TRAITS(HashSetTraitsT, Const_traits)
 
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
@@ -228,7 +228,7 @@ public:
 };
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashMultisetTraitsT, Const_traits);
+_STLP_CREATE_ITERATOR_TRAITS(HashMultisetTraitsT, Const_traits)
 
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),

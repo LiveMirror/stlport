@@ -1,3 +1,10 @@
+2004-10-12  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config.h: typo fix thanks Mickael Fink
+	
+	* stlport/stl/_move_construct_fwk.h, _set.h, _map.h, _hash_set.h, _hash_map.h:
+	Extra semicolons removal thanks Wlodek Szafran reports.
+
 2004-10-11  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_rope.h: add typename.
