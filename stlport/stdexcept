@@ -66,6 +66,10 @@
 
 _STLP_BEGIN_NAMESPACE
 
+# ifdef _STLP_WCE_NET
+#  pragma warning(disable: 4275)
+# endif
+
 # if   ! defined (_STLP_NO_EXCEPTION_HEADER)
 # if !defined(_STLP_EXCEPTION_BASE) && !defined(_STLP_BROKEN_EXCEPTION_CLASS) && defined (_STLP_USE_NAMESPACES) && defined (_STLP_USE_OWN_NAMESPACE)
 using _STLP_VENDOR_EXCEPT_STD::exception;
@@ -92,6 +96,10 @@ private:
   enum { _S_bufsize = 256 };
   char _M_name[_S_bufsize];
 };
+
+# ifdef _STLP_WCE_NET
+#  pragma warning(default: 4275)
+# endif
 
 class _STLP_CLASS_DECLSPEC logic_error : public __Named_exception {
 public:
