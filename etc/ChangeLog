@@ -1,3 +1,32 @@
+2004-11-27  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_threads.h: direct access to _M_ref_count isn't MT-safe;
+	counter value returned by _M_incr and _M_decr methods only.
+
+	* stlport/stl/_rope.h, stlport/stl/_rope.c: adaptation to changes above;
+	removed __GC macro dependent code, that was never defined in present
+	sources.
+
+	* src/locale.cpp, locale_impl.cpp, locale_impl.h: general revision of locale
+	implementation; code clean, corrected, concepts fixed, errors fixed,
+	new bugs added.
+	
+	* src/ctype.cpp, facets_byname.cpp, locale_catalog.cpp, messages.cpp, monetary.cpp:
+	ditto.
+
+	* stlport/stl/_codecvt.h, _collate.h, _ctype.h, _locale.h, _messages_facets.h:
+	ditto.
+	
+	* _monetary.h, _num_get.h, _num_put.h, _numpunct.h, _time_facets.h: ditto.
+
+	* src/locale_nonclassic.h: removed due to code revision.
+
+	* src/explore/Makefile.inc: locale.cpp is directly included into locale_impl.cpp.
+
+	* src/explore/gcc.mak, test/unit/gcc.mak: use _STLP_LEAKS_PEDANTIC before release
+	by default.
+	
+
 2004-11-24  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_cmath.h: Fix of the abs definition for the EVC platform
