@@ -733,7 +733,7 @@ _STLP_END_NAMESPACE
 #  undef  slist
 #  define __slist__ __FULL_NAME(slist)
 
-#if defined (_STLP_DEBUG) && !defined (_STLP_INTERNAL_DBG_SLIST_H)
+#if defined (_STLP_DEBUG)
 # include <stl/debug/_slist.h>
 #endif
 
@@ -778,7 +778,6 @@ public:
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 _STLP_END_NAMESPACE
-
 
 # if defined ( _STLP_USE_WRAPPER_FOR_ALLOC_PARAM )
 # include <stl/wrappers/_slist.h>
