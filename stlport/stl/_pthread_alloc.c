@@ -28,6 +28,10 @@
 #pragma warning 368 9
 #endif
 
+#ifndef _STLP_PTHREAD_ALLOC_H
+# include <stl/_pthread_alloc.h>
+#endif
+
 # if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
 
 # include <cerrno>
@@ -213,7 +217,7 @@ void *_Pthread_alloc<_Max_size>
     return(__result);
 }
 
-#if _STLP_STATIC_TEMPLATE_DATA > 0
+#if defined (_STLP_STATIC_TEMPLATE_DATA) && (_STLP_STATIC_TEMPLATE_DATA > 0)
 
 template <size_t _Max_size>
 _Pthread_alloc_per_thread_state<_Max_size> * _Pthread_alloc<_Max_size>::_S_free_per_thread_states = 0;

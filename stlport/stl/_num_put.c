@@ -516,7 +516,7 @@ template <class _CharT, class _OutputIter>
 _OutputIter 
 num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT __fill,
                                      const void* __val) const {
-# ifdef _STLP_LONG_LONG
+# if defined(_STLP_LONG_LONG) && !defined(__MRC__)		//*ty 11/24/2001 - MrCpp can not cast from void* to long long
   return this->do_put(__s, __f, __fill, __REINTERPRET_CAST(unsigned _STLP_LONG_LONG,__val));
 # else
   return this->do_put(__s, __f, __fill, __REINTERPRET_CAST(unsigned long,__val));

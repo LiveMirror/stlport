@@ -425,10 +425,14 @@ void _Locale::insert_ctype_facets(const char* pname)
 
   if (pname == 0 || pname[0] == 0 || strcmp(pname, "C") == 0) {
     this->insert(i2, ctype<char>::id);
+# ifndef _STLP_NO_MBSTATE_T
     this->insert(i2, codecvt<char, char, mbstate_t>::id);
+# endif
 # ifndef _STLP_NO_WCHAR_T
     this->insert(i2, ctype<wchar_t>::id);
+# ifndef _STLP_NO_MBSTATE_T
     this->insert(i2, codecvt<wchar_t, char, mbstate_t>::id);
+# endif
 # endif
   }
   else {

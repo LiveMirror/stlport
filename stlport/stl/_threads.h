@@ -148,8 +148,8 @@ _STLP_IMPORT_DECLSPEC void _STLP_STDCALL OutputDebugStringA( const char* lpOutpu
 # elif defined(__DECC) || defined(__DECCXX)
 #  include <machine/builtins.h>
 #  define _STLP_ATOMIC_EXCHANGE __ATOMIC_EXCH_LONG
-#  define _STLP_ATOMIC_INCREMENT(__x, __y) __ATOMIC_ADD_LONG(__x, 1)
-#  define _STLP_ATOMIC_DECREMENT(__x, __y) __ATOMIC_ADD_LONG(__x, -1)
+#  define _STLP_ATOMIC_INCREMENT(__x) __ATOMIC_ADD_LONG(__x, 1)
+#  define _STLP_ATOMIC_DECREMENT(__x) __ATOMIC_ADD_LONG(__x, -1)
 # elif defined(_STLP_SPARC_SOLARIS_THREADS)
 #  include <stl/_sparc_atomic.h>
 # elif defined (_STLP_UITHREADS)
@@ -323,6 +323,8 @@ false); }
      status_t t = release_sem(sem);
      assert(t == B_NO_ERROR);
   }
+#else		//*ty 11/24/2001 - added configuration check
+#error "Unknown thread facility configuration"
 #endif
 #else /* No threads */
   inline void _M_initialize() {}

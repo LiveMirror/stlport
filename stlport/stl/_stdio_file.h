@@ -121,7 +121,7 @@ inline void _FILE_I_set(FILE *__f, char* __begin, char* __next, char* __end) {
 
 # define _STLP_FILE_I_O_IDENTICAL 1
 
-# elif defined(_STLP_SCO_OPENSERVER)
+# elif defined(_STLP_SCO_OPENSERVER) || defined(__NCR_SVR)
 
 typedef  unsigned char* _File_ptr_type;
 

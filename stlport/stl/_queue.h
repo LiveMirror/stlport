@@ -46,6 +46,10 @@
 # include <stl/_function.h>
 #endif
 
+#if defined(__SC__)		//*ty 12/07/2001 - since "comp" is a built-in type and reserved under SCpp
+#define comp _Comp
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 # if ! defined ( _STLP_LIMITED_DEFAULT_TEMPLATES )

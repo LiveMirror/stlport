@@ -391,6 +391,16 @@ struct _Locale_messages;
 #  define _Locale_SPACE _S
 #  define _Locale_PRINT _R
 #  define _Locale_ALPHA _A
+#elif defined (__NCR_SVR)
+#  define _Locale_CNTRL _C
+#  define _Locale_UPPER _U
+#  define _Locale_LOWER _L
+#  define _Locale_DIGIT _N
+#  define _Locale_XDIGIT _X
+#  define _Locale_PUNCT _P
+#  define _Locale_SPACE _S
+#  define _Locale_PRINT (_P | _U | _L | _N | _B)
+#  define _Locale_ALPHA (_U | _L)
 #endif
 
 # endif /* _STLP_C_LOCALE_H */

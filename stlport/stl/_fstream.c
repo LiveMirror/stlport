@@ -702,7 +702,7 @@ bool basic_filebuf<_CharT, _Traits>::_M_seek_init(bool __do_unshift) {
     bool __ok = !traits_type::eq_int_type(this->overflow(traits_type::eof()),
                                           traits_type::eof());
     if (__do_unshift)
-      __ok == __ok && this->_M_unshift();
+      __ok = __ok && this->_M_unshift();
     if (!__ok) {
       _M_in_output_mode = false;
       _M_in_error_mode = true;
