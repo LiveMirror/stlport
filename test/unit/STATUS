@@ -3,15 +3,30 @@ Operational environment:        Solaris 9, SPARC
 =======================================================================
 
 -----------------------------------------------------------------------
-Compiler:                       gcc 3.4.1
+Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
-Date:                           2004-09-10
+Date:                           2004-09-14
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
 Status (release-shared):        runtime fail
 Notes:                          uncatched exception during locale test:
                                 terminate called after throwing an instance of '_STL::runtime_error'
                                 what():  locale error
+                                It is like problem with exceptions, not with locale
+Status (stldbg-shared):         runtime fail
+Notes:
+
+-----------------------------------------------------------------------
+Compiler:                       gcc 3.4.1
+-----------------------------------------------------------------------
+Date:                           2004-09-14
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        runtime fail
+Notes:                          uncatched exception during locale test:
+                                terminate called after throwing an instance of '_STL::runtime_error'
+                                what():  locale error
+                                It is like problem with exceptions, not with locale
 Status (stldbg-shared):         runtime fail
 Notes:
 
