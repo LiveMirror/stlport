@@ -14,6 +14,8 @@
 //
 // TestCase class
 //
+#if !defined (_STLP_NO_EXCEPTIONS)
+
 class ExceptionTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(ExceptionTest);
@@ -92,3 +94,5 @@ void ExceptionTest::uncaught_except()
   }
   CPPUNIT_ASSERT( uncaught_result == 1 );
 }
+
+#endif // _STLP_NO_EXCEPTIONS
