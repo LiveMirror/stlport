@@ -1,3 +1,30 @@
+2004-08-11  Francois Dumont  <dums@...>
+
+	* src/explore/Makefiles/nmake: extension of the new build system for VC.Net
+	2005 (VC8).
+
+	* src/explore/Makefiles/nmake/app: restauration of the default behavior shared
+	rules generates executable using the STLport dynamic library and static rules
+	use the static libraries.
+
+	* stlport/stl/_string.h: Add check of _STLP_NO_IOSTREAM to force inclusion of
+	_string.c in this case.
+	
+	* stlport/stl/_string.c: removal of the _STLP_LINK_TIME_INSTANTIATION macro check 
+	before inclusion as the check is already done to include _string.c from _string.h.
+
+	* stlport/stl/_istream.h _istream.c: removal of the _M_put_num function definition
+	from the .h and removal of all the inline implementation of the >> operators.
+	_M_put_num is now hidden in the .c to avoid to have to deal with export of this
+	symbol. Fix errors while using the _STLP_NO_CUSTOM_IO macro.
+	
+	* stlport/stl/_ostream.h _ostream.c, src/ostream.cpp: ditto but for the _M_get_num
+	function.
+	
+	* stlport/stl/_istream.h _istream.c: _M_init_skip and _M_init_noskip are now inline
+	functions defined within the .h to fix link errors when using the _STLP_NO_CUSTOM_IO
+	macro.
+
 2004-08-10  Francois Dumont  <dums@...>
 
 	* stlport/stl/_string.h: add check of the _STLP_EXPOSE_STREAM_IMPLEMENTATION
