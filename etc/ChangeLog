@@ -1,3 +1,15 @@
+2004-12-24  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles: makesystem moved here from src/Makefiles
+
+	* build/lib: makefiles moved here from src catalog.
+
+	* build/test/unit: makefiles moved here from test/unit catalog.
+
+	* INSTALL: updated.
+
+	* README: updated.
+
 2004-12-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_vector.h, _vector.c: Fix of the code for movable types
