@@ -1,6 +1,11 @@
 
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+2003-10-23  Francois Dumont
+  * debug/: modification of the invalidation of iterators to avoid invalidation of the end iterator for the
+            associative containers, hashed containers and list on calls to clear/assign/assignment operator.
+            (thanks  Alexey  Sarytchev)
+
 2003-10-16  Francois Dumont
 
   * _alloc.h: Add of the throw() specification on allocator comparision.

@@ -87,9 +87,6 @@ public:
   typedef typename _Base::const_iterator _Base_const_iterator;
 
 protected:
-  void _Invalidate_all() {
-    _M_iter_list._Invalidate_all();
-  }
   void _Invalidate_iterator(const const_iterator& __it) { 
     __invalidate_iterator(&_M_iter_list,__it); 
   }
@@ -123,19 +120,18 @@ public:
   
   explicit _DBG_hashtable(__partial_move_source<_Self> src) :
     _STLP_DBG_HT_SUPER(_AsPartialMoveSource<_STLP_DBG_HT_SUPER >(src.get())),
-    _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all();
-  }
+    _M_iter_list(_Get_base()) {}
   
   /*explicit _DBG_hashtable(__full_move_source<_Self> src) :
     _STLP_DBG_HT_SUPER(_FullMoveSource<_STLP_DBG_HT_SUPER >(src.get())),
     _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all();
+    src.get()._M_iter_list._Invalidate_all();
   }*/
   
   _Self& operator= (const _Self& __ht) {
     if (this !=  &__ht) {
-      _Invalidate_all();
+      //Should not invalidate end iterator
+      _Invalidate_iterators(this->begin(), this->end());
       _Base::operator=((const _Base&)__ht);
     }
     return *this;
@@ -259,7 +255,7 @@ public:
   }
   
   void clear() {
-    _Invalidate_all();
+    _Invalidate_iterators(this->begin(), this->end());
     _Base::clear();
   }
 

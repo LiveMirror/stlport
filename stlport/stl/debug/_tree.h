@@ -85,10 +85,6 @@ protected:
   //typedef typename _Base::key_param_type key_param_type;
   //typedef typename _Base::val_param_type val_param_type;
 
-  void _Invalidate_all() {
-    _M_iter_list._Invalidate_all();
-  }
-
   void _Invalidate_iterator(const iterator& __it) { 
     __invalidate_iterator(&_M_iter_list,__it); 
   }
@@ -112,17 +108,21 @@ public:
     _STLP_DBG_TREE_SUPER(__x), _M_iter_list(_Get_base()) {}
 
   explicit _DBG_Rb_tree(__partial_move_source<_Self> src):
-    _STLP_DBG_TREE_SUPER(_AsPartialMoveSource<_STLP_DBG_TREE_SUPER >(src.get())), _M_iter_list(_Get_base()) {}
+    _STLP_DBG_TREE_SUPER(_AsPartialMoveSource<_STLP_DBG_TREE_SUPER >(src.get())), 
+    _M_iter_list(_Get_base()) {}
 
   /*explicit _DBG_Rb_tree(__full_move_source<_Self> src):
-    _STLP_DBG_TREE_SUPER(_FullMoveSource<_STLP_DBG_TREE_SUPER >(src.get())), _M_iter_list(_Get_base()) {
+    _STLP_DBG_TREE_SUPER(_FullMoveSource<_STLP_DBG_TREE_SUPER >(src.get())), 
+    _M_iter_list(_Get_base()) {
+    src.get()._M_iter_list._Invalidate_all();
   }*/
 
   ~_DBG_Rb_tree() {}
 
   _Self& operator=(const _Self& __x) {
     if (this != &__x) {
-      _Invalidate_all();
+      //Should not invalidate end iterator:
+      _Invalidate_iterators(this->begin(), this->end());
       _Base::operator=((const _Base&)__x);
     }
     return *this;
@@ -250,7 +250,8 @@ public:
   }
 
   void clear() {
-    _Invalidate_all();
+    //should not invalidate end:
+    _Invalidate_iterators(this->begin(), this->end());
     _Base::clear();
   }      
 };

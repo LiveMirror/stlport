@@ -115,9 +115,8 @@ public:
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   explicit _DBG_list(__partial_move_source<_Self> src)
-		   : _STLP_DBG_LIST_BASE(_AsPartialMoveSource<_STLP_DBG_LIST_BASE >(src.get())), _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all();
-  }
+		: _STLP_DBG_LIST_BASE(_AsPartialMoveSource<_STLP_DBG_LIST_BASE >(src.get())), 
+      _M_iter_list(_Get_base()) {}
   
   /*explicit _DBG_list(__full_move_source<_Self> src)
 		   : _STLP_DBG_LIST_BASE(_FullMoveSource<_STLP_DBG_LIST_BASE >(src.get())), _M_iter_list(_Get_base()) {
@@ -161,7 +160,8 @@ public:
 
   _Self& operator= (const _Self& __x) {
     if (this != &__x) {
-      _Invalidate_all();
+      //Should not invalidate end iterator
+      _Invalidate_iterators(this->begin(), this->end());
       _Base::operator=((const _Base&)__x);
     }
     return *this;
@@ -304,7 +304,7 @@ public:
   }
 
   void clear() {   
-    _Invalidate_all();
+    _Invalidate_iterators(this->begin(), this->end());
     _Base::clear(); 
   }
 

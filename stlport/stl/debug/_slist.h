@@ -106,9 +106,8 @@ public:
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   explicit _DBG_slist(__partial_move_source<_Self> src)
-		: _STLP_DBG_SLIST_BASE(_AsPartialMoveSource<_STLP_DBG_SLIST_BASE >(src.get())) , _M_iter_list(_Get_base()) {
-    src.get()._Invalidate_all();
-  }
+		: _STLP_DBG_SLIST_BASE(_AsPartialMoveSource<_STLP_DBG_SLIST_BASE >(src.get())) , 
+      _M_iter_list(_Get_base()) {}
   
   /*explicit _DBG_slist(__full_move_source<_Self> src)
 		   : _STLP_DBG_SLIST_BASE(_FullMoveSource<_STLP_DBG_SLIST_BASE >(src.get())) , _M_iter_list(_Get_base()) {
@@ -153,7 +152,7 @@ public:
   
   _Self& operator= (const _Self& __x) {
     if (this != &__x) {
-      _Invalidate_all();
+      _Invalidate_iterators(this->begin(), this->end());
       _Base::operator=((const _Base&)__x);
     }
     return *this;
@@ -163,7 +162,7 @@ public:
 
 public:
   void assign(size_type __n, const value_type& __val) {
-    _Invalidate_all();
+    _Invalidate_iterators(this->begin(), this->end());
     _Base::assign(__n, __val); 
   }
 
@@ -182,7 +181,7 @@ public:
 
   void swap(_Self& __x) { 
     _M_iter_list._Swap_owners(__x._M_iter_list);
-    _Base::swap(__x); 
+    _Base::swap(__x);
   }
 
 public:
@@ -236,7 +235,7 @@ public:
   template <class _InputIterator>
   void assign(_InputIterator __first, _InputIterator __last) {
     _STLP_DEBUG_CHECK(__check_range(__first, __last))
-    _Invalidate_all();
+    _Invalidate_iterators(this->begin(), this->end());
     _Base::assign(__first, __last);
   }
 
@@ -350,7 +349,7 @@ public:
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void clear() {
-    _Invalidate_all();      
+    _Invalidate_iterators(this->begin(), this->end());      
     _Base::clear();
   }
 
