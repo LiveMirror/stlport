@@ -17,6 +17,11 @@ CXX := ${TARGET_OS}-${CXX}
 CC := ${TARGET_OS}-${CC}
 endif
 
+CXX_VERSION := $(shell ${CXX} gcc --version | grep gcc | awk '{ print $3; }')
+CXX_VERSION_MAJOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $1; }')
+CXX_VERSION_MINOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $2; }')
+CXX_VERSION_PATCH := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $3; }')
+
 DEFS ?=
 OPT ?=
 
