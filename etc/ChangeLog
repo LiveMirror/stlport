@@ -1,5 +1,8 @@
 2004-09-06  Francois Dumont  <dums@...>
 
+	* test/unit/nmake-evc*.mak: end of build code factorisation, use of 
+	nmake-evc-common.mak within all makefiles.
+	
 	* test/unit/locale_test.cpp: Application of a patch from Michael Fink
 	to check the "C" locale on all platforms. Fix of the money_get_put test
 	case for the "C" locale.
