@@ -382,7 +382,7 @@ extern "C" {
     int size, month, dayofweek;
     char cname[_Locale_MAX_SIMPLE_NAME];
 
-    _Locale_time_t *ltime=(_Locale_time_t*)malloc(sizeof(_Locale_time_t));;
+    _Locale_time_t *ltime=(_Locale_time_t*)malloc(sizeof(_Locale_time_t));
     if(!ltime) return ltime;
     memset(ltime, 0, sizeof(_Locale_time_t));
 
@@ -698,7 +698,7 @@ extern "C" {
   }
 
   int _Locale_toupper(struct _Locale_ctype* ltype, int c) {
-    char buf[2], out_buf[2];;
+    char buf[2], out_buf[2];
     buf[0] = (char)c; buf[1] = 0;
     if(__GetDefaultCP(ltype->lcid) == ltype->cp) {
 	    LCMapStringA(ltype->lcid, LCMAP_LINGUISTIC_CASING | LCMAP_UPPERCASE, buf, 2, out_buf, 2);
@@ -718,7 +718,7 @@ extern "C" {
   }
 
   int _Locale_tolower(struct _Locale_ctype* ltype, int c) {
-    char buf[2], out_buf[2];;
+    char buf[2], out_buf[2];
     buf[0] = (char)c; buf[1] = 0;
     if(__GetDefaultCP(ltype->lcid) == ltype->cp) {
 	    LCMapStringA(ltype->lcid, LCMAP_LINGUISTIC_CASING | LCMAP_LOWERCASE, buf, 2, out_buf, 2);
