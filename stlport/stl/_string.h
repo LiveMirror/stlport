@@ -1393,6 +1393,13 @@ template <class _CharT, class _Traits, class _Alloc> void  _STLP_CALL _S_string_
 
 # undef basic_string
 
+#if defined(_STLP_WINCE)
+// A couple of functions to transfer between ASCII/Unicode
+
+wstring __ASCIIToWide(const char *ascii);
+string __WideToASCII(const wchar_t *wide);
+#endif
+
 _STLP_END_NAMESPACE
 
 # ifdef _STLP_DEBUG

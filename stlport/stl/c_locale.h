@@ -204,7 +204,7 @@ struct _Locale_messages;
 # define _Locale_PRINT _CTYPE_R
 # define _Locale_ALPHA _CTYPE_A
 
-# elif defined (__NetBSD__)
+# elif defined (__NetBSD__) || defined (__amigaos__)
  
 # define _Locale_CNTRL _C
 # define _Locale_UPPER _U

@@ -324,8 +324,8 @@ public:                         // Typedefs.
 
 private:                        // Data members.
 
-  FILE& _M_get;                 // Reference to the get area
-  FILE& _M_put;                 // Reference to the put area
+  FILE* _M_get;                 // Reference to the get area
+  FILE* _M_put;                 // Reference to the put area
 
 #if defined(__hpux)
   _FILEX  _M_default_get;          // Get area, unless we're syncing with stdio.
@@ -348,8 +348,8 @@ protected:                      // Constructors.
   // The default constructor.
   basic_streambuf _STLP_PSPEC2(char, char_traits<char>) ()
 # if defined(__MVS__) || defined(__OS400__)
- : _M_get(_M_default_get),
-               _M_put(_M_default_put), _M_locale()
+ : _M_get(&_M_default_get),
+   _M_put(&_M_default_put), _M_locale()
                {
                // _M_lock._M_initialize();
 
