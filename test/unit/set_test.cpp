@@ -199,7 +199,7 @@ void SetTest::specialized_less()
   s.insert(SetTestClass(0));
 
   set<SetTestClass>::iterator sit(s.begin()), sitEnd(s.end());
-  unsigned int i = 0;
+  int i = 0;
   for (; sit != sitEnd; ++sit, ++i) {
     CPPUNIT_ASSERT( sit->data() == i );
   }
