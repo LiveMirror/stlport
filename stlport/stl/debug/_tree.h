@@ -37,42 +37,40 @@
 #  undef _DBG_Rb_tree
 #  define _DBG_Rb_tree _Rb_tree
 
-# define _STLP_DBG_TREE_SUPER __WORKAROUND_DBG_RENAME(Rb_tree) <_Key, _Compare, _Value, _KeyOfValue, _ConstIteTraits, _Alloc>
+# define _STLP_DBG_TREE_SUPER __WORKAROUND_DBG_RENAME(Rb_tree) <_Key, _Compare, _Value, _KeyOfValue, _ConstTraits, _Alloc>
 
 _STLP_BEGIN_NAMESPACE
 
 # ifdef _STLP_DEBUG_USE_DISTINCT_VALUE_TYPE_HELPERS
 template <class _Key, class _Compare, 
-          class _Value, class _KeyOfValue, class _ConstIteTraits, class _Alloc >
+          class _Value, class _KeyOfValue, class _ConstTraits, class _Alloc >
 inline _Value*
 value_type(const  _DBG_iter_base< _STLP_DBG_TREE_SUPER >&) {
   return (_Value*)0;
 }
 template <class _Key, class _Compare, 
-          class _Value, class _KeyOfValue, class _ConstIteTraits, class _Alloc >
+          class _Value, class _KeyOfValue, class _ConstTraits, class _Alloc >
 inline bidirectional_iterator_tag
 iterator_category(const  _DBG_iter_base< _STLP_DBG_TREE_SUPER >&) {
   return bidirectional_iterator_tag();
 }
 # endif
 template <class _Key, class _Compare, 
-          class _Value, class _KeyOfValue, class _ConstIteTraits, 
+          class _Value, class _KeyOfValue, class _ConstTraits, 
           _STLP_DBG_ALLOCATOR_SELECT(_Value) >
-class _DBG_Rb_tree : public _STLP_DBG_TREE_SUPER 
-{
+class _DBG_Rb_tree : public _STLP_DBG_TREE_SUPER {
   typedef _STLP_DBG_TREE_SUPER _Base;
-  typedef _DBG_Rb_tree<_Key, _Compare, _Value, _KeyOfValue, _ConstIteTraits, _Alloc> _Self;
+  typedef _DBG_Rb_tree<_Key, _Compare, _Value, _KeyOfValue, _ConstTraits, _Alloc> _Self;
 protected:
-  friend class __owned_link;
-  mutable __owned_list _M_iter_list;
+  __owned_list _M_iter_list;
 
 public:
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
   typedef typename _Base::key_type key_type;
   
-  typedef typename _ConstIteTraits::_Non_const_traits _NonConstIteTraits;
-  typedef _DBG_iter<_Base, _NonConstIteTraits> iterator;
-  typedef _DBG_iter<_Base, _ConstIteTraits> const_iterator;
+  typedef typename _ConstTraits::_NonConstTraits _NonConstTraits;
+  typedef _DBG_iter<_Base, _NonConstTraits> iterator;
+  typedef _DBG_iter<_Base, _ConstTraits> const_iterator;
 
   _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS;
 
@@ -247,17 +245,25 @@ public:
   }      
 };
 
-#define _STLP_TEMPLATE_HEADER template <class _Key, class _Compare, class _Value, class _KeyOfValue, class _ConstIteTraits, class _Alloc>
-#define _STLP_TEMPLATE_CONTAINER _DBG_Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstIteTraits,_Alloc>
+#define _STLP_TEMPLATE_HEADER template <class _Key, class _Compare, class _Value, class _KeyOfValue, class _ConstTraits, class _Alloc>
+#define _STLP_TEMPLATE_CONTAINER _DBG_Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_ConstTraits,_Alloc>
 #define _STLP_TEMPLATE_CONTAINER_BASE _STLP_DBG_TREE_SUPER
 #include <stl/debug/_relops_cont.h>
 #undef _STLP_TEMPLATE_CONTAINER_BASE
 #undef _STLP_TEMPLATE_CONTAINER
 #undef _STLP_TEMPLATE_HEADER
          
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Key, class _Compare, class _Value, class _KeyOfValue, class _ConstTraits, class _Alloc>
+struct __move_traits<_DBG_Rb_tree<_Key, _Compare, _Value, _KeyOfValue, _ConstTraits, _Alloc> > :
+  __move_traits_aux<_STLP_DBG_TREE_SUPER >
+{};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+
 _STLP_END_NAMESPACE
 
-#undef  _STLP_DBG_TREE_SUPER
+#undef _STLP_DBG_TREE_SUPER
+#undef _DBG_Rb_tree
 
 #endif /* _STLP_INTERNAL_DBG_TREE_H */
 

@@ -39,7 +39,7 @@
 
 # define _DEQUE_WRAPPER _DBG_deque<_Tp,_Alloc>
 
-# define _STLP_DEQUE_SUPER   __WORKAROUND_DBG_RENAME(deque) <_Tp,_Alloc>
+# define _STLP_DEQUE_SUPER __WORKAROUND_DBG_RENAME(deque) <_Tp,_Alloc>
 
 _STLP_BEGIN_NAMESPACE
 
@@ -372,6 +372,13 @@ public:                         // Erase
 #undef _STLP_TEMPLATE_CONTAINER_BASE
 #undef _STLP_TEMPLATE_CONTAINER
 #undef _STLP_TEMPLATE_HEADER
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Tp, class _Alloc>
+struct __move_traits<_DBG_deque<_Tp,_Alloc> > :
+  __move_traits_aux<_STLP_DEQUE_SUPER >
+{};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 _STLP_END_NAMESPACE
 

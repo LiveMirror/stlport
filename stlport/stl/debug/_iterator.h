@@ -183,7 +183,7 @@ ptrdiff_t operator-(const _DBG_iter_base<_Container>& __x,
 template <class _Container, class _Traits>
 struct _DBG_iter_mid : public _DBG_iter_base<_Container>
 {
-  typedef _DBG_iter_mid<_Container, typename _Traits::_Non_const_traits> _Nonconst_self;
+  typedef _DBG_iter_mid<_Container, typename _Traits::_NonConstTraits> _Nonconst_self;
   typedef typename _Container::iterator        _Nonconst_iterator;
   typedef typename _Container::const_iterator  _Const_iterator;
 
@@ -210,7 +210,7 @@ private:
   typedef typename _Base::_Const_iterator _Const_iterator;
 
   typedef _DBG_iter<_Container, _Traits>     _Self;
-  typedef _DBG_iter_mid<_Container, typename _Traits::_Non_const_traits> _Nonconst_mid;
+  typedef _DBG_iter_mid<_Container, typename _Traits::_NonConstTraits> _Nonconst_mid;
 
 public:
 

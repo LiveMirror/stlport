@@ -55,12 +55,16 @@ iterator_category(const  _DBG_iter_base< _STLP_DBG_VECTOR_BASE >&) {
 # endif
 
 template <class _Tp, class _NcIt>
+struct _Vector_const_traits;
+
+template <class _Tp, class _NcIt>
 struct _Vector_nonconst_traits {
   typedef _Nonconst_traits<_Tp> _BaseT;
   typedef _Tp value_type;
   typedef _Tp& reference;
   typedef _Tp* pointer;
-  typedef _Vector_nonconst_traits<_Tp, _NcIt> _Non_const_traits;
+  typedef _Vector_const_traits<_Tp, _NcIt> _ConstTraits;
+  typedef _Vector_nonconst_traits<_Tp, _NcIt> _NonConstTraits;
 };
 
 template <class _Tp, class _NcIt>
@@ -69,7 +73,8 @@ struct _Vector_const_traits {
   typedef _Tp value_type;
   typedef const _Tp& reference;
   typedef const _Tp* pointer;
-  typedef _Vector_nonconst_traits<_Tp, _NcIt> _Non_const_traits;
+  typedef _Vector_const_traits<_Tp, _NcIt> _ConstTraits;
+  typedef _Vector_nonconst_traits<_Tp, _NcIt> _NonConstTraits;
 };
 
 _STLP_TEMPLATE_NULL
@@ -77,7 +82,8 @@ struct _Vector_nonconst_traits<bool, _Bit_iterator> {
   typedef _Bit_iterator::value_type value_type;
   typedef _Bit_iterator::reference reference;
   typedef _Bit_iterator::pointer pointer;
-  typedef _Vector_nonconst_traits<bool, _Bit_iterator> _Non_const_traits;
+  typedef _Vector_const_traits<bool, _Bit_iterator> _ConstTraits;
+  typedef _Vector_nonconst_traits<bool, _Bit_iterator> _NonConstTraits;
 };
 
 _STLP_TEMPLATE_NULL
@@ -85,7 +91,8 @@ struct _Vector_const_traits<bool, _Bit_iterator> {
   typedef _Bit_const_iterator::value_type value_type;
   typedef _Bit_const_iterator::reference reference;
   typedef _Bit_const_iterator::pointer pointer;
-  typedef _Vector_nonconst_traits<bool, _Bit_iterator> _Non_const_traits;
+  typedef _Vector_const_traits<bool, _Bit_iterator> _ConstTraits;
+  typedef _Vector_nonconst_traits<bool, _Bit_iterator> _NonConstTraits;
 };
 
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
@@ -96,7 +103,7 @@ private:
   typedef _STLP_DBG_VECTOR_BASE _Base;
   typedef _DBG_vector<_Tp, _Alloc> _Self;
   typedef _STLP_RANGE_CHECKER(_Tp, typename _STLP_DBG_VECTOR_BASE::const_iterator) _CheckRange;
-  mutable __owned_list _M_iter_list;
+  __owned_list _M_iter_list;
 
 public:
 

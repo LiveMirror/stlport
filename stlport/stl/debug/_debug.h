@@ -18,22 +18,23 @@
  */
 
 #ifndef _STLP_DEBUG_H
-# define _STLP_DEBUG_H
+#define _STLP_DEBUG_H
 
-# if defined (_STLP_ASSERTIONS) || defined (_STLP_DEBUG)
+#if defined (_STLP_ASSERTIONS) || defined (_STLP_DEBUG)
 
-#ifndef _STLP_CONFIG_H
-# include <stl/_config.h>
+#ifndef __TYPE_TRAITS_H
+#  include <stl/type_traits.h>
 #endif
 
-# if !defined (_STLP_EXTRA_OPERATORS_FOR_DEBUG) && \
-     ( defined (_STLP_BASE_MATCH_BUG) || (defined (_STLP_MSVC) && _STLP_MSVC < 1100 ) )
-#  define _STLP_EXTRA_OPERATORS_FOR_DEBUG
-# endif
 
-# if !defined(_STLP_FILE__)
-#   define _STLP_FILE__ __FILE__
-# endif
+#if !defined (_STLP_EXTRA_OPERATORS_FOR_DEBUG) && \
+   ( defined (_STLP_BASE_MATCH_BUG) || (defined (_STLP_MSVC) && _STLP_MSVC < 1100 ) )
+#  define _STLP_EXTRA_OPERATORS_FOR_DEBUG
+#endif
+
+#if !defined(_STLP_FILE__)
+#  define _STLP_FILE__ __FILE__
+#endif
 
 enum {
   _StlFormat_ERROR_RETURN,

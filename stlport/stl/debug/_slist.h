@@ -30,9 +30,7 @@
 #include <stl/debug/_iterator.h>
 
 //# ifndef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
-#  ifdef _DBG_slist
-#   undef  _DBG_slist
-#  endif
+#  undef  _DBG_slist
 #  define _DBG_slist slist
 //# endif
 
@@ -70,8 +68,7 @@ public:
   typedef _DBG_iter<_Base, _Const_traits<value_type> >    const_iterator;
 
 protected:
-  friend class __owned_link;
-  mutable __owned_list _M_iter_list;
+  __owned_list _M_iter_list;
   void _Invalidate_all() {
     _M_iter_list._Invalidate_all();
   }
@@ -526,7 +523,17 @@ public:
 #undef _STLP_TEMPLATE_CONTAINER
 #undef _STLP_TEMPLATE_HEADER
 
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Tp, class _Alloc>
+struct __move_traits<_DBG_slist<_Tp,_Alloc> > :
+  __move_traits_aux<_STLP_DBG_SLIST_BASE >
+{};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+
 _STLP_END_NAMESPACE
+
+#undef _STLP_DBG_SLIST_BASE
+#undef _DBG_slist
 
 #endif /* _STLP_INTERNAL_DBG_SLIST_H */
 

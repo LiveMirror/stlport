@@ -41,8 +41,7 @@
 #  define _DBG_list list
 # endif
 
-#  define _STLP_DBG_LIST_BASE \
-__WORKAROUND_DBG_RENAME(list) <_Tp, _Alloc>
+#  define _STLP_DBG_LIST_BASE __WORKAROUND_DBG_RENAME(list) <_Tp, _Alloc>
 
 _STLP_BEGIN_NAMESPACE
 
@@ -76,7 +75,7 @@ public:
   _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS;
 
 protected:
-  mutable __owned_list _M_iter_list;
+  __owned_list _M_iter_list;
   void _Invalidate_iterator(const iterator& __it) { 
     __invalidate_iterator(&_M_iter_list,__it);
   }
@@ -414,7 +413,17 @@ public:
 #undef _STLP_TEMPLATE_CONTAINER
 #undef _STLP_TEMPLATE_HEADER
 
-_STLP_END_NAMESPACE 
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Tp, class _Alloc>
+struct __move_traits<_DBG_list<_Tp,_Alloc> > :
+  __move_traits_aux<_STLP_DBG_LIST_BASE >
+{};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+
+_STLP_END_NAMESPACE
+
+#undef _STLP_DBG_LIST_BASE
+#undef _DBG_list
 
 #endif /* _STLP_INTERNAL_LIST_H */
 
