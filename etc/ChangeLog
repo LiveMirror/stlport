@@ -15,6 +15,9 @@
 	
 	* src/explore: factorisation of the evc build makefiles thanks Michael Fink.
 	
+	* src/explore/Makefiles/nmake/lib/clean.mak, macro.mak: Addition of some
+	file clean up for the clobber rule thanks Michael Fink.
+	
 2004-09-03  Francois Dumont  <dums@...>
 
 	* test/unit/fstream_test.cpp, sstream_test.cpp: Move of the test for the
