@@ -25,21 +25,37 @@ release-static:	LDFLAGS += ${LDSEARCH}
 endif
 
 ifeq ($(OSNAME),linux)
+
+NOSTDLIB := 
+
+ifeq ($(CXX_VERSION_MAJOR),3)
+
+# gcc before 3.3 (i.e. 3.0.x, 3.1.x, 3.2.x) has buggy libsupc++, so we should link with libstdc++ to avoid one
+
+ifneq ($(CXX_VERSION_MINOR),0)
+ifneq ($(CXX_VERSION_MINOR),1)
+ifneq ($(CXX_VERSION_MINOR),2)
 START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
 #START_A_OBJ := $(shell for o in crt{i,beginT}.o; do ${CXX} -print-file-name=$$o; done)
 END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
 #END_A_OBJ := $(shell for o in crtn.o; do ${CXX} -print-file-name=$$o; done)
-ifeq ($(CXX_VERSION_MAJOR),3)
 STDLIBS := -lsupc++ -lgcc_s -lpthread -lc -lm
+NOSTDLIB := -nostdlib
+endif
+endif
+endif
+
 else
 # i.e. gcc before 3.x.x: 2.95, etc.
 # gcc before 3.x don't had libsupc++.a and libgcc_s.so
 # exceptions and operators new are in libgcc.a
-STDLIBS := $(shell ${CXX} -print-file-name=libgcc.a) -lpthread -lc -lm
+#  Unfortunatly gcc before 3.x has a buggy C++ language support outside stdc++, so line below is commented
+#STDLIBS := $(shell ${CXX} -print-file-name=libgcc.a) -lpthread -lc -lm
 endif
-dbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_DBGxx) ${LDSEARCH} -nostdlib
-stldbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_STLDBGxx) ${LDSEARCH} -nostdlib
-release-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAMExx) ${LDSEARCH} -nostdlib
+
+dbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_DBGxx) ${LDSEARCH} ${NOSTDLIB}
+stldbg-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAME_STLDBGxx) ${LDSEARCH} ${NOSTDLIB}
+release-shared:	LDFLAGS += -shared -Wl,-h$(SO_NAMExx) ${LDSEARCH} ${NOSTDLIB}
 dbg-static:	LDFLAGS += ${LDSEARCH}
 stldbg-static:	LDFLAGS += ${LDSEARCH}
 release-static:	LDFLAGS += ${LDSEARCH}

@@ -77,6 +77,21 @@ CFLAGS = -pthread $(OPT)
 CXXFLAGS = -pthread -fexceptions -fident $(OPT)
 endif
 
+#ifeq ($(CXX_VERSION_MAJOR),3)
+#ifeq ($(CXX_VERSION_MINOR),2)
+#CXXFLAGS += -ftemplate-depth-32
+#endif
+#ifeq ($(CXX_VERSION_MINOR),1)
+#CXXFLAGS += -ftemplate-depth-32
+#endif
+#ifeq ($(CXX_VERSION_MINOR),0)
+#CXXFLAGS += -ftemplate-depth-32
+#endif
+#endif
+ifeq ($(CXX_VERSION_MAJOR),2)
+CXXFLAGS += -ftemplate-depth-32
+endif
+
 CDEPFLAGS = -E -M
 CCDEPFLAGS = -E -M
 
