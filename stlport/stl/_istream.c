@@ -442,8 +442,11 @@ basic_istream<_CharT, _Traits>::seekg(pos_type __pos) {
   sentry __sentry(*this, _No_Skip_WS());
 
   basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
-  if (!this->fail() && __buf)
-    __buf->pubseekpos(__pos);
+  if (!this->fail() && __buf) {
+    if (__buf->pubseekpos(__pos) == pos_type(-1)) {
+      this->setstate(ios_base::failbit);
+    }
+  }
   return *this;
 }
 
