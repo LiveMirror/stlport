@@ -12,7 +12,7 @@ ifeq (cygwin,$(findstring cygwin,$(OSNAME)))
 OSNAME := $(shell uname -o | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
 endif
 
-ifeq (mingw,$(findstring cygwin,$(OSNAME)))
+ifeq (mingw,$(findstring mingw,$(OSNAME)))
 OSNAME := mingw
 endif
 
