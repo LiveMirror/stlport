@@ -416,8 +416,8 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
   char_type __plus  = __c_type.widen('+');
   char_type __space = __c_type.widen(' ');
   char_type __zero  = __c_type.widen('0');
-  char_type __point = __intl ? __punct_intl.decimal_point() //__c_type.widen(__punct_intl.decimal_point())
-                             : __punct.decimal_point(); //__c_type.widen(__punct.decimal_point());
+  char_type __point = __intl ? __punct_intl.decimal_point()
+                             : __punct.decimal_point();
 
   char_type __sep = __intl ? __punct_intl.thousands_sep()
                            : __punct.thousands_sep();

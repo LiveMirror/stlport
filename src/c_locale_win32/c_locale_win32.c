@@ -841,7 +841,7 @@ extern "C" {
 	    return result;
     }
     else { // Multi byte encoding.
-    	size_t retval, count = 0;
+    	size_t retval = 0, count = 0;
     	while(n--) {
 	      retval = __mbtowc(ltype, to, *from, shift_state);
 	      if(retval == -2) { from++; count++; }
