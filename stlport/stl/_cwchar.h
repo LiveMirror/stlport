@@ -26,7 +26,7 @@
 
 # if defined (_STLP_NO_WCHAR_T) || \
      defined (__MRC__) || defined (__SC__) || defined (__BORLANDC__) || \
-     defined(__OpenBSD__) || \
+     defined(__OpenBSD__) || defined(__FreeBSD__) || \
      (defined (__GNUC__) && (defined (__APPLE__) || defined( __Lynx__ )))
 #  include _STLP_NATIVE_C_HEADER(stddef.h)
 #  if defined (__Lynx__)
