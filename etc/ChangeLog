@@ -1,3 +1,24 @@
+2004-08-09  Francois Dumont <dums@...>
+
+	* stlport/stl/_limits.h, stlport/config/stl_mycomp.h: introduction of a new macro
+	configuration to signal no support of the IEC 559 specification for floating point
+	numbers.
+	
+	* stlport/config/stl_msvc.h: fix of the config to signal no IEC 559 support before
+	Visual C++ .Net even if the infinity value is fine.
+	
+	* test/unit/limits_test.cpp: New test case to check the right numeric_limits class
+	configuration. Do not check the signaling_NaN yet...
+	
+	* stlport/config/stl_msvc.h: Visual .Net Beta 2005 portage.
+	
+	* stlport/stl/_ios.h: Move of the basic_ios::narrow and widen member method 
+	specialization before the explicit instanciation of the basic_ios class for
+	the char type.
+	
+	* stlport/stl/_construct.h, _num_put.c: fix of some unused parameter warning
+	thanks Kidman report.
+
 2004-08-05  Francois Dumont <dums@...>
 
 	* Fixes of the internal move framework for compilers not supporting partial

@@ -41,6 +41,7 @@ SRC_CPP = cppunit/test_main.cpp \
 	less_test.cpp \
 	lexcmp_test.cpp \
 	list_test.cpp \
+	limits_test.cpp \
 	logic_test.cpp \
 	map_test.cpp \
 	max_test.cpp \

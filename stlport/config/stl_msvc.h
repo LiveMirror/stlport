@@ -75,22 +75,16 @@
 // # ifndef __BUILDING_STLPORT
 // #  define _STLP_USE_TEMPLATE_EXPORT 1
 // # endif
-
-# if (_STLP_MSVC >= 1310)
-# define _STLP_NO_METHOD_SPECIALIZATION 1
-# define _STLP_FULL_ADL_IMPLEMENTED 1
-# endif	//	(_STLP_MSVC >= 1310)
-
-#  if (_STLP_MSVC > 1100)
-     typedef char __stl_char;
-#   define _STLP_DEFAULTCHAR __stl_char
-#  endif /* (_STLP_MSVC < 1100 ) */
-
-# if (_STLP_MSVC <= 1310)
+# if (_STLP_MSVC <= 1400)
 # define _STLP_STATIC_CONST_INIT_BUG   1
 # endif	//	(_STLP_MSVC <= 1310)
 
+# if (_STLP_MSVC >= 1310)
+# define _STLP_FULL_ADL_IMPLEMENTED 1
+# endif	//	(_STLP_MSVC >= 1310)
+
 # if (_STLP_MSVC <= 1300) 
+#  define _STLP_NO_METHOD_SPECIALIZATION 1
 #  define _STLP_DEF_CONST_PLCT_NEW_BUG 1
 #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
 #  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
@@ -145,6 +139,7 @@
 # endif /* (_MSC_VER <= 1310) */
 
 # if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
+#  define _STLP_NO_IEC559_SUPPORT 1
 //  these work, as long they are inline
 #  define _STLP_INLINE_MEMBER_TEMPLATES 1
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
@@ -156,6 +151,11 @@
 #   define _STLP_USE_ABBREVS
 #  endif
 # endif /* (_MSC_VER <= 1200) */
+
+# if (_STLP_MSVC > 1100)
+     typedef char __stl_char;
+#   define _STLP_DEFAULTCHAR __stl_char
+# endif /* (_STLP_MSVC < 1100 ) */
 
 # if ( _MSC_VER<=1010 )
 // "bool" is reserved in MSVC 4.1 while <yvals.h> absent, so :
@@ -269,7 +269,9 @@
 #    define _STLP_LIB_BASENAME "stlport_wce4"
 #   endif
 #  else
-#   if (_MSC_VER >= 1310) 
+#   if (_MSC_VER >= 1400)
+#    define _STLP_LIB_BASENAME "stlport_vc8"
+#   elif (_MSC_VER >= 1310) 
 #    define _STLP_LIB_BASENAME "stlport_vc71"
 #   elif (_MSC_VER >= 1300) 
 #    define _STLP_LIB_BASENAME "stlport_vc70"

@@ -59,7 +59,7 @@ inline void __destroy_aux(_Tp* __pointer, const __false_type& /*_Trivial_destruc
 #  endif
 }
 template <class _Tp>
-inline void __destroy_aux(_Tp* __pointer, const __true_type& /*_Trivial_destructor*/) {}
+inline void __destroy_aux(_Tp*, const __true_type& /*_Trivial_destructor*/) {}
 
 template <class _Tp>
 inline void _Destroy(_Tp* __pointer) {
@@ -144,12 +144,14 @@ __destroy_range_aux(_ForwardIterator __first, _ForwardIterator __last, const __f
 
 template <class _ForwardIterator> 
 inline void
+#ifdef _STLP_DEBUG_UNINITIALIZED
 __destroy_range_aux(_ForwardIterator __first, _ForwardIterator __last, const __true_type& /*_Trivial_destructor*/) {
-# ifdef _STLP_DEBUG_UNINITIALIZED
   //We call _Destroy just for the _STLP_DEBUG_UNINITIALIZED option:
   for ( ; __first != __last; ++__first)
     __destroy_aux(&(*__first), __true_type());
-# endif
+#else
+__destroy_range_aux(_ForwardIterator, _ForwardIterator, const __true_type& /*_Trivial_destructor*/) {
+#endif
 }
 
 template <class _ForwardIterator, class _Tp>

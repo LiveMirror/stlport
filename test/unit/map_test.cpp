@@ -16,12 +16,14 @@ class MapTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(map1);
   CPPUNIT_TEST(mmap1);
   CPPUNIT_TEST(mmap2);
+  CPPUNIT_TEST(iterators);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void map1();
   void mmap1();
   void mmap2();
+  void iterators();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MapTest);
@@ -112,4 +114,46 @@ void MapTest::mmap2()
   i = m.upper_bound(3);
   CPPUNIT_ASSERT((*i).first==6);
   CPPUNIT_ASSERT((*i).second=='f');
+}
+
+
+void MapTest::iterators()
+{
+  typedef multimap<int, char, less<int> > mmap;
+  typedef mmap::value_type pair_type;
+
+  pair_type p1(3, 'c');
+  pair_type p2(6, 'f');
+  pair_type p3(1, 'a');
+  pair_type p4(2, 'b');
+  pair_type p5(3, 'x');
+  pair_type p6(6, 'f');
+
+  pair_type array [] =
+  {
+    p1,
+    p2,
+    p3,
+    p4,
+    p5,
+    p6
+  };
+
+  mmap m(array+0, array + 6);
+
+  mmap::reverse_iterator ri = m.rbegin();
+  CPPUNIT_ASSERT( ri != m.rend() );
+  CPPUNIT_ASSERT( ri == m.rbegin() );
+  CPPUNIT_ASSERT( (*ri).first == 6 );
+  CPPUNIT_ASSERT( (*ri++).second == 'f' );
+  CPPUNIT_ASSERT( (*ri).first == 6 );
+  CPPUNIT_ASSERT( (*ri).second == 'f' );
+
+  mmap const& cm = m;
+  mmap::const_reverse_iterator rci = cm.rbegin();
+  CPPUNIT_ASSERT( rci != cm.rend() );
+  CPPUNIT_ASSERT( (*rci).first == 6 );
+  CPPUNIT_ASSERT( (*rci++).second == 'f' );
+  CPPUNIT_ASSERT( (*rci).first == 6 );
+  CPPUNIT_ASSERT( (*rci).second == 'f' );
 }

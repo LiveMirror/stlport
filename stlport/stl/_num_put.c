@@ -133,7 +133,7 @@ _M_do_put_float(_OutputIter __s, ios_base& __f,
                      __group_pos, __f._M_grouping());
 }
 
-inline void __get_money_digits_aux (__iostring &__buf, ios_base &__f, _STLP_LONG_DOUBLE __x) {
+inline void __get_money_digits_aux (__iostring &__buf, ios_base &, _STLP_LONG_DOUBLE __x) {
   __get_floor_digits(__buf, __x);
 }
 

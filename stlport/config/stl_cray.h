@@ -65,4 +65,6 @@
 # define _STLP_NO_CSTD_FUNCTION_IMPORTS
 //# define _STLP_VENDOR_GLOBAL_EXCEPT_STD
 
-
+#if !defined (_CRAYIEEE)
+#  define _STLP_NO_IEC559_SUPPORT 1
+#endif
