@@ -89,7 +89,7 @@ struct _Lor2 {
   typedef __true_type _Ret;
 };
 
-template<>
+_STLP_TEMPLATE_NULL
 struct _Lor2<__false_type, __false_type> {
   typedef __false_type _Ret;
 };
