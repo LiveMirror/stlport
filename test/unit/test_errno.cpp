@@ -1,7 +1,7 @@
-#ifndef _STLP_WCE
-
 #include <errno.h>
 #include <errno.h> // not typo, check errno def/undef/redef
+
+#ifndef _STLP_WCE
 
 #include "cppunit/cppunit_proxy.h"
 
