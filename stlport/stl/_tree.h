@@ -372,7 +372,7 @@ public:
   size_type max_size() const { return size_type(-1); }
 
   void swap(_Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __t) {
-    _STLP_STD::swap(this->_M_header._M_data, __t._M_header._M_data);
+    _STLP_STD::swap(this->_M_header, __t._M_header);
     _STLP_STD::swap(_M_node_count, __t._M_node_count);
     _STLP_STD::swap(_M_key_compare, __t._M_key_compare);
   }

@@ -336,9 +336,7 @@ public:
   }
   
   mutable __owned_link              _M_node; 
-  // # ifdef _STLP_THREADS
-  mutable _STLP_mutex                _M_lock;
-  // # endif
+  mutable _STLP_mutex               _M_lock;
   
 private:
   // should never be called, should be left undefined,

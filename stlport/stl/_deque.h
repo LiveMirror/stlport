@@ -341,7 +341,6 @@ public:
       _M_map_size(__a, (size_t)0) {
   }
   ~_Deque_base();    
-  allocator_type get_allocator() const { return _M_map_size; }
 
 protected:
   void _M_initialize_map(size_t);
@@ -427,6 +426,7 @@ public:                         // Basic accessors
   size_type size() const { return this->_M_finish - this->_M_start; }
   size_type max_size() const { return size_type(-1); }
   bool empty() const { return this->_M_finish == this->_M_start; }
+  allocator_type get_allocator() const { return _M_map_size; }
 
 public:                         // Constructor, destructor.
   explicit deque(const allocator_type& __a = allocator_type()) 
@@ -437,10 +437,10 @@ public:                         // Constructor, destructor.
       __uninitialized_copy(__x.begin(), __x.end(), this->_M_start, _IsPODType()); 
   }
 
-  deque(size_type __n, const value_type& __value,
+  deque(size_type __n, const value_type& __val,
         const allocator_type& __a = allocator_type()) : 
     _Deque_base<_Tp, _Alloc>(__a, __n)
-    { _M_fill_initialize(__value); }
+    { _M_fill_initialize(__val); }
   // int,long variants may be needed 
   explicit deque(size_type __n) : _Deque_base<_Tp, _Alloc>(allocator_type(), __n)
     { _M_fill_initialize(value_type()); }
@@ -718,7 +718,7 @@ public:                         // Erase
 
 protected:                        // Internal construction/destruction
 
-  void _M_fill_initialize(const value_type& __value);
+  void _M_fill_initialize(const value_type& __val);
 
 #ifdef _STLP_MEMBER_TEMPLATES 
 

@@ -263,6 +263,12 @@ void _STLP_CALL ios_base::_S_uninitialize()
   _Destroy(ptr_clog);
 
 # ifndef _STLP_NO_WCHAR_T
+  // we don't want any exceptions being thrown here
+  ptr_wcin->exceptions(0);
+  ptr_wcout->exceptions(0);
+  ptr_wcerr->exceptions(0);
+  ptr_wclog->exceptions(0);
+
   delete ptr_wcin->rdbuf(0);
   delete ptr_wcout->rdbuf(0);
   delete ptr_wcerr->rdbuf(0);

@@ -326,7 +326,7 @@ public:
   bool empty() const { return this->_M_head._M_data._M_next == 0; }
 
   void swap(_Self& __x) { 
-    _STLP_STD::swap(this->_M_head._M_data._M_next, __x._M_head._M_data._M_next); 
+    _STLP_STD::swap(this->_M_head, __x._M_head); 
   }
 
 public:
@@ -751,8 +751,8 @@ public:
   }
 
   insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __value) { 
-    iter = container->insert_after(iter, __value);
+  operator=(const typename _Container::value_type& __val) { 
+    iter = container->insert_after(iter, __val);
     return *this;
   }
   insert_iterator<_Container>& operator*() { return *this; }

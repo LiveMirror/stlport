@@ -38,10 +38,10 @@ __partial_sum(_InputIterator __first, _InputIterator __last,
   if (__first == __last) return __result;
   *__result = *__first;
 
-  _Tp __value = *__first;
+  _Tp __val = *__first;
   while (++__first != __last) {
-    __value = __binary_op(__value, *__first);
-    *++__result = __value;
+    __val = __binary_op(__val, *__first);
+    *++__result = __val;
   }
   return ++__result;
 }
@@ -55,11 +55,11 @@ __adjacent_difference(_InputIterator __first, _InputIterator __last,
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
   if (__first == __last) return __result;
   *__result = *__first;
-  _Tp __value = *__first;
+  _Tp __val = *__first;
   while (++__first != __last) {
     _Tp __tmp = *__first;
-    *++__result = __binary_op(__tmp, __value);
-    __value = __tmp;
+    *++__result = __binary_op(__tmp, __val);
+    __val = __tmp;
   }
   return ++__result;
 }

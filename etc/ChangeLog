@@ -8,6 +8,14 @@ The following changes were made in 4.5.2 since 4.5.1 release:
 	
 	* _hash_map::operator[] : enhanced to avoid calling default object constructor
 	 (Thanks Yuri Taranenko for the report)
+
+	* Identifier "__value" changed everywhere to "__val" to avoid clashes with Microsoft's "managed C++" keyword (thanks Crow for the report)
+
+	* Most containers : swap() fixed to swap non-stateless allocators correctly (thanks Scott Meyers)
+
+	* _sstream : fix to account for ios_base::app flag properly
+
+	* type_traits.h : _IsOKToMemCpy() fixed to only allow memcpy() for same type arguments (thanks  Ed Brey for the report)
 	
 	* stl/_num_put.c, stl/_list.c : workarounds for Debian gcc (thanks Levente Farkas)
 	
@@ -26,7 +34,8 @@ The following changes were made in 4.5.2 since 4.5.1 release:
 	* _rope.h : rope<>::swap() methods fixed for non-partial ordering case (thanks Eric Musser)
  	
 	* comlex_trig.cpp : fixed bug on SGI (thanks Mortis)
-	
+
+	* A bunch of fixes for HP aCC compilation with -AA option (thanks  John Bossom)
 	
 The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
