@@ -26,6 +26,7 @@
 
 #include <fstream>
 
+
 #ifdef __CYGWIN__
 #  define __int64 long long
 #endif

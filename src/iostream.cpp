@@ -246,6 +246,12 @@ void _STLP_CALL ios_base::_S_uninitialize()
   wostream* ptr_wclog = __REINTERPRET_CAST(wostream*,&wclog);
 # endif
 
+  // we don't want any exceptions being thrown here
+  ptr_cin->exceptions(0);
+  ptr_cout->exceptions(0);
+  ptr_cerr->exceptions(0);
+  ptr_clog->exceptions(0);
+
   delete ptr_cin->rdbuf(0);
   delete ptr_cout->rdbuf(0);
   delete ptr_cerr->rdbuf(0);

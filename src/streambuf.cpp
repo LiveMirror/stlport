@@ -34,19 +34,6 @@ _STLP_BEGIN_NAMESPACE
 
 #if !defined(_STLP_WINCE)
 
-#if !(defined(__MVS__) || defined(__OS400__))
-// The default constructor.
-basic_streambuf<char, char_traits<char> >::basic_streambuf()
-  : _M_get(FILE_CAST(&_M_default_get)), 
-    _M_put(FILE_CAST(&_M_default_put)), _M_locale()
-{
-  //  _M_lock._M_initialize();
-
-  _FILE_I_set(_M_get, 0, 0, 0);
-  _FILE_O_set(_M_put, 0, 0, 0);
-}
-# endif
-
 basic_streambuf<char, char_traits<char> >::~basic_streambuf() {}
 
 // This constructor is an extension.  It is for streambuf subclasses that

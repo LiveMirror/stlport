@@ -36,7 +36,7 @@ include common_macros.mak
 
 WARNING_FLAGS= -W -Wno-sign-compare -Wno-unused -Wno-uninitialized -D_STLP_USE_GLIBC
 
-# boris : real locale implementation does not really work
+# boris : real locale implementation may not really work
 # CXXFLAGS_COMMON = -I${STLPORT_DIR} ${WARNING_FLAGS} -D_STLP_REAL_LOCALE_IMPLEMENTED
 CXXFLAGS_COMMON = -I${STLPORT_DIR} ${WARNING_FLAGS}
 
