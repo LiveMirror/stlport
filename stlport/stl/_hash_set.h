@@ -228,7 +228,7 @@ public:
 };
 
 //Specific iterator traits creation
-_STLP_CREATE_ITERATOR_TRAITS(HashMultisetTraits, Const_traits);
+_STLP_CREATE_ITERATOR_TRAITS(HashMultisetTraitsT, Const_traits);
 
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),

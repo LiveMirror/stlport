@@ -615,7 +615,16 @@ namespace __std_alias = std;
 #if defined (_STLP_USE_NAMESPACES)
 
 #  if defined (_STLP_USE_OWN_NAMESPACE)
-#    define _STLP_STD      _STL
+#    if !defined (_STLP_DEBUG)
+#      define _STLP_STD  stlp_std
+#    else
+/*
+ * The STLport debug mode is binary incompatible with the other modes,
+ * lets make it clear on the STLport namespace to generate link errors rather
+ * than runtime.
+ */
+#      define _STLP_STD  stlpd_std
+#    endif
 namespace _STLP_STD { }
 #  else
 #    ifdef _STLP_DEBUG
@@ -634,7 +643,9 @@ namespace _STLP_PRIV {}
 
 // _STLP_BEGIN_NAMESPACE _STLP_END_NAMESPACE
 
+//Backward compatibility:
 namespace stlport = _STLP_STD;
+namespace _STL = _STLP_STD;
 // backward compatibility 
 # undef __STLPORT_NAMESPACE
 # define __STLPORT_NAMESPACE _STLP_STD

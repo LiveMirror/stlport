@@ -1,3 +1,11 @@
+2004-09-10  Francois Dumont  <dums@...>
+
+	* stlport/stl/_config.h: The new official namespace is now stlp_std. _STL is
+	just an alias. STLPORT macro still contains the STLport std namespace equivalent.
+	Moreover in _STLP_DEBUG mode, which is not a binary compatible with the release
+	or debug mode, the namespace is stlpd_std to generate link error rather
+	than runtime crash.
+	
 2004-09-09  Francois Dumont  <dums@...>
 
 	* stlport/stl/_config.h: _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 

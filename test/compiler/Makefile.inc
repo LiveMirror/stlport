@@ -2,4 +2,4 @@
 # $Id$
 
 PRGNAME = compiler_test
-SRC_CPP = ttei1.cpp ttei2.cpp ttei3.cpp ttei4.cpp ttei5.cpp
+SRC_CPP = ttei1.cpp ttei2.cpp ttei3.cpp ttei4.cpp ttei5.cpp ttei6.cpp ttei7.cpp
