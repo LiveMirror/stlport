@@ -2,7 +2,7 @@
 Operational environment:	Linux 2.4.26/SMP glibc 2.2.5
 
 Compiler:			gcc 3.4.1
-Date:				2004-08-26
+Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
 Status (release-shared):	All pass (282 tests)
@@ -29,26 +29,22 @@ Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
 Compiler:			gcc 3.2.3
-Date:				2004-08-26
+Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	runtime fail in DequeTest::at
+Status (release-shared):	All pass (282 tests)
 Notes:
-        see notes for stldbg-shared
-Status (stldbg-shared):         runtime fail in DequeTest::at
+Status (stldbg-shared):         All pass (282 tests)
 Notes:
-        uncatched exception (but it should be catched)
 
 Compiler:			gcc 3.1.1
-Date:				2004-08-26
+Date:				2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	runtime fail in DequeTest::at
+Status (release-shared):	All pass (282 tests)
 Notes:
-        see notes for stldbg-shared
-Status (stldbg-shared):         runtime fail in DequeTest::at
+Status (stldbg-shared):         All pass (282 tests)
 Notes:
-        uncatched exception (but it should be catched)
 
 Compiler:			gcc 2.95.4 20011002 (Debian prerelease)
 Date:				2004-08-26
