@@ -3,6 +3,9 @@ The following changes were made in 4.5.2 since 4.5.1 release:
 	* iostreams ported to Windows CE (thanks Andrew Waters)
 
 	* iostreams ported to AmigaOS (thanks Steven Solie)
+
+	* _hash_map::operator[] : enhanced to avoid calling default object constructor
+	 (Thanks Yuri Taranenko for the report)
 	
 	* stl/_num_put.c, stl/_list.c : workarounds for Debian gcc (thanks Levente Farkas)
 	
