@@ -33,7 +33,7 @@
 # ifndef __LOCALE_INITIALIZED
 #  define __LOCALE_INITIALIZED
 // Global initializer object, to ensure initialization of locale subsystem.
-static ios_base::_Loc_init _LocInit;
+//static ios_base::_Loc_init _LocInit;
 # endif
 
 #  ifndef _STLP_HAS_NO_NAMESPACES
