@@ -18,172 +18,163 @@
 
 #ifndef _STLP_STDEXCEPT
 
-# if !defined (_STLP_OUTERMOST_HEADER_ID)
+#if !defined (_STLP_OUTERMOST_HEADER_ID)
 #  define _STLP_OUTERMOST_HEADER_ID 0x63
 #  include <stl/_prolog.h>
-# elif (_STLP_OUTERMOST_HEADER_ID == 0x63) && ! defined (_STLP_DONT_POP_HEADER_ID)
+#elif (_STLP_OUTERMOST_HEADER_ID == 0x63) && ! defined (_STLP_DONT_POP_HEADER_ID)
 #  define _STLP_DONT_POP_HEADER_ID
-# endif
+#endif
 
-# ifdef _STLP_PRAGMA_ONCE
+#ifdef _STLP_PRAGMA_ONCE
 #  pragma once
-# endif
+#endif
 
-# if !defined(_STLP_STDEXCEPT_SEEN) && \
+#if !defined(_STLP_STDEXCEPT_SEEN) && \
    (!defined (_STLP_USE_NATIVE_STDEXCEPT) || defined (_STLP_USE_OWN_NAMESPACE))
 
 #  define _STLP_STDEXCEPT_SEEN 1
 
 #  include <exception>
 
-#if defined(_STLP_USE_EXCEPTIONS) || \
-    !(defined(_MIPS_SIM) && defined(_ABIO32) && _MIPS_SIM == _ABIO32)
+#  if defined(_STLP_USE_EXCEPTIONS) || \
+    !(defined(_MIPS_SIM) && defined(_ABIO32) && (_MIPS_SIM == _ABIO32))
 
-# include <cstring>
+#    include <cstring>
 
-#ifndef _STLP_INTERNAL_ALLOC_H
-# include <stl/_alloc.h>
-#endif
+#    ifndef _STLP_INTERNAL_ALLOC_H
+#      include <stl/_alloc.h>
+#    endif
 
-#if defined (_STLP_MSVC) && (_STLP_MSVC == 1300 || _STLP_MSVC == 1310)
-/*
- * MSVC7.x needs this include even if it is not a good thing to include
- * it directly. As long as the MSVC message won't be clearer it will be
- * like that!
- */
-#  ifndef _STLP_STRING_H
-#    include <stl/_string.h>
-#  endif
-#else
-#  ifndef _STLP_STRING_FWD_H
-#   include <stl/_string_fwd.h>
-#  endif
-#endif /* _STLP_MSVC == 1300 */
+#    ifndef _STLP_STRING_FWD_H
+#      include <stl/_string_fwd.h>
+#    endif
 
-# ifndef _STLP_USE_NO_IOSTREAMS
-#  define _STLP_OWN_STDEXCEPT 1
-# endif
+#    ifndef _STLP_USE_NO_IOSTREAMS
+#      define _STLP_OWN_STDEXCEPT 1
+#    endif
 
 _STLP_BEGIN_NAMESPACE
 
-# ifdef _STLP_WCE_NET
-#  pragma warning(disable: 4275)
-# endif
+#    ifdef _STLP_WCE_NET
+#      pragma warning (push)
+#      pragma warning (disable: 4275)
+#    endif
 
-# if   ! defined (_STLP_NO_EXCEPTION_HEADER)
-# if !defined(_STLP_EXCEPTION_BASE) && !defined(_STLP_BROKEN_EXCEPTION_CLASS) && defined (_STLP_USE_NAMESPACES) && defined (_STLP_USE_OWN_NAMESPACE)
+#    if !defined (_STLP_NO_EXCEPTION_HEADER)
+#      if !defined(_STLP_EXCEPTION_BASE) && !defined(_STLP_BROKEN_EXCEPTION_CLASS) && \
+           defined (_STLP_USE_NAMESPACES) && defined (_STLP_USE_OWN_NAMESPACE)
 using _STLP_VENDOR_EXCEPT_STD::exception;
-# endif
-# endif
-#  define _STLP_EXCEPTION_BASE exception
+#      endif
+#    endif
+#    define _STLP_EXCEPTION_BASE exception
 
 class _STLP_CLASS_DECLSPEC __Named_exception : public _STLP_EXCEPTION_BASE {
 public:
   __Named_exception(const string& __str) 
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
     ;
   const char* what() const _STLP_NOTHROW_INHERENTLY;
   ~__Named_exception() _STLP_NOTHROW_INHERENTLY;
-# else
+#    else
   {
     strncpy(_M_name, __get_c_string(__str), _S_bufsize);
     _M_name[_S_bufsize - 1] = '\0';
   }
   const char* what() const _STLP_NOTHROW_INHERENTLY { return _M_name; }
-# endif
+#    endif
 
 private:
   enum { _S_bufsize = 256 };
   char _M_name[_S_bufsize];
 };
 
-# ifdef _STLP_WCE_NET
-#  pragma warning(default: 4275)
-# endif
+#    ifdef _STLP_WCE_NET
+#      pragma warning (pop)
+#    endif
 
 class _STLP_CLASS_DECLSPEC logic_error : public __Named_exception {
 public:
   logic_error(const string& __s) : __Named_exception(__s) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~logic_error() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC runtime_error : public __Named_exception {
 public:
   runtime_error(const string& __s) : __Named_exception(__s) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~runtime_error() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC domain_error : public logic_error {
 public:
   domain_error(const string& __arg) : logic_error(__arg) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~domain_error() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC invalid_argument : public logic_error {
 public:
   invalid_argument(const string& __arg) : logic_error(__arg) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~invalid_argument() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC length_error : public logic_error {
 public:
   length_error(const string& __arg) : logic_error(__arg) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~length_error() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC out_of_range : public logic_error {
 public:
   out_of_range(const string& __arg) : logic_error(__arg) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~out_of_range() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC range_error : public runtime_error {
 public:
   range_error(const string& __arg) : runtime_error(__arg) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~range_error() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC overflow_error : public runtime_error {
 public:
   overflow_error(const string& __arg) : runtime_error(__arg) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~overflow_error() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 class _STLP_CLASS_DECLSPEC underflow_error : public runtime_error {
 public:
   underflow_error(const string& __arg) : runtime_error(__arg) {}
-# ifndef _STLP_USE_NO_IOSTREAMS
+#    ifndef _STLP_USE_NO_IOSTREAMS
   ~underflow_error() _STLP_NOTHROW_INHERENTLY;
-# endif
+#    endif
 };
 
 _STLP_END_NAMESPACE
 
-#endif /* Not o32, and no exceptions */
-# endif /* _STLP_STDEXCEPT_SEEN */
+#  endif /* Not o32, and no exceptions */
+#endif /* _STLP_STDEXCEPT_SEEN */
 
 
 #if defined (_STLP_USE_NATIVE_STDEXCEPT)
 #  include _STLP_NATIVE_HEADER(stdexcept)
-# endif
+#endif
 
-#  define _STLP_STDEXCEPT 1
+#define _STLP_STDEXCEPT 1
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x63)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)
@@ -199,4 +190,3 @@ _STLP_END_NAMESPACE
 // Local Variables:
 // mode:C++
 // End:
-
