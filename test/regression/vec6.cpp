@@ -18,7 +18,7 @@ int vec6_test(int, char**)
 int array [] = { 1, 4, 9, 16, 25, 36 };
 
   vector<int> v(array, array + 6);
-  int i;
+  size_t i;
   for(i = 0; i < v.size(); i++)
     cout << "v[" << i << "] = " << v[i] << endl;
   cout << endl;

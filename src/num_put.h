@@ -85,7 +85,7 @@ __insert_grouping_aux(basic_string<Char> &iostr, size_t __dec_pos,
   if (iostr.empty())
     return;
 
-  basic_string<Char>::iterator first(iostr.begin());
+  typename basic_string<Char>::iterator first(iostr.begin());
   int sign = 0;
 
   if (*first == Plus || *first == Minus) {
@@ -95,7 +95,7 @@ __insert_grouping_aux(basic_string<Char> &iostr, size_t __dec_pos,
  
   first += basechars;
   str_size n = 0;                                                   // Index of the current group.
-  basic_string<Char>::iterator cur_group(iostr.begin()+__dec_pos);  // Points immediately beyond the rightmost
+  typename basic_string<Char>::iterator cur_group(iostr.begin()+__dec_pos);  // Points immediately beyond the rightmost
                                                                     // digit of the current group.
   int groupsize = 0;                                                // Size of the current group.
   
