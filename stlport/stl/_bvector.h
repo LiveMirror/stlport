@@ -85,6 +85,16 @@ inline void swap(_Bit_reference& __x, _Bit_reference& __y) {
   __y = __tmp;
 }
 
+// Might not be very usefull but costs nothing!
+_STLP_TEMPLATE_NULL
+struct __type_traits<_Bit_reference> { 
+  typedef __false_type    has_trivial_default_constructor;
+  typedef __true_type     has_trivial_copy_constructor;
+  typedef __false_type    has_trivial_assignment_operator;
+  typedef __true_type     has_trivial_destructor;
+  typedef __false_type    is_POD_type;
+};
+
 struct _Bit_iterator_base {
   typedef ptrdiff_t difference_type;
 
