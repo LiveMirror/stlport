@@ -20,7 +20,10 @@
 #endif
 
 #if defined (_STLP_USE_OWN_NAMESPACE) && !defined (_STLP_DONT_REDEFINE_STD)
-/*  We redefine "std" to "stlport", so that user code may use std:: transparently */
+/*  We redefine "std" to STLPORT, so that user code may use std:: transparently 
+ *  The STLPORT macro contains the STLport namespace name containing all the std
+ *  stuff.
+ */
 #  ifdef std
 /*
  * Looks like the compiler native library on which STLport rely defined the std macro.
