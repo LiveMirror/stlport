@@ -288,16 +288,14 @@ At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
 
 #  if ((__GNUC_MINOR__ == 0) || (__APPLE__))
 #   define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
-#   define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../g++-v3/backward
 #  else
 #   if defined(__GNUC_PATCHLEVEL__) && (__GNUC_PATCHLEVEL__ > 0)
 #     define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__
-#     define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__/backward
 #   else
 #     define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__
-#     define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__/backward
 #   endif
 #  endif
+#  define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH/backward
 
 # elif (__GNUC_MINOR__ < 8)
 
