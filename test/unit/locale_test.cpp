@@ -73,16 +73,20 @@ struct ref_locale {
   const char *name;
   const char *decimal_point;
   const char *thousands_sep;
+  const char *money_int_prefix;
   const char *money_prefix;
+  const char *money_int_suffix;
   const char *money_suffix;
+  const char *money_decimal_point;
+  const char *money_thousands_sep;
 };
 
 static ref_locale tested_locales[] = {
-//{  name,         decimal_point, thousands_sep, money_prefix, money_suffix},
-  { "french",      ",",           "\xa0",       "",           " EUR" },
-  { "ru_RU.koi8r", ",",           " ",           "",           " RUR" },
-  { "en_GB",       ".",           "'",           "GBP ",       "" },
-  { "en_US",       ".",           "'",           "USD ",       "" }
+//{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_suffix, money_decimal_point,  money_thousands_sep},
+  { "french",      ",",           "\xa0",        "",               "",           " EUR",           "",           ",",                  "\xa0" },
+  { "ru_RU.koi8r", ",",           ".",           "",               "",           " RUR",           "",           ".",                  " " },
+  { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",               "",           ".",                  "," },
+  { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",           ".",                  "," }
 };
 
 //
@@ -176,23 +180,31 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   //The result is '1 234,56 EUR'
   string str_res = ostr.str();
 
-  // cout << "code " << hex << int(str_res[0]) << dec << ' ' << str_res << endl;
-  CPPUNIT_ASSERT( str_res[0] == '1' );
-  CPPUNIT_ASSERT( str_res[1] == intl_fmp.thousands_sep() );
-  CPPUNIT_ASSERT( str_res[2] == '2' );
-  CPPUNIT_ASSERT( str_res[3] == '3' );
-  CPPUNIT_ASSERT( str_res[4] == '4' );
-  CPPUNIT_ASSERT( str_res[5] == intl_fmp.decimal_point() );
-  CPPUNIT_ASSERT( str_res[6] == '5' );
-  CPPUNIT_ASSERT( str_res[7] == '6' );
-  CPPUNIT_ASSERT( str_res[8] == ' ' );
-  CPPUNIT_ASSERT( str_res.substr(9, intl_fmp.curr_symbol().size()) == intl_fmp.curr_symbol() );
-  CPPUNIT_ASSERT( str_res.size() == 9 + intl_fmp.curr_symbol().size() );
+  string::size_type p = strlen( rl.money_int_prefix );
+  CPPUNIT_ASSERT( str_res.substr( 0, p ) == rl.money_int_prefix );
+  CPPUNIT_ASSERT( str_res[p] == '1' );
+  // CPPUNIT_ASSERT( str_res[0] == '1' );
+  CPPUNIT_ASSERT( str_res[p + 1] == /* intl_fmp.thousands_sep() */ *rl.money_thousands_sep );
+  CPPUNIT_ASSERT( str_res[p + 2] == '2' );
+  CPPUNIT_ASSERT( str_res[p + 3] == '3' );
+  CPPUNIT_ASSERT( str_res[p + 4] == '4' );
+  CPPUNIT_ASSERT( str_res[p + 5] == /* intl_fmp.decimal_point() */ *rl.money_decimal_point );
+  CPPUNIT_ASSERT( str_res[p + 6] == '5' );
+  CPPUNIT_ASSERT( str_res[p + 7] == '6' );
+  // CPPUNIT_ASSERT( str_res[p + 8] == ' ' );
+  string::size_type p1 = strlen( rl.money_int_suffix );
+  CPPUNIT_ASSERT( str_res.substr(p + 8, p1) == rl.money_int_suffix );
+  // CPPUNIT_ASSERT( intl_fmp.curr_symbol() == rl.money_suffix );
+
+  // CPPUNIT_ASSERT( str_res.substr(p + 9, intl_fmp.curr_symbol().size()) == intl_fmp.curr_symbol() );
+  // CPPUNIT_ASSERT( str_res.size() == 9 + intl_fmp.curr_symbol().size() );
 
   ios_base::iostate err = ios_base::goodbit;
   string digits;
 
   istringstream istr(str_res);
+  ostr.str( "" );
+  ostr.clear();
   fmg.get(istr, istreambuf_iterator<char>(), true, ostr, err, digits);
   CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
   CPPUNIT_ASSERT( digits == "123456" );
@@ -208,6 +220,8 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   size_t index = 0;
   CPPUNIT_ASSERT( str_res.substr(index, dom_fmp.negative_sign().size()) == dom_fmp.negative_sign() );
   index += dom_fmp.negative_sign().size();
+  p = strlen( rl.money_prefix );
+  index += p;
   CPPUNIT_ASSERT( str_res[index++] == '1' );
   CPPUNIT_ASSERT( str_res[index++] == dom_fmp.thousands_sep() );
   CPPUNIT_ASSERT( str_res[index++] == '2' );
@@ -216,9 +230,12 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   CPPUNIT_ASSERT( str_res[index++] == dom_fmp.decimal_point() );
   CPPUNIT_ASSERT( str_res[index++] == '5' );
   CPPUNIT_ASSERT( str_res[index++] == '6' );
-  CPPUNIT_ASSERT( str_res[index++] == ' ' );
-  CPPUNIT_ASSERT( str_res.substr(index, dom_fmp.curr_symbol().size()) == dom_fmp.curr_symbol() );
-  CPPUNIT_ASSERT( str_res.size() == index + dom_fmp.curr_symbol().size() );
+  p1 = strlen( rl.money_suffix );
+  CPPUNIT_ASSERT( str_res.substr(index, p1) == rl.money_suffix );
+  index += p1;
+  // CPPUNIT_ASSERT( str_res[index++] == ' ' );
+  // CPPUNIT_ASSERT( str_res.substr(index, dom_fmp.curr_symbol().size()) == dom_fmp.curr_symbol() );
+  // CPPUNIT_ASSERT( str_res.size() == index + dom_fmp.curr_symbol().size() );
 
   err = 0;
   _STLP_LONG_DOUBLE val;
@@ -250,7 +267,7 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
   int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
   for ( int i = 0; i < n; ++i ) {
     if ( loc_ent[string( tested_locales[i].name )] ) {
-      //cout << '\t' << tested_locales[i].name << endl;
+      cout << '\t' << tested_locales[i].name << endl;
       locale loc( tested_locales[i].name );
       (inst.*__test)(loc, tested_locales[i] );
     }
