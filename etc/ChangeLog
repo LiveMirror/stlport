@@ -1,3 +1,21 @@
+2005-01-08  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_codecvt.h: Add of a missing export declaration for the wchar_t
+	specialization of the codecvt_byname class.
+
+	* src/stlport.rc: improvement of the information included in the ressource file.
+	Especially add of the compiler options.
+
+	* stlport/stl/_stlport_version.h: Creation of a special file containing all the
+	version informations; very usefull to avoid problem with the ressource compiler.
+
+	* stlport/stl/_config.h: Removal of the unused _STLP_USING_VENDOR_STD macro.
+	Inclusion of the _stlport_version.h file. Update of the comment explaining why
+	_STLP_USE_DECLSPEC is undefined when user do not use iostreams.
+
+	* build/Makefiles/nmake/vc-common.mak, evc-common.mak, gmake/gcc.mak: Improvement
+	of the ressource compiler options.
+
 2005-01-06  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Move the _STLP_DONT_RETURN_VOID configuration
