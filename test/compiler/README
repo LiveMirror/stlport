@@ -1,0 +1,13 @@
+This is tests to check wether compiler understand or not some language construction.
+It is NOT tests for language support libraries!
+
+The main purposes of this tests is help for developers to find correct workarounds,
+if compiler don't understand some (correct) language constructions.
+
+Notes about tests.
+
+ttei1.cpp, ttei2.cpp, ttei3.cpp, ttei4.cpp, ttei5.cpp:
+tests for template-in-the-template explicit instanciation. ttei1.cpp, ttei2.cpp
+may be used as workaround for ttei3.cpp, ttei4.cpp (I am expect that last are
+compiled correctly by VC6).
+
