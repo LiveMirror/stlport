@@ -28,6 +28,8 @@ void g()
 
 }
 
+using namespace std;
+
 void h()
 {
   double d( 1.0 );
@@ -44,31 +46,6 @@ struct sq
 
     double sqroot( double x )
       {
-        /*
-         * gcc (3.4.2) fail to resolve correct namespace for sqrt in case:
-
-         using namespace std;
-         return sqrt(x);
-
-         The key is 'using namespace std;'.
-         The workaround is 'using std::sqrt;';
-
-         There is no way to import one function from another namespace
-         and add overloaded variants, due to following construction is ill-formed:
-
-         namespace std {
-         using double ::sqrt( double );
-         float sqrt( float );
-         long double sqrt( long double );
-         };
-
-         BTW, no 'using'---no problems (see functions f(), g(), h() above ).
-
-           - ptr, 2005-03-04
-
-         */
-
-        // using namespace std;
         using std::sqrt;
         return sqrt(x);
       }
