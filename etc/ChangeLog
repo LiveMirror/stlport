@@ -1,3 +1,19 @@
+2004-12-01  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stdexcept: removes some warnings regarding the exception class being derived
+	from a non-dll interface class on evc4. Michael Fink contribution.
+
+	* stlport/stl/_cmath.h: push/pop warning level for VCs. Michael Fink contribution.
+
+	* src/_stdio_file.h: Evc4 uses an ugly hack to implement file IO using a FILECE structure
+	representing the internal FILE structure. For evc3 Michael Fink implemented a much simpler
+	way that also works for evc4.
+
+	* stlport/config/stl_evc.h, stl_msvc.h, stlcomp.h: separate config stuff for stl_evc.h
+	and stl_msvc.h. Now all Windows CE specific defines are in stl_evc.h only.
+	Michael Fink contribution.
+
+
 2004-11-30  Petr Ovtchenkov  <ptr@island...>
 
 	* src/explore/configure.bat: added quotes. Thanks Ulrich Eckhardt and Michael Fink.
