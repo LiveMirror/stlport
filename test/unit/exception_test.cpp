@@ -1,6 +1,5 @@
 #include <exception>
 #include <stdexcept>
-	
 
 #include "cppunit/cppunit_proxy.h"
 
