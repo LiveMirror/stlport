@@ -1753,7 +1753,9 @@ _STLP_END_NAMESPACE
 #  include <stl/_string.c>
 #endif
 
-# include <stl/_string_io.h>  
+#ifndef _STLP_USE_NO_IOSTREAMS
+# include <stl/_string_io.h>
+#endif
 # include <stl/_string_hash.h>
 
 #endif /* _STLP_INTERNAL_STRING_H */
