@@ -19,34 +19,18 @@
       simulate_possible_failure() to be called (see "nc_alloc.h").
     
 ***********************************************************************************/
-#if !INCLUDED_MOTU_LeakCheck
+#ifndef INCLUDED_MOTU_LeakCheck
 #define INCLUDED_MOTU_LeakCheck 1
 
 # include "Prefix.h"
 
 # include "nc_alloc.h"
 
-# if defined (EH_NEW_HEADERS)
 #  include <cstdio>
 #  include <cassert>
 #  include <iterator>
-# else
-#  include <stdio.h>
-#  include <assert.h>
-#  include <iterator.h>
-# endif
 
-# if defined (EH_NEW_IOSTREAMS)
 #  include <iostream>
-# else
-#  include <iostream.h>
-# endif
-
-# if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)
-#  define _STLP_FILE_UNIQUE_ID LEAKCHECK_H
-
-_STLP_INSTRUMENT_FILE();
-# endif
 
 EH_BEGIN_NAMESPACE
 
@@ -165,61 +149,56 @@ void ConstCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
 template <class Value, class Operation>
 void StrongCheck( const Value& v, const Operation& op, long max_iters = 2000000 )
 {
-    bool succeeded = false;
-    bool failed = false;
-    gTestController.SetCurrentTestCategory("strong");
-    for ( long count = 0; !succeeded && !failed && count < max_iters; count++ )
+  bool succeeded = false;
+  bool failed = false;
+  gTestController.SetCurrentTestCategory("strong");
+  for ( long count = 0; !succeeded && !failed && count < max_iters; count++ ) {
+    gTestController.BeginLeakDetection();
+
     {
-        gTestController.BeginLeakDetection();
-
-        {
-            Value dup = v;
-            {
-# ifndef EH_NO_EXCEPTIONS
-            try
-# endif
+      Value dup = v;
       {
-                gTestController.SetFailureCountdown(count);
-                op( dup );
-                succeeded = true;
-                gTestController.CancelFailureCountdown();
-      }
 # ifndef EH_NO_EXCEPTIONS
-            catch(...)
-            {
-                gTestController.CancelFailureCountdown();
-                bool unchanged = dup == v;
-                EH_ASSERT( unchanged );
-                
-                if ( !unchanged )
-                {
-#if 0
-                    typedef typename Value::value_type value_type;
-                    EH_STD::ostream_iterator<value_type> o(EH_STD::cerr, " ");
-                    EH_STD::cerr<<"EH test FAILED:\nStrong guaranee failed !\n";
-                    EH_STD::copy(dup.begin(), dup.end(), o);
-                    EH_STD::cerr<<"\nOriginal is:\n";
-                    EH_STD::copy(v.begin(), v.end(), o);
-                    EH_STD::cerr<<EH_STD::endl;
-#endif
-                    failed = true;
-                }
-            }  // Just try again.
+        try {
 # endif
-            CheckInvariant(v);
+          gTestController.SetFailureCountdown(count);
+          op( dup );
+          succeeded = true;
+          gTestController.CancelFailureCountdown();
+# ifndef EH_NO_EXCEPTIONS
         }
-
-        }
-
-  bool leaked = gTestController.ReportLeaked();
-  EH_ASSERT( !leaked );
-  if ( leaked )
-    failed = true;
-    
-        if ( succeeded )
-      gTestController.ReportSuccess(count);
+        catch (...) {
+          gTestController.CancelFailureCountdown();
+          bool unchanged = (dup == v);
+          EH_ASSERT( unchanged );
+                
+          if ( !unchanged ) {
+#if 0
+            typedef typename Value::value_type value_type;
+            EH_STD::ostream_iterator<value_type> o(EH_STD::cerr, " ");
+            EH_STD::cerr<<"EH test FAILED:\nStrong guaranee failed !\n";
+            EH_STD::copy(dup.begin(), dup.end(), o);
+            EH_STD::cerr<<"\nOriginal is:\n";
+            EH_STD::copy(v.begin(), v.end(), o);
+            EH_STD::cerr<<EH_STD::endl;
+#endif
+            failed = true;
+          }
+        }  // Just try again.
+# endif
+        CheckInvariant(v);
+      }
     }
-    EH_ASSERT( succeeded || failed );  // Make sure the count hasn't gone over
+
+    bool leaked = gTestController.ReportLeaked();
+    EH_ASSERT( !leaked );
+    if ( leaked )
+      failed = true;
+    
+    if ( succeeded )
+      gTestController.ReportSuccess(count);
+  }
+  EH_ASSERT( succeeded || failed );  // Make sure the count hasn't gone over
 }
 
 # if defined(_STLP_ASSERTIONS) || defined(_STLP_DEBUG)

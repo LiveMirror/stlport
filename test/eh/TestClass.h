@@ -21,16 +21,9 @@
 
 # include "Prefix.h"
 
-# if defined (EH_NEW_HEADERS)
 #  include <functional>
 #  include <utility>
 #  include <climits>
-# else
-#  include <function.h>
-#  include <pair.h>
-#  include <limits.h>
-# endif
-
 
 #include <iosfwd>
 #include "random_number.h"
@@ -163,10 +156,6 @@ inline unsigned int TestClass::get_random( unsigned range )
     return random_number( range );
 }
 
-# ifdef EH_NEW_IOSTREAMS
-extern EH_STD::ostream& operator << ( EH_STD::ostream& s, const TestClass&);
-# else
-extern ostream& operator << ( ostream& s, const TestClass&);
-# endif
+extern std::ostream& operator << ( std::ostream& s, const TestClass&);
 
 #endif // INCLUDED_MOTU_TestClass
