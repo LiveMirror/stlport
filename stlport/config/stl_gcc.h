@@ -194,7 +194,7 @@ typedef unsigned int wint_t;
 //#   endif
 #  else
 #    ifdef _STLP_USE_GLIBC
-#      define _STLP_VENDOR_LONG_DOUBLE_MATH  1 // - ptr: with new c headers no needs
+#      define _STLP_VENDOR_LONG_DOUBLE_MATH  1
 #    endif
 #  endif
 #endif
@@ -207,6 +207,8 @@ typedef unsigned int wint_t;
 #    define _STLP_VENDOR_GLOBAL_EXCEPT_STD 1
 #  endif
 #endif
+
+// #  define _STLP_VENDOR_GLOBAL_CSTD       1
 
 #if (__GNUC_MINOR__ < 95)  && (__GNUC__ < 3)
 #  define _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
