@@ -1,3 +1,8 @@
+2004-11-04  Petr Ovtchenkov  <ptr@island...>
+
+	* src/explore/Makefiles: added templates CC.mak for SunPro's CC compilers;
+	ones should be checked and fixed with real compiler.
+
 2004-11-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_function.h, _queue.h, _stack.h, _map.h, _iterator.h: 
@@ -14,21 +19,21 @@
 	equal_range_unique methods to use the unicity information of the map and
 	set containers in binary tree searches.
 
-  * stlport/stl/_string.h: Add _STLP_USE_NO_ISTREAMS check beforing deciding
-  not to include _string.c thanks KL
+	* stlport/stl/_string.h: Add _STLP_USE_NO_IOSTREAMS check beforing deciding
+	not to include _string.c thanks KL
 	
 2004-11-02  Francois Dumont  <dums@stlport...>
 
-  * stlport/stl/pointers/_deque.h: Fix for the problem of the deque<void*>
-  instanciation thanks Alex Cosealin report
+	* stlport/stl/pointers/_deque.h: Fix for the problem of the deque<void*>
+	instanciation thanks Alex Cosealin report
 
-  * test/unit/ptrspec_test.cpp: Add of a test for the previous problem.
+	* test/unit/ptrspec_test.cpp: Add of a test for the previous problem.
 
 2004-10-31  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_rope.h: Fix of the apply_to_pieces qualification thanks Leeya.
 
-  * test/unit/rope_test.cpp: New test case for the previous fix.
+	* test/unit/rope_test.cpp: New test case for the previous fix.
 
 2004-10-30  Francois Dumont  <dums@stlport...>
 
