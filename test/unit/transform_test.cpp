@@ -18,11 +18,13 @@ class TransformTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE(TransformTest);
   CPPUNIT_TEST(trnsfrm1);
   CPPUNIT_TEST(trnsfrm2);
+  CPPUNIT_TEST(self_str);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void trnsfrm1();
   void trnsfrm2();
+  void self_str();
 
   static int negate_int(int a_)
   {
@@ -31,6 +33,10 @@ protected:
   static char map_char(char a_, int b_)
   {
     return char(a_ + b_);
+  }
+  static char shift( char c )
+  {
+    return char(((int)c + 1) % 256);
   }
 };
 
@@ -72,3 +78,12 @@ void TransformTest::trnsfrm2()
   string result=buff->str();
   CPPUNIT_ASSERT(!strcmp(result.c_str(), "Hello World!"))
 }
+
+void TransformTest::self_str()
+{
+  string s( "0123456789abcdefg" );
+  string r( "123456789:bcdefgh" );
+  transform( s.begin(), s.end(), s.begin(), shift );
+  CPPUNIT_ASSERT( s == r );
+}
+
