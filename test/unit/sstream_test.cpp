@@ -1,6 +1,5 @@
 #include <string>
 #include <sstream>
-#include <iostream>
 
 #include "cppunit/cppunit_proxy.h"
 
