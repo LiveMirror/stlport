@@ -1,3 +1,8 @@
+2004-10-21  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_iostring_stream.h: Simplification of the __stl_alloc_rebind
+	 overload to make it less ambiguous for the compilers using it.
+	
 2004-10-18  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_vector.h, _vector.c: Add of checks to know if a reference
