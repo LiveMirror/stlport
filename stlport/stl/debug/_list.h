@@ -311,7 +311,6 @@ public:
 
 public:
   void splice(iterator __position, _Self& __x) {
-    _STLP_VERBOSE_ASSERT(&__x!=this, _StlMsg_INVALID_ARGUMENT)
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
     _Base::splice(__position._M_iterator, __x);
     //dums: Invalidation according the Standard C++98 but against the SGI specs:
@@ -330,14 +329,13 @@ public:
   void splice(iterator __position, _Self& __x, iterator __first, iterator __last) {
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
     _STLP_DEBUG_CHECK(__check_range(__first, __last, __x.begin(), __x.end()))
-    _STLP_DEBUG_CHECK(!__check_range(__position, __first, __last))
+    _STLP_DEBUG_CHECK(this == &__x ? !__check_range(__position, __first, __last) : true)
     _Base::splice(__position._M_iterator, __x, __first._M_iterator, __last._M_iterator);
     //dums: Invalidation according the Standard C++98 but against the SGI specs:
     __x._Invalidate_iterators(__first, __last);
   }
 
   void merge(_Self& __x) {
-    _STLP_VERBOSE_ASSERT(&__x!=this, _StlMsg_INVALID_ARGUMENT)
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(this->begin(), this->end()))
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(__x.begin(), __x.end()))
     _Base::merge(__x);
@@ -396,7 +394,6 @@ public:
 
   template <class _StrictWeakOrdering>
   void merge(_Self& __x, _StrictWeakOrdering __comp) {
-    _STLP_VERBOSE_ASSERT(&__x!=this, _StlMsg_INVALID_ARGUMENT)
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(_Base::begin(), _Base::end(), __comp))
     _STLP_DEBUG_CHECK(_STLP_STD::is_sorted(__x.begin()._M_iterator, __x.end()._M_iterator, __comp))
     _Base::merge(__x, __comp);
