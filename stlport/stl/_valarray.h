@@ -105,7 +105,7 @@ public:
 
   // Basic constructors
   valarray() : _Valarray_base<_Tp>() {}
-  valarray(size_t __n) : _Valarray_base<_Tp>(__n)
+  explicit valarray(size_t __n) : _Valarray_base<_Tp>(__n)
     { uninitialized_fill_n(this->_M_first, this->_M_size, _STLP_DEFAULT_CONSTRUCTED(value_type)); }
   valarray(const value_type& __x, size_t __n) : _Valarray_base<_Tp>(__n)
     { uninitialized_fill_n(this->_M_first, this->_M_size, __x); }

@@ -1,5 +1,10 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * _valarray.h: Correction of the missing explicit keyword in front of one of the valarray constructors
+                 (thanks Stephen Clamage)
+
+  ----
+
   * stdexcept: Correction of the mysterious 50 messages from VC7.Net (thanks Krish S)
 
   ----
