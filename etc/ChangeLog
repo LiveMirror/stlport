@@ -1,3 +1,11 @@
+2005-03-31  Francois Dumont  <dums@stlport...>
+
+	* stlport/errno.h: Fixed for MSVC compilers, should still be fine for
+	others.
+	
+	* test/unit/test_errno.cpp: Modified to be a real unit test. Also test
+	errno assignment.
+	
 2005-03-30  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_fstream.c: Try to fix ambiguous type deduction in a max

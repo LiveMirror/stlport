@@ -2,11 +2,31 @@
 
 #include <errno.h> // not typo, check errno def/undef/redef
 
-int check()
+#include "cppunit/cppunit_proxy.h"
+
+//
+// TestCase class
+//
+class ErrnoTest : public CPPUNIT_NS::TestCase
 {
-  if ( errno != 0 ) {
-    return 1;
-  }
+  CPPUNIT_TEST_SUITE(ErrnoTest);
+  CPPUNIT_TEST(check);
+  CPPUNIT_TEST_SUITE_END();
+
+protected:
+  void check();
+};
+
+CPPUNIT_TEST_SUITE_REGISTRATION(ErrnoTest);
+
+void ErrnoTest::check()
+{
+  CPPUNIT_ASSERT( errno == 0 );
+
+  errno = 1;
+
+  CPPUNIT_ASSERT( errno == 1 );
+  errno = 0;
 
 /* Note: in common, you can't write ::errno or std::errno,
  * due to errno in most cases is just a macro, that frequently
@@ -24,6 +44,4 @@ int check()
     return 1;
   }
 #endif
-
-  return 0;
 }

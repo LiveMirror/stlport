@@ -13,37 +13,41 @@
  *
  */
 
-# if !defined (_STLP_OUTERMOST_HEADER_ID)
+#if !defined (_STLP_OUTERMOST_HEADER_ID)
 #  define _STLP_OUTERMOST_HEADER_ID 0x205
 #  include <stl/_prolog.h>
-# elif (_STLP_OUTERMOST_HEADER_ID == 0x205) && ! defined (_STLP_DONT_POP_HEADER_ID)
+#elif (_STLP_OUTERMOST_HEADER_ID == 0x205) && !defined (_STLP_DONT_POP_HEADER_ID)
 #  define _STLP_DONT_POP_HEADER_ID
-# endif
-
-#ifdef errno
-# define __stlp_errno errno
-# undef errno
 #endif
 
-# include _STLP_NATIVE_C_HEADER(errno.h)
-
-#if !defined(errno) && defined(__stlp_errno)
-# define errno __stlp_errno
+#if defined (errno)
+#  define _STLP_ERRNO_ALREADY_DEFINED
+#  undef errno
 #endif
 
-#ifndef errno
+#include _STLP_NATIVE_C_HEADER(errno.h)
+
+#if defined (errno) || defined (_STLP_ERRNO_ALREADY_DEFINED)
+#  if !defined (_STLP_ERRNO_ALREADY_DEFINED)
+inline int* __stlp_errno() {
+  return &(errno);
+}
+#  endif
+#  undef errno
+#  define errno (*__stlp_errno())
+#else
 _STLP_BEGIN_NAMESPACE
 using ::errno;
 _STLP_END_NAMESPACE
 #endif
 
-# if (_STLP_OUTERMOST_HEADER_ID == 0x205)
+#if (_STLP_OUTERMOST_HEADER_ID == 0x205)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)
-#   include <stl/_epilog.h>
-#   undef  _STLP_OUTERMOST_HEADER_ID
-#   endif
-#   undef  _STLP_DONT_POP_HEADER_ID
-# endif
+#    include <stl/_epilog.h>
+#    undef  _STLP_OUTERMOST_HEADER_ID
+#  endif
+#  undef  _STLP_DONT_POP_HEADER_ID
+#endif
 
 // Local Variables:
 // mode:C++
