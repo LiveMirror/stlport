@@ -530,7 +530,7 @@ public:                         // Constructors, destructor.
     _M_buf() {
       this->init(&_M_buf);
       if (!_M_buf.open(__s, __mod | ios_base::in))
-	this->setstate(ios_base::failbit);
+      	this->setstate(ios_base::failbit);
   }
 
 # ifndef _STLP_NO_EXTENSIONS
@@ -696,7 +696,7 @@ public:                         // Constructors, destructor.
     basic_ios<_CharT, _Traits>(), basic_iostream<_CharT, _Traits>(0), _M_buf() {
       this->init(&_M_buf);
       if (!_M_buf.open(__s, __mod))
-	this->setstate(ios_base::failbit);
+      	this->setstate(ios_base::failbit);
   }
 
 # ifndef _STLP_NO_EXTENSIONS
