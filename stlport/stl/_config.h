@@ -975,103 +975,103 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define  _STLP_EXPORT_TEMPLATE _STLP_EXPORT template
 # endif
 
-# if defined (_STLP_USE_DECLSPEC) /* using export/import technique */
+#if defined (_STLP_USE_DECLSPEC) /* using export/import technique */
 
 #  ifndef _STLP_EXPORT_DECLSPEC
-#   define _STLP_EXPORT_DECLSPEC
+#    define _STLP_EXPORT_DECLSPEC
 #  endif
 #  ifndef _STLP_IMPORT_DECLSPEC
-#   define _STLP_IMPORT_DECLSPEC
+#    define _STLP_IMPORT_DECLSPEC
 #  endif
 #  ifndef _STLP_CLASS_EXPORT_DECLSPEC
-#   define _STLP_CLASS_EXPORT_DECLSPEC
+#    define _STLP_CLASS_EXPORT_DECLSPEC
 #  endif
 #  ifndef _STLP_CLASS_IMPORT_DECLSPEC
-#   define _STLP_CLASS_IMPORT_DECLSPEC
+#    define _STLP_CLASS_IMPORT_DECLSPEC
 #  endif
 #  if defined (_STLP_DESIGNATED_DLL) /* This is a lib which will contain STLport exports */
-#   define  _STLP_DECLSPEC        _STLP_EXPORT_DECLSPEC 
-#   define  _STLP_CLASS_DECLSPEC  _STLP_CLASS_EXPORT_DECLSPEC 
+#    define  _STLP_DECLSPEC        _STLP_EXPORT_DECLSPEC 
+#    define  _STLP_CLASS_DECLSPEC  _STLP_CLASS_EXPORT_DECLSPEC 
 #  else
-#   define  _STLP_DECLSPEC        _STLP_IMPORT_DECLSPEC   /* Other modules, importing STLport exports */
-#   define  _STLP_CLASS_DECLSPEC  _STLP_CLASS_IMPORT_DECLSPEC
+#    define  _STLP_DECLSPEC        _STLP_IMPORT_DECLSPEC   /* Other modules, importing STLport exports */
+#    define  _STLP_CLASS_DECLSPEC  _STLP_CLASS_IMPORT_DECLSPEC
 #  endif
 
 #  ifndef _STLP_STATIC_CONST_INIT_BUG
 // constant data members cannot be exported; using workaround here
-#   define _STLP_STATIC_CONST_INIT_BUG
+#    define _STLP_STATIC_CONST_INIT_BUG
 #  endif
-# else /* Not using DLL export/import specifications */
+#else /* Not using DLL export/import specifications */
 
 #  define _STLP_DECLSPEC
 #  define _STLP_CLASS_DECLSPEC
 
-# endif
+#endif
 
-#  define _STLP_EXPORT_TEMPLATE_CLASS _STLP_EXPORT template class _STLP_CLASS_DECLSPEC
+#define _STLP_EXPORT_TEMPLATE_CLASS _STLP_EXPORT template class _STLP_CLASS_DECLSPEC
 
-#  if defined (_STLP_MSVC) || defined (__ICL) 
-#   define _STLP_STATIC_MEMBER_DECLSPEC
-#  else
-#   define _STLP_STATIC_MEMBER_DECLSPEC _STLP_DECLSPEC
-#  endif
+#if defined (_STLP_MSVC) || defined (__ICL) 
+#  define _STLP_STATIC_MEMBER_DECLSPEC
+#else
+#  define _STLP_STATIC_MEMBER_DECLSPEC _STLP_DECLSPEC
+#endif
 
-# if !defined (_STLP_CALL)
-#   define _STLP_CALL
-# endif
+#if !defined (_STLP_CALL)
+#  define _STLP_CALL
+#endif
 
 #ifdef _STLP_OWN_IOSTREAMS
 
 #  if defined (__DECCXX) && ! defined (__USE_STD_IOSTREAM)
-#   define __USE_STD_IOSTREAM
+#    define __USE_STD_IOSTREAM
 #  endif
 
 /* We only need to expose details of streams implementation 
    if we use non-standard i/o or are building STLport*/
-# if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE) || !defined(_STLP_NO_CUSTOM_IO)
-#  define _STLP_EXPOSE_STREAM_IMPLEMENTATION 1
-# endif
+#  if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE) || !defined(_STLP_NO_CUSTOM_IO)
+#    define _STLP_EXPOSE_STREAM_IMPLEMENTATION 1
+#  endif
 
 /* We only need to expose details of global implementation if we are building STLport 
    or have not instantiated everything in the lib */
-# if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE)
-#   undef  _STLP_EXPOSE_GLOBALS_IMPLEMENTATION
-#   define _STLP_EXPOSE_GLOBALS_IMPLEMENTATION 1
-# endif
+#  if defined (__BUILDING_STLPORT) || defined (_STLP_NO_FORCE_INSTANTIATE)
+#    undef  _STLP_EXPOSE_GLOBALS_IMPLEMENTATION
+#    define _STLP_EXPOSE_GLOBALS_IMPLEMENTATION 1
+#  endif
 
-#else
+#else /* _STLP_OWN_IOSTREAMS */
 /* when we are not using SGI iostreams, we must expose globals, but not streams implementation */
 #  define _STLP_EXPOSE_GLOBALS_IMPLEMENTATION
-#endif
+#endif /* _STLP_OWN_IOSTREAMS */
 
-# ifdef _STLP_PARTIAL_SPEC_NEEDS_TEMPLATE_ARGS
+#ifdef _STLP_PARTIAL_SPEC_NEEDS_TEMPLATE_ARGS
 #  define _STLP_PSPEC2(t1,t2) < t1,t2 >
 #  define _STLP_PSPEC3(t1,t2,t3) < t1,t2,t3 >
-# else
+#else
 #  define _STLP_PSPEC2(t1,t2)	/* nothing */
 #  define _STLP_PSPEC3(t1,t2,t3)	/* nothing */
-# endif
+#endif
 
 //Activation of the partial template workaround:
-# if !defined(_STLP_DONT_USE_PARTIAL_SPEC_WRKD) \
-    && (!defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) || !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER))
+#if !defined(_STLP_DONT_USE_PARTIAL_SPEC_WRKD) &&\
+   (!defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) || !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER))
 #  define _STLP_USE_PARTIAL_SPEC_WORKAROUND
-# endif
+#endif
 
-# if defined (_STLP_OWN_IOSTREAMS)
+#if defined (_STLP_OWN_IOSTREAMS)
 #  define _STLP_NEW_IO_NAMESPACE _STLP_STD
 #  define _STLP_NO_WIDE_STREAMS  _STLP_NO_WCHAR_T
-# else
+#else
 #  ifdef _STLP_USE_NEW_IOSTREAMS
-#   define _STLP_NEW_IO_NAMESPACE _STLP_VENDOR_STD
-#   ifdef _STLP_NO_NATIVE_WIDE_STREAMS
-#    define _STLP_NO_WIDE_STREAMS _STLP_NO_NATIVE_WIDE_STREAMS
-#   endif /* _STLP_NO_NATIVE_WIDE_STREAMS */
+#    define _STLP_NEW_IO_NAMESPACE _STLP_VENDOR_STD
+#    ifdef _STLP_NO_NATIVE_WIDE_STREAMS
+#      define _STLP_NO_WIDE_STREAMS _STLP_NO_NATIVE_WIDE_STREAMS
+#    endif /* _STLP_NO_NATIVE_WIDE_STREAMS */
 #  else
-#   define _STLP_NO_WIDE_STREAMS
-#   define _STLP_NEW_IO_NAMESPACE
+#    define _STLP_NO_WIDE_STREAMS
+#    define _STLP_NEW_IO_NAMESPACE
 #  endif
-# endif
+#endif
 
 #ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
 # define _STLP_RELOPS_OPERATORS(_TMPL, _TP) \
