@@ -209,17 +209,19 @@ public:
   is_specialized = true,
   is_signed = true, 
 
-#if (!defined(_CRAY) || !defined(_CRAYIEEE))
-   has_infinity     =  true,
-   has_quiet_NaN    =  true,
-   has_signaling_NaN=  true,
+  //IEC 559 specify the floating point representation of
+  //infinity, quite and signaling Not a Number. Not supporting
+  //it is concider as not being able to grant those values.
+#if (defined(_STLP_MSVC) && (_STLP_MSVC <= 1200))
+  //MSVC 6 do not fully support IEC 599 but grant a good infinity value.
+  has_infinity      = true,
 #else
-  has_infinity     =  false,
-  has_quiet_NaN    =  false,
-  has_signaling_NaN=  false,
+  has_infinity      = __IsIEC559,
 #endif
+  has_quiet_NaN     = __IsIEC559,
+  has_signaling_NaN = __IsIEC559,
 
-  has_denorm_loss  =  false,
+  has_denorm_loss   =  false,
   is_iec559      =  __IsIEC559,
   is_bounded     =  true,
   traps          =  true,
@@ -479,7 +481,11 @@ _STLP_TEMPLATE_NULL class   numeric_limits<float>
                             FLT_MAX_EXP,    // Maximum exponent
                             FLT_MIN_10_EXP, // Minimum base 10 exponent
                             FLT_MAX_10_EXP, // Maximum base 10 exponent
+# if defined (_STLP_NO_IEC559_SUPPORT)
+                            false,          // do not conform to iec559
+# else
                             true,           // conforms to iec559
+# endif
                             round_to_nearest>
 {
 public:
@@ -501,7 +507,11 @@ _STLP_TEMPLATE_NULL class   numeric_limits<double>
                             DBL_MAX_EXP,    // Maximum exponent
                             DBL_MIN_10_EXP, // Minimum base 10 exponent
                             DBL_MAX_10_EXP, // Maximum base 10 exponent
+# if defined (_STLP_NO_IEC559_SUPPORT)
+                            false,          // do not conform to iec559
+# else
                             true,           // conforms to iec559
+# endif
                             round_to_nearest>
 {
 public:
@@ -526,7 +536,7 @@ class   numeric_limits<long double>
                             LDBL_MAX_EXP,   // Maximum exponent
                             LDBL_MIN_10_EXP,// Minimum base 10 exponent
                             LDBL_MAX_10_EXP,// Maximum base 10 exponent
-                            false,          // Doesn't conform to iec559
+                            false,          // do not conform to iec559
                             round_to_nearest>
 {
 public:
