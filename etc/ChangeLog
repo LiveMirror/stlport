@@ -1,3 +1,25 @@
+2004-10-04  Francois Dumont  <dums@stlport...>
+
+	* test/unit/type_traits_test.cpp: A new test case to check behavior of
+	the numerous helper functions from type_traits.h and type_manips.h.
+	
+	* stlport/stl/type_traits.h: Fix of some bugs and addition of the __type_traits
+	specializations of const, volatile and const volatile native types.
+	
+	* stlport/stl/type_manips.h: Modification of the __bool2type default value
+	so that it concider any value as true and only the 0 value false.
+	
+	* stlport/config/stl_msvc.h, stlport/stl/_config.h: Modification of the STLport
+	std equivalent namespace to be sure that the user rebuild correctly the STLport 
+	library when he forces the use of the dynamic or static library.
+	
+	* src/explore/Makefiles/nmake/lib/vc-common.mak, app/vc-common.mak: Creation
+	of the STLP_BUILD_FORCE_STATIC_RUNTIME that forces use of the static version
+	of the native	runtime.
+	
+	* test/unit: fix of some tests that failed to compile using the 
+	_STLP_NO_ANACHRONISMS macro.
+	
 2004-09-30  Petr Ovtchenkov  <ptr@island...>
 
 	* test/regression: catalog removed---it obsolete and unsupported; use

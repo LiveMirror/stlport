@@ -30,8 +30,9 @@
  * NOTE: please do that only if you know what you are doing!
  * Changing default will require you to change makefile in "src" accordingly
  * and to rebuild STLPort library!
- * On UNIX, this has no effect. 
- *
+ * On UNIX, this has no effect.
+ * Check src/explore/README.options file for help in building the require
+ * STLport library version.
  */
 // #  define _STLP_USE_DYNAMIC_LIB
 
@@ -41,7 +42,8 @@
  * Changing default will require you to change makefile in "src" accordingly
  * and to rebuild STLPort library!
  * On UNIX, this has no effect. 
- *
+ * Check src/explore/README.options file for help in building the require
+ * STLport library version.
  */
 // # define _STLP_USE_STATIC_LIB
 # endif // !_STLP_USE_DYNAMIC_LIB && !_STLP_USE_STATIC_LIB
@@ -63,7 +65,7 @@
 
 /* 
  * _STLP_USE_OWN_NAMESPACE/_STLP_NO_OWN_NAMESPACE
- * If defined, STLport uses _STL:: namespace, else std::
+ * If defined, STLport uses own namespace, else std::
  * The reason you have to use separate namespace in wrapper mode is that new-style IO
  * compiled library may have its own idea about STL stuff (string, vector, etc.),
  * so redefining them in the same namespace would break ODR and may cause
@@ -81,10 +83,12 @@
  * memory chunks. Normally not required. But if you worry about quazi-leaks
  * (may be reported by some leaks detection tools), use
  * _STLP_LEAKS_PEDANTIC. It should be used with _STLP_USE_NEWALLOC or
- * _STLP_USE_MALLOC (see below).
+ * _STLP_USE_MALLOC (see below), the default node_alloc allocator also clean
+ * its internal memory pool but only if STLport is used as a dynamic library
+ * under Win32 (using MSVC like compilers).
  */
 
-#define _STLP_LEAKS_PEDANTIC 1
+// #define _STLP_LEAKS_PEDANTIC 1
 
 /* 
  * Uncomment _STLP_USE_NEWALLOC to force allocator<T> to use plain "new"

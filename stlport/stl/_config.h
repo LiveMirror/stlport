@@ -63,6 +63,16 @@
  */
 # include <stl_user_config.h>
 
+//For the STLport implementation we can use everything:
+#if defined (__BUILDING_STLPORT)
+#  if defined (_STLP_NO_ANACHRONISMS)
+#    undef _STLP_NO_ANACHRONISMS
+#  endif
+#  if defined (_STLP_NO_EXTENSIONS)
+#    undef _STLP_NO_EXTENSIONS
+#  endif
+#endif
+
 /* ========================================================= */
 /* This file is used for compatibility; it accepts old-style config
    switches */
@@ -590,14 +600,22 @@ namespace __std_alias = std;
 
 #  if defined (_STLP_USE_OWN_NAMESPACE)
 #    if !defined (_STLP_DEBUG)
-#      define _STLP_STD  stlp_std
+#      if !defined (_STLP_USING_CROSS_NATIVE_RUNTIME_LIB)
+#        define _STLP_STD  stlp_std
+#      else
+#        define _STLP_STD  stlpx_std
+#      endif
 #    else
 /*
  * The STLport debug mode is binary incompatible with the other modes,
  * lets make it clear on the STLport namespace to generate link errors rather
  * than runtime.
  */
-#      define _STLP_STD  stlpd_std
+#      if !defined (_STLP_USING_CROSS_NATIVE_RUNTIME_LIB)
+#        define _STLP_STD  stlpd_std
+#      else
+#        define _STLP_STD  stlpdx_std
+#      endif
 #    endif
 namespace _STLP_STD { }
 #  else

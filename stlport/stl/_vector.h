@@ -238,7 +238,7 @@ public:
   // Check whether it's an integral type.  If so, it's not an iterator.
   template <class _InputIterator>
   _VECTOR_IMPL(_InputIterator __first, _InputIterator __last,
-         const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL ) :
+               const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL ) :
     _Vector_base<_Tp, _Alloc>(__a) {
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_aux(__first, __last, _Integral());

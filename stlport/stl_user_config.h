@@ -10,7 +10,6 @@
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
- *
  */
 
 /*
@@ -22,7 +21,6 @@
  * to use consistent settings when you compile STLport library and your project. 
  * Those settings are defined in _site_config.h and have to be the same for a given
  * STLport installation.
- *
  */
 
  
@@ -38,7 +36,7 @@
  * If you want iostreams, you have to compile library in ../src and supply resulting
  * library at link time.
  */
-// # define _STLP_NO_IOSTREAMS 1
+// #define _STLP_NO_IOSTREAMS 1
 
 /* 
  * Set _STLP_DEBUG to turn the "Debug Mode" on.
@@ -90,7 +88,7 @@
  * to rename std:: for the user to _STL::. If you do not want this feature, 
  * please define the following switch :
  */
-// # define _STLP_DONT_REDEFINE_STD 1
+// #define _STLP_DONT_REDEFINE_STD 1
 
 
 /*
@@ -104,7 +102,7 @@
  * Otherwise this option is not recommended as it increases the size of your object files
  * and slows down compilation.
  */
-// # define _STLP_WHOLE_NATIVE_STD
+// #define _STLP_WHOLE_NATIVE_STD
 
 
 /*
@@ -114,8 +112,8 @@
  * Note : _STLP_DEBUG and _STLP_DEBUG_ALLOC don't set this option automatically.
  */
 
-// # define _STLP_DEBUG_UNINITIALIZED 1
-// # define _STLP_DEBUG_ALLOC 1
+// #define _STLP_DEBUG_UNINITIALIZED 1
+// #define _STLP_DEBUG_ALLOC 1
 
 /*
  * Uncomment and provide a definition for the byte with which raw memory
@@ -143,26 +141,26 @@
  *  Define this macro to disable anachronistic constructs (like the ones used in HP STL and
  *  not included in final standard, etc. 
  */
-// define _STLP_NO_ANACHRONISMS 1
+// #define _STLP_NO_ANACHRONISMS 1
 
 /*
  *  Define this macro to disable STLport extensions (for example, to make sure your code will 
  *  compile with some other implementation )
  */
-// define _STLP_NO_EXTENSIONS   1
+// #define _STLP_NO_EXTENSIONS   1
 
 /* 
  * You should define this macro if compiling with MFC - STLport <stl/_config.h>
  * then include <afx.h> instead of <windows.h> to get synchronisation primitives 
  */
-// # define _STLP_USE_MFC 1
+// #define _STLP_USE_MFC 1
 
 /*
  * boris : this setting is here as we cannot detect precense of new Platform SDK automatically 
  * If you are using new PSDK with VC++ 6.0 or lower,
  * please define this to get correct prototypes for InterlockedXXX functions
  */
-//# define _STLP_NEW_PLATFORM_SDK 1
+// #define _STLP_NEW_PLATFORM_SDK 1
 
 /*
  * Use minimum set of default arguments on template classes that have more
@@ -174,7 +172,7 @@
  * Affects : map<>, multimap<>, set<>, multiset<>, hash_*<>, 
  * queue<>, priority_queue<>, stack<>, istream_iterator<>
  */
-// # define _STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS 1
+// #define _STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS 1
 
 /*
  * The agregation of strings using the + operator is an expensive operation

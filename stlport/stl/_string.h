@@ -1381,8 +1381,8 @@ private:  // Helper functions for insert.
      * A user could encapsulate those iterator within their own iterator interface
      * and in this case lead to a bad behavior, this is a known limitation.
      */
-    typedef typename _AreSameTypes<_InputIter, iterator>::_Ret _IsIterator;
-    typedef typename _AreSameTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
     typedef typename _Lor2<_IsIterator, _IsConstIterator>::_Ret _CheckInside;
     _M_insert_aux(__p, __first, __last, _CheckInside());
   }
@@ -1545,8 +1545,8 @@ protected:                        // Helper functions for replace.
   _Self& _M_replace_dispatch(iterator __first, iterator __last,
                              _InputIter __f, _InputIter __l, const __false_type& /*IsIntegral*/) {
     _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
-    typedef typename _AreSameTypes<_InputIter, iterator>::_Ret _IsIterator;
-    typedef typename _AreSameTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
     typedef typename _Lor2<_IsIterator, _IsConstIterator>::_Ret _CheckInside;
     return _M_replace_aux(__first, __last, __f, __l, _CheckInside());
   }

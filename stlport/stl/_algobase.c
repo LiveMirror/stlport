@@ -166,18 +166,18 @@ _STLP_INLINE_LOOP _RandomAccessIter __find_if(_RandomAccessIter __first, _Random
 }
 
 template <class _InputIter, class _Tp>
-inline _InputIter __find(_InputIter __first, _InputIter __last,
-                         const _Tp& __val,
-                         const input_iterator_tag &) {
+_STLP_INLINE_LOOP _InputIter __find(_InputIter __first, _InputIter __last,
+                                    const _Tp& __val,
+                                    const input_iterator_tag &) {
   while (__first != __last && !(*__first == __val))
     ++__first;
   return __first;
 }
 
 template <class _InputIter, class _Predicate>
-inline _InputIter __find_if(_InputIter __first, _STLP_MPW_EXTRA_CONST _InputIter __last,
-                            _Predicate __pred,
-                            const input_iterator_tag &) {
+_STLP_INLINE_LOOP _InputIter __find_if(_InputIter __first, _STLP_MPW_EXTRA_CONST _InputIter __last,
+                                       _Predicate __pred,
+                                       const input_iterator_tag &) {
   while (__first != __last && !__pred(*__first))
     ++__first;
   return __first;

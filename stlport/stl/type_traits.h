@@ -224,7 +224,7 @@ struct _IsPtr {
 #    if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
 //This class avoid instanciation of the more complex class _IsPtr when _BoolType is __false_type
 template <class _CondT>
-struct _IsPtrCondAux/*<__false_type>*/ {
+struct _IsPtrIfAux/*<__false_type>*/ {
   template <class _Tp>
   struct _In {
     enum { _Ret = 0 };
@@ -232,7 +232,7 @@ struct _IsPtrCondAux/*<__false_type>*/ {
 };
 
 _STLP_TEMPLATE_NULL
-struct _IsPtrCondAux<__true_type> {
+struct _IsPtrIfAux<__true_type> {
   template <class _Tp>
   struct _In {
     enum { _Ret = _IsPtr<_Tp>::_Ret };
@@ -240,21 +240,21 @@ struct _IsPtrCondAux<__true_type> {
 };
 
 template <class _CondT, class _Tp>
-struct _IsPtrCond {
-  enum { _Ret = _IsPtrCondAux<_CondT>::_STLP_TEMPLATE _In<_Tp>::_Ret };
+struct _IsPtrIf {
+  enum { _Ret = _IsPtrIfAux<_CondT>::_STLP_TEMPLATE _In<_Tp>::_Ret };
 };
 
-//Idem _IsPtrAux but won't instanciate _IsPtr if _BoolType is __true_type
+//Idem _IsPtrIf but won't instanciate _IsPtr if _BoolType is __true_type
 template <typename _CondT>
-struct _IsPtrCondNotAux/*<__true_type>*/ {
+struct _IsPtrIfNotAux/*<__true_type>*/ {
   template <class _Tp>
   struct _In {
-    enum { _Ret = 1 };
+    enum { _Ret = 0 };
   };
 };
 
 _STLP_TEMPLATE_NULL
-struct _IsPtrCondNotAux<__false_type> {
+struct _IsPtrIfNotAux<__false_type> {
   template <class _Tp>
   struct _In {
     enum { _Ret = _IsPtr<_Tp>::_Ret };
@@ -262,24 +262,23 @@ struct _IsPtrCondNotAux<__false_type> {
 };
 
 template <class _CondT, class _Tp>
-struct _IsPtrCondNot {
-  enum { _Ret = _IsPtrCondNotAux<_CondT>::_STLP_TEMPLATE _In<_Tp>::_Ret };
+struct _IsPtrIfNot {
+  enum { _Ret = _IsPtrIfNotAux<_CondT>::_STLP_TEMPLATE _In<_Tp>::_Ret };
 };
 
 #    else /* _STLP_MEMBER_TEMPLATE_CLASSES */
 template <class _CondT, class _Tp>
-struct _IsPtrCond {
+struct _IsPtrIf {
   enum { _Ret = _IsPtr<_Tp>::_Ret };
 };
 
 template <class _CondT, class _Tp>
-struct _IsPtrCondNot {
+struct _IsPtrIfNot {
   enum { _Ret = _IsPtr<_Tp>::_Ret };
 };
 #    endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
 
 template <class _Tp>
-
 struct _IsPtrType {
 #    if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
   typedef typename _Is_integer<_Tp>::_Integral _Tr1;
@@ -287,7 +286,7 @@ struct _IsPtrType {
 
   typedef typename _Lor2<_Tr1, _Tr2>::_Ret _Tr3;
 
-  enum { _Is = _IsPtrCond<_Tr3, _Tp>::_Ret } ;
+  enum { _Is = _IsPtrIfNot<_Tr3, _Tp>::_Ret } ;
 #    else
   enum { _Is =  _IsPtr<_Tp>::_Ret } ;
 #    endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
@@ -304,7 +303,7 @@ struct _BothPtrType {
 
   typedef typename _Lor2<_Tr11, _Tr12>::_Ret _Tr13;
 
-  enum { _Is1 = _IsPtrCond<_Tr13, _Tp1>::_Ret } ;
+  enum { _Is1 = _IsPtrIfNot<_Tr13, _Tp1>::_Ret } ;
 #    else
   enum { _Is1 =  _IsPtr<_Tp1>::_Ret } ;
 #    endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
@@ -316,11 +315,13 @@ struct _BothPtrType {
   typedef typename _Is_rational<_Tp2>::_Rational _Tr22;
 
   typedef typename _Lor2<_Tr21, _Tr22>::_Ret _Tr23;
-  typedef typename _Land2<_Tr23, _Type1>::_Ret _Tr24;
+  typedef typename _Not<_Tr23>::_Ret _Tr24;
 
-  enum { _Is2 = _IsPtrCond<_Tr24, _Tp2>::_Ret } ;
+  typedef typename _Land2<_Tr24, _Type1>::_Ret _Tr25;
+
+  enum { _Is2 = _IsPtrIf<_Tr25, _Tp2>::_Ret } ;
 #    else
-  enum { _Is2 =  _IsPtrCond<_Type1, _Tp2>::_Ret } ;
+  enum { _Is2 =  _IsPtrIf<_Type1, _Tp2>::_Ret } ;
 #    endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
   typedef __bool2type< _Is2 > _B2;
   typedef typename _B2::_Ret _Type2;
@@ -386,41 +387,47 @@ template <class _Tp> struct __type_traits<_Tp*> : __type_traits_aux<1> {};
 // Provide some specializations.  This is harmless for compilers that
 //  have built-in __types_traits support, and essential for compilers
 //  that don't.
+#define _STLP_DEFINE_TYPE_TRAITS_FOR(Type) \
+_STLP_TEMPLATE_NULL struct __type_traits< Type > : __type_traits_aux<1> {}; \
+_STLP_TEMPLATE_NULL struct __type_traits< const Type > : __type_traits_aux<1> {}; \
+_STLP_TEMPLATE_NULL struct __type_traits< volatile Type > : __type_traits_aux<1> {}; \
+_STLP_TEMPLATE_NULL struct __type_traits< const volatile Type > : __type_traits_aux<1> {}
+
 #  ifndef _STLP_NO_BOOL
-_STLP_TEMPLATE_NULL struct __type_traits<bool> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(bool);
 #  endif /* _STLP_NO_BOOL */
-_STLP_TEMPLATE_NULL struct __type_traits<char> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(char);
 #  ifndef _STLP_NO_SIGNED_BUILTINS
-_STLP_TEMPLATE_NULL struct __type_traits<signed char> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(signed char);
 #  endif
-_STLP_TEMPLATE_NULL struct __type_traits<unsigned char> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(unsigned char);
 #  if defined ( _STLP_HAS_WCHAR_T ) && ! defined (_STLP_WCHAR_T_IS_USHORT)
-_STLP_TEMPLATE_NULL struct __type_traits<wchar_t> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(wchar_t);
 #  endif /* _STLP_HAS_WCHAR_T */
 
-_STLP_TEMPLATE_NULL struct __type_traits<short> : __type_traits_aux<1> {};
-_STLP_TEMPLATE_NULL struct __type_traits<unsigned short> : __type_traits_aux<1> {};
-_STLP_TEMPLATE_NULL struct __type_traits<int> : __type_traits_aux<1> {};
-_STLP_TEMPLATE_NULL struct __type_traits<unsigned int> : __type_traits_aux<1> {};
-_STLP_TEMPLATE_NULL struct __type_traits<long> : __type_traits_aux<1> {};
-_STLP_TEMPLATE_NULL struct __type_traits<unsigned long> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(short);
+_STLP_DEFINE_TYPE_TRAITS_FOR(unsigned short);
+_STLP_DEFINE_TYPE_TRAITS_FOR(int);
+_STLP_DEFINE_TYPE_TRAITS_FOR(unsigned int);
+_STLP_DEFINE_TYPE_TRAITS_FOR(long);
+_STLP_DEFINE_TYPE_TRAITS_FOR(unsigned long);
 
 #  ifdef _STLP_LONG_LONG
-_STLP_TEMPLATE_NULL struct __type_traits<_STLP_LONG_LONG> : __type_traits_aux<1> {};
-_STLP_TEMPLATE_NULL struct __type_traits<unsigned _STLP_LONG_LONG> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(_STLP_LONG_LONG);
+_STLP_DEFINE_TYPE_TRAITS_FOR(unsigned _STLP_LONG_LONG);
 #  endif /* _STLP_LONG_LONG */
 
-_STLP_TEMPLATE_NULL struct __type_traits<float> : __type_traits_aux<1> {};
-_STLP_TEMPLATE_NULL struct __type_traits<double> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(float);
+_STLP_DEFINE_TYPE_TRAITS_FOR(double);
 
 #  if !defined ( _STLP_NO_LONG_DOUBLE )
-_STLP_TEMPLATE_NULL struct __type_traits<long double> : __type_traits_aux<1> {};
+_STLP_DEFINE_TYPE_TRAITS_FOR(long double);
 #  endif
 
 template <class _Tp1, class _Tp2>
 struct _OKToMemCpy {
   typedef typename __type_traits<_Tp1>::has_trivial_assignment_operator _Tr1;
-  typedef typename _AreSameTypes<_Tp1, _Tp2>::_Ret _Tr2;
+  typedef typename _AreSameUnCVTypes<_Tp1, _Tp2>::_Ret _Tr2;
   typedef typename _Land2<_Tr1, _Tr2>::_Ret _Type;
   static _Type _Answer() { return _Type(); }
 };
@@ -433,7 +440,7 @@ struct _DefaultZeroValue {
   typedef typename _Lor2<_Tr1, _Tr2>::_Ret _Tr3;
 
 #  if defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS)
-  enum { _IsPtrVal = _IsPtrCondNot<_Tr3, _Tp>::_Ret };
+  enum { _IsPtrVal = _IsPtrIfNot<_Tr3, _Tp>::_Ret };
 #  else
   enum { _IsPtrVal = _IsPtr<_Tp>::_Ret };
 #  endif /* !_STLP_CLASS_PARTIAL_SPECIALIZATION && _STLP_MEMBER_TEMPLATE_CLASSES*/

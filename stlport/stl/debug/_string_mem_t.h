@@ -295,8 +295,8 @@ public:                         // Insert
     _STLP_DEBUG_CHECK(__check_if_owner(&this->_M_iter_list,__p))
     _STLP_DEBUG_CHECK(__check_range(__first,__last))
 
-    typedef typename _AreSameTypes<_InputIter, iterator>::_Ret _IsNonConstIterator;
-    typedef typename _AreSameTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsNonConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
     typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _IsIterator;
 
     size_type __old_capacity = this->capacity();
@@ -402,8 +402,8 @@ public:                         // Replace.  (Conceptually equivalent
     _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
     _STLP_DEBUG_CHECK(__check_range(__f, __l))
 
-    typedef typename _AreSameTypes<_InputIter, iterator>::_Ret _IsNonConstIterator;
-    typedef typename _AreSameTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsNonConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
     typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _IsIterator;
 
     size_type __old_capacity = this->capacity();

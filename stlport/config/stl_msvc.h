@@ -243,18 +243,33 @@
 #  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 # endif
 
-#if (defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || \
-     defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB)) && \
-    !defined(_STLP_USE_STATIC_LIB)
-#  undef  _STLP_USE_DECLSPEC
-#  define _STLP_USE_DECLSPEC 1
-#  if !defined (_STLP_USE_DYNAMIC_LIB)
-#    define _STLP_USE_DYNAMIC_LIB
+#if defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || defined(_AFXDLL)
+#  if !defined (_STLP_USE_STATIC_LIB)
+#    if !defined (_STLP_USE_DYNAMIC_LIB)
+#      define _STLP_USE_DYNAMIC_LIB
+#    endif
+#  else
+/* The user is forcing use of STLport as a dynamic library. We signal it so
+ * that the STLport namespace will be modify to report such a combination 
+ * and force the user to link with the rebuild STLport library.
+ */
+#    define _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
 #  endif
 #else
-#  if !defined (_STLP_USE_STATIC_LIB)
-#    define _STLP_USE_STATIC_LIB
+#  if !defined(_STLP_USE_DYNAMIC_LIB)
+#    if !defined (_STLP_USE_STATIC_LIB)
+#      define _STLP_USE_STATIC_LIB
+#    endif
+#  else
+/* Idem previous remark but the user forces use of the static native runtime.
+ */
+#    define _STLP_USING_CROSS_NATIVE_RUNTIME_LIB
 #  endif
+#endif
+
+#if defined(_STLP_USE_DYNAMIC_LIB)
+#  undef  _STLP_USE_DECLSPEC
+#  define _STLP_USE_DECLSPEC 1
 #endif
 
 # ifndef _STLP_IMPORT_TEMPLATE_KEYWORD

@@ -216,8 +216,8 @@ public:
     _STLP_DEBUG_CHECK(__check_range(__first, __last))
     
 # if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
-    typedef typename _AreSameTypes<_InputIterator, iterator>::_Ret _IsListIterator;
-    typedef typename _AreSameTypes<_InputIterator, const_iterator>::_Ret _IsListConstIterator;
+    typedef typename _AreSameUnCVTypes<_InputIterator, iterator>::_Ret _IsListIterator;
+    typedef typename _AreSameUnCVTypes<_InputIterator, const_iterator>::_Ret _IsListConstIterator;
     typedef typename _Lor2<_IsListIterator, _IsListConstIterator>::_Ret _DoCheck;
     _STLP_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()))
 # endif

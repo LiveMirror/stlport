@@ -208,7 +208,7 @@ __value_type(const _Iter&, const __false_type&) {
 }
 
 template <class _Tp>
-inline _Tp*  
+inline _Tp*
 __value_type(const _Tp*, const __true_type&) {
   return __STATIC_CAST(_Tp*, 0);
 }
