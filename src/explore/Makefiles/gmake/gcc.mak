@@ -1,10 +1,11 @@
-# Time-stamp: <03/11/30 11:46:14 ptr>
+# Time-stamp: <04/07/02 23:33:15 ptr>
 # $Id$
+
 
 #INCLUDES = -I$(SRCROOT)/include
 INCLUDES :=
 
-CXX := g++
+CXX := c++
 CC := gcc
 
 ifeq ($(OSNAME), cygwin)
