@@ -54,6 +54,15 @@ void ListTest::list1()
   CPPUNIT_ASSERT(*i2++==9);
   CPPUNIT_ASSERT(*i2++==16);
   CPPUNIT_ASSERT(*i2++==36);
+
+  //A small compilation time check to be activated from time to time:
+#if 0
+  {
+    list<char>::iterator l_char_ite;
+    list<int>::iterator l_int_ite;
+    CPPUNIT_ASSERT( l_char_ite != l_int_ite );
+  }
+#endif
 }
 void ListTest::list2()
 {

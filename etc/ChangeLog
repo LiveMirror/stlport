@@ -1,3 +1,11 @@
+2004-10-07  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_list.h: Specialization of the __type_traits struct for list iterators.
+	Move of the == and != operators from the base iterator class to the iterator class
+	to make iterator of different list instanciation not comparable anymore.
+	
+	* stlport/stl/_slist.h: ditto.
+	
 2004-10-06  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_rope.h, _rope.c: Code review, use of general STLport tools rather

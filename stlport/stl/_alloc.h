@@ -252,16 +252,18 @@ private:
   // Amount of total allocated memory
   static size_t _S_heap_size;
 #ifdef _STLP_DO_CLEAN_NODE_ALLOC
+  //A helper class to guaranty the memory pool management:
+  //friend struct _Node_alloc_helper;
+  //Some compilers (MSVC) seems to have trouble with friend declarations:
+public:
   // Methods to report alloc/dealloc calls to the counter system.
   static size_t& _STLP_CALL _S_alloc_call(size_t incr = 1);
   static void _STLP_CALL _S_dealloc_call();
+private:
   // Free all the allocated chuncks of memory
   static void _STLP_CALL _S_chunk_dealloc();
   // Beginning of the linked list of allocated chunks of memory
   static _Obj *_S_chunks;
-
-  //A helper class to guaranty the memory pool management:
-  friend struct _Node_alloc_helper;
 #endif
   static void * _STLP_CALL _M_allocate(size_t __n);
   /* __p may not be 0 */

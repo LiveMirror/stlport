@@ -97,12 +97,6 @@ struct _List_iterator_base {
 
   void _M_incr() { _M_node = _M_node->_M_next; }
   void _M_decr() { _M_node = _M_node->_M_prev; }
-  bool operator==(const _List_iterator_base& __y ) const {
-    return _M_node == __y._M_node;
-  }
-  bool operator!=(const _List_iterator_base& __y ) const {
-    return _M_node != __y._M_node;
-  }
 };
 
 
@@ -115,6 +109,8 @@ struct _List_iterator : public _List_iterator_base {
   typedef _List_iterator<_Tp, _Traits>         _Self;
   typedef typename _Traits::_NonConstTraits    _NonConstTraits;
   typedef _List_iterator<_Tp, _NonConstTraits> iterator;
+  typedef typename _Traits::_ConstTraits       _ConstTraits;
+  typedef _List_iterator<_Tp, _ConstTraits>    const_iterator;
 
   typedef bidirectional_iterator_tag iterator_category;
   typedef _List_node<_Tp> _Node;
@@ -148,7 +144,24 @@ struct _List_iterator : public _List_iterator_base {
     this->_M_decr();
     return __tmp;
   }
+  bool operator==(const_iterator __y ) const {
+    return this->_M_node == __y._M_node;
+  }
+  bool operator!=(const_iterator __y ) const {
+    return this->_M_node != __y._M_node;
+  }
 };
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Tp, class _Traits>
+struct __type_traits<_List_iterator<_Tp, _Traits> > {
+  typedef __false_type   has_trivial_default_constructor;
+  typedef __true_type    has_trivial_copy_constructor;
+  typedef __true_type    has_trivial_assignment_operator;
+  typedef __true_type    has_trivial_destructor;
+  typedef __false_type   is_POD_type;
+};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 #ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 template <class _Tp, class _Traits>

@@ -82,6 +82,15 @@ sorted: lst
   buff=os4.rdbuf();
   result=buff->str();
   CPPUNIT_ASSERT(!strcmp(result.c_str(),"lst"));
+
+  //A small compilation time check to be activated from time to time:
+#if 0
+  {
+    slist<char>::iterator sl_char_ite;
+    slist<int>::iterator sl_int_ite;
+    CPPUNIT_ASSERT( sl_char_ite != sl_int_ite );
+  }
+#endif
 }
 
 void SlistTest::erase()

@@ -74,18 +74,11 @@ struct _Slist_iterator_base {
   _Slist_iterator_base(_Slist_node_base *__x) : _M_node(__x) {}
 
   void _M_incr() { 
-//    _STLP_VERBOSE_ASSERT(_M_node != 0, _StlMsg_INVALID_ADVANCE)
     _M_node = _M_node->_M_next; 
-  }
-  bool operator==(const _Slist_iterator_base& __y ) const { 
-    return _M_node == __y._M_node; 
-  }
-  bool operator!=(const _Slist_iterator_base& __y ) const { 
-    return _M_node != __y._M_node; 
   }
 };
 
-# ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
+#ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 inline ptrdiff_t* _STLP_CALL distance_type(const _Slist_iterator_base&) { return 0; }
 inline forward_iterator_tag _STLP_CALL iterator_category(const _Slist_iterator_base&) { return forward_iterator_tag(); }
 #endif
@@ -103,6 +96,8 @@ public:
   typedef _Slist_iterator<_Tp, _Traits>         _Self;
   typedef typename _Traits::_NonConstTraits     _NonConstTraits;
   typedef _Slist_iterator<_Tp, _NonConstTraits> iterator;
+  typedef typename _Traits::_ConstTraits        _ConstTraits;
+  typedef _Slist_iterator<_Tp, _ConstTraits>    const_iterator;
 
   typedef _Slist_node<value_type> _Node;
 
@@ -124,7 +119,25 @@ public:
     _M_incr();
     return __tmp;
   }
+
+  bool operator==(const_iterator __y ) const {
+    return this->_M_node == __y._M_node;
+  }
+  bool operator!=(const_iterator __y ) const {
+    return this->_M_node != __y._M_node;
+  }
 };
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+template <class _Tp, class _Traits>
+struct __type_traits<_Slist_iterator<_Tp, _Traits> > {
+  typedef __false_type   has_trivial_default_constructor;
+  typedef __true_type    has_trivial_copy_constructor;
+  typedef __true_type    has_trivial_assignment_operator;
+  typedef __true_type    has_trivial_destructor;
+  typedef __false_type   is_POD_type;
+};
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 #ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 template <class _Tp, class _Traits>

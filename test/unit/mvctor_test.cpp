@@ -105,6 +105,30 @@ void MoveConstructorTest::move_construct_test()
   swap(elem1, elem2);
   CPPUNIT_ASSERT(((p1 == &elem2.front()) && (p2 == &elem1.front())));
 
+  {
+    vector<bool> bit_vec(5, true);
+    bit_vec.insert(bit_vec.end(), 5, false);
+    vector<vector<bool> > v_v_bits(1, bit_vec);
+
+    /*
+     * This is a STLport specific test as we are using internal implementation
+     * details to check that the move has been correctly handled. For other
+     * STL implementation it is only a compile check.
+     */
+#ifdef STLPORT
+    unsigned int *punit = v_v_bits.front().begin()._M_p;
+#endif
+
+    size_t cur_capacity = v_v_bits.capacity();
+    while (v_v_bits.capacity() <= cur_capacity) {
+      v_v_bits.push_back(bit_vec);
+    }
+
+#ifdef STLPORT
+    //v_v_bits has been resized
+    CPPUNIT_ASSERT( punit == v_v_bits.front().begin()._M_p );
+#endif
+  }
 
   // zero: don't like this kind of tests
   // because of template test function 

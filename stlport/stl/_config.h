@@ -626,7 +626,9 @@ namespace stdD = std;
 #  endif /* _STLP_USE_OWN_NAMESPACE */
 
 #  define _STLP_PRIV     stlp_private
-namespace _STLP_PRIV {}
+namespace _STLP_PRIV {
+  using namespace _STLP_STD;
+}
 
 #  define _STLP_BEGIN_NAMESPACE namespace _STLP_STD {
 #  define _STLP_END_NAMESPACE }
