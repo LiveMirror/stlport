@@ -1,3 +1,27 @@
+2005-03-04  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_cmath.h: removed recursive include of cmath header
+	
+	* src/complex_impl.h: include cmath instead of stl/_cmath.h
+
+	* stlport/stl/_complex.h: idem.
+
+	* stlport/stl/_valarray.h: idem.
+
+	* test/unit/unary.h: workaround for namespace resolution.
+
+	* test/unit/resolve_name.cpp: test to show problem with namespace resolution.
+
+	* stlport/cmath, stlport/stl/_cmath.h: standard require overloaded math
+	functions for double and float arguments. Import with 'using' directive
+	can't provide such overload. Removed import with 'using', used direct
+	inline wrappers in namespace stlp_std instead. Cleaning code.
+
+	* stlport/cstdlib: complement to cmath---the same as above for abs.
+
+	* stlport/stl/_config.h: uClibc declare pthread_spin... but ones absent
+	in the library indeed.
+
 2005-03-02  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/top.mak: move .PHONY target to the bottom, it work here
