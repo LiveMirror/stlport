@@ -46,6 +46,7 @@ enum {
   _StlMsg_ERASE_PAST_THE_END,
   _StlMsg_OUT_OF_BOUNDS,
   _StlMsg_NOT_OWNER,
+  _StlMsg_SHOULD_NOT_OWNER,
   _StlMsg_INVALID_ITERATOR,
   _StlMsg_INVALID_LEFTHAND_ITERATOR,
   _StlMsg_INVALID_RIGHTHAND_ITERATOR,
@@ -70,7 +71,7 @@ enum {
 };
 
 /* have to hardcode that ;() */
-# define _StlMsg_MAX 27
+# define _StlMsg_MAX 28
 
 _STLP_BEGIN_NAMESPACE
 
@@ -114,7 +115,9 @@ struct __stl_debug_engine {
                                              const __owned_link& __i2);
   static bool _STLP_CALL  _Check_same_or_null_owner( const __owned_link& __i1, 
                                                      const __owned_link& __i2);
-  static bool  _STLP_CALL _Check_if_owner( const __owned_list*, const __owned_link&);
+  static bool _STLP_CALL  _Check_if_owner( const __owned_list*, const __owned_link&);
+
+  static bool _STLP_CALL  _Check_if_not_owner( const __owned_list*, const __owned_link&);
 
   static void _STLP_CALL  _Verify(const __owned_list*);
   
@@ -401,14 +404,14 @@ template <class _Iterator>
 inline bool _STLP_CALL __check_if_not_owner( const __owned_list* __owner,
                                              const _Iterator& __it,
                                              const __false_type&) {
-  return false;
+  return true;
 }
 
 template <class _Iterator>
 inline bool _STLP_CALL __check_if_not_owner( const __owned_list* __owner,
                                              const _Iterator& __it,
                                              const __true_type&) {
-  return !__check_if_owner(__owner, __it);
+  return __stl_debugger::_Check_if_not_owner(__owner, (const __owned_link&)__it);
 }
 
 

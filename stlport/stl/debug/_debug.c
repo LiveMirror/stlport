@@ -211,6 +211,7 @@ _STLP_STRING_LITERAL("Trying to extract an object out from empty container"),\
 _STLP_STRING_LITERAL("Past-the-end iterator could not be erased"),  \
 _STLP_STRING_LITERAL("Index out of bounds"),  \
 _STLP_STRING_LITERAL("Container doesn't own the iterator"),  \
+_STLP_STRING_LITERAL("Container is own of the iterator, but should not"),  \
 _STLP_STRING_LITERAL("Uninitialized or invalidated (by mutating operation) iterator used"),  \
 _STLP_STRING_LITERAL("Uninitialized or invalidated (by mutating operation) lefthand iterator in expression"),  \
 _STLP_STRING_LITERAL("Uninitialized or invalidated (by mutating operation) righthand iterator in expression"),  \
@@ -491,6 +492,14 @@ __stl_debug_engine<_Dummy>::_Check_if_owner( const __owned_list * __l, const __o
   return true;
 }
 
+template <class _Dummy>
+bool _STLP_CALL
+__stl_debug_engine<_Dummy>::_Check_if_not_owner( const __owned_list * __l, const __owned_link& __it) {
+  const __owned_list* __owner_ptr = __it._Owner();
+  _STLP_VERBOSE_RETURN(__owner_ptr!=0, _StlMsg_INVALID_ITERATOR)
+  _STLP_VERBOSE_RETURN(__l!=__owner_ptr, _StlMsg_SHOULD_NOT_OWNER)
+  return true;
+}
 
 _STLP_END_NAMESPACE
 
