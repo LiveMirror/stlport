@@ -1,3 +1,18 @@
+2004-09-24  Petr Ovtchenkov  <ptr@island...>
+
+	* src/explore/Makefiles/gmake/sunos: 'explore' makesystem adopted to work
+	under Solaris with GNU make.
+
+	* test/unit/gcc.mak: ditto.
+
+	* src/explore/Makefiles/gmake/app/gcc.mak: ditto.
+
+	* src/explore/Makefiles/gmake/lib/gcc.mak: ditto.
+
+	* stlport/cmath: fix some math calls for Solaris.
+
+	* test/unit/list_test.cpp: add illustration for list iterator/reverse_iterator questions.
+
 2004-09-21  Francois Dumont  <dums@...>
 
 	* stlport/stl/debug: Modification of the __check_range class in the more general
@@ -87,7 +102,7 @@
 	or _STLP_USE_DYNAMIC_LIB depending on the current kind of build.
 	
 	* stlport/stl/_streambuf.h, _streambug.c: Fix an unresolved symbol 
-  problem for MSVC6 (and before?) when STLport is used as a static library.
+	problem for MSVC6 (and before?) when STLport is used as a static library.
 
 2004-09-06  Francois Dumont  <dums@...>
 
