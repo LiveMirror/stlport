@@ -135,9 +135,10 @@ CXX = $(CC)
 
 # DEBUG_FLAGS= -D_STLP_DEBUG
 
-CXXFLAGS = -Wl,+vshlibunsats -AA ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
+# CXXFLAGS = -Wl,+vshlibunsats -AA ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
+CXXFLAGS = -AA ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
 
-LIBS = -L../../lib -lstlport_aCC -lm ${PTHREAD_LIB}
+LIBS = +nostl -L../../lib -lstlport_aCC -lm ${PTHREAD_LIB}
 LIBSTDCXX = 
 
 check: $(TEST)
@@ -177,5 +178,5 @@ clean:
 
 #Work around bug in compiler: disable inlining
 hmap1.o: hmap1.cpp
-	aCC +d -g0 -Wl,+vshlibunsats -Aa -I../../stlport -I. hmap1.cpp -c -o hmap1.o
+	aCC +d -g0 -Wl,+vshlibunsats -AA -I../../stlport -I. hmap1.cpp -c -o hmap1.o
 

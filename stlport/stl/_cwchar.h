@@ -16,7 +16,11 @@
 #ifndef _STLP_CWCHAR_H
 # define _STLP_CWCHAR_H
 
+#ifdef __cplusplus
 # include <cwchar>
+#else
+# include <wchar.h>
+#endif
 
 # if defined (__MRC__) || defined (__SC__) || defined (__BORLANDC__) || defined(__FreeBSD__) || (defined (__GNUC__) && defined (__APPLE__) || defined( __Lynx__ )) || defined (_STLP_NO_WCHAR_T)
 

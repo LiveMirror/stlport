@@ -101,14 +101,16 @@
 // but the beta still has an issue with template classes
 // ok:    class a { static const int v = 2; };
 // error: template &lt;class _Tp> class a { static const int v = 2; };
+#  if !defined (_STLP_WHOLE_NATIVE_STD) && ! defined (_STLP_REDEFINE_STD)
+#    define _STLP_REDEFINE_STD
+#  endif
 # endif /* (_MSC_VER <= 1300) */
 
 # if (_MSC_VER <= 1200)  // including MSVC 6.0
 //  these work, as long they are inline
-#   define _STLP_INLINE_MEMBER_TEMPLATES 1
+#  define _STLP_INLINE_MEMBER_TEMPLATES 1
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
 #  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
-
 #  define _STLP_GLOBAL_NEW_HANDLER
 # endif /* (_MSC_VER <= 1200) */
 

@@ -307,7 +307,7 @@ struct eh_select1st_hint : public unary_function<Pair, U> {
 #endif
 
 #if defined (EH_USE_NAMESPACES) && !defined(_STLP_VENDOR_GLOBAL_CSTD)
-# define USING_CSTD_NAME(name) using EH_STD :: name;
+# define USING_CSTD_NAME(name) using EH_CSTD :: name;
 #else
 # define USING_CSTD_NAME(name)
 #endif

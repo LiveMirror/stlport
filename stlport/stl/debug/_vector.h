@@ -262,7 +262,7 @@ public:
     _Base::clear();
   }
   void push_back(const _Tp& __x) {
-    if (size()+1 > capacity()) _M_iter_list._Invalidate_all();
+    if (this->size()+1 > this->capacity()) _M_iter_list._Invalidate_all();
     _Base::push_back(__x);
   }
 };
