@@ -17,7 +17,7 @@ int copy2_test(int, char**)
 {
   cout<<"Results of copy2_test:"<<endl;
   vector <int> v(10);
-  for(int i = 0; i < v.size(); i++)
+  for(size_t i = 0; i < v.size(); i++)
     v[i] = i;
   ostream_iterator<int> iter(cout, " ");
   copy(v.begin(), v.end(), iter);

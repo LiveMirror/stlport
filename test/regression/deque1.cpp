@@ -22,7 +22,7 @@ int deque1_test(int, char**)
   d.push_back(9);
   d.push_back(16);
   d.push_front(1); // Insert at beginning.
-  int i;
+  size_t i;
   for(i = 0; i < d.size(); i++)
     cout << "d[" << i << "] = " << d[i] << endl;
   cout << endl;

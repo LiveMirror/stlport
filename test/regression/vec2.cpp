@@ -15,7 +15,7 @@ using namespace std;
 
 static void print(vector<double>& vector_)
 {
-  for(int i = 0; i < vector_.size(); i++)
+  for(size_t i = 0; i < vector_.size(); i++)
     cout << vector_[i] << " ";
   cout << endl;
 }

@@ -16,7 +16,7 @@ int lwrbnd1_test(int, char**)
 {
   cout<<"Results of lwrbnd1_test:"<<endl;
   std::vector <int> v1(20);
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
   {
     v1[i] = i/4;
     cout << v1[i] << ' ';

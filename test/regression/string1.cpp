@@ -16,7 +16,7 @@ int string1_test(int, char**)
   cout<<"Results of string1_test:"<<endl;
   char* array = "Hello, World!";
   std::string v(array);
-  int i;
+  size_t i;
   cout << v << endl;
   v.erase(v.begin() + 1, v.end() - 1); // Erase all but first and last.
   for(i = 0; i < v.size(); i++)

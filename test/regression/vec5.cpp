@@ -18,7 +18,7 @@ int vec5_test(int, char**)
 int array [] = { 1, 4, 9, 16 };
 
   vector<int> v(array, array + 4);
-  for(int i = 0; i < v.size(); i++)
+  for(size_t i = 0; i < v.size(); i++)
     cout << "v[" << i << "] = " << v[i] << endl;
   return 0;
 }

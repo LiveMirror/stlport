@@ -17,7 +17,7 @@ int advance_test(int, char**)
   cout<<"Results of advance_test:"<<endl;
   typedef vector <int> IntVector;
   IntVector v(10);
-  for(int i = 0; i < v.size(); i++)
+  for(size_t i = 0; i < v.size(); i++)
     v[i] = i;
   IntVector::iterator location = v.begin();
   cout << "At Beginning: " << *location << endl;

@@ -12,7 +12,7 @@
 #endif
 static bool odd(int a_)
 {
-  return a_ % 2;
+  return (a_ % 2) != 0;
 }
 
 #if !defined (STLPORT) || defined(__STL_USE_NAMESPACES)
@@ -23,7 +23,7 @@ int repcpif1_test(int, char**)
   cout<<"Results of repcpif1_test:"<<endl;
 
   vector <int> v1(10);
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
     v1[i] = i % 5;
   ostream_iterator <int> iter(cout, " ");
   copy(v1.begin(), v1.end(), iter);

@@ -28,7 +28,7 @@ char* names[] = { "aa", "ff", "dd", "ee", "cc", "bb" };
 
   const unsigned nameSize = sizeof(names) / sizeof(names[0]);
   vector <char*> v1(nameSize);
-  for(int i = 0; i < v1.size(); i++)
+  for(size_t i = 0; i < v1.size(); i++)
     v1[i] = names[i];
   ostream_iterator<char*> iter(cout, " ");
   copy(v1.begin(), v1.end(), iter);

@@ -21,7 +21,7 @@ int array2 [] = { 9, 16 };
   vector<int> v(array1, array1 + 3);
   v.insert(v.begin(), 0); // Insert before first element.
   v.insert(v.end(), 36); // Insert after last element.
-  int i;
+  size_t i;
   for(i = 0; i < v.size(); i++)
     cout << "v[" << i << "] = " << v[i] << endl;
   cout << endl;
