@@ -48,10 +48,18 @@ _STLP_BEGIN_NAMESPACE
   static const long double ldouble_limit = ldouble_ulimit.ld;
 # endif
 #else
+# if defined(M_LN2) && defined(FLT_MAX_EXP)
+  static const float float_limit = float(M_LN2*FLT_MAX_EXP);
+  static const double double_limit = M_LN2*DBL_MAX_EXP;
+#  ifndef _STLP_NO_LONG_DOUBLE
+  static const long double ldouble_limit = M_LN2l * LDBL_MAX_EXP;
+#  endif
+# else
   static const float float_limit = log(FLT_MAX);
   static const double double_limit = log(DBL_MAX);
-# ifndef _STLP_NO_LONG_DOUBLE
+#  ifndef _STLP_NO_LONG_DOUBLE
   static const long double ldouble_limit = log(LDBL_MAX);
+#  endif
 # endif
 #endif
 
