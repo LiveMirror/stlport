@@ -45,9 +45,6 @@ public:
 #  endif
 
 public:                         // Constructor, destructor, assignment.
-  typedef typename _Base::_Reserve_t _Reserve_t;
-
-public:
   basic_string() :
     _STLP_NON_DBG_STRING_BASE() {}
   
