@@ -26,7 +26,7 @@
 // Note that the template class complex is declared within namespace
 // std, as called for by the draft C++ standard.  
 
-#include <cmath>
+#include <stl/_cmath.h>
 #include <iosfwd>
 
 _STLP_BEGIN_NAMESPACE

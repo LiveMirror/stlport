@@ -19,8 +19,8 @@
 #ifndef _STLP_VALARRAY_H
 #define _STLP_VALARRAY_H
 
-#ifndef _STLP_CMATH
-#include <cmath>
+#ifndef _STLP_CMATH_H_HEADER
+#include <stl/_cmath.h>
 #endif
 #ifndef _STLP_INTERNAL_NEW_HEADER
 #include <stl/_new.h>

@@ -16,7 +16,7 @@
 #ifndef _STLP_CMATH_H_HEADER
 # define _STLP_CMATH_H_HEADER
 
-
+# include <cmath>
 
 _STLP_BEGIN_NAMESPACE
 
