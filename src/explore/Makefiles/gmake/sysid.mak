@@ -9,11 +9,13 @@ OSNAME := $(shell uname -s | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr '
 # RedHat use nonstandard options for uname at least in cygwin,
 # macro should be overwritten:
 ifeq (cygwin,$(findstring cygwin,$(OSNAME)))
-OSNAME := $(shell uname -o | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
+OSNAME    := cygming
+OSREALNAME := $(shell uname -o | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
 endif
 
 ifeq (mingw,$(findstring mingw,$(OSNAME)))
-OSNAME := mingw
+OSNAME    := cygming
+OSREALNAME := mingw
 endif
 
 OSREL  := $(shell uname -r | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')

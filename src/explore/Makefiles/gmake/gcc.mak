@@ -8,7 +8,7 @@ INCLUDES :=
 CXX := c++
 CC := gcc
 
-ifeq ($(OSNAME), cygwin)
+ifeq ($(OSNAME), cygming)
 RC := windres
 endif
 
@@ -32,7 +32,7 @@ OUTPUT_OPTION = -o $@
 LINK_OUTPUT_OPTION = ${OUTPUT_OPTION}
 CPPFLAGS = $(DEFS) $(INCLUDES)
 
-ifeq ($(OSNAME), cygwin)
+ifeq ($(OSNAME), cygming)
 RCFLAGS = --output-format coff
 RC_OUTPUT_OPTION = -o $@
 endif
@@ -51,7 +51,7 @@ CFLAGS = -pthread $(OPT)
 CXXFLAGS = -pthread -fexceptions -fident $(OPT)
 endif
 
-ifeq ($(OSNAME),cygwin)
+ifeq ($(OSNAME),cygming)
 CCFLAGS = $(OPT)
 CFLAGS = $(OPT)
 CXXFLAGS = -fexceptions -fident $(OPT)

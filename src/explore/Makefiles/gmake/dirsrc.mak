@@ -14,7 +14,7 @@ WORD1 := $(word 1,$(DIRS_UNIQUE_SRC))
 ifneq "$(WORD1)" ""
 include ${RULESBASE}/rules-o.mak
 include ${RULESBASE}/rules-d.mak
-ifeq ($(OSNAME),cygwin)
+ifeq ($(OSNAME),cygming)
 include ${RULESBASE}/rules-res.mak
 endif
 # remove processed directory from list
