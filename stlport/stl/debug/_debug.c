@@ -40,17 +40,6 @@ _STLP_BEGIN_NAMESPACE
 //==========================================================
 //  global non-inline functions
 //==========================================================
-
-template <class _Iterator>
-bool _STLP_CALL __check_infinite_loop(const _Iterator& __it, const _Iterator& __end, __true_type const&) {
-  /*
-   * thanks to the third parameter we know that __it is a stlport debug iterator.
-   */
-  _STLP_VERBOSE_RETURN(!__check_same_owner(__it, __end) || __it._M_iterator != __end._M_iterator,
-                       _StlMsg_INFINIT_LOOP)
-  return true;
-}
-
 // [ i1, i2)
 template <class _Iterator>
 inline bool  _STLP_CALL

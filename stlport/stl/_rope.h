@@ -936,10 +936,10 @@ public:
   _Self& operator= (const _Self& __x) {
     if (0 != __x._M_buf_ptr) {
       *(__STATIC_CAST(_Base*,this)) = __x;
-      if (_M_buf_start == __x._M_tmp_buf) {
-        _M_buf_start = _M_tmp_buf;
-        _M_buf_end = _M_tmp_buf + (__x._M_buf_end - __x._M_buf_start);
-        _M_buf_ptr = _M_tmp_buf + (__x._M_buf_ptr - __x._M_buf_start);
+      if (this->_M_buf_start == __x._M_tmp_buf) {
+        this->_M_buf_start = this->_M_tmp_buf;
+        this->_M_buf_end = this->_M_tmp_buf + (__x._M_buf_end - __x._M_buf_start);
+        this->_M_buf_ptr = this->_M_tmp_buf + (__x._M_buf_ptr - __x._M_buf_start);
       }
     } else {
       this->_M_current_pos = __x._M_current_pos;
@@ -1046,10 +1046,10 @@ public:
     if (0 != __x._M_buf_ptr) {
       _M_root_rope = __x._M_root_rope;
       *(__STATIC_CAST(_Base*,this)) = __x;
-      if (_M_buf_start == __x._M_tmp_buf) {
-        _M_buf_start = _M_tmp_buf;
-        _M_buf_end = _M_tmp_buf + (__x._M_buf_end - __x._M_buf_start);
-        _M_buf_ptr = _M_tmp_buf + (__x._M_buf_ptr - __x._M_buf_start);
+      if (this->_M_buf_start == __x._M_tmp_buf) {
+        this->_M_buf_start = this->_M_tmp_buf;
+        this->_M_buf_end = this->_M_tmp_buf + (__x._M_buf_end - __x._M_buf_start);
+        this->_M_buf_ptr = this->_M_tmp_buf + (__x._M_buf_ptr - __x._M_buf_start);
       }
     } else {
       this->_M_current_pos = __x._M_current_pos;

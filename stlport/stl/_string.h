@@ -32,7 +32,7 @@
 #endif
 
 #ifndef _STLP_INTERNAL_FUNCTION_BASE_H
-# include <stl/_function.h> 
+# include <stl/_function.h>
 #endif
 
 # include <stl/_ctraits_fns.h>  
@@ -172,7 +172,7 @@ public:                         // Constructor, destructor, assignment.
   basic_string();
 
   explicit basic_string(const allocator_type& __a)
-      : _String_base<_CharT,_Alloc>(__a /* , _DEFAULT_SIZE */ ) { 
+      : _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE) { 
     _M_terminate_string(); 
   }
 

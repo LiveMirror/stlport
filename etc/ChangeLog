@@ -1,3 +1,33 @@
+2004-06-03  Francois Dumont  <dums@...>
+
+  * stlport/stl/pointers/README, doc/pointer_specialization.txt: move and
+  rename of the doc about pointer partial template specialization feature.
+
+  * doc/README.ecv4: Creation of a documentation about the install and use
+  of STLport within Embedded Visual C++ 4 thanks Zdenek Nemec.
+
+  * doc/README.ecv3: Creation of a documentation about the process installment
+  with the Embedded Visual C++ 3 thanks Michael Fink.
+
+  * stlport/stl/_slist.h: fix of an invalid reference to a _M_node member data
+  on a _Slist_node_base struct (thanks gcc 3.4.0).
+  
+  * stlport/stl/_string.c, stlport/stl/_string.h: fix of missing scopes to 
+  access the base template class _String_base _DEFAULT_SIZE enum member.
+  (thanks gcc 3.4.0)
+  
+  * stlport/stl/_string_base.h: fix of the anonymous union used as a parameter
+  of the template function swap. (thanks gcc 3.4.0)
+  
+  * stlport/stl/_ostream.h: fixes of the missing scopes to access the basefield enum
+  within the base template class basic_ios from the basic_ostream. (thanks gcc 3.4.0)
+  
+  * stlport/stl/_debug.c: clean up of a no more use template function. 
+  (thanks gcc 3.4.0)
+  
+  * stlport/stl/_rope.h: fix of the missing scope to access base template class 
+  data member. (thanks gcc 3.4.0)
+  
 2004-06-02  Petr Ovtchenkov  <ptr@island...>
 
 	* src/num_put_float.cpp: some fixes for systems that use snprintf for
@@ -13,7 +43,7 @@
 2004-05-28  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_gcc.h: fix for the gcc3.4.0 compiler. Modification
-	of the include path macro to generate 3.4.0 rather than 3.4 . No more
+	of the include path macro to generate 3.4.0 rather than 3.4 . Need
 	template keyword to reveal use of a nested template class.
 
 	* stlport/stl/_config.h: creation of the _STLP_LONG_DOUBLE macro that 

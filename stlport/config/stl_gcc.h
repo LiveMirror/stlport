@@ -7,7 +7,7 @@
 # define _STLP_USE_GLIBC
 #endif
 
-#if (__GNUC__ <= 3) && (__GNUC_MAJOR__ <= 3)
+#if (__GNUC__ <= 3) && (__GNUC_MINOR__ <= 3)
 //define for gcc versions before 3.4.0.
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
 #endif

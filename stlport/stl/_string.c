@@ -634,7 +634,7 @@ void _String_base<_Tp, _Alloc>::_M_allocate_block(size_t __n) {
  
 template <class _CharT, class _Traits, class _Alloc> 
 basic_string<_CharT, _Traits, _Alloc>::basic_string()
-    : _String_base<_CharT,_Alloc>(allocator_type(), _DEFAULT_SIZE) {
+    : _String_base<_CharT,_Alloc>(allocator_type(), _String_base<_CharT,_Alloc>::_DEFAULT_SIZE) {
   _M_terminate_string();
 } 
 

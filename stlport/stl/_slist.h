@@ -516,7 +516,7 @@ private:
   template <class _Integer>
   void _M_splice_range(_Node_base* __pos, _Integer __n, _Integer __x,
                        const __true_type&) {
-    _M_insert_after_fill(_Sl_global_inst::__previous(&this->_M_head._M_data, __pos._M_node), __n, __x);
+    _M_insert_after_fill(_Sl_global_inst::__previous(&this->_M_head._M_data, __pos), __n, __x);
   }
 
   template <class _InIter>

@@ -44,15 +44,15 @@ class _String_base {
   typedef _String_base<_Tp, _Alloc> _Self;
 protected:
   _STLP_FORCE_ALLOCATORS(_Tp, _Alloc)
-  typedef typename _Alloc_traits<_Tp, _Alloc>::allocator_type allocator_type;
 public:
   //dums: Some compiler(MSVC6) require it to be public not simply protected!
   enum {_DEFAULT_SIZE = _STLP_SHORT_STRING_SZ};
   //This is needed by the full move framework
+  typedef typename _Alloc_traits<_Tp, _Alloc>::allocator_type allocator_type;
   typedef _STLP_alloc_proxy<_Tp*, _Tp, allocator_type> _AllocProxy;
 private:
 #ifdef _STLP_USE_SHORT_STRING_OPTIM
-  union {
+  union _Buffers {
     _Tp*  _M_dynamic_buf;
     _Tp   _M_static_buf[_DEFAULT_SIZE];
   } _M_buffers;
@@ -179,7 +179,7 @@ protected:
 #ifdef _STLP_USE_SHORT_STRING_OPTIM
     if (_M_using_static_buf()) {
       if (__s._M_using_static_buf()) {
-        _STLP_STD::swap(_M_buffers, __s._M_buffers);
+        _STLP_STD::swap<_Buffers>(_M_buffers, __s._M_buffers);
         _Tp *__tmp = _M_finish;
         _M_finish = _M_buffers._M_static_buf + (__s._M_finish - __s._M_buffers._M_static_buf);
         __s._M_finish = __s._M_buffers._M_static_buf + (__tmp - _M_buffers._M_static_buf);

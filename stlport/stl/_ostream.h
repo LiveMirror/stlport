@@ -96,12 +96,12 @@ public:                         // Formatted output.
   _Self& operator<<(unsigned char __x) { _M_put_char(__x); return *this; }
 # endif
   _Self& operator<<(short __x) { 
-    long __tmp = ((this->flags() & basefield) != ios_base::dec)?(unsigned short)__x:__x;
+    long __tmp = ((this->flags() & _Basic_ios::basefield) != ios_base::dec)?(unsigned short)__x:__x;
     return _M_put_num(*this,  __tmp);
   }
   _Self& operator<<(unsigned short __x) { return _M_put_num(*this,  __STATIC_CAST(unsigned long,__x)); }
   _Self& operator<<(int __x) { 
-    long __tmp = ((this->flags() & basefield) != ios_base::dec)?(unsigned int)__x:__x;
+    long __tmp = ((this->flags() & _Basic_ios::basefield) != ios_base::dec)?(unsigned int)__x:__x;
     return _M_put_num(*this,  __tmp);
   }
   _Self& operator<<(unsigned int __x) { return _M_put_num(*this,  __STATIC_CAST(unsigned long,__x)); }
