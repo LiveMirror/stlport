@@ -32,6 +32,7 @@ using namespace std;
 class StringTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(StringTest);
+  CPPUNIT_TEST(assign);
   CPPUNIT_TEST(erase);
   CPPUNIT_TEST(data);
   CPPUNIT_TEST(c_str);
@@ -40,7 +41,6 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(resize);
   CPPUNIT_TEST(short_string);
   CPPUNIT_TEST(find);
-  CPPUNIT_TEST(assign);
 #if defined (STLPORT) && defined (_STLP_THREADS)
   CPPUNIT_TEST(mt);
 #endif
@@ -533,6 +533,17 @@ void StringTest::assign()
   string s2("other test string");
   s.assign(s2);
   CPPUNIT_ASSERT( s == s2 );
+
+  static std::string str1;
+  static std::string str2;
+
+  // short string optim:
+  str1 = "123456";
+  // longer than short string:
+  str2 = "1234567890123456789012345678901234567890";
+
+  CPPUNIT_ASSERT(str1[5] == '6');
+  CPPUNIT_ASSERT(str2[29] == '0'); 
 }
 
 /* This test is to check if std::string properly supports the short string

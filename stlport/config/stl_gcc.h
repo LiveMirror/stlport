@@ -203,7 +203,7 @@ typedef unsigned int wint_t;
 //# endif
 #endif
 
-#ifdef __OpenBSD__
+#if defined(__OpenBSD__) || defined(__FreeBSD__)
 #  define _STLP_NO_VENDOR_MATH_L
 #  define _STLP_NO_VENDOR_STDLIB_L /* no llabs */
 #  ifndef __unix
