@@ -108,7 +108,7 @@ void StringTest::mt()
 #endif
 
 #if !defined(_STLP_PTHREADS) && !defined(_STLP_WIN32THREADS)
-  // this test if useless without thrad support!
+  // this test is useless without thread support!
   CPPUNIT_ASSERT(false);
 #endif
 }
