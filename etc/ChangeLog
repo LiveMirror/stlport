@@ -1,3 +1,14 @@
+2004-11-30  Petr Ovtchenkov  <ptr@island...>
+
+	* src/explore/configure.bat: added quotes. Thanks Ulrich Eckhardt and Michael Fink.
+
+	* stlport/stl/_locale.h, src/locale_impl.h, src/locale_impl.cpp: added _STLP_DECLSPEC
+	and _STLP_CALL for some functions. Thanks Ulrich Eckhardt.
+
+	* stlport/stl/_collate.h, _numpunct.h, _monetary.h, _codecvt.h, _time_facets.h:
+	_Locale_imp made friend without relation to _STLP_LEAKS_PEDANTIC. Thanks Ulrich Eckhardt.
+
+
 2004-11-29  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_cmath.h: patch from Michael Fink applied.
