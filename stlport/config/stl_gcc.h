@@ -264,6 +264,28 @@ typedef unsigned int wint_t;
 
 # if (__GNUC__ >= 3)
 
+#  if (__GNUC__ == 3) && (__GNUC_MINOR__ <= 1)
+/* 
+due to bug in some gcc compilers (mangling scheme bug)
+the construction (stlport/stl/_epilog.h)
+
+namespace _STLP_STD {}
+namespace std {
+  using namespace _STLP_STD;
+}
+
+lead to infinite recursion in compiler, so the only way to incorporate
+_STLP_STD namespace into std, is redefine one.
+
+I don't know precise versions of gcc, when this bug happen.
+At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
+
+  - ptr
+*/
+
+#   define _STLP_REDEFINE_STD 1
+#  endif
+
 #  if ((__GNUC_MINOR__ == 0) || (__APPLE__))
 #   define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
 #   define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../g++-v3/backward
@@ -371,7 +393,3 @@ typedef unsigned int wint_t;
 # else
 #   define _STLP_STATIC_TEMPLATE_DATA 1
 # endif
-
-
-
-
