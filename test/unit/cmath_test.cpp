@@ -158,4 +158,10 @@ void CMathTest::test()
   CPPUNIT_CHECK( are_equals(std::sinh(0.0l), 0.0l) );
   CPPUNIT_CHECK( are_equals(std::tanh(0.0l), 0.0l) );
 #endif
+
+  CPPUNIT_CHECK( are_equals(std::sqrt(std::sqrt(std::sqrt(256.0))), 2.0) );
+  CPPUNIT_CHECK( are_equals(std::sqrt(std::sqrt(std::sqrt(256.0f))), 2.0f) );
+#if !defined (_STLP_NO_LONG_DOUBLE)
+  CPPUNIT_CHECK( are_equals(std::sqrt(std::sqrt(std::sqrt(256.0l))), 2.0l) );
+#endif
 }
