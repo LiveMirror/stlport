@@ -3,6 +3,9 @@
 	* stlport/config/stl_msvc.h: Definition of the _STLP_HAS_NATIVE_FLOAT_ABS
 	starting with MSVC .Net 2002 thanks Kevin Bluck report.
 
+	* test/unit/cmath_test.cpp: Creation of a test case to check correct import
+	and extensions of C functions.
+
 2004-11-04  Petr Ovtchenkov  <ptr@island...>
 
 	* src/explore/Makefiles: added templates CC.mak for SunPro's CC compilers;

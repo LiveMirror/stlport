@@ -14,36 +14,36 @@
  */
 
 #ifndef _STLP_CMATH
-# define _STLP_CMATH
+#define _STLP_CMATH
 
-# ifndef _STLP_OUTERMOST_HEADER_ID
+#ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID  0x109
 #  include <stl/_prolog.h>
-# endif
+#endif
 
-# if defined (_STLP_USE_NEW_C_HEADERS)
+#if defined (_STLP_USE_NEW_C_HEADERS)
 #  if defined (_STLP_HAS_NO_NAMESPACES) && ! defined (exception)
-#   define exception __math_exception
+#    define exception __math_exception
 #  endif
 #  include _STLP_NATIVE_CPP_C_HEADER(cmath)
 #  if defined (_STLP_HAS_NO_NAMESPACES)
-#   undef exception
+#    undef exception
 #  endif
-# else
+#else
 #  include <math.h>
-# endif
+#endif
 
-#  if (defined (__SUNPRO_CC) && (__SUNPRO_CC > 0x500)) || \
-     !( defined (__IBMCPP__) && (__IBMCPP__ >= 500) || ! ( defined (__HP_aCC) && (__HP_aCC >= 30000) ))
-# ifndef _STLP_HAS_NO_NAMESPACES
+#if (defined (__SUNPRO_CC) && (__SUNPRO_CC > 0x500)) || \
+     !(defined (__IBMCPP__) && (__IBMCPP__ >= 500) || !(defined(__HP_aCC) && (__HP_aCC >= 30000) ))
+#  ifndef _STLP_HAS_NO_NAMESPACES
 namespace std {
-# endif
-  extern "C" double hypot(double x, double y);
-# ifndef _STLP_HAS_NO_NAMESPACES
-}
-# endif
-
 #  endif
+  extern "C" double hypot(double x, double y);
+#  ifndef _STLP_HAS_NO_NAMESPACES
+}
+#  endif
+
+#endif
 
 #if defined(__sun) && defined(__GNUC__) 
 extern "C" {
@@ -94,12 +94,12 @@ inline long double log10l(long double v) { return __log10l(v); }
 #endif // __sun && __GNUC__
 
 
-#  ifdef _STLP_IMPORT_VENDOR_CSTD
+#ifdef _STLP_IMPORT_VENDOR_CSTD
 _STLP_BEGIN_NAMESPACE
-# if ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
-# ifdef _STLP_HAS_NATIVE_FLOAT_ABS
+#  if ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
+#    ifdef _STLP_HAS_NATIVE_FLOAT_ABS
 using _STLP_VENDOR_CSTD::abs;
-# endif
+#    endif
 using _STLP_VENDOR_CSTD::acos;
 using _STLP_VENDOR_CSTD::asin;
 using _STLP_VENDOR_CSTD::atan2;
@@ -122,18 +122,18 @@ using _STLP_VENDOR_CSTD::sinh;
 using _STLP_VENDOR_CSTD::sqrt;
 using _STLP_VENDOR_CSTD::tan;
 using _STLP_VENDOR_CSTD::tanh;
-# endif /* BUG */
+#  endif /* BUG */
 _STLP_END_NAMESPACE
-#  endif /* _STLP_IMPORT_VENDOR_CSTD */
+#endif /* _STLP_IMPORT_VENDOR_CSTD */
 
 #ifndef _STLP_CMATH_H_HEADER
 #  include <stl/_cmath.h>
 #endif
 
-# if (_STLP_OUTERMOST_HEADER_ID ==  0x109 )
+#if (_STLP_OUTERMOST_HEADER_ID ==  0x109 )
 #  include <stl/_epilog.h>
 #  undef _STLP_OUTERMOST_HEADER_ID
-# endif
+#endif
 
 #endif /* _STLP_CMATH */
 

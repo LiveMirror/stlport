@@ -14,13 +14,13 @@
  */
 
 #ifndef _STLP_CMATH_H_HEADER
-# define _STLP_CMATH_H_HEADER
+#define _STLP_CMATH_H_HEADER
 
-# include <cmath>
+#include <cmath>
 
 _STLP_BEGIN_NAMESPACE
 
-# ifdef _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
+#ifdef _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
 
 // this proxy is needed for some compilers to resolve problems
 // calling sqrt() from within sqrt(), etc.
@@ -50,11 +50,11 @@ struct _STL_math_proxy {
   static inline _Tp _do_tan(const _Tp& __x)     { return _STLP_VENDOR_CSTD::tan(__x); } 
   static inline _Tp _do_tanh(const _Tp& __x)    { return _STLP_VENDOR_CSTD::tanh(__x); } 
   static inline _Tp _do_exp(const _Tp& __x)     { return _STLP_VENDOR_CSTD::exp(__x); } 
-#ifdef _STLP_WCE
+#  ifdef _STLP_WCE
   static inline _Tp _do_hypot(const _Tp& __x, const _Tp& __y)   { return _STLP_VENDOR_CSTD::sqrt(__x * __x + __y * __y); } 
-#else  
+#  else  
   static inline _Tp _do_hypot(const _Tp& __x, const _Tp& __y)   { return _STLP_VENDOR_CSTD::hypot(__x, __y); } 
-#endif
+#  endif
 };
 
 #  define _STLP_DO_ABS(_Tp)   _STL_math_proxy<_Tp>::_do_abs
@@ -81,7 +81,7 @@ struct _STL_math_proxy {
 #  define _STLP_DO_EXP(_Tp)   _STL_math_proxy<_Tp>::_do_exp
 #  define _STLP_DO_HYPOT(_Tp) _STL_math_proxy<_Tp>::_do_hypot
 
-# else /* _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG */
+#else /* _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG */
 
 #  define _STLP_DO_ABS(_Tp)   _STLP_VENDOR_CSTD::fabs
 #  define _STLP_DO_ACOS(_Tp)  _STLP_VENDOR_CSTD::acos
@@ -111,20 +111,20 @@ struct _STL_math_proxy {
 // #  define _STLP_DO_HYPOT(_Tp) _STLP_VENDOR_CSTD::hypot
 // # endif
 
-# endif /* _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG */
+#endif /* _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG */
 
 _STLP_END_NAMESPACE
 
-# if (defined (_STLP_HAS_NO_NEW_C_HEADERS) || defined(_STLP_MSVC) || defined (__ICL)) && !defined (_STLP_HAS_NO_NAMESPACES)
+#if (defined (_STLP_HAS_NO_NEW_C_HEADERS) || defined(_STLP_MSVC) || defined (__ICL)) && !defined (_STLP_HAS_NO_NAMESPACES)
 
-# if ! defined (_STLP_USE_NEW_C_HEADERS) 
+#  if !defined (_STLP_USE_NEW_C_HEADERS) 
 
 _STLP_BEGIN_NAMESPACE
 
-#  ifndef _STLP_HAS_NATIVE_FLOAT_ABS
+#    ifndef _STLP_HAS_NATIVE_FLOAT_ABS
 inline double abs(double __x)                 { return _STLP_DO_ABS(double)(__x); }
 inline float abs (float __x)                  { return _STLP_DO_ABS(float)(__x); }
-#  endif
+#    endif
 
 inline double pow(double __x, int __y)        { return _STLP_DO_POW(double)(__x, __y); }
 inline float acos (float __x)                 { return _STLP_DO_ACOS(float)(__x); }
@@ -135,29 +135,29 @@ inline float ceil (float __x)                 { return _STLP_DO_CEIL(float)(__x)
 inline float cos (float __x)                  { return _STLP_DO_COS(float)(__x); }
 inline float cosh (float __x)                 { return _STLP_DO_COSH(float)(__x); }
 inline float exp (float __x)                  { return _STLP_DO_EXP(float)(__x); }
-# ifdef _STLP_USE_NAMESPACES
+#    ifdef _STLP_USE_NAMESPACES
 inline float fabs (float __x)                 { return _STLP_DO_ABS(float)(__x); }
-# endif
+#    endif
 inline float floor(float __x)                 { return _STLP_DO_FLOOR(float)(__x); }
 inline float fmod (float __x, float __y)      { return _STLP_DO_FMOD(float)(__x, __y); }
 inline float frexp(float __x, int* __y)       { return _STLP_DO_FREXP(float)(__x, __y); }
 inline float ldexp(float __x, int __y)        { return _STLP_DO_LDEXP(float)(__x, __y); }
 // fbp : float versions are not always available
-#if !defined(_STLP_VENDOR_LONG_DOUBLE_MATH)  //*ty 11/25/2001 - 
+#    if !defined(_STLP_VENDOR_LONG_DOUBLE_MATH)  //*ty 11/25/2001 - 
 inline float modf (float __x, float* __y)     { 
   double __dd[2]; 
   double __res = _STLP_DO_MODF(double)((double)__x, __dd); 
   __y[0] = (float)__dd[0] ; __y[1] = (float)__dd[1]; 
   return (float)__res; 
 }
-#else  //*ty 11/25/2001 - i.e. for apple SCpp
+#    else  //*ty 11/25/2001 - i.e. for apple SCpp
 inline float modf (float __x, float* __y)     { 
   long double __dd[2]; 
   long double __res = _STLP_DO_MODF(long double)((long double)__x, __dd); 
   __y[0] = (float)__dd[0] ; __y[1] = (float)__dd[1]; 
   return (float)__res; 
 }
-#endif  //*ty 11/25/2001 - 
+#    endif  //*ty 11/25/2001 - 
 
 inline float log (float __x)                  { return _STLP_DO_LOG(float)(__x); }
 inline float log10(float __x)                 { return _STLP_DO_LOG10(float)(__x); }
@@ -169,11 +169,11 @@ inline float sqrt (float __x)                 { return _STLP_DO_SQRT(float)(__x)
 inline float tan (float __x)                  { return _STLP_DO_TAN(float)(__x); }
 inline float tanh (float __x)                 { return _STLP_DO_TANH(float)(__x); }
 
-#  if ! (defined  (_STLP_NO_LONG_DOUBLE) || defined(_STLP_VENDOR_LONG_DOUBLE_MATH))
+#    if !(defined  (_STLP_NO_LONG_DOUBLE) || defined (_STLP_VENDOR_LONG_DOUBLE_MATH))
 
-#if !defined (__MVS__)
+#      if !defined (__MVS__)
 inline long double abs (long double __x)                  { return _STLP_DO_ABS(long double)((double)__x); }
-#endif
+#      endif
 inline long double acos (long double __x)                 { return _STLP_DO_ACOS(long double)(__x); }
 inline long double asin (long double __x)                 { return _STLP_DO_ASIN(long double)(__x); }
 inline long double atan (long double __x)                 { return _STLP_DO_ATAN(long double)(__x); }
@@ -204,12 +204,12 @@ inline long double sqrt (long double __x)                 { return _STLP_DO_SQRT
 inline long double tan (long double __x)                  { return _STLP_DO_TAN(long double)(__x); }
 inline long double tanh (long double __x)                 { return _STLP_DO_TANH(long double)(__x); }
 
-#  endif /* ! _STLP_NO_LONG_DOUBLE || _STLP_VENDOR_LONG_DOUBLE_MATH */
+#    endif /* ! _STLP_NO_LONG_DOUBLE || _STLP_VENDOR_LONG_DOUBLE_MATH */
 
 _STLP_END_NAMESPACE
 
-# endif /* _STLP_USE_NEW_C_HEADERS */
+#  endif /* _STLP_USE_NEW_C_HEADERS */
 
-# endif /* (_STLP_HAS_NO_NEW_C_HEADERS || _STLP_MSVC || __ICL) && ! _STLP_HAS_NO_NAMESPACES */
+#endif /* (_STLP_HAS_NO_NEW_C_HEADERS || _STLP_MSVC || __ICL) && ! _STLP_HAS_NO_NAMESPACES */
 
 #endif /* CMATH_H */

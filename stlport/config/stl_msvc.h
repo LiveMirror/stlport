@@ -92,7 +92,6 @@
 #    if !defined (_STLP_DONT_USE_EXCEPTIONS)
 #      define _STLP_NOTHROW throw()
 #    endif
-#    define _STLP_HAS_NATIVE_FLOAT_ABS 1
 #  endif	//	(_STLP_MSVC >= 1300)
 
 #  if (_STLP_MSVC <= 1300) 
@@ -112,6 +111,10 @@
 // fails to properly resolve call to sin() from within sin()
 #    define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
 #  endif /* _STLP_MSVC <= 1300 */
+
+#  if (_STLP_MSVC >= 1200)
+#    define _STLP_HAS_NATIVE_FLOAT_ABS 1
+#  endif
 
 #  if (_STLP_MSVC <= 1200)
 /*

@@ -14,20 +14,20 @@
  */
 
 #ifndef _STLP_CSTDLIB
-# define _STLP_CSTDLIB
+#define _STLP_CSTDLIB
 
-# ifndef _STLP_OUTERMOST_HEADER_ID
+#ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID 0x116
 #  include <stl/_prolog.h>
-# endif
+#endif
 
-# if defined (_STLP_USE_NEW_C_HEADERS)
+#if defined (_STLP_USE_NEW_C_HEADERS)
 #  include _STLP_NATIVE_CPP_C_HEADER(cstdlib)
-# else
+#else
 #  include _STLP_NATIVE_C_HEADER(stdlib.h)
-# endif
+#endif
 
-# if defined( __MSL__ ) && __MSL__ <= 0x5003
+#if defined( __MSL__ ) && __MSL__ <= 0x5003
 namespace std {
 	typedef ::div_t div_t;
 	typedef ::ldiv_t ldiv_t;
@@ -35,9 +35,9 @@ namespace std {
 	typedef ::lldiv_t lldiv_t;
 #  endif
 }
-# endif
+#endif
 
-# ifdef _STLP_IMPORT_VENDOR_CSTD 
+#ifdef _STLP_IMPORT_VENDOR_CSTD 
 _STLP_BEGIN_NAMESPACE
 using _STLP_VENDOR_CSTD::div_t;
 using _STLP_VENDOR_CSTD::ldiv_t;
@@ -63,16 +63,16 @@ using _STLP_VENDOR_CSTD::strtol;
 using _STLP_VENDOR_CSTD::strtoul;
 using _STLP_VENDOR_CSTD::system;
 
-#if ! (defined (_STLP_NO_NATIVE_WIDE_STREAMS) || defined (_STLP_NO_MBSTATE_T) )
+#    if !(defined (_STLP_NO_NATIVE_WIDE_STREAMS) || defined (_STLP_NO_MBSTATE_T))
 using _STLP_VENDOR_CSTD::wcstombs;
 using _STLP_VENDOR_CSTD::wctomb;
-#endif
+#    endif
 using _STLP_VENDOR_CSTD::bsearch;
 using _STLP_VENDOR_CSTD::qsort;
 // boris : if we do not have native float abs, we define ours; then we cannot do "using" for "other" abs 
-# ifdef _STLP_HAS_NATIVE_FLOAT_ABS 
+#    ifdef _STLP_HAS_NATIVE_FLOAT_ABS 
 using _STLP_VENDOR_CSTD::abs;
-# endif
+#    endif
 using _STLP_VENDOR_CSTD::div;
 using _STLP_VENDOR_CSTD::labs;
 using _STLP_VENDOR_CSTD::ldiv;
@@ -84,14 +84,20 @@ _STLP_END_NAMESPACE
 
 _STLP_BEGIN_NAMESPACE
 
-# if defined(_STLP_HAS_NO_NEW_C_HEADERS) && defined(__cplusplus)
-# if !defined ( _STLP_LABS )
+#if defined(__cplusplus)
+#  if defined(_STLP_HAS_NO_NEW_C_HEADERS)
+#    if !defined ( _STLP_LABS )
 inline long   abs(long __x) { return _STLP_VENDOR_CSTD::labs(__x); }
-# endif
-# if !defined ( _STLP_LDIV )
+#    endif
+#    if !defined ( _STLP_LDIV )
 inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); } 
-# endif
-# endif
+#    endif
+#  endif
+
+#  if defined(_STLP_MSVC) && (_STLP_MSVC <= 1200)
+inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); } 
+#  endif
+#endif
 
 #  if defined ( _STLP_LLABS )
 _STLP_LONG_LONG   abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::_STLP_LLABS(__x); }
@@ -102,10 +108,10 @@ _STLP_LLDIV_T div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDO
 
 _STLP_END_NAMESPACE
 
-# if (_STLP_OUTERMOST_HEADER_ID == 0x116)
+#if (_STLP_OUTERMOST_HEADER_ID == 0x116)
 #  include <stl/_epilog.h>
 #  undef _STLP_OUTERMOST_HEADER_ID
-# endif
+#endif
 
 #endif /* _STLP_CSTDLIB */
 
