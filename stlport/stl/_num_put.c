@@ -384,11 +384,32 @@ __write_integer_backward(char* __buf, ios_base::fmtflags __flags, _Integer __x)
 // num_put<>
 //
 
-# if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
+#if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
 
 template <class _CharT, class _OutputIterator>
 locale::id num_put<_CharT, _OutputIterator>::id;
-# else /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
+
+#  if defined(__CYGWIN__) && defined(_STLP_USE_DYNAMIC_LIB)
+/*
+ * Under cygwin, when STLport is used as a shared library, the id needs
+ * to be specified as imported otherwise they will be duplicated in the
+ * calling executable.
+ */
+template <>
+_STLP_DECLSPEC locale::id num_put<char, ostreambuf_iterator<char, char_traits<char> > >::id;
+template <>
+_STLP_DECLSPEC locale::id num_put<char, char*>::id;
+
+#    ifndef _STLP_NO_WCHAR_T
+template <>
+_STLP_DECLSPEC locale::id num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id;
+template <>
+_STLP_DECLSPEC locale::id num_put<wchar_t, wchar_t*>::id;
+#    endif
+
+#  endif /* __CYGWIN__ && _STLP_USE_DYNAMIC_LIB */
+
+#else /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
 
 typedef num_put<char, const char*> num_put_char;
 typedef num_put<char, char*> num_put_char_2;
@@ -398,7 +419,7 @@ __DECLARE_INSTANCE(locale::id, num_put_char::id, );
 __DECLARE_INSTANCE(locale::id, num_put_char_2::id, );
 __DECLARE_INSTANCE(locale::id, num_put_char_3::id, );
 
-# ifndef _STLP_NO_WCHAR_T
+#  ifndef _STLP_NO_WCHAR_T
 
 typedef num_put<wchar_t, const wchar_t*> num_put_wchar_t;
 typedef num_put<wchar_t, wchar_t*> num_put_wchar_t_2;
@@ -408,13 +429,13 @@ __DECLARE_INSTANCE(locale::id, num_put_wchar_t::id, );
 __DECLARE_INSTANCE(locale::id, num_put_wchar_t_2::id, );
 __DECLARE_INSTANCE(locale::id, num_put_wchar_t_3::id, );
 
-# endif
+#  endif
 
-# endif /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
+#endif /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
 
 // issue 118
 
-# ifndef _STLP_NO_BOOL
+#ifndef _STLP_NO_BOOL
 
 template <class _CharT, class _OutputIter>  
 _OutputIter 
@@ -443,7 +464,7 @@ num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f,
                                  (_CharT) 0, (_CharT) 0);
 }
 
-# endif
+#endif
 
 template <class _CharT, class _OutputIter>
 _OutputIter 

@@ -3,7 +3,7 @@
  */
 
 /* Systems having GLIBC installed have different traits */
-#if ! defined (_STLP_USE_GLIBC) && ( defined (__linux__) || defined (__CYGWIN__) )
+#if ! defined (_STLP_USE_GLIBC) && (defined (__linux__) || defined(__CYGWIN__))
 # define _STLP_USE_GLIBC
 #endif
 
@@ -81,8 +81,19 @@
 // #   define _STLP_USE_TEMPLATE_EXPORT 1
 /* Using dynamic library in MinGW requires _STLP_NO_CUSTOM_IO */
 #  define _STLP_NO_CUSTOM_IO
-# endif
+# endif /* _STLP_USE_DYNAMIC_LIB */
 
+#endif /* __MINGW32__ */
+
+#if defined (__CYGWIN__) && defined (_STLP_USE_DYNAMIC_LIB)
+/*
+ * We use the import/export mechanism only to import symbols to
+ * an exe or an other dynamic lib. During library built all symbols
+ * are exported.
+ */
+#  define _STLP_IMPORT_DECLSPEC __declspec(dllimport)
+#  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
+#  define _STLP_USE_DECLSPEC 1
 #endif
 
 #if defined (__CYGWIN__) || defined (__MINGW32__) || !(defined (_STLP_USE_GLIBC) || defined (__sun)) 
@@ -377,11 +388,11 @@ At least problem present in gcc 3.1.1 and not exist in 2.95.3, 3.2.3, 3.3
 
 
 #ifdef _SCO_ELF
-# define _STLP_SCO_OPENSERVER
-#     if defined(_REENTRANT)
-#           define _UITHREADS     /* if      UnixWare < 7.0.1 */
-#           define _STLP_UITHREADS
-#     endif /* _REENTRANT */
+#  define _STLP_SCO_OPENSERVER
+#  if defined(_REENTRANT)
+#    define _UITHREADS     /* if      UnixWare < 7.0.1 */
+#    define _STLP_UITHREADS
+#  endif /* _REENTRANT */
 #endif
 
 // Tune settings for the case where static template data members are not 
