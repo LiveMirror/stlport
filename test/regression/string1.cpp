@@ -36,33 +36,33 @@ int string1_test(int, char**)
   //test self insertion:
   str.insert(10, str.c_str() + 5, 15);
   //Should be: This is teis test string st string for string calls
-  cout << str << endl;
+  cout << str << " ... " << (str == "This is teis test string st string for string calls" ? "pass" : "fail" ) << endl;
 
   //An other one using an other implementation
   str = strorg;
   str.insert(15, str.c_str() + 5, 25);
   //Should be: This is test stis test string for stringring for string calls
-  cout << str << endl;
+  cout << str << " ... " << (str == "This is test stis test string for stringring for string calls" ? "pass" : "fail" ) << endl;
 
   str = strorg;
   str.insert(0, str.c_str() + str.size() - 4, 4);
   //Should be: allsThis is test string for string calls
-  cout << str << endl;
+  cout << str << " ... " << (str == "allsThis is test string for string calls" ? "pass" : "fail" ) << endl;
 
   str = strorg;
   str.insert(0, str.c_str() + str.size() / 2 - 1, str.size() / 2 + 1);
   //Should be: ng for string callsThis is test string for string calls
-  cout << str << endl;
+  cout << str << " ... " << (str == "ng for string callsThis is test string for string calls" ? "pass" : "fail" ) << endl;
 
   str = strorg;
   str.replace(5, 15, str.c_str(), 10);
   //Should be: This This is tefor string calls
-  cout << str << endl;
+  cout << str << " ... " << (str == "This This is tefor string calls" ? "pass" : "fail" ) << endl;
 
   str = strorg;
   str.replace(5, 5, str.c_str(), 10);
   //Should be: This This is test string for string calls
-  cout << str << endl;
+  cout << str << " ... " << (str == "This This is test string for string calls" ? "pass" : "fail" ) << endl;
   cout << endl;
 
   return 0;
