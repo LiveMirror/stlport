@@ -15,6 +15,19 @@
 	with the result of the inline function, which returns a pseudo-
 	HANDLE value. [patch by Michael Fink]
 
+	* cwchar, wchar.h, stl/_cwchar.h: fix access to mbstate and wint_t
+	for FreeBSD.
+
+	* build/Makefiles/gmake/sysid.mak, app/gcc.mak, lib/gcc.mak:
+	FreeBSD before 5.3 require linkage with libc_r, while 5.3 and
+	later use libpthread.
+
+	* test/unit/locale_test.cpp: add std:: namespace qualifier for
+	gcc 3.3.2 and/or FreeBSD.
+
+	* libstlport, test/unit: library build and most tests pass for
+	FreeBSD 5.3 and FreeBSD 4.10.
+
 2005-04-02  Francois Dumont  <dums@stlport...>
 
 	* stlport/cstdlib: Fix missing div taking long definition for VC71.
