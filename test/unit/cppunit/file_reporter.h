@@ -34,13 +34,18 @@ public:
 
     virtual ~FileReporter() { if(_myStream) fclose(_file); else fflush(_file);  }
     
-    virtual void error(char *in_macroName, char *in_macro, char *in_file, int in_line) 
+    virtual void error(const char *in_macroName, const char *in_macro, const char *in_file, int in_line) 
     {
         m_numErrors++;
         fprintf(_file, "\n%s(%d) : %s(%s);\n", in_file, in_line, in_macroName, in_macro);
     }
+
+    virtual void message( const char *msg )
+    {
+      fprintf(_file, "\t%s\n", msg );
+    }
   
-    virtual void progress(char *in_className, char *in_shortTestName) 
+    virtual void progress(const char *in_className, const char *in_shortTestName) 
     {
         m_numTests++;
         fprintf(_file, "%s::%s\n", in_className, in_shortTestName);
