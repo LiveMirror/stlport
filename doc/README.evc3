@@ -3,7 +3,7 @@
 STLport README for eMbedded Visual C++ 3
 ========================================
 
-by: Michael Fink, vividos@users.sourceforge.net, last edited 2004-09-28
+by: Michael Fink, vividos@users.sourceforge.net, last edited 2005-01-04
 
 ============
 Introduction
@@ -21,6 +21,8 @@ To build and use STLport you will need following tools and libraries:
  - eMbedded Visual C++ 3.0
  - latest CVS version of STLport, use
    'cvs -d :pserver:cvs@cvs.stlport.com:/stlport checkout STLport' to get it.
+   Note that you may have to get a different branch, please check out the
+   STLport forum "Announcements" which sourcecode is being worked on.
 
 ================
 Building STLport
@@ -38,7 +40,7 @@ WCEARM.bat and WCEx86.bat. Check if the environment variables are set up
 properly after that call. You can also adjust the batch files to have the
 PLATFORM variable set automatically.
 
-Go into STLport's 'src\explore' folder and type:
+Go into STLport's 'build\lib' folder and type:
 
   configure.bat -c evc3 -p ARM
 
@@ -62,7 +64,7 @@ removing intermediate build files. This is done with the following command:
 Testing STLport
 ===============
 You can use the unit tests to verify STLport behaves correctly. Change into
-STLports 'test\unit' folder and type:
+STLports 'build\test\unit' folder and type:
 
   nmake /f nmake-evc3.mak install
 
@@ -88,16 +90,15 @@ library files (order of paths doesn't matter here).
 There are some preprocessor defines that controls usage of the STLport in evc3
 projects:
 
-In debug builds you have to specify the flag _STLP_USE_DEBUG_LIB if you want to
-link against the debug version of the library. The use of _STLP_DEBUG is
-currently not recommended for eMbedded Visual C++ builds with the ARM compiler.
-
 Define the symbol _STLP_USE_STATIC_LIB when you want to statically link against
 STLport. The linker will remove unused classes and methods then, saving some
 space in the executable.
 
-In all cases you have to specify the proper .lib file for linking, in the
-Project Settings, on the "link" tab. The .lib names have the following syntax:
+If you want automatic linking to the proper .lib file, you have to specify the
+define _STLP_USE_AUTO_LINK. When you define _STLP_VERBOSE_AUTO_LINK too, the
+library that is linked against is printed in the compiler output. When not using
+automatic linking, you have to specify the proper .lib file in the Project
+Settings, on the "link" tab. The .lib names have the following syntax:
 
    stlport_[static_](r|d|stld)<STLport-Version>.lib
 
@@ -106,18 +107,20 @@ Examples:
    stlport_static_r50.lib - static release version, Version 5.0.0
    stlport_d50.lib - dll debug version, Version 5.0.0
 
-When using STLport together with MFC you have to take care of some things. Be
-sure that you always include the MFC header files first before including STLport
-headers, e.g. in your stdafx.h file.
+Note that usage of the _STLP_DEBUG mode is currently not recommended for
+eMbedded Visual C++ builds using the ARM compiler.
+
+When using STLport together with MFC, you have to define _STLP_USE_MFC to
+properly include and use STLport.
 
 Now you should be ready to use STLport.
 
 ============
 Known issues
 ============
- - Warning in Pocket PC 2000 Platform SDK, file math.h:
-   warning C4005: 'exception' : macro redefinition
-   ../../stlport\math.h(26) : see previous definition of 'exception'
+ - Warning when compiling the library:
+   [...]\Pocket PC 2002\include\../include/math.h(16) : note C6311:
+   ../stlport\math.h(26) : see previous definition of 'exception'
    This warning can be ignored.
 
  - Unit Tests in _STLP_DEBUG mode (target 'stldbg-shared') fails in

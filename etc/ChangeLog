@@ -1,3 +1,11 @@
+2005-01-04  Francois Dumont  <dums@stlport...>
+
+	* doc/README.evc3: patched by Michael Fink
+
+	* build/lib/configure.bat: warning fix thanks Michael Fink.
+
+	* build/test/unit/nmake-src-prefix.mak: fixed thanks Michael Fink.
+
 2005-01-02  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_sum.h, _string_operators.h: Fix of a assignment bug

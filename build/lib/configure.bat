@@ -24,10 +24,10 @@ goto skp_comp
 
 REM initially create/overwrite config.mak
 echo # STLport Configuration Tool for Windows > ..\Makefiles\config.mak
-echo # >> .\Makefiles\config.mak
+echo # >> ..\Makefiles\config.mak
 echo # config.mak generated with command line: >> ..\Makefiles\config.mak
 echo # configure.bat %1 %2 %3 %4 %5 %6 %7 %8 %9 >> ..\Makefiles\config.mak
-echo # >> .\Makefiles\config.mak
+echo # >> ..\Makefiles\config.mak
 
 set STLPORT_COMPILE_COMMAND=
 
@@ -153,14 +153,12 @@ set STLPORT_COMPILE_COMMAND=nmake -f nmake-vc70.mak
 goto oc_end
 
 :oc_msvc71
-echo. > .\Makefiles\config.mak
 echo Setting compiler: Microsoft Visual C++ .NET 2003
 echo TARGET_OS=x86 >> ..\Makefiles\config.mak
 set STLPORT_COMPILE_COMMAND=nmake -f nmake-vc71.mak
 goto oc_end
 
 :oc_msvc8
-echo. > .\Makefiles\config.mak
 echo Setting compiler: Microsoft Visual C++ .NET 2005 (beta)
 echo TARGET_OS=x86 >> ..\Makefiles\config.mak
 set STLPORT_COMPILE_COMMAND=nmake -f nmake-vc8.mak
