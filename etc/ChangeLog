@@ -7,6 +7,9 @@
 
 	* stlport/stl/_cwchar.h, stlport/wchar.h: workarounds for FreeBSD.
 
+	* due to change in link sequence most tests [including exceptions] pass
+	for uClibc.
+
 2005-03-28  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_istream.h, _ostream.h: Fix assignment operators prototypes
