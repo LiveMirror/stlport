@@ -316,13 +316,13 @@
 # if defined(__linux__) && defined(_STLP_PTHREADS)
 #  include <features.h>
 
-#  ifdef __USE_XOPEN2K
+#  if defined(__USE_XOPEN2K) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
 #   define _STLP_USE_PTHREAD_SPINLOCK
 #   define _STLP_STATIC_MUTEX _STLP_mutex
 #  endif /* __USE_XOPEN2K */
 # endif /* __linux__ && _STLP_PTHREADS */
 
-# if defined(__OpenBSD__) && defined(_POSIX_THREADS)
+# if defined(__OpenBSD__) && defined(_POSIX_THREADS) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
 #  define _STLP_USE_PTHREAD_SPINLOCK
 #  define _STLP_STATIC_MUTEX _STLP_mutex
 # endif

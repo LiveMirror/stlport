@@ -180,7 +180,6 @@ typedef unsigned int wint_t;
 #  else
 #    ifdef _STLP_USE_GLIBC
 #      define _STLP_VENDOR_LONG_DOUBLE_MATH  1 // - ptr: with new c headers no needs
-//#      define _STLP_REAL_LOCALE_IMPLEMENTED
 #    endif
 #  endif
 #endif
@@ -188,7 +187,7 @@ typedef unsigned int wint_t;
 #if (__GNUC__ < 3)
 #  define _STLP_HAS_NO_NEW_C_HEADERS     1
 #  define _STLP_VENDOR_GLOBAL_CSTD       1
-//#  define _STLP_HAS_NO_NEW_IOSTREAMS     1
+#  define _STLP_DONT_USE_PTHREAD_SPINLOCK 1
 #  ifndef __HONOR_STD
 #    define _STLP_VENDOR_GLOBAL_EXCEPT_STD 1
 #  endif
