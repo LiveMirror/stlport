@@ -1,3 +1,7 @@
+2005-03-09  Petr Ovtchenkov  <ptr@island...>
+
+	* doc/FAQ: FAQ was established.
+
 2005-03-07  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_bitset.h, _bitset.c: Avoid include of istream when
