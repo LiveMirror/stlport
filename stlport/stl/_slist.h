@@ -151,7 +151,7 @@ protected:
     _Node* __next = (_Node*) (__pos->_M_next);
     _Slist_node_base* __next_next = __next->_M_next;
     __pos->_M_next = __next_next;
-    _Destroy(&__next->_M_data);
+    _STLP_STD::_Destroy(&__next->_M_data);
     _M_head.deallocate(__next,1);
     return __next_next;
   }
@@ -344,7 +344,7 @@ public:
   void pop_front() {
     _Node* __node = (_Node*) this->_M_head._M_data._M_next;
     this->_M_head._M_data._M_next = __node->_M_next;
-    _Destroy(&__node->_M_data);
+    _STLP_STD::_Destroy(&__node->_M_data);
     this->_M_head.deallocate(__node, 1);
   }
 

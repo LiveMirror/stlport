@@ -576,7 +576,7 @@ private:
   
   void _M_delete_node(_Node* __n)
   {
-    _Destroy(&__n->_M_val);
+    _STLP_STD::_Destroy(&__n->_M_val);
     _M_num_elements.deallocate(__n, 1);
   }
 

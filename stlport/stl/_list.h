@@ -350,7 +350,7 @@ public:
     _Node* __n = (_Node*) __position._M_node;
     __prev_node->_M_next = __next_node;
     __next_node->_M_prev = __prev_node;
-    _Destroy(&__n->_M_data);
+    _STLP_STD::_Destroy(&__n->_M_data);
     this->_M_node.deallocate(__n, 1);
     return iterator((_Node*)__next_node);
     }

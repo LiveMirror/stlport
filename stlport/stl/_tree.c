@@ -639,7 +639,7 @@ _Rb_tree<_Key,_Value,_KeyOfValue,
   while (__x != 0) {
     _M_erase(_S_right(__x));
     _Link_type __y = _S_left(__x);
-    _Destroy(&__x->_M_value_field);
+    _STLP_STD::_Destroy(&__x->_M_value_field);
     this->_M_header.deallocate(__x,1);
     __x = __y;
   }

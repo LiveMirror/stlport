@@ -104,7 +104,7 @@ template <class _ForwardIterator>
 _STLP_INLINE_LOOP void
 __destroy_aux(_ForwardIterator __first, _ForwardIterator __last, const __false_type&) {
   for ( ; __first != __last; ++__first)
-    _Destroy(&*__first);
+    _STLP_STD::_Destroy(&*__first);
 }
 
 template <class _ForwardIterator> 
@@ -137,9 +137,9 @@ inline void construct(_T1* __p, const _T2& __val) {_Construct(__p, __val); }
 template <class _T1>
 inline void construct(_T1* __p) { _Construct(__p); }
 template <class _Tp>
-inline void destroy(_Tp* __pointer) {  _Destroy(__pointer); }
+inline void destroy(_Tp* __pointer) {  _STLP_STD::_Destroy(__pointer); }
 template <class _ForwardIterator>
-inline void destroy(_ForwardIterator __first, _ForwardIterator __last) { _Destroy(__first, __last); }
+inline void destroy(_ForwardIterator __first, _ForwardIterator __last) { _STLP_STD::_Destroy(__first, __last); }
 # endif
 _STLP_END_NAMESPACE
 

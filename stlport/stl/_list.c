@@ -70,7 +70,7 @@ _List_base<_Tp,_Alloc>::clear()
   while (__cur != this->_M_node._M_data) {
     _List_node<_Tp>* __tmp = __cur;
     __cur = (_List_node<_Tp>*) __cur->_M_next;
-    _Destroy(&__tmp->_M_data);
+    _STLP_STD::_Destroy(&__tmp->_M_data);
     this->_M_node.deallocate(__tmp, 1);
   }
   this->_M_node._M_data->_M_next = this->_M_node._M_data;

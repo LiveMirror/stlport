@@ -30,11 +30,15 @@
 #  ifndef _STLP_CONFIG_H
 #   include <stl/_config.h>
 #  endif
-#  if defined (_STLP_USE_OWN_NAMESPACE) && (defined (_STLP_OWN_IOSTREAMS) || defined (_STLP_HAS_NO_NEW_IOSTREAMS))
+
+// this was for the reverse namespace injection schema
+#  if 0 /* defined (_STLP_USE_OWN_NAMESPACE) && (defined (_STLP_OWN_IOSTREAMS) || defined (_STLP_HAS_NO_NEW_IOSTREAMS))
 namespace _STLP_STD {}
 namespace std {
   using namespace _STLP_STD;
 }
+	*/
 #  endif
+
 # endif /* __cplusplus */
 # endif

@@ -118,7 +118,7 @@ public:
   valarray(const indirect_array<_Tp>&);
 
   // Destructor
-  ~valarray() { _Destroy(this->_M_first, this->_M_first + this->_M_size); }
+  ~valarray() { _STLP_STD::_Destroy(this->_M_first, this->_M_first + this->_M_size); }
 
   // Extension: constructor that doesn't initialize valarray elements to a
   // specific value.  This is faster for types such as int and double.
@@ -345,7 +345,7 @@ public:                         // Other member functions.
   }
   
   void resize(size_t __n, value_type __x = value_type()) {
-    _Destroy(this->_M_first, this->_M_first + this->_M_size);
+    _STLP_STD::_Destroy(this->_M_first, this->_M_first + this->_M_size);
     this->_Valarray_base<_Tp>::_M_deallocate();
     this->_Valarray_base<_Tp>::_M_allocate(__n);
     uninitialized_fill_n(this->_M_first, this->_M_size, __x);

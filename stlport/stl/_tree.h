@@ -419,7 +419,7 @@ public:
 							 this->_M_header._M_data->_M_parent,
 							 this->_M_header._M_data->_M_left,
 							 this->_M_header._M_data->_M_right);
-    _Destroy(&__y->_M_value_field);
+    _STLP_STD::_Destroy(&__y->_M_value_field);
     this->_M_header.deallocate(__y,1);
     --_M_node_count;
   }

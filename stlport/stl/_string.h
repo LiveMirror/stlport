@@ -299,7 +299,7 @@ public:                         // Constructor, destructor, assignment.
   operator __std_string() const { return __std_string(this->data(), this->size()); }
 # endif
 
-  ~basic_string() { _Destroy(this->_M_start, this->_M_finish + 1); }
+  ~basic_string() { _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1); }
     
   _Self& operator=(const _Self& __s) {
     if (&__s != this) 
@@ -341,7 +341,7 @@ private:
     _STLP_TRY {
       _M_construct_null(this->_M_finish);
     }
-    _STLP_UNWIND(_Destroy(this->_M_start, this->_M_finish));
+    _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_start, this->_M_finish));
   }
 
   void _M_terminate_string_aux(const __true_type&) {
@@ -361,7 +361,7 @@ private:
     _STLP_TRY {
       append(__f, __l);
     }
-    _STLP_UNWIND(_Destroy(this->_M_start, this->_M_finish + 1));
+    _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1));
   }
 
   template <class _ForwardIter> void _M_range_initialize(_ForwardIter __f, _ForwardIter __l, 
@@ -434,7 +434,7 @@ public:                         // Size, capacity, etc.
   void clear() {
     if (!empty()) {
       _Traits::assign(*(this->_M_start), _M_null());
-      _Destroy(this->_M_start+1, this->_M_finish+1);
+      _STLP_STD::_Destroy(this->_M_start+1, this->_M_finish+1);
       this->_M_finish = this->_M_start;
     }
   } 
@@ -509,7 +509,7 @@ public:                         // Append, operator+=, push_back.
 
   void pop_back() {
     _Traits::assign(*(this->_M_finish - 1), _M_null());
-    _Destroy(this->_M_finish);
+    _STLP_STD::_Destroy(this->_M_finish);
     --this->_M_finish;
   }
 
@@ -541,9 +541,9 @@ private:                        // Helper functions for append.
 	        __new_finish = uninitialized_copy(__first, __last, __new_finish);
 	        _M_construct_null(__new_finish);
 	      }
-	      _STLP_UNWIND((_Destroy(__new_start,__new_finish),
+	      _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish),
 	                    this->_M_end_of_storage.deallocate(__new_start,__len)));
-	      _Destroy(this->_M_start, this->_M_finish + 1);
+	      _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
 	      this->_M_deallocate_block();
 	      this->_M_start = __new_start;
 	      this->_M_finish = __new_finish;
@@ -556,7 +556,7 @@ private:                        // Helper functions for append.
 	      _STLP_TRY {
 	        _M_construct_null(this->_M_finish + __n);
 	      }
-	      _STLP_UNWIND(_Destroy(this->_M_finish + 1, this->_M_finish + __n));
+	      _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_finish + 1, this->_M_finish + __n));
 	      _Traits::assign(*end(), *__first);
 	      this->_M_finish += __n;
 	    }
@@ -762,7 +762,7 @@ private:                        // Helper functions for insert.
 	          uninitialized_copy(__position, __old_finish + 1, this->_M_finish);
 	          this->_M_finish += __elems_after;
 	        }
-	        _STLP_UNWIND((_Destroy(__old_finish + 1, this->_M_finish), 
+	        _STLP_UNWIND((_STLP_STD::_Destroy(__old_finish + 1, this->_M_finish), 
 	                      this->_M_finish = __old_finish));
 	        _M_copy(__first, __mid, __position);
 	}
@@ -780,9 +780,9 @@ private:                        // Helper functions for insert.
 	          = uninitialized_copy(__position, this->_M_finish, __new_finish);
 	        _M_construct_null(__new_finish);
 	      }
-	      _STLP_UNWIND((_Destroy(__new_start,__new_finish),
+	      _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish),
 	                    this->_M_end_of_storage.deallocate(__new_start,__len)));
-	      _Destroy(this->_M_start, this->_M_finish + 1);
+	      _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
 	      this->_M_deallocate_block();
 	      this->_M_start = __new_start;
 	      this->_M_finish = __new_finish;
@@ -828,7 +828,7 @@ public:                         // Erase.
   iterator erase(iterator __position) {
                                 // The move includes the terminating _CharT().
     _Traits::move(__position, __position + 1, this->_M_finish - __position);
-    _Destroy(this->_M_finish);
+    _STLP_STD::_Destroy(this->_M_finish);
     --this->_M_finish;
     return __position;
   }
@@ -838,7 +838,7 @@ public:                         // Erase.
                                 // The move includes the terminating _CharT().
       traits_type::move(__first, __last, (this->_M_finish - __last) + 1);
       pointer __new_finish = this->_M_finish - (__last - __first);
-      _Destroy(__new_finish + 1, this->_M_finish + 1);
+      _STLP_STD::_Destroy(__new_finish + 1, this->_M_finish + 1);
       this->_M_finish = __new_finish;
     }
     return __first;

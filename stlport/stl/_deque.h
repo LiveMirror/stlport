@@ -493,7 +493,7 @@ public:                         // Constructor, destructor.
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   ~deque() { 
-    _Destroy(this->_M_start, this->_M_finish); 
+    _STLP_STD::_Destroy(this->_M_start, this->_M_finish); 
   }
 
   _Self& operator= (const _Self& __x);
@@ -614,7 +614,7 @@ public:                         // push_* and pop_*
   void pop_back() {
     if (this->_M_finish._M_cur != this->_M_finish._M_first) {
       --this->_M_finish._M_cur;
-      _Destroy(this->_M_finish._M_cur);
+      _STLP_STD::_Destroy(this->_M_finish._M_cur);
     }
     else
       _M_pop_back_aux();
@@ -622,7 +622,7 @@ public:                         // push_* and pop_*
 
   void pop_front() {
     if (this->_M_start._M_cur != this->_M_start._M_last - 1) {
-      _Destroy(this->_M_start._M_cur);
+      _STLP_STD::_Destroy(this->_M_start._M_cur);
       ++this->_M_start._M_cur;
     }
     else 
@@ -751,7 +751,7 @@ protected:                        // Internal construction/destruction
     }
     uninitialized_copy(__first, __last, this->_M_finish._M_first);
    }
-  _STLP_UNWIND(_Destroy(this->_M_start, iterator(*__cur_node, __cur_node)));
+  _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_start, iterator(*__cur_node, __cur_node)));
  }
 #endif /* _STLP_MEMBER_TEMPLATES */
 

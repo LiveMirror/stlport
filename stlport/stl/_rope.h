@@ -439,7 +439,7 @@ public:
                              allocator_type __a) {
 
     if (!_S_is_basic_char_type((_CharT*)0)) {
-      _Destroy(__s, __s + __len);
+      _STLP_STD::_Destroy(__s, __s + __len);
     }
     //  This has to be a static member, so this gets a bit messy
 #   ifdef _STLP_MEMBER_TEMPLATE_CLASSES
@@ -1613,7 +1613,7 @@ public:
   }
 
   void copy(_CharT* __buffer) const {
-    _Destroy(__buffer, __buffer + size());
+    _STLP_STD::_Destroy(__buffer, __buffer + size());
     _S_flatten(_M_tree_ptr._M_data, __buffer);
   }
 
@@ -1627,7 +1627,7 @@ public:
     size_t _p_size = size();
     size_t __len = (__pos + __n > _p_size? _p_size - __pos : __n);
 
-    _Destroy(__buffer, __buffer + __len);
+    _STLP_STD::_Destroy(__buffer, __buffer + __len);
     _S_flatten(_M_tree_ptr._M_data, __pos, __len, __buffer);
     return __len;
   }

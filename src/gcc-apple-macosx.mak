@@ -5,8 +5,8 @@
 #
 # compiler
 #
-CC = cc
-CXX = cc
+CC = gcc
+CXX = c++ -fexceptions
 
 #
 # Basename for libraries
@@ -34,9 +34,9 @@ all: all_dynamic all_static
 
 include common_macros.mak
 
-WARNING_FLAGS= -W -Wno-sign-compare -Wno-unused -Wno-uninitialized
+WARNING_FLAGS= -Wall -W -Wno-sign-compare -Wno-unused -Wno-uninitialized -ftemplate-depth-32
 
-CXXFLAGS_COMMON = -I${STLPORT_DIR} ${WARNING_FLAGS}  -traditional-cpp -fno-coalesce
+CXXFLAGS_COMMON = -I${STLPORT_DIR} ${WARNING_FLAGS}
 
 CXXFLAGS_RELEASE_static = $(CXXFLAGS_COMMON) -O2
 CXXFLAGS_RELEASE_dynamic = $(CXXFLAGS_COMMON) -O2 -fPIC

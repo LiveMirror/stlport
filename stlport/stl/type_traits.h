@@ -142,8 +142,9 @@ char* _STLP_CALL _IsSameFun(bool, ...);          // no implementation is require
 
 template <class _Tp1, class _Tp2>
 struct _IsSame {
-  static _Tp1& __null_rep1();
-  static _Tp2& __null_rep2();
+  // boris : check!
+  static _Tp1* __null_rep1();
+  static _Tp2* __null_rep2();
   enum { _Ret = (sizeof(_IsSameFun(false,__null_rep1(),__null_rep2())) == sizeof(char)) };
 };
 

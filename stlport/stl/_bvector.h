@@ -63,7 +63,7 @@ public:
   void flip() { *_M_p ^= _M_mask; }
 };
 
-inline void swap(_Bit_reference __x, _Bit_reference& __y)
+inline void swap(_Bit_reference& __x, _Bit_reference& __y)
 {
   bool __tmp = (bool)__x;
   __x = __y;
