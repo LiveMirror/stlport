@@ -1,0 +1,22 @@
+Document file - DO NOT EDIT
+
+<BEGIN> CORE_INFO_TYPE
+Workspace
+<END>
+
+<BEGIN> CORE_INFO_VERSION
+2.2
+<END>
+
+<BEGIN> projectList
+$(PRJ_DIR)/test/STLportRegression.wpj \
+	$(PRJ_DIR)/src/libSTLport.wpj \
+	$(PRJ_DIR)/test/regression/STLportRegression1.wpj \
+	$(PRJ_DIR)/../VxWorksCplus/VxWorksCplus.wpj \
+	$(PRJ_DIR)/test/regression/STLportRegression2/STLportRegression2.wpj
+<END>
+
+<BEGIN> userComments
+
+<END>
+

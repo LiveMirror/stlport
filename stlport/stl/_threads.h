@@ -261,6 +261,8 @@ using _STLP_VENDOR_CSTD::time_t;
   APIRET _System DosCloseMutexSem(HMTX hmtx);
 # define _STLP_MUTEX_INITIALIZER = { 0 };
 #  endif /* GNUC */
+# elif defined(_STLP_VXWORKS_THREADS)
+#  include "semLib.h"
 # endif
 
 # ifndef _STLP_MUTEX_INITIALIZER
@@ -434,6 +436,37 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
      status_t t = release_sem(sem);
      assert(t == B_NO_ERROR);
   }
+# elif defined(_STLP_VXWORKS_THREADS)
+  SEM_ID _M_sem;
+  inline void _M_initialize() 
+  {
+     _M_sem = semMCreate(SEM_Q_FIFO);
+     assert(_M_sem > 0);
+  }
+  inline void _M_destroy() 
+  {
+    STATUS __s;
+    semDelete (_M_sem);
+    assert(__s == OK);
+  }
+  inline void _M_acquire_lock_nodemand()
+  {
+    STATUS __s;
+    semTake (_M_sem, WAIT_FOREVER);
+    assert(__s == OK);
+  }
+  inline void _M_acquire_lock()
+  {
+    if (!_M_sem)
+      _M_initialize();
+    _M_acquire_lock_nodemand();
+  }
+  inline void _M_release_lock() 
+  {
+    STATUS __s;
+    semGive (_M_sem, WAIT_FOREVER);
+    assert(__s == OK);
+  }
 # else		//*ty 11/24/2001 - added configuration check
 #  error "Unknown thread facility configuration"
 # endif
@@ -470,94 +503,6 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_nodemand {
     void operator=(const _STLP_mutex&);
 };
 
-#if 0 /* def _STLP_DEBUG */
-/*
- * Recursive Safe locking class.
-*/
-# ifndef _STLP_THREADS
-class _STLP_mutex_RS
-{};
-# else
-class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
-{
-  public:
-    _STLP_mutex_RS()
-      : _count( 0 )
-#  if defined(_STLP_UITHREADS)
-        ,_id( __STATIC_CAST(thread_t,-1) )
-#  elif defined(_STLP_PTHREADS)
-#   if !defined(__FreeBSD__) && !defined(__DECCXX)
-        ,_id( __STATIC_CAST(pthread_t,-1) )
-#   else
-        ,_id( __STATIC_CAST(pthread_t,0) )
-#   endif /*__FreeBSD__*/
-#  elif defined(__FIT_NOVELL_THREADS)
-        ,_id( -1 )
-#  elif defined(_STLP_WIN32THREADS)
-        ,_id( NULL )
-#  else
-#   error "New _STLP_mutex_RS class not yet ported to this platform"
-#  endif
-    {}
-
-    ~_STLP_mutex_RS()
-    {}
-
-    void _M_acquire_lock() {
-#  if defined(_STLP_PTHREADS)
-      pthread_t _c_id = pthread_self();
-#  elif defined(_STLP_UITHREADS)
-      thread_t _c_id = thr_self();
-#  elif defined(__FIT_NOVELL_THREADS)
-      int _c_id = GetThreadID();
-#  elif defined(_STLP_WIN32THREADS)
-      DWORD _c_id = GetCurrentThreadId();
-#  endif
-      if ( _c_id == _id ) {
-        ++_count;
-        return;
-      }
-      _STLP_mutex::_M_acquire_lock();
-      _id = _c_id;
-      ++_count;
-    }
-
-    void _M_release_lock() {
-      if ( --_count == 0 ) {
-#  if defined(_STLP_UITHREADS)
-        _id = __STATIC_CAST(thread_t,-1);
-#  elif defined(_STLP_PTHREADS)
-#   if !defined(__FreeBSD__) && !defined(__DECCXX)
-        _id =  __STATIC_CAST(pthread_t,-1);
-#   else
-        _id =  __STATIC_CAST(pthread_t,0);
-#   endif /*__FreeBSD__*/
-#  elif defined(__FIT_NOVELL_THREADS)
-        _id = -1;
-#  elif defined(_STLP_WIN32THREADS)
-        _id = NULL;
-#  endif
-        _STLP_mutex::_M_release_lock();
-      }
-    }
-
-  protected:
-    unsigned int _count;
-
-#  if defined(_STLP_PTHREADS)
-    pthread_t _id;
-#  elif defined(_STLP_UITHREADS)
-    thread_t  _id;
-#  elif defined(__FIT_NOVELL_THREADS)
-    int _id;
-#  elif defined(_STLP_WIN32THREADS)
-    DWORD _id;
-#  endif
-};
-
-# endif /* _STLP_THREADS */
-
-#endif /* OBSOLETE, _STLP_DEBUG */
 
 
 /*

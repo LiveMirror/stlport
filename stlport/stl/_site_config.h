@@ -58,15 +58,16 @@
  * compiler vendor's headers included. Default is "../include"
  * Hint : never install STLport in the directory that ends with "include"
  */
-// #  undef _STLP_NATIVE_INCLUDE_PATH
-// #  define _STLP_NATIVE_INCLUDE_PATH ../include
-// same for C library headers like <cstring>
-// #  undef _STLP_NATIVE_CPP_C_INCLUDE_PATH
-// #  define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
-// same for C headers like <string.h>
-// #  undef _STLP_NATIVE_C_INCLUDE_PATH
-// #  define _STLP_NATIVE_C_INCLUDE_PATH ../include
-
+#if 0
+ #  undef _STLP_NATIVE_INCLUDE_PATH
+ #  define _STLP_NATIVE_INCLUDE_PATH ../include
+  same for C library headers like <cstring>
+ #  undef _STLP_NATIVE_CPP_C_INCLUDE_PATH
+ #  define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
+ same for C headers like <string.h>
+ #  undef _STLP_NATIVE_C_INCLUDE_PATH
+ #  define _STLP_NATIVE_C_INCLUDE_PATH ../include
+#endif
 
 /* 
  * _STLP_USE_OWN_NAMESPACE/_STLP_NO_OWN_NAMESPACE
@@ -80,7 +81,7 @@
  * link with third-part libraries compiled with different standard library implementation.
  */
 // #  define _STLP_USE_OWN_NAMESPACE 1
-// #  define _STLP_NO_OWN_NAMESPACE  1
+#  define _STLP_NO_OWN_NAMESPACE  1
 
 
 /* 

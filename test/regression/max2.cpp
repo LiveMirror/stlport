@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cstring>
 
+#undef max
+
 #ifdef MAIN 
 #define max2_test main
 #endif

@@ -1,0 +1,2725 @@
+Document file - DO NOT EDIT
+
+<BEGIN> BUILD_RULE_STLportRegression1.out
+
+<END>
+
+<BEGIN> BUILD_RULE_STLportRegression1.pl
+
+<END>
+
+<BEGIN> BUILD_RULE_archive
+
+<END>
+
+<BEGIN> BUILD_RULE_objects
+
+<END>
+
+<BEGIN> BUILD_SIMNT_BUILDRULE
+STLportRegression1.out
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_BUILDRULE
+STLportRegression1.out
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_AR
+arsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_ARCHIVE
+$(PRJ_DIR)/../SIMNTgnu/STLportRegression1.a
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_AS
+ccsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_CC
+ccsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_CC_ARCH_SPEC
+-mpentium
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_CFLAGS
+-g \
+	-mpentium \
+	-ansi \
+	-fno-builtin \
+	-fno-defer-pop \
+	-I. \
+	-I$(WIND_PROJ_BASE)/STLport/stlport \
+	-I$(WIND_BASE)/target/h/ \
+	-I$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu \
+	-D_STLP_VXWORKS_TORNADO \
+	-D_STLP_DEBUG
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_CFLAGS_AS
+-g \
+	-mpentium \
+	-ansi \
+	-fno-builtin \
+	-fno-defer-pop \
+	-P \
+	-xassembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h/ \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_CPP
+ccsimpc -E -P
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_HEX_FLAGS
+
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_LD
+ldsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_LDDEPS
+
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_LDFLAGS
+--subsystem=windows -L../../src/libSTLport_SIMNT_Debug  -lSTLport
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_LD_PARTIAL
+ccsimpc -r -nostdlib
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_LD_PARTIAL_FLAGS
+-r
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_NM
+nmsimpc -g
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_OPTION_DEPEND
+-M -w
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_OPTION_GENERATE_DEPENDENCY_FILE
+-MD
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_OPTION_LANG_C
+-xc
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_OPTION_UNDEFINE_MACRO
+-U
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_POST_BUILD_RULE
+
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_PRJ_LIBS
+../../../src/libSTLport_SIMNT_Debug/libSTLport.a
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_SIZE
+sizesimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_MACRO_TOOL_FAMILY
+gnu
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} \
+	{$(WIND_BASE)/target/src/} \
+	{$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_SIMNT_Debug_TC
+::tc_SIMNTgnu
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_AR
+arsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_ARCHIVE
+$(PRJ_DIR)/../SIMNTgnu/STLportRegression1.a
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_AS
+ccsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_CC
+ccsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_CC_ARCH_SPEC
+-mpentium
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_CFLAGS
+-O2 \
+	-mpentium \
+	-ansi \
+	-fno-builtin \
+	-fno-defer-pop \
+	-I. \
+	-I$(WIND_PROJ_BASE)/STLport/stlport \
+	-I$(WIND_BASE)/target/h/ \
+	-I$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu \
+	-D_STLP_VXWORKS_TORNADO
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_CFLAGS_AS
+-g \
+	-mpentium \
+	-ansi \
+	-fno-builtin \
+	-fno-defer-pop \
+	-P \
+	-xassembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h/ \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_CPP
+ccsimpc -E -P
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_HEX_FLAGS
+
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_LD
+ldsimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_LDDEPS
+
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_LDFLAGS
+--subsystem=windows -L../../../src/libSTLport_SIMNT -lSTLport
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_LD_PARTIAL
+ccsimpc -r -nostdlib
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_LD_PARTIAL_FLAGS
+-r
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_NM
+nmsimpc -g
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_OPTION_DEPEND
+-M -w
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_OPTION_GENERATE_DEPENDENCY_FILE
+-MD
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_OPTION_LANG_C
+-xc
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_OPTION_UNDEFINE_MACRO
+-U
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_POST_BUILD_RULE
+
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_PRJ_LIBS
+$(WIND_PROJ_BASE)/STLport/src/libSTLport_SIMNT/libSTLport.a
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_SIZE
+sizesimpc
+<END>
+
+<BEGIN> BUILD_SIMNT_MACRO_TOOL_FAMILY
+gnu
+<END>
+
+<BEGIN> BUILD_SIMNT_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} \
+	{$(WIND_BASE)/target/src/} \
+	{$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_SIMNT_TC
+::tc_SIMNTgnu
+<END>
+
+<BEGIN> BUILD_STRONGARM_BUILDRULE
+STLportRegression1.out
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_AR
+ararm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_ARCHIVE
+$(PRJ_DIR)/../STRONGARM/STLportRegression1.a
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_AS
+ccarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CC
+ccarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CC_ARCH_SPEC
+-mapcs-32 -mlittle-endian -mcpu=strongarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CFLAGS
+-O3 \
+	-mapcs-32 \
+	-mlittle-endian \
+	-mcpu=strongarm \
+	-ansi \
+	-fno-builtin \
+	-DARMEL \
+	-I. \
+	-I$(WIND_BASE)/target/h/ \
+	-DCPU=STRONGARM \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu \
+	-I../../stlport \
+	-I$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include \
+	-D_STLP_VXWORKS_TORNADO
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CFLAGS_AS
+-g \
+	-mapcs-32 \
+	-mlittle-endian \
+	-mcpu=strongarm \
+	-ansi \
+	-fno-builtin \
+	-P \
+	-xassembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h/ \
+	-DCPU=STRONGARM \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CPP
+ccarm -E -P
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_HEX_FLAGS
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LD
+ldarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LDDEPS
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LDFLAGS
+-X -EL -N
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LD_PARTIAL
+ccarm -r -nostdlib -Wl,-X -Wl,-EL
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LD_PARTIAL_FLAGS
+-X -EL -r
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_NM
+nmarm -g
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_DEPEND
+-M -w
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_GENERATE_DEPENDENCY_FILE
+-MD
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_LANG_C
+-xc
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_UNDEFINE_MACRO
+-U
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_POST_BUILD_RULE
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_PRJ_LIBS
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_SIZE
+sizearm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_TOOL_FAMILY
+gnu
+<END>
+
+<BEGIN> BUILD_STRONGARM_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} \
+	{$(WIND_BASE)/target/src/} \
+	{$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_STRONGARM_TC
+::tc_STRONGARMgnu
+<END>
+
+<BEGIN> BUILD__CURRENT
+SIMNT_Debug
+<END>
+
+<BEGIN> BUILD__LIST
+SIMNT_Debug STRONGARM SIMNT
+<END>
+
+<BEGIN> CORE_INFO_TYPE
+::prj_vxApp
+<END>
+
+<BEGIN> CORE_INFO_VERSION
+2.2
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum1.cpp_objects
+accum1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum2.cpp_objects
+accum2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/accum2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff0.cpp_objects
+adjdiff0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff1.cpp_objects
+adjdiff1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff2.cpp_objects
+adjdiff2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjdiff2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind0.cpp_objects
+adjfind0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind1.cpp_objects
+adjfind1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/string \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind2.cpp_objects
+adjfind2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/adjfind2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/advance.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/advance.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/advance.cpp_objects
+advance.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/advance.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg1.cpp_objects
+alg1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg2.cpp_objects
+alg2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg3.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg3.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg3.cpp_objects
+alg3.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg3.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg4.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg4.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg4.cpp_objects
+alg4.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg4.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg5.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg5.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/deque \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg5.cpp_objects
+alg5.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/alg5.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(PRJ_DIR)/unary.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos1.cpp_objects
+bcompos1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(PRJ_DIR)/unary.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos2.cpp_objects
+bcompos2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bcompos2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st1.cpp_objects
+bind1st1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st2.cpp_objects
+bind1st2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind1st2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd1.cpp_objects
+bind2nd1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd2.cpp_objects
+bind2nd2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bind2nd2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert1.cpp_objects
+binsert1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert2.cpp_objects
+binsert2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsert2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch1.cpp_objects
+binsrch1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch2.cpp_objects
+binsrch2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/binsrch2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bitset1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bitset1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/bitset \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(WIND_PROJ_BASE)/STLport/stlport/stdexcept
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bitset1.cpp_objects
+bitset1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bitset1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate1.cpp_objects
+bnegate1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate2.cpp_objects
+bnegate2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bnegate2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bvec1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bvec1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bvec1.cpp_objects
+bvec1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/bvec1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy1.cpp_objects
+copy1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy2.cpp_objects
+copy2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy3.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy3.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy3.cpp_objects
+copy3.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy3.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy4.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy4.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy4.cpp_objects
+copy4.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copy4.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb.cpp_objects
+copyb.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb0.cpp_objects
+copyb0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/copyb0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count0.cpp_objects
+count0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count1.cpp_objects
+count1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/count1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/countif1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/countif1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/countif1.cpp_objects
+countif1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/countif1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/deque1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/deque1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(WIND_PROJ_BASE)/STLport/stlport/deque
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/deque1.cpp_objects
+deque1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/deque1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/divides.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/divides.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/divides.cpp_objects
+divides.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/divides.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge0.cpp_objects
+eqlrnge0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge1.cpp_objects
+eqlrnge1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/string \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge2.cpp_objects
+eqlrnge2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/eqlrnge2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal0.cpp_objects
+equal0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal1.cpp_objects
+equal1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal2.cpp_objects
+equal2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equal2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equalto.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equalto.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equalto.cpp_objects
+equalto.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/equalto.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fill1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fill1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fill1.cpp_objects
+fill1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fill1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/filln1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/filln1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/filln1.cpp_objects
+filln1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/filln1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find0.cpp_objects
+find0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find1.cpp_objects
+find1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/find1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif0.cpp_objects
+findif0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif1.cpp_objects
+findif1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/findif1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/deque \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert1.cpp_objects
+finsert1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/deque \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert2.cpp_objects
+finsert2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/finsert2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(PRJ_DIR)/fadapter.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach0.cpp_objects
+foreach0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(PRJ_DIR)/fadapter.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach1.cpp_objects
+foreach1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/foreach1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func1.cpp_objects
+func1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func2.cpp_objects
+func2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func3.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func3.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func3.cpp_objects
+func3.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/func3.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(PRJ_DIR)/fadapter.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener1.cpp_objects
+gener1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(PRJ_DIR)/fib.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/string \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener2.cpp_objects
+gener2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/gener2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(PRJ_DIR)/fadapter.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern1.cpp_objects
+genern1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(PRJ_DIR)/fib.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern2.cpp_objects
+genern2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/genern2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greateq.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greateq.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greateq.cpp_objects
+greateq.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greateq.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greater.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greater.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greater.cpp_objects
+greater.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/greater.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmap1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmap1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/rope \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_relops_hash_cont.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_hash_map.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(WIND_PROJ_BASE)/STLport/stlport/hash_map
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmap1.cpp_objects
+hmap1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmap1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmmap1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmmap1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/rope \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_relops_hash_cont.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_hash_map.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(WIND_PROJ_BASE)/STLport/stlport/hash_map
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmmap1.cpp_objects
+hmmap1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmmap1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmset1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmset1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_relops_hash_cont.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_hash_set.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/hash_set \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmset1.cpp_objects
+hmset1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hmset1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hset2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hset2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_relops_hash_cont.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_hash_set.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/hash_set \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hset2.cpp_objects
+hset2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/hset2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl0.cpp_objects
+incl0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl1.cpp_objects
+incl1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl2.cpp_objects
+incl2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/incl2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg1.cpp_objects
+inplmrg1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg2.cpp_objects
+inplmrg2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inplmrg2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod0.cpp_objects
+inrprod0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/string \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod1.cpp_objects
+inrprod1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/string \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod2.cpp_objects
+inrprod2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/inrprod2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/deque \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert1.cpp_objects
+insert1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/deque \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert2.cpp_objects
+insert2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/insert2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iota1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iota1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iota1.cpp_objects
+iota1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iota1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istmit1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istmit1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istmit1.cpp_objects
+istmit1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istmit1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter1.cpp_objects
+iter1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter2.cpp_objects
+iter2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter3.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter3.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter3.cpp_objects
+iter3.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter3.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter4.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter4.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter4.cpp_objects
+iter4.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iter4.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp0.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp0.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp0.cpp_objects
+iterswp0.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp0.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp1.cpp_objects
+iterswp1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iterswp1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/less.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/less.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/less.cpp_objects
+less.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/less.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lesseq.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lesseq.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lesseq.cpp_objects
+lesseq.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lesseq.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp1.cpp_objects
+lexcmp1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp2.cpp_objects
+lexcmp2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lexcmp2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/list \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list1.cpp_objects
+list1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/list \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list2.cpp_objects
+list2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list3.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list3.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/list \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list3.cpp_objects
+list3.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list3.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list4.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list4.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/list \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list4.cpp_objects
+list4.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/list4.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicand.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicand.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicand.cpp_objects
+logicand.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicand.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicnot.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicnot.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicnot.cpp_objects
+logicnot.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicnot.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicor.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicor.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicor.cpp_objects
+logicor.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/logicor.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd1.cpp_objects
+lwrbnd1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd2.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd2.cpp_objects
+lwrbnd2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/lwrbnd2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stl_test_1.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stl_test_1.cpp_dependencies
+$(WIND_PROJ_BASE)/STLport/stlport/rope \
+	$(WIND_PROJ_BASE)/STLport/stlport/map \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_hash_set.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_ctraits_fns.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/slist \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_tree.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/algorithm \
+	$(WIND_PROJ_BASE)/STLport/stlport/hash_set \
+	$(PRJ_DIR)/stl_test.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_hash_map.h \
+	$(PRJ_DIR)/stl.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/hash_map \
+	$(WIND_PROJ_BASE)/STLport/stlport/pthread_alloc \
+	$(WIND_PROJ_BASE)/STLport/stlport/iterator \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_set.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/numeric \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_istream.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/iostream \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_map.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stack \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_numeric.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_relops_hash_cont.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_iosfwd.h \
+	$(WIND_PROJ_BASE)/STLport/stlport/vector \
+	$(WIND_PROJ_BASE)/STLport/stlport/functional \
+	$(WIND_PROJ_BASE)/STLport/stlport/set \
+	$(WIND_PROJ_BASE)/STLport/stlport/list \
+	$(WIND_PROJ_BASE)/STLport/stlport/deque \
+	$(WIND_PROJ_BASE)/STLport/stlport/stl/_stack.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stl_test_1.cpp_objects
+stl_test_1.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stl_test_1.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> PROJECT_FILES
+$(PRJ_DIR)/accum1.cpp \
+	$(PRJ_DIR)/accum2.cpp \
+	$(PRJ_DIR)/adjdiff0.cpp \
+	$(PRJ_DIR)/adjdiff1.cpp \
+	$(PRJ_DIR)/adjdiff2.cpp \
+	$(PRJ_DIR)/adjfind0.cpp \
+	$(PRJ_DIR)/adjfind1.cpp \
+	$(PRJ_DIR)/adjfind2.cpp \
+	$(PRJ_DIR)/advance.cpp \
+	$(PRJ_DIR)/alg1.cpp \
+	$(PRJ_DIR)/alg2.cpp \
+	$(PRJ_DIR)/alg3.cpp \
+	$(PRJ_DIR)/alg4.cpp \
+	$(PRJ_DIR)/alg5.cpp \
+	$(PRJ_DIR)/bcompos1.cpp \
+	$(PRJ_DIR)/bcompos2.cpp \
+	$(PRJ_DIR)/bind1st1.cpp \
+	$(PRJ_DIR)/bind1st2.cpp \
+	$(PRJ_DIR)/bind2nd1.cpp \
+	$(PRJ_DIR)/bind2nd2.cpp \
+	$(PRJ_DIR)/binsert1.cpp \
+	$(PRJ_DIR)/binsert2.cpp \
+	$(PRJ_DIR)/binsrch1.cpp \
+	$(PRJ_DIR)/binsrch2.cpp \
+	$(PRJ_DIR)/bitset1.cpp \
+	$(PRJ_DIR)/bnegate1.cpp \
+	$(PRJ_DIR)/bnegate2.cpp \
+	$(PRJ_DIR)/bvec1.cpp \
+	$(PRJ_DIR)/copy1.cpp \
+	$(PRJ_DIR)/copy2.cpp \
+	$(PRJ_DIR)/copy3.cpp \
+	$(PRJ_DIR)/copy4.cpp \
+	$(PRJ_DIR)/copyb.cpp \
+	$(PRJ_DIR)/copyb0.cpp \
+	$(PRJ_DIR)/count0.cpp \
+	$(PRJ_DIR)/count1.cpp \
+	$(PRJ_DIR)/countif1.cpp \
+	$(PRJ_DIR)/deque1.cpp \
+	$(PRJ_DIR)/divides.cpp \
+	$(PRJ_DIR)/eqlrnge0.cpp \
+	$(PRJ_DIR)/eqlrnge1.cpp \
+	$(PRJ_DIR)/eqlrnge2.cpp \
+	$(PRJ_DIR)/equal0.cpp \
+	$(PRJ_DIR)/equal1.cpp \
+	$(PRJ_DIR)/equal2.cpp \
+	$(PRJ_DIR)/equalto.cpp \
+	$(PRJ_DIR)/fill1.cpp \
+	$(PRJ_DIR)/filln1.cpp \
+	$(PRJ_DIR)/find0.cpp \
+	$(PRJ_DIR)/find1.cpp \
+	$(PRJ_DIR)/findif0.cpp \
+	$(PRJ_DIR)/findif1.cpp \
+	$(PRJ_DIR)/finsert1.cpp \
+	$(PRJ_DIR)/finsert2.cpp \
+	$(PRJ_DIR)/foreach0.cpp \
+	$(PRJ_DIR)/foreach1.cpp \
+	$(PRJ_DIR)/func1.cpp \
+	$(PRJ_DIR)/func2.cpp \
+	$(PRJ_DIR)/func3.cpp \
+	$(PRJ_DIR)/gener1.cpp \
+	$(PRJ_DIR)/gener2.cpp \
+	$(PRJ_DIR)/genern1.cpp \
+	$(PRJ_DIR)/genern2.cpp \
+	$(PRJ_DIR)/greateq.cpp \
+	$(PRJ_DIR)/greater.cpp \
+	$(PRJ_DIR)/hmap1.cpp \
+	$(PRJ_DIR)/hmmap1.cpp \
+	$(PRJ_DIR)/hmset1.cpp \
+	$(PRJ_DIR)/hset2.cpp \
+	$(PRJ_DIR)/incl0.cpp \
+	$(PRJ_DIR)/incl1.cpp \
+	$(PRJ_DIR)/incl2.cpp \
+	$(PRJ_DIR)/inplmrg1.cpp \
+	$(PRJ_DIR)/inplmrg2.cpp \
+	$(PRJ_DIR)/inrprod0.cpp \
+	$(PRJ_DIR)/inrprod1.cpp \
+	$(PRJ_DIR)/inrprod2.cpp \
+	$(PRJ_DIR)/insert1.cpp \
+	$(PRJ_DIR)/insert2.cpp \
+	$(PRJ_DIR)/iota1.cpp \
+	$(PRJ_DIR)/istmit1.cpp \
+	$(PRJ_DIR)/iter1.cpp \
+	$(PRJ_DIR)/iter2.cpp \
+	$(PRJ_DIR)/iter3.cpp \
+	$(PRJ_DIR)/iter4.cpp \
+	$(PRJ_DIR)/iterswp0.cpp \
+	$(PRJ_DIR)/iterswp1.cpp \
+	$(PRJ_DIR)/less.cpp \
+	$(PRJ_DIR)/lesseq.cpp \
+	$(PRJ_DIR)/lexcmp1.cpp \
+	$(PRJ_DIR)/lexcmp2.cpp \
+	$(PRJ_DIR)/list1.cpp \
+	$(PRJ_DIR)/list2.cpp \
+	$(PRJ_DIR)/list3.cpp \
+	$(PRJ_DIR)/list4.cpp \
+	$(PRJ_DIR)/logicand.cpp \
+	$(PRJ_DIR)/logicnot.cpp \
+	$(PRJ_DIR)/logicor.cpp \
+	$(PRJ_DIR)/lwrbnd1.cpp \
+	$(PRJ_DIR)/lwrbnd2.cpp \
+	$(PRJ_DIR)/stl_test_1.cpp
+<END>
+
+<BEGIN> userComments
+STLport Regression, part 1
+<END>
+

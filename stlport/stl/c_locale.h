@@ -431,6 +431,16 @@ struct _Locale_messages;
 #  define _Locale_SPACE  _SPACE
 #  define _Locale_PRINT  _PRINT
 #  define _Locale_ALPHA  _ALPHA
+#elif defined (_STLP_VXWORKS_TORNADO)
+#define _Locale_UPPER _C_UPPER   /* 0x01 */
+#define _Locale_LOWER _C_LOWER /* 0x02 */
+#define _Locale_DIGIT  _C_NUMBER   /* 0x04 */
+#define _Locale_SPACE  _C_WHITE_SPACE   /* 0x08 */
+#define _Locale_PUNCT _C_PUNCT   /* 0x10 */
+#define _Locale_CNTRL _C_CONTROL   /* 0x20 */
+#define _Locale_XDIGIT _C_HEX_NUMBER   /* 0x40 */
+#define _Locale_PRINT  (_C_B | _C_UPPER |  _C_LOWER | _C_NUMBER | _C_PUNCT)
+#define _Locale_ALPHA (_C_UPPER |  _C_LOWER) 
 #endif
 
 # endif /* _STLP_C_LOCALE_H */

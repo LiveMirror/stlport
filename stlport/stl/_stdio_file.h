@@ -86,7 +86,8 @@ _STLP_BEGIN_NAMESPACE
     ( defined(__sgi) || \
       ( defined(__sun) && ! defined (_LP64) )  || \
       defined (__osf__) || defined(__DECCXX) || \
-      defined (_STLP_MSVC) || defined (__ICL) || defined (__MINGW32__) || defined(__DJGPP) || defined (_AIX) || defined (_CRAY))
+      defined (_STLP_MSVC) || defined (__ICL) || defined (__MINGW32__) || defined(__DJGPP) ||\
+      defined (_AIX) || defined (_CRAY))
 
 #if defined ( _MSC_VER ) || defined (__ICL) || defined (__MINGW32__) || defined(__DJGPP)
 typedef  char* _File_ptr_type;
@@ -223,7 +224,7 @@ __f->__pad[3] = __end - __next;
 # define _STLP_FILE_I_O_IDENTICAL
 
 #elif defined (__CYGWIN__) || defined(__FreeBSD__)  || defined(__NetBSD__) \
-  || defined(__amigaos__) || ( defined(__GNUC__) && defined(__APPLE__) )
+  || defined(__amigaos__) || ( defined(__GNUC__) && defined(__APPLE__) ) || defined (_STLP_VXWORKS_TORNADO)
 
 inline int _FILE_fd(const FILE *__f) { return __f->_file; }
 inline char* _FILE_I_begin(const FILE *__f) { return (char*)

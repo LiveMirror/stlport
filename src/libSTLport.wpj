@@ -1,0 +1,1295 @@
+Document file - DO NOT EDIT
+
+<BEGIN> BUILD_RULE_archive
+
+<END>
+
+<BEGIN> BUILD_RULE_libSTLport.out
+
+<END>
+
+<BEGIN> BUILD_RULE_libSTLport.pl
+
+<END>
+
+<BEGIN> BUILD_RULE_objects
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_BUILDRULE
+archive
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_AR
+ararm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_ARCHIVE
+$(PRJ_DIR)/STRONGARM/libSTLport.a
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_AS
+ccarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CC
+ccarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CC_ARCH_SPEC
+-mapcs-32 -mlittle-endian -mcpu=strongarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CFLAGS
+-O2 \
+	-mapcs-32 \
+	-mlittle-endian \
+	-mcpu=strongarm \
+	-fno-builtin \
+	-DARMEL \
+	-I. \
+	-DCPU=STRONGARM \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu \
+	-I$(PRJ_DIR)/../stlport \
+	-I$(WIND_BASE)/target/h/ \
+	-I$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include \
+	-D_STLP_VXWORKS_TORNADO
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CFLAGS_AS
+-g \
+	-mapcs-32 \
+	-mlittle-endian \
+	-mcpu=strongarm \
+	-ansi \
+	-fno-builtin \
+	-P \
+	-xassembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h/ \
+	-DCPU=STRONGARM \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_CPP
+ccarm -E -P
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_HEX_FLAGS
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LD
+ldarm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LDDEPS
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LDFLAGS
+-X -EL -N
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LD_PARTIAL
+ccarm -r -nostdlib -Wl,-X -Wl,-EL
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_LD_PARTIAL_FLAGS
+-X -EL -r
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_NM
+nmarm -g
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_DEPEND
+-M -w
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_GENERATE_DEPENDENCY_FILE
+-MD
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_LANG_C
+-xc
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_OPTION_UNDEFINE_MACRO
+-U
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_POST_BUILD_RULE
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_PRJ_LIBS
+
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_SIZE
+sizearm
+<END>
+
+<BEGIN> BUILD_STRONGARM_MACRO_TOOL_FAMILY
+gnu
+<END>
+
+<BEGIN> BUILD_STRONGARM_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} \
+	{$(WIND_BASE)/target/src/} \
+	{$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_STRONGARM_TC
+::tc_STRONGARMgnu
+<END>
+
+<BEGIN> BUILD__CURRENT
+libSTLport_SIMNT_Debug
+<END>
+
+<BEGIN> BUILD__LIST
+libSTLport_SIMNT libSTLport_SIMNT_Debug STRONGARM
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_BUILDRULE
+archive
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_BUILDRULE
+archive
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_AR
+arsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_ARCHIVE
+$(PRJ_DIR)/libSTLport_SIMNT_Debug/libSTLport.a
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_AS
+ccsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_CC
+ccsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_CC_ARCH_SPEC
+-mpentium
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_CFLAGS
+-g \
+	-mpentium \
+	-fno-builtin \
+	-fno-defer-pop \
+	-I$(PRJ_DIR)/../stlport \
+	-I$(WIND_BASE)/target/h/ \
+	-I$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include \
+	-I. \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu \
+	-D_STLP_VXWORKS_TORNADO \
+	-D_STLP_DEBUG
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_CFLAGS_AS
+-g \
+	-mpentium \
+	-ansi \
+	-fno-builtin \
+	-fno-defer-pop \
+	-P \
+	-xassembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h/ \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_CPP
+ccsimpc -E -P
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_HEX_FLAGS
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_LD
+ldsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_LDDEPS
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_LDFLAGS
+--subsystem=windows
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_LD_PARTIAL
+ccsimpc -r -nostdlib
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_LD_PARTIAL_FLAGS
+-r
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_NM
+nmsimpc -g
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_OPTION_DEPEND
+-M -w
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_OPTION_GENERATE_DEPENDENCY_FILE
+-MD
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_OPTION_LANG_C
+-xc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_OPTION_UNDEFINE_MACRO
+-U
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_POST_BUILD_RULE
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_PRJ_LIBS
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_SIZE
+sizesimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_MACRO_TOOL_FAMILY
+gnu
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} \
+	{$(WIND_BASE)/target/src/} \
+	{$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_Debug_TC
+::tc_SIMNTgnu
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_AR
+arsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_ARCHIVE
+$(PRJ_DIR)/libSTLport_SIMNT/libSTLport.a
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_AS
+ccsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_CC
+ccsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_CC_ARCH_SPEC
+-mpentium
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_CFLAGS
+-g \
+	-mpentium \
+	-fno-builtin \
+	-fno-defer-pop \
+	-I$(PRJ_DIR)/../stlport \
+	-I$(WIND_BASE)/target/h/ \
+	-I$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include \
+	-I. \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu \
+	-D_STLP_VXWORKS_TORNADO
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_CFLAGS_AS
+-g \
+	-mpentium \
+	-ansi \
+	-fno-builtin \
+	-fno-defer-pop \
+	-P \
+	-xassembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h/ \
+	-DCPU=SIMNT \
+	-DTOOL_FAMILY=gnu \
+	-DTOOL=gnu
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_CPP
+ccsimpc -E -P
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_HEX_FLAGS
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_LD
+ldsimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_LDDEPS
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_LDFLAGS
+--subsystem=windows
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_LD_PARTIAL
+ccsimpc -r -nostdlib
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_LD_PARTIAL_FLAGS
+-r
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_NM
+nmsimpc -g
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_OPTION_DEPEND
+-M -w
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_OPTION_GENERATE_DEPENDENCY_FILE
+-MD
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_OPTION_LANG_C
+-xc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_OPTION_UNDEFINE_MACRO
+-U
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_POST_BUILD_RULE
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_PRJ_LIBS
+
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_SIZE
+sizesimpc
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_MACRO_TOOL_FAMILY
+gnu
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} \
+	{$(WIND_BASE)/target/src/} \
+	{$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_libSTLport_SIMNT_TC
+::tc_SIMNTgnu
+<END>
+
+<BEGIN> CORE_INFO_TYPE
+::prj_vxApp
+<END>
+
+<BEGIN> CORE_INFO_VERSION
+2.2
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale.c_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale.c_dependencies
+
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale.c_objects
+c_locale.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale.c_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale_stub.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale_stub.cpp_dependencies
+$(PRJ_DIR)/stlport_prefix.h \
+	$(PRJ_DIR)/../stlport/stl/_config.h \
+	$(PRJ_DIR)/../stlport/stl_user_config.h \
+	$(PRJ_DIR)/../stlport/stl/_config_compat.h \
+	$(PRJ_DIR)/../stlport/stl/_site_config.h \
+	$(PRJ_DIR)/../stlport/config/stlcomp.h \
+	$(PRJ_DIR)/../stlport/config/stl_gcc.h \
+	$(PRJ_DIR)/../stlport/config/stl_confix.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/ctime \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stddef.h \
+	$(PRJ_DIR)/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/c_locale.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cstddef \
+	$(PRJ_DIR)/../stlport/stl/_cwchar.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cwchar \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/wchar.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stdarg.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cctype
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale_stub.cpp_objects
+c_locale_stub.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/c_locale_stub.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/codecvt.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/codecvt.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_codecvt.h \
+	$(PRJ_DIR)/../stlport/stl/_algobase.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/codecvt.cpp_objects
+codecvt.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/codecvt.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/collate.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/collate.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_collate.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/collate.cpp_objects
+collate.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/collate.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex.cpp_dependencies
+$(PRJ_DIR)/complex_impl.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stddef.h \
+	$(PRJ_DIR)/../stlport/complex \
+	$(PRJ_DIR)/../stlport/stl/_cmath.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex.cpp_objects
+complex.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_exp.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_exp.cpp_dependencies
+$(PRJ_DIR)/complex_impl.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stddef.h \
+	$(PRJ_DIR)/../stlport/complex \
+	$(PRJ_DIR)/../stlport/numeric \
+	$(PRJ_DIR)/../stlport/stl/_cmath.h \
+	$(PRJ_DIR)/../stlport/stl/_numeric.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_exp.cpp_objects
+complex_exp.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_exp.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io.cpp_dependencies
+$(PRJ_DIR)/../stlport/istream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io.cpp_objects
+complex_io.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io_w.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io_w.cpp_dependencies
+$(PRJ_DIR)/../stlport/istream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io_w.cpp_objects
+complex_io_w.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_io_w.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_trig.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_trig.cpp_dependencies
+$(PRJ_DIR)/complex_impl.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stddef.h \
+	$(PRJ_DIR)/../stlport/complex \
+	$(PRJ_DIR)/../stlport/stl/_cmath.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_trig.cpp_objects
+complex_trig.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/complex_trig.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ctype.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ctype.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_function_adaptors.h \
+	$(PRJ_DIR)/../stlport/stl/_function_base.h \
+	$(PRJ_DIR)/../stlport/algorithm \
+	$(PRJ_DIR)/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_ctype.h \
+	$(PRJ_DIR)/../stlport/stl/_config.h \
+	$(PRJ_DIR)/../stlport/stl/_function.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ctype.cpp_objects
+ctype.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ctype.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/dll_main.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/dll_main.cpp_dependencies
+$(PRJ_DIR)/stlport_prefix.h \
+	$(PRJ_DIR)/../stlport/stl/_config.h \
+	$(PRJ_DIR)/../stlport/stl_user_config.h \
+	$(PRJ_DIR)/../stlport/stl/_config_compat.h \
+	$(PRJ_DIR)/../stlport/stl/_site_config.h \
+	$(PRJ_DIR)/../stlport/config/stlcomp.h \
+	$(PRJ_DIR)/../stlport/config/stl_gcc.h \
+	$(PRJ_DIR)/../stlport/config/stl_confix.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/ctime \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stddef.h \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stl/_prolog.h \
+	$(PRJ_DIR)/../stlport/stl/type_traits.h \
+	$(PRJ_DIR)/../stlport/stl/debug/_debug.h \
+	$(PRJ_DIR)/../stlport/stl/debug/_debug.c \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cstdlib \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cstdarg \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stdarg.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cstdio \
+	$(PRJ_DIR)/../stlport/stl/_pair.h \
+	$(PRJ_DIR)/../stlport/stl/_epilog.h \
+	$(PRJ_DIR)/../stlport/stl/_config_compat_post.h \
+	$(PRJ_DIR)/../stlport/memory \
+	$(PRJ_DIR)/../stlport/stl/_alloc.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cstddef \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cstring \
+	$(PRJ_DIR)/../stlport/stl/_new.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/lib/gcc-lib/i386-pc-mingw32/gcc-2.96/include/new \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/lib/gcc-lib/i386-pc-mingw32/gcc-2.96/include/exception \
+	$(PRJ_DIR)/../stlport/stl/_threads.h \
+	$(PRJ_DIR)/../stlport/stl/_threads.c \
+	$(PRJ_DIR)/../stlport/stl/_construct.h \
+	$(PRJ_DIR)/../stlport/stl/_iterator_base.h \
+	$(PRJ_DIR)/../stlport/stl/_alloc.c \
+	$(PRJ_DIR)/../stlport/stl/_tempbuf.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/climits \
+	$(PRJ_DIR)/../stlport/stl/_uninitialized.h \
+	$(PRJ_DIR)/../stlport/stl/_algobase.h \
+	$(PRJ_DIR)/../stlport/stl/_algobase.c \
+	$(PRJ_DIR)/../stlport/stl/_iterator.h \
+	$(PRJ_DIR)/../stlport/stl/_tempbuf.c \
+	$(PRJ_DIR)/../stlport/stl/_raw_storage_iter.h \
+	$(PRJ_DIR)/../stlport/stl/_auto_ptr.h \
+	$(PRJ_DIR)/../stlport/vector \
+	$(PRJ_DIR)/../stlport/stl/_vector.h \
+	$(PRJ_DIR)/../stlport/stl/_range_errors.h \
+	$(PRJ_DIR)/../stlport/stl/_relops_cont.h \
+	$(PRJ_DIR)/../stlport/stl/_vector.c \
+	$(PRJ_DIR)/../stlport/stl/_bvector.h \
+	$(PRJ_DIR)/../stlport/set \
+	$(PRJ_DIR)/../stlport/stl/_set.h \
+	$(PRJ_DIR)/../stlport/stl/_tree.h \
+	$(PRJ_DIR)/../stlport/stl/_function_base.h \
+	$(PRJ_DIR)/../stlport/stl/_tree.c \
+	$(PRJ_DIR)/../stlport/list \
+	$(PRJ_DIR)/../stlport/stl/_list.h \
+	$(PRJ_DIR)/../stlport/stl/_list.c \
+	$(PRJ_DIR)/../stlport/slist \
+	$(PRJ_DIR)/../stlport/stl/_slist.h \
+	$(PRJ_DIR)/../stlport/stl/_slist_base.h \
+	$(PRJ_DIR)/../stlport/stl/_slist_base.c \
+	$(PRJ_DIR)/../stlport/stl/_slist.c \
+	$(PRJ_DIR)/../stlport/stl/_hashtable.h \
+	$(PRJ_DIR)/../stlport/stl/_hash_fun.h \
+	$(PRJ_DIR)/../stlport/stl/_relops_hash_cont.h \
+	$(PRJ_DIR)/../stlport/stl/_hashtable.c \
+	$(PRJ_DIR)/../stlport/limits \
+	$(PRJ_DIR)/../stlport/stl/_limits.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cfloat \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/float.h \
+	$(PRJ_DIR)/../stlport/stl/_cwchar.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cwchar \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/wchar.h \
+	$(PRJ_DIR)/../stlport/stl/_limits.c \
+	$(PRJ_DIR)/../stlport/string \
+	$(PRJ_DIR)/../stlport/stl/_string.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/include/g++-3/cctype \
+	$(PRJ_DIR)/../stlport/stl/_string_fwd.h \
+	$(PRJ_DIR)/../stlport/iosfwd \
+	$(PRJ_DIR)/../stlport/stl/_iosfwd.h \
+	$(PRJ_DIR)/../stlport/stl/char_traits.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/../stlport/stl/_string.c \
+	$(PRJ_DIR)/../stlport/stl/_string_fwd.c \
+	$(PRJ_DIR)/../stlport/stl/_string_io.h \
+	$(PRJ_DIR)/../stlport/stl/_string_io.c \
+	$(PRJ_DIR)/../stlport/stl/_ctype.h \
+	$(PRJ_DIR)/../stlport/stl/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_string_hash.h \
+	$(PRJ_DIR)/../stlport/stdexcept \
+	$(PRJ_DIR)/../stlport/bitset \
+	$(PRJ_DIR)/../stlport/stl/_bitset.h \
+	$(PRJ_DIR)/../stlport/istream \
+	$(PRJ_DIR)/../stlport/stl/_istream.h \
+	$(PRJ_DIR)/../stlport/stl/_ios.h \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h \
+	$(PRJ_DIR)/../stlport/stl/_numpunct.h \
+	$(PRJ_DIR)/../stlport/stl/_ios.c \
+	$(PRJ_DIR)/../stlport/stl/_streambuf.h \
+	$(PRJ_DIR)/../stlport/stl/_stdio_file.h \
+	$(PRJ_DIR)/../stlport/stl/_streambuf.c \
+	$(PRJ_DIR)/../stlport/stl/_ostream.h \
+	$(PRJ_DIR)/../stlport/stl/_ostreambuf_iterator.h \
+	$(PRJ_DIR)/../stlport/stl/_ostream.c \
+	$(PRJ_DIR)/../stlport/stl/_num_put.h \
+	$(PRJ_DIR)/../stlport/stl/_num_put.c \
+	$(PRJ_DIR)/../stlport/stl/_istreambuf_iterator.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.c \
+	$(PRJ_DIR)/../stlport/stl/_num_get.h \
+	$(PRJ_DIR)/../stlport/stl/_num_get.c \
+	$(PRJ_DIR)/../stlport/stl/_bitset.c
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/dll_main.cpp_objects
+dll_main.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/dll_main.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/facets_byname.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/facets_byname.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_monetary.h \
+	$(PRJ_DIR)/../stlport/algorithm \
+	$(PRJ_DIR)/../stlport/stl/_num_put.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/locale_impl.h \
+	$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_hash_map.h \
+	$(PRJ_DIR)/c_locale.h \
+	$(PRJ_DIR)/../stlport/hash_map \
+	$(PRJ_DIR)/locale_nonclassic.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h \
+	$(PRJ_DIR)/../stlport/stl/_messages_facets.h \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h \
+	$(PRJ_DIR)/../stlport/stl/_ctype.h \
+	$(PRJ_DIR)/../stlport/stl/_num_get.h \
+	$(PRJ_DIR)/../stlport/string \
+	$(PRJ_DIR)/../stlport/stl/_codecvt.h \
+	$(PRJ_DIR)/../stlport/stl/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_relops_hash_cont.h \
+	$(PRJ_DIR)/../stlport/stl/_time_facets.h \
+	$(PRJ_DIR)/../stlport/vector \
+	$(PRJ_DIR)/../stlport/stl/_collate.h \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stdexcept \
+	$(PRJ_DIR)/../stlport/stl/_algobase.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/facets_byname.cpp_objects
+facets_byname.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/facets_byname.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fstream.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fstream.cpp_dependencies
+$(PRJ_DIR)/../stlport/fstream \
+	$(PRJ_DIR)/../stlport/stl/_stdio_file.h \
+	$(PRJ_DIR)/fstream_impl.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fstream.cpp_objects
+fstream.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/fstream.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ios.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ios.cpp_dependencies
+
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ios.cpp_objects
+ios.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ios.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iostream.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iostream.cpp_dependencies
+$(PRJ_DIR)/aligned_buffer.h \
+	$(PRJ_DIR)/../stlport/stdio_streambuf \
+	$(PRJ_DIR)/../stlport/stl/_codecvt.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h \
+	$(PRJ_DIR)/../stlport/streambuf \
+	$(PRJ_DIR)/../stlport/stl/_stdio_file.h \
+	$(PRJ_DIR)/../stlport/stl/_fstream.h \
+	$(PRJ_DIR)/../stlport/istream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iostream.cpp_objects
+iostream.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/iostream.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istream.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istream.cpp_dependencies
+$(PRJ_DIR)/../stlport/istream
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istream.cpp_objects
+istream.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/istream.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_monetary.h \
+	$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/locale \
+	$(PRJ_DIR)/locale_nonclassic.h \
+	$(PRJ_DIR)/../stlport/stl/_messages_facets.h \
+	$(PRJ_DIR)/../stlport/stl/_ctype.h \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h \
+	$(PRJ_DIR)/../stlport/stl/_codecvt.h \
+	$(PRJ_DIR)/../stlport/stl/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_collate.h \
+	$(PRJ_DIR)/../stlport/stl/_time_facets.h \
+	$(PRJ_DIR)/../stlport/stdexcept \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stl/_algobase.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale.cpp_objects
+locale.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_catalog.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_catalog.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_monetary.h \
+	$(PRJ_DIR)/../stlport/stl/_num_put.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/locale_impl.h \
+	$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_hash_map.h \
+	$(PRJ_DIR)/c_locale.h \
+	$(PRJ_DIR)/../stlport/hash_map \
+	$(PRJ_DIR)/locale_nonclassic.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h \
+	$(PRJ_DIR)/../stlport/stl/_messages_facets.h \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h \
+	$(PRJ_DIR)/../stlport/stl/_ctype.h \
+	$(PRJ_DIR)/../stlport/stl/_num_get.h \
+	$(PRJ_DIR)/../stlport/string \
+	$(PRJ_DIR)/../stlport/stl/_codecvt.h \
+	$(PRJ_DIR)/../stlport/stl/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_relops_hash_cont.h \
+	$(PRJ_DIR)/../stlport/stl/_time_facets.h \
+	$(PRJ_DIR)/../stlport/vector \
+	$(PRJ_DIR)/../stlport/stl/_collate.h \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stdexcept
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_catalog.cpp_objects
+locale_catalog.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_catalog.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_impl.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_impl.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_monetary.h \
+	$(PRJ_DIR)/locale_impl.h \
+	$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_hash_map.h \
+	$(PRJ_DIR)/message_facets.h \
+	$(PRJ_DIR)/c_locale.h \
+	$(PRJ_DIR)/../stlport/locale \
+	$(PRJ_DIR)/../stlport/hash_map \
+	$(PRJ_DIR)/aligned_buffer.h \
+	$(PRJ_DIR)/../stlport/stl/_messages_facets.h \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h \
+	$(PRJ_DIR)/../stlport/stl/_ctype.h \
+	$(PRJ_DIR)/../stlport/string \
+	$(PRJ_DIR)/../stlport/stl/_codecvt.h \
+	$(PRJ_DIR)/../stlport/stl/_relops_hash_cont.h \
+	$(PRJ_DIR)/../stlport/stl/c_locale.h \
+	$(PRJ_DIR)/../stlport/vector \
+	$(PRJ_DIR)/../stlport/stl/_collate.h \
+	$(PRJ_DIR)/../stlport/stl/_time_facets.h \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stdexcept
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_impl.cpp_objects
+locale_impl.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/locale_impl.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/messages.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/messages.cpp_dependencies
+
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/messages.cpp_objects
+messages.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/messages.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/monetary.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/monetary.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_monetary.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/monetary.cpp_objects
+monetary.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/monetary.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_algo.h \
+	$(PRJ_DIR)/../stlport/stl/_num_get.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get.cpp_objects
+num_get.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get_float.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get_float.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_num_get.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h \
+	$(PRJ_DIR)/../stlport/stl/_limits.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get_float.cpp_objects
+num_get_float.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_get_float.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put.cpp_dependencies
+
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put.cpp_objects
+num_put.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put_float.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put_float.cpp_dependencies
+
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put_float.cpp_objects
+num_put_float.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/num_put_float.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/numpunct.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/numpunct.cpp_dependencies
+
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/numpunct.cpp_objects
+numpunct.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/numpunct.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ostream.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ostream.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_ostream.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ostream.cpp_objects
+ostream.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/ostream.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/sstream.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/sstream.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_sstream.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/sstream.cpp_objects
+sstream.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/sstream.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stdio_streambuf.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stdio_streambuf.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(WIND_BASE)/host/$(WIND_HOST_TYPE)/i386-pc-mingw32/sys-include/stddef.h \
+	$(PRJ_DIR)/../stlport/stl/_fstream.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h \
+	$(PRJ_DIR)/../stlport/stl/_codecvt.h \
+	$(PRJ_DIR)/fstream_impl.h \
+	$(PRJ_DIR)/../stlport/stl/_stdio_file.h \
+	$(PRJ_DIR)/../stlport/streambuf \
+	$(PRJ_DIR)/../stlport/stdio_streambuf
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stdio_streambuf.cpp_objects
+stdio_streambuf.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stdio_streambuf.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/stlport_prefix.h_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/streambuf.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/streambuf.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stdexcept \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h \
+	$(PRJ_DIR)/../stlport/stl/_streambuf.h \
+	$(PRJ_DIR)/../stlport/stl/_algobase.h \
+	$(PRJ_DIR)/../stlport/stl/_stdio_file.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/streambuf.cpp_objects
+streambuf.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/streambuf.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/string_w.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/string_w.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_string.h \
+	$(PRJ_DIR)/stlport_prefix.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/string_w.cpp_objects
+string_w.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/string_w.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/strstream.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/strstream.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/_string.h \
+	$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stdexcept \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h \
+	$(PRJ_DIR)/../stlport/stl/_streambuf.h \
+	$(PRJ_DIR)/../stlport/stl/_strstream.h \
+	$(PRJ_DIR)/../stlport/stl/_algobase.h \
+	$(PRJ_DIR)/../stlport/istream \
+	$(PRJ_DIR)/../stlport/stl/_stdio_file.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/strstream.cpp_objects
+strstream.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/strstream.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/time_facets.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/time_facets.cpp_dependencies
+$(PRJ_DIR)/../stlport/stl/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_ctraits_fns.h \
+	$(PRJ_DIR)/../stlport/stl/_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_time_facets.h \
+	$(PRJ_DIR)/stlport_prefix.h \
+	$(PRJ_DIR)/c_locale.h \
+	$(PRJ_DIR)/../stlport/stl/_istream.h \
+	$(PRJ_DIR)/../stlport/utility \
+	$(PRJ_DIR)/../stlport/stdexcept \
+	$(PRJ_DIR)/../stlport/stl/_ios_base.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/time_facets.cpp_objects
+time_facets.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/time_facets.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> PROJECT_FILES
+$(PRJ_DIR)/ostream.cpp \
+	$(PRJ_DIR)/c_locale.c \
+	$(PRJ_DIR)/c_locale_stub.cpp \
+	$(PRJ_DIR)/codecvt.cpp \
+	$(PRJ_DIR)/collate.cpp \
+	$(PRJ_DIR)/complex.cpp \
+	$(PRJ_DIR)/complex_exp.cpp \
+	$(PRJ_DIR)/complex_io.cpp \
+	$(PRJ_DIR)/complex_io_w.cpp \
+	$(PRJ_DIR)/complex_trig.cpp \
+	$(PRJ_DIR)/ctype.cpp \
+	$(PRJ_DIR)/dll_main.cpp \
+	$(PRJ_DIR)/facets_byname.cpp \
+	$(PRJ_DIR)/fstream.cpp \
+	$(PRJ_DIR)/ios.cpp \
+	$(PRJ_DIR)/iostream.cpp \
+	$(PRJ_DIR)/istream.cpp \
+	$(PRJ_DIR)/locale.cpp \
+	$(PRJ_DIR)/locale_catalog.cpp \
+	$(PRJ_DIR)/locale_impl.cpp \
+	$(PRJ_DIR)/messages.cpp \
+	$(PRJ_DIR)/monetary.cpp \
+	$(PRJ_DIR)/num_get.cpp \
+	$(PRJ_DIR)/num_get_float.cpp \
+	$(PRJ_DIR)/num_put.cpp \
+	$(PRJ_DIR)/num_put_float.cpp \
+	$(PRJ_DIR)/numpunct.cpp \
+	$(PRJ_DIR)/time_facets.cpp \
+	$(PRJ_DIR)/sstream.cpp \
+	$(PRJ_DIR)/stdio_streambuf.cpp \
+	$(PRJ_DIR)/streambuf.cpp \
+	$(PRJ_DIR)/string_w.cpp \
+	$(PRJ_DIR)/strstream.cpp \
+	$(PRJ_DIR)/stlport_prefix.h
+<END>
+
+<BEGIN> userComments
+STLport Standard C++ Library
+<END>
+
