@@ -57,9 +57,7 @@ __ucopy_trivial(const void* __first, const void* __last, void* __result) {
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __ucopy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
                                const __false_type& /*IsOKToMemCpy*/) {
-  return __copy(__first, __last, __result, 
-                _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
-                _STLP_DISTANCE_TYPE(__first, _InputIter));
+  return __copy(__first, __last, __result, random_access_iterator_tag(), (ptrdiff_t*)0);
 }
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __ucopy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 

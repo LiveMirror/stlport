@@ -73,6 +73,15 @@ inline void _Destroy(_Tp* __pointer) {
 # endif
 }
 
+template <class _Tp>
+inline void _Destroy_Moved(_Tp* __pointer) {
+  typedef typename __move_traits<_Tp>::complete _Trivial_destructor;
+  __destroy_aux(__pointer, _Trivial_destructor());
+# ifdef _STLP_DEBUG_UNINITIALIZED
+  memset((char*)__pointer, _STLP_SHRED_BYTE, sizeof(_Tp));
+# endif
+}
+
 # if defined (new)
 #   define _STLP_NEW_REDEFINE new
 #   undef new
@@ -195,7 +204,7 @@ __destroy_mv_srcs(_ForwardIterator __first, _ForwardIterator __last, _Tp* __p) {
 }
 
 template <class _ForwardIterator>
-inline void _Destroy_Mvd_Sources(_ForwardIterator __first, _ForwardIterator __last) {
+inline void _Destroy_Moved_Range(_ForwardIterator __first, _ForwardIterator __last) {
   __destroy_mv_srcs(__first, __last, _STLP_VALUE_TYPE(__first, _ForwardIterator));
 }
 

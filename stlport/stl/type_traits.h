@@ -568,31 +568,6 @@ struct _SwapImplemented {
 };
 #endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
 
-template <class _Tp>
-struct __action_on_move {
-  typedef __false_type swap;
-};
-
-template <class _Tp1, class _Tp2> 
-struct _SwapOnMove {
-  typedef typename __action_on_move<_Tp1>::swap _Enabled1;
-#if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION)
-  typedef typename _IsStlportClassCondNot<_Enabled1, _Tp1>::_Ret _Enabled2;
-#else
-  typedef __false_type _Enabled2;
-#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
-  typedef typename _Lor2<_Enabled1, _Enabled2>::_Ret _Enabled;
-
-  typedef typename _AreSameTypes<_Tp1,_Tp2>::_Ret _SameTypes;
-
-  typedef typename _Land3<_Enabled, _SameTypes, __true_type>::_Ret _Type;
-  static _Type _Answer() {return _Type();}
-};
-
-template<class _Tp1, class _Tp2>
-_SwapOnMove<_Tp1, _Tp2> _DoSwapOnMove (_Tp1*, _Tp2*)
-{return _SwapOnMove<_Tp1, _Tp2>();}
-
 _STLP_END_NAMESPACE
 
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION

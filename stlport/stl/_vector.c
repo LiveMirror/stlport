@@ -90,7 +90,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow(pointer __position, const _Tp
   _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
                this->_M_end_of_storage.deallocate(__new_start,__len)))
 
-  _STLP_STD::_Destroy_Mvd_Sources(this->_M_start, this->_M_finish);
+  _STLP_STD::_Destroy_Moved_Range(this->_M_start, this->_M_finish);
   this->_M_end_of_storage.deallocate(this->_M_start, this->_M_end_of_storage._M_data - this->_M_start);
   _M_set(__new_start, __new_finish, __new_start + __len);
 }

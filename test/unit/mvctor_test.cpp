@@ -20,10 +20,12 @@ class MoveConstructorTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(MoveConstructorTest);
   CPPUNIT_TEST(move_construct_test);
+  CPPUNIT_TEST(move_traits);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void move_construct_test();
+  void move_traits();
 
   template <class _Container>
   void standard_test1(_Container const& ref_cont) {
@@ -135,4 +137,121 @@ void MoveConstructorTest::move_construct_test()
   CheckFullMoveSupport(list<int>());
   CheckFullMoveSupport(slist<int>());
   */
+}
+
+#ifdef STLPORT
+struct MovableStruct {
+  MovableStruct() {
+    ++nb_dft_construct_call;
+  }
+  MovableStruct(MovableStruct const&) {
+    ++nb_cpy_construct_call;
+  }
+  MovableStruct(__move_source<MovableStruct>) {
+    ++nb_mv_construct_call;
+  }
+
+  ~MovableStruct() {
+    ++nb_destruct_call;
+  }
+
+  static unsigned int nb_dft_construct_call;
+  static unsigned int nb_cpy_construct_call;
+  static unsigned int nb_mv_construct_call;
+  static unsigned int nb_destruct_call;
+};
+
+unsigned int MovableStruct::nb_dft_construct_call = 0;
+unsigned int MovableStruct::nb_cpy_construct_call = 0;
+unsigned int MovableStruct::nb_mv_construct_call = 0;
+unsigned int MovableStruct::nb_destruct_call = 0;
+
+namespace std {
+  _STLP_TEMPLATE_NULL
+  struct __move_traits<MovableStruct> {
+    typedef __true_type implemented;
+    typedef __false_type complete;
+  };
+}
+
+struct CompleteMovableStruct {
+  CompleteMovableStruct() {
+    ++nb_dft_construct_call;
+  }
+  CompleteMovableStruct(CompleteMovableStruct const&) {
+    ++nb_cpy_construct_call;
+  }
+  CompleteMovableStruct(__move_source<CompleteMovableStruct>) {
+    ++nb_mv_construct_call;
+  }
+
+  ~CompleteMovableStruct() {
+    ++nb_destruct_call;
+  }
+
+  static unsigned int nb_dft_construct_call;
+  static unsigned int nb_cpy_construct_call;
+  static unsigned int nb_mv_construct_call;
+  static unsigned int nb_destruct_call;
+};
+
+unsigned int CompleteMovableStruct::nb_dft_construct_call = 0;
+unsigned int CompleteMovableStruct::nb_cpy_construct_call = 0;
+unsigned int CompleteMovableStruct::nb_mv_construct_call = 0;
+unsigned int CompleteMovableStruct::nb_destruct_call = 0;
+
+namespace std {
+  _STLP_TEMPLATE_NULL
+  struct __move_traits<CompleteMovableStruct> {
+    typedef __true_type implemented;
+    typedef __true_type complete;
+  };
+}
+#endif //STLPORT
+
+void MoveConstructorTest::move_traits()
+{
+  //Only relevant for an STLport test:
+#ifdef STLPORT
+  {
+    {
+      vector<MovableStruct> vect;
+      vect.push_back(MovableStruct());
+      vect.push_back(MovableStruct());
+      vect.push_back(MovableStruct());
+      vect.push_back(MovableStruct());
+
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 3 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 7);
+
+      vect.erase(vect.begin(), vect.begin() + 2);
+
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 5 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call ==11);
+    }
+    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 13);
+  }
+
+  {
+    {
+      vector<CompleteMovableStruct> vect;
+      vect.push_back(CompleteMovableStruct());
+      vect.push_back(CompleteMovableStruct());
+      vect.push_back(CompleteMovableStruct());
+      vect.push_back(CompleteMovableStruct());
+
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 3 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4);
+
+      vect.erase(vect.begin(), vect.begin() + 2);
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 5 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 6);
+    }
+    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 8);
+  }
+#endif //STLPORT
 }

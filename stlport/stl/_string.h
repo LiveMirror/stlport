@@ -1767,11 +1767,6 @@ swap(basic_string<_CharT,_Traits,_Alloc>& __x,
 #if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 
 template <class _CharT, class _Traits, class _Alloc>
-struct __action_on_move<basic_string<_CharT,_Traits,_Alloc> > {
-  typedef __true_type swap;
-};
-
-template <class _CharT, class _Traits, class _Alloc>
 struct __move_traits<basic_string<_CharT,_Traits,_Alloc> > :
   //everything rely on the _String_base class that managed memory.
   __move_traits_aux<_String_base<_CharT, _Alloc> >

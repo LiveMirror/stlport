@@ -143,13 +143,14 @@ public:
     return _STLP_CONVERT_ALLOCATOR((const allocator_type&)this->_M_end_of_storage, _Tp);
   }
 protected:
-  typedef typename  __type_traits<_Tp>::has_trivial_assignment_operator _TrivialAss;
-  typedef typename  __type_traits<_Tp>::has_trivial_assignment_operator _IsPODType;
+  typedef typename __type_traits<_Tp>::has_trivial_assignment_operator _TrivialAss;
+  typedef typename __type_traits<_Tp>::has_trivial_assignment_operator _IsPODType;
+  typedef typename __move_traits<_Tp>::implemented _Movable;
 
   // handles insertions on overflow
-  void _M_insert_overflow(pointer __position, const _Tp& __x, const __false_type& /*IsPOD*/, 
+  void _M_insert_overflow(pointer __pos, const _Tp& __x, const __false_type& /*IsPOD*/, 
                           size_type __fill_len, bool __atend = false);
-  void _M_insert_overflow(pointer __position, const _Tp& __x, const __true_type& /*IsPOD*/, 
+  void _M_insert_overflow(pointer __pos, const _Tp& __x, const __true_type& /*IsPOD*/, 
                           size_type __fill_len, bool __atend = false);
   void _M_range_check(size_type __n) const {
     if (__n >= size_type(this->_M_finish-this->_M_start))
@@ -346,14 +347,14 @@ public:
   }
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
-  iterator insert(iterator __position, const _Tp& __x = _STLP_DEFAULT_CONSTRUCTED(_Tp));
+  iterator insert(iterator __pos, const _Tp& __x = _STLP_DEFAULT_CONSTRUCTED(_Tp));
 #else
-  iterator insert(iterator __position, const _Tp& __x);
+  iterator insert(iterator __pos, const _Tp& __x);
 #endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
 #if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
   void push_back() { push_back(_STLP_DEFAULT_CONSTRUCTED(_Tp)); }
-  iterator insert(iterator __position) { return insert(__position, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+  iterator insert(iterator __pos) { return insert(__pos, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
 # endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
   void swap(_Self& __x) {
@@ -400,25 +401,25 @@ private:
   }
 
   template <class _ForwardIterator>
-  void _M_range_insert(iterator __position,
+  void _M_range_insert(iterator __pos,
                        _ForwardIterator __first, _ForwardIterator __last,
                        const forward_iterator_tag &) {
 #else /* _STLP_MEMBER_TEMPLATES */
 public:
-  void insert(iterator __position,
+  void insert(iterator __pos,
               const_iterator __first, const_iterator __last) {
 #endif /* _STLP_MEMBER_TEMPLATES */
     if (__first != __last) {
       size_type __n = distance(__first, __last);
 
       if (size_type(this->_M_end_of_storage._M_data - this->_M_finish) >= __n) {
-        const size_type __elems_after = this->_M_finish - __position;
+        const size_type __elems_after = this->_M_finish - __pos;
         pointer __old_finish = this->_M_finish;
         if (__elems_after > __n) {
           __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
           this->_M_finish += __n;
-          __copy_backward_ptrs(__position, __old_finish - __n, __old_finish, _TrivialAss());
-          copy(__first, __last, __position);
+          __copy_backward_ptrs(__pos, __old_finish - __n, __old_finish, _TrivialAss());
+          copy(__first, __last, __pos);
         }
         else {
 # if defined ( _STLP_MEMBER_TEMPLATES )
@@ -429,9 +430,9 @@ public:
 # endif
           __uninitialized_copy(__mid, __last, this->_M_finish, _IsPODType());
           this->_M_finish += __n - __elems_after;
-          __uninitialized_move(__position, __old_finish, this->_M_finish, _IsPODType());
+          __uninitialized_move(__pos, __old_finish, this->_M_finish, _IsPODType());
           this->_M_finish += __elems_after;
-          copy(__first, __mid, __position);
+          copy(__first, __mid, __pos);
         } /* elems_after */
       }
       else {
@@ -440,9 +441,9 @@ public:
         pointer __new_start = this->_M_end_of_storage.allocate(__len);
         pointer __new_finish = __new_start;
         _STLP_TRY {
-          __new_finish = __uninitialized_move(this->_M_start, __position, __new_start, _IsPODType());
+          __new_finish = __uninitialized_move(this->_M_start, __pos, __new_start, _IsPODType());
           __new_finish = __uninitialized_copy(__first, __last, __new_finish, _IsPODType());
-          __new_finish = __uninitialized_move(__position, this->_M_finish, __new_finish, _IsPODType());
+          __new_finish = __uninitialized_move(__pos, this->_M_finish, __new_finish, _IsPODType());
         }
         _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish), 
                       this->_M_end_of_storage.deallocate(__new_start,__len)))
@@ -460,18 +461,57 @@ public:
     --this->_M_finish;
     _STLP_STD::_Destroy(this->_M_finish);
   }
-  iterator erase(iterator __position) {
-    if (__position + 1 != end())
-      __move_ptrs(__position + 1, this->_M_finish, __position, _TrivialAss());
+
+protected:
+  iterator _M_erase(iterator __pos, const __true_type& /*_Movable*/) {
+    _STLP_STD::_Destroy(__pos);
+    iterator __ite = __pos, __next = __ite + 1;
+    iterator __end = end();
+    for (; __next != __end; ++__ite, ++__next) {
+      _STLP_STD::_Move_Construct(__ite, *__next);
+      _STLP_STD::_Destroy_Moved(__next);
+    }
+    --this->_M_finish;
+    if (__pos == this->_M_finish) {
+      --__pos;
+    }
+    return __pos;
+  }
+  iterator _M_erase(iterator __pos, const __false_type& /*_Movable*/) {
+    if (__pos + 1 != end())
+      __copy_ptrs(__pos + 1, this->_M_finish, __pos, _TrivialAss());
     --this->_M_finish;
     _STLP_STD::_Destroy(this->_M_finish);
-    return __position;
+    return __pos;
   }
-  iterator erase(iterator __first, iterator __last) {
-    pointer __i = __move_ptrs(__last, this->_M_finish, __first, _TrivialAss());
+  iterator _M_erase(iterator __first, iterator __last, const __true_type& /*_Movable*/) {
+    iterator __dst = __first, __src = __last;
+    iterator __end = end();
+    for (; __dst != __last && __src != __end; ++__dst, ++__src) {
+      _STLP_STD::_Destroy(__dst);
+      _STLP_STD::_Move_Construct(__dst, *__src);
+    }
+    for (; __src != __end; ++__dst, ++__src) {
+      _STLP_STD::_Destroy_Moved(__dst);
+      _STLP_STD::_Move_Construct(__dst, *__src);
+    }
+    _STLP_STD::_Destroy_Moved_Range(__dst, __end);
+    this->_M_finish = __dst;
+    return __first;
+  }
+  iterator _M_erase(iterator __first, iterator __last, const __false_type& /*_Movable*/) {
+    pointer __i = __copy_ptrs(__last, this->_M_finish, __first, _TrivialAss());
     _STLP_STD::_Destroy_Range(__i, this->_M_finish);
     this->_M_finish = __i;
     return __first;
+  }
+
+public:
+  iterator erase(iterator __pos) {
+    return _M_erase(__pos, _Movable());
+  }
+  iterator erase(iterator __first, iterator __last) {
+    return _M_erase(__first, __last, _Movable());
   }
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM)
