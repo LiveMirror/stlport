@@ -24,7 +24,7 @@
 _STLP_BEGIN_NAMESPACE
 
 template <class _CharT, class _Traits, class _Alloc> 
-class basic_string : private __range_checker_mem_t
+class basic_string : private __construct_checker_mem_t
                    , public _STLP_NON_DBG_STRING_BASE
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                    , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
@@ -33,7 +33,7 @@ class basic_string : private __range_checker_mem_t
 private:
   typedef _STLP_NON_DBG_STRING_BASE _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
-  typedef __range_checker_mem_t _CheckRange;
+  typedef __construct_checker_mem_t _ConstructCheck;
   typedef typename _Base::_DbgBase _DbgBase;
 
 public:
@@ -60,7 +60,7 @@ public:                         // Constructor, destructor, assignment.
     _STLP_NON_DBG_STRING_BASE(__r, __n, __a) {}
 
   basic_string(const _Self& __s) :
-    _CheckRange(__s), _STLP_NON_DBG_STRING_BASE(__s) {}
+    _ConstructCheck(__s), _STLP_NON_DBG_STRING_BASE(__s) {}
 
   basic_string(const _Self& __s, size_type __pos, size_type __n = _Base::npos,
                const allocator_type& __a = allocator_type()) :
@@ -85,13 +85,13 @@ public:                         // Constructor, destructor, assignment.
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l,
                const allocator_type & __a _STLP_ALLOCATOR_TYPE_DFL) :
-    _CheckRange(__f, __l), 
+    _ConstructCheck(__f, __l), 
     _STLP_NON_DBG_STRING_BASE(__f, __l, __a) {
   }
 #  ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l) :
-    _CheckRange(__f, __l), 
+    _ConstructCheck(__f, __l), 
     _STLP_NON_DBG_STRING_BASE(__f, __l) {
   }
 #  endif

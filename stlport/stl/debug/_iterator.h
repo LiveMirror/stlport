@@ -356,33 +356,37 @@ operator+(ptrdiff_t __n, const _DBG_iter<_Container, _Traits>& __it) {
  * Helper classes to check iterator range validity at construction time.
  */
 template <class _Container>
-class __range_checker {
+class __construct_checker {
   typedef typename _Container::value_type value_type;
 protected:
-  __range_checker() {}
+  __construct_checker() {}
+
+  __construct_checker(const value_type* __p) {
+    _STLP_VERBOSE_ASSERT((__p != 0), _StlMsg_INVALID_ARGUMENT)
+  }
 
   /*
    * The __true_type and __false_type parameters are here to distinguish
    * between the 2 constructors if _InputIterator is equal to const _Tp*.
    */
-  __range_checker(const value_type* __f, const value_type* __l) {
-    _STLP_DEBUG_CHECK(__check_range(__f,__l))
+  __construct_checker(const value_type* __f, const value_type* __l) {
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f,__l))
   }
 
   typedef _DBG_iter_base<_Container> _IteType;
-  __range_checker(const _IteType& __f, const _IteType& __l) {
+  __construct_checker(const _IteType& __f, const _IteType& __l) {
     _STLP_DEBUG_CHECK(__check_range(__f,__l))
   }
 };
 
 
 #if defined (_STLP_MEMBER_TEMPLATES)
-class __range_checker_mem_t {
+class __construct_checker_mem_t {
 protected:
-  __range_checker_mem_t() {}
+  __construct_checker_mem_t() {}
 
   template <class _InputIter>
-  __range_checker_mem_t(const _InputIter& __f, const _InputIter& __l) {
+  __construct_checker_mem_t(const _InputIter& __f, const _InputIter& __l) {
     typedef typename _Is_integer<_InputIter>::_Integral _Integral;
     _M_check_dispatch(__f, __l, _Integral());
   }
@@ -398,9 +402,9 @@ protected:
 #endif
 
 #if !defined (_STLP_MEMBER_TEMPLATES)
-#  define _STLP_RANGE_CHECKER(a) __range_checker<a >
+#  define _STLP_CONSTRUCT_CHECKER(a) __construct_checker<a >
 #else
-#  define _STLP_RANGE_CHECKER(a) __range_checker_mem_t
+#  define _STLP_CONSTRUCT_CHECKER(a) __construct_checker_mem_t
 #endif
 
 

@@ -213,19 +213,22 @@ inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __
 }
 
 template <class _Iterator>
-inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2, const forward_iterator_tag&) { 
+inline bool  _STLP_CALL __valid_range(const _Iterator& __i1 ,const _Iterator& __i2, 
+                                      const forward_iterator_tag&) { 
   // check if comparable
   bool __dummy(__i1==__i2);
   return (__dummy==__dummy);
 }
 
 template <class _Iterator>
-inline bool  _STLP_CALL __valid_range(const _Iterator&,const _Iterator&, const input_iterator_tag&) { 
+inline bool  _STLP_CALL __valid_range(const _Iterator&,const _Iterator&, 
+                                      const input_iterator_tag&) { 
   return true; 
 }
 
 template <class _Iterator>
-inline bool  _STLP_CALL __valid_range(const _Iterator&,const _Iterator&, const output_iterator_tag&) { 
+inline bool  _STLP_CALL __valid_range(const _Iterator&,const _Iterator&, 
+                                      const output_iterator_tag&) { 
   return true; 
 }
 
@@ -361,13 +364,15 @@ private:
 // forward declaratioins
 
 template <class _Iterator>
-bool  _STLP_CALL __check_range(const _Iterator&, const _Iterator&);
+bool _STLP_CALL __check_range(const _Iterator&, const _Iterator&);
 template <class _Iterator>
-bool _STLP_CALL  __check_range(const _Iterator&, 
-                               const _Iterator&, const _Iterator&);
+bool _STLP_CALL __check_range(const _Iterator&, 
+                              const _Iterator&, const _Iterator&);
 template <class _Iterator>
-bool _STLP_CALL  __check_range(const _Iterator&, const _Iterator& , 
-                               const _Iterator&, const _Iterator& );
+bool _STLP_CALL __check_range(const _Iterator&, const _Iterator& , 
+                              const _Iterator&, const _Iterator& );
+template <class _Tp>
+bool _STLP_CALL __check_ptr_range(const _Tp*, const _Tp*);
 
 template <class _Iterator>
 void _STLP_CALL  __invalidate_range(const __owned_list* __base, 

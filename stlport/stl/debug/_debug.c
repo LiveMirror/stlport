@@ -105,6 +105,13 @@ bool _STLP_CALL  __check_range(const _Iterator& __first, const _Iterator& __last
   return true;
 }
 
+template <class _Tp>
+bool _STLP_CALL __check_ptr_range(const _Tp* __first, const _Tp* __last) {
+  _STLP_VERBOSE_RETURN((__first != 0 || __last == 0), _StlMsg_INVALID_ARGUMENT)
+  _STLP_VERBOSE_RETURN(__valid_range(__first,__last,random_access_iterator_tag()), _StlMsg_INVALID_RANGE)
+  return true;
+}
+
 //===============================================================
 
 template <class _Iterator>

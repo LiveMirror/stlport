@@ -45,7 +45,7 @@ iterator_category(const  _DBG_iter_base< _STLP_NON_DBG_STRING_BASE >&) {
 #endif
 
 template <class _CharT, class _Traits, class _Alloc> 
-class basic_string : private __range_checker<_STLP_NON_DBG_STRING_BASE >
+class basic_string : private __construct_checker<_STLP_NON_DBG_STRING_BASE >
                    , public _STLP_NON_DBG_STRING_BASE
 #if !defined(basic_string) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                    , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
@@ -54,7 +54,7 @@ class basic_string : private __range_checker<_STLP_NON_DBG_STRING_BASE >
 private:
   typedef _STLP_NON_DBG_STRING_BASE _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
-  typedef __range_checker<_STLP_NON_DBG_STRING_BASE > _CheckRange;
+  typedef __construct_checker<_STLP_NON_DBG_STRING_BASE > _ConstructCheck;
 
 protected:
   typedef typename _Base::_NonDbgBase _NonDbgBase;
@@ -105,7 +105,7 @@ public:
     _STLP_NON_DBG_STRING_BASE(__r, __n, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(const _Self& __s) :
-     _CheckRange(__s),
+     _ConstructCheck(__s),
      _STLP_NON_DBG_STRING_BASE(__s), _M_iter_list(_Get_base()) {}
 
   basic_string(const _Self& __s, size_type __pos, size_type __n = _Base::npos,
@@ -114,11 +114,12 @@ public:
 
   basic_string(const _CharT* __s, size_type __n,
                const allocator_type& __a = allocator_type()) :
-    //TODO: Add not null pointer check.
+    _ConstructCheck(__s),
     _STLP_NON_DBG_STRING_BASE(__s, __n, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(const _CharT* __s,
                const allocator_type& __a = allocator_type()) :
+    _ConstructCheck(__s),
     _STLP_NON_DBG_STRING_BASE(__s, __a), _M_iter_list(_Get_base()) {}
 
   basic_string(size_type __n, _CharT __c,
@@ -133,12 +134,12 @@ public:
 #if !defined (_STLP_MEMBER_TEMPLATES) || defined(__MRC__) || defined(__SC__)
   basic_string(const _CharT* __f, const _CharT* __l,
                const allocator_type& __a = allocator_type()) :
-    _CheckRange(__f, __l),
+    _ConstructCheck(__f, __l),
     _STLP_NON_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {
   }
   basic_string(const_iterator __f, const_iterator __l, 
                const allocator_type & __a = allocator_type()) :
-    _CheckRange(__f, __l),
+    _ConstructCheck(__f, __l),
     _STLP_NON_DBG_STRING_BASE(__f._M_iterator, __l._M_iterator, __a), _M_iter_list(_Get_base()) {
   }
 #endif
@@ -165,6 +166,7 @@ public:
 
   _Self& operator=(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     _Invalidate_all();
     _Base::operator=(__s);
     return *this;
@@ -243,7 +245,11 @@ public:                         // Element access.
 public:                         // Append, operator+=, push_back.
 
   _Self& operator+=(const _Self& __s) { return append(__s); }
-  _Self& operator+=(const _CharT* __s) { _STLP_FIX_LITERAL_BUG(__s) return append(__s); }
+  _Self& operator+=(const _CharT* __s) {
+    _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
+    return append(__s); 
+  }
   _Self& operator+=(_CharT __c) { push_back(__c); return *this; }
 
 #if defined (_STLP_MEMBER_TEMPLATES)
@@ -251,7 +257,7 @@ protected:
 #endif
   _Self& append(const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f, __l))
     size_type __old_capacity = this->capacity();
     _Base::append(__f, __l);
     _Compare_Capacity(__old_capacity);
@@ -280,11 +286,13 @@ public:
 
   _Self& append(const _CharT* __s, size_type __n) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return append(__s, __s + __n);
   }
 
   _Self& append(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return append(__s, __s + _Traits::length(__s)); 
   }
 
@@ -323,11 +331,13 @@ public:                         // Assign
 
   _Self& assign(const _CharT* __s, size_type __n) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return assign(__s, __s + __n);
   }
 
   _Self& assign(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return assign(__s, __s + _Traits::length(__s));
   }
 
@@ -342,7 +352,7 @@ protected:
 #endif
   _Self& assign(const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
-    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f, __l))
     _Invalidate_all();
     _Base::assign(__f, __l);
     return *this;
@@ -373,6 +383,7 @@ public:                         // Insert
 
   _Self& insert(size_type __pos, const _CharT* __s, size_type __n) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     size_type __old_capacity = this->capacity();
     _Base::insert(__pos, __s, __n);
     _Compare_Capacity(__old_capacity);
@@ -381,6 +392,7 @@ public:                         // Insert
 
   _Self& insert(size_type __pos, const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     return insert(__pos, __s, _Traits::length(__s));
   }
     
@@ -419,7 +431,7 @@ protected:
   void insert(iterator __p, const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f)_STLP_FIX_LITERAL_BUG(__l)
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__p))
-    _STLP_DEBUG_CHECK(__check_range(__f,__l))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f,__l))
     size_type __old_capacity = this->capacity();
     _Base::insert(__p._M_iterator, __f, __l); 
     _Compare_Capacity(__old_capacity);
@@ -471,6 +483,7 @@ public:                         // Replace.  (Conceptually equivalent
 
   _Self& replace(size_type __pos, size_type __n1, const _CharT* __s, size_type __n2) {    
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     size_type __old_capacity = this->capacity();
     _Base::replace(__pos, __n1, __s, __n2);
     _Compare_Capacity(__old_capacity);
@@ -479,6 +492,7 @@ public:                         // Replace.  (Conceptually equivalent
 
   _Self& replace(size_type __pos, size_type __n1, const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     size_type __old_capacity = this->capacity();
     _Base::replace(__pos, __n1, __s);
     _Compare_Capacity(__old_capacity);
@@ -503,6 +517,7 @@ public:                         // Replace.  (Conceptually equivalent
   _Self& replace(iterator __f, iterator __l, const _CharT* __s, size_type __n) { 
     _STLP_FIX_LITERAL_BUG(__s)
     _STLP_DEBUG_CHECK(__check_range(__f, __l, this->begin(), this->end()))
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     size_type __old_capacity = this->capacity();
     _Base::replace(__f._M_iterator, __l._M_iterator,__s, __n);
     _Compare_Capacity(__old_capacity);
@@ -512,6 +527,7 @@ public:                         // Replace.  (Conceptually equivalent
   _Self& replace(iterator __f, iterator __l, const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
     _STLP_DEBUG_CHECK(__check_range(__f, __l, this->begin(), this->end()))
+    _STLP_VERBOSE_ASSERT((__s != 0), _StlMsg_INVALID_ARGUMENT)
     size_type __old_capacity = this->capacity();
     _Base::replace(__f._M_iterator, __l._M_iterator,__s);
     _Compare_Capacity(__old_capacity);
@@ -544,7 +560,7 @@ protected:
                  const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__f)_STLP_FIX_LITERAL_BUG(__l)
     _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
-    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f, __l))
     size_type __old_capacity = this->capacity();
     _Base::replace(__first._M_iterator, __last._M_iterator, __f, __l);
     _Compare_Capacity(__old_capacity);
@@ -581,10 +597,10 @@ public:                        // Helper functions for compare.
 
 // This is a hook to instantiate STLport exports in a designated DLL
 #if defined (_STLP_USE_TEMPLATE_EXPORT)
-_STLP_EXPORT_TEMPLATE_CLASS __range_checker<_STLP_NON_DBG_STRING_BASE_NAME <char, char_traits<char>, allocator<char> > >;
+_STLP_EXPORT_TEMPLATE_CLASS __construct_checker<_STLP_NON_DBG_STRING_BASE_NAME <char, char_traits<char>, allocator<char> > >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_string<char, char_traits<char>, allocator<char> >;
 #  if defined (_STLP_HAS_WCHAR_T)
-_STLP_EXPORT_TEMPLATE_CLASS __range_checker<_STLP_NON_DBG_STRING_BASE_NAME <wchar_t, char_traits<wchar_t>, allocator<wchar_t> > >;
+_STLP_EXPORT_TEMPLATE_CLASS __construct_checker<_STLP_NON_DBG_STRING_BASE_NAME <wchar_t, char_traits<wchar_t>, allocator<wchar_t> > >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
 #  endif
 #endif /* _STLP_USE_TEMPLATE_EXPORT */

@@ -175,12 +175,12 @@ public:
 #else /* _STLP_MEMBER_TEMPLATES */
 
   void insert_unique(const value_type* __f, const value_type* __l) {
-    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f, __l))
     _Base::insert_unique(__f, __l);
   }
   
   void insert_equal(const value_type* __f, const value_type* __l) {
-    _STLP_DEBUG_CHECK(__check_range(__f, __l))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__f, __l))
     _Base::insert_equal(__f, __l);
   }
   

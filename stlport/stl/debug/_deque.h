@@ -55,7 +55,7 @@ inline random_access_iterator_tag iterator_category(const  _DBG_iter_base< _STLP
 # endif
 
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
-class _DBG_deque : private _STLP_RANGE_CHECKER(_STLP_DEQUE_SUPER),
+class _DBG_deque : private _STLP_CONSTRUCT_CHECKER(_STLP_DEQUE_SUPER),
                    public _STLP_DEQUE_SUPER
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                     , public __stlport_class<_DBG_deque<_Tp, _Alloc> >
@@ -63,7 +63,7 @@ class _DBG_deque : private _STLP_RANGE_CHECKER(_STLP_DEQUE_SUPER),
 {
   typedef _DBG_deque<_Tp,_Alloc> _Self;
   typedef _STLP_DEQUE_SUPER _Base;
-  typedef _STLP_RANGE_CHECKER(_STLP_DEQUE_SUPER) _CheckRange;
+  typedef _STLP_CONSTRUCT_CHECKER(_STLP_DEQUE_SUPER) _ConstructCheck;
 
 public:                         // Basic types
 
@@ -134,7 +134,7 @@ public:                         // Constructor, destructor.
   explicit _DBG_deque(const allocator_type& __a = allocator_type()) :
     _STLP_DEQUE_SUPER(__a), _M_iter_list(_Get_base()) {}
   _DBG_deque(const _Self& __x) : 
-    _CheckRange(__x), _STLP_DEQUE_SUPER(__x), _M_iter_list(_Get_base()) {}
+    _ConstructCheck(__x), _STLP_DEQUE_SUPER(__x), _M_iter_list(_Get_base()) {}
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit _DBG_deque(size_type __n, const value_type& __x = _Tp(),
@@ -157,14 +157,14 @@ public:                         // Constructor, destructor.
   template <class _InputIterator>
   _DBG_deque(_InputIterator __first, _InputIterator __last,
         const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _CheckRange(__first, __last),
+    : _ConstructCheck(__first, __last),
       _STLP_DEQUE_SUPER(__first, __last, __a) ,
       _M_iter_list(_Get_base()) {
     }
 # ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   _DBG_deque(_InputIterator __first, _InputIterator __last)
-    : _CheckRange(__first, __last),
+    : _ConstructCheck(__first, __last),
       _STLP_DEQUE_SUPER(__first, __last) , 
       _M_iter_list(_Get_base()) {
     }
@@ -172,14 +172,14 @@ public:                         // Constructor, destructor.
 #else /* _STLP_MEMBER_TEMPLATES */
   _DBG_deque(const value_type* __first, const value_type* __last,
         const allocator_type& __a = allocator_type()) 
-    : _CheckRange(__first, __last),
+    : _ConstructCheck(__first, __last),
       _STLP_DEQUE_SUPER(__first, __last, __a), 
       _M_iter_list(_Get_base()) {
     }
 
   _DBG_deque(const_iterator __first, const_iterator __last,
         const allocator_type& __a = allocator_type()) 
-    : _CheckRange(__first, __last),
+    : _ConstructCheck(__first, __last),
       _STLP_DEQUE_SUPER(__first._M_iterator, __last._M_iterator, __a), 
       _M_iter_list(_Get_base()) {
     }
@@ -207,6 +207,7 @@ public:
 #ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIterator>
   void assign(_InputIterator __first, _InputIterator __last) {
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
 #else
   void assign(const_iterator __first, const_iterator __last) {
     _STLP_DEBUG_CHECK(__check_range(__first, __last))
@@ -214,8 +215,8 @@ public:
     _Base::assign(__first._M_iterator, __last._M_iterator);
   }
   void assign(const value_type *__first, const value_type *__last) {
+    _STLP_DEBUG_CHECK(__check_ptr_range(__first, __last))
 #endif /* _STLP_MEMBER_TEMPLATES */
-    _STLP_DEBUG_CHECK(__check_range(__first, __last))
     _Invalidate_all();
     _Base::assign(__first, __last);
   }
@@ -295,6 +296,7 @@ public:                         // Insert
 #ifdef _STLP_MEMBER_TEMPLATES  
   template <class _InputIterator>
   void insert(iterator __position, _InputIterator __first, _InputIterator __last) {
+    _STLP_DEBUG_CHECK(__check_range(__first, __last))
 #else /* _STLP_MEMBER_TEMPLATES */
   void insert(iterator __position,
               const_iterator __first, const_iterator __last) {
@@ -306,9 +308,9 @@ public:                         // Insert
   }
   void insert(iterator __position,
               const value_type* __first, const value_type* __last) {
+    _STLP_DEBUG_CHECK(__check_ptr_range(__first, __last))
 #endif /* _STLP_MEMBER_TEMPLATES */
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __position))
-    _STLP_DEBUG_CHECK(__check_range(__first, __last))
     _Base::insert(__position._M_iterator, __first, __last);
     //dums: because of self insertion iterators must be invalidated after insertion.
     if (__first != __last) _Invalidate_all();

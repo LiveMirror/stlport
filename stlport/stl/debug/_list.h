@@ -59,7 +59,7 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_LIST_BASE >&) {
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_list : private _STLP_RANGE_CHECKER(_STLP_DBG_LIST_BASE),
+class _DBG_list : private _STLP_CONSTRUCT_CHECKER(_STLP_DBG_LIST_BASE),
                   public _STLP_DBG_LIST_BASE
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
                   , public __stlport_class<_DBG_list<_Tp, _Alloc> >
@@ -67,7 +67,7 @@ class _DBG_list : private _STLP_RANGE_CHECKER(_STLP_DBG_LIST_BASE),
 {
   typedef _STLP_DBG_LIST_BASE _Base;
   typedef _DBG_list<_Tp, _Alloc> _Self;
-  typedef _STLP_RANGE_CHECKER(_STLP_DBG_LIST_BASE) _CheckRange;
+  typedef _STLP_CONSTRUCT_CHECKER(_STLP_DBG_LIST_BASE) _ConstructCheck;
 
 public:      
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
@@ -121,13 +121,13 @@ public:
   template <class _InputIterator>
   _DBG_list(_InputIterator __first, _InputIterator __last,
             const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _CheckRange(__first, __last), 
+    : _ConstructCheck(__first, __last), 
       _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
     }
 #  if defined (_STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS)
   template <class _InputIterator>
   _DBG_list(_InputIterator __first, _InputIterator __last)
-    : _CheckRange(__first, __last), 
+    : _ConstructCheck(__first, __last), 
       _STLP_DBG_LIST_BASE(__first, __last), _M_iter_list(_Get_base()) {
     }
 #  endif
@@ -135,19 +135,19 @@ public:
 
   _DBG_list(const value_type* __first, const value_type* __last,
             const allocator_type& __a = allocator_type())
-    : _CheckRange(__first, __last), 
+    : _ConstructCheck(__first, __last), 
       _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
     }
   _DBG_list(const_iterator __first, const_iterator __last,
             const allocator_type& __a = allocator_type())
-    : _CheckRange(__first, __last), 
+    : _ConstructCheck(__first, __last), 
       _STLP_DBG_LIST_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
     }
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   _DBG_list(const _Self& __x) : 
-    _CheckRange(__x),
+    _ConstructCheck(__x),
     _STLP_DBG_LIST_BASE(__x) , _M_iter_list(_Get_base()) {}
 
   _Self& operator= (const _Self& __x) {
@@ -229,7 +229,7 @@ public:
 
   void insert(iterator __position, const _Tp* __first, const _Tp* __last) {
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
-    _STLP_DEBUG_CHECK(__check_range(__first, __last))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__first, __last))
     _Base::insert(__position._M_iterator, __first, __last);
   }
 

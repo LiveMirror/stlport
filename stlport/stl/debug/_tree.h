@@ -203,7 +203,7 @@ public:
     _Base::insert_unique(__first._M_iterator, __last._M_iterator);
   }
   void insert_unique(const value_type* __first, const value_type* __last) {
-    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__first,__last))
     _Base::insert_unique(__first, __last);    
   }
   void insert_equal(const_iterator __first, const_iterator __last) {
@@ -211,7 +211,7 @@ public:
     _Base::insert_equal(__first._M_iterator, __last._M_iterator);
   }
   void insert_equal(const value_type* __first, const value_type* __last) {
-    _STLP_DEBUG_CHECK(__check_range(__first,__last))
+    _STLP_DEBUG_CHECK(__check_ptr_range(__first,__last))
     _Base::insert_equal(__first, __last);
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
