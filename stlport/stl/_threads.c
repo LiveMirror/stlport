@@ -91,7 +91,12 @@ void _STLP_CALL
 _STLP_mutex_spin<__inst>::_S_nsec_sleep(int __log_nsec) {
 #     if defined(_STLP_WIN32THREADS)
 	  if (__log_nsec <= 20) {
-	      Sleep(0);
+        // Note from boost (www.boost.org): 
+        // Changed to Sleep(1) from Sleep(0).
+        // According to MSDN, Sleep(0) will never yield
+        // to a lower-priority thread, whereas Sleep(1)
+        // will. Performance seems not to be affected.
+	      Sleep(1);
 	  } else {
 	      Sleep(1 << (__log_nsec - 20));
 	  }
