@@ -1,3 +1,18 @@
+2004-06-22  Francois Dumont  <dums@...>
+
+  * src/locale_catalog.cpp: fix of the locale facets registration system.
+  The hash container use string has key rather than char const* so that
+  a copy of the facet name is stored rather than a copy of the string
+  pointer that might be freed. We also extract the complete facet name
+  before storing it to avoid store of facet aliases that cannot be retrieved
+  at release.
+
+2004-06-21  Francois Dumont  <dums@s...>
+
+  * Restauration of the cygwin support (using gcc 3.3.1). Extension of the
+  explore build system, workaround of a link problem when using shared
+  libraries.
+
 2004-06-13  Petr Ovtchenkov  <ptr@Island...>
 
 	* src/c_locale_glibc/c_locale_glibc2.c:	locale_data for glibc 2.3 is differ

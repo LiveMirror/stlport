@@ -33,7 +33,7 @@ class LColl {
 
 LColl::LColl( const char *loc_dir )
 {
-# if defined(__unix) || defined(__unix__)
+# if (defined(__unix) || defined(__unix__)) && !defined(__CYGWIN__)
   /* Iterate through catalog that contain catalogs with locale definitions, installed on system
    * (this is expected /usr/lib/locale for most linuxes and /usr/share/locale for *BSD).
    * The names of catalogs here will give supported locales.
@@ -91,16 +91,21 @@ static ref_locale tested_locales[] = {
 class LocaleTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(LocaleTest);
+  CPPUNIT_TEST(locale_by_name);
+  CPPUNIT_TEST(loc_has_facet);
   CPPUNIT_TEST(num_put_get);
   CPPUNIT_TEST(money_put_get);
   CPPUNIT_TEST(time_put_get);
   CPPUNIT_TEST_SUITE_END();
 
 public:
+  void locale_by_name();
+  void loc_has_facet();
   void num_put_get();
   void money_put_get();
   void time_put_get();
 private:
+  void _loc_has_facet( const locale&, const ref_locale& );
   void _num_put_get( const locale&, const ref_locale& );
   void _money_put_get( const locale&, const ref_locale& );
   void _time_put_get( const locale&, const ref_locale& );
@@ -111,7 +116,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(LocaleTest);
 //
 // tests implementation
 //
-
 void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   float val = 1234.56f;
   ostringstream ostr;
@@ -241,35 +245,61 @@ void LocaleTest::_time_put_get( const locale& loc, const ref_locale& rl )
   string str_ret = ostr.str();
 }
 
-void LocaleTest::num_put_get() {
+template <class _Tp>
+void test_supported_locale(LocaleTest inst, _Tp __test) {
   int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
   for ( int i = 0; i < n; ++i ) {
     if ( loc_ent[string( tested_locales[i].name )] ) {
       //cout << '\t' << tested_locales[i].name << endl;
       locale loc( tested_locales[i].name );
-      _num_put_get( loc, tested_locales[i] );
+      (inst.*__test)(loc, tested_locales[i] );
     }
   }
+}
+
+void LocaleTest::locale_by_name() {
+  /*
+   * Check of the 22.1.1.2.7 standard point.
+   */
+  try {
+    locale loc(static_cast<char const*>(0));
+    CPPUNIT_ASSERT( false );
+  }
+  catch (runtime_error const&) {
+  }
+  catch (...) {
+    CPPUNIT_ASSERT( false );
+  }
+
+  try {
+    locale loc("yasli_language");
+    CPPUNIT_ASSERT( false );
+  }
+  catch (runtime_error const&) {
+  }
+  catch (...) {
+    CPPUNIT_ASSERT( false );
+  }
+}
+
+void LocaleTest::loc_has_facet() {
+  /*
+  locale loc("C");
+  typedef numpunct<char> implemented_facet;
+  CPPUNIT_ASSERT( has_facet<implemented_facet>(loc) );
+  typedef num_put<char, back_insert_iterator<string> > not_implemented_facet;
+  CPPUNIT_ASSERT( !has_facet<not_implemented_facet>(loc) );
+  */
+}
+
+void LocaleTest::num_put_get() {
+  test_supported_locale(*this, &LocaleTest::_num_put_get);
 }
 
 void LocaleTest::money_put_get() {
-  int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
-  for ( int i = 0; i < n; ++i ) {
-    if ( loc_ent[string( tested_locales[i].name )] ) {
-      //cout << '\t' << tested_locales[i].name << endl;
-      locale loc( tested_locales[i].name );
-      _money_put_get( loc, tested_locales[i] );
-    }
-  }
+  test_supported_locale(*this, &LocaleTest::_money_put_get);
 }
 
 void LocaleTest::time_put_get() {
-  int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
-  for ( int i = 0; i < n; ++i ) {
-    if ( loc_ent[string( tested_locales[i].name )] ) {
-      //cout << '\t' << tested_locales[i].name << endl;
-      locale loc( tested_locales[i].name );
-      _time_put_get( loc, tested_locales[i] );
-    }
-  }
+  test_supported_locale(*this, &LocaleTest::_time_put_get);
 }
