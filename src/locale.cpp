@@ -29,18 +29,24 @@
 
 _STLP_BEGIN_NAMESPACE
 
+static const string _Nameless("*");
+
+#if defined(_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#  define locale _STLP_NO_MEM_T_NAME(loc)
+#endif
+
 locale::facet::~facet() {}
 
 #if ! defined ( _STLP_MEMBER_TEMPLATES ) || defined (_STLP_INLINE_MEMBER_TEMPLATES)
 // members that fail to be templates
 bool locale::operator()(const string& __x,
-                             const string& __y) const {
+                        const string& __y) const {
   return __locale_do_operator_call(this, __x, __y);
 }
 
 #  if !defined (_STLP_NO_WCHAR_T)
 bool locale::operator()(const wstring& __x,
-                             const wstring& __y) const {
+                        const wstring& __y) const {
   return __locale_do_operator_call(this, __x, __y);
 }
 #  endif
@@ -167,7 +173,7 @@ void _Stl_loc_combine_names(_Locale_impl* L,
 // in category c are instead constructed by name.
 locale::locale(const locale& L, const char* name, locale::category c)
   : _M_impl(0) {
-  if (name == 0 || strcmp(name, "*") == 0)
+  if (name == 0 || (_Nameless == name))
     _M_throw_runtime_error(name);
 
   _Locale_impl* impl = 0;
@@ -201,11 +207,10 @@ locale::locale(const locale& L1, const locale& L2, category c)
 
   _Locale_impl* i2 = L2._M_impl;
 
-  static string nameless("*");
-  if (L1.name() != nameless && L2.name() != nameless)
+  if (L1.name() != _Nameless && L2.name() != _Nameless)
     _Stl_loc_combine_names(impl, L1._M_impl->name.c_str(), L2._M_impl->name.c_str(), c);
   else {
-    impl->name = "*";
+    impl->name = _Nameless;
   }
 
   if (c & collate) {
@@ -293,8 +298,6 @@ locale::facet* locale::_M_use_facet(const locale::id& n) const {
 string locale::name() const {
   return _M_impl->name;
 }
-
-static string _Nameless("*");
 
 // Compare two locales for equality.
 bool locale::operator==(const locale& L) const {

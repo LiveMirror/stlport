@@ -106,15 +106,17 @@
  * instanciated to be exported. There is a workaround, seperate the non template methods
  * from the template ones within 2 different classes and only export the non template one.
  * It is implemented for basic_string and locale at the writing of this note. 
- * But this has finally been concidered as not important enough to not use this feature. 
+ * This problem has finally been concidered as not important enough to not use this feature. 
  * Moreover boost (www.boost.org) required it to be granted.
+ * The workaround is activated thanks to the _STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND macro defined
+ * later in this config file.
  */
 /*
 #    ifdef _DLL
 #      define _STLP_NO_MEMBER_TEMPLATES 1
 #    endif
-
 */
+
 // boris : not defining this macro for SP5 causes other problems
 //#    if !defined (_MSC_FULL_VER) || (_MSC_FULL_VER < 12008804 )
 #    define _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS 1
@@ -259,6 +261,9 @@ typedef char __stl_char;
 #if defined(_STLP_USE_DYNAMIC_LIB)
 #  undef  _STLP_USE_DECLSPEC
 #  define _STLP_USE_DECLSPEC 1
+#  if (_STLP_MSVC == 1200)
+#    define _STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND 1
+#  endif
 #endif
 
 #ifndef _STLP_IMPORT_TEMPLATE_KEYWORD

@@ -1,3 +1,12 @@
+2004-12-10  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_collate.h, _locale.h: fix of the __locale_do_operator_call internal
+	function to make traits and allocator also template parameters.
+
+	* stlport/stl/_locale.h, _collate.h, stlport/config/stl_msvc.h, src/locale.cpp, 
+	src/locale_impl.h: restoration of the MSVC6 workaround for the locale class to 
+	correctly handle the member template methods.
+	
 2004-12-09  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_messages_facets.h: fixed messages_base::catalog from long typedef

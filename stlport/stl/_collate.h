@@ -160,19 +160,25 @@ private:
 
 # endif /* NO_WCHAR_T */
 
-template <class _CharT>
+#if defined(_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#  define locale _STLP_NO_MEM_T_NAME(loc)
+#endif
+
+template <class _CharT, class _Traits, class _Alloc>
 bool 
 __locale_do_operator_call (const locale* __that, 
-                           const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __x,
-                           const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __y) 
+                           const basic_string<_CharT, _Traits, _Alloc>& __x,
+                           const basic_string<_CharT, _Traits, _Alloc>& __y) 
 {
   collate<_CharT>* __f = (collate<_CharT>*)__that->_M_get_facet(collate<_CharT>::id);
   if (!__f)
     __that->_M_throw_runtime_error();
   return __f->compare(__x.data(), __x.data() + __x.size(),
-                      __y.data(), __y.data() + __y.size()) < 0;
-  
+                      __y.data(), __y.data() + __y.size()) < 0;  
 }
+#if defined(_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#  undef locale
+#endif
 
 _STLP_END_NAMESPACE
 
