@@ -7,5 +7,7 @@
 # tag with assignment fail, but work assignment for all tags
 # (really that more correct).
 
+LDFLAGS_REL = /LTCG
+
 !include $(RULESBASE)/$(USE_MAKE)/lib/vc-common.mak
 
