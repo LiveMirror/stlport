@@ -755,7 +755,7 @@ _STLP_STATIC_MEMBER_DECLSPEC locale::id numpunct<wchar_t>::id = { 25 };
 _STLP_STATIC_MEMBER_DECLSPEC locale::id messages<wchar_t>::id = { 26 };
 # endif
 
-_Locale_impl *_get_Locale_impl( _Locale_impl *loc )
+_Locale_impl * _STLP_DECLSPEC _STLP_CALL _get_Locale_impl( _Locale_impl *loc )
 {
   _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
@@ -763,7 +763,7 @@ _Locale_impl *_get_Locale_impl( _Locale_impl *loc )
   return loc;
 }
 
-void _release_Locale_impl( _Locale_impl *& loc )
+void _STLP_CALL _release_Locale_impl( _Locale_impl *& loc )
 {
   _STLP_ASSERT( loc != 0 );
   if ( loc->_M_decr() == 0 && loc != _Stl_classic_locale_impl ) {
@@ -772,7 +772,7 @@ void _release_Locale_impl( _Locale_impl *& loc )
   }
 }
 
-_Locale_impl *_copy_Locale_impl( _Locale_impl *loc )
+_Locale_impl * _STLP_CALL _copy_Locale_impl( _Locale_impl *loc )
 {
    _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
@@ -781,7 +781,7 @@ _Locale_impl *_copy_Locale_impl( _Locale_impl *loc )
   return loc_new;
 }
 
-_Locale_impl *_copy_Nameless_Locale_impl( _Locale_impl *loc )
+_Locale_impl * _STLP_DECLSPEC _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl *loc )
 {
    _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
@@ -791,7 +791,7 @@ _Locale_impl *_copy_Nameless_Locale_impl( _Locale_impl *loc )
   return loc_new;
 }
 
-locale::facet *_get_facet( locale::facet *f )
+locale::facet * _STLP_CALL _get_facet( locale::facet *f )
 {
   if ( f != 0 && f->_M_delete ) {
     f->_M_incr();
@@ -800,7 +800,7 @@ locale::facet *_get_facet( locale::facet *f )
   return f;
 }
 
-void _release_facet( locale::facet *&f )
+void _STLP_CALL _release_facet( locale::facet *&f )
 {
   if ( f != 0 && f->_M_delete && f->_M_decr() == 0 ) {
     delete f;

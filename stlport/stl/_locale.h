@@ -51,9 +51,8 @@ __locale_do_operator_call (const locale* __that,
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __x,
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __y);
 
-class _Locale_impl;
-_Locale_impl *_get_Locale_impl( _Locale_impl *locimpl );
-_Locale_impl *_copy_Nameless_Locale_impl( _Locale_impl *locimpl );
+_Locale_impl * _STLP_DECLSPEC _STLP_CALL _get_Locale_impl( _Locale_impl *locimpl );
+_Locale_impl * _STLP_DECLSPEC _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl *locimpl );
 
 class _STLP_CLASS_DECLSPEC locale {
 public:
@@ -66,8 +65,8 @@ public:
     virtual ~facet();
     friend class locale;
     friend class _Locale_impl;
-    friend facet *_get_facet( facet * );
-    friend void _release_facet( facet *& );
+    friend facet * _STLP_CALL _get_facet( facet * );
+    friend void _STLP_CALL _release_facet( facet *& );
     
   private:                        // Invalidate assignment and copying.
     facet(const facet& __f) : _Refcount_Base(1), _M_delete(false) {};
