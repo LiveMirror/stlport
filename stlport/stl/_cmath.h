@@ -101,16 +101,6 @@ _STLP_DEF_MATH_INLINE(abs,fabs)
 inline float abs(float __x) { return ::fabsf(__x); }
 #  endif
 
-# ifdef _STLP_USE_UCLIBC // gcc/uClibc cross
-extern "C" {
-  inline float expf( float x ) { return __STATIC_CAST(float,::exp((double)x));};
-  inline float logf( float x ) { return __STATIC_CAST(float,::log((double)x));};
-  inline float sinf( float x ) { return __STATIC_CAST(float,::sin((double)x));};
-  inline float cosf( float x ) { return __STATIC_CAST(float,::cos((double)x));};
-}
-# endif
-
-
 _STLP_DEF_MATH_INLINE(acos,acos)
 _STLP_DEF_MATH_INLINE(asin,asin)
 _STLP_DEF_MATH_INLINE(atan,atan)
