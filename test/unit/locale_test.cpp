@@ -76,17 +76,18 @@ struct ref_locale {
   const char *money_int_prefix;
   const char *money_prefix;
   const char *money_int_suffix;
+  const char *money_int_suffix_old;
   const char *money_suffix;
   const char *money_decimal_point;
   const char *money_thousands_sep;
 };
 
 static ref_locale tested_locales[] = {
-//{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_suffix, money_decimal_point,  money_thousands_sep},
-  { "french",      ",",           "\xa0",        "",               "",           " EUR",           "",           ",",                  "\xa0" },
-  { "ru_RU.koi8r", ",",           ".",           "",               "",           " RUR",           "",           ".",                  " " },
-  { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",               "",           ".",                  "," },
-  { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",           ".",                  "," }
+//{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point,  money_thousands_sep},
+  { "french",      ",",           "\xa0",        "",               "",           " EUR",           " FRF",               "",           ",",                  "\xa0" },
+  { "ru_RU.koi8r", ",",           ".",           "",               "",           " RUR",           " RUR",               "",           ".",                  " " },
+  { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",               "",                   "",           ".",                  "," },
+  { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",                   "",           ".",                  "," }
 };
 
 //
@@ -196,7 +197,8 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   CPPUNIT_ASSERT( str_res[p + 7] == '6' );
   // CPPUNIT_ASSERT( str_res[p + 8] == ' ' );
   string::size_type p1 = strlen( rl.money_int_suffix );
-  CPPUNIT_ASSERT( str_res.substr(p + 8, p1) == rl.money_int_suffix );
+  CPPUNIT_ASSERT( str_res.substr(p + 8, p1) == rl.money_int_suffix || 
+                  str_res.substr(p + 8, p1) == rl.money_int_suffix_old );
   // CPPUNIT_ASSERT( intl_fmp.curr_symbol() == rl.money_suffix );
 
   // CPPUNIT_ASSERT( str_res.substr(p + 9, intl_fmp.curr_symbol().size()) == intl_fmp.curr_symbol() );
