@@ -42,12 +42,14 @@ _STLP_DECLSPEC complex<double> _STLP_CALL exp(const complex<double>& z)
                          expx * _STLP_SIN(z._M_im));
 }
 
+# ifndef _STLP_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL exp(const complex<long double>& z)
 {
   long double expx = _STLP_EXPL(z._M_re);
   return complex<long double>(expx * _STLP_COSL(z._M_im),
                               expx * _STLP_SINL(z._M_im));
 }
+# endif
 
 //----------------------------------------------------------------------
 // log10
@@ -72,6 +74,7 @@ _STLP_DECLSPEC complex<double> _STLP_CALL log10(const complex<double>& z)
   return r;
 }
 
+#ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL log10(const complex<long double>& z)
 {
   complex<long double> result;
@@ -81,7 +84,7 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL log10(const complex<long double>&
   result._M_re = _STLP_LOG10L(_STLP_HYPOTL(z._M_re, z._M_im));
   return result;
 }
-
+# endif
 
 //----------------------------------------------------------------------
 // log
@@ -104,6 +107,7 @@ _STLP_DECLSPEC complex<double> _STLP_CALL log(const complex<double>& z)
   return r;
 }
 
+#ifndef _STLP_NO_LONG_DOUBLE
 _STLP_DECLSPEC complex<long double> _STLP_CALL log(const complex<long double>& z)
 {
   complex<long double> result;
@@ -112,7 +116,7 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL log(const complex<long double>& z
   result._M_re = _STLP_LOGL(_STLP_HYPOTL(z._M_re, z._M_im));
   return result;
 }
-
+# endif
 
 //----------------------------------------------------------------------
 // pow

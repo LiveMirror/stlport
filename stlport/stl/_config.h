@@ -489,10 +489,12 @@ namespace __std_alias = std;
 #   define _STLP_USING_VENDOR_CSTD _STLP_USING_NAMESPACE(_STLP_VENDOR_CSTD)
 #  endif /* _STLP_VENDOR_CSTD */
 /* exception, typeinfo, new - always come from the vendor */
-#  ifdef _STLP_VENDOR_GLOBAL_EXCEPT_STD
-#   define _STLP_VENDOR_EXCEPT_STD
-#  else
-#   define _STLP_VENDOR_EXCEPT_STD _STLP_VENDOR_STD
+#  ifndef _STLP_VENDOR_EXCEPT_STD
+#   ifdef _STLP_VENDOR_GLOBAL_EXCEPT_STD
+#    define _STLP_VENDOR_EXCEPT_STD
+#   else
+#    define _STLP_VENDOR_EXCEPT_STD _STLP_VENDOR_STD
+#   endif
 #  endif
 # define _STLP_OLD_IO_NAMESPACE
 # ifndef _STLP_VENDOR_MB_NAMESPACE

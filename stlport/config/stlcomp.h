@@ -70,6 +70,9 @@
 #  include <config/stl_watcom.h>
 # elif defined(__COMO__) || defined (__COMO_VERSION_)
 #  include <config/stl_como.h>
+# elif defined (__DMC__)
+/* Digital Mars C++ */
+#  include <config/stl_dm.h>
 # elif defined (__SC__) && (__SC__ < 0x800)
 /* Symantec 7.5 */
 #  include <config/stl_symantec.h>

@@ -303,6 +303,16 @@ struct _Locale_messages;
 #  define _Locale_PRINT  (_ALPHA | _DIGIT | _BLANK | _PUNCT)
 // is this one has to be so complex ?  
 #  define _Locale_ALPHA  ( _ALPHA & ~ (_UPPER | _LOWER )) 
+#elif defined (__DMC__)
+#  define _Locale_CNTRL  _CONTROL
+#  define _Locale_UPPER  _UPPER
+#  define _Locale_LOWER  _LOWER
+#  define _Locale_DIGIT  _DIGIT
+#  define _Locale_XDIGIT _HEX
+#  define _Locale_PUNCT  _PUNCT
+#  define _Locale_SPACE  _SPACE
+#  define _Locale_PRINT  (_UPPER | _LOWER | _DIGIT | _PUNCT | _SPACE)
+#  define _Locale_ALPHA  _ALPHA
 #elif defined(__MRC__) || defined(__SC__)		//*TY 02/24/2000 - added support for MPW
 #  define _Locale_CNTRL  _CTL
 #  define _Locale_UPPER  _UPP

@@ -47,7 +47,7 @@ _STLP_BEGIN_NAMESPACE
 using _STLP_VENDOR_EXCEPT_STD::type_info;
 // # endif
 
-#  if !(defined(__MRC__) || defined(__SC__))
+#  if !(defined(__MRC__) || defined(__SC__) || defined(__DMC__))
 using _STLP_VENDOR_EXCEPT_STD::bad_typeid;
 #  endif
 
@@ -68,7 +68,9 @@ _STLP_END_NAMESPACE
 
 # include <exception>
 _STLP_BEGIN_NAMESPACE
+# ifndef __DMC__
 struct bad_cast : exception {};
+# endif
 _STLP_END_NAMESPACE
 #endif  /* NO_TYPEINFO */
 

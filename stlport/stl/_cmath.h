@@ -110,7 +110,7 @@ struct _STL_math_proxy {
 
 _STLP_END_NAMESPACE
 
-# if defined (_STLP_HAS_NO_NEW_C_HEADERS) || defined(_STLP_MSVC) || defined (__ICL)
+# if (defined (_STLP_HAS_NO_NEW_C_HEADERS) || defined(_STLP_MSVC) || defined (__ICL)) && !defined (_STLP_HAS_NO_NAMESPACES)
 
 #if ! defined (_STLP_USE_NEW_C_HEADERS) 
 

@@ -27,8 +27,8 @@ _STLP_BEGIN_NAMESPACE
 extern const char __hex_char_table_lo[];
 extern const char __hex_char_table_hi[];
 
-const char __hex_char_table_lo[18] = "0123456789abcdefx"; 
-const char __hex_char_table_hi[18] = "0123456789ABCDEFX";
+_STLP_DECLSPEC const char __hex_char_table_lo[18] = "0123456789abcdefx"; 
+_STLP_DECLSPEC const char __hex_char_table_hi[18] = "0123456789ABCDEFX";
 
 char* _STLP_CALL
 __write_integer(char* buf, ios_base::fmtflags flags, long x)

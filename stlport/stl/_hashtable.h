@@ -461,7 +461,7 @@ public:
   reference find_or_insert(const value_type& __obj);
 
 private:
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )  && !(defined(__MRC__)||defined(__SC__))
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )  && !(defined(__MRC__)||(defined(__SC__)&&!defined(__DMC_)))
   template <class _KT> 
    _Node* _M_find(const _KT& __key) const
 # else
@@ -478,7 +478,7 @@ private:
   } 
 
 public:
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )  && !(defined(__MRC__)||defined(__SC__))
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )  && !(defined(__MRC__)||(defined(__SC__)&&!defined(__DMC__)))
   template <class _KT> 
   iterator find(const _KT& __key) 
 # else
@@ -488,7 +488,7 @@ public:
     return iterator(_M_find(__key), this);
   } 
 
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )  && !(defined(__MRC__)||defined(__SC__))
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )  && !(defined(__MRC__)||(defined(__SC__)&&!defined(__DMC__)))
   template <class _KT> 
   const_iterator find(const _KT& __key) const
 # else

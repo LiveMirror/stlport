@@ -286,7 +286,7 @@ protected:
 # else
 #  define __BVEC_TMPL_HEADER _STLP_TEMPLATE_NULL
 # endif
-# if !(defined(__MRC__)||defined(__SC__))			//*TY 12/17/2000 - 
+# if !(defined(__MRC__)||(defined(__SC__)&&!defined(__DMC__)))			//*TY 12/17/2000 - 
 #  define _Alloc _STLP_DEFAULT_ALLOCATOR(bool)
 # else
 #  define _Alloc allocator<bool>

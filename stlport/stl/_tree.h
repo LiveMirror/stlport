@@ -454,7 +454,7 @@ public:
 
 public:
                                 // set operations:
-# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS ) && !defined(__MRC__) && !defined(__SC__)
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS ) && !defined(__MRC__) && !(defined(__SC__) && !defined(__DMC__))
   template <class _KT> iterator find(const _KT& __x) { return iterator(_M_find(__x)); }
   template <class _KT> const_iterator find(const _KT& __x) const { return const_iterator(_M_find(__x)); }
 private:

@@ -93,18 +93,41 @@ _STLP_DECLSPEC wostream wclog(0);
 // Most compilers, however, silently accept this instead of diagnosing
 // it as an error.
 
+#ifndef __DMC__
 _STLP_DECLSPEC _Stl_aligned_buffer<istream> cin;
 _STLP_DECLSPEC _Stl_aligned_buffer<ostream> cout;
 _STLP_DECLSPEC _Stl_aligned_buffer<ostream> cerr;
 _STLP_DECLSPEC _Stl_aligned_buffer<ostream> clog;
+#else
+_Stl_aligned_buffer<istream> cin;
+_Stl_aligned_buffer<ostream> cout;
+_Stl_aligned_buffer<ostream> cerr;
+_Stl_aligned_buffer<ostream> clog;
+
+#pragma alias("?cin@std@@3V?$basic_istream@std@DV?$char_traits@std@D@1@@1@A", "?cin@std@@3T?$_Stl_aligned_buffer@std@V?$basic_istream@std@DV?$char_traits@std@D@1@@1@@1@A")
+#pragma alias("?cout@std@@3V?$basic_ostream@std@DV?$char_traits@std@D@1@@1@A", "?cout@std@@3T?$_Stl_aligned_buffer@std@V?$basic_ostream@std@DV?$char_traits@std@D@1@@1@@1@A")
+#pragma alias("?cerr@std@@3V?$basic_ostream@std@DV?$char_traits@std@D@1@@1@A", "?cerr@std@@3T?$_Stl_aligned_buffer@std@V?$basic_ostream@std@DV?$char_traits@std@D@1@@1@@1@A")
+#pragma alias("?clog@std@@3V?$basic_ostream@std@DV?$char_traits@std@D@1@@1@A", "?clog@std@@3T?$_Stl_aligned_buffer@std@V?$basic_ostream@std@DV?$char_traits@std@D@1@@1@@1@A")
+#endif
 
 # ifndef _STLP_NO_WCHAR_T
 
+#ifndef __DMC__
 _STLP_DECLSPEC _Stl_aligned_buffer<wistream> wcin;
 _STLP_DECLSPEC _Stl_aligned_buffer<wostream> wcout;
 _STLP_DECLSPEC _Stl_aligned_buffer<wostream> wcerr;
 _STLP_DECLSPEC _Stl_aligned_buffer<wostream> wclog;
+#else
+_Stl_aligned_buffer<wistream> wcin;
+_Stl_aligned_buffer<wostream> wcout;
+_Stl_aligned_buffer<wostream> wcerr;
+_Stl_aligned_buffer<wostream> wclog;
 
+#pragma alias("?wcin@std@@3V?$basic_istream@std@_YV?$char_traits@std@_Y@1@@1@A", "?wcin@std@@3T?$_Stl_aligned_buffer@std@V?$basic_istream@std@_YV?$char_traits@std@_Y@1@@1@@1@A")
+#pragma alias("?wcout@std@@3V?$basic_ostream@std@_YV?$char_traits@std@_Y@1@@1@A", "?wcout@std@@3T?$_Stl_aligned_buffer@std@V?$basic_ostream@std@_YV?$char_traits@std@_Y@1@@1@@1@A")
+#pragma alias("?wcerr@std@@3V?$basic_ostream@std@_YV?$char_traits@std@_Y@1@@1@A", "?wcerr@std@@3T?$_Stl_aligned_buffer@std@V?$basic_ostream@std@_YV?$char_traits@std@_Y@1@@1@@1@A")
+#pragma alias("?wclog@std@@3V?$basic_ostream@std@_YV?$char_traits@std@_Y@1@@1@A", "?wclog@std@@3T?$_Stl_aligned_buffer@std@V?$basic_ostream@std@_YV?$char_traits@std@_Y@1@@1@@1@A")
+#endif
 # endif
 
 #endif /* STL_MSVC || __MWERKS__ */

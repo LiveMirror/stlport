@@ -794,7 +794,7 @@ class _Rope_insert_char_consumer : public _Rope_char_consumer<_CharT> {
 	// _CharT* buffer;    // XXX not used
 	_Rope_insert_char_consumer(_Insert_ostream& __writer) 
 	  : _M_o(__writer) {};
-#if defined(__MRC__)||defined(__SC__)		//*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
+#if defined(__MRC__)||(defined(__SC__) && !defined(__DMC__))		//*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
   ~_Rope_insert_char_consumer();		//*TY 05/23/2000 - 
 #else		//*TY 05/23/2000 - 
   ~_Rope_insert_char_consumer() {}
@@ -805,7 +805,7 @@ class _Rope_insert_char_consumer : public _Rope_char_consumer<_CharT> {
 };
 	    
 # if defined ( _STLP_USE_NEW_IOSTREAMS )
-#  if defined(__MRC__)||defined(__SC__)		//*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
+#  if defined(__MRC__)||(defined(__SC__) && !defined(__DMC__))		//*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
   template<class _CharT, class _Traits>
   _Rope_insert_char_consumer<_CharT, _Traits>::  ~_Rope_insert_char_consumer() {}
 #  endif		//*TY 05/23/2000 - 
@@ -820,7 +820,7 @@ class _Rope_insert_char_consumer : public _Rope_char_consumer<_CharT> {
     return true;
 }
 # else
-#  if defined(__MRC__)||defined(__SC__)		//*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
+#  if defined(__MRC__)||(defined(__SC__) && !defined(__DMC__))		//*TY 05/23/2000 - added support for mpw compiler's trigger function approach to generate vtable
   template<class _CharT>
   _Rope_insert_char_consumer<_CharT>::  ~_Rope_insert_char_consumer() {}
 #  endif		//*TY 05/23/2000 - 

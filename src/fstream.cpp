@@ -334,6 +334,42 @@ ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
   return flag_to_openmode(mode);
 }
 
+#elif defined(__DMC__)
+
+#define FHND_APPEND 0x04
+#define FHND_DEVICE 0x08
+#define FHND_TEXT   0x10
+
+extern "C" unsigned char __fhnd_info[_NFILE];
+
+ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
+  int mode = 0;
+
+  if (__fhnd_info[fd] & FHND_APPEND)
+    mode |= O_APPEND;
+
+  if (__fhnd_info[fd] & FHND_TEXT == 0)
+    mode |= O_BINARY;
+
+  for (FILE *fp = &_iob[0]; fp < &_iob[_NFILE]; fp++)
+  {
+    if ((fileno(fp) == fd) && (fp->_flag & (_IOREAD | _IOWRT | _IORW)))
+    {
+      const int osflags = fp->_flag;
+
+      if ((osflags & _IOREAD) && !(osflags & _IOWRT) && !(osflags & _IORW))
+	mode |= O_RDONLY;
+      else if ((osflags & _IOWRT) && !(osflags & _IOREAD) && !(osflags & _IORW))
+	mode |= O_WRONLY;
+      else
+	mode |= O_RDWR;
+
+      break;
+    }
+  }
+
+  return flag_to_openmode(mode);
+}
 #endif // _MSC_VER
 
 __SGI_END_NAMESPACE
@@ -688,7 +724,7 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
     return false;
   }
 # elif (defined(_STLP_USE_WIN32_IO) && defined (_MSC_VER) && !defined(_STLP_WINCE)) || \
-        (defined(__MINGW32__) && defined(__MSVCRT__))
+        (defined(__MINGW32__) && defined(__MSVCRT__)) || defined(__DMC__)
 
   if (_M_is_open || file_no == -1)
     return false;

@@ -77,6 +77,12 @@ template <class _Tp>
 struct _List_node : public _List_node_base {
   _Tp _M_data;
   __TRIVIAL_STUFF(_List_node)
+
+#ifdef __DMC__
+  // for some reason, Digital Mars C++ needs a constructor...
+ private:
+  _List_node();
+#endif
 };
 
 struct _List_iterator_base {
@@ -251,7 +257,7 @@ protected:
   }
 
 public:
-# if !(defined(__MRC__)||defined(__SC__))
+# if !(defined(__MRC__)||(defined(__SC__) && !defined(__DMC__)))
   explicit
 # endif
   list(const allocator_type& __a = allocator_type()) :

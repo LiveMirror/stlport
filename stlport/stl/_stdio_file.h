@@ -447,6 +447,56 @@ inline void _FILE_I_set(FILE *__f, char* __begin, char* __next, char* __end) {
 
 # define _STLP_FILE_I_O_IDENTICAL
 
+#elif defined(__DMC__)
+
+inline int   _FILE_fd(const FILE *__f) { return __f->_file; }
+
+//       Returns a pointer to the beginning of the buffer.
+inline char* _FILE_I_begin(const FILE *__f) { return __f->_base; }
+
+//       Returns the current read/write position within the buffer.
+inline char* _FILE_I_next(const FILE *__f) { return __f->_ptr; }
+
+//       Returns a pointer immediately past the end of the buffer.
+inline char* _FILE_I_end(const FILE *__f) { return __f->_ptr + __f->_cnt; }
+
+//       Returns the number of characters remaining in the buffer, i.e.
+//       _FILE_[IO]_end(__f) - _FILE_[IO]_next(__f).
+inline ptrdiff_t _FILE_I_avail(const FILE *__f) { return __f->_cnt; }
+
+//       Increments the current read/write position by 1, returning the 
+//       character at the NEW position.
+inline char& _FILE_I_preincr(FILE *__f) { --__f->_cnt; return *(++__f->_ptr); }
+
+
+//       Increments the current read/write position by 1, returning the 
+//       character at the old position.
+inline char& _FILE_I_postincr(FILE *__f) { --__f->_cnt; return *(__f->_ptr++); }
+
+//       Decrements the current read/write position by 1, returning the 
+//       character at the NEW position.
+inline char& _FILE_I_predecr(FILE *__f) { ++__f->_cnt; return *(--__f->_ptr); }
+
+//       Decrements the current read/write position by 1, returning the 
+//       character at the old position.
+inline char& _FILE_I_postdecr(FILE *__f) { ++__f->_cnt; return *(__f->_ptr--); }
+
+//       Increments the current read/write position by __n.
+inline void _FILE_I_bump(FILE *__f, int __n) { __f->_cnt -= __n; __f->_ptr += __n; }
+
+//       Sets the beginning of the bufer to __begin, the current read/write
+//       position to __next, and the buffer's past-the-end pointer to __end.
+//       If any of those pointers is null, then all of them must be null.
+inline void _FILE_I_set(FILE *__f, char* __begin, char* __next, char* __end)
+{
+	__f->_base = __begin;
+	__f->_ptr = __next;
+	__f->_cnt = __end - __next;
+	__f->_bufsiz = __end - __begin;
+}
+
+# define _STLP_FILE_I_O_IDENTICAL
+
 #elif defined(__MRC__) || defined(__SC__)		//*TY 02/24/2000 - added support for MPW
 
 inline int   _FILE_fd(const FILE *__f) { return __f->_file; }
