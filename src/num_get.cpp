@@ -26,10 +26,10 @@ _STLP_BEGIN_NAMESPACE
 // num_get
 
 
+# ifndef _STLP_NO_WCHAR_T 
+
 static char narrow_digits[11]  = "0123456789";
 static char narrow_xdigits[13] = "aAbBcCdDeEfF";
-
-# ifndef _STLP_NO_WCHAR_T 
 
 void  _STLP_CALL
 _Initialize_get_digit(wchar_t* digits, wchar_t* xdigits,

@@ -28,11 +28,14 @@ _STLP_DECLSPEC float _STLP_CALL abs(const complex<float>& __z)
 {
   return _STLP_HYPOTF(__z._M_re, __z._M_im);
 }
+
+#ifndef _STLP_COMPLEX_SPECIALIZATION_BUG
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC double _STLP_CALL abs(const complex<double>& __z)
 {
   return _STLP_HYPOT(__z._M_re, __z._M_im);
 }
+#endif
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL
@@ -50,11 +53,13 @@ _STLP_DECLSPEC float _STLP_CALL arg(const complex<float>& __z)
   return _STLP_ATAN2F(__z._M_im, __z._M_re);
 }
 
+#ifndef _STLP_COMPLEX_SPECIALIZATION_BUG
 _STLP_TEMPLATE_NULL 
 _STLP_DECLSPEC double _STLP_CALL arg(const complex<double>& __z) 
 {
   return _STLP_ATAN2(__z._M_im, __z._M_re);
 }
+#endif
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL
@@ -70,11 +75,14 @@ _STLP_DECLSPEC complex<float> _STLP_CALL polar(const float& __rho, const float& 
 {
   return complex<float>(__rho * _STLP_COSF(__phi), __rho * _STLP_SINF(__phi));
 }
+
+#ifndef _STLP_COMPLEX_SPECIALIZATION_BUG
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC complex<double> _STLP_CALL polar(const double& __rho, const double& __phi) 
 {
   return complex<double>(__rho * _STLP_COS(__phi), __rho * _STLP_SIN(__phi));
 }
+#endif
 
 #ifndef _STLP_NO_LONG_DOUBLE
 _STLP_TEMPLATE_NULL 
