@@ -1,3 +1,12 @@
+2004-08-03  Francois Dumont <dums@...>
+
+	* stlport/stl/_iterator.h: Fix of the back_insert_iterator, front_insert_iterator
+	nd insert_iterator to make them assignable like specify in the Standard requirements
+	of the output iterators.
+
+	* test/unit/insert_test.cpp, finsert_test.cpp, binsert_test.cpp: Addition of tests for
+	the assignment operators on the output iterators.
+
 2004-08-02  Francois Dumont <dums@...>
 
 	* stlport/stl/_string.h, _string.c, debug/_string.h: split of the basic_string

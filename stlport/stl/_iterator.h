@@ -177,21 +177,26 @@ operator+(_DifferenceType n,const reverse_iterator<_Iterator>& x) {
 template <class _Container>
 class back_insert_iterator 
   : public iterator<output_iterator_tag,void,void,void,void> {
+  typedef back_insert_iterator<_Container> _Self;
 protected:
-  _Container& _M_container;
+  _Container *_M_pcontainer;
 public:
   typedef _Container          container_type;
   typedef output_iterator_tag iterator_category;
 
-  explicit back_insert_iterator(_Container& __x) : _M_container(__x) {}
-  back_insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __val) { 
-    _M_container.push_back(__val);
+  explicit back_insert_iterator(_Container& __x) : _M_pcontainer(&__x) {}
+
+  _Self& operator=(const _Self& __other) {
+    _M_pcontainer = __other._M_pcontainer;
     return *this;
   }
-  back_insert_iterator<_Container>& operator*() { return *this; }
-  back_insert_iterator<_Container>& operator++() { return *this; }
-  back_insert_iterator<_Container>  operator++(int) { return *this; }
+  _Self& operator=(const typename _Container::value_type& __val) { 
+    _M_pcontainer->push_back(__val);
+    return *this;
+  }
+  _Self& operator*() { return *this; }
+  _Self& operator++() { return *this; }
+  _Self  operator++(int) { return *this; }
 };
 
 template <class _Container>
@@ -202,20 +207,25 @@ inline back_insert_iterator<_Container>  _STLP_CALL back_inserter(_Container& __
 template <class _Container>
 class front_insert_iterator 
   : public iterator<output_iterator_tag,void,void,void,void> {
+  typedef front_insert_iterator<_Container> _Self;
 protected:
-  _Container& _M_container;
+  _Container *_M_pcontainer;
 public:
   typedef _Container          container_type;
   typedef output_iterator_tag iterator_category;
-  explicit front_insert_iterator(_Container& __x) : _M_container(__x) {}
-  front_insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __val) { 
-    _M_container.push_front(__val);
+  explicit front_insert_iterator(_Container& __x) : _M_pcontainer(&__x) {}
+
+  _Self& operator=(const _Self& __other) {
+    _M_pcontainer = __other._M_pcontainer;
     return *this;
   }
-  front_insert_iterator<_Container>& operator*() { return *this; }
-  front_insert_iterator<_Container>& operator++() { return *this; }
-  front_insert_iterator<_Container>  operator++(int) { return *this; }
+  _Self& operator=(const typename _Container::value_type& __val) { 
+    _M_pcontainer->push_front(__val);
+    return *this;
+  }
+  _Self& operator*() { return *this; }
+  _Self& operator++() { return *this; }
+  _Self  operator++(int) { return *this; }
 };
 
 template <class _Container>
@@ -226,23 +236,29 @@ inline front_insert_iterator<_Container>  _STLP_CALL front_inserter(_Container& 
 template <class _Container>
 class insert_iterator 
   : public iterator<output_iterator_tag,void,void,void,void> {
+  typedef insert_iterator<_Container> _Self;
 protected:
-  _Container& _M_container;
+  _Container *_M_pcontainer;
   typename _Container::iterator _M_iter;
 public:
   typedef _Container          container_type;
   typedef output_iterator_tag iterator_category;
   insert_iterator(_Container& __x, typename _Container::iterator __i) 
-    : _M_container(__x), _M_iter(__i) {}
-  insert_iterator<_Container>&
-  operator=(const typename _Container::value_type& __val) { 
-    _M_iter = _M_container.insert(_M_iter, __val);
+    : _M_pcontainer(&__x), _M_iter(__i) {}
+
+  _Self& operator=(_Self const& __other) {
+    _M_pcontainer = __other._M_pcontainer;
+    _M_iter = __other._M_iter;
+    return *this;
+  }
+  _Self& operator=(const typename _Container::value_type& __val) { 
+    _M_iter = _M_pcontainer->insert(_M_iter, __val);
     ++_M_iter;
     return *this;
   }
-  insert_iterator<_Container>& operator*() { return *this; }
-  insert_iterator<_Container>& operator++() { return *this; }
-  insert_iterator<_Container>& operator++(int) { return *this; }
+  _Self& operator*() { return *this; }
+  _Self& operator++() { return *this; }
+  _Self& operator++(int) { return *this; }
 };
 
 template <class _Container, class _Iterator>
