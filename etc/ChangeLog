@@ -1,3 +1,15 @@
+2005-03-30  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_fstream.c: Try to fix ambiguous type deduction in a max
+	call under WinCE.
+	
+	* stlport/stl/_cmath.h: Fix missing non Standard hypot function under
+	WinCE thanks Micheal Fink.
+	
+	* stlport/stl/_cmath.h: Attempt to fix the WinCE math function support
+	where neither *f nor *l functions are present even if the compiler
+	support the long double type.
+	
 2005-03-30  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/assert.h, float.h, iso646.h, limits.h, errno.h:

@@ -50,24 +50,42 @@
   _STLP_MATH_INLINE2(float,int,func,cf##f) \
   _STLP_MATH_INLINE2(long double,int,func,cf##l)
 #else // !_STLP_NO_LONG_DOUBLE
-#  if !defined (_STLP_NO_LONG_DOUBLE) && defined (_STLP_NO_VENDOR_MATH_L)
-#    define _STLP_DEF_MATH_INLINE(func,cf) \
-    _STLP_MATH_INLINE(float,func,cf##f) \
-    _STLP_MATH_INLINEX(long double,func,cf)
-#    define _STLP_DEF_MATH_INLINE2(func,cf) \
-    _STLP_MATH_INLINE2(float,float,func,cf##f) \
-    _STLP_MATH_INLINE2XX(long double,func,cf)
-#    define _STLP_DEF_MATH_INLINE2P(func,cf) \
-    _STLP_MATH_INLINE2(float,float *,func,cf##f) \
-    _STLP_MATH_INLINE2PX(long double,func,cf)
-#    define _STLP_DEF_MATH_INLINE2PI(func,cf) \
-    _STLP_MATH_INLINE2(float,int *,func,cf##f) \
-    _STLP_MATH_INLINE2X(long double,int *,func,cf)
-#    define _STLP_DEF_MATH_INLINE2I(func,cf) \
-    _STLP_MATH_INLINE2(float,int,func,cf##f) \
-    _STLP_MATH_INLINE2X(long double,int,func,cf)
+#  if !defined (_STLP_NO_LONG_DOUBLE)
+#    if !defined (_STLP_NO_VENDOR_MATH_F)
+#      define _STLP_DEF_MATH_INLINE(func,cf) \
+      _STLP_MATH_INLINE(float,func,cf##f) \
+      _STLP_MATH_INLINEX(long double,func,cf)
+#      define _STLP_DEF_MATH_INLINE2(func,cf) \
+      _STLP_MATH_INLINE2(float,float,func,cf##f) \
+      _STLP_MATH_INLINE2XX(long double,func,cf)
+#      define _STLP_DEF_MATH_INLINE2P(func,cf) \
+      _STLP_MATH_INLINE2(float,float *,func,cf##f) \
+      _STLP_MATH_INLINE2PX(long double,func,cf)
+#      define _STLP_DEF_MATH_INLINE2PI(func,cf) \
+      _STLP_MATH_INLINE2(float,int *,func,cf##f) \
+      _STLP_MATH_INLINE2X(long double,int *,func,cf)
+#      define _STLP_DEF_MATH_INLINE2I(func,cf) \
+      _STLP_MATH_INLINE2(float,int,func,cf##f) \
+      _STLP_MATH_INLINE2X(long double,int,func,cf)
+#    else
+#      define _STLP_DEF_MATH_INLINE(func,cf) \
+      _STLP_MATH_INLINEX(float,func,cf) \
+      _STLP_MATH_INLINEX(long double,func,cf)
+#      define _STLP_DEF_MATH_INLINE2(func,cf) \
+      _STLP_MATH_INLINE2XX(float,func,cf) \
+      _STLP_MATH_INLINE2XX(long double,func,cf)
+#      define _STLP_DEF_MATH_INLINE2P(func,cf) \
+      _STLP_MATH_INLINE2PX(float,func,cf) \
+      _STLP_MATH_INLINE2PX(long double,func,cf)
+#      define _STLP_DEF_MATH_INLINE2PI(func,cf) \
+      _STLP_MATH_INLINE2X(float,int *,func,cf) \
+      _STLP_MATH_INLINE2X(long double,int *,func,cf)
+#      define _STLP_DEF_MATH_INLINE2I(func,cf) \
+      _STLP_MATH_INLINE2X(float,int,func,cf) \
+      _STLP_MATH_INLINE2X(long double,int,func,cf)
+#    endif
 #  else
-#    ifndef _STLP_NO_VENDOR_MATH_F
+#    if !defined (_STLP_NO_VENDOR_MATH_F)
 #      define _STLP_DEF_MATH_INLINE(func,cf) \
       _STLP_MATH_INLINE(float,func,cf##f)
 #      define _STLP_DEF_MATH_INLINE2(func,cf) \
@@ -201,11 +219,11 @@ _STLP_DEF_MATH_INLINE(tanh,tanh)
 
 #endif
 
-#if defined(_STLP_MSVC)
+#if defined (_STLP_MSVC) && !defined (_STLP_WCE)
 _STLP_MATH_INLINE2XX(float,hypot,hypot)
 _STLP_MATH_INLINE2XX(long double,hypot,hypot)
 #else
-#  ifdef _STLP_USE_UCLIBC
+#  if defined (_STLP_USE_UCLIBC) || defined (_STLP_WCE)
 inline double hypot(double x, double y) { return sqrt(x*x + y*y); }
 #  endif
 _STLP_DEF_MATH_INLINE2(hypot,hypot)

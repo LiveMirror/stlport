@@ -616,7 +616,7 @@ template <class _CharT, class _Traits>
 bool 
 basic_filebuf<_CharT, _Traits>::_M_allocate_buffers(_CharT* __buf, streamsize __n) {
   if (__buf == 0) {
-    _M_int_buf = __STATIC_CAST(_CharT*,malloc(__n * sizeof(_CharT)));
+    _M_int_buf = __STATIC_CAST(_CharT*, malloc(__n * sizeof(_CharT)));
     if (! _M_int_buf)
       return false;
     _M_int_buf_dynamic = true;
@@ -626,10 +626,10 @@ basic_filebuf<_CharT, _Traits>::_M_allocate_buffers(_CharT* __buf, streamsize __
     _M_int_buf_dynamic = false;
   }
   
-  size_t __ebufsiz = (max)(__n * (max)(_M_codecvt->encoding(), 1),
-                      streamsize(_M_codecvt->max_length()));
+  size_t __ebufsiz = (max)(__n * __STATIC_CAST(streamsize, (max)(_M_codecvt->encoding(), 1)),
+                           __STATIC_CAST(streamsize, _M_codecvt->max_length()));
 
-  _M_ext_buf = __STATIC_CAST(char*,malloc(__ebufsiz));
+  _M_ext_buf = __STATIC_CAST(char*, malloc(__ebufsiz));
   if (!_M_ext_buf) {
     _M_deallocate_buffers();
     return false;
