@@ -32,7 +32,8 @@ int ioiter_test( int, char ** )
   cout << "plain C-string postfix increment operator and indirection: ";
   pc = strorg;
   std::string::size_type sz = strlen(strorg);
-  for ( std::string::size_type i = 0; i < sz; ++i ) {
+  std::string::size_type i = 0;
+  for ( i = 0; i < sz; ++i ) {
     c = *pc++;
     tmp += c;
     std::cout << c;
@@ -48,7 +49,7 @@ int ioiter_test( int, char ** )
 
   tmp.clear();
 
-  for ( std::string::size_type i = 0; i < sz /* objIStrmbIt1 != end */; ++i ) {
+  for ( i = 0; i < sz /* objIStrmbIt1 != end */; ++i ) {
     c = *objIStrmbIt1++;
     tmp += c;
     std::cout << c;
@@ -60,7 +61,7 @@ int ioiter_test( int, char ** )
   tmp.clear();
 
   std::istreambuf_iterator<char> objIStrmbIt2( objIStrStrm2.rdbuf() );
-  for ( std::string::size_type i = 0; i < sz; ++i ) {
+  for ( i = 0; i < sz; ++i ) {
     c = *objIStrmbIt2;
     tmp += c;
     std::cout << c;
