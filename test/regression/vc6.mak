@@ -128,9 +128,10 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	unique1.obj unique2.obj \
 	uprbnd1.obj uprbnd2.obj \
 	vec1.obj vec2.obj vec3.obj vec4.obj vec5.obj vec6.obj vec7.obj vec8.obj \
-        hmap1.obj hmmap1.obj hset2.obj hmset1.obj slist1.obj string1.obj bitset1.obj
+        hmap1.obj hmmap1.obj hset2.obj hmset1.obj slist1.obj string1.obj bitset1.obj \
+	string_mt.obj
 
-CPP_PRJ_LINK = /link /incremental:no /LIBPATH:$(STL_PATH)\lib
+CPP_PRJ_LINK = /Fe"stl_test.exe" /link /incremental:no /LIBPATH:$(STL_PATH)\lib
 
 CPP_PRJ_CMN = /nologo /W3 /GR /GX /DWIN32 /D_WINDOWS /D_CONSOLE /I$(STL_PATH)\stlport /I.
 
@@ -190,7 +191,8 @@ stl_test.out : $(Dep_stl)
 #	$(CPP) $(CPP_PROJ) $(Dep_stl) $(CPP_LIBS)
 #	stl_test < stdin
 	$(CPP) $(CPP_PROJ) $(Dep_stl) $(CPP_PRJ_LINK)
-	stl_test > stl_test.out < stdin
+	cd ..\..\lib
+	..\test\regression\stl_test.exe > ..\test\regression\stl_test.out < ..\test\regression\stdin
 	echo done
 
 clean :
