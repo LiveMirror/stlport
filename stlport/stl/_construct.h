@@ -182,25 +182,10 @@ inline void _Destroy_Range(const wchar_t*, const wchar_t*) {}
 # endif
 
 template <class _ForwardIterator, class _Tp>
-_STLP_INLINE_LOOP void
-__destroy_mv_srcs_aux(_ForwardIterator __first, _ForwardIterator __last, _Tp*, const __false_type& /*_Trivial_destructor*/) {
-  typedef typename __move_traits<_Tp>::complete _CompleteMove;
-  __destroy_range_aux(__first, __last, _CompleteMove());
-}
-
-template <class _ForwardIterator, class _Tp> 
-inline void
-__destroy_mv_srcs_aux(_ForwardIterator __first, _ForwardIterator __last, _Tp*, const __true_type&/*_Trivial_destructor*/) {
-# ifdef _STLP_DEBUG_UNINITIALIZED
-  __destroy_range_aux(__first, __last, __true_type());
-# endif
-}
-
-template <class _ForwardIterator, class _Tp>
 inline void 
 __destroy_mv_srcs(_ForwardIterator __first, _ForwardIterator __last, _Tp* __p) {
-  typedef typename __type_traits<_Tp>::has_trivial_destructor _Trivial_destructor;
-  __destroy_mv_srcs_aux(__first, __last, __p, _Trivial_destructor());
+  typedef typename __move_traits<_Tp>::complete _CompleteMove;
+  __destroy_range_aux(__first, __last, _CompleteMove());
 }
 
 template <class _ForwardIterator>

@@ -20,13 +20,16 @@ class MoveConstructorTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(MoveConstructorTest);
   CPPUNIT_TEST(move_construct_test);
+  CPPUNIT_TEST(deque_test);
   CPPUNIT_TEST(move_traits);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void move_construct_test();
+  void deque_test();
   void move_traits();
 
+  /*
   template <class _Container>
   void standard_test1(_Container const& ref_cont) {
     vector<_Container> vec_cont(1, ref_cont);
@@ -40,6 +43,7 @@ protected:
     bool b=( (pvalue==(&(*vec_cont.front().begin()))) );
     CPPUNIT_ASSERT(b);
   }
+  */
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MoveConstructorTest);
@@ -169,6 +173,207 @@ void MoveConstructorTest::move_construct_test()
   CheckFullMoveSupport(list<int>());
   CheckFullMoveSupport(slist<int>());
   */
+}
+
+void MoveConstructorTest::deque_test()
+{
+  //Check the insert range method.
+  //To the front:
+  {
+    deque<vector<int> > vect_deque;
+    vector<int*> bufs;
+    vect_deque.assign(3, vector<int>(10));
+    bufs.push_back(&vect_deque[0].front());
+    bufs.push_back(&vect_deque[1].front());
+    bufs.push_back(&vect_deque[2].front());
+
+    int nb_insert = 5;
+    //Initialize to 1 to generate a front insertion:
+    int pos = 1;
+    while (nb_insert--) {
+      vector<vector<int> > vect_vect(2, vector<int>(10));
+      vect_deque.insert(vect_deque.begin() + pos, vect_vect.begin(), vect_vect.end());
+      bufs.insert(bufs.begin() + pos, &vect_deque[pos].front());
+      bufs.insert(bufs.begin() + pos + 1, &vect_deque[pos + 1].front());
+      ++pos;
+    }
+    CPPUNIT_ASSERT( vect_deque.size() == 13 );
+    for (int i = 0; i < 5; ++i) {
+      CPPUNIT_ASSERT( bufs[i] == &vect_deque[i].front() );
+      CPPUNIT_ASSERT( bufs[11 - i] == &vect_deque[11 - i].front() );
+    }
+  }
+
+  //To the back
+  {
+    deque<vector<int> > vect_deque;
+    vector<int*> bufs;
+    vect_deque.assign(3, vector<int>(10));
+    bufs.push_back(&vect_deque[0].front());
+    bufs.push_back(&vect_deque[1].front());
+    bufs.push_back(&vect_deque[2].front());
+
+    int nb_insert = 5;
+    //Initialize to 2 to generate a back insertion:
+    int pos = 2;
+    while (nb_insert--) {
+      vector<vector<int> > vect_vect(2, vector<int>(10));
+      vect_deque.insert(vect_deque.begin() + pos, vect_vect.begin(), vect_vect.end());
+      bufs.insert(bufs.begin() + pos, &vect_deque[pos].front());
+      bufs.insert(bufs.begin() + pos + 1, &vect_deque[pos + 1].front());
+      ++pos;
+    }
+    CPPUNIT_ASSERT( vect_deque.size() == 13 );
+    for (int i = 0; i < 5; ++i) {
+      CPPUNIT_ASSERT( bufs[i + 1] == &vect_deque[i + 1].front() );
+      CPPUNIT_ASSERT( bufs[12 - i] == &vect_deque[12 - i].front() );
+    }
+  }
+
+  //Check the different erase methods.
+  {
+    deque<vector<int> > vect_deque;
+    vect_deque.assign(20, vector<int>(10));
+    deque<vector<int> >::iterator vdit(vect_deque.begin()), vditEnd(vect_deque.end());
+    vector<int*> bufs;
+    for (; vdit != vditEnd; ++vdit) {
+      bufs.push_back(&vdit->front());
+    }
+
+    {
+      // This check, repeated after each operation, check the deque consistency:
+      deque<vector<int> >::iterator it = vect_deque.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_deque.end() && nb_incr <= 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //erase in front:
+      vect_deque.erase(vect_deque.begin() + 2);
+      bufs.erase(bufs.begin() + 2);
+      CPPUNIT_ASSERT( vect_deque.size() == 19 );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      deque<vector<int> >::iterator it = vect_deque.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_deque.end() && nb_incr <= 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //erase in the back:
+      vect_deque.erase(vect_deque.end() - 2);
+      bufs.erase(bufs.end() - 2);
+      CPPUNIT_ASSERT( vect_deque.size() == 18 );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      deque<vector<int> >::iterator it = vect_deque.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_deque.end() && nb_incr < 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //range erase in front
+      vect_deque.erase(vect_deque.begin() + 3, vect_deque.begin() + 5);
+      bufs.erase(bufs.begin() + 3, bufs.begin() + 5);
+      CPPUNIT_ASSERT( vect_deque.size() == 16 );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      deque<vector<int> >::iterator it = vect_deque.end() - 5;
+      int nb_incr = 0;
+      for (; it != vect_deque.end() && nb_incr <= 6; ++nb_incr, ++it) {}
+      CPPUNIT_ASSERT( nb_incr == 5 );
+    }
+
+    {
+      //range erase in back
+      vect_deque.erase(vect_deque.end() - 5, vect_deque.end() - 3);
+      bufs.erase(bufs.end() - 5, bufs.end() - 3);
+      CPPUNIT_ASSERT( vect_deque.size() == 14 );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+  }
+
+  //Check the insert value(s)
+  {
+    deque<vector<int> > vect_deque;
+    vect_deque.assign(20, vector<int>(10));
+    deque<vector<int> >::iterator vdit(vect_deque.begin()), vditEnd(vect_deque.end());
+    vector<int*> bufs;
+    for (; vdit != vditEnd; ++vdit) {
+      bufs.push_back(&vdit->front());
+    }
+
+    {
+      //2 values in front:
+      vect_deque.insert(vect_deque.begin() + 2, 2, vector<int>(10));
+      bufs.insert(bufs.begin() + 2, &vect_deque[2].front());
+      bufs.insert(bufs.begin() + 3, &vect_deque[3].front());
+      CPPUNIT_ASSERT( vect_deque.size() == 22 );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      //2 values in back:
+      vect_deque.insert(vect_deque.end() - 2, 2, vector<int>(10));
+      bufs.insert(bufs.end() - 2, &vect_deque[20].front());
+      bufs.insert(bufs.end() - 2, &vect_deque[21].front());
+      CPPUNIT_ASSERT( vect_deque.size() == 24 );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      //1 value in front:
+      deque<vector<int> >::iterator ret;
+      ret = vect_deque.insert(vect_deque.begin() + 2, vector<int>(10));
+      bufs.insert(bufs.begin() + 2, &vect_deque[2].front());
+      CPPUNIT_ASSERT( vect_deque.size() == 25 );
+      CPPUNIT_ASSERT( &ret->front() == bufs[2] );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+
+    {
+      //1 value in back:
+      deque<vector<int> >::iterator ret;
+      ret = vect_deque.insert(vect_deque.end() - 2, vector<int>(10));
+      bufs.insert(bufs.end() - 2, &vect_deque[23].front());
+      CPPUNIT_ASSERT( vect_deque.size() == 26 );
+      CPPUNIT_ASSERT( &ret->front() == bufs[23] );
+      deque<vector<int> >::iterator dit(vect_deque.begin()), ditEnd(vect_deque.end());
+      for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
+        CPPUNIT_ASSERT( bufs[i] == &dit->front() );
+      }
+    }
+  }
 }
 
 #ifdef STLPORT

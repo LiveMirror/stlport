@@ -417,6 +417,7 @@ protected:                      // Internal typedefs
   typedef typename __type_traits<_Tp>::has_trivial_assignment_operator _TrivialAss;
   typedef typename __type_traits<_Tp>::has_trivial_copy_constructor _TrivialCpy;
   typedef typename _Land2<_TrivialAss, _TrivialCpy>::_Ret _TrivialUCpy;
+  typedef typename __move_traits<_Tp>::implemented _Movable;
 
 public:                         // Basic accessors
   iterator begin() { return this->_M_start; }
@@ -688,44 +689,42 @@ public:                         // push_* and pop_*
       --this->_M_finish._M_cur;
       _STLP_STD::_Destroy(this->_M_finish._M_cur);
     }
-    else
+    else {
       _M_pop_back_aux();
+      _STLP_STD::_Destroy(this->_M_finish._M_cur);
+    }
   }
 
   void pop_front() {
-    if (this->_M_start._M_cur != this->_M_start._M_last - 1) {
-      _STLP_STD::_Destroy(this->_M_start._M_cur);
-      ++this->_M_start._M_cur;
-    }
-    else 
-      _M_pop_front_aux();
+    _STLP_STD::_Destroy(this->_M_start._M_cur);
+    _M_pop_front_aux();
   }
 
 public:                         // Insert
 
 #if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
-  iterator insert(iterator __position, const value_type& __x = _STLP_DEFAULT_CONSTRUCTED(_Tp)) {
+  iterator insert(iterator __pos, const value_type& __x = _STLP_DEFAULT_CONSTRUCTED(_Tp)) {
 #else
-  iterator insert(iterator __position, const value_type& __x) {
+  iterator insert(iterator __pos, const value_type& __x) {
 #endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
-    if (__position._M_cur == this->_M_start._M_cur) {
+    if (__pos._M_cur == this->_M_start._M_cur) {
       push_front(__x);
       return this->_M_start;
     }
-    else if (__position._M_cur == this->_M_finish._M_cur) {
+    else if (__pos._M_cur == this->_M_finish._M_cur) {
       push_back(__x);
       iterator __tmp = this->_M_finish;
       --__tmp;
       return __tmp;
     }
     else {
-      return _M_insert_aux(__position, __x);
+      return _M_fill_insert_aux(__pos, 1, __x, _Movable());
     }
   }
 
 #if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
-  iterator insert(iterator __position)
-  { return insert(__position, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+  iterator insert(iterator __pos)
+  { return insert(__pos, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
 #endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
   void insert(iterator __pos, size_type __n, const value_type& __x) {
@@ -733,18 +732,12 @@ public:                         // Insert
   }
 
 protected:
+  iterator _M_fill_insert_aux(iterator __pos, size_type __n, const value_type& __x, const __true_type& /*_Movable*/);
+  iterator _M_fill_insert_aux(iterator __pos, size_type __n, const value_type& __x, const __false_type& /*_Movable*/);
+
   void _M_fill_insert(iterator __pos, size_type __n, const value_type& __x);
 
 #ifdef _STLP_MEMBER_TEMPLATES  
-public:
-  // Check whether it's an integral type.  If so, it's not an iterator.
-  template <class _InputIterator>
-  void insert(iterator __pos, _InputIterator __first, _InputIterator __last) {
-    typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
-    _M_insert_dispatch(__pos, __first, __last, _Integral());
-  }
-
-protected:
   template <class _Integer>
   void _M_insert_dispatch(iterator __pos, _Integer __n, _Integer __x,
                           const __true_type& /*_IsIntegral*/) {
@@ -755,10 +748,30 @@ protected:
   void _M_insert_dispatch(iterator __pos,
                           _InputIterator __first, _InputIterator __last,
                           const __false_type& /*_IsIntegral*/) {
-    insert(__pos, __first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIterator));
+    _M_insert(__pos, __first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIterator));
+  }
+
+public:
+  // Check whether it's an integral type.  If so, it's not an iterator.
+  template <class _InputIterator>
+  void insert(iterator __pos, _InputIterator __first, _InputIterator __last) {
+    typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
+    _M_insert_dispatch(__pos, __first, __last, _Integral());
   }
 
 #else /* _STLP_MEMBER_TEMPLATES */
+  void _M_insert_range_aux(iterator __pos,
+                           const value_type* __first, const value_type* __last,
+                           const __true_type& /*_Movable*/);
+  void _M_insert_range_aux(iterator __pos,
+                           const value_type* __first, const value_type* __last,
+                           const __false_type& /*_Movable*/);
+  void _M_insert_range_aux(iterator __pos,
+                           const_iterator __first, const_iterator __last,
+                           const __true_type& /*_Movable*/);
+  void _M_insert_range_aux(iterator __pos,
+                           const_iterator __first, const_iterator __last,
+                           const __false_type& /*_Movable*/);
 public:
   void insert(iterator __pos,
               const value_type* __first, const value_type* __last);
@@ -784,23 +797,25 @@ public:
   void resize(size_type __new_size) { resize(__new_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
+protected:
+  iterator _M_erase(iterator __pos, const __true_type& /*_Movable*/);
+  iterator _M_erase(iterator __pos, const __false_type& /*_Movable*/);
+
+  iterator _M_erase(iterator __first, iterator __last, const __true_type& /*_Movable*/);
+  iterator _M_erase(iterator __first, iterator __last, const __false_type& /*_Movable*/);
 public:                         // Erase
   iterator erase(iterator __pos) {
-    iterator __next = __pos;
-    ++__next;
-    difference_type __index = __pos - this->_M_start;
-    if (size_type(__index) < this->size() >> 1) {
-      copy_backward(this->_M_start, __pos, __next);
-      pop_front();
+    return _M_erase(__pos, _Movable());
+  }
+  iterator erase(iterator __first, iterator __last) {
+    if (__first == this->_M_start && __last == this->_M_finish) {
+      clear();
+      return this->_M_finish;
     }
     else {
-      copy(__next, this->_M_finish, __pos);
-      pop_back();
+      return _M_erase(__first, __last, _Movable());
     }
-    return this->_M_start + __index;
   }
-
-  iterator erase(iterator __first, iterator __last);
   void clear(); 
 
 protected:                        // Internal construction/destruction
@@ -855,62 +870,88 @@ protected:                        // Internal push_* and pop_*
 
 protected:                        // Internal insert functions
 
-#ifdef _STLP_MEMBER_TEMPLATES
+#if defined (_STLP_MEMBER_TEMPLATES)
 
-template <class _InputIterator>
-void insert(iterator __pos,
-            _InputIterator __first,
-            _InputIterator __last,
-            const input_iterator_tag &) {
-  copy(__first, __last, inserter(*this, __pos));
-}
-
-template <class _ForwardIterator>
-void  insert(iterator __pos,
-             _ForwardIterator __first,
-             _ForwardIterator __last,
-             const forward_iterator_tag &) {
-  size_type __n = distance(__first, __last);
-  if (__pos._M_cur == this->_M_start._M_cur) {
-    iterator __new_start = _M_reserve_elements_at_front(__n);
-    _STLP_TRY {
-      uninitialized_copy(__first, __last, __new_start);
-      this->_M_start = __new_start;
-    }
-    _STLP_UNWIND(this->_M_destroy_nodes(__new_start._M_node, this->_M_start._M_node))
+  template <class _InputIterator>
+  void _M_insert(iterator __pos,
+                _InputIterator __first,
+                _InputIterator __last,
+                const input_iterator_tag &) {
+    copy(__first, __last, inserter(*this, __pos));
   }
-  else if (__pos._M_cur == this->_M_finish._M_cur) {
-    iterator __new_finish = _M_reserve_elements_at_back(__n);
-    _STLP_TRY {
-      uninitialized_copy(__first, __last, this->_M_finish);
-      this->_M_finish = __new_finish;
-    }
-    _STLP_UNWIND(this->_M_destroy_nodes(this->_M_finish._M_node + 1, __new_finish._M_node + 1))
-  }
-  else
-    _M_insert_aux(__pos, __first, __last, __n);
-}
-#endif /* _STLP_MEMBER_TEMPLATES */
 
-#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
-  iterator _M_insert_aux(iterator __pos, const value_type& __x = _STLP_DEFAULT_CONSTRUCTED(_Tp));
-#else
-  iterator _M_insert_aux(iterator __pos, const value_type& __x);
-  iterator _M_insert_aux(iterator __pos);
-#endif /*!_STLP_DONT_SUP_DFLT_PARAM*/
-  iterator _M_insert_aux_prepare(iterator __pos);
-
-  void _M_insert_aux(iterator __pos, size_type __n, const value_type& __x);
-
-#ifdef _STLP_MEMBER_TEMPLATES  
   template <class _ForwardIterator>
-  void _M_insert_aux(iterator __pos,
-                     _ForwardIterator __first,
-                     _ForwardIterator __last,
-                     size_type __n) {    
+  void  _M_insert(iterator __pos,
+                  _ForwardIterator __first,
+                  _ForwardIterator __last,
+                  const forward_iterator_tag &) {
+    size_type __n = distance(__first, __last);
+    if (__pos._M_cur == this->_M_start._M_cur) {
+      iterator __new_start = _M_reserve_elements_at_front(__n);
+      _STLP_TRY {
+        uninitialized_copy(__first, __last, __new_start);
+        this->_M_start = __new_start;
+      }
+      _STLP_UNWIND(this->_M_destroy_nodes(__new_start._M_node, this->_M_start._M_node))
+    }
+    else if (__pos._M_cur == this->_M_finish._M_cur) {
+      iterator __new_finish = _M_reserve_elements_at_back(__n);
+      _STLP_TRY {
+        uninitialized_copy(__first, __last, this->_M_finish);
+        this->_M_finish = __new_finish;
+      }
+      _STLP_UNWIND(this->_M_destroy_nodes(this->_M_finish._M_node + 1, __new_finish._M_node + 1))
+    }
+    else
+      _M_insert_range_aux(__pos, __first, __last, __n, _Movable());
+  }
+
+  template <class _ForwardIterator>
+  void _M_insert_range_aux(iterator __pos,
+                           _ForwardIterator __first, _ForwardIterator __last,
+                           size_type __n, const __true_type& /*_Movable*/) {
     const difference_type __elemsbefore = __pos - this->_M_start;
     size_type __length = size();
-    if (__elemsbefore < difference_type(__length / 2)) {
+    if (__elemsbefore <= difference_type(__length / 2)) {
+      iterator __new_start = _M_reserve_elements_at_front(__n);
+      __pos = this->_M_start + __elemsbefore;
+      _STLP_TRY {
+        iterator __dst = __new_start;
+        iterator __src = this->_M_start;
+        for (; __src != __pos; ++__dst, ++__src) {
+          _STLP_STD::_Move_Construct(&(*__dst), *__src);
+          _STLP_STD::_Destroy_Moved(&(*__src));
+        }
+        this->_M_start = __new_start;
+        __uninitialized_copy(__first, __last, __dst, _TrivialUCpy());
+      }
+      _STLP_UNWIND(this->_M_destroy_nodes(__new_start._M_node, this->_M_start._M_node))
+    }
+    else {
+      iterator __new_finish = _M_reserve_elements_at_back(__n);
+      const difference_type __elemsafter = difference_type(__length) - __elemsbefore;
+      __pos = this->_M_finish - __elemsafter;
+      _STLP_TRY {
+        iterator __dst = __new_finish;
+        iterator __src = this->_M_finish;
+        for (--__src, --__dst; __src >= __pos; --__src, --__dst) {
+          _STLP_STD::_Move_Construct(&(*__dst), *__src);
+          _STLP_STD::_Destroy_Moved(&(*__src));
+        }
+        this->_M_finish = __new_finish;
+        __uninitialized_copy(__first, __last, __pos, _TrivialUCpy());
+      }
+      _STLP_UNWIND(this->_M_destroy_nodes(this->_M_finish._M_node + 1, __new_finish._M_node + 1))
+    }
+  }
+
+  template <class _ForwardIterator>
+  void _M_insert_range_aux(iterator __pos,
+                           _ForwardIterator __first, _ForwardIterator __last,
+                           size_type __n, const __false_type& /*_Movable*/) {
+    const difference_type __elemsbefore = __pos - this->_M_start;
+    size_type __length = size();
+    if (__elemsbefore <= difference_type(__length / 2)) {
       iterator __new_start = _M_reserve_elements_at_front(__n);
       iterator __old_start = this->_M_start;
       __pos = this->_M_start + __elemsbefore;
@@ -936,8 +977,7 @@ void  insert(iterator __pos,
     else {
       iterator __new_finish = _M_reserve_elements_at_back(__n);
       iterator __old_finish = this->_M_finish;
-      const difference_type __elemsafter = 
-      difference_type(__length) - __elemsbefore;
+      const difference_type __elemsafter = difference_type(__length) - __elemsbefore;
       __pos = this->_M_finish - __elemsafter;
       _STLP_TRY {
         if (__elemsafter > difference_type(__n)) {
@@ -958,16 +998,6 @@ void  insert(iterator __pos,
       _STLP_UNWIND(this->_M_destroy_nodes(this->_M_finish._M_node + 1, __new_finish._M_node + 1))
     }
   }
-#else /* _STLP_MEMBER_TEMPLATES */
-  
-  void _M_insert_aux(iterator __pos,
-                     const value_type* __first, const value_type* __last,
-                     size_type __n);
-
-  void _M_insert_aux(iterator __pos, 
-                     const_iterator __first, const_iterator __last,
-                     size_type __n);
- 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   iterator _M_reserve_elements_at_front(size_type __n) {
