@@ -73,6 +73,7 @@ SRC_CPP = cppunit/test_main.cpp \
 	reviter_test.cpp \
 	rm_cp_test.cpp \
 	rndshf_test.cpp \
+	rope_test.cpp \
 	rotate_test.cpp \
 	search_test.cpp \
 	set_test.cpp \

@@ -1,3 +1,9 @@
+2004-10-31  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_rope.h: Fix of the apply_to_pieces qualification thanks Leeya.
+
+  * test/unit/rope_test.cpp: New test case for the previous fix.
+
 2004-10-30  Francois Dumont  <dums@stlport...>
 
 	* src/explore/Makefiles/nmake/vc-common.mak: introductions of the LDFLAGS_A_REL

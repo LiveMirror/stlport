@@ -1209,7 +1209,7 @@ public:
   typedef _Rope_char_consumer<_CharT>& _CharConsumer;
 #endif
   void apply_to_pieces(size_t __begin, size_t __end,
-                       _CharConsumer __c) {
+                       _CharConsumer __c) const {
     _S_apply_to_pieces(__c, _M_tree_ptr._M_data, __begin, __end);
   }
 
