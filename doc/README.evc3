@@ -41,7 +41,7 @@ You can also adjust the batch files to have the PLATFORM variable set.
 
 Go into STLport's 'src\explore' folder and type:
 
-  nmake TARGET_PROC=arm -f nmake-evc3.mak install
+  nmake TARGET_PROC=arm /f nmake-evc3.mak install
 
 All libraries (debug, stldebug, release) should be built, static and shared
 ones. Replace 'arm' with 'x86' to build for the emulator.
@@ -55,7 +55,7 @@ Testing STLport
 You can use the unit tests to verify STLport behaves correctly. Change into
 STLports 'test\unit' folder and type:
 
-  nmake TARGET_PROC=arm -f nmake-evc3.mak
+  nmake TARGET_PROC=arm /f nmake-evc3.mak
 
 Again, replace 'arm' with 'x86' to build for the emulator.
 

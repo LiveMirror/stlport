@@ -32,20 +32,20 @@ if "%WCEROOT%"=="" set WCEROOT=C:\Program Files\Microsoft eMbedded C++ 4.0
 if "%SDKROOT%"=="" set SDKROOT=C:\Program Files\Windows CE Tools
 
 Third, when you are 100percent sure you've set correctly systems variables go to STLport/src/explore dir, 
-there invoke following commad: 'nmake -f nmake-evc4-x86.mak install' if you set variables for emulator 
-or 'nmake -f nmake-evc4-arm.mak install' if are building for ARM.
+there invoke following command: 'nmake /f nmake-evc4-x86.mak install' if you set variables for emulator 
+or 'nmake /f nmake-evc4-arm.mak install' if are building for ARM.
 
 At this moment building of STLport should be underway.
 If anything goes wrong check if you met all prerequisities and if you set system vars accordingly to makfile you are using.
 At the end of build process you should have some libs installed in STLport/lib directory.
 
-You might want to repeat all those steps if you would like to have both ARM and x86 emulator binaries, just don't forget to do 'nmake -f nmake-evc4-x86.mak clobber' or 'nmake -f nmake-evc4-arm.mak clobber' before new build. 
+You might want to repeat all those steps if you would like to have both ARM and x86 emulator binaries, just don't forget to do 'nmake /f nmake-evc4-x86.mak clobber' or 'nmake /f nmake-evc4-arm.mak clobber' before new build. 
 
 ===============
 Testing STLport
 ===============
 When you successfuly build STLport libs, you should go to STLport/test/unit directory build and run the STLP test suite. 
-Use 'nmake -f nmake-evc4-x86.mak' or 'nmake -f nmake-evc4-arm.mak' and keep in mind that you still have to have proper system variables set! 
+Use 'nmake /f nmake-evc4-x86.mak' or 'nmake /f nmake-evc4-arm.mak' and keep in mind that you still have to have proper system variables set! 
 Once test build has finished upload and run stlp_unit_test.exe to your emulator or device. 
 Wait for a while (aprox. 2mins) untill all tests are done. 
 You should see two files next to your binary now. 
