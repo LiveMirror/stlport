@@ -108,10 +108,14 @@ __DECLARE_INSTANCE(locale::id, money_put_wchar_t_2::id, );
 
 // helper functions for do_get
 template <class _InIt1, class _InIt2>
-pair<_InIt1, bool> __get_string(_InIt1 __first,     _InIt1 __last,
-                               _InIt2 __str_first, _InIt2 __str_last) {
-  pair<_InIt1, _InIt2> __pr = mismatch(__first, __last, __str_first);
-  return make_pair(__pr.first, __pr.second == __str_last);
+pair<_InIt1, bool> __get_string( _InIt1 __first, _InIt1 __last,
+                                 _InIt2 __str_first, _InIt2 __str_last)
+{
+  while ( __first != __last && __str_first != __str_last && *__first == *__str_first ) {
+    ++__first;
+    ++__str_first;
+  }
+  return make_pair(__first, __str_first == __str_last);
 }
 
 template <class _InIt, class _OuIt, class _CharT>
