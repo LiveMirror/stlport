@@ -166,9 +166,17 @@
  * Some compilers support the automatic linking feature. 
  * Uncomment the following and you won't have to specify the STLport library
  * to link with anymore.
- * For the moment this feature is supported by the Microsoft compilers.
+ * For the moment, this feature is only supported by the Microsoft compilers.
  */
 // #define _STLP_USE_AUTO_LINK 1
+
+/*
+ * When using automatic linking (see above), output a message that tells the 
+ * user which lib is getting linked via 'pragma message(..)'.
+ * This setting has no effect if automatic linking is not active.
+ */
+// #define _STLP_VERBOSE_AUTO_LINK 1
+
 
 /*
  * Use minimum set of default arguments on template classes that have more

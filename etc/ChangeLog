@@ -2,6 +2,10 @@
 
 	* stlport/stl/_messages_facets.h: fixed messages_base::catalog from long typedef
 	to int thanks Ulrich Eckhardt report.
+	
+	* stlport/stl_user_config.h, config/stl_msvc.h: addition of the _STLP_VERBOSE_AUTO_LINK 
+	config macro to make the automatic linking feature more verbose thanks Ulrich Eckhardt
+	patch.
 
 2004-12-01  Petr Ovtchenkov  <ptr@island...>
 

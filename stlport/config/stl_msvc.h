@@ -136,11 +136,12 @@
 //  these work, as long they are inline
 #  define _STLP_INLINE_MEMBER_TEMPLATES 1
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
-#  define _STLP_GLOBAL_NEW_HANDLER
+#  define _STLP_GLOBAL_NEW_HANDLER 1
 #  define _STLP_DONT_RETURN_VOID 1
 #  define _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE 1
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
-#  define _STLP_VENDOR_UNEXPECTED_STD
+#  define _STLP_VENDOR_UNEXPECTED_STD 1
+#  define _STLP_USING_NAMESPACE_BUG 1
 #endif /* (_MSC_VER <= 1200) */
 
 #if (_STLP_MSVC > 1100)
@@ -300,8 +301,10 @@ typedef char __stl_char;
 
 #  define _STLP_STLPORT_LIB "stlport_"_STLP_LIB_TYPE""_STLP_LIB_OPTIM_MODE""_STLP_VERSION_STR".lib"
 
-//#pragma message ("Auto linking to "_STLP_STLPORT_LIB)
-#pragma comment (lib , _STLP_STLPORT_LIB)
+#  ifdef _STLP_VERBOSE_AUTO_LINK
+#    pragma message ("STLport: Auto linking to "_STLP_STLPORT_LIB)
+#  endif
+#  pragma comment (lib , _STLP_STLPORT_LIB)
 
 #  undef _STLP_STLPORT_LIB
 #  undef _STLP_LIB_OPTIM_MODE
