@@ -128,7 +128,7 @@
 #  if !defined(_STLP_WHOLE_NATIVE_STD) && !defined(_STLP_REDEFINE_STD)
 /*
  * All VC compilers has a problem with import whole namespace, i.e. sentence
- *   namespace std { uning namespace _STL; }
+ *   namespace std { using namespace _STL; }
  * has no effect.
  * The only way is to redefine name 'std'.
  */
