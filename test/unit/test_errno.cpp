@@ -1,5 +1,6 @@
-#include <errno.h>
+#ifndef _STLP_WCE
 
+#include <errno.h>
 #include <errno.h> // not typo, check errno def/undef/redef
 
 #include "cppunit/cppunit_proxy.h"
@@ -34,12 +35,13 @@ void ErrnoTest::check()
  *
  *                - ptr, 2005-03-30
  */
-#if 0
+# if 0
   if ( ::errno != 0 ) {
     return 1;
   }
   if ( std::errno != 0 ) {
     return 1;
   }
-#endif
+# endif
 }
+#endif // _STLP_WCE
