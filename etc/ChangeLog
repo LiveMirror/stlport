@@ -1,3 +1,32 @@
+2005-01-13  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_algobase.h: Improvment of the iter_swap algo to use the swap
+	method when possible thanks David Abrahams and Aleksey Gurtovoy great book
+	introduction.
+
+	* stlport/stl/_alloc.h: Deactivation of the lock free allocator implementation
+	not mature enough to be release yet.
+	
+	* stlport/stl/_uninitialized.h: Fix of non Standard algo signature:
+			- uninitialized_fill_n
+			
+	*stlport/stl/_iterator_base.h: Fix of non Standard algo signature:
+			- distance
+			
+	* stlport/stl/_algobase.h: Fix of non Standard algo signature:
+			- fill_n
+			
+	* stlport/stl/_algo.h: Fix of non Standard algo signature:
+			- rotate
+			- generate_n
+			
+	* stlport/stl/_string.h, debug/_string.h: Fix of the non Standard basic_string
+	default constructor.
+			
+	*stlport/stl/_algobase.h, _function.h, _iterator_base.h, _move_construct_fwk.h, 
+	_ptr_specialize.h, char_traits.h, debug/_debug.h: Fix of the macro name check 
+	before including type_traits.h.
+	
 2005-01-08  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_codecvt.h: Add of a missing export declaration for the wchar_t

@@ -41,10 +41,7 @@ public:
   typedef typename _DbgBase::_Reserve_t _Reserve_t;
 
 public:                         // Constructor, destructor, assignment.
-  basic_string() :
-    _STLP_NON_DBG_STRING_BASE() {}
-  
-  explicit basic_string(const allocator_type& __a) :
+  explicit basic_string(const allocator_type& __a = allocator_type()) :
     _STLP_NON_DBG_STRING_BASE(__a) {}
 
   basic_string(_Reserve_t __r, size_t __n,

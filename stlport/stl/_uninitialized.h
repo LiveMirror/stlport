@@ -229,7 +229,7 @@ template <class _ForwardIter, class _Size, class _Tp>
 inline _ForwardIter
 __uninitialized_fill_n(_ForwardIter __first, _Size __n,
                        const _Tp& __x, const __true_type& /*IsPOD*/) {
-  return _STLP_STD::fill_n(__first, __n, __x);
+  return __fill_n(__first, __n, __x);
 }
 
 template <class _ForwardIter, class _Size, class _Tp>
@@ -247,9 +247,9 @@ __uninitialized_fill_n(_ForwardIter __first, _Size __n,
 }
 
 template <class _ForwardIter, class _Size, class _Tp>
-inline _ForwardIter 
+inline void
 uninitialized_fill_n(_ForwardIter __first, _Size __n, const _Tp& __x) {
-  return __uninitialized_fill_n(__first, __n, __x, _STLP_IS_POD_ITER(__first, _ForwardIter));
+  __uninitialized_fill_n(__first, __n, __x, _STLP_IS_POD_ITER(__first, _ForwardIter));
 }
 
 // Extensions: __uninitialized_copy_copy, __uninitialized_copy_fill, 

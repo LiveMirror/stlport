@@ -53,13 +53,13 @@ class basic_string : private _STLP_CONSTRUCT_CHECKER<_STLP_NON_DBG_STRING_BASE >
                    , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
 #endif
 {
-private:
+protected:
   typedef _STLP_NON_DBG_STRING_BASE _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
   typedef _STLP_CONSTRUCT_CHECKER<_STLP_NON_DBG_STRING_BASE > _ConstructCheck;
+  typedef typename _Base::_Char_Is_POD _Char_Is_POD;
 
 #if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
-protected:
   typedef typename _Base::_NonDbgBase _NonDbgBase;
 #endif
 
@@ -93,10 +93,7 @@ protected:
   }
 
 public:
-  basic_string() : 
-    _STLP_NON_DBG_STRING_BASE(), _M_iter_list(_Get_base()) {}
-  
-  explicit basic_string(const allocator_type& __a) :
+  explicit basic_string(const allocator_type& __a = allocator_type()) :
     _STLP_NON_DBG_STRING_BASE(__a), _M_iter_list(_Get_base()) {}
 
   basic_string(_Reserve_t __r, size_t __n,

@@ -60,7 +60,14 @@ _STLP_DECLSPEC locale::id money_put<char, ostreambuf_iterator<char, char_traits<
 template <>
 _STLP_DECLSPEC locale::id money_put<char, char*>::id;
 
-#    ifndef _STLP_NO_WCHAR_T
+/*
+template<>
+_STLP_DECLSPEC locale::id moneypunct<char, true>::id;
+template<>
+_STLP_DECLSPEC locale::id moneypunct<char, false>::id;
+*/
+
+#    if !defined (_STLP_NO_WCHAR_T)
 template <>
 _STLP_DECLSPEC locale::id money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id;
 template <>
@@ -70,6 +77,13 @@ template <>
 _STLP_DECLSPEC locale::id money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id;
 template <>
 _STLP_DECLSPEC locale::id money_put<wchar_t, wchar_t*>::id;
+
+/*
+template<>
+_STLP_DECLSPEC locale::id moneypunct<wchar_t, true>::id;
+template<>
+_STLP_DECLSPEC locale::id moneypunct<wchar_t, false>::id;
+*/
 #    endif
 
 #  endif
@@ -184,7 +198,7 @@ template <class _CharT, class _InputIter, class _StrType>
 _InputIter _S_do_get(_InputIter __s, 
                      _InputIter __end, bool  __intl,
                      ios_base&  __str, ios_base::iostate&  __err,
-                     _StrType& __digits, bool &__is_positive) {
+                     _StrType& __digits, bool &__is_positive, _CharT* /*__dummy*/) {
   if (__s == __end) {
     __err |= ios_base::eofbit;
     return __s;
@@ -352,7 +366,10 @@ money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  _
                                       _STLP_LONG_DOUBLE& __units) const {
   string_type __buf;
   bool __is_positive = true;
-  __s = _S_do_get<_CharT, _InputIter, string_type>(__s, __end, __intl, __str, __err, __buf, __is_positive);
+  {
+    _CharT *__pdummy = 0;
+    __s = _S_do_get(__s, __end, __intl, __str, __err, __buf, __is_positive, __pdummy);
+  }
 
   if (__err == ios_base::goodbit || __err == ios_base::eofbit) {
     typename string_type::iterator __b = __buf.begin(), __e = __buf.end();
@@ -377,7 +394,8 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
                                       ios_base&  __str, ios_base::iostate&  __err,
                                       string_type& __digits) const {
   bool __is_positive = true;
-  return _S_do_get<_CharT, _InputIter, string_type>(__s, __end, __intl, __str, __err, __digits, __is_positive);
+  _CharT *__pdummy = 0;
+  return _S_do_get(__s, __end, __intl, __str, __err, __digits, __is_positive, __pdummy);
 }
 
 // money_put facets
@@ -385,7 +403,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
 template <class _CharT, class _OutputIter, class _Str_Type, class _Str>
 _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
                       _CharT __fill, const _Str& __digits, bool __check_digits,
-                      _Str_Type const& /*__dummy*/) {
+                      _Str_Type * /*__dummy*/) {
   typedef _CharT char_type;
   typedef _Str_Type string_type;
   typedef ctype<char_type>             _Ctype;
@@ -499,19 +517,19 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
 
   if (__fill_amt != 0 &&
       !(__fill_pos & (ios_base::left | ios_base::internal)))
-    __s = fill_n(__s, __fill_amt, __fill);
+    __s = __fill_n(__s, __fill_amt, __fill);
     
   for (int __i = 0; __i < 4; ++__i) {
     char __ffield = __format.field[__i];
     switch (__ffield) {
     case money_base::none:
       if (__fill_amt != 0 && __fill_pos == ios_base::internal)
-        __s = fill_n(__s, __fill_amt, __fill);
+        __s = __fill_n(__s, __fill_amt, __fill);
       break;
     case money_base::space:
       *__s++ = __space;
       if (__fill_amt != 0 && __fill_pos == ios_base::internal)
-        __s = fill_n(__s, __fill_amt, __fill);
+        __s = __fill_n(__s, __fill_amt, __fill);
       break;
     case money_base::symbol:
       if (__generate_curr)
@@ -528,7 +546,7 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
         if ((int)__value_length <= __frac_digits) {
           *__s++ = __point;
           __s = copy(__digits_first, __digits_last, __s);
-          __s =  fill_n(__s, __frac_digits - __value_length, __zero);
+          __s =  __fill_n(__s, __frac_digits - __value_length, __zero);
         }
         else {
           __s = copy(__digits_first, __digits_last - __frac_digits, __s);
@@ -546,7 +564,7 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
     __s = copy(__sign.begin() + 1, __sign.end(), __s);
   if (__fill_amt != 0 &&
       !(__fill_pos & (ios_base::right | ios_base::internal)))
-    __s = fill_n(__s, __fill_amt, __fill);
+    __s = __fill_n(__s, __fill_amt, __fill);
   
   return __s;
 }
@@ -561,7 +579,8 @@ money_put<_CharT, _OutputIter>
   _STLP_BASIC_IOSTRING(char_type) __digits;
   __get_money_digits(__digits, __str, __units);
 
-  return _S_do_put(__s, __intl, __str, __fill, __digits, false, string_type());
+  string_type *__pdummy = 0;
+  return _S_do_put(__s, __intl, __str, __fill, __digits, false, __pdummy);
 }
 
 template <class _CharT, class _OutputIter>
@@ -569,8 +588,9 @@ _OutputIter
 money_put<_CharT, _OutputIter>
  ::do_put(_OutputIter __s, bool __intl, ios_base& __str,
           char_type __fill,
-          const string_type& __digits) const { 
-  return _S_do_put(__s, __intl, __str, __fill, __digits, true, string_type());
+          const string_type& __digits) const {
+  string_type *__pdummy = 0;
+  return _S_do_put(__s, __intl, __str, __fill, __digits, true, __pdummy);
 }
 
 _STLP_END_NAMESPACE

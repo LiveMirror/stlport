@@ -244,7 +244,7 @@ private:
     const size_type __old_size = this->size();
     if (__s_size > this->max_size() || __old_size > (this->max_size() - __s_size))
       this->_M_throw_length_error();
-    size_type __offset_size = _M_get_additional_size(__old_size + __s_size, _STLP_STRING_BASE_SCOPE _Char_Is_POD());
+    size_type __offset_size = _M_get_additional_size(__old_size + __s_size, _Char_Is_POD());
     if (__old_size + __s_size + __offset_size > this->capacity()) {
       const size_type __len = __old_size + __offset_size + (max)(__old_size, __s_size) + 1;
       pointer __new_start = this->_M_end_of_storage.allocate(__len);
@@ -286,7 +286,7 @@ private:
     const size_type __old_size = this->size();
     if (__s_size > this->max_size() || __old_size > (this->max_size() - __s_size))
       this->_M_throw_length_error();
-    size_type __offset_size = _M_get_additional_size(__old_size + __s_size, _STLP_STRING_BASE_SCOPE _Char_Is_POD());
+    size_type __offset_size = _M_get_additional_size(__old_size + __s_size, _Char_Is_POD());
     if (__old_size + __s_size + __offset_size > this->capacity()) {
       const size_type __len = __old_size + __offset_size + (max)(__old_size, __s_size) + 1;
       pointer __new_start = this->_M_end_of_storage.allocate(__len);

@@ -225,11 +225,10 @@ generate(_ForwardIter __first, _ForwardIter __last, _Generator __gen) {
 }
 
 template <class _OutputIter, class _Size, class _Generator>
-_STLP_INLINE_LOOP _OutputIter 
+_STLP_INLINE_LOOP void 
 generate_n(_OutputIter __first, _Size __n, _Generator __gen) {
   for ( ; __n > 0; --__n, ++__first)
     *__first = __gen();
-  return __first;
 }
 
 // remove, remove_if, remove_copy, remove_copy_if
@@ -358,8 +357,7 @@ _EuclideanRingElement __gcd(_EuclideanRingElement __m,
 }
 
 template <class _ForwardIter>
-_ForwardIter 
-rotate(_ForwardIter __first, _ForwardIter __middle, _ForwardIter __last);
+void rotate(_ForwardIter __first, _ForwardIter __middle, _ForwardIter __last);
 
 template <class _ForwardIter, class _OutputIter>
 inline _OutputIter rotate_copy(_ForwardIter __first, _ForwardIter __middle,

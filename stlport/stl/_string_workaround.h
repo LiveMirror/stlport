@@ -32,6 +32,7 @@ protected:                        // Protected members inherited from base.
   typedef _STLP_NO_MEM_T_STRING_BASE _Base;
   typedef typename _Base::_NonDbgBase _NonDbgBase;
   typedef _Base _DbgBase;
+  typedef typename _Base::_Char_Is_POD _Char_Is_POD;
 
 public:
 
@@ -42,10 +43,7 @@ public:
   typedef typename _NonDbgBase::_Reserve_t _Reserve_t;
 
 public:                         // Constructor, destructor, assignment.
-  basic_string()
-    : _STLP_NO_MEM_T_STRING_BASE() {}
-
-  explicit basic_string(const allocator_type& __a)
+  explicit basic_string(const allocator_type& __a = allocator_type())
     : _STLP_NO_MEM_T_STRING_BASE(__a) {}
 
   basic_string(_Reserve_t __r, size_t __n,
@@ -152,7 +150,7 @@ private:
     }
     else
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
-    this->_M_finish = uninitialized_fill_n(this->_M_Start(), __n, __x);
+    this->_M_finish = __uninitialized_fill_n(this->_M_Start(), __n, __x, _Char_Is_POD());
     this->_M_terminate_string();
   }
 

@@ -295,7 +295,7 @@ unique_copy(_InputIter __first, _InputIter __last,_OutputIter __result,
 // rotate and rotate_copy, and their auxiliary functions
 
 template <class _ForwardIter, class _Distance>
-_ForwardIter __rotate(_ForwardIter __first,
+_ForwardIter __rotate_aux(_ForwardIter __first,
                       _ForwardIter __middle,
                       _ForwardIter __last,
                       _Distance*,
@@ -328,7 +328,7 @@ _ForwardIter __rotate(_ForwardIter __first,
 }
 
 template <class _BidirectionalIter, class _Distance>
-_BidirectionalIter __rotate(_BidirectionalIter __first,
+_BidirectionalIter __rotate_aux(_BidirectionalIter __first,
                             _BidirectionalIter __middle,
                             _BidirectionalIter __last,
                             _Distance*,
@@ -355,10 +355,10 @@ _BidirectionalIter __rotate(_BidirectionalIter __first,
 }
 
 template <class _RandomAccessIter, class _Distance, class _Tp>
-_RandomAccessIter __rotate(_RandomAccessIter __first,
-                           _RandomAccessIter __middle,
-                           _RandomAccessIter __last,
-                           _Distance *, _Tp *) {
+_RandomAccessIter __rotate_aux(_RandomAccessIter __first,
+                               _RandomAccessIter __middle,
+                               _RandomAccessIter __last,
+                               _Distance *, _Tp *) {
 
   _Distance __n = __last   - __first;
   _Distance __k = __middle - __first;
@@ -412,20 +412,25 @@ _RandomAccessIter __rotate(_RandomAccessIter __first,
 
 template <class _RandomAccessIter, class _Distance>
 inline _RandomAccessIter 
-__rotate(_RandomAccessIter __first, _RandomAccessIter __middle, _RandomAccessIter __last,
-         _Distance * __dis, const random_access_iterator_tag &) {
-  return __rotate(__first, __middle, __last,
-                  __dis, _STLP_VALUE_TYPE(__first, _RandomAccessIter));
+__rotate_aux(_RandomAccessIter __first, _RandomAccessIter __middle, _RandomAccessIter __last,
+             _Distance * __dis, const random_access_iterator_tag &) {
+  return __rotate_aux(__first, __middle, __last,
+                      __dis, _STLP_VALUE_TYPE(__first, _RandomAccessIter));
 }
 
 template <class _ForwardIter>
 _ForwardIter 
-rotate(_ForwardIter __first, _ForwardIter __middle, _ForwardIter __last) {
+__rotate(_ForwardIter __first, _ForwardIter __middle, _ForwardIter __last) {
   _STLP_DEBUG_CHECK(__check_range(__first, __middle))
   _STLP_DEBUG_CHECK(__check_range(__middle, __last))
-  return __rotate(__first, __middle, __last,
-                  _STLP_DISTANCE_TYPE(__first, _ForwardIter),
-                  _STLP_ITERATOR_CATEGORY(__first, _ForwardIter));
+  return __rotate_aux(__first, __middle, __last,
+                      _STLP_DISTANCE_TYPE(__first, _ForwardIter),
+                      _STLP_ITERATOR_CATEGORY(__first, _ForwardIter));
+}
+
+template <class _ForwardIter>
+void rotate(_ForwardIter __first, _ForwardIter __middle, _ForwardIter __last) {
+  __rotate(__first, __middle, __last);
 }
 
 // Return a random number in the range [0, __n).  This function encapsulates
@@ -651,11 +656,11 @@ _ForwardIter __inplace_stable_partition(_ForwardIter __first,
     return __pred(*__first) ? __last : __first;
   _ForwardIter __middle = __first;
   advance(__middle, __len / 2);
-  return rotate(__inplace_stable_partition(__first, __middle, __pred, 
-                                           __len / 2),
-                __middle,
-                __inplace_stable_partition(__middle, __last, __pred,
-                                           __len - __len / 2));
+  return __rotate(__inplace_stable_partition(__first, __middle, __pred, 
+                                             __len / 2),
+                  __middle,
+                  __inplace_stable_partition(__middle, __last, __pred,
+                                             __len - __len / 2));
 }
 
 template <class _ForwardIter, class _Pointer, class _Predicate, 
@@ -683,7 +688,7 @@ _ForwardIter __stable_partition_adaptive(_ForwardIter __first,
   else {
     _ForwardIter __middle = __first;
     advance(__middle, __len / 2);
-    return rotate(__stable_partition_adaptive(
+    return __rotate(__stable_partition_adaptive(
                           __first, __middle, __pred,
                           __len / 2, __buffer, __buffer_size),
                     __middle,
@@ -938,7 +943,7 @@ _BidirectionalIter1 __rotate_adaptive(_BidirectionalIter1 __first,
     return copy_backward(__buffer, __buffer_end, __last);
   }
   else
-    return rotate(__first, __middle, __last);
+    return __rotate(__first, __middle, __last);
 }
 
 template <class _BidirectionalIter, class _Distance, class _Pointer,
@@ -1286,7 +1291,7 @@ void __merge_without_buffer(_BidirectionalIter __first,
     __len11 +=distance(__first, __first_cut);
   }
   _BidirectionalIter __new_middle
-    = rotate(__first_cut, __middle, __second_cut);
+    = __rotate(__first_cut, __middle, __second_cut);
   __merge_without_buffer(__first, __first_cut, __new_middle, __len11, __len22,
                          __comp);
   __merge_without_buffer(__new_middle, __second_cut, __last, __len1 - __len11,

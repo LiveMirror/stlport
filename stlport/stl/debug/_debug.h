@@ -22,7 +22,7 @@
 
 #if defined (_STLP_ASSERTIONS) || defined (_STLP_DEBUG)
 
-#ifndef __TYPE_TRAITS_H
+#ifndef _STLP_TYPE_TRAITS_H
 #  include <stl/type_traits.h>
 #endif
 

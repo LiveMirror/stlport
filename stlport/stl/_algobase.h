@@ -55,7 +55,7 @@
 #  include <stl/_iterator_base.h>
 #endif
 
-#ifndef __TYPE_TRAITS_H
+#ifndef _STLP_TYPE_TRAITS_H
 #  include <stl/type_traits.h>
 #endif
 
@@ -89,16 +89,28 @@ inline void swap(_Tp& __a, _Tp& __b) {
 }
 
 template <class _ForwardIter1, class _ForwardIter2, class _Value>
-inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, _Value * ) {
+inline void __iter_swap_aux_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, _Value *) {
   _Value tmp = *__i1;
   *__i1 = *__i2;
   *__i2 = tmp;
 }
 
 template <class _ForwardIter1, class _ForwardIter2>
+inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, const __true_type& /*OKToSwap*/) {
+  swap(*__i1, *__i2);
+}
+
+template <class _ForwardIter1, class _ForwardIter2>
+inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, const __false_type& /*OKToSwap*/) {
+  __iter_swap_aux_aux( __i1, __i2, _STLP_VALUE_TYPE(__i1,_ForwardIter1) );
+}
+
+template <class _ForwardIter1, class _ForwardIter2>
 inline void iter_swap(_ForwardIter1 __i1, _ForwardIter2 __i2) {
   // swap(*__i1, *__i2);
-  __iter_swap_aux( __i1, __i2, _STLP_VALUE_TYPE(__i1,_ForwardIter1) );
+  __iter_swap_aux( __i1, __i2, _IsOKToSwap(_STLP_VALUE_TYPE(__i1, _ForwardIter1), _STLP_VALUE_TYPE(__i2, _ForwardIter2),
+                                           _STLP_IS_REF_TYPE_REAL_REF(__i1, _ForwardIter1), 
+                                           _STLP_IS_REF_TYPE_REAL_REF(__i2, _ForwardIter2))._Answer());
 }
 
 //--------------------------------------------------
@@ -361,11 +373,18 @@ void fill(_ForwardIter __first, _ForwardIter __last, const _Tp& __val) {
 
 template <class _OutputIter, class _Size, class _Tp>
 _STLP_INLINE_LOOP
-_OutputIter fill_n(_OutputIter __first, _Size __n, const _Tp& __val) {
+_OutputIter __fill_n(_OutputIter __first, _Size __n, const _Tp& __val) {
   _STLP_FIX_LITERAL_BUG(__first)
   for ( ; __n > 0; --__n, ++__first)
     *__first = __val;
   return __first;
+}
+
+template <class _OutputIter, class _Size, class _Tp>
+_STLP_INLINE_LOOP
+void fill_n(_OutputIter __first, _Size __n, const _Tp& __val) {
+  _STLP_FIX_LITERAL_BUG(__first)
+  __fill_n(__first, __n, __val);
 }
 
 
@@ -391,21 +410,21 @@ inline void fill(char* __first, char* __last, const char& __val) {
 #ifdef _STLP_FUNCTION_TMPL_PARTIAL_ORDER
 
 template <class _Size>
-inline unsigned char* fill_n(unsigned char* __first, _Size __n,
+inline unsigned char* __fill_n(unsigned char* __first, _Size __n,
                              const unsigned char& __val) {
   fill(__first, __first + __n, __val);
   return __first + __n;
 }
 
 template <class _Size>
-inline signed char* fill_n(char* __first, _Size __n,
+inline signed char* __fill_n(char* __first, _Size __n,
                            const signed char& __val) {
   fill(__first, __first + __n, __val);
   return __first + __n;
 }
 
 template <class _Size>
-inline char* fill_n(char* __first, _Size __n, const char& __val) {
+inline char* __fill_n(char* __first, _Size __n, const char& __val) {
   fill(__first, __first + __n, __val);
   return __first + __n;
 }

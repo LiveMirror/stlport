@@ -186,6 +186,11 @@ struct __type_traits_aux<1> {
   typedef __true_type    is_POD_type;
 };
 
+template <class _Tp>
+struct _IsRef {
+  enum { _Ret = 0 };
+};
+
 #  ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
 /* 
  * Boris : simulation technique is used here according to Adobe Open Source License Version 1.0.
@@ -337,12 +342,6 @@ struct __type_traits : __type_traits_aux<_IsPtr<_Tp>::_Ret> {};
 #  else /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
 
 template <class _Tp>  struct _IsPtr { enum { _Ret = 0 }; };
-template <class _Tp>  struct _IsPtrType { 
-  static __false_type _Ret() { return __false_type();} 
-};
-template <class _Tp1, class _Tp2>  struct _BothPtrType { 
-  static __false_type _Ret() { return __false_type();} 
-};
 
 template <class _Tp>
 struct __type_traits { 
@@ -370,19 +369,33 @@ struct __type_traits {
    typedef __false_type    is_POD_type;
 };
 
-#    ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
-template <class _Tp>  struct _IsPtr<_Tp*> { enum { _Ret = 1 }; };
-template <class _Tp>  struct _IsPtrType<_Tp*> { 
-  static __true_type _Ret() { return __true_type();} 
-};
-template <class _Tp1, class _Tp2>  struct _BothPtrType<_Tp1*, _Tp2*> { 
-  static __true_type _Ret() { return __true_type();} 
-};
+#    if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+template <class _Tp> struct _IsPtr<_Tp*> { enum { _Ret = 1 }; };
+template <class _Tp> struct _IsRef<_Tp&> { enum { _Ret = 1 }; };
 
 template <class _Tp> struct __type_traits<_Tp*> : __type_traits_aux<1> {};
 #    endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
+template <class _Tp>  struct _IsPtrType { 
+  enum { is_ptr = _IsPtr<_Tp>::_Ret };
+  typedef typename __bool2type<is_ptr>::_Ret _Type;
+  static _Type _Ret() { return _Type();} 
+};
+template <class _Tp1, class _Tp2>  struct _BothPtrType { 
+  enum { is_ptr1 = _IsPtr<_Tp1>::_Ret };
+  enum { is_ptr2 = _IsPtr<_Tp2>::_Ret };
+  typedef typename __bool2type<is_ptr1 && is_ptr2>::_Ret _Type;
+  static _Type _Ret() { return _Type();} 
+};
+
 #  endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
+
+template <class _Tp>
+struct _IsRefType {
+  enum { is_ref = _IsRef<_Tp>::_Ret };
+  typedef typename __bool2type<is_ref>::_Ret _Type;
+  static _Type _Ret() { return _Type();} 
+};
 
 // Provide some specializations.  This is harmless for compilers that
 //  have built-in __types_traits support, and essential for compilers
@@ -490,8 +503,24 @@ struct __call_traits<_Tp&> {
 #endif
 
 template <class _Tp1, class _Tp2>
-inline _OKToMemCpy<_Tp1, _Tp2> _IsOKToMemCpy(_Tp1*, _Tp2*)  {
+inline _OKToMemCpy<_Tp1, _Tp2> _IsOKToMemCpy(_Tp1*, _Tp2*) {
   return _OKToMemCpy<_Tp1, _Tp2>();
+}
+
+template <class _Tp1, class _Tp2, class _IsRef1, class _IsRef2>
+struct _OKToSwap {
+  enum { same = _AreSameUnCVTypes<_Tp1, _Tp2>::_Same };
+
+  enum { is_ref1 = __type2bool<_IsRef1>::_Ret };
+  enum { is_ref2 = __type2bool<_IsRef2>::_Ret };
+
+  typedef typename __bool2type<same && is_ref1 && is_ref2>::_Ret _Type;
+  static _Type _Answer() { return _Type(); }
+};
+
+template <class _Tp1, class _Tp2, class _IsRef1, class _IsRef2>
+inline _OKToSwap<_Tp1, _Tp2, _IsRef1, _IsRef2> _IsOKToSwap(_Tp1*, _Tp2*, const _IsRef1&, const _IsRef2&) {
+  return _OKToSwap<_Tp1, _Tp2, _IsRef1, _IsRef2>();
 }
 
 template <class _Tp1, class _Tp2>
@@ -616,7 +645,7 @@ _STLP_END_NAMESPACE
 #  define _STLP_IS_POD_ITER(_It, _Tp) _Is_POD( _STLP_VALUE_TYPE( _It, _Tp ) )._Answer()
 #endif
 
-#endif /* __TYPE_TRAITS_H */
+#endif /* _STLP_TYPE_TRAITS_H */
 
 // Local Variables:
 // mode:C++

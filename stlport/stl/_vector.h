@@ -143,6 +143,7 @@ protected:
   typedef typename _TrivialUCopy<_Tp>::_Ret _TrivialUCpy;
   typedef typename __type_traits<_Tp>::has_trivial_copy_constructor _TrivialCpy;
   typedef typename __move_traits<_Tp>::implemented _Movable;
+  typedef typename __type_traits<_Tp>::is_POD_type _PODType;
 
   // handles insertions on overflow
   void _M_insert_overflow_aux(pointer __pos, const _Tp& __x, const __false_type& /*_Movable*/, 
@@ -211,13 +212,13 @@ public:
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
          const allocator_type& __a = allocator_type()) 
     : _Vector_base<_Tp, _Alloc>(__n, __a) { 
-    this->_M_finish = uninitialized_fill_n(this->_M_start, __n, __val); 
+    this->_M_finish = __uninitialized_fill_n(this->_M_start, __n, __val, _PODType());
   }
 
 #if defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit _VECTOR_IMPL(size_type __n)
     : _Vector_base<_Tp, _Alloc>(__n, allocator_type() ) {
-    this->_M_finish = uninitialized_fill_n(this->_M_start, __n, _STLP_DEFAULT_CONSTRUCTED(_Tp)); 
+    this->_M_finish = __uninitialized_fill_n(this->_M_start, __n, _STLP_DEFAULT_CONSTRUCTED(_Tp), _PODType());
   }
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
@@ -238,7 +239,7 @@ public:
                          const __true_type& /*_IsIntegral*/) {
     this->_M_start = this->_M_end_of_storage.allocate(__n);
     this->_M_end_of_storage._M_data = this->_M_start + __n; 
-    this->_M_finish = uninitialized_fill_n(this->_M_start, __n, __val);
+    this->_M_finish = __uninitialized_fill_n(this->_M_start, __n, __val, _PODType());
   }
 
   template <class _InputIterator>

@@ -237,7 +237,9 @@ public:
  * Thanks to the support of the simple Compare And Swap atomic operation
  * we are able to grant a lock free node_alloc implementation.
  */
-#  define _STLP_USE_LOCK_FREE_IMPLEMENTATION
+// dums: This feature is not mature enough to be released yet. We will see later when
+// some more tests will have been performed.
+//#  define _STLP_USE_LOCK_FREE_IMPLEMENTATION
 #endif
 
 #if defined (_STLP_USE_LOCK_FREE_IMPLEMENTATION)

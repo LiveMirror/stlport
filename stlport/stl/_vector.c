@@ -104,7 +104,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_insert_overflow(pointer __pos, const _Tp& __x
   pointer __new_start = this->_M_end_of_storage.allocate(__len);
   pointer __new_finish = (pointer)__copy_trivial(this->_M_start, __pos, __new_start);
   // handle insertion
-  __new_finish = fill_n(__new_finish, __fill_len, __x);
+  __new_finish = __fill_n(__new_finish, __fill_len, __x);
   if (!__atend)
     __new_finish = (pointer)__copy_trivial(__pos, this->_M_finish, __new_finish); // copy remainder
   _M_clear();
@@ -144,8 +144,7 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_insert_aux (iterator __pos, size_type __
     __copy_backward_ptrs(__pos, __old_finish - __n, __old_finish, _TrivialAss());
     _STLP_STD::fill(__pos, __pos + __n, __x);
   } else {
-    uninitialized_fill_n(this->_M_finish, __n - __elems_after, __x);
-    this->_M_finish += __n - __elems_after;
+    this->_M_finish = __uninitialized_fill_n(this->_M_finish, __n - __elems_after, __x, _PODType());
     __uninitialized_copy(__pos, __old_finish, this->_M_finish, _TrivialUCpy());
     this->_M_finish += __elems_after;
     _STLP_STD::fill(__pos, __old_finish, __x);
@@ -192,9 +191,9 @@ void _VECTOR_IMPL<_Tp, _Alloc>::_M_fill_assign(size_t __n, const _Tp& __val) {
     __tmp.swap(*this);
   } else if (__n > size()) {
     fill(begin(), end(), __val);
-    this->_M_finish = _STLP_STD::uninitialized_fill_n(this->_M_finish, __n - size(), __val);
+    this->_M_finish = __uninitialized_fill_n(this->_M_finish, __n - size(), __val, _PODType());
   } else
-    erase(_STLP_STD::fill_n(begin(), __n, __val), end());
+    erase(__fill_n(begin(), __n, __val), end());
 }
 
 template <class _Tp, class _Alloc>

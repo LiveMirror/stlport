@@ -1,4 +1,5 @@
 #include <vector>
+#include <list>
 #include <algorithm>
 #include <sstream>
 #include <numeric>
@@ -21,6 +22,7 @@ class IterTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(iterswp0);
   CPPUNIT_TEST(iterswp1);
   CPPUNIT_TEST(iterswp2);
+  CPPUNIT_TEST(iterswp3);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -30,6 +32,7 @@ protected:
   void iterswp0();
   void iterswp1();
   void iterswp2();
+  void iterswp3();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(IterTest);
@@ -141,5 +144,28 @@ void IterTest::iterswp2()
   iter_swap( i1, i2 );
 
   CPPUNIT_ASSERT(( *i1 == v1 && *i2 == v0 ));
+}
 
+
+void IterTest::iterswp3()
+{
+  vector<int> vvref(10, 10);
+  vector<int> lvref(10, 20);
+
+  vector<vector<int> > vvints(4, vvref);
+  list<vector<int> > lvints(4, lvref);
+
+  iter_swap(vvints.begin(), lvints.begin());
+  CPPUNIT_CHECK( vvints.front() == lvref );
+  CPPUNIT_CHECK( lvints.front() == vvref );
+
+#if defined (STLPORT) && defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+  int *pvvint = &vvints.front().front();
+  int *plvint = &lvints.front().front();
+
+  iter_swap(vvints.begin(), lvints.begin());
+  //Check that elements have been swaped:
+  CPPUNIT_CHECK( pvvint == &lvints.front().front() );
+  CPPUNIT_CHECK( plvint == &vvints.front().front() );
+#endif
 }

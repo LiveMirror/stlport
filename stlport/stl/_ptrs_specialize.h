@@ -1,7 +1,7 @@
 #ifndef _STLP_PTRS_SPECIALIZE_H
 #define _STLP_PTRS_SPECIALIZE_H
 
-#ifndef __TYPE_TRAITS_H
+#ifndef _STLP_TYPE_TRAITS_H
 #  include <stl/type_traits.h>
 #endif
 

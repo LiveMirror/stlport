@@ -41,7 +41,7 @@
 //#endif /* _STLP_IMPORT_VENDOR_CSTD */
 
 #if !defined(_STLP_USE_OLD_HP_ITERATOR_QUERIES) && !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION)
-#  ifndef __TYPE_TRAITS_H
+#  ifndef _STLP_TYPE_TRAITS_H
 #    include <stl/type_traits.h>
 #  endif
 #endif
@@ -75,12 +75,15 @@ struct iterator<output_iterator_tag, void, void, void, void> {
 #endif
 };
 
-#ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
+#if defined (_STLP_USE_OLD_HP_ITERATOR_QUERIES)
 #  define _STLP_ITERATOR_CATEGORY(_It, _Tp) iterator_category(_It)
 #  define _STLP_DISTANCE_TYPE(_It, _Tp)     distance_type(_It)
 #  define _STLP_VALUE_TYPE(_It, _Tp)        value_type(_It)
+//Old HP iterator queries do not give information about the iterator
+//associated reference type so we concider that it is not a real reference.
+#  define _STLP_IS_REF_TYPE_REAL_REF(_It, _Tp) __false_type()
 #else
-#  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+#  if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 #    define _STLP_VALUE_TYPE(_It, _Tp)        (typename iterator_traits< _Tp >::value_type*)0
 #    define _STLP_DISTANCE_TYPE(_It, _Tp)     (typename iterator_traits< _Tp >::difference_type*)0
 #    if defined (__BORLANDC__) || defined (__SUNPRO_CC) || ( defined (__MWERKS__) && (__MWERKS__ <= 0x2303)) || ( defined (__sgi) && defined (_COMPILER_VERSION)) || defined (__DMC__)
@@ -88,10 +91,12 @@ struct iterator<output_iterator_tag, void, void, void, void> {
 #    else
 #      define _STLP_ITERATOR_CATEGORY(_It, _Tp) typename iterator_traits< _Tp >::iterator_category()
 #    endif
+#    define _STLP_IS_REF_TYPE_REAL_REF(_It, _Tp) _IsRefType< typename iterator_traits< _Tp >::reference >::_Ret()
 #  else
-#    define _STLP_ITERATOR_CATEGORY(_It, _Tp) __iterator_category(_It, _IsPtrType<_Tp>::_Ret())
-#    define _STLP_DISTANCE_TYPE(_It, _Tp)     (ptrdiff_t*)0
-#    define _STLP_VALUE_TYPE(_It, _Tp)        __value_type(_It, _IsPtrType<_Tp>::_Ret() )
+#    define _STLP_ITERATOR_CATEGORY(_It, _Tp)   __iterator_category(_It, _IsPtrType<_Tp>::_Ret())
+#    define _STLP_DISTANCE_TYPE(_It, _Tp)       (ptrdiff_t*)0
+#    define _STLP_VALUE_TYPE(_It, _Tp)          __value_type(_It, _IsPtrType<_Tp>::_Ret() )
+#    define _STLP_IS_REF_TYPE_REAL_REF(_It, _Tp) __false_type()
 #  endif
 #endif
 
@@ -146,7 +151,7 @@ struct iterator_traits<_Tp* const> {
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 
-#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION) ||\
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION) || \
    (defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS) && ! defined (_STLP_NO_ARROW_OPERATOR))
 #  define _STLP_POINTERS_SPECIALIZE( _TpP )
 #  define _STLP_DEFINE_ARROW_OPERATOR  pointer operator->() const { return &(operator*()); }
@@ -369,7 +374,7 @@ __distance(const _RandomAccessIterator& __first, const _RandomAccessIterator& __
 
 template <class _InputIterator>
 inline _STLP_DIFFERENCE_TYPE(_InputIterator) _STLP_CALL
-distance(const _InputIterator& __first, const _InputIterator& __last) {
+distance(_InputIterator __first, _InputIterator __last) {
   return __distance(__first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIterator));  
 }
 

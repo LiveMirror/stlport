@@ -398,7 +398,7 @@ void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale& rl )
 
   locale loc_ref;
   {
-    locale gloc( loc_ref, new my_facet );
+    locale gloc( loc_ref, new my_facet() );
     CPPUNIT_ASSERT( has_facet<my_facet>( gloc ) );
     //The following code is just here to try to confuse the reference counting underlying mecanism:
     locale::global( locale::classic() );

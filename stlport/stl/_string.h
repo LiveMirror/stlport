@@ -173,9 +173,7 @@ public:                         // Constructor, destructor, assignment.
     return _STLP_CONVERT_ALLOCATOR((const allocator_type&)this->_M_end_of_storage, _CharT);
   }
 
-  basic_string();
-
-  explicit basic_string(const allocator_type& __a)
+  explicit basic_string(const allocator_type& __a = allocator_type())
       : _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE) {
     _M_terminate_string();
   }
@@ -218,7 +216,7 @@ public:                         // Constructor, destructor, assignment.
     }
     else
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
-    this->_M_finish = uninitialized_fill_n(this->_M_Start(), __n, __c);
+    this->_M_finish = __uninitialized_fill_n(this->_M_Start(), __n, __c, _Char_Is_POD());
     _M_terminate_string();
   }
 
@@ -302,7 +300,7 @@ private:
     }
     else
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
-    this->_M_finish = uninitialized_fill_n(this->_M_Start(), __n, __x);
+    this->_M_finish = __uninitialized_fill_n(this->_M_Start(), __n, __x, _Char_Is_POD());
     this->_M_terminate_string();
   }
 

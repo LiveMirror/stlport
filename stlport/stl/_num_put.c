@@ -55,16 +55,16 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
 
     if (__dir == ios_base::left) {
       __out = copy(__first, __last, __out);
-      return fill_n(__out, __pad, __fill);
+      return __fill_n(__out, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __first != __last &&
              (*__first == __xplus || *__first == __xminus)) {
       *__out++ = *__first++;
-      __out = fill_n(__out, __pad, __fill);
+      __out = __fill_n(__out, __pad, __fill);
       return copy(__first, __last, __out);
     }
     else {
-      __out = fill_n(__out, __pad, __fill);
+      __out = __fill_n(__out, __pad, __fill);
       return copy(__first, __last, __out);
     }
   }
@@ -167,12 +167,12 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
 
     if (__dir == ios_base::left) {
       __out = copy(__buf, __buf + __len, __out);
-      return fill_n(__out, __pad, __fill);
+      return __fill_n(__out, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __len != 0 &&
              (__buf[0] == __xplus || __buf[0] == __xminus)) {
       *__out++ = __buf[0];
-      __out = fill_n(__out, __pad, __fill);
+      __out = __fill_n(__out, __pad, __fill);
       return copy(__buf + 1, __buf + __len, __out);
     }
     else if (__dir == ios_base::internal && __len >= 2 &&
@@ -180,11 +180,11 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
              (__flg & ios_base::basefield) == ios_base::hex) {
       *__out++ = __buf[0];
       *__out++ = __buf[1];
-      __out = fill_n(__out, __pad, __fill);
+      __out = __fill_n(__out, __pad, __fill);
       return copy(__buf + 2, __buf + __len, __out);
     }
     else {
-      __out = fill_n(__out, __pad, __fill);
+      __out = __fill_n(__out, __pad, __fill);
       return copy(__buf, __buf + __len, __out);
     }
   }

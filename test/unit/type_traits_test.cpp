@@ -19,6 +19,9 @@ class TypeTraitsTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(integer);
   CPPUNIT_TEST(rational);
   CPPUNIT_TEST(pointer_type);
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+  CPPUNIT_TEST(reference_type);
+#endif
   CPPUNIT_TEST(both_pointer_type);
   CPPUNIT_TEST(ok_to_use_memcpy);
   CPPUNIT_TEST_SUITE_END();
@@ -28,6 +31,9 @@ protected:
   void integer();
   void rational();
   void pointer_type();
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+  void reference_type();
+#endif
   void both_pointer_type();
   void ok_to_use_memcpy();
 };
@@ -40,10 +46,6 @@ int type_to_value(__true_type const&) {
 int type_to_value(__false_type const&) {
   return 0;
 }
-template <class _BoolType>
-struct get_result {
-  static _BoolType _Ret() { return _BoolType(); }
-};
 
 int* int_pointer;
 int const* int_const_pointer;
@@ -52,8 +54,9 @@ int const volatile* int_const_volatile_pointer;
 int int_val = 0;
 int const int_const_val = 0;
 int volatile int_volatile_val = 0;
-int& int_ref = int_val;
+int & int_ref = int_val;
 int const& int_const_ref = int_val;
+int const volatile& int_const_volatile_ref = int_val;
 
 //A type that represent any type:
 struct any_type
@@ -325,6 +328,26 @@ void TypeTraitsTest::pointer_type()
   CPPUNIT_ASSERT( is_pointer_type(any) == 0 );
   CPPUNIT_ASSERT( is_pointer_type(any_pointer) == 1 );
 }
+
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+void TypeTraitsTest::reference_type()
+{
+  CPPUNIT_ASSERT( _IsRef<int>::_Ret == 0 );
+  CPPUNIT_ASSERT( _IsRef<int*>::_Ret == 0 );
+  CPPUNIT_ASSERT( _IsRef<int&>::_Ret == 1 );
+  CPPUNIT_ASSERT( _IsRef<int const&>::_Ret == 1 );
+  CPPUNIT_ASSERT( _IsRef<int const volatile&>::_Ret == 1 );
+  CPPUNIT_ASSERT( type_to_value(_IsRefType<int>::_Ret()) == 0 );
+  CPPUNIT_ASSERT( type_to_value(_IsRefType<int*>::_Ret()) == 0 );
+  CPPUNIT_ASSERT( type_to_value(_IsRefType<int&>::_Ret()) == 1 );
+  CPPUNIT_ASSERT( type_to_value(_IsRefType<int const&>::_Ret()) == 1 );
+  CPPUNIT_ASSERT( type_to_value(_IsRefType<int const volatile&>::_Ret()) == 1 );
+
+  CPPUNIT_ASSERT( type_to_value(_OKToSwap<int, int, int&, int&>::_Answer()) == 1 );
+  CPPUNIT_ASSERT( type_to_value(_IsOKToSwap(int_pointer, int_pointer, __true_type(), __true_type())._Answer()) == 1 );
+  CPPUNIT_ASSERT( type_to_value(_IsOKToSwap(int_pointer, int_pointer, __false_type(), __false_type())._Answer()) == 0 );
+}
+#endif
 
 template <typename _Tp1, typename _Tp2>
 int are_both_pointer_type (_Tp1, _Tp2) {
