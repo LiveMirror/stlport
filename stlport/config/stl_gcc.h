@@ -185,9 +185,9 @@ typedef unsigned int wint_t;
 
 #if (__GNUC__ >= 3)
 #  ifndef _STLP_HAS_NO_NEW_C_HEADERS
-#   ifndef _STLP_USE_UCLIBC
+//#   ifndef _STLP_USE_UCLIBC
 #    define _STLP_HAS_NATIVE_FLOAT_ABS
-#   endif
+//#   endif
 #  else
 #    ifdef _STLP_USE_GLIBC
 #      define _STLP_VENDOR_LONG_DOUBLE_MATH  1 // - ptr: with new c headers no needs

@@ -207,6 +207,7 @@
 #   endif
 
 #   ifdef _STLP_USE_UCLIBC
+     /* see into uClib (c runtime lib) configuration */
 #    if !defined(__UCLIBC_HAS_WCHAR__)
 #     ifndef _STLP_NO_WCHAR_T
 #      define _STLP_NO_WCHAR_T
@@ -217,13 +218,18 @@
 #     ifndef _STLP_NO_NATIVE_WIDE_STREAMS
 #      define _STLP_NO_NATIVE_WIDE_STREAMS
 #     endif
-#    endif /* */
+#    endif /* __UCLIBC_HAS_WCHAR__ */
      /* Hmm, bogus _GLIBCPP_USE_NAMESPACES seems undefined... */
 #    define _STLP_VENDOR_GLOBAL_CSTD 1
 #    if defined(_STLP_REAL_LOCALE_IMPLEMENTED)
       /* locale in uClibc is very restricted */
       /* recheck if __UCLIBC_HAS_LOCALE__ defined...*/
 #     undef _STLP_REAL_LOCALE_IMPLEMENTED
+#    endif
+#    ifndef _STLP_DONT_USE_PTHREAD_SPINLOCK
+      /* in uClibc (0.9.26) pthread_spinlock* declared in headers
+       * but absent in library */
+#     define _STLP_DONT_USE_PTHREAD_SPINLOCK
 #    endif
 #   endif /* _STLP_USE_UCLIBC */
 
