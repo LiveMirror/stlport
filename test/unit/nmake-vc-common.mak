@@ -2,7 +2,6 @@
 # $Id$
 
 SRCROOT=../../src/explore
-COMPILER_NAME=vc6
 STLPORT_DIR=../..
 
 !include Makefile.inc
