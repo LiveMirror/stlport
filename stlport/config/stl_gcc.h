@@ -9,8 +9,12 @@
 
 #   define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
 
-# if defined(__FreeBSD__) || defined (__hpux) || defined(__amigaos__) || ( defined(__OS2__) && defined(__EMX__) )
+# if defined (__hpux) || defined(__amigaos__) || ( defined(__OS2__) && defined(__EMX__) )
 #  define _STLP_NO_WCHAR_T
+# elif defined(__FreeBSD__)
+# if (__FreeBSD_cc_version < 500005)
+# define _STLP_NO_WCHAR_T
+# endif /* __FreeBSD_cc_version < 500005 */
 # endif
 
 #ifdef __USLC__
