@@ -131,7 +131,7 @@ DEBUG_FLAGS= -D_STLP_DEBUG
 CXXFLAGS = -Wall ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
 # CXXFLAGS = -Wall ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS} 
 
-LIBS = -L../../lib -lstlport_gcc_stldebug -lm 
+LIBS = -L../../lib -Wl,-rpath=../../lib -lstlport_gcc_stldebug -lm 
 
 LIBSTDCXX = 
 
