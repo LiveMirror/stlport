@@ -155,8 +155,8 @@ private:
 #if defined (_STLP_USE_SHORT_STRING_OPTIM)
     //To avoid problem with the string assumptions, never allocate a dynamic buffer smaller or equal
     //than the static one:
-    if (__new_size < _DEFAULT_SIZE + 1)
-      return (_DEFAULT_SIZE + 1) - __new_size;
+    if (__new_size < _Base::_DEFAULT_SIZE + 1)
+      return (_Base::_DEFAULT_SIZE + 1) - __new_size;
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
     return 0;
   }
@@ -169,8 +169,8 @@ private:
 #if defined (_STLP_USE_SHORT_STRING_OPTIM)
     //To avoid problem with the string assumptions, never allocate a dynamic buffer smaller or equal
     //than the static one:
-    if (__new_size < _DEFAULT_SIZE + 1)
-      __new_size = _DEFAULT_SIZE + 1;
+    if (__new_size < _Base::_DEFAULT_SIZE + 1)
+      __new_size = _Base::_DEFAULT_SIZE + 1;
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
     pointer __new_start = this->_M_end_of_storage.allocate(__new_size);
     pointer __new_finish = __new_start;
@@ -192,8 +192,8 @@ private:
 #if defined (_STLP_USE_SHORT_STRING_OPTIM)
     //To avoid problem with the string assumptions, never allocate a dynamic buffer smaller or equal
     //than the static one:
-    if (__new_size < _DEFAULT_SIZE + 1)
-      __new_size = _DEFAULT_SIZE + 1;
+    if (__new_size < _Base::_DEFAULT_SIZE + 1)
+      __new_size = _Base::_DEFAULT_SIZE + 1;
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
     pointer __new_start = this->_M_end_of_storage.allocate(__new_size);
     pointer __new_finish = __new_start;
@@ -212,9 +212,9 @@ private:
   template <class _Left, class _Right, class _StorageDir>
   _Self& _M_assign_sum (__bstr_sum<_CharT, _Traits, _Alloc, _Left, _Right, _StorageDir> const& __s) {
     //TODO: We systematically use a new allocation to avoid the self referencing trouble, try to avoid it.
-    size_type __len = size();
+    size_type __len = this->size();
     const size_type __s_size = __s.size();
-    if (__s_size > max_size() || __len > (max_size() - __s_size))
+    if (__s_size > this->max_size() || __len > (this->max_size() - __s_size))
       this->_M_throw_length_error();
     if (__s_size > __len) {
       __len = __len + (max)(__len, __s_size) + 1;
@@ -226,11 +226,11 @@ private:
   _Self& _M_assign_sum_pos(__bstr_sum<_CharT, _Traits, _Alloc, _Left, _Right, _StorageDir> const& __s,
                            size_type __pos, size_type __n) {
     //TODO: We systematically use a new allocation to avoid the self referencing trouble, try to avoid it.
-    size_type __len = size();
+    size_type __len = this->size();
     const size_type __s_size = (min) (__s.size() - __pos, __n);
-    if (__s_size > max_size() || __len > (max_size() - __s_size))
+    if (__s_size > this->max_size() || __len > (this->max_size() - __s_size))
       this->_M_throw_length_error();
-    if (__s_size > capacity()) {
+    if (__s_size > this->capacity()) {
       __len = __len + (max)(__len, __s_size) + 1;
     }
     return _M_assign_overflow_pos(__len, __s, __pos, __n);
@@ -242,7 +242,7 @@ private:
     if (__s_size == 0)
       return *this;
     const size_type __old_size = this->size();
-    if (__s_size > max_size() || __old_size > (max_size() - __s_size))
+    if (__s_size > this->max_size() || __old_size > (this->max_size() - __s_size))
       this->_M_throw_length_error();
     size_type __offset_size = _M_get_additional_size(__old_size + __s_size, _STLP_STRING_BASE_SCOPE _Char_Is_POD());
     if (__old_size + __s_size + __offset_size > this->capacity()) {
@@ -284,7 +284,7 @@ private:
     if (__s_size == 0)
       return *this;
     const size_type __old_size = this->size();
-    if (__s_size > max_size() || __old_size > (max_size() - __s_size))
+    if (__s_size > this->max_size() || __old_size > (this->max_size() - __s_size))
       this->_M_throw_length_error();
     size_type __offset_size = _M_get_additional_size(__old_size + __s_size, _STLP_STRING_BASE_SCOPE _Char_Is_POD());
     if (__old_size + __s_size + __offset_size > this->capacity()) {

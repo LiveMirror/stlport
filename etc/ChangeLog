@@ -1,3 +1,7 @@
+2005-01-05  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_sum_methods.h: Fixes reported by gcc.
+
 2005-01-04  Francois Dumont  <dums@stlport...>
 
 	* doc/README.evc3: patched by Michael Fink
