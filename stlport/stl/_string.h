@@ -1299,6 +1299,10 @@ public:                         // Insert
     return _Base::insert(__p, __c);
   }
 
+  void insert(iterator __p, size_t __n, _CharT __c) {
+    _Base::insert(__p, __n, __c);
+  }
+
   // Check to see if _InputIterator is an integer type.  If so, then
   // it can't be an iterator.
   template <class _InputIter>
@@ -1789,7 +1793,7 @@ _STLP_END_NAMESPACE
 
 #include <stl/_string_operators.h>
 
-#if (defined(_STLP_NO_IOSTREAM) || defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)) && \
+#if (defined(_STLP_NO_OWN_IOSTREAMS) || defined (_STLP_USE_NO_IOSTREAMS) || defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)) && \
     !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_string.c>
 #endif
