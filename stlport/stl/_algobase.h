@@ -56,12 +56,32 @@
 #endif
 
 _STLP_BEGIN_NAMESPACE
-// swap and iter_swap
+
+#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
 template <class _Tp>
-inline void swap(_Tp& __a, _Tp& __b) {
+inline void __swap_aux(_Tp& __a, _Tp& __b, const __true_type& /*SwapImplemented*/) {
+  __a.swap(__b);
+}
+
+template <class _Tp>
+inline void __swap_aux(_Tp& __a, _Tp& __b, const __false_type& /*SwapImplemented*/) {
   _Tp __tmp = __a;
   __a = __b;
   __b = __tmp;
+}
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
+
+// swap and iter_swap
+template <class _Tp>
+inline void swap(_Tp& __a, _Tp& __b) {
+#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+  typedef typename _SwapImplemented<_Tp>::_Ret _Implemented;
+  __swap_aux(__a, __b, _Implemented());
+#else
+  _Tp __tmp = __a;
+  __a = __b;
+  __b = __tmp;
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
 }
 
 template <class _ForwardIter1, class _ForwardIter2>
@@ -124,7 +144,7 @@ inline _OutputIter __copy(_InputIter __first, _InputIter __last,
 
 template <class _InputIter, class _OutputIter, class _Distance>
 inline _OutputIter __copy(_InputIter __first, _InputIter __last,
-			  _OutputIter __result, const bidirectional_iterator_tag &, _Distance* __dis) {
+			  _OutputIter __result, const bidirectional_iterator_tag &, _Distance* ) {
   for ( ; __first != __last; ++__result, ++__first)
     *__result = *__first;
   return __result;
@@ -217,11 +237,13 @@ inline _OutputIter copy(_InputIter __first, _InputIter __last, _OutputIter __res
 }
 
 template <class _InputIter, class _OutputIter>
-inline _OutputIter __copy_backward_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, const __false_type&) {
+inline _OutputIter __copy_backward_ptrs(_InputIter __first, _InputIter __last, 
+                                        _OutputIter __result, const __false_type& /*TrivialAssignment*/) {
   return __copy_backward(__first, __last, __result, _STLP_ITERATOR_CATEGORY(__first, _InputIter), _STLP_DISTANCE_TYPE(__first, _InputIter));
 }
 template <class _InputIter, class _OutputIter>
-inline _OutputIter __copy_backward_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, const __true_type&) {
+inline _OutputIter __copy_backward_ptrs(_InputIter __first, _InputIter __last, 
+                                        _OutputIter __result, const __true_type& /*TrivialAssignment*/) {
   return (_OutputIter)__copy_trivial_backward(__first, __last, __result);  
 }
 
@@ -316,8 +338,74 @@ copy_n(_InputIter __first, _Size __count, _OutputIter __result) {
 }
 
 //--------------------------------------------------
-// fill and fill_n
+// move stuff rather than copy it, if the used type do not support move (supporting swap)
+// the following algos behave like copy:
+template <class _InputIter, class _OutputIter, class _Distance>
+inline _OutputIter __swap_move(_InputIter __first, _InputIter __last, _OutputIter __result,
+                               const input_iterator_tag &, _Distance*) {
+  for ( ; __first != __last; ++__result, ++__first)
+    (*__result).swap(*__first);
+  return __result;
+}
 
+# if defined (_STLP_NONTEMPL_BASE_MATCH_BUG) 
+template <class _InputIter, class _OutputIter, class _Distance>
+inline _OutputIter __swap_move(_InputIter __first, _InputIter __last, _OutputIter __result,
+                               const forward_iterator_tag &, _Distance* ) {
+  for ( ; __first != __last; ++__result, ++__first)
+    (*__result).swap(*__first);
+  return __result;
+}
+
+
+template <class _InputIter, class _OutputIter, class _Distance>
+inline _OutputIter __swap_move(_InputIter __first, _InputIter __last, _OutputIter __result, 
+                               const bidirectional_iterator_tag &, _Distance* ) {
+  for ( ; __first != __last; ++__result, ++__first)
+    (*__result).swap(*__first);
+  return __result;
+}
+# endif 
+
+template <class _RandomAccessIter, class _OutputIter, class _Distance>
+inline _OutputIter __swap_move(_RandomAccessIter __first, _RandomAccessIter __last, _OutputIter __result, 
+                               const random_access_iterator_tag &, _Distance*) {
+  for (_Distance __n = __last - __first; __n > 0; --__n) {
+	  (*__result).swap(*__first);
+    ++__first;
+    ++__result;
+  }
+  return __result;
+}
+
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __move_ptrs_aux(_InputIter __first, _InputIter __last, _OutputIter __result, const __false_type& /*use_swap*/) {
+  //We have to use the usual copy with the assignment operator:
+  return __copy(__first, __last, __result, 
+                _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
+                _STLP_DISTANCE_TYPE(__first, _InputIter));
+}
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __move_ptrs_aux(_InputIter __first, _InputIter __last, _OutputIter __result, const __true_type& /*use_swap*/) {
+  //We are going to swap rather than copy:
+  return __swap_move(__first, __last, __result, 
+                     _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
+                     _STLP_DISTANCE_TYPE(__first, _InputIter));
+}
+
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __move_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, const __false_type& /*_IsPOD*/) {
+	return __move_ptrs_aux(__first, __last, __result, _DoSwapOnMove(_STLP_VALUE_TYPE(__first, _InputIter), 
+												                                          _STLP_VALUE_TYPE(__result, _OutputIter))._Answer());
+}
+template <class _InputIter, class _OutputIter>
+inline _OutputIter __move_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, const __true_type& /*_IsPOD*/) {
+  //we are working on POD, we use memmove
+  return (_OutputIter)__copy_trivial(__first, __last, __result);
+}
+
+//--------------------------------------------------
+// fill and fill_n
 
 template <class _ForwardIter, class _Tp>
 _STLP_INLINE_LOOP

@@ -221,8 +221,8 @@ public:
   vector(const _Self& __x) 
     : _Vector_base<_Tp, _Alloc>(__x.size(), __x.get_allocator()) { 
     this->_M_finish = __uninitialized_copy(__CONST_CAST(const_pointer, __x._M_start),
-											           __CONST_CAST(const_pointer, __x._M_finish), 
-                                                       this->_M_start, _IsPODType());
+											                     __CONST_CAST(const_pointer, __x._M_finish), 
+                                           this->_M_start, _IsPODType());
   }
 
   /*explicit vector(__full_move_source<_Self> src)
@@ -450,7 +450,7 @@ public:
         const size_type __elems_after = this->_M_finish - __position;
         pointer __old_finish = this->_M_finish;
         if (__elems_after > __n) {
-          __uninitialized_copy(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
+          __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
           this->_M_finish += __n;
           __copy_backward_ptrs(__position, __old_finish - __n, __old_finish, _TrivialAss());
           copy(__first, __last, __position);
@@ -464,7 +464,7 @@ public:
 # endif
           __uninitialized_copy(__mid, __last, this->_M_finish, _IsPODType());
           this->_M_finish += __n - __elems_after;
-          __uninitialized_copy(__position, __old_finish, this->_M_finish, _IsPODType());
+          __uninitialized_move(__position, __old_finish, this->_M_finish, _IsPODType());
           this->_M_finish += __elems_after;
           copy(__first, __mid, __position);
         } /* elems_after */
@@ -495,13 +495,13 @@ public:
   }
   iterator erase(iterator __position) {
     if (__position + 1 != end())
-      __copy_ptrs(__position + 1, this->_M_finish, __position, _TrivialAss());
+      __move_ptrs(__position + 1, this->_M_finish, __position, _TrivialAss());
     --this->_M_finish;
     _STLP_STD::_Destroy(this->_M_finish);
     return __position;
   }
   iterator erase(iterator __first, iterator __last) {
-    pointer __i = __copy_ptrs(__last, this->_M_finish, __first, _TrivialAss());
+    pointer __i = __move_ptrs(__last, this->_M_finish, __first, _TrivialAss());
     _STLP_STD::_Destroy_Range(__i, this->_M_finish);
     this->_M_finish = __i;
     return __first;

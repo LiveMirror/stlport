@@ -258,6 +258,17 @@ _STLP_TEMPLATE_NULL struct _Is_float_point<long double> {
 };
 # endif
 
+//Base class used for internal purpose
+#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+class __stlp_base_class {};
+#define _STLP_SIGNAL_BASE_CLASS_1 : public __stlp_base_class
+#define _STLP_SIGNAL_BASE_CLASS_N , public __stlp_base_class
+#else
+#define _STLP_SIGNAL_BASE_CLASS_1
+#define _STLP_SIGNAL_BASE_CLASS_N
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
+
+
 template <class _Tp1, class _Tp2>
 struct _OKToMemCpy {
   enum { _Same = _IsSame<_Tp1,_Tp2>::_Ret } ;
@@ -293,9 +304,46 @@ struct _DefaultZeroValue {
 };
 
 template <class _Tp>
-inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*)  {
+inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*) {
   return _DefaultZeroValue<_Tp>();
 }
+
+#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+template <class _Tp>
+struct _SwapImplemented {
+  typedef typename _IsConvertibleType<_Tp, __stlp_base_class>::_Type _Ret;
+};
+#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
+
+template <class _Tp>
+struct __action_on_move {
+	typedef __false_type swap;
+};
+
+class __enable_swap_on_move {};
+
+template <class _Tp1, class _Tp2> 
+struct _SwapOnMove {
+	typedef typename __action_on_move<_Tp1>::swap _Enabled1;
+	typedef typename _IsConvertibleType<_Tp1, __enable_swap_on_move>::_Type _Enabled2;
+#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
+  typedef typename _IsConvertibleType<_Tp1, __stlp_base_class>::_Type _Enabled3;
+#else
+  typedef __false_type _Enabled3;
+#endif
+	typedef typename _Lor3<_Enabled1, _Enabled2, _Enabled3>::_Ret _Enabled;
+
+  enum { _Same = _IsSame<_Tp1,_Tp2>::_Ret };
+  typedef typename __bool2type< _Same >::_Ret _Cond;
+
+  typedef typename _Land3<_Enabled, _Cond, __true_type>::_Ret _Type;
+	static _Type _Answer() {return _Type();}
+};
+
+template<class _Tp1, class _Tp2>
+_SwapOnMove<_Tp1, _Tp2> _DoSwapOnMove (_Tp1*, _Tp2*)
+{return _SwapOnMove<_Tp1, _Tp2>();}
+
 
 #  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 #   if defined (__BORLANDC__) || defined (__SUNPRO_CC) || ( defined (__MWERKS__) && (__MWERKS__ <= 0x2303)) || ( defined (__sgi) && defined (_COMPILER_VERSION)) || defined (__DMC__)
@@ -306,16 +354,6 @@ inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*)  {
 #  else
 #   define _IS_POD_ITER(_It, _Tp) _Is_POD( _STLP_VALUE_TYPE( _It, _Tp ) )._Answer()
 #  endif
-
-//Base class used for internal purpose
-#ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
-class __stlp_base_class {};
-#define _STLP_SIGNAL_BASE_CLASS_1 : public __stlp_base_class
-#define _STLP_SIGNAL_BASE_CLASS_N , public __stlp_base_class
-#else
-#define _STLP_SIGNAL_BASE_CLASS_1
-#define _STLP_SIGNAL_BASE_CLASS_N
-#endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
 
 _STLP_END_NAMESPACE
 

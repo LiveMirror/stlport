@@ -34,6 +34,11 @@ struct __partial_move_traits<_STLP_TEMPLATE_CONTAINER > {
   typedef __true_type supported;
 };
 
+_STLP_TEMPLATE_HEADER
+struct __action_on_move<_STLP_TEMPLATE_CONTAINER > {
+  typedef __true_type swap;
+};
+
 /*
 _STLP_TEMPLATE_HEADER
 struct __full_move_traits<_STLP_TEMPLATE_CONTAINER > {
