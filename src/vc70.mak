@@ -1,13 +1,13 @@
 #
-# STLport makefile for VC++ 7 (.NET)
+# STLport makefile for VC++ 7.0 (.NET 2002)
 #
 
 CXX=cl.exe
 CC=cl.exe
 RC=rc
 
-LIB_BASENAME=stlport_vc7
-COMP=VC7
+LIB_BASENAME=stlport_vc70
+COMP=VC70
 
 # EXTRA_COMMON_FLAGS=/D "_MBCS"
 EXTRA_COMMON_FLAGS=/FI "vc_warning_disable.h" /D "_MBCS"
