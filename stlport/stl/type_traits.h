@@ -66,6 +66,7 @@ template <class T> inline void copy(T* source,T* destination,int n) {
 #ifdef _STLP_USE_BOOST_SUPPORT
 #  include <stl/boost_type_traits.h>
 #  include <boost/type_traits/add_reference.hpp>
+#  include <boost/type_traits/add_const.hpp>
 #endif /* _STLP_USE_BOOST_SUPPORT */
 
 _STLP_BEGIN_NAMESPACE
@@ -447,7 +448,8 @@ struct _DefaultZeroValue {
 template <class _Tp> 
 struct __call_traits {
 #if defined(_STLP_USE_BOOST_SUPPORT) && !defined(_STLP_NO_EXTENSIONS)
-  typedef typename ::boost::add_reference<_Tp>::type param_type;
+  typedef typename __select< ::boost::is_reference<_Tp>::value,
+                             _Tp, typename ::boost::add_reference< typename ::boost::add_const<_Tp>::type >::type>::_Ret param_type;
 #else
   typedef const _Tp& param_type;
 #endif /* _STLP_USE_BOOST_SUPPORT */
