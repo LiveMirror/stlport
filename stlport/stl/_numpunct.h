@@ -47,7 +47,7 @@ template <class _Ch, class _InIt> class num_get;
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct<char> : public locale::facet
 {
-  friend class _Locale;
+  // friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -58,7 +58,7 @@ public:
   typedef char               char_type;
   typedef string             string_type;
 
-  explicit numpunct(size_t __refs = 0) : _BaseFacet(__refs) {}
+  explicit numpunct(size_t __refs = 0) : locale::facet(__refs) {}
 
   char decimal_point() const { return do_decimal_point(); }
   char thousands_sep() const { return do_thousands_sep(); }
@@ -89,7 +89,7 @@ protected:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct<wchar_t> : public locale::facet
 {
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -97,7 +97,7 @@ public:
   typedef wchar_t               char_type;
   typedef wstring               string_type;
 
-  explicit numpunct(size_t __refs = 0) : _BaseFacet(__refs) {}
+  explicit numpunct(size_t __refs = 0) : locale::facet(__refs) {}
 
   wchar_t decimal_point() const { return do_decimal_point(); }
   wchar_t thousands_sep() const { return do_thousands_sep(); }

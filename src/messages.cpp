@@ -25,7 +25,7 @@ _STLP_BEGIN_NAMESPACE
 // messages<char>
 
 messages<char>::messages(_Messages* imp)  : 
-  _BaseFacet(1), _M_impl(imp) { imp->_M_delete = false;  }
+  locale::facet(1), _M_impl(imp) { imp->_M_delete = false;  }
 
 messages<char>::~messages()
 { 
@@ -72,7 +72,7 @@ void _Messages::do_close(catalog) const
 # ifndef _STLP_NO_WCHAR_T
 
 messages<wchar_t>::messages(_Messages* imp)  : 
-  _BaseFacet(1), _M_impl(imp) { imp->_M_delete = false;  }
+  locale::facet(1), _M_impl(imp) { imp->_M_delete = false;  }
 
 messages<wchar_t>::~messages()
 { if (_M_impl && _M_impl->_M_delete) delete _M_impl; }

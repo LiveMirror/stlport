@@ -52,7 +52,7 @@ template <class _charT, __DFL_NON_TYPE_PARAM(bool, _International, false) > clas
 
 template <class _CharT, __DFL_TMPL_PARAM(_InputIter , istreambuf_iterator<_CharT>) >
 class money_get : public locale::facet {
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -61,7 +61,7 @@ public:
   typedef _InputIter           iter_type;
   typedef basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> > string_type;
 
-  money_get(size_t __refs = 0) : _BaseFacet(__refs) {}
+  money_get(size_t __refs = 0) : locale::facet(__refs) {}
   iter_type get(iter_type __s, iter_type  __end, bool __intl,
                 ios_base&  __str, ios_base::iostate&  __err,
                 _STLP_LONG_DOUBLE& __units) const
@@ -129,7 +129,7 @@ protected:
   virtual pattern     do_pos_format()    const;
   virtual pattern     do_neg_format()    const;
 
-  friend class _Locale;
+  // friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -179,7 +179,7 @@ protected:
   virtual pattern     do_pos_format()    const;
   virtual pattern     do_neg_format()    const;
 
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -191,7 +191,7 @@ protected:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, true> : public locale::facet, public money_base 
 {
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -239,7 +239,7 @@ protected:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, false> : public locale::facet, public money_base 
 {
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -392,7 +392,7 @@ protected:
 
 template <class _CharT, __DFL_TMPL_PARAM( _OutputIter , ostreambuf_iterator<_CharT>) >
 class money_put : public locale::facet {
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -402,7 +402,7 @@ public:
   typedef _OutputIter          iter_type;
   typedef basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> > string_type;
 
-  money_put(size_t __refs = 0) : _BaseFacet(__refs) {}
+  money_put(size_t __refs = 0) : locale::facet(__refs) {}
   iter_type put(iter_type __s, bool __intl, ios_base& __str,
                 char_type  __fill, _STLP_LONG_DOUBLE __units) const
     { return do_put(__s, __intl, __str, __fill, __units); }

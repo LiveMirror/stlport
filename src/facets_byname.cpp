@@ -21,7 +21,8 @@
 #include "locale_impl.h"
 #include "c_locale.h"
 
-#include "locale_nonclassic.h"
+//#include "locale_nonclassic.h"
+#include "locale_impl.h"
 
 
 #include <stl/_codecvt.h>
@@ -1028,9 +1029,9 @@ void _Messages_impl::do_close(catalog thecat) const {
 // messages<char>
 
 messages<char>::messages(size_t refs)  : 
-  _BaseFacet(refs), _M_impl(new _Messages_impl(false)) {}
+  locale::facet(refs), _M_impl(new _Messages_impl(false)) {}
 
-messages<char>::messages(size_t refs, _Locale_messages* msg_obj) : _BaseFacet(refs), 
+messages<char>::messages(size_t refs, _Locale_messages* msg_obj) : locale::facet(refs), 
   _M_impl(new _Messages_impl(false, msg_obj)) {}
 
 
@@ -1048,10 +1049,10 @@ messages_byname<char>::~messages_byname() {}
 // messages<wchar_t>
 
 messages<wchar_t>::messages(size_t refs)  : 
-  _BaseFacet(refs), _M_impl(new _Messages_impl(true)) {}
+  locale::facet(refs), _M_impl(new _Messages_impl(true)) {}
 
 messages<wchar_t>::messages(size_t refs, _Locale_messages* msg_obj)
-  : _BaseFacet(refs),
+  : locale::facet(refs),
     _M_impl(new _Messages_impl(true, msg_obj)) {}
 
 //----------------------------------------------------------------------

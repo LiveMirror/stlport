@@ -53,7 +53,7 @@ _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC codecvt<char, char, mbstate_t>
   : public locale::facet, public codecvt_base 
 {
-  friend class _Locale;
+  // friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -62,7 +62,7 @@ public:
   typedef char       extern_type;
   typedef mbstate_t  state_type;
 
-  explicit codecvt(size_t __refs = 0) : _BaseFacet(__refs) {}
+  explicit codecvt(size_t __refs = 0) : locale::facet(__refs) {}
 
   result out(mbstate_t&   __state,
              const char*  __from,
@@ -147,7 +147,7 @@ _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC codecvt<wchar_t, char, mbstate_t>
   : public locale::facet, public codecvt_base
 {
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -156,7 +156,7 @@ public:
   typedef char       extern_type;
   typedef mbstate_t  state_type;
 
-  explicit codecvt(size_t __refs = 0) : _BaseFacet(__refs) {}
+  explicit codecvt(size_t __refs = 0) : locale::facet(__refs) {}
 
   result out(mbstate_t&      __state,
              const wchar_t*  __from,

@@ -43,7 +43,7 @@ template <class _CharT> class collate_byname {};
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC collate<char> : public locale::facet 
 {
-  friend class _Locale;
+  // friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -51,7 +51,7 @@ public:
   typedef char   char_type;
   typedef string string_type;
 
-  explicit collate(size_t __refs = 0) : _BaseFacet(__refs) {}
+  explicit collate(size_t __refs = 0) : locale::facet(__refs) {}
 
   int compare(const char* __low1, const char* __high1,
               const char* __low2, const char* __high2) const {
@@ -84,7 +84,7 @@ private:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC collate<wchar_t> : public locale::facet 
 {
-  friend class _Locale;
+  // friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
@@ -92,7 +92,7 @@ public:
   typedef wchar_t char_type;
   typedef wstring string_type;
 
-  explicit collate(size_t __refs = 0) : _BaseFacet(__refs) {}
+  explicit collate(size_t __refs = 0) : locale::facet(__refs) {}
 
   int compare(const wchar_t* __low1, const wchar_t* __high1,
               const wchar_t* __low2, const wchar_t* __high2) const {
@@ -166,7 +166,7 @@ private:
 
 template <class _CharT>
 bool 
-__locale_do_operator_call (const _LocaleBase* __that, 
+__locale_do_operator_call (const locale* __that, 
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __x,
                            const basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >& __y) 
 {

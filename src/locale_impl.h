@@ -35,35 +35,26 @@ _STLP_BEGIN_NAMESPACE
 // Class _Locale_impl
 // This is the base class which implements access only and is supposed to 
 // be used for classic locale only
-class _STLP_CLASS_DECLSPEC _Locale_impl : public _Refcount_Base {
+class _STLP_CLASS_DECLSPEC _Locale_impl :
+    public _Refcount_Base
+{
   public:
     _Locale_impl(const char* s);
     _Locale_impl(const _Locale_impl&);
-    virtual ~_Locale_impl();
+    _Locale_impl(size_t n, const char* s);
 
-    virtual void incr() { this->_M_incr(); }
-    virtual void decr() { 
-      this->_M_decr();
-      if (!this->_M_ref_count) {
-        /*
-         * Here we do not call the delete operator like in the not classic
-         * locale implementation because the classic implementation is only
-         * instanciated once on a static buffer and not on the heap.
-         */
-        this->~_Locale_impl();
-      }
-    }
+  private:
+    ~_Locale_impl();
 
-    size_t size() const { return _M_size; }
+  public:
+
+    size_t size() const { return facets_vec.size(); }
 
     static void make_classic_locale();
 #ifdef _STLP_LEAKS_PEDANTIC
     static void free_classic_locale();
 #endif // _STLP_LEAKS_PEDANTIC
   
-    locale::facet** facets;
-    size_t _M_size;
-
     basic_string<char, char_traits<char>, allocator<char> > name;
 
     static void _STLP_CALL _M_throw_bad_cast();
@@ -71,7 +62,6 @@ class _STLP_CLASS_DECLSPEC _Locale_impl : public _Refcount_Base {
   private:
     void operator=(const _Locale_impl&);
 
-    // private:
   public:
     class _STLP_CLASS_DECLSPEC Init
     {
@@ -79,20 +69,43 @@ class _STLP_CLASS_DECLSPEC _Locale_impl : public _Refcount_Base {
         Init();
         ~Init();
       private:
-        static long _S_count;
-        // friend class _Locale_impl;
+        // static long _S_count;
+        static _Refcount_Base _S_count;
     };
 
     static void _STLP_CALL _S_initialize();
     static void _STLP_CALL _S_uninitialize();
     friend class Init;
+
+  public: // _Locale
+    // void remove(size_t index);
+    locale::facet* insert(locale::facet*, size_t index);
+    void insert(_Locale_impl* from, const locale::id& n);
+
+    // Helper functions for byname construction of locales.
+    void insert_ctype_facets(const char* name);
+    void insert_numeric_facets(const char* name);
+    void insert_time_facets(const char* name);
+    void insert_collate_facets(const char* name);
+    void insert_monetary_facets(const char* name);
+    void insert_messages_facets(const char* name);
+
+  private:
+
+    vector<locale::facet*> facets_vec;
+
+  private:
+    friend struct _Locale_classic_free;
+    friend _Locale_impl *_copy_Locale_impl( _Locale_impl * );
+    friend _Locale_impl *_copy_Nameless_Locale_impl( _Locale_impl * );
+    friend void _release_Locale_impl( _Locale_impl *& loc );
+    friend class locale;
 };
 
-inline _Locale_impl*  _STLP_CALL _S_copy_impl(_Locale_impl* I) {
-    _STLP_ASSERT( I != 0 );
-    I->incr();
-    return I;
-}
+_Locale_impl *_get_Locale_impl( _Locale_impl *loc );
+void _release_Locale_impl( _Locale_impl *& loc );
+_Locale_impl *_copy_Locale_impl( _Locale_impl *loc );
+_Locale_impl *_copy_Nameless_Locale_impl( _Locale_impl * );
 
 _STLP_END_NAMESPACE
 

@@ -100,7 +100,7 @@ public:
 template <class _Ch, __DFL_TMPL_PARAM( _InIt , istreambuf_iterator<_Ch>) >
 class time_get : public locale::facet, public time_base 
 {
-    friend class _Locale;
+    // friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
     friend class _Locale_impl;
 #endif
@@ -108,7 +108,7 @@ public:
   typedef _Ch   char_type;
   typedef _InIt iter_type;
 
-  explicit time_get(size_t __refs = 0)   : _BaseFacet(__refs) {
+  explicit time_get(size_t __refs = 0) : locale::facet(__refs) {
       _Init_timeinfo(_M_timeinfo);
   }
   dateorder date_order() const { return do_date_order(); }
@@ -133,7 +133,7 @@ public:
 protected:
   _Time_Info _M_timeinfo;
 
-  time_get(_Locale_time *, size_t __refs) : _BaseFacet(__refs) {}
+  time_get(_Locale_time *, size_t __refs) : locale::facet(__refs) {}
 
   ~time_get() {}
 
@@ -214,7 +214,7 @@ _OuIt _STLP_CALL __put_time(char * __first, char * __last, _OuIt __out,
 template<class _Ch, __DFL_TMPL_PARAM( _OutputIter , ostreambuf_iterator<_Ch> ) >
 class time_put : public locale::facet, public time_base
 {
-    friend class _Locale;
+    //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
     friend class _Locale_impl;
 #endif
@@ -222,7 +222,7 @@ public:
   typedef _Ch      char_type;
   typedef _OutputIter iter_type;
 
-  explicit time_put(size_t __refs = 0) : _BaseFacet(__refs) {
+  explicit time_put(size_t __refs = 0) : locale::facet(__refs) {
     _Init_timeinfo(_M_timeinfo);
   }
 
@@ -240,7 +240,7 @@ public:
 protected:
   _Time_Info _M_timeinfo;
 
-  time_put(_Locale_time* /*__time*/, size_t __refs) : _BaseFacet(__refs) {
+  time_put(_Locale_time* /*__time*/, size_t __refs) : locale::facet(__refs) {
     //    _Init_timeinfo(_M_timeinfo, __time);
   }
 
@@ -253,7 +253,7 @@ protected:
 template <class _Ch, __DFL_TMPL_PARAM( _InIt , ostreambuf_iterator<_Ch> ) >
 class time_put_byname : public time_put<_Ch, _InIt> 
 {
-  friend class _Locale;
+  //friend class _Locale;
 public:
   typedef time_base::dateorder dateorder;
   typedef _InIt iter_type;

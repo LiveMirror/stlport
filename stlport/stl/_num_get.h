@@ -54,7 +54,7 @@ template <class _CharT, class _InputIter = istreambuf_iterator<_CharT> >
 # endif
 class num_get: public locale::facet
 {
-  friend class _Locale;
+  //friend class _Locale;
 #ifdef _STLP_LEAKS_PEDANTIC
   friend class _Locale_impl;
 #endif
