@@ -1,3 +1,8 @@
+2004-06-30  Francois Dumont  <dums@...>
+
+  stlport/stl/_function.h: Use a call_traits to avoid the reference
+  to reference problem in struct like binder1st or binder2nd.
+
 2004-06-26  Francois Dumont  <dums@...>
 
   * src/explore/: portage of the explore build system for the 
