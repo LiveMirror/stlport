@@ -1,10 +1,30 @@
+2005-03-24  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/gmake/lib/gcc.mak, build/Makefiles/gmake/app/gcc.mak:
+	code reorganization to simplify platform configuration with or without
+	-nostdlib [avoid link with libstdc++ or libestdc++]; now link without
+	libstdc++/libestdc++ supported on Linux and OpenBSD.
+
+	* build/Makefiles/gmake/openbsd/rules-so.mak: idem.
+
+	* build/Makefiles/gmake/freebsd/rules-so.mak: idem.
+
+	* src/num_put_float.cpp: clean float convertions for OpenBSD and FreeBSD;
+	OpenBSD and FreeBSD use STLport code instead of sprintf now.
+
+	* stlport/stl/_cwchar.h: allow masquarade to use mbstate_t from native
+	cwchar header on OpenBSD.
+
+	* stlport/config/slt_gcc.h: llabs and *l math functions absent in OpenBSD;
+	define __unix, that missed in OpenBSD.
+
 2005-03-23  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/app/gcc.mak, build/Makefiles/gmake/lib/gcc.mak:
 	incorporate gcc language support library into libstlport.so
 	[add ~100k to library],	but libsupc++ don't required more in link stage
 	for applications and libraries that use stlport, as in case with
-	libstd++.
+	libstdc++.
 
 2005-03-22  Francois Dumont  <dums@stlport...>
 
