@@ -144,10 +144,11 @@ __acquire_category(const char* name, loc_create_func_t create_obj,
 
   // Find what name to look for.  Be careful if user requests the default.
   char buf[_Locale_MAX_SIMPLE_NAME];
-  if (name == 0 || name[0] == 0)
+  if (name == 0 || name[0] == 0) {
     name = default_obj(buf);
-  if (name == 0 || name[0] == 0)
-    name = "C";
+    if (name == 0 || name[0] == 0)
+      name = "C";
+  }
 
   // Look for an existing entry with that name.
 
