@@ -1,3 +1,19 @@
+2005-03-02  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/top.mak: move .PHONY target to the bottom, it work here
+	as expected
+
+	* build/Makefiles/gmake/depend.mak, targetdirs.mak: reduce amount of dummy
+	targets; fix creation of directories for install.
+
+	* build/Makefiles/gmake/linux/rules-install-so.mak: ditto.
+
+	* stlport/stl/_config.h, stlport/config/stl_gcc.h: support of gcc/linux/uClibc
+
+	* src/_stdio_file.h, num_put_float.cpp, stdio_streambuf.cpp: uClibc support
+
+	* stlport/cwchar: ditto.
+
 2005-03-01  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_threads.h, _windows.h, _rope.c: Fix of a 64 bits portage issue
