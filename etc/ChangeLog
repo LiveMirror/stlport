@@ -1,3 +1,9 @@
+2004-07-01  Francois Dumont  <dums@...>
+
+  src/explore/Makefiles/nmake/lib/vc-common.mak: creation of the
+  STLP_BUILD_FORCE_DYNAMIC_RUNTIME option to create STLport statix
+  versions more easily.
+
 2004-06-30  Francois Dumont  <dums@...>
 
   stlport/stl/_function.h: Use a call_traits to avoid the reference
