@@ -429,7 +429,8 @@ int basic_istream<_CharT, _Traits>::sync() {
 template <class _CharT, class _Traits>
 __BIS_pos_type__
 basic_istream<_CharT, _Traits>::tellg() {
-  //   sentry __sentry(*this, _No_Skip_WS());
+  sentry __sentry(*this, _No_Skip_WS());
+
   basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
   return (__buf && !this->fail()) ? __buf->pubseekoff(0, ios_base::cur, ios_base::in)
     : pos_type(-1);
@@ -442,7 +443,7 @@ basic_istream<_CharT, _Traits>::seekg(pos_type __pos) {
 
   basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
   if (!this->fail() && __buf)
-    __buf->pubseekpos(__pos, ios_base::in);
+    __buf->pubseekpos(__pos);
   return *this;
 }
 
@@ -454,7 +455,7 @@ basic_istream<_CharT, _Traits>::seekg(off_type __off, ios_base::seekdir __dir)
 
   basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
   if (!this->fail() && __buf)
-    __buf->pubseekoff(__off, __dir, ios_base::in);
+    __buf->pubseekoff(__off, __dir);
   return *this;
 }
 

@@ -8,6 +8,10 @@
   * _bitset.h: integration of a workaround for up to MSVC6 compilers
                for the bitset input and output operators
                (thanks Jesse Booher)
+               
+  * _ostream.h, _istream.h: fix of a non-standard behavior of the seekp
+               and seekg calls and conformance to the latest 2003 standard.
+               (thanks Tanaka)
 	
 2003-10-26  Francois Dumont
 

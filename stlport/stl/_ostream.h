@@ -131,14 +131,17 @@ public:                         // Buffer positioning and manipulation.
   }
 
   _Self& seekp(pos_type __pos) {
-    if (this->rdbuf() && !this->fail())
-      this->rdbuf()->pubseekpos(__pos, ios_base::out);
+    if (this->rdbuf() && !this->fail()) {
+      if (this->rdbuf()->pubseekpos(__pos) == pos_type(-1)) {
+        this->setstate(ios_base::failbit);
+      }
+    }
     return *this;
   }
 
   _Self& seekp(off_type __off, ios_base::seekdir __dir) {
     if (this->rdbuf() && !this->fail())
-      this->rdbuf()->pubseekoff(__off, __dir, ios_base::out);
+      this->rdbuf()->pubseekoff(__off, __dir);
     return *this;
   }
 
