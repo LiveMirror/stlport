@@ -5,7 +5,7 @@
 
 2004-10-12  Francois Dumont  <dums@stlport...>
 
-	* stlport/stl/_config.h: typo fix thanks Mickael Fink
+	* stlport/stl/_config.h: typo fix thanks KL
 	
 	* stlport/stl/_move_construct_fwk.h, _set.h, _map.h, _hash_set.h, _hash_map.h:
 	Extra semicolons removal thanks Wlodek Szafran reports.
