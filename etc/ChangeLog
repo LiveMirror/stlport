@@ -4,6 +4,10 @@
 
   * _string.c: judicious correction for string::find_first_not_of to
                improve performance. (thanks Stephen Cleary)
+               
+  * _bitset.h: integration of a workaround for up to MSVC6 compilers
+               for the bitset input and output operators
+               (thanks Jesse Booher)
 	
 2003-10-26  Francois Dumont
 

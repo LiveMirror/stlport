@@ -93,6 +93,14 @@
 #  define _STLP_DONT_USE_BOOL_TYPEDEF 1
 # endif /* _STLP_MSVC <= 1300 */
 
+# if (_STLP_MSVC <= 1200)
+// dums: VC6 can't handle correctly member templates of class that are explicitely
+// instanciated to be exported
+#  ifdef _DLL
+#    define _STLP_NO_MEMBER_TEMPLATES 1
+#  endif
+# endif
+
 # endif /* _STLP_MSVC */
 
 # if (_MSC_VER <= 1310) 
@@ -114,7 +122,6 @@
 #  define _STLP_DONT_RETURN_VOID 1
 #  define _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
-#  define _STLP_NO_MEMBER_TEMPLATES 1
 # endif /* (_MSC_VER <= 1200) */
 
 # if ( _MSC_VER<=1010 )

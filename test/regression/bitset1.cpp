@@ -7,10 +7,10 @@
 #include <bitset>
 #include <algorithm>
 
-#if defined (_STLP_MSVC) && (_MSC_VER < 1300)
+/*#if defined (_STLP_MSVC) && (_MSC_VER < 1300)
 # define _STLP_NON_TYPE_TMPL_PARAM_BUG
 # define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS
-#endif
+#endif*/
 
 # ifdef _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS
 # define CHART
@@ -27,13 +27,14 @@ using namespace std;
 #endif
 
 void disp_bitset(char const* pname, bitset<13U> const& bset) {
-# if ! (defined (_STLP_MSVC) && (_MSC_VER < 1300)) && ! (defined (__SUNPRO_CC) && (__SUNPRO_CC < 0x500))
+  // Boris : MSVC just cannot take it right
+//# if ! (defined (_STLP_MSVC) && (_MSC_VER < 1300)) && ! (defined (__SUNPRO_CC) && (__SUNPRO_CC < 0x500))
 # if !defined (_STLP_NON_TYPE_TMPL_PARAM_BUG)
-  cout << pname<<bset<<endl;
+  cout << pname << bset << endl;
 # else
-  cout << pname<<bset.to_string CHART ()<<endl;
+  cout << pname << bset.to_string CHART () << endl;
 # endif
-# endif /* MSVC || SUNPRO*/
+//# endif /* MSVC || SUNPRO*/
 }
 
 int bitset1_test(int, char**)
@@ -42,7 +43,6 @@ int bitset1_test(int, char**)
 
   bitset<13U> b1(0xFFFF);
   bitset<13U> b2(0x1111);
-  // Boris : MSVC just cannot take it right
   cout << "b1 size = " << b1.size() << endl;
   disp_bitset("b1 = ", b1);
   cout << "b2 size = " << b2.size() << endl;

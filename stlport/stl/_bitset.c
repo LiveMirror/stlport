@@ -194,8 +194,8 @@ operator>>(basic_istream<_CharT, _Traits>& __is, bitset<_Nb>& __x)
         break;
       }
       else {
-        char __c2 = _Traits::to_char_type(__c1);
-        char __c  = __is.narrow(__c2, '*');
+        typename _Traits::char_type __c2 = _Traits::to_char_type(__c1);
+        char __c = __is.narrow(__c2, '*');
 
         if (__c == '0' || __c == '1')
           __tmp.push_back(__c);

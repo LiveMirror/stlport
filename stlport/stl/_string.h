@@ -816,9 +816,11 @@ private:  // Helper functions for insert.
           this->_M_finish += __n;
           iterator __move_dest = __position + __n;
           iterator __move_dest_end = __position + __elems_after + 1;
-          //We have to check that the source buffer won't be modified by the move
-          if ((__first >= __move_dest) && (__first < __move_dest_end)) {
-            if (__last <= __move_dest_end) {
+          const _CharT* __first_ite = __STATIC_CAST(const _CharT*, &(*__first));
+          const _CharT* __last_ite = __STATIC_CAST(const _CharT*, &(*__last));
+          //We have to check that the source buffer won't be modified by the _Traits::move
+          if ((__first_ite >= __move_dest) && (__first_ite < __move_dest_end)) {
+            if (__last_ite <= __move_dest_end) {
               __first += __n;
               __last += __n;
               _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
@@ -826,7 +828,7 @@ private:  // Helper functions for insert.
             }
             else {
               _ForwardIter __mid = __move_dest_end;
-              difference_type __mid_pos = __mid - __first;
+              difference_type __mid_pos = __mid - __first_ite;
               _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
               _M_copy(__mid, __last, __position + __mid_pos);
               __first += __n;
@@ -834,9 +836,9 @@ private:  // Helper functions for insert.
               _M_copy(__first, __mid, __position);
             }
           }
-          else if ((__last > __move_dest) && (__last <= __move_dest_end)) {
+          else if ((__last_ite > __move_dest) && (__last_ite <= __move_dest_end)) {
             _ForwardIter __mid = __move_dest;
-            difference_type __mid_pos = __mid - __first;
+            difference_type __mid_pos = __mid - __first_ite;
             _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
             _M_copy(__first, __mid, __position);
             __mid += __n;
@@ -844,8 +846,8 @@ private:  // Helper functions for insert.
             _M_copy(__mid, __last, __position + __mid_pos);
           }
           else {
-            _Traits::move(__position + __n, __position, (__elems_after - __n) + 1);
-            _M_copy(__first, __last, __position);
+            _Traits::move(__move_dest, __position, (__elems_after - __n) + 1);
+            _M_move(__first, __last, __position);
           }
         }
         else {

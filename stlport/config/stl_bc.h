@@ -133,8 +133,7 @@ typedef char    mbstate_t;
 #   if !defined (_STLP_NO_OWN_IOSTREAMS)
 
 #    if ( defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) \
-     || defined (_STLP_USE_DYNAMIC_LIB) ) \
-       && ! defined (_STLP_USE_STATIC_LIB)
+     || defined (_STLP_USE_DYNAMIC_LIB) ) && ! defined (_STLP_USE_STATIC_LIB)
 #      undef  _STLP_USE_DECLSPEC
 #      define _STLP_USE_DECLSPEC
 #     endif

@@ -20,30 +20,30 @@ int ioiter_test( int, char ** )
   char c;
   char *pc;
   char *strorg = "abcd";
-  std::string expected( "abcd" );
-  std::string tmp;
+  string expected( "abcd" );
+  string tmp;
 
-  std::string objStr(strorg);
+  string objStr(strorg);
 
-  std::istringstream objIStrStrm1(objStr);
-  std::istringstream objIStrStrm2(objStr);
-  std::istringstream objIStrStrm3(objStr);
+  istringstream objIStrStrm1(objStr);
+  istringstream objIStrStrm2(objStr);
+  istringstream objIStrStrm3(objStr);
 
   cout << "plain C-string postfix increment operator and indirection: ";
   pc = strorg;
-  std::string::size_type sz = strlen(strorg);
-  std::string::size_type i = 0;
+  string::size_type sz = strlen(strorg);
+  string::size_type i = 0;
   for ( i = 0; i < sz; ++i ) {
     c = *pc++;
     tmp += c;
-    std::cout << c;
+    cout << c;
   }
-  std::cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << std::endl;
+  cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << endl;
 
   cout << "postfix increment operator and indirection: ";
 
-  std::istreambuf_iterator<char> objIStrmbIt1( objIStrStrm1.rdbuf() );
-  std::istreambuf_iterator<char> end;
+  istreambuf_iterator<char> objIStrmbIt1( objIStrStrm1.rdbuf() );
+  istreambuf_iterator<char> end;
 
   // objIStrmbIt1 != end;
 
@@ -52,35 +52,35 @@ int ioiter_test( int, char ** )
   for ( i = 0; i < sz /* objIStrmbIt1 != end */; ++i ) {
     c = *objIStrmbIt1++;
     tmp += c;
-    std::cout << c;
+    cout << c;
   }
-  std::cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << std::endl;
+  cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << endl;
 
   cout << "indirection, then postfix increment operator: ";
 
   tmp.clear();
 
-  std::istreambuf_iterator<char> objIStrmbIt2( objIStrStrm2.rdbuf() );
+  istreambuf_iterator<char> objIStrmbIt2( objIStrStrm2.rdbuf() );
   for ( i = 0; i < sz; ++i ) {
     c = *objIStrmbIt2;
     tmp += c;
-    std::cout << c;
+    cout << c;
     objIStrmbIt2++;
   }
-  std::cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << std::endl;
+  cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << endl;
 
   tmp.clear();
 
   cout << "compare, then postfix increment operator and indirection: ";
 
-  std::istreambuf_iterator<char> objIStrmbIt3( objIStrStrm3.rdbuf() );
+  istreambuf_iterator<char> objIStrmbIt3( objIStrStrm3.rdbuf() );
 
   while ( objIStrmbIt3 != end ) {
     c = *objIStrmbIt3++;
     tmp += c;
-    std::cout << c;
+    cout << c;
   }
-  std::cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << std::endl;
+  cout << " ... " << ( tmp == expected ? "pass" : "fail" ) << endl;
 
   return 0;
 }
