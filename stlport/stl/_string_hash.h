@@ -33,7 +33,6 @@ template <class _CharT, class _Traits, class _Alloc>
 _STLP_INLINE_LOOP size_t
 __stl_string_hash(const basic_string<_CharT,_Traits,_Alloc>& __s) {
   unsigned long __h = 0;
-  typedef typename basic_string<_CharT,_Traits,_Alloc>::const_pointer const_ptr;
   size_t __len = __s.size();
   const _CharT* __data = __s.data();
   for ( size_t __i = 0; __i < __len; ++__i)
