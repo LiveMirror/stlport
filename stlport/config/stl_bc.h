@@ -154,12 +154,11 @@ typedef char    mbstate_t;
 #  endif
 #  define _STLP_EXPORT_TEMPLATE_KEYWORD __declspec(dllexport)
 
-#  if (__BORLANDC__ >= 0x560) && ! defined (_STLP_OWN_IOSTREAMS)
+#  if (__BORLANDC__ >= 0x560) && !defined (_STLP_OWN_IOSTREAMS)
 // #  define _STLP_IS_NATIVE_LIB
-#    define _STLP_NATIVE_INCLUDE_PATH ../include/oldstl
-#    define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include/oldstl
-#    define _STLP_NATIVE_C_INCLUDE_PATH ../include/oldstl
-#    define _STLP_NATIVE_CPP_RUNTIME_PATH ../include/oldstl
+#    if !defined (_STLP_NATIVE_INCLUDE_PATH)
+#      define _STLP_NATIVE_INCLUDE_PATH ../include/oldstl
+#    endif
 #  endif
 
 #endif

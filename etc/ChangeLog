@@ -4,6 +4,16 @@
 	uClibc 0.9.27/gcc problem. Fix one macro for declaration math
 	functions in case of absent *f functions.
 
+2005-03-16  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/*: Clean native header include path macro definition. 
+	Removed many useless definition simply recreating the default behavior. 
+	Removed the unreferenced _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH macro.
+	
+	* stlport/stl/_site_config.h: Update relative path headers macros 
+	documentation to reflect more accurately default behavior and add 
+	the unreference	_STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH macro.
+
 2005-03-15  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_fstream.h: Fix _Noconv_input helper class default implementation.

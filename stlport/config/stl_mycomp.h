@@ -281,7 +281,7 @@
 // #  define _STLP_MAKE_HEADER(path, header) <path/header>
 
 // This macro constructs native include header path from include path and name.
-// You may have do define it if experirncing problems with preprocessor
+// You may have do define it if experimenting problems with preprocessor
 // # define _STLP_NATIVE_HEADER(header) _STLP_MAKE_HEADER(_STLP_NATIVE_INCLUDE_PATH,header)
 
 // Same for C headers

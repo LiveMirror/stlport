@@ -15,16 +15,16 @@
 
 // compatibility section
 
-# if (defined (_STLP_NOTHREADS) || defined (_STLP_NO_THREADS) || defined (NOTHREADS))
+#if (defined (_STLP_NOTHREADS) || defined (_STLP_NO_THREADS) || defined (NOTHREADS))
 #  if ! defined (_NOTHREADS)
 #   define _NOTHREADS
 #  endif
 #  if ! defined (_STLP_NO_THREADS)
 #   define _STLP_NO_THREADS
 #  endif
-# endif
+#endif
 
-# if !defined(_STLP_USE_DYNAMIC_LIB) && !defined(_STLP_USE_STATIC_LIB)
+#if !defined(_STLP_USE_DYNAMIC_LIB) && !defined(_STLP_USE_STATIC_LIB)
 /*
  * Turn _STLP_USE_DYNAMIC_LIB to enforce use of .dll version of STLport library.
  * NOTE: please do that only if you know what you are doing!
@@ -46,22 +46,26 @@
  * STLport library version.
  */
 // # define _STLP_USE_STATIC_LIB
-# endif // !_STLP_USE_DYNAMIC_LIB && !_STLP_USE_STATIC_LIB
+#endif // !_STLP_USE_DYNAMIC_LIB && !_STLP_USE_STATIC_LIB
 
 /* 
  * Edit relative path below (or put full path) to get native 
  * compiler vendor's headers included. Default is "../include"
+ * for _STLP_NATIVE_INCLUDE_PATH, default for other macros is
+ * _STLP_NATIVE_INCLUDE_PATH.
  * Hint : never install STLport in the directory that ends with "include"
  */
 // #  undef _STLP_NATIVE_INCLUDE_PATH
 // #  define _STLP_NATIVE_INCLUDE_PATH ../include
 // same for C library headers like <cstring>
 // #  undef _STLP_NATIVE_CPP_C_INCLUDE_PATH
-// #  define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
+// #  define _STLP_NATIVE_CPP_C_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
 // same for C headers like <string.h>
 // #  undef _STLP_NATIVE_C_INCLUDE_PATH
-// #  define _STLP_NATIVE_C_INCLUDE_PATH ../include
-
+// #  define _STLP_NATIVE_C_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
+/* Some compilers locate basic C++ runtime support headers (<new>, <typeinfo>, <exception>) in separate directory */
+// #  undef _STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH
+// #  define _STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
 
 /* 
  * _STLP_USE_OWN_NAMESPACE/_STLP_NO_OWN_NAMESPACE

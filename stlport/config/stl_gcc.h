@@ -4,17 +4,16 @@
 
 /* Systems having GLIBC installed have different traits */
 #if defined (__linux__) || defined(__CYGWIN__)
-# ifndef _STLP_USE_GLIBC
-#  define _STLP_USE_GLIBC 1
+#  ifndef _STLP_USE_GLIBC
+#    define _STLP_USE_GLIBC 1
 //#  ifdef _GLIBCPP_USE_NAMESPACES
 //#   undef _GLIBCPP_USE_NAMESPACES
 //#  endif
-# endif
-# if defined(__UCLIBC__) && !defined(_STLP_USE_UCLIBC)
-#  define _STLP_USE_UCLIBC 1
-# endif
+#  endif
+#  if defined(__UCLIBC__) && !defined(_STLP_USE_UCLIBC)
+#    define _STLP_USE_UCLIBC 1
+#  endif
 #endif
-
 
 #if (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ <= 3))
 //define for gcc versions before 3.4.0.
@@ -316,23 +315,24 @@ __GIVE_UP_WITH_STL(GCC_272);
 
 #if (__GNUC__ >= 3)
 
-#  if (((__GNUC__ == 3 ) && (__GNUC_MINOR__ == 0)) || ((__GNUC_MINOR__ < 3) && __APPLE__))
-#    define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
-#  else
-#    if ((__GNUC_MINOR__ >= 3) && __APPLE__)
-#      define _STLP_NATIVE_INCLUDE_PATH ../c++
+#  if !defined (_STLP_NATIVE_INCLUDE_PATH)
+#    if (((__GNUC__ == 3 ) && (__GNUC_MINOR__ == 0)) || ((__GNUC_MINOR__ < 3) && __APPLE__))
+#      define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
+#    else
+#      if ((__GNUC_MINOR__ >= 3) && __APPLE__)
+#        define _STLP_NATIVE_INCLUDE_PATH ../c++
 /*
 * Before version 3.4.0 the 0 patch level was not part of the include path:
 */
-#    elif defined (__GNUC_PATCHLEVEL__) && ((__GNUC_PATCHLEVEL__ > 0) || \
-                                            (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || \
-                                            (__GNUC__ > 3))
-#      define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__
-#    else
-#      define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__
+#      elif defined (__GNUC_PATCHLEVEL__) && ((__GNUC_PATCHLEVEL__ > 0) || \
+                                              (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || \
+                                              (__GNUC__ > 3))
+#        define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__
+#      else
+#        define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__
+#      endif
 #    endif
-#  endif 
-#  define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH/backward
+#  endif
 
 /* Instantiation scheme that used (default) in gcc 3 made void of sense explicit
    instantiation within library: nothing except increased library size. - ptr
@@ -341,7 +341,9 @@ __GIVE_UP_WITH_STL(GCC_272);
 
 #elif (__GNUC_MINOR__ < 8)
 
-#  define _STLP_NATIVE_INCLUDE_PATH ../g++-include
+#  if !defined (_STLP_NATIVE_INCLUDE_PATH)
+#    define _STLP_NATIVE_INCLUDE_PATH ../g++-include
+#  endif
 
 /* tuning of static template data members workaround */
 #  if ( _STLP_STATIC_TEMPLATE_DATA < 1 )
@@ -366,22 +368,25 @@ __GIVE_UP_WITH_STL(GCC_272);
 // If your installation use "g++-3" include directory for any reason (pre-2.95.2 or Win binary kit),
 // please change the macro below to point to your directory. 
 
-#  if defined(__DJGPP)
-#    define _STLP_NATIVE_INCLUDE_PATH ../lang/cxx
-#  elif (__GNUC__ >= 3) || (__GNUC_MINOR__ >= 97)
-#    define _STLP_NATIVE_INCLUDE_PATH ../include/g++-v3
-#  elif ((__GNUC_MINOR__ >= 95 && __GNUC_MINOR__ < 97) && !( defined (__FreeBSD__) || defined (__NetBSD__) || defined(__sgi) || defined (__OS2__) ) )
-#    define _STLP_NATIVE_INCLUDE_PATH ../g++-3
-#  elif (__GNUC_MINOR__ > 8) && (__GNUC_MINOR__ < 95) && (__GNUC__ < 3) && !defined( __Lynx__ )
+#  if !defined (_STLP_NATIVE_INCLUDE_PATH)
+#    if defined(__DJGPP)
+#      define _STLP_NATIVE_INCLUDE_PATH ../lang/cxx
+#    elif (__GNUC__ >= 3) || (__GNUC_MINOR__ >= 97)
+#      define _STLP_NATIVE_INCLUDE_PATH ../include/g++-v3
+#    elif ((__GNUC_MINOR__ >= 95 && __GNUC_MINOR__ < 97) && \
+          !( defined (__FreeBSD__) || defined (__NetBSD__) || defined(__sgi) || defined (__OS2__) ) )
+#      define _STLP_NATIVE_INCLUDE_PATH ../g++-3
+#    elif (__GNUC_MINOR__ > 8) && (__GNUC_MINOR__ < 95) && (__GNUC__ < 3) && !defined( __Lynx__ )
 // this really sucks, as GNUpro does not really identifies itself, so we have to guess 
 // depending on a platform
-#    ifdef __hpux
-#      define _STLP_NATIVE_INCLUDE_PATH ../g++-3
+#      ifdef __hpux
+#        define _STLP_NATIVE_INCLUDE_PATH ../g++-3
+#      else
+#        define _STLP_NATIVE_INCLUDE_PATH ../g++-2
+#      endif
 #    else
-#      define _STLP_NATIVE_INCLUDE_PATH ../g++-2
+#      define _STLP_NATIVE_INCLUDE_PATH g++
 #    endif
-#  else
-#    define _STLP_NATIVE_INCLUDE_PATH g++
 #  endif
 
 // <exception> et al
@@ -391,9 +396,7 @@ __GIVE_UP_WITH_STL(GCC_272);
 #    endif
 #  else
 // azov
-#    ifdef __Lynx__ 
-#      define _STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
-#    else
+#    ifndef __Lynx__ 
 #      if (__GNUC__ > 2) || (__GNUC__ == 2 && __GNUC_MINOR__ >= 97)
 // #     define _STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH ../g++-v3
 #      else
@@ -404,8 +407,9 @@ __GIVE_UP_WITH_STL(GCC_272);
 
 #endif /* GNUC_MINOR < 8 */
 
-#define _STLP_NATIVE_CPP_C_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
-#define _STLP_NATIVE_C_INCLUDE_PATH ../include
+#if !defined (_STLP_NATIVE_C_INCLUDE_PATH)
+#  define _STLP_NATIVE_C_INCLUDE_PATH ../include
+#endif
 
 #ifdef _SCO_ELF
 #  define _STLP_SCO_OPENSERVER

@@ -4,19 +4,10 @@
 
 
 // Common features for VC++ 4.0 and higher
+
 #if defined (_M_IA64)
-#  define _STLP_NATIVE_HEADER(x) <../crt/##x>
-#  define _STLP_NATIVE_C_HEADER(x) <../crt/##x>
-#  define _STLP_NATIVE_CPP_C_HEADER(x) <../crt/##x>
-#  define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../crt/##x>
-#  define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../crt/##header>
+#  define _STLP_NATIVE_INCLUDE_PATH ../crt
 #  define _STLP_GLOBAL_NEW_HANDLER
-#else
-#  define _STLP_NATIVE_HEADER(x) <../include/##x>
-#  define _STLP_NATIVE_C_HEADER(x) <../include/##x>
-#  define _STLP_NATIVE_CPP_C_HEADER(x) <../include/##x>
-#  define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../include/##x>
-#  define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../include/##header>
 #endif
 
 #define _STLP_CALL __cdecl

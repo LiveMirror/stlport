@@ -139,45 +139,22 @@
 /*
  * eMbedded Visual C++ .NET specific settings
  */
-# ifdef _STLP_WCE_NET
+#ifdef _STLP_WCE_NET
 // include headers for ARM and emulator
-#  undef _STLP_NATIVE_HEADER
-#  undef _STLP_NATIVE_C_HEADER
-#  undef _STLP_NATIVE_CPP_C_HEADER
-#  undef _STLP_NATIVE_OLD_STREAMS_HEADER
-#  undef _STLP_NATIVE_CPP_RUNTIME_HEADER
 #  if defined(_X86_)
-#   define _STLP_NATIVE_HEADER(x) <../Emulator/##x>
-#   define _STLP_NATIVE_C_HEADER(x) <../Emulator/##x>
-#   define _STLP_NATIVE_CPP_C_HEADER(x) <../Emulator/##x>
-#   define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../Emulator/##x>
-#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../Emulator/##header>
+#    define _STLP_NATIVE_INCLUDE_PATH ../Emulator
 #  elif defined(_ARM_)
-#   define _STLP_NATIVE_HEADER(x) <../Armv4/##x>
-#   define _STLP_NATIVE_C_HEADER(x) <../Armv4/##x>
-#   define _STLP_NATIVE_CPP_C_HEADER(x) <../Armv4/##x>
-#   define _STLP_NATIVE_OLD_STREAMS_HEADER(x) <../Armv4/##x>
-#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../Armv4/##header>
-#  elif defined(_MIPS_) && defined(MIPS16)
-#   define _STLP_NATIVE_HEADER(header) <../mips16/##header>
-#   define _STLP_NATIVE_C_HEADER(header) <../mips16/##header>
-#   define _STLP_NATIVE_CPP_C_HEADER(header) <../mips16/##header>
-#   define _STLP_NATIVE_OLD_STREAMS_HEADER(header) <../mips16/##header>
-#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../mips16/##header>
-#  elif defined(_MIPS_) && defined(MIPSII)
-#   define _STLP_NATIVE_HEADER(header) <../mipsII/##header>
-#   define _STLP_NATIVE_C_HEADER(header) <../mipsII/##header>
-#   define _STLP_NATIVE_CPP_C_HEADER(header) <../mipsII/##header>
-#   define _STLP_NATIVE_OLD_STREAMS_HEADER(header) <../mipsII/##header>
-#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../mipsII/##header>
-#  elif defined(_MIPS_) && defined(MIPSIV)
-#   define _STLP_NATIVE_HEADER(header) <../mipsIV/##header>
-#   define _STLP_NATIVE_C_HEADER(header) <../mipsIV/##header>
-#   define _STLP_NATIVE_CPP_C_HEADER(header) <../mipsIV/##header>
-#   define _STLP_NATIVE_OLD_STREAMS_HEADER(header) <../mipsIV/##header>
-#   define _STLP_NATIVE_CPP_RUNTIME_HEADER(header) <../mipsIV/##header>
+#    define _STLP_NATIVE_INCLUDE_PATH ../Armv4
+#  elif defined(_MIPS_)
+#    if defined(MIPS16)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mips16
+#    elif defined(MIPSII)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mipsII
+#    elif defined(MIPSIV)
+#      define _STLP_NATIVE_INCLUDE_PATH ../mipsIV
+#    endif
 #  endif
-# endif /* _STLP_WCE_NET */
+#endif /* _STLP_WCE_NET */
 
 /*
  * eMbedded Visual C++ 3.0 specific settings

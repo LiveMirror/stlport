@@ -31,12 +31,6 @@
 //
 #  if defined(__HP_aCC)
 
-# if __HP_aCC < 33100
-#   define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../iostream
-# else
-#   define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../include/iostream
-# endif
-
 #   define _STLP_LONG_LONG long long
 
 #if (__HP_aCC <= 30000 && __HP_aCC >= 12100)
@@ -50,8 +44,6 @@ static void _STLP_dummy_literal_3() { const char *p = "123456700000000000000089"
 
 #     define _STLP_HP_ACC                   0123
 #     define _STLP_NATIVE_INCLUDE_PATH       ../include
-#     define _STLP_NATIVE_C_INCLUDE_PATH     ../include
-#     define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
 #     define _STLP_VENDOR_GLOBAL_STD         1
 #     define _STLP_VENDOR_GLOBAL_CSTD        1
 #     define _STLP_DONT_THROW_RANGE_ERRORS   1
@@ -87,15 +79,11 @@ static void _STLP_dummy_literal_3() { const char *p = "123456700000000000000089"
 // to use the STL defined in the include_std directory.
 //
 # define _STLP_NATIVE_INCLUDE_PATH ../include_std
-# define _STLP_NATIVE_C_INCLUDE_PATH ../include_std
-# define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include_std
 
 // #      define _STLP_HPACC_ONLY_NATIVE_STRING 1 // STLPort _string.c includes <locale>
 #     define _STLP_HP_ACC_COMPAT            -1
 #    else // option -Aa
 #     define _STLP_NATIVE_INCLUDE_PATH       ../include
-#     define _STLP_NATIVE_C_INCLUDE_PATH     ../include
-#     define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
 #     define _STLP_VENDOR_GLOBAL_STD         1
 #     define _STLP_VENDOR_GLOBAL_CSTD        1
 // Add the following in _site_config.h if "-Wc,-koenig_lookup,on" not used
@@ -114,14 +102,10 @@ typedef typename _STLP_dummy_type1:: _STLP_TEMPLATE rebind<t>::other _STLP_dummy
 #    if defined(_NAMESPACE_STD) // option -AA
 // from now, we have a full standard lib in namespace std
 #      define _STLP_NATIVE_INCLUDE_PATH       ../include_std
-#      define _STLP_NATIVE_C_INCLUDE_PATH     ../include_std
-#      define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include_std
 // #      define _STLP_HPACC_ONLY_NATIVE_STRING 1 // STLPort _string.c includes <locale>
 #     define _STLP_HP_ACC_COMPAT            -1
 #    else // kind of compatibility mode
 #     define _STLP_NATIVE_INCLUDE_PATH       ../include
-#     define _STLP_NATIVE_C_INCLUDE_PATH     ../include
-#     define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
 #     define _STLP_VENDOR_GLOBAL_STD         1
 #     define _STLP_VENDOR_GLOBAL_CSTD        1
 // comment if  "-Wc,-koenig_lookup,on" id used
