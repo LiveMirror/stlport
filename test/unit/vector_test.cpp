@@ -25,6 +25,7 @@ class VectorTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(vec_test_7);
   CPPUNIT_TEST(capacity);
   CPPUNIT_TEST(at);
+  CPPUNIT_TEST(pointer);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -37,6 +38,7 @@ protected:
   void vec_test_7();
   void capacity();
   void at();
+  void pointer();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(VectorTest);
@@ -276,3 +278,11 @@ void VectorTest::at() {
 #endif
 }
 
+void VectorTest::pointer()
+{
+  vector<int *> v1;
+  vector<int *> v2 = v1;
+  vector<int *> v3;
+  
+  v3.insert( v3.end(), v1.begin(), v1.end() );
+}
