@@ -13,49 +13,56 @@
  *
  */
 
-#ifndef __STLPORT_IOMANIP_H
-# define __STLPORT_IOMANIP_H
+#ifndef _STLP_IOMANIP_H
+# define _STLP_IOMANIP_H
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2031
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2031
 #  include <stl/_prolog.h>
 # endif
 
-# if defined ( __SGI_STL_OWN_IOSTREAMS )
+# if defined ( _STLP_OWN_IOSTREAMS )
 
+#ifdef __BORLANDC__
+#  include <iomanip.>
+#else
 #  include <iomanip>
+#endif
 
-#  ifndef __STL_HAS_NO_NAMESPACES
-#  ifdef __STL_BROKEN_USING_DIRECTIVE
-using namespace __STLPORT_STD;
+#  ifndef _STLP_HAS_NO_NAMESPACES
+#  ifdef _STLP_BROKEN_USING_DIRECTIVE
+using namespace _STLP_STD;
 #  else
-using __STLPORT_STD::setiosflags;
-using __STLPORT_STD::resetiosflags;
-using __STLPORT_STD::setbase;
-using __STLPORT_STD::setfill;
-using __STLPORT_STD::setprecision;
-using __STLPORT_STD::setw;
+using _STLP_STD::setiosflags;
+using _STLP_STD::resetiosflags;
+using _STLP_STD::setbase;
+using _STLP_STD::setfill;
+using _STLP_STD::setprecision;
+using _STLP_STD::setw;
 #  endif
-#  endif /* __STL_HAS_NO_NAMESPACES */
+#  endif /* _STLP_HAS_NO_NAMESPACES */
 
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+// get all the pollution we want
+# include <iostream.h>
 
-# include __STL_NATIVE_OLD_STREAMS_HEADER(iomanip.h)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 
-# if defined  (__STL_USE_NAMESPACES) && ! defined (__STL_BROKEN_USING_DIRECTIVE)
-__STL_BEGIN_NAMESPACE
+# include _STLP_NATIVE_OLD_STREAMS_HEADER(iomanip.h)
+
+# if defined  (_STLP_USE_NAMESPACES) && ! defined (_STLP_BROKEN_USING_DIRECTIVE)
+_STLP_BEGIN_NAMESPACE
 # include <using/h/iomanip.h>
-__STL_END_NAMESPACE
-#  endif /* __STL_USE_NAMESPACES */
+_STLP_END_NAMESPACE
+#  endif /* _STLP_USE_NAMESPACES */
 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2031)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2031)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_IOMANIP_H */
+#endif /* _STLP_IOMANIP_H */
 
 // Local Variables:
 // mode:C++

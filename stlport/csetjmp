@@ -13,41 +13,41 @@
  *
  */
 
-#ifndef __STLPORT_CSETJMP
-# define __STLPORT_CSETJMP
+#ifndef _STLP_CSETJMP
+# define _STLP_CSETJMP
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x111
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x111
 #  include <stl/_prolog.h>
 # endif
 
 // if the macro is on, the header is already there
 # ifndef setjmp
-# if defined (__STL_USE_NEW_C_HEADERS)
-#  include __STL_NATIVE_CPP_C_HEADER(csetjmp)
+# if defined (_STLP_USE_NEW_C_HEADERS)
+#  include _STLP_NATIVE_CPP_C_HEADER(csetjmp)
 # else
-#  include __STL_NATIVE_C_HEADER(setjmp.h)
+#  include _STLP_NATIVE_C_HEADER(setjmp.h)
 # endif
 # endif
 
-# ifdef __STL_IMPORT_VENDOR_CSTD
-__STL_BEGIN_NAMESPACE
-using __STL_VENDOR_CSTD::jmp_buf;
-# ifndef __STL_NO_CSTD_FUNCTION_IMPORTS
+# ifdef _STLP_IMPORT_VENDOR_CSTD
+_STLP_BEGIN_NAMESPACE
+using _STLP_VENDOR_CSTD::jmp_buf;
+# ifndef _STLP_NO_CSTD_FUNCTION_IMPORTS
 #  ifndef setjmp
-using __STL_VENDOR_CSTD::setjmp;
+using _STLP_VENDOR_CSTD::setjmp;
 #  endif
-using __STL_VENDOR_CSTD::longjmp;
+using _STLP_VENDOR_CSTD::longjmp;
 # endif
-__STL_END_NAMESPACE
-#endif /* __STL_IMPORT_VENDOR_CSTD */
+_STLP_END_NAMESPACE
+#endif /* _STLP_IMPORT_VENDOR_CSTD */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x111 )
+# if (_STLP_OUTERMOST_HEADER_ID == 0x111 )
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_CSETJMP */
+#endif /* _STLP_CSETJMP */
 
 // Local Variables:
 // mode:C++

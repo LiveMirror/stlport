@@ -23,28 +23,32 @@
  *
  */
 
-#ifndef __SGI_STL_DEQUE
-#define __SGI_STL_DEQUE
+#ifndef _STLP_DEQUE
+#define _STLP_DEQUE
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x22
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x22
 #  include <stl/_prolog.h>
 # endif
 
-#ifndef __SGI_STL_INTERNAL_DEQUE_H
+#ifdef _STLP_PRAGMA_ONCE
+# pragma once
+#endif
+
+#ifndef _STLP_INTERNAL_DEQUE_H
 # include <stl/_deque.h>
 #endif
 
-#if defined (__STL_WHOLE_NATIVE_STD)
-# include  __STL_NATIVE_HEADER(deque)
+#if defined (_STLP_WHOLE_VENDOR_STD)
+# include _STLP_NATIVE_HEADER(deque)
 #endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x22)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x22)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_DEQUE */
+#endif /* _STLP_DEQUE */
 
 // Local Variables:
 // mode:C++

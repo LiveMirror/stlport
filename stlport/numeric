@@ -20,26 +20,30 @@
  *
  */
 
-#ifndef __SGI_STL_NUMERIC
-#define __SGI_STL_NUMERIC
+#ifndef _STLP_NUMERIC
+#define _STLP_NUMERIC
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x49
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x49
 #  include <stl/_prolog.h>
 # endif
 
-#ifndef __SGI_STL_INTERNAL_FUNCTION_H
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+#ifndef _STLP_INTERNAL_FUNCTION_H
 # include <stl/_function.h>
 #endif
 
 #include <stl/_numeric.h>
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x49)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x49)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_NUMERIC */
+#endif /* _STLP_NUMERIC */
 
 // Local Variables:
 // mode:C++

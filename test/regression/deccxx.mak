@@ -56,6 +56,7 @@ OBJ_LIST  = stl_test.o accum1.o accum2.o \
 	map1.o \
 	max1.o max2.o \
 	maxelem1.o maxelem2.o \
+	memfunptr.o \
 	merge0.o merge1.o merge2.o \
 	min1.o min2.o \
 	minelem1.o minelem2.o \
@@ -230,7 +231,7 @@ TEST  = stl_test.out
 CC = cxx
 CXX = $(CC)
 # CXXFLAGS = -O -w0 ${STL_INCL}  -I.
-CXXFLAGS =  ${STL_INCL}  -std strict_ansi_errors -I. -D__NO_USE_STD_IOSTREAM -D__STL_NO_SGI_IOSTREAMS -D__STL_DEBUG
+CXXFLAGS =  ${STL_INCL}  -std strict_ansi_errors -I. -D__NO_USE_STD_IOSTREAM -D_STLP_NO_OWN_IOSTREAMS -D_STLP_DEBUG
 
 LIBS = -lm 
 LIBSTDCXX = 

@@ -16,22 +16,26 @@
  *
  */
 
-#ifndef __SGI_STL_HASH_SET
-#define __SGI_STL_HASH_SET
+#ifndef _STLP_HASH_SET
+#define _STLP_HASH_SET
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x4029
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x4029
 #  include <stl/_prolog.h>
+# endif
+
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
 # endif
 
 #include <stl/_hash_set.h>
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x4029)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x4029)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_HASH_SET */
+#endif /* _STLP_HASH_SET */
 
 // Local Variables:
 // mode:C++

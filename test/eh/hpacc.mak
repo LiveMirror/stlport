@@ -36,17 +36,24 @@ NOSGI_TEST = ./eh_test_nosgi.out
 CC = aCC
 CXX = $(CC)
 
-CXX_EXTRA_FLAGS = -Aa -DEH_DELETE_HAS_THROW_SPEC
+CXX_EXTRA_FLAGS = -AA -DEH_DELETE_HAS_THROW_SPEC
 # dwa 12/22/99 -- had to turn off -ansi flag so we could use SGI IOSTREAMS
 # also, test_slist won't compile with -O3/-O2 when targeting PPC. It fails 
 # in the assembler with 'invalid relocation type'
 CXXFLAGS = -g -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -DEH_VECTOR_OPERATOR_NEW
-D_CXXFLAGS = -g -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -DEH_VECTOR_OPERATOR_NEW -D__STL_DEBUG -D__STL_USE_STATIC_LIB
-NOSGI_CXXFLAGS = -g -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -D__STL_NO_SGI_IOSTREAMS -D__STL_DEBUG_UNINITIALIZED -DEH_VECTOR_OPERATOR_NEW
+D_CXXFLAGS = -g -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -DEH_VECTOR_OPERATOR_NEW -D_STLP_DEBUG -D_STLP_USE_STATIC_LIB
+NOSGI_CXXFLAGS = -g -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -D_STLP_NO_OWN_IOSTREAMS -D_STLP_DEBUG_UNINITIALIZED -DEH_VECTOR_OPERATOR_NEW
 
 check: $(TEST)
 
-LIBS = -lm -lcma
+HP_VERSION=$(shell uname -r)
+ifeq (${HP_VERSION},B.10.20)
+PTHREAD_LIB=-lcma
+else
+PTHREAD_LIB=-lpthread +nostl
+endif
+
+LIBS = $(PTHREAD_LIB) -lm
  
 D_LIBSTLPORT = -L../../lib -lstlport_aCC_debug
 LIBSTLPORT = -L../../lib -lstlport_aCC

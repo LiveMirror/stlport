@@ -20,32 +20,36 @@
  *
  */
 
-#ifndef __SGI_STL_VECTOR
-#define __SGI_STL_VECTOR
+#ifndef _STLP_VECTOR
+#define _STLP_VECTOR
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x77
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x77
 #  include <stl/_prolog.h>
 # endif
 
-# ifndef __SGI_STL_INTERNAL_ALGOBASE_H
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+# ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h>
 # endif
 
-#ifndef __SGI_STL_INTERNAL_VECTOR_H
+#ifndef _STLP_INTERNAL_VECTOR_H
 # include <stl/_vector.h>
 #endif
 
-#if defined (__STL_IMPORT_VENDOR_STD) && ! defined (__STL_MINIMUM_IMPORT_STD)
-#  include __STL_NATIVE_HEADER(vector)
+#if defined (_STLP_IMPORT_VENDOR_STD) && ! defined (_STLP_MINIMUM_IMPORT_STD)
+#  include _STLP_NATIVE_HEADER(vector)
 #endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x77)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x77)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_VECTOR */
+#endif /* _STLP_VECTOR */
 
 // Local Variables:
 // mode:C++

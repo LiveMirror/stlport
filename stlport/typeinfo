@@ -13,59 +13,73 @@
  *
  */
 
-#ifndef __STLPORT_TYPEINFO
-# define __STLPORT_TYPEINFO
+#ifndef _STLP_TYPEINFO
+# define _STLP_TYPEINFO
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x473
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x473
 #  include <stl/_prolog.h>
 # endif
 
-# ifndef __STL_NO_TYPEINFO
+# ifndef _STLP_NO_TYPEINFO
 
-# if defined (__STL_NO_NEW_NEW_HEADER)
+# if defined (_STLP_NO_NEW_NEW_HEADER)
 #  include <typeinfo.h>
 # else
-#  include __STL_NATIVE_CPP_RUNTIME_HEADER(typeinfo)
+#  include _STLP_NATIVE_CPP_RUNTIME_HEADER(typeinfo)
+# endif
+
+# if defined(_STLP_MSVC) && (_STLP_MSVC >= 1300)
+// In .NET, <typeinfo> actually includes <typeinfo.h> 
+#  undef _STLP_OLDSTD_typeinfo
 # endif
 
 // if <typeinfo.h> already included, do not import anything
-# if defined  (__STL_USE_NAMESPACES) && ! defined (__STLPORT_OLDSTD_typeinfo) \
-&& ( defined (__STL_VENDOR_GLOBAL_EXCEPT_STD) || defined (__STL_USE_OWN_NAMESPACE) || defined (__STL_DEBUG))
-__STL_BEGIN_NAMESPACE
+# if defined  (_STLP_USE_NAMESPACES) && ! defined (_STLP_OLDSTD_typeinfo) \
+&& ( defined (_STLP_VENDOR_GLOBAL_EXCEPT_STD) || defined (_STLP_USE_OWN_NAMESPACE) || defined (_STLP_DEBUG))
+# if defined(_STLP_MSVC) && (_STLP_MSVC < 1300)
+class bad_cast : public exception {};
+# endif
+_STLP_BEGIN_NAMESPACE
 
 // VC++ 6 has only this guy in ::
-// # if !(defined(__STL_MSVC)&& (__STL_MSVC <= 1200))
-using __STL_VENDOR_EXCEPT_STD::type_info;
+// # if !(defined(_STLP_MSVC)&& (_STLP_MSVC <= 1200))
+using _STLP_VENDOR_EXCEPT_STD::type_info;
 // # endif
 
-#  if !(defined(__MRC__) || defined(__SC__))
-using __STL_VENDOR_EXCEPT_STD::bad_typeid;
+#  if !(defined(__MRC__) || defined(__SC__) || defined(__DMC__))
+using _STLP_VENDOR_EXCEPT_STD::bad_typeid;
 #  endif
 
 //#if defined( __xlC__ ) && (__xlC__ < 0x500)
 //# include <exception>
 //struct bad_cast : exception {};
 //#endif
-using __STL_VENDOR_EXCEPT_STD::bad_cast;
+# if defined(_STLP_MSVC) && (_STLP_MSVC < 1300)
+using ::bad_cast;
+# else
+using _STLP_VENDOR_EXCEPT_STD::bad_cast;
+# endif
 
-__STL_END_NAMESPACE
-#endif /* __STL_OWN_NAMESPACE */
+_STLP_END_NAMESPACE
+#endif /* _STLP_OWN_NAMESPACE */
 
 #else
 
 # include <exception>
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
+# ifndef __DMC__
 struct bad_cast : exception {};
-__STL_END_NAMESPACE
+# endif
+_STLP_END_NAMESPACE
 #endif  /* NO_TYPEINFO */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x473)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x473)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_TYPEINFO */
+#endif /* _STLP_TYPEINFO */
 
 // Local Variables:
 // mode:C++

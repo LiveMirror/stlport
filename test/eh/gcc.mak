@@ -4,6 +4,7 @@
 
 srcdir = .
 VPATH = .
+SHELL=/bin/sh
 
 # point this to proper location
 STL_INCL=-I../../stlport
@@ -33,15 +34,15 @@ TEST  = ./eh_test.out
 D_TEST = ./eh_test_d.out
 NOSGI_TEST = ./eh_test_nosgi.out
 
-CC = g++ -pthreads
+CC = g++ -pthread
 CXX = $(CC)
 
 # dwa 12/22/99 -- had to turn off -ansi flag so we could use SGI IOSTREAMS
 # also, test_slist won't compile with -O3/-O2 when targeting PPC. It fails 
 # in the assembler with 'invalid relocation type'
 CXXFLAGS = -Wall -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -DEH_VECTOR_OPERATOR_NEW
-D_CXXFLAGS = -Wall -g -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -DEH_VECTOR_OPERATOR_NEW -D__STL_DEBUG -D__STL_USE_STATIC_LIB
-NOSGI_CXXFLAGS = -Wall -g -O2 ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -D__STL_NO_SGI_IOSTREAMS -D__STL_DEBUG_UNINITIALIZED -DEH_VECTOR_OPERATOR_NEW
+D_CXXFLAGS = -Wall -g -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -DEH_VECTOR_OPERATOR_NEW -D_STLP_DEBUG -D_STLP_USE_STATIC_LIB
+NOSGI_CXXFLAGS = -Wall -g -O2 ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} -D_STLP_NO_OWN_IOSTREAMS -D_STLP_DEBUG_UNINITIALIZED -DEH_VECTOR_OPERATOR_NEW
 
 check: $(TEST)
 
@@ -55,21 +56,32 @@ check_nosgi: $(NOSGI_TEST)
 check_d: $(D_TEST)
 
 
-$(TEST_EXE) : $(OBJECTS)
+OBJDIR=obj
+D_OBJDIR=d_obj
+NOSGI_OBJDIR=nosgi_obj
+
+$(OBJDIR):
+	mkdir obj
+$(D_OBJDIR):
+	mkdir d_obj
+$(NOSGI_OBJDIR):
+	mkdir nosgi_obj
+
+$(TEST_EXE) : $(OBJDIR) $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LIBSTLPORT) $(LIBS) -o $(TEST_EXE)
 
-$(D_TEST_EXE) : $(D_OBJECTS)
+$(D_TEST_EXE) : $(D_OBJDIR) $(D_OBJECTS)
 	$(CXX) $(D_CXXFLAGS) $(D_OBJECTS) $(D_LIBSTLPORT) $(LIBS) -o $(D_TEST_EXE)
 
-$(NOSGI_TEST_EXE) : $(NOSGI_OBJECTS)
+$(NOSGI_TEST_EXE) : $(NOSGI_OBJDIR) $(NOSGI_OBJECTS)
 	$(CXX) $(NOSGI_CXXFLAGS) $(NOSGI_OBJECTS) $(LIBS) -o $(NOSGI_TEST_EXE)
 
-
 $(TEST) : $(TEST_EXE)
-	$(TEST_EXE)
+	LD_LIBRARY_PATH="../../lib:$(LD_LIBRARY_PATH)" time ./$(TEST_EXE) -s 100
 
 $(D_TEST) : $(D_TEST_EXE)
-	$(D_TEST_EXE)
+	LD_LIBRARY_PATH="../../lib:$(LD_LIBRARY_PATH)" ./$(D_TEST_EXE) -s 100
+
 
 $(NOSGI_TEST) : $(NOSGI_TEST_EXE)
 	$(NOSGI_TEST_EXE)
@@ -95,7 +107,7 @@ obj/%.i : %.cpp
 	$(CXX) $(CXXFLAGS) $< -E -H > $@
 
 %.out: %.cpp
-	$(CXX) $(CXXFLAGS) $< -c -USINGLE -DMAIN -D__STL_DEBUG -D__STL_NO_SGI_IOSTREAMS -g -o $*.o
+	$(CXX) $(CXXFLAGS) $< -c -USINGLE -DMAIN -g -o $*.o
 	$(CXX) $(CXXFLAGS) $*.o $(LIBSTLPORT) $(LIBS) -o $*
 	./$* > $@
 #	-rm -f $*

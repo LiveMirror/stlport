@@ -20,34 +20,34 @@
 // represent streamsbufs and streams whose sources or destinations are
 // C++ strings.
 
-#ifndef __SGI_STL_SSTREAM
-#define __SGI_STL_SSTREAM
+#ifndef _STLP_SSTREAM
+#define _STLP_SSTREAM
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1059
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1059
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
 
-#  if defined(__sgi) && !defined(__GNUC__) && !defined(_STANDARD_C_PLUS_PLUS)
-#   error This header file requires the -LANG:std option
-#  endif
+# if defined (_STLP_OWN_IOSTREAMS)
 
 # include <stl/_sstream.h>
 
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 
 # include <wrap_std/sstream>
 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1059)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1059)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_SSTREAM */
+#endif /* _STLP_SSTREAM */
 
 // Local Variables:
 // mode:C++

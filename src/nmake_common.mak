@@ -16,8 +16,8 @@ install_headers_vc:
 	@echo Done copying STLport headers.
 
 check_env_vc:
-	@if not exist "%MSVCDir%\lib" echo "Please set up MSVCDir environment variable. Did you run vcvars32.bat ?"
-	@if not exist "%MSVCDir%\lib" dir "%MSVCDir%\lib"
+	@if not exist "%MSVCDir%\lib\*.*" echo "Please set up MSVCDir environment variable. Did you run vcvars32.bat ?"
+	@if not exist "%MSVCDir%\lib\*.*" dir "%MSVCDir%\lib"
 
 install_vc : all check_env_vc install_libs_vc install_dlls install_headers_vc report_dirs_vc
 
@@ -40,6 +40,19 @@ report_dirs_vc :
 
 {$(SRCDIR)}.cpp{$(RELEASE_OBJDIR_static)}.sbr:
    $(CXX) $(CXXFLAGS_RELEASE_static) $<
+
+
+{$(SRCDIR)}.cpp{$(RELEASE_OBJDIR_staticx)}.obj:
+   $(CXX) $(CXXFLAGS_RELEASE_staticx) $< 
+
+{$(SRCDIR)}.c{$(RELEASE_OBJDIR_staticx)}.obj:
+   $(CC) $(CXXFLAGS_RELEASE_staticx) $< 
+
+{$(SRCDIR)}.c{$(RELEASE_OBJDIR_staticx)}.sbr:
+   $(CC) $(CXXFLAGS_RELEASE_staticx) $< 
+
+{$(SRCDIR)}.cpp{$(RELEASE_OBJDIR_staticx)}.sbr:
+   $(CXX) $(CXXFLAGS_RELEASE_staticx) $<
 
 
 {$(SRCDIR)}.cpp{$(RELEASE_OBJDIR_dynamic)}.obj:
@@ -68,6 +81,18 @@ report_dirs_vc :
 {$(SRCDIR)}.cpp{$(DEBUG_OBJDIR_static)}.sbr:
    $(CXX) $(CXXFLAGS_DEBUG_static) $<
 
+{$(SRCDIR)}.cpp{$(DEBUG_OBJDIR_staticx)}.obj:
+   $(CXX) $(CXXFLAGS_DEBUG_staticx) $<
+
+{$(SRCDIR)}.c{$(DEBUG_OBJDIR_staticx)}.obj:
+   $(CC) $(CXXFLAGS_DEBUG_staticx) $<
+
+{$(SRCDIR)}.c{$(DEBUG_OBJDIR_staticx)}.sbr:
+   $(CC) $(CXXFLAGS_DEBUG_staticx) $<
+
+{$(SRCDIR)}.cpp{$(DEBUG_OBJDIR_staticx)}.sbr:
+   $(CXX) $(CXXFLAGS_DEBUG_staticx) $<
+
 {$(SRCDIR)}.cpp{$(DEBUG_OBJDIR_dynamic)}.obj:
    $(CXX) $(CXXFLAGS_DEBUG_dynamic) $<
 
@@ -94,6 +119,18 @@ report_dirs_vc :
 {$(SRCDIR)}.cpp{$(STLDEBUG_OBJDIR_static)}.sbr:
    $(CXX) $(CXXFLAGS_STLDEBUG_static) $<
 
+{$(SRCDIR)}.cpp{$(STLDEBUG_OBJDIR_staticx)}.obj:
+   $(CXX) $(CXXFLAGS_STLDEBUG_staticx) $<
+
+{$(SRCDIR)}.c{$(STLDEBUG_OBJDIR_staticx)}.obj:
+   $(CC) $(CXXFLAGS_STLDEBUG_staticx) $<
+
+{$(SRCDIR)}.c{$(STLDEBUG_OBJDIR_staticx)}.sbr:
+   $(CC) $(CXXFLAGS_STLDEBUG_staticx) $<
+
+{$(SRCDIR)}.cpp{$(STLDEBUG_OBJDIR_staticx)}.sbr:
+   $(CXX) $(CXXFLAGS_STLDEBUG_staticx) $<
+
 {$(SRCDIR)}.cpp{$(STLDEBUG_OBJDIR_dynamic)}.obj:
    $(CXX) $(CXXFLAGS_STLDEBUG_dynamic) $<
 
@@ -116,4 +153,5 @@ report_dirs_vc :
 
 {$(SRCDIR)}.rc{$(STLDEBUG_OBJDIR_dynamic)}.res:
 	$(RC) /d COMP=$(COMP) /d BUILD=_STLDEBUG /fo $(STLDEBUG_OBJDIR_dynamic)\stlport.res $<
+
 

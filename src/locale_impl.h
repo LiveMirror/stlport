@@ -25,21 +25,21 @@
 #include <stl/_locale.h>
 #include "c_locale.h"
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------
 // Class _Locale_impl
 // This is the base class which implements access only and is supposed to 
 // be used for classic locale only
-class __STL_CLASS_DECLSPEC _Locale_impl
+class _STLP_CLASS_DECLSPEC _Locale_impl
 {
 public:
-  _Locale_impl(const char* s) : name(s) {}
+  _Locale_impl(const char* s);
   //  _Locale_impl(const _Locale_impl&);
-  virtual ~_Locale_impl() {}
+  virtual ~_Locale_impl();
 
-  virtual void incr() {}
-  virtual int decr() { return 1; }
+  virtual void incr();
+  virtual void decr();
 
   size_t size() const { return _M_size; }
 
@@ -50,22 +50,23 @@ public:
 
   basic_string<char, char_traits<char>, allocator<char> > name;
 
-  static void __STL_CALL _M_throw_bad_cast();
+  static void _STLP_CALL _M_throw_bad_cast();
 
 private:
   void operator=(const _Locale_impl&);
 };
 
-inline _Locale_impl*  __STL_CALL _S_copy_impl(_Locale_impl* I) {
+inline _Locale_impl*  _STLP_CALL _S_copy_impl(_Locale_impl* I) {
+    _STLP_ASSERT( I != 0 );
     I->incr();
     return I;
 }
 
 extern _Locale_impl*   _Stl_loc_global_impl;
 // extern locale*         _Stl_loc_classic_locale;
-extern _STL_STATIC_MUTEX _Stl_loc_global_locale_lock;
+extern _STLP_STATIC_MUTEX _Stl_loc_global_locale_lock;
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
 #endif
 

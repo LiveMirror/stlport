@@ -13,56 +13,61 @@
  *
  */
 
-#ifndef __STLPORT_STRSTREAM_H
-# define __STLPORT_STRSTREAM_H
+#ifndef _STLP_STRSTREAM_H
+# define _STLP_STRSTREAM_H
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2071
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2071
 #  include <stl/_prolog.h>
 # endif
 
-# if defined ( __STL_USE_NEW_IOSTREAMS )
+# if defined ( _STLP_USE_NEW_IOSTREAMS )
 
 // fbp - if we are going to use that consistently, let's do it
-# include  <strstream>
+#ifdef __BORLANDC__
+#  include <strstream.>
+#else
+#  include <strstream>
+#endif
+
 # include  <iostream.h>
 
 
-# ifndef __STL_HAS_NO_NAMESPACES
+# ifndef _STLP_HAS_NO_NAMESPACES
 
-#  ifdef __STL_BROKEN_USING_DIRECTIVE
+#  ifdef _STLP_BROKEN_USING_DIRECTIVE
 
-using namespace __STLPORT_STD;
+using namespace _STLP_STD;
 
 #  else
 
-using __STLPORT_STD::strstreambuf;
-using __STLPORT_STD::istrstream;
-using __STLPORT_STD::ostrstream;
-using __STLPORT_STD::strstream;
+using _STLP_STD::strstreambuf;
+using _STLP_STD::istrstream;
+using _STLP_STD::ostrstream;
+using _STLP_STD::strstream;
 
-#  endif /* __STL_BROKEN_USING_DIRECTIVE */
+#  endif /* _STLP_BROKEN_USING_DIRECTIVE */
 
-# endif /* __STL_HAS_NO_NAMESPACES */
+# endif /* _STLP_HAS_NO_NAMESPACES */
 
 # else
 
 
 // just include old-style strstream.h
-#  if defined (_MSC_VER) && (_MSC_VER < 1200)
-#   include __STL_NATIVE_OLD_STREAMS_HEADER(strstrea.h)
+#  if defined (_MSC_VER) && (_MSC_VER <= 1200)
+#   include _STLP_NATIVE_OLD_STREAMS_HEADER(strstrea.h)
 #  else
-#   include __STL_NATIVE_OLD_STREAMS_HEADER(strstream.h)
+#   include _STLP_NATIVE_OLD_STREAMS_HEADER(strstream.h)
 #  endif
 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2071)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2071)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_STRSTREAM_H */
+#endif /* _STLP_STRSTREAM_H */
 
 // Local Variables:
 // mode:C++

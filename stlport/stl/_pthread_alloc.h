@@ -39,9 +39,12 @@
 // cache lines among processors, with potentially serious performance
 // consequences.
 
+#include <pthread.h>
+
 #ifndef _STLP_INTERNAL_ALLOC_H
 #include <stl/_alloc.h>
 #endif
+
 #ifndef __RESTRICT
 #  define __RESTRICT
 #endif
@@ -64,35 +67,42 @@ template<size_t _Max_size>
 struct _Pthread_alloc_per_thread_state {
   typedef _Pthread_alloc_obj __obj;
   enum { _S_NFREELISTS = _Max_size/_STLP_DATA_ALIGNMENT };
-  _Pthread_alloc_obj* volatile __free_list[_S_NFREELISTS]; 
-  _Pthread_alloc_per_thread_state<_Max_size> * __next; 
-	// Free list link for list of available per thread structures.
-  	// When one of these becomes available for reuse due to thread
-	// termination, any objects in its free list remain associated
-	// with it.  The whole structure may then be used by a newly
-	// created thread.
+
+  // Free list link for list of available per thread structures.
+  // When one of these becomes available for reuse due to thread
+  // termination, any objects in its free list remain associated
+  // with it.  The whole structure may then be used by a newly
+  // created thread.
   _Pthread_alloc_per_thread_state() : __next(0)
   {
     memset((void *)__free_list, 0, (size_t)_S_NFREELISTS * sizeof(__obj *));
   }
   // Returns an object of size __n, and possibly adds to size n free list.
   void *_M_refill(size_t __n);
-};
+  
+  _Pthread_alloc_obj* volatile __free_list[_S_NFREELISTS]; 
+  _Pthread_alloc_per_thread_state<_Max_size> * __next; 
+  // this data member is only to be used by per_thread_allocator, which returns memory to the originating thread.
+  _STLP_mutex _M_lock;
+
+ };
 
 // Pthread-specific allocator.
 // The argument specifies the largest object size allocated from per-thread
 // free lists.  Larger objects are allocated using malloc_alloc.
 // Max_size must be a power of 2.
-template < __DFL_NON_TYPE_PARAM(size_t, _Max_size, 128) >
-class _Pthread_alloc_template {
+template < __DFL_NON_TYPE_PARAM(size_t, _Max_size, _MAX_BYTES) >
+class _Pthread_alloc {
 
 public: // but only for internal use:
 
   typedef _Pthread_alloc_obj __obj;
+  typedef _Pthread_alloc_per_thread_state<_Max_size> __state_type;
+  typedef char value_type;
 
   // Allocates a chunk for nobjs of size size.  nobjs may be reduced
   // if it is inconvenient to allocate the requested number.
-  static char *_S_chunk_alloc(size_t __size, int &__nobjs);
+  static char *_S_chunk_alloc(size_t __size, size_t &__nobjs);
 
   enum {_S_ALIGN = _STLP_DATA_ALIGNMENT};
 
@@ -106,7 +116,7 @@ public: // but only for internal use:
 private:
   // Chunk allocation state. And other shared state.
   // Protected by _S_chunk_allocator_lock.
-  static _STL_mutex_base _S_chunk_allocator_lock;
+  static _STLP_mutex_base _S_chunk_allocator_lock;
   static char *_S_start_free;
   static char *_S_end_free;
   static size_t _S_heap_size;
@@ -119,8 +129,10 @@ private:
         // Function to be called on thread exit to reclaim per thread
         // state.
   static _Pthread_alloc_per_thread_state<_Max_size> *_S_new_per_thread_state();
+public:
         // Return a recycled or new per thread state.
   static _Pthread_alloc_per_thread_state<_Max_size> *_S_get_per_thread_state();
+private:
         // ensure that the current thread has an associated
         // per thread state.
   class _M_lock;
@@ -138,16 +150,14 @@ public:
   {
     __obj * volatile * __my_free_list;
     __obj * __RESTRICT __result;
-    _Pthread_alloc_per_thread_state<_Max_size>* __a;
+    __state_type* __a;
 
     if (__n > _Max_size) {
         return(__malloc_alloc<0>::allocate(__n));
     }
-    if (!_S_key_initialized ||
-        !(__a = (_Pthread_alloc_per_thread_state<_Max_size>*)
-                                 pthread_getspecific(_S_key))) {
-        __a = _S_get_per_thread_state();
-    }
+
+    __a = _S_get_per_thread_state();
+
     __my_free_list = __a -> __free_list + _S_freelist_index(__n);
     __result = *__my_free_list;
     if (__result == 0) {
@@ -163,17 +173,60 @@ public:
   {
     __obj *__q = (__obj *)__p;
     __obj * volatile * __my_free_list;
-    _Pthread_alloc_per_thread_state<_Max_size>* __a;
+    __state_type* __a;
 
     if (__n > _Max_size) {
         __malloc_alloc<0>::deallocate(__p, __n);
         return;
     }
-    if (!_S_key_initialized ||
-        !(__a = (_Pthread_alloc_per_thread_state<_Max_size> *)
-                pthread_getspecific(_S_key))) {
-        __a = _S_get_per_thread_state();
+
+    __a = _S_get_per_thread_state();
+    
+    __my_free_list = __a->__free_list + _S_freelist_index(__n);
+    __q -> __free_list_link = *__my_free_list;
+    *__my_free_list = __q;
+  }
+
+  // boris : versions for per_thread_allocator
+  /* n must be > 0      */
+  static void * allocate(size_t __n, __state_type* __a)
+  {
+    __obj * volatile * __my_free_list;
+    __obj * __RESTRICT __result;
+
+    if (__n > _Max_size) {
+        return(__malloc_alloc<0>::allocate(__n));
     }
+
+    // boris : here, we have to lock per thread state, as we may be getting memory from
+    // different thread pool.
+    _STLP_mutex_lock __lock(__a->_M_lock);
+
+    __my_free_list = __a -> __free_list + _S_freelist_index(__n);
+    __result = *__my_free_list;
+    if (__result == 0) {
+        void *__r = __a -> _M_refill(_S_round_up(__n));
+        return __r;
+    }
+    *__my_free_list = __result -> __free_list_link;
+    return (__result);
+  };
+
+  /* p may not be 0 */
+  static void deallocate(void *__p, size_t __n, __state_type* __a)
+  {
+    __obj *__q = (__obj *)__p;
+    __obj * volatile * __my_free_list;
+
+    if (__n > _Max_size) {
+        __malloc_alloc<0>::deallocate(__p, __n);
+        return;
+    }
+
+    // boris : here, we have to lock per thread state, as we may be returning memory from
+    // different thread.
+    _STLP_mutex_lock __lock(__a->_M_lock);
+
     __my_free_list = __a->__free_list + _S_freelist_index(__n);
     __q -> __free_list_link = *__my_free_list;
     *__my_free_list = __q;
@@ -183,209 +236,12 @@ public:
 
 } ;
 
-typedef _Pthread_alloc_template<128> pthread_alloc;
-
-
-template <size_t _Max_size>
-void _Pthread_alloc_template<_Max_size>::_S_destructor(void * __instance)
-{
-    _M_lock __lock_instance;	// Need to acquire lock here.
-    _Pthread_alloc_per_thread_state<_Max_size>* __s =
-        (_Pthread_alloc_per_thread_state<_Max_size> *)__instance;
-    __s -> __next = _S_free_per_thread_states;
-    _S_free_per_thread_states = __s;
-}
-
-template <size_t _Max_size>
-_Pthread_alloc_per_thread_state<_Max_size> *
-_Pthread_alloc_template<_Max_size>::_S_new_per_thread_state()
-{    
-    /* lock already held here.	*/
-    if (0 != _S_free_per_thread_states) {
-        _Pthread_alloc_per_thread_state<_Max_size> *__result =
-					_S_free_per_thread_states;
-        _S_free_per_thread_states = _S_free_per_thread_states -> __next;
-        return __result;
-    } else {
-        return _STLP_NEW _Pthread_alloc_per_thread_state<_Max_size>;
-    }
-}
-
-template <size_t _Max_size>
-_Pthread_alloc_per_thread_state<_Max_size> *
-_Pthread_alloc_template<_Max_size>::_S_get_per_thread_state()
-{
-    /*REFERENCED*/
-    _M_lock __lock_instance;	// Need to acquire lock here.
-    int __ret_code;
-    _Pthread_alloc_per_thread_state<_Max_size> * __result;
-    if (!_S_key_initialized) {
-        if (pthread_key_create(&_S_key, _S_destructor)) {
-            __THROW_BAD_ALLOC;  // failed
-        }
-        _S_key_initialized = true;
-    }
-    __result = _S_new_per_thread_state();
-    __ret_code = pthread_setspecific(_S_key, __result);
-    if (__ret_code) {
-      if (__ret_code == ENOMEM) {
-	__THROW_BAD_ALLOC;
-      } else {
-	// EINVAL
-	abort();
-      }
-    }
-    return __result;
-}
-
-/* We allocate memory in large chunks in order to avoid fragmenting     */
-/* the malloc heap too much.                                            */
-/* We assume that size is properly aligned.                             */
-template <size_t _Max_size>
-char *_Pthread_alloc_template<_Max_size>
-::_S_chunk_alloc(size_t __p_size, int &__nobjs)
-{
-  {
-    char * __result;
-    size_t __total_bytes;
-    size_t __bytes_left;
-    /*REFERENCED*/
-    _M_lock __lock_instance;         // Acquire lock for this routine
-
-    __total_bytes = __p_size * __nobjs;
-    __bytes_left = _S_end_free - _S_start_free;
-    if (__bytes_left >= __total_bytes) {
-        __result = _S_start_free;
-        _S_start_free += __total_bytes;
-        return(__result);
-    } else if (__bytes_left >= __p_size) {
-        __nobjs = __bytes_left/__p_size;
-        __total_bytes = __p_size * __nobjs;
-        __result = _S_start_free;
-        _S_start_free += __total_bytes;
-        return(__result);
-    } else {
-        size_t __bytes_to_get =
-		2 * __total_bytes + _S_round_up(_S_heap_size >> 4);
-        // Try to make use of the left-over piece.
-        if (__bytes_left > 0) {
-            _Pthread_alloc_per_thread_state<_Max_size>* __a = 
-                (_Pthread_alloc_per_thread_state<_Max_size>*)
-			pthread_getspecific(_S_key);
-            __obj * volatile * __my_free_list =
-                        __a->__free_list + _S_freelist_index(__bytes_left);
-
-            ((__obj *)_S_start_free) -> __free_list_link = *__my_free_list;
-            *__my_free_list = (__obj *)_S_start_free;
-        }
-#       ifdef _SGI_SOURCE
-          // Try to get memory that's aligned on something like a
-          // cache line boundary, so as to avoid parceling out
-          // parts of the same line to different threads and thus
-          // possibly different processors.
-          {
-            const int __cache_line_size = 128;  // probable upper bound
-            __bytes_to_get &= ~(__cache_line_size-1);
-            _S_start_free = (char *)memalign(__cache_line_size, __bytes_to_get); 
-            if (0 == _S_start_free) {
-              _S_start_free = (char *)__malloc_alloc<0>::allocate(__bytes_to_get);
-            }
-          }
-#       else  /* !SGI_SOURCE */
-          _S_start_free = (char *)__malloc_alloc<0>::allocate(__bytes_to_get);
-#       endif
-        _S_heap_size += __bytes_to_get;
-        _S_end_free = _S_start_free + __bytes_to_get;
-    }
-  }
-  // lock is released here
-  return(_S_chunk_alloc(__p_size, __nobjs));
-}
-
-
-/* Returns an object of size n, and optionally adds to size n free list.*/
-/* We assume that n is properly aligned.                                */
-/* We hold the allocation lock.                                         */
-template <size_t _Max_size>
-void *_Pthread_alloc_per_thread_state<_Max_size>
-::_M_refill(size_t __n)
-{
-    int __nobjs = 128;
-    char * __chunk =
-	_Pthread_alloc_template<_Max_size>::_S_chunk_alloc(__n, __nobjs);
-    __obj * volatile * __my_free_list;
-    __obj * __result;
-    __obj * __current_obj, * __next_obj;
-    int __i;
-
-    if (1 == __nobjs)  {
-        return(__chunk);
-    }
-    __my_free_list = __free_list
-		 + _Pthread_alloc_template<_Max_size>::_S_freelist_index(__n);
-
-    /* Build free list in chunk */
-      __result = (__obj *)__chunk;
-      *__my_free_list = __next_obj = (__obj *)(__chunk + __n);
-      for (__i = 1; ; __i++) {
-        __current_obj = __next_obj;
-        __next_obj = (__obj *)((char *)__next_obj + __n);
-        if (__nobjs - 1 == __i) {
-            __current_obj -> __free_list_link = 0;
-            break;
-        } else {
-            __current_obj -> __free_list_link = __next_obj;
-        }
-      }
-    return(__result);
-}
-
-template <size_t _Max_size>
-void *_Pthread_alloc_template<_Max_size>
-::reallocate(void *__p, size_t __old_sz, size_t __new_sz)
-{
-    void * __result;
-    size_t __copy_sz;
-
-    if (__old_sz > _Max_size
-	&& __new_sz > _Max_size) {
-        return(realloc(__p, __new_sz));
-    }
-    if (_S_round_up(__old_sz) == _S_round_up(__new_sz)) return(__p);
-    __result = allocate(__new_sz);
-    __copy_sz = __new_sz > __old_sz? __old_sz : __new_sz;
-    memcpy(__result, __p, __copy_sz);
-    deallocate(__p, __old_sz);
-    return(__result);
-}
-
-#if _STLP_STATIC_TEMPLATE_DATA > 0
-template <size_t _Max_size>
-_Pthread_alloc_per_thread_state<_Max_size> *
-_Pthread_alloc_template<_Max_size>::_S_free_per_thread_states = 0;
-
-template <size_t _Max_size>
-pthread_key_t _Pthread_alloc_template<_Max_size>::_S_key;
-
-template <size_t _Max_size>
-bool _Pthread_alloc_template<_Max_size>::_S_key_initialized = false;
-
-template <size_t _Max_size>
-_STL_mutex_base _Pthread_alloc_template<_Max_size>::_S_chunk_allocator_lock
- _STLP_MUTEX_INITIALIZER;
-
-template <size_t _Max_size>
-char *_Pthread_alloc_template<_Max_size>
-::_S_start_free = 0;
-
-template <size_t _Max_size>
-char *_Pthread_alloc_template<_Max_size>
-::_S_end_free = 0;
-
-template <size_t _Max_size>
-size_t _Pthread_alloc_template<_Max_size>
-::_S_heap_size = 0;
+# if defined (_STLP_USE_TEMPLATE_EXPORT)
+_STLP_EXPORT_TEMPLATE_CLASS _Pthread_alloc<_MAX_BYTES>;
 # endif
+
+typedef _Pthread_alloc<_MAX_BYTES> __pthread_alloc;
+typedef __pthread_alloc pthread_alloc;
 
 template <class _Tp>
 class pthread_allocator {
@@ -408,7 +264,7 @@ public:
   pthread_allocator() _STLP_NOTHROW {}
   pthread_allocator(const pthread_allocator<_Tp>& a) _STLP_NOTHROW {}
 
-#if defined (_STLP_MEMBER_TEMPLATES) && defined (_STLP_FUNCTION_PARTIAL_ORDER)
+#if defined (_STLP_MEMBER_TEMPLATES) /* && defined (_STLP_FUNCTION_PARTIAL_ORDER) */
   template <class _OtherType> pthread_allocator(const pthread_allocator<_OtherType>&)
 		_STLP_NOTHROW {}
 #endif
@@ -437,7 +293,7 @@ public:
 };
 
 _STLP_TEMPLATE_NULL
-class pthread_allocator<void> {
+class _STLP_CLASS_DECLSPEC pthread_allocator<void> {
 public:
   typedef size_t      size_type;
   typedef ptrdiff_t   difference_type;
@@ -450,15 +306,6 @@ public:
   };
 #endif
 };
-
-/*
-template <size_t _Max_size>
-inline bool operator==(const _Pthread_alloc_template<_Max_size>&,
-                       const _Pthread_alloc_template<_Max_size>&)
-{
-  return true;
-}
-*/
 
 template <class _T1, class _T2>
 inline bool operator==(const pthread_allocator<_T1>&,
@@ -476,21 +323,17 @@ inline bool operator!=(const pthread_allocator<_T1>&,
 }
 #endif
 
+
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+
+# ifdef _STLP_USE_RAW_SGI_ALLOCATORS
 template <class _Tp, size_t _Max_size>
-struct _Alloc_traits<_Tp, _Pthread_alloc_template<_Max_size> >
+struct _Alloc_traits<_Tp, _Pthread_alloc<_Max_size> >
 {
-  typedef __allocator<_Tp, _Pthread_alloc_template<_Max_size> > 
+  typedef __allocator<_Tp, _Pthread_alloc<_Max_size> > 
           allocator_type;
 };
-
-/*
-template <class _Tp, class _Atype, size_t _Max>
-struct _Alloc_traits<_Tp, __allocator<_Atype, _Pthread_alloc_template<_Max> > >
-{
-  typedef __allocator<_Tp, _Pthread_alloc_template<_Max> > allocator_type;
-};
-*/
+# endif
 
 template <class _Tp, class _Atype>
 struct _Alloc_traits<_Tp, pthread_allocator<_Atype> >
@@ -500,17 +343,144 @@ struct _Alloc_traits<_Tp, pthread_allocator<_Atype> >
 
 #endif
 
-#if !defined (_STLP_MEMBER_TEMPLATE_CLASSES)
+#if !defined (_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM)
 
 template <class _Tp1, class _Tp2>
-inline allocator<_Tp2>
-__stl_alloc_rebind(pthread_allocator<_Tp1>&, const _Tp2*) {
-  return allocator<_Tp2>();
+inline pthread_allocator<_Tp2>&
+__stl_alloc_rebind(pthread_allocator<_Tp1>& __x, const _Tp2*) {
+  return (pthread_allocator<_Tp2>&)__x;
 }
 
-#endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
+template <class _Tp1, class _Tp2>
+inline pthread_allocator<_Tp2>
+__stl_alloc_create(pthread_allocator<_Tp1>&, const _Tp2*) {
+  return pthread_allocator<_Tp2>();
+}
+
+#endif /* _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM */
+
+//
+// per_thread_allocator<> : this allocator always return memory to the same thread 
+// it was allocated from.
+//
+
+template <class _Tp>
+class per_thread_allocator {
+  typedef pthread_alloc _S_Alloc;          // The underlying allocator.
+  typedef pthread_alloc::__state_type __state_type;
+public:
+  typedef size_t     size_type;
+  typedef ptrdiff_t  difference_type;
+  typedef _Tp*       pointer;
+  typedef const _Tp* const_pointer;
+  typedef _Tp&       reference;
+  typedef const _Tp& const_reference;
+  typedef _Tp        value_type;
+
+#ifdef _STLP_MEMBER_TEMPLATE_CLASSES
+  template <class _NewType> struct rebind {
+    typedef per_thread_allocator<_NewType> other;
+  };
+#endif
+
+  per_thread_allocator() _STLP_NOTHROW { 
+    _M_state = _S_Alloc::_S_get_per_thread_state();
+  }
+  per_thread_allocator(const per_thread_allocator<_Tp>& __a) _STLP_NOTHROW : _M_state(__a._M_state){}
+
+#if defined (_STLP_MEMBER_TEMPLATES) /* && defined (_STLP_FUNCTION_PARTIAL_ORDER) */
+  template <class _OtherType> per_thread_allocator(const per_thread_allocator<_OtherType>& __a)
+		_STLP_NOTHROW : _M_state(__a._M_state) {}
+#endif
+
+  ~per_thread_allocator() _STLP_NOTHROW {}
+
+  pointer address(reference __x) const { return &__x; }
+  const_pointer address(const_reference __x) const { return &__x; }
+
+  // __n is permitted to be 0.  The C++ standard says nothing about what
+  // the return value is when __n == 0.
+  _Tp* allocate(size_type __n, const void* = 0) {
+    return __n != 0 ? __STATIC_CAST(_Tp*,_S_Alloc::allocate(__n * sizeof(_Tp), _M_state)): 0;
+  }
+
+  // p is not permitted to be a null pointer.
+  void deallocate(pointer __p, size_type __n)
+    { _S_Alloc::deallocate(__p, __n * sizeof(_Tp), _M_state); }
+
+  size_type max_size() const _STLP_NOTHROW 
+    { return size_t(-1) / sizeof(_Tp); }
+
+  void construct(pointer __p, const _Tp& __val) { _STLP_PLACEMENT_NEW (__p) _Tp(__val); }
+  void destroy(pointer _p) { _p->~_Tp(); }
+
+  // state is being kept here
+  __state_type* _M_state;
+};
+
+_STLP_TEMPLATE_NULL
+class _STLP_CLASS_DECLSPEC per_thread_allocator<void> {
+public:
+  typedef size_t      size_type;
+  typedef ptrdiff_t   difference_type;
+  typedef void*       pointer;
+  typedef const void* const_pointer;
+  typedef void        value_type;
+#ifdef _STLP_MEMBER_TEMPLATE_CLASSES
+  template <class _NewType> struct rebind {
+    typedef per_thread_allocator<_NewType> other;
+  };
+#endif
+};
+
+template <class _T1, class _T2>
+inline bool operator==(const per_thread_allocator<_T1>& __a1,
+                       const per_thread_allocator<_T2>& __a2) 
+{
+  return __a1._M_state == __a2._M_state;
+}
+
+#ifdef _STLP_FUNCTION_TMPL_PARTIAL_ORDER
+template <class _T1, class _T2>
+inline bool operator!=(const per_thread_allocator<_T1>& __a1,
+                       const per_thread_allocator<_T2>& __a2)
+{
+  return __a1._M_state != __a2._M_state;
+}
+#endif
+
+
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+
+template <class _Tp, class _Atype>
+struct _Alloc_traits<_Tp, per_thread_allocator<_Atype> >
+{
+  typedef per_thread_allocator<_Tp> allocator_type;
+};
+
+#endif
+
+#if !defined (_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM)
+
+template <class _Tp1, class _Tp2>
+inline per_thread_allocator<_Tp2>&
+__stl_alloc_rebind(per_thread_allocator<_Tp1>& __x, const _Tp2*) {
+  return (per_thread_allocator<_Tp2>&)__x;
+}
+
+template <class _Tp1, class _Tp2>
+inline per_thread_allocator<_Tp2>
+__stl_alloc_create(per_thread_allocator<_Tp1>&, const _Tp2*) {
+  return per_thread_allocator<_Tp2>();
+}
+
+#endif /* _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM */
 
 _STLP_END_NAMESPACE
+
+# if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
+#  include <stl/_pthread_alloc.c>
+# endif
 
 #endif /* _STLP_PTHREAD_ALLOC */
 

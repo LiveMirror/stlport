@@ -13,28 +13,28 @@
  *
  */
 
-#ifndef __STLPORT_CFLOAT
-# define __STLPORT_CFLOAT
+#ifndef _STLP_CFLOAT
+# define _STLP_CFLOAT
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x106
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x106
 #  include <stl/_prolog.h>
 # endif
 
 // Borland defines some implementation constants in std:: namespace,
 // we do not want to import them.
-# if defined  (__STL_USE_NEW_C_HEADERS) && ! defined (__BORLANDC__)
-#  include __STL_NATIVE_CPP_C_HEADER(cfloat)
+# if defined  (_STLP_USE_NEW_C_HEADERS) && ! defined (__BORLANDC__)
+#  include _STLP_NATIVE_CPP_C_HEADER(cfloat)
 # else
-#  include __STL_NATIVE_C_HEADER(float.h)
+#  include _STLP_NATIVE_C_HEADER(float.h)
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x106 )
+# if (_STLP_OUTERMOST_HEADER_ID == 0x106 )
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_CFLOAT */
+#endif /* _STLP_CFLOAT */
 
 // Local Variables:
 // mode:C++

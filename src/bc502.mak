@@ -7,7 +7,7 @@ CXX=bcc32
 RC=brc32
 COMP=BCC502
 
-LIB_BASENAME=stlport_bcc
+LIB_BASENAME=stlport_bcb
 
 # ---------------------------------------------------------------------------
 
@@ -20,17 +20,17 @@ DYNEXT=dll
 STEXT=lib
 RM=@erase /F /Q
 PATH_SEP=\\
-MKDIR=mkdir -p
+MKDIR=mkdir
 STATIC_SUFFIX=_static
 INSTALL_STEP=install_bc
 
 # static builds, but cannot be used - some weird compile errors..
 all : all_dynamic
 
-!include common_macros.mak
+!include common_macros_windows.mak
 
 DYNAMIC_DEFS=_RTLDLL
-STATIC_DEFS=_LIB;__STL_NO_FORCE_INSTANTIATE
+STATIC_DEFS=_LIB;_STLP_NO_FORCE_INSTANTIATE
 
 LINKSTARTUP= c0d32.obj
 
@@ -58,11 +58,11 @@ LDLIBS_STLDEBUG_dynamic=  import32.lib cw32mti.lib
 
 CXXFLAGS_RELEASE_static= $(FLAGS_COMMON_static) -O2 -n$(RELEASE_OBJDIR_static)
 CXXFLAGS_DEBUG_static= $(FLAGS_COMMON_static) -v -N -x -xp -n$(DEBUG_OBJDIR_static)
-CXXFLAGS_STLDEBUG_static= $(FLAGS_COMMON_static) -v -N -x -xp -n$(STLDEBUG_OBJDIR_static) -D__STLDEBUG
+CXXFLAGS_STLDEBUG_static= $(FLAGS_COMMON_static) -v -N -x -xp -n$(STLDEBUG_OBJDIR_static) -D_STLP_DEBUG
 
 CXXFLAGS_RELEASE_dynamic= $(FLAGS_COMMON_dynamic) -O2 -n$(RELEASE_OBJDIR_dynamic)
 CXXFLAGS_DEBUG_dynamic= $(FLAGS_COMMON_dynamic)  -v -N -x -xp -n$(DEBUG_OBJDIR_dynamic)
-CXXFLAGS_STLDEBUG_dynamic= $(FLAGS_COMMON_dynamic)  -v -N -x -xp -n$(STLDEBUG_OBJDIR_dynamic) -D__STLDEBUG
+CXXFLAGS_STLDEBUG_dynamic= $(FLAGS_COMMON_dynamic)  -v -N -x -xp -n$(STLDEBUG_OBJDIR_dynamic) -D_STLP_DEBUG
 
 RELEASE_LINK_COMMANDS_static=\
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)complex.$(OBJEXT) \
@@ -79,27 +79,30 @@ RELEASE_LINK_COMMANDS_static=\
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)fstream.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)strstream.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)sstream.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)c_locale_stub.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)codecvt.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)collate.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)ctype.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)message_facets.$(OBJEXT) \
++$(RELEASE_OBJDIR_static)$(PATH_SEP)messages.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)monetary.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)moneypunct.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)num_get.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)num_get_float.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)num_put.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)num_put_float.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)numpunct.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)numpunct_byname.$(OBJEXT) \
 +$(RELEASE_OBJDIR_static)$(PATH_SEP)time_facets.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)string_w.$(OBJEXT) \
-+$(RELEASE_OBJDIR_static)$(PATH_SEP)complex_io_w.$(OBJEXT)
++$(RELEASE_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
++$(RELEASE_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
++$(RELEASE_OBJDIR_static)$(PATH_SEP)facets_byname.$(OBJEXT) \
++$(RELEASE_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
++$(RELEASE_OBJDIR_static)$(PATH_SEP)complex_io_w.$(OBJEXT) \
++$(RELEASE_OBJDIR_static)$(PATH_SEP)string_w.$(OBJEXT)
+
 
 DEBUG_LINK_COMMANDS_static= \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)complex.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)complex_exp.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)complex_io.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)complex_trig.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)dll_main.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)ios.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)streambuf.$(OBJEXT) \
@@ -110,63 +113,56 @@ DEBUG_LINK_COMMANDS_static= \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)fstream.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)strstream.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)sstream.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)c_locale_stub.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)codecvt.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)collate.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)complex.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)complex_exp.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)complex_io.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)complex_trig.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)ctype.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)message_facets.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)messages.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)monetary.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)moneypunct.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)num_get.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)num_get_float.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)num_put.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)num_put_float.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)numpunct.$(OBJEXT) \
-+$(DEBUG_OBJDIR_static)$(PATH_SEP)numpunct_byname.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)time_facets.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)facets_byname.$(OBJEXT) \
++$(DEBUG_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)complex_io_w.$(OBJEXT) \
 +$(DEBUG_OBJDIR_static)$(PATH_SEP)string_w.$(OBJEXT)
 
 STLDEBUG_LINK_COMMANDS_static= \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_exp.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_io.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_trig.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)dll_main.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)ios.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)streambuf.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)stdio_streambuf.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)iostream.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)ostream.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)istream.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)ostream.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)fstream.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)strstream.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)sstream.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)c_locale_stub.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)codecvt.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)collate.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_exp.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_io.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_trig.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)ctype.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)message_facets.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)messages.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)monetary.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)moneypunct.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)num_get.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)num_get_float.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)num_put.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)num_put_float.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)numpunct.$(OBJEXT) \
 +$(STLDEBUG_OBJDIR_static)$(PATH_SEP)time_facets.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)string_w.$(OBJEXT) \
-+$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_io_w.$(OBJEXT)
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale_catalog.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)facets_byname.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)locale_impl.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)complex_io_w.$(OBJEXT) \
++$(STLDEBUG_OBJDIR_static)$(PATH_SEP)string_w.$(OBJEXT)
 
 #
 #  Target directories

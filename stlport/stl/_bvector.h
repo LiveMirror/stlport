@@ -27,16 +27,16 @@
  *   You should not attempt to use it directly.
  */
 
-#ifndef __SGI_STL_INTERNAL_BVECTOR_H
-#define __SGI_STL_INTERNAL_BVECTOR_H
+#ifndef _STLP_INTERNAL_BVECTOR_H
+#define _STLP_INTERNAL_BVECTOR_H
 
-#ifndef __SGI_STL_INTERNAL_VECTOR_H
+#ifndef _STLP_INTERNAL_VECTOR_H
 # include <stl/_vector.h>
 # endif
 
 #define __WORD_BIT (int(CHAR_BIT*sizeof(unsigned int)))
 
-__STL_BEGIN_NAMESPACE 
+_STLP_BEGIN_NAMESPACE 
 
 struct _Bit_reference {
   unsigned int* _M_p;
@@ -46,44 +46,42 @@ struct _Bit_reference {
 
 public:
   _Bit_reference() : _M_p(0), _M_mask(0) {}
-  operator bool() const { return !(!(*_M_p & _M_mask)); }
-  _Bit_reference& operator=(bool __x)
-  {
+
+  operator bool() const { 
+	  return !(!(*_M_p & _M_mask)); 
+  }
+  _Bit_reference& operator=(bool __x) {
     if (__x)  *_M_p |= _M_mask;
     else      *_M_p &= ~_M_mask;
     return *this;
   }
-  _Bit_reference& operator=(const _Bit_reference& __x) 
-    { return *this = bool(__x); }
-  bool operator==(const _Bit_reference& __x) const
-    { return bool(*this) == bool(__x); }
+  _Bit_reference& operator=(const _Bit_reference& __x) {
+	  return *this = bool(__x); 
+  }
+  bool operator==(const _Bit_reference& __x) const {
+	  return bool(*this) == bool(__x); 
+  }
   bool operator<(const _Bit_reference& __x) const {
     return !bool(*this) && bool(__x);
+  }
+
+  _Bit_reference& operator |= (bool __x) {
+	  if (__x)
+		  *_M_p |= _M_mask;
+	  return *this;
+  }
+  _Bit_reference& operator &= (bool __x) {
+	  if (!__x)
+		  *_M_p &= ~_M_mask;
+	  return *this;
   }
   void flip() { *_M_p ^= _M_mask; }
 };
 
-__STL_END_NAMESPACE
 
-# if defined (__SGI_STL_NO_ARROW_OPERATOR) && ! defined (__STL_NO_PROXY_ARROW_OPERATOR)
-
-__STL_TEMPLATE_NULL struct __arrow_op_dispatch<_Bit_reference, _Bit_reference*> {
-  __arrow_op_dispatch(_Bit_reference) {}
-  __arrow_op_dummy operator ->() const { return __arrow_op_dummy(); }
-};
-
-__STL_TEMPLATE_NULL struct __arrow_op_dispatch<bool, const bool*> {
-  __arrow_op_dispatch(bool) {}
-  __arrow_op_dummy operator ->() const { return __arrow_op_dummy(); }
-};
-
-# endif
-
-__STL_BEGIN_NAMESPACE
-
-inline void swap(_Bit_reference __x, _Bit_reference __y)
+inline void swap(_Bit_reference& __x, _Bit_reference& __y)
 {
-  bool __tmp = __x;
+  bool __tmp = (bool)__x;
   __x = __y;
   __y = __tmp;
 }
@@ -95,7 +93,7 @@ struct _Bit_iterator_base
   typedef ptrdiff_t difference_type;
 
   unsigned int* _M_p;
-  unsigned int _M_offset;
+  unsigned int  _M_offset;
 
   void _M_bump_up() {
     if (_M_offset++ == __WORD_BIT - 1) {
@@ -113,6 +111,8 @@ struct _Bit_iterator_base
 
   _Bit_iterator_base() : _M_p(0), _M_offset(0) {}
   _Bit_iterator_base(unsigned int* __x, unsigned int __y) : _M_p(__x), _M_offset(__y) {}
+  //  _Bit_iterator_base( const _Bit_iterator_base& __x) : _M_p(__x._M_p), _M_offset(__x._M_offset) {}
+  //  _Bit_iterator_base& operator = ( const _Bit_iterator_base& __x) { _M_p = __x._M_p ; _M_offset = __x._M_offset ; return *this; }
 
   void _M_advance (difference_type __i) {
     difference_type __n = __i + _M_offset;
@@ -130,24 +130,24 @@ struct _Bit_iterator_base
   }
 };
 
-inline bool  __STL_CALL operator==(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) {
+inline bool  _STLP_CALL operator==(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) {
   return __y._M_p == __x._M_p && __y._M_offset == __x._M_offset;
 }
-inline bool  __STL_CALL operator!=(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) {
+inline bool  _STLP_CALL operator!=(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) {
   return __y._M_p != __x._M_p || __y._M_offset != __x._M_offset;
 }
 
-inline bool __STL_CALL operator<(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) {
+inline bool _STLP_CALL operator<(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) {
   return __x._M_p < __y._M_p || (__x._M_p == __y._M_p && __x._M_offset < __y._M_offset);
 }
 
-inline bool __STL_CALL operator>(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y)  { 
+inline bool _STLP_CALL operator>(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y)  { 
   return operator <(__y , __x); 
 }
-inline bool __STL_CALL operator<=(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) { 
+inline bool _STLP_CALL operator<=(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) { 
   return !(__y < __x); 
 }
-inline bool __STL_CALL operator>=(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) { 
+inline bool _STLP_CALL operator>=(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y) { 
   return !(__x < __y); 
 }
 
@@ -156,8 +156,6 @@ struct _Bit_iter : public _Bit_iterator_base
 {
   typedef _Ref  reference;
   typedef _Ptr  pointer;
-  //  typedef _Bit_iter<_Bit_reference, _Bit_reference*> iterator;
-  //  typedef _Bit_iter<bool, const bool*> const_iterator;
   typedef _Bit_iter<_Ref, _Ptr> _Self;
   typedef random_access_iterator_tag iterator_category;
   typedef bool value_type;
@@ -166,8 +164,13 @@ struct _Bit_iter : public _Bit_iterator_base
 
   _Bit_iter(unsigned int* __x, unsigned int __y) : _Bit_iterator_base(__x, __y) {}
   _Bit_iter() {}
+
   _Bit_iter(const _Bit_iter<_Bit_reference, _Bit_reference*>& __x): 
     _Bit_iterator_base((const _Bit_iterator_base&)__x) {}
+
+  //  _Self& operator = (const _Bit_iter<_Bit_reference, _Bit_reference*>& __x)
+  //   { (_Bit_iterator_base&)*this = (const _Bit_iterator_base&)__x; return *this; }
+
   reference operator*() const { 
     return _Bit_reference(_M_p, 1UL << _M_offset); 
   }
@@ -212,12 +215,12 @@ struct _Bit_iter : public _Bit_iterator_base
 };
 
 template <class _Ref, class _Ptr>
-inline _Bit_iter<_Ref,_Ptr>  __STL_CALL
+inline _Bit_iter<_Ref,_Ptr>  _STLP_CALL
 operator+(ptrdiff_t __n, const _Bit_iter<_Ref, _Ptr>& __x) {
    return __x + __n;
 }
 
-# ifdef __STL_USE_OLD_HP_ITERATOR_QUERIES
+# ifdef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 inline random_access_iterator_tag  iterator_category(const _Bit_iterator_base&) {return random_access_iterator_tag();}
 inline ptrdiff_t* distance_type(const _Bit_iterator_base&) {return (ptrdiff_t*)0;}
 inline bool* value_type(const _Bit_iter<_Bit_reference, _Bit_reference*>&) {return (bool*)0;}
@@ -227,8 +230,6 @@ inline bool* value_type(const _Bit_iter<bool, const bool*>&) {return (bool*)0;}
 typedef _Bit_iter<bool, const bool*> _Bit_const_iterator;
 typedef _Bit_iter<_Bit_reference, _Bit_reference*> _Bit_iterator;
 
-
-
 // Bit-vector base class, which encapsulates the difference between
 //  old SGI-style allocators and standard-conforming allocators.
 
@@ -237,15 +238,18 @@ template <class _Alloc>
 class _Bvector_base
 {
 public:
+  _STLP_FORCE_ALLOCATORS(bool, _Alloc)
   typedef typename _Alloc_traits<bool, _Alloc>::allocator_type allocator_type;
   typedef unsigned int __chunk_type;
   typedef typename _Alloc_traits<__chunk_type, 
           _Alloc>::allocator_type __chunk_allocator_type;
   allocator_type get_allocator() const { 
-    return __STL_CONVERT_ALLOCATOR((const __chunk_allocator_type&)_M_end_of_storage, bool); 
+    return _STLP_CONVERT_ALLOCATOR((const __chunk_allocator_type&)_M_end_of_storage, bool); 
   }
+  static allocator_type __get_dfl_allocator() { return allocator_type(); }
+   
   _Bvector_base(const allocator_type& __a)
-    : _M_start(), _M_finish(), _M_end_of_storage(__STL_CONVERT_ALLOCATOR(__a, __chunk_type),
+    : _M_start(), _M_finish(), _M_end_of_storage(_STLP_CONVERT_ALLOCATOR(__a, __chunk_type),
 						 (__chunk_type*)0) {
   }
   ~_Bvector_base() { _M_deallocate();
@@ -263,7 +267,7 @@ protected:
 
   _Bit_iterator _M_start;
   _Bit_iterator _M_finish;
-  _STL_alloc_proxy<__chunk_type*, __chunk_type, __chunk_allocator_type> _M_end_of_storage;  
+  _STLP_alloc_proxy<__chunk_type*, __chunk_type, __chunk_allocator_type> _M_end_of_storage;  
 };
 
 
@@ -272,30 +276,33 @@ protected:
 //  compiler support.  Otherwise, we define a class bit_vector which uses
 //  the default allocator. 
 
-#if defined(__STL_CLASS_PARTIAL_SPECIALIZATION) \
- && !defined(__STL_PARTIAL_SPECIALIZATION_BUG) && ! defined(__STL_NO_BOOL)
-# define __SGI_STL_VECBOOL_TEMPLATE
+#if defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) && ! defined(_STLP_NO_BOOL) && ! defined (__SUNPRO_CC)
+# define _STLP_VECBOOL_TEMPLATE
 # define __BVEC_TMPL_HEADER template <class _Alloc>
 #else
-# undef __SGI_STL_VECBOOL_TEMPLATE
-# ifdef __STL_NO_BOOL
+# undef _STLP_VECBOOL_TEMPLATE
+# ifdef _STLP_NO_BOOL
 #  define __BVEC_TMPL_HEADER
 # else
-#  define __BVEC_TMPL_HEADER __STL_TEMPLATE_NULL
+#  define __BVEC_TMPL_HEADER _STLP_TEMPLATE_NULL
 # endif
-# define _Alloc __STL_DEFAULT_ALLOCATOR(bool)
+# if !(defined(__MRC__)||(defined(__SC__)&&!defined(__DMC__)))			//*TY 12/17/2000 - 
+#  define _Alloc _STLP_DEFAULT_ALLOCATOR(bool)
+# else
+#  define _Alloc allocator<bool>
+# endif
 #endif
 
-#ifdef __STL_NO_BOOL
+#ifdef _STLP_NO_BOOL
 # define __BVECTOR_QUALIFIED bit_vector
 # define __BVECTOR           bit_vector
 #else
-# ifdef __SGI_STL_VECBOOL_TEMPLATE
+# ifdef _STLP_VECBOOL_TEMPLATE
 #  define __BVECTOR_QUALIFIED __WORKAROUND_DBG_RENAME(vector) <bool, _Alloc>
 # else
 #  define __BVECTOR_QUALIFIED __WORKAROUND_DBG_RENAME(vector) <bool, allocator<bool> >
 # endif
-#ifdef __STL_PARTIAL_SPEC_NEEDS_TEMPLATE_ARGS
+#if defined (_STLP_PARTIAL_SPEC_NEEDS_TEMPLATE_ARGS)
 # define __BVECTOR __BVECTOR_QUALIFIED
 #else
 # define __BVECTOR __WORKAROUND_DBG_RENAME(vector)
@@ -321,25 +328,24 @@ public:
   typedef _Bit_iterator                iterator;
   typedef _Bit_const_iterator          const_iterator;
 
-#if defined ( __STL_CLASS_PARTIAL_SPECIALIZATION ) && \
-  ! defined (__STL_PARTIAL_SPECIALIZATION_BUG)
-  typedef __STLPORT_STD::reverse_iterator<const_iterator> const_reverse_iterator;
-  typedef __STLPORT_STD::reverse_iterator<iterator> reverse_iterator;
-#else /* __STL_CLASS_PARTIAL_SPECIALIZATION */
-# if defined (__STL_MSVC50_COMPATIBILITY)
-  typedef __STLPORT_STD::reverse_iterator<const_iterator, value_type, const_reference, 
+#if defined ( _STLP_CLASS_PARTIAL_SPECIALIZATION )
+  typedef _STLP_STD::reverse_iterator<const_iterator> const_reverse_iterator;
+  typedef _STLP_STD::reverse_iterator<iterator> reverse_iterator;
+#else /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+# if defined (_STLP_MSVC50_COMPATIBILITY)
+  typedef _STLP_STD::reverse_iterator<const_iterator, value_type, const_reference, 
   const_pointer, difference_type> const_reverse_iterator;
-  typedef __STLPORT_STD::reverse_iterator<iterator, value_type, reference, reference*, 
+  typedef _STLP_STD::reverse_iterator<iterator, value_type, reference, reference*, 
   difference_type> reverse_iterator;
 # else
-  typedef __STLPORT_STD::reverse_iterator<const_iterator, value_type, const_reference, 
+  typedef _STLP_STD::reverse_iterator<const_iterator, value_type, const_reference, 
                                   difference_type> const_reverse_iterator;
-  typedef __STLPORT_STD::reverse_iterator<iterator, value_type, reference, difference_type>
+  typedef _STLP_STD::reverse_iterator<iterator, value_type, reference, difference_type>
           reverse_iterator;
 # endif
-#endif /* __STL_CLASS_PARTIAL_SPECIALIZATION */
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
-# ifdef __SGI_STL_VECBOOL_TEMPLATE
+# ifdef _STLP_VECBOOL_TEMPLATE
   typedef typename _Bvector_base<_Alloc >::allocator_type allocator_type;
   typedef typename _Bvector_base<_Alloc >::__chunk_type __chunk_type ;
 # else
@@ -373,10 +379,10 @@ protected:
     }
   }
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIterator>
   void _M_initialize_range(_InputIterator __first, _InputIterator __last,
-			input_iterator_tag) {
+			const input_iterator_tag &) {
     this->_M_start = iterator();
     this->_M_finish = iterator();
     this->_M_end_of_storage._M_data = 0;
@@ -386,9 +392,8 @@ protected:
 
   template <class _ForwardIterator>
   void _M_initialize_range(_ForwardIterator __first, _ForwardIterator __last,
-                           forward_iterator_tag) {
-    size_type __n = 0;
-    distance(__first, __last, __n);
+                           const forward_iterator_tag &) {
+    size_type __n = distance(__first, __last);
     _M_initialize(__n);
     //    copy(__first, __last, _M_start);
     copy(__first, __last, this->_M_start); // dwa 12/22/99 -- resolving ambiguous reference.
@@ -397,7 +402,7 @@ protected:
   template <class _InputIterator>
   void _M_insert_range(iterator __pos,
                        _InputIterator __first, _InputIterator __last,
-                       input_iterator_tag) {
+                       const input_iterator_tag &) {
     for ( ; __first != __last; ++__first) {
       __pos = insert(__pos, *__first);
       ++__pos;
@@ -407,17 +412,16 @@ protected:
   template <class _ForwardIterator>
   void _M_insert_range(iterator __position,
                        _ForwardIterator __first, _ForwardIterator __last,
-                       forward_iterator_tag) {
+                       const forward_iterator_tag &) {
     if (__first != __last) {
-      size_type __n = 0;
-      distance(__first, __last, __n);
+      size_type __n = distance(__first, __last);
       if (capacity() - size() >= __n) {
         __copy_backward(__position, end(), this->_M_finish + difference_type(__n), random_access_iterator_tag(), (difference_type*)0 );
         copy(__first, __last, __position);
         this->_M_finish += difference_type(__n);
       }
       else {
-        size_type __len = size() + __STL_MAX(size(), __n);
+        size_type __len = size() + (max)(size(), __n);
         unsigned int* __q = this->_M_bit_alloc(__len);
         iterator __i = copy(begin(), __position, iterator(__q, 0));
         __i = copy(__first, __last, __i);
@@ -429,7 +433,7 @@ protected:
     }
   }      
 
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
 public:
   iterator begin() { return this->_M_start; }
@@ -467,17 +471,16 @@ public:
   const_reference at(size_type __n) const
     { _M_range_check(__n); return (*this)[__n]; }
 
-  explicit __BVECTOR(const allocator_type& __a = 
-		     allocator_type())
+  explicit __BVECTOR(const allocator_type& __a = allocator_type())
     : _Bvector_base<_Alloc >(__a) {}
 
-  __BVECTOR(size_type __n, bool __value,
+  __BVECTOR(size_type __n, bool __val,
             const allocator_type& __a = 
 	    allocator_type())
     : _Bvector_base<_Alloc >(__a)
   {
     _M_initialize(__n);
-    fill(this->_M_start._M_p, (__chunk_type*)(this->_M_end_of_storage._M_data), __value ? ~0 : 0);
+    fill(this->_M_start._M_p, (__chunk_type*)(this->_M_end_of_storage._M_data), __val ? ~0 : 0);
   }
 
   explicit __BVECTOR(size_type __n)
@@ -492,19 +495,19 @@ public:
     copy(__x.begin(), __x.end(), this->_M_start);
   }
 
-#if defined (__STL_MEMBER_TEMPLATES) && !(defined (__GNUC__) && __GNUC_MINOR__ < 90)     
+#if defined (_STLP_MEMBER_TEMPLATES)
   template <class _Integer>
-  void _M_initialize_dispatch(_Integer __n, _Integer __x, __true_type) {
+  void _M_initialize_dispatch(_Integer __n, _Integer __x, const __true_type&) {
     _M_initialize(__n);
     fill(this->_M_start._M_p, this->_M_end_of_storage._M_data, __x ? ~0 : 0);
   }
     
   template <class _InputIterator>
   void _M_initialize_dispatch(_InputIterator __first, _InputIterator __last,
-                              __false_type) {
-    _M_initialize_range(__first, __last, __ITERATOR_CATEGORY(__first, _InputIterator));
+                              const __false_type&) {
+    _M_initialize_range(__first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIterator));
   }
-
+# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   // Check whether it's an integral type.  If so, it's not an iterator.
   template <class _InputIterator>
   __BVECTOR(_InputIterator __first, _InputIterator __last)
@@ -513,22 +516,21 @@ public:
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_dispatch(__first, __last, _Integral());
   }
+# endif
   template <class _InputIterator>
   __BVECTOR(_InputIterator __first, _InputIterator __last,
-            const allocator_type& __a)
+            const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
     : _Base(__a)
   {
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_dispatch(__first, __last, _Integral());
   }
-
-#else /* __STL_MEMBER_TEMPLATES */
+#else /* _STLP_MEMBER_TEMPLATES */
   __BVECTOR(const_iterator __first, const_iterator __last,
             const allocator_type& __a = allocator_type())
     : _Bvector_base<_Alloc >(__a)
   {
-    size_type __n = 0;
-    distance(__first, __last, __n);
+    size_type __n = distance(__first, __last);
     _M_initialize(__n);
     copy(__first, __last, this->_M_start);
   }
@@ -536,12 +538,11 @@ public:
             const allocator_type& __a = allocator_type())
     : _Bvector_base<_Alloc >(__a)
   {
-    size_type __n = 0;
-    distance(__first, __last, __n);
+    size_type __n = distance(__first, __last);
     _M_initialize(__n);
     copy(__first, __last, this->_M_start);
   }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
   ~__BVECTOR() { }
 
@@ -573,7 +574,7 @@ public:
   }
   void assign(size_t __n, bool __x) { _M_fill_assign(__n, __x); }
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 
   template <class _InputIterator>
   void assign(_InputIterator __first, _InputIterator __last) {
@@ -582,16 +583,16 @@ public:
   }
 
   template <class _Integer>
-  void _M_assign_dispatch(_Integer __n, _Integer __val, __true_type)
+  void _M_assign_dispatch(_Integer __n, _Integer __val, const __true_type&)
     { _M_fill_assign((size_t) __n, (bool) __val); }
 
   template <class _InputIter>
-  void _M_assign_dispatch(_InputIter __first, _InputIter __last, __false_type)
-    { _M_assign_aux(__first, __last, __ITERATOR_CATEGORY(__first, _InputIter)); }
+  void _M_assign_dispatch(_InputIter __first, _InputIter __last, const __false_type&)
+    { _M_assign_aux(__first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIter)); }
 
   template <class _InputIterator>
   void _M_assign_aux(_InputIterator __first, _InputIterator __last,
-                     input_iterator_tag) {
+                     const input_iterator_tag &) {
     iterator __cur = begin();
     for ( ; __first != __last && __cur != end(); ++__cur, ++__first)
       *__cur = *__first;
@@ -603,9 +604,8 @@ public:
 
   template <class _ForwardIterator>
   void _M_assign_aux(_ForwardIterator __first, _ForwardIterator __last,
-                     forward_iterator_tag) {
-    size_type __len = 0;
-    distance(__first, __last, __len);
+                     const forward_iterator_tag &) {
+    size_type __len = distance(__first, __last);
     if (__len < size())
       erase(copy(__first, __last, begin()), end());
     else {
@@ -616,7 +616,7 @@ public:
     }
   }    
 
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
   void reserve(size_type __n) {
     if (capacity() < __n) {
@@ -642,9 +642,9 @@ public:
       _M_insert_aux(end(), __x);
   }
   void swap(__BVECTOR_QUALIFIED& __x) {
-    __STLPORT_STD::swap(this->_M_start, __x._M_start);
-    __STLPORT_STD::swap(this->_M_finish, __x._M_finish);
-    __STLPORT_STD::swap(this->_M_end_of_storage._M_data, __x._M_end_of_storage._M_data);
+    _STLP_STD::swap(this->_M_start, __x._M_start);
+    _STLP_STD::swap(this->_M_finish, __x._M_finish);
+    _STLP_STD::swap(this->_M_end_of_storage, __x._M_end_of_storage);
   }
   iterator insert(iterator __position, bool __x = bool()) {
     difference_type __n = __position - begin();
@@ -657,19 +657,19 @@ public:
     return begin() + __n;
   }
 
-#if defined ( __STL_MEMBER_TEMPLATES ) && !(defined (__GNUC__) && (__GNUC_MINOR__ < 90)) 
+#if defined ( _STLP_MEMBER_TEMPLATES )
 
   template <class _Integer>
   void _M_insert_dispatch(iterator __pos, _Integer __n, _Integer __x,
-                          __true_type) {
+                          const __true_type&) {
     _M_fill_insert(__pos, (size_type) __n, (bool) __x);
   }
 
   template <class _InputIterator>
   void _M_insert_dispatch(iterator __pos,
                           _InputIterator __first, _InputIterator __last,
-                          __false_type) {
-    _M_insert_range(__pos, __first, __last, __ITERATOR_CATEGORY(__first, _InputIterator));
+                          const __false_type&) {
+    _M_insert_range(__pos, __first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIterator));
   }
 
   // Check whether it's an integral type.  If so, it's not an iterator.
@@ -679,12 +679,11 @@ public:
     typedef typename _Is_integer<_InputIterator>::_Integral _Is_Integral;
     _M_insert_dispatch(__position, __first, __last, _Is_Integral());
   }
-#else /* __STL_MEMBER_TEMPLATES */
+#else /* _STLP_MEMBER_TEMPLATES */
   void insert(iterator __position,
               const_iterator __first, const_iterator __last) {
     if (__first == __last) return;
-    size_type __n = 0;
-    distance(__first, __last, __n);
+    size_type __n = distance(__first, __last);
     if (capacity() - size() >= __n) {
       __copy_backward(__position, end(), this->_M_finish + __n,
                       random_access_iterator_tag(), (difference_type*)0 );
@@ -692,7 +691,7 @@ public:
       this->_M_finish += __n;
     }
     else {
-      size_type __len = size() + __STL_MAX(size(), __n);
+      size_type __len = size() + (max)(size(), __n);
       unsigned int* __q = this->_M_bit_alloc(__len);
       iterator __i = copy(begin(), __position, iterator(__q, 0));
       __i = copy(__first, __last, __i);
@@ -705,8 +704,7 @@ public:
 
   void insert(iterator __position, const bool* __first, const bool* __last) {
     if (__first == __last) return;
-    size_type __n = 0;
-    distance(__first, __last, __n);
+    size_type __n = distance(__first, __last);
     if (capacity() - size() >= __n) {
       __copy_backward(__position, end(), this->_M_finish + __n, 
                       random_access_iterator_tag(), (difference_type*)0 );
@@ -714,7 +712,7 @@ public:
       this->_M_finish += __n;
     }
     else {
-      size_type __len = size() + __STL_MAX(size(), __n);
+      size_type __len = size() + (max)(size(), __n);
       unsigned int* __q = this->_M_bit_alloc(__len);
       iterator __i = copy(begin(), __position, iterator(__q, 0));
       __i = copy(__first, __last, __i);
@@ -724,7 +722,7 @@ public:
       this->_M_start = iterator(__q, 0);
     }
   }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
   
   void _M_fill_insert(iterator __position, size_type __n, bool __x) {
     if (__n == 0) return;
@@ -734,7 +732,7 @@ public:
       this->_M_finish += difference_type(__n);
     }
     else {
-      size_type __len = size() + __STL_MAX(size(), __n);
+      size_type __len = size() + (max)(size(), __n);
       unsigned int* __q = this->_M_bit_alloc(__len);
       iterator __i = copy(begin(), __position, iterator(__q, 0));
       fill_n(__i, __n, __x);
@@ -776,51 +774,32 @@ public:
   void clear() { erase(begin(), end()); }
 };
 
-# if defined  ( __STL_NO_BOOL ) \
-|| defined (__HP_aCC) // fixed soon (03/17/2000)
+# if defined  ( _STLP_NO_BOOL ) || defined (__HP_aCC) // fixed soon (03/17/2000)
  
-__BVEC_TMPL_HEADER
-inline void swap(__BVECTOR_QUALIFIED& __x, __BVECTOR_QUALIFIED& __y) {
-  __x.swap(__y);
-}
-
-__BVEC_TMPL_HEADER
-inline bool __STL_CALL 
-operator==(const __BVECTOR_QUALIFIED& __x, const __BVECTOR_QUALIFIED& __y)
-{
-  return (__x.size() == __y.size() && 
-          equal(__x.begin(), __x.end(), __y.begin()));
-}
-
-
-__BVEC_TMPL_HEADER
-inline bool __STL_CALL 
-operator<(const __BVECTOR_QUALIFIED& __x, const __BVECTOR_QUALIFIED& __y)
-{
-  return lexicographical_compare(__x.begin(), __x.end(), 
-                                 __y.begin(), __y.end());
-}
-
-__STL_RELOPS_OPERATORS( __BVEC_TMPL_HEADER, __BVECTOR_QUALIFIED )
+#define _STLP_TEMPLATE_HEADER __BVEC_TMPL_HEADER
+#define _STLP_TEMPLATE_CONTAINER __BVECTOR_QUALIFIED
+#include <stl/_relops_cont.h>
+#undef _STLP_TEMPLATE_CONTAINER
+#undef _STLP_TEMPLATE_HEADER
   
 # endif /* NO_BOOL */
   
-#if !defined (__STL_NO_BOOL)
+#if !defined (_STLP_NO_BOOL)
 // This typedef is non-standard.  It is provided for backward compatibility.
   typedef __WORKAROUND_DBG_RENAME(vector) <bool, allocator<bool> > bit_vector;
 #endif
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
 #undef _Alloc
-#undef __SGI_STL_VECBOOL_TEMPLATE
+#undef _STLP_VECBOOL_TEMPLATE
 #undef __BVECTOR
 #undef __BVECTOR_QUALIFIED
 #undef __BVEC_TMPL_HEADER
 
 # undef __WORD_BIT
 
-#endif /* __SGI_STL_INTERNAL_BVECTOR_H */
+#endif /* _STLP_INTERNAL_BVECTOR_H */
 
 // Local Variables:
 // mode:C++

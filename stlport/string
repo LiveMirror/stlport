@@ -16,44 +16,45 @@
  *
  */
 
-#ifndef __SGI_STL_STRING
-# define __SGI_STL_STRING
+#ifndef _STLP_STRING
+# define _STLP_STRING
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x68
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x68
 #  include <stl/_prolog.h>
 # endif
 
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
 
-#if defined (__STL_USE_NATIVE_STRING)
+#if defined (_STLP_USE_NATIVE_STRING)
 
 // as part of compiled runtime library depends on it.
-// DO NOT use SGI <string> with native <iostream> unless you recompile 
-// standard C++ runtime library with STLport installed. 
 
-# if defined (__STL_MSVC)
+# if defined (_STLP_MSVC)
 #  include <streambuf>
 #  include <istream>
 # endif
 
-#  include __STL_NATIVE_HEADER(string)
+#  include _STLP_NATIVE_HEADER(string)
 
-# endif /* __STL_USE_NATIVE_STRING */
+# endif /* _STLP_USE_NATIVE_STRING */
 
-# if !defined (__STL_USE_NATIVE_STRING) || defined (__STL_USE_OWN_NAMESPACE)
+# if !defined (_STLP_USE_NATIVE_STRING) || defined (_STLP_USE_OWN_NAMESPACE)
 # include <stl/_string.h>
 # else
 # include <stl/_string_hash.h>
-# endif /*__STL_USE_NATIVE_STRING */
+# endif /*_STLP_USE_NATIVE_STRING */
 
 // cleanup
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x68)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x68)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_STRING */
+#endif /* _STLP_STRING */
 
 // Local Variables:
 // mode:C++

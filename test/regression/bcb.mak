@@ -136,6 +136,7 @@ OBJFILES = \
    ostmit.obj\
    iterswp1.obj\
    min1.obj\
+   memfunptr.obj \
    merge2.obj\
    merge1.obj\
    merge0.obj\
@@ -248,12 +249,17 @@ PATHPAS = .;
 PATHASM = .;
 PATHRC = .;
 
-USERDEFINES = __STL_NO_SGI_IOSTREAMS
-SYSDEFINES = _RTLDLL;NO_STRICT;USEPACKAGES;_DEBUG
+USERDEFINES = _DEBUG
+SYSDEFINES = NO_STRICT;USEPACKAGES
 
  # ---------------------------------------------------------------------------
 # CFLAG1 = -w- -jb -j1  -I.;..\..\stlport;$(BCB)\include; -Od -v -N -x -xp -tWCR -D$(SYSDEFINES);$(USERDEFINES)  -L..\..\lib
-CFLAG1 = -w- -jb -j1  -I.;..\..\stlport;$(BCB)\include; -tWCR -D$(SYSDEFINES);$(USERDEFINES)
+
+# CFLAG1 = -w- -jb -j1  -I.;..\..\stlport;$(BCB)\include; -tWCR -w-par -w-inl -w-stl -D$(SYSDEFINES);$(USERDEFINES)
+
+CFLAG1 = -w- -jb -j1  -I.;..\..\stlport;$(BCB)\include; -Od -v -N -x -xp -tWC -D$(SYSDEFINES);$(USERDEFINES) -L..\..\lib
+
+LDFLAGS =  -L..\..\lib;$(BCB)\..\lib stlpst.lib
 
 .autodepend
 # ---------------------------------------------------------------------------
@@ -261,18 +267,18 @@ CFLAG1 = -w- -jb -j1  -I.;..\..\stlport;$(BCB)\include; -tWCR -D$(SYSDEFINES);$(
 all : $(PROJECT)
 
 $(PROJECT) : $(OBJFILES)
-	$(BCB)\BIN\$(BCC32) -e$(PROJECT) $(CFLAG1) $(OBJFILES)
+	$(BCB)\BIN\$(BCC32) -e$(PROJECT) $(CFLAG1) $(LDFLAGS) $(OBJFILES)
 
 clean:
 	del *.obj *.exe *.core *.tds
 
 # ---------------------------------------------------------------------------
 .cpp.obj:
-    $(BCB)\BIN\$(BCC32) $(CFLAG1) -n$(@D) -c $<
+    $(BCC32) $(CFLAG1) -n$(@D) -c $<
 
 .cpp.exe:
-    $(BCB)\BIN\$(BCC32) $(CFLAG1) -DMAIN  -n$(@D) $<
+    $(BCC32) $(CFLAG1) -DMAIN  -n$(@D) $<
 
 .cpp.i:
-    $(BCB)\BIN\$(CPP32) $(CFLAG1) -n. -Sr -Ss -Sd {$< }
+    $(CPP32) $(CFLAG1) -n. -Sr -Ss -Sd {$< }
 # ---------------------------------------------------------------------------

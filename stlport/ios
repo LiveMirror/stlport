@@ -16,26 +16,30 @@
  *
  */ 
 
-#ifndef __SGI_STL_IOS
-#define __SGI_STL_IOS
+#ifndef _STLP_IOS
+#define _STLP_IOS
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1032
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1032
 #  include <stl/_prolog.h>
 # endif
 
-# if defined ( __SGI_STL_OWN_IOSTREAMS )
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+# if defined ( _STLP_OWN_IOSTREAMS )
 #  include <stl/_ios.h>
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 #  include <wrap_std/ios>
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1032)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1032)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_IOS */
+#endif /* _STLP_IOS */
 
 // Local Variables:
 // mode:C++

@@ -23,72 +23,107 @@
  * modified is included with the above copyright notice.
  *
  */
-#ifndef __STL_THREADS_C
-#define __STL_THREADS_C
+#ifndef _STLP_THREADS_C
+#define _STLP_THREADS_C
 
-# if defined (__STL_EXPOSE_GLOBALS_IMPLEMENTATION)
+#ifndef _STLP_INTERNAL_THREADS_H
+# include <stl/_threads.h>
+#endif
 
-# if defined(__STL_SGI_THREADS)
+# if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
+
+# if defined(_STLP_SGI_THREADS)
 #  include <time.h>
-# elif defined (__STL_UNIX)
+# elif defined (_STLP_UNIX)
 #  include <ctime>
+# if defined (_STLP_USE_NAMESPACES) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
+using _STLP_VENDOR_CSTD::time_t;
+# endif
+#  include <sys/time.h>
 # endif
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
-# if ( __STL_STATIC_TEMPLATE_DATA > 0 )
- 
-#  if !defined ( __STL_ATOMIC_EXCHANGE ) && (defined (__STL_PTHREADS) || defined (__STL_UITHREADS) || defined (__STL_OS2THREADS))
+# if (_STLP_STATIC_TEMPLATE_DATA > 0)
+
+#  ifdef _STLP_THREADS
+#  if !defined(_STLP_ATOMIC_EXCHANGE) && (defined(_STLP_PTHREADS) || defined(_STLP_UITHREADS) || defined(_STLP_OS2THREADS) || defined(_STLP_USE_PTHREAD_SPINLOCK))
 template<int __dummy>
-_STL_STATIC_MUTEX
-_Swap_lock_struct<__dummy>::_S_swap_lock __STL_MUTEX_INITIALIZER;
+_STLP_STATIC_MUTEX
+_Swap_lock_struct<__dummy>::_S_swap_lock _STLP_MUTEX_INITIALIZER;
 #  endif
+#  endif //_STLP_THREADS
+
+#  ifndef _STLP_USE_PTHREAD_SPINLOCK
+template <int __inst>
+unsigned _STLP_mutex_spin<__inst>::__max = _STLP_mutex_spin<__inst>::__low_max;
 
 template <int __inst>
-unsigned _STL_mutex_spin<__inst>::__max = _STL_mutex_spin<__inst>::__low_max;
+unsigned _STLP_mutex_spin<__inst>::__last = 0;
+#  endif // _STLP_USE_PTHREAD_SPINLOCK
+
+# else /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
+
+#  if defined(_STLP_PTHREADS) || defined(_STLP_UITHREADS) || defined(_STLP_OS2THREADS)
+__DECLARE_INSTANCE(_STLP_STATIC_MUTEX, _Swap_lock_struct<0>::_S_swap_lock, 
+                   _STLP_MUTEX_INITIALIZER  );
+#  endif /* _STLP_PTHREADS */
+
+#  ifndef _STLP_USE_PTHREAD_SPINLOCK
+__DECLARE_INSTANCE(unsigned, _STLP_mutex_spin<0>::__max,  =30);
+__DECLARE_INSTANCE(unsigned, _STLP_mutex_spin<0>::__last, =0);
+#  endif // _STLP_USE_PTHREAD_SPINLOCK
+
+# endif /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
+
+#ifndef _STLP_USE_PTHREAD_SPINLOCK
+
+#ifdef _STLP_SPARC_SOLARIS_THREADS
+// underground function in libc.so; we do not want dependance on librt
+extern "C" int __nanosleep(const struct timespec*, struct timespec*);
+# define _STLP_NANOSLEEP __nanosleep
+#else
+# define _STLP_NANOSLEEP nanosleep
+#endif
 
 template <int __inst>
-unsigned _STL_mutex_spin<__inst>::__last = 0;
-
-# else /* ( __STL_STATIC_TEMPLATE_DATA > 0 ) */
-
-#  if defined (__STL_PTHREADS) || defined (__STL_UITHREADS)  || defined (__STL_OS2THREADS)
-__DECLARE_INSTANCE(_STL_STATIC_MUTEX, _Swap_lock_struct<0>::_S_swap_lock, 
-                   __STL_MUTEX_INITIALIZER  );
-#  endif /* __STL_PTHREADS */
-
-__DECLARE_INSTANCE(unsigned, _STL_mutex_spin<0>::__max,  =30);
-__DECLARE_INSTANCE(unsigned, _STL_mutex_spin<0>::__last, =0);
-
-# endif /* ( __STL_STATIC_TEMPLATE_DATA > 0 ) */
-
-template <int __inst>
-void __STL_CALL
-_STL_mutex_spin<__inst>::_S_nsec_sleep(int __log_nsec) {
-#     if defined(__STL_WIN32THREADS)
+void _STLP_CALL
+_STLP_mutex_spin<__inst>::_S_nsec_sleep(int __log_nsec) {
+#     if defined(_STLP_WIN32THREADS)
 	  if (__log_nsec <= 20) {
-	      Sleep(0);
+        // Note from boost (www.boost.org): 
+        // Changed to Sleep(1) from Sleep(0).
+        // According to MSDN, Sleep(0) will never yield
+        // to a lower-priority thread, whereas Sleep(1)
+        // will. Performance seems not to be affected.
+	      Sleep(1);
 	  } else {
 	      Sleep(1 << (__log_nsec - 20));
 	  }
-#     elif defined (__STL_UNIX)
-          struct ::timespec __ts;
+#    elif defined(_STLP_OS2THREADS)
+      if (__log_nsec <= 20) {
+         DosSleep(0);
+      } else {
+         DosSleep(1 << (__log_nsec - 20));
+      }
+#     elif defined (_STLP_UNIX)
+          timespec __ts;
           /* Max sleep is 2**27nsec ~ 60msec      */
           __ts.tv_sec = 0;
           __ts.tv_nsec = 1 << __log_nsec;
-          nanosleep(&__ts, 0);
+          _STLP_NANOSLEEP(&__ts, 0);
 #     endif
   }
 
 
 template <int __inst>
-void  __STL_CALL
-_STL_mutex_spin<__inst>::_M_do_lock(volatile __stl_atomic_t* __lock)
+void  _STLP_CALL
+_STLP_mutex_spin<__inst>::_M_do_lock(volatile __stl_atomic_t* __lock)
 {
-#if defined(__STL_ATOMIC_EXCHANGE)
+#if defined(_STLP_ATOMIC_EXCHANGE)
   if (_Atomic_swap(__lock, 1)) {
-    unsigned __my_spin_max = _STL_mutex_spin<0>::__max;
-    unsigned __my_last_spins = _STL_mutex_spin<0>::__last;
+    unsigned __my_spin_max = _STLP_mutex_spin<0>::__max;
+    unsigned __my_last_spins = _STLP_mutex_spin<0>::__last;
     volatile unsigned __junk = 17; 	// Value doesn't matter.
     unsigned  __i;
     
@@ -102,15 +137,15 @@ _STL_mutex_spin<__inst>::_M_do_lock(volatile __stl_atomic_t* __lock)
           // Spinning worked.  Thus we're probably not being scheduled
           // against the other process with which we were contending.
           // Thus it makes sense to spin longer the next time.
-          _STL_mutex_spin<0>::__last = __i;
-          _STL_mutex_spin<0>::__max = _STL_mutex_spin<0>::__high_max;
+          _STLP_mutex_spin<0>::__last = __i;
+          _STLP_mutex_spin<0>::__max = _STLP_mutex_spin<0>::__high_max;
 	    return;
         }
       }
     }
     
     // We are probably being scheduled against the other process.  Sleep.
-    _STL_mutex_spin<0>::__max = _STL_mutex_spin<0>::__low_max;
+    _STLP_mutex_spin<0>::__max = _STLP_mutex_spin<0>::__low_max;
     
     for (__i = 0 ;; ++__i) {
       int __log_nsec = __i + 6;
@@ -125,11 +160,12 @@ _STL_mutex_spin<__inst>::_M_do_lock(volatile __stl_atomic_t* __lock)
   } /* first _Atomic_swap */
 # endif
 }
+#endif // _STLP_USE_PTHREAD_SPINLOCK
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
 # endif /* BUILDING_STLPORT */
-#endif /*  __STL_THREADS_C */
+#endif /*  _STLP_THREADS_C */
 
 // Local Variables:
 // mode:C++

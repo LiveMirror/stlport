@@ -13,30 +13,36 @@
  *
  */
 
-# if !defined (__STL_OUTERMOST_HEADER_ID)
-#  define __STL_OUTERMOST_HEADER_ID 0x278
+# if !defined (_STLP_OUTERMOST_HEADER_ID)
+#  define _STLP_OUTERMOST_HEADER_ID 0x278
 #  include <stl/_prolog.h>
-# elif (__STL_OUTERMOST_HEADER_ID == 0x278) && ! defined (__STL_DONT_POP_0x278)
-#  define __STL_DONT_POP_0x278
+# elif (_STLP_OUTERMOST_HEADER_ID == 0x278) && ! defined (_STLP_DONT_POP_0x278)
+#  define _STLP_DONT_POP_0x278
 # endif
 
-# if ! defined (__STL_WINCE) && ! defined (__STL_NO_WCHAR_T)
+# if ! defined (_STLP_WINCE) && ! defined (_STLP_NO_WCHAR_T)
 
 # if defined ( __BORLANDC__ ) && (__BORLANDC__) >= 0x530
-#  include <cstring>
-using __STL_VENDOR_CSTD::strlen;
-using __STL_VENDOR_CSTD::strspn;
+// #  include <cstring>
+# include _STLP_NATIVE_CPP_C_HEADER(_str.h)
+using _STLP_VENDOR_CSTD::strlen;
+using _STLP_VENDOR_CSTD::strspn;
 # endif
-# include __STL_NATIVE_C_HEADER(wchar.h)
+
+# if defined (__GNUC__) && defined (__APPLE__)
+#  include _STLP_NATIVE_C_HEADER(stddef.h)
+# else
+#  include _STLP_NATIVE_C_HEADER(wchar.h)
+# endif
 
 # endif /* WINCE */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x278)
-#  if ! defined (__STL_DONT_POP_0x278)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x278)
+#  if ! defined (_STLP_DONT_POP_0x278)
 #   include <stl/_epilog.h>
-#   undef  __STL_OUTERMOST_HEADER_ID
+#   undef  _STLP_OUTERMOST_HEADER_ID
 #   endif
-#   undef  __STL_DONT_POP_0x278
+#   undef  _STLP_DONT_POP_0x278
 # endif
 
 // Local Variables:

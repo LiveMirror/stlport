@@ -16,16 +16,20 @@
  * modified is included with the above copyright notice.
  *
  */
-#ifndef __STL_SLIST_C
-#define __STL_SLIST_C
+#ifndef _STLP_SLIST_C
+#define _STLP_SLIST_C
+
+#ifndef _STLP_INTERNAL_SLIST_H
+# include <stl/_slist.h>
+#endif
 
 # undef slist
 # define  slist  __WORKAROUND_DBG_RENAME(slist)
-# if defined (__STL_NESTED_TYPE_PARAM_BUG) 
+# if defined (_STLP_NESTED_TYPE_PARAM_BUG) 
 #  define size_type          size_t
 # endif
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 template <class _Tp, class _Alloc> 
 _Slist_node_base*
@@ -35,7 +39,7 @@ _Slist_base<_Tp,_Alloc>::_M_erase_after(_Slist_node_base* __before_first,
   while (__cur != __last_node) {
     _Slist_node<_Tp>* __tmp = __cur;
     __cur = (_Slist_node<_Tp>*) __cur->_M_next;
-    _Destroy(&__tmp->_M_data);
+    _STLP_STD::_Destroy(&__tmp->_M_data);
     _M_head.deallocate(__tmp,1);
   }
   __before_first->_M_next = __last_node;
@@ -166,9 +170,9 @@ void slist<_Tp,_Alloc>::sort()
 # undef slist
 # undef size_type
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
-#endif /*  __STL_SLIST_C */
+#endif /*  _STLP_SLIST_C */
 
 // Local Variables:
 // mode:C++

@@ -51,6 +51,7 @@ OBJECTS  = stl_test.obj accum1.obj accum2.obj \
 	map1.obj \
 	max1.obj max2.obj \
 	maxelem1.obj maxelem2.obj \
+	memfunptr.obj \
 	merge0.obj merge1.obj merge2.obj \
 	min1.obj min2.obj \
 	minelem1.obj minelem2.obj \
@@ -115,7 +116,7 @@ TEST_EXE  = stl_test.exe
 TEST  = stl_test.out
 
 CC = icc.exe
-CXX = $(CC) -D__STL_NO_SGI_IOSTREAMS
+CXX = $(CC) -D_STLP_NO_OWN_IOSTREAMS
 DEBUG_FLAGS=
 # Use this for a Debug version
 #DEBUG_FLAGS=-O- -Ti+
@@ -166,11 +167,11 @@ $(LIBS)
 #	$(CXX) $(CXXFLAGS) -c $< -o $@
 #
 #%.s: %.cpp
-#	$(CXX) $(CXXFLAGS) -O5 -D__STL_USE_MALLOC -S -pto $<  -o $@
+#	$(CXX) $(CXXFLAGS) -O5 -D_STLP_USE_MALLOC -S -pto $<  -o $@
 
-#	$(CXX) $(CXXFLAGS) -O5 -D__STL_USE_MALLOC -noex -D__STL_NO_EXCEPTIONS -S -pto $<  -o $@
+#	$(CXX) $(CXXFLAGS) -O5 -D_STLP_USE_MALLOC -noex -D_STLP_NO_EXCEPTIONS -S -pto $<  -o $@
 
-#	$(CXX) $(CXXFLAGS) -O4 -noex -D__STL_NO_EXCEPTIONS -D__STL_NO_EXCEPTIONS -S -pta $<  -o $@
+#	$(CXX) $(CXXFLAGS) -O4 -noex -D_STLP_NO_EXCEPTIONS -D_STLP_NO_EXCEPTIONS -S -pta $<  -o $@
 
 clean:
   del *.exe

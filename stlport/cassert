@@ -13,26 +13,21 @@
  *
  */
 
-#ifndef __STLPORT_CASSERT
-# define __STLPORT_CASSERT
-
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x103
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x103
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__STL_USE_NEW_C_HEADERS) || defined (__IN_STLPORT_CASSERT)
-#  include __STL_NATIVE_CPP_C_HEADER(cassert)
+# if defined (_STLP_USE_NEW_C_HEADERS) || defined (__IN_STLPORT_CASSERT)
+#  include _STLP_NATIVE_CPP_C_HEADER(cassert)
 # else
 #  include <assert.h>
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x103 )
+# if (_STLP_OUTERMOST_HEADER_ID == 0x103 )
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
-
-#endif /* __STLPORT_CASSERT */
 
 // Local Variables:
 // mode:C++

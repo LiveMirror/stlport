@@ -23,7 +23,7 @@
 
 #include "locale_nonclassic.h"
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 _Locale::_Locale(const _Locale_impl& L)
   : _Locale_impl(L), _Refcount_Base(1), facets_vec((void**)L.facets, (void**)L.facets+L.size())
@@ -46,9 +46,11 @@ _Locale::~_Locale() {
 void _Locale::remove(size_t index) {
   if (index > 0 && index < facets_vec.size()) {
     locale::facet* old = (locale::facet*)facets_vec[index];
-    if (old && old->_M_delete)
-      if (old->_M_decr() == 0)
+    if (old && old->_M_delete) {
+      old->_M_decr(); 
+      if (old->_M_ref_count == 0)
         delete old;
+    }
     facets_vec[index] = 0;
   }
 }
@@ -81,7 +83,7 @@ void _Locale::insert(_Locale_impl* from, const locale::id& n) {
 }
 
 
-static _STL_STATIC_MUTEX _Index_lock __STL_MUTEX_INITIALIZER;
+static _STLP_STATIC_MUTEX _Index_lock _STLP_MUTEX_INITIALIZER;
 
 // Takes a reference to a locale::id, and returns its numeric index.
 // If no numeric index has yet been assigned, assigns one.  The return
@@ -89,7 +91,7 @@ static _STL_STATIC_MUTEX _Index_lock __STL_MUTEX_INITIALIZER;
 static size_t _Stl_loc_get_index(locale::id& id)
 {
   if (id._M_index == 0) {
-    _STL_auto_lock sentry(_Index_lock);
+    _STLP_auto_lock sentry(_Index_lock);
     size_t new_index = locale::id::_S_max++;
     id._M_index = new_index;
   }
@@ -115,4 +117,4 @@ locale::locale(_Locale_impl* impl, bool do_copy)
     _M_impl = _S_copy_impl(impl);
 }
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE

@@ -26,7 +26,7 @@ IDE_LinkFLAGS32 =  -L${BCROOT}\LIB
 LinkerLocalOptsAtC32_osdexe =  -Tpe -ap -c
 ResLocalOptsAtC32_osdexe = 
 BLocalOptsAtC32_osdexe = 
-CompInheritOptsAt_osdexe = -I.;${STLINCL};${BCROOT}\INCLUDE -D_RTLDLL -D__STL_NO_SGI_IOSTREAMS;
+CompInheritOptsAt_osdexe = -I.;${STLINCL};${BCROOT}\INCLUDE -D_RTLDLL -D_STLP_NO_OWN_IOSTREAMS;
 LinkerInheritOptsAt_osdexe = -x
 LinkerOptsAt_osdexe = $(LinkerLocalOptsAtC32_osdexe)
 ResOptsAt_osdexe = $(ResLocalOptsAtC32_osdexe)
@@ -167,6 +167,7 @@ Dep_osdexe = \
    ostmit.obj\
    iterswp1.obj\
    min1.obj\
+   memfunptr.obj \
    merge2.obj\
    merge1.obj\
    merge0.obj\

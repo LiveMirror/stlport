@@ -16,8 +16,8 @@
  *
  */
 
-#ifndef __SGI_STL_BITSET
-#define __SGI_STL_BITSET
+#ifndef _STLP_BITSET
+#define _STLP_BITSET
 
 // This implementation of bitset<> has a second template parameter,
 // _WordT, which defaults to unsigned long.  *YOU SHOULD NOT USE
@@ -39,23 +39,23 @@
 // to test(), except that it does no range checking.  The non-const version
 // returns a reference to a bit, again without doing any range checking.
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2
 #  include <stl/_prolog.h>
 # endif
 
-# include <stl/_bitset.h>
-
-#if defined (__STL_WHOLE_NATIVE_STD)
-# include __STL_NATIVE_HEADER(bitset)
+#ifdef _STLP_PRAGMA_ONCE
+# pragma once
 #endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2 )
+# include <stl/_bitset.h>
+
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2 )
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_BITSET */
+#endif /* _STLP_BITSET */
 
 
 // Local Variables:

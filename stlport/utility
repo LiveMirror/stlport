@@ -20,46 +20,44 @@
  *
  */
 
-#ifndef __SGI_STL_UTILITY
-#define __SGI_STL_UTILITY
+#ifndef _STLP_UTILITY
+#define _STLP_UTILITY
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x75
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x75
 #  include <stl/_prolog.h>
 # endif
 
-// this is not really needed by <utility> contents,
-// but it is convenient place to put this stuff in
-#if !defined (__STLPORT_DEBUG_H) && (defined  (__STL_DEBUG) || defined (__STL_ASSERTIONS))
-# include <stl/debug/_debug.h>
-#endif
-
-# ifndef __SGI_STL_INTERNAL_RELOPS
-#  include <stl/_relops.h>
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
 # endif
 
 # ifndef __TYPE_TRAITS_H
 #  include <stl/type_traits.h>
 # endif
 
-# ifndef __SGI_STL_INTERNAL_PAIR_H
+# if !defined (_STLP_DEBUG_H) && (defined  (_STLP_DEBUG) || defined (_STLP_ASSERTIONS))
+#  include <stl/debug/_debug.h>
+# endif
+
+# ifndef _STLP_INTERNAL_PAIR_H
 #  include <stl/_pair.h>
 # endif
 
-# if defined (__STL_IMPORT_VENDOR_STD)
-#   include __STL_NATIVE_HEADER(utility)
+# if defined (_STLP_IMPORT_VENDOR_STD)
+#   include _STLP_NATIVE_HEADER(utility)
 # else
-#  if defined (__STL_MSVC) && ! defined (__SGI_STL_INTERNAL_ITERATOR_H)
+#  if defined (_STLP_MSVC) && ! defined (_STLP_INTERNAL_ITERATOR_H)
 #   include <stl/_iterator.h>
 #  endif
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x75)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x75)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_UTILITY */
+#endif /* _STLP_UTILITY */
 
 // Local Variables:
 // mode:C++

@@ -16,28 +16,32 @@
  *
  */
 
-#ifndef __SGI_STL_FUNCTIONAL
-#define __SGI_STL_FUNCTIONAL
+#ifndef _STLP_FUNCTIONAL
+#define _STLP_FUNCTIONAL
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x27
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x27
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__STL_IMPORT_VENDOR_STD)
-#  include __STL_NATIVE_HEADER(functional)
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
 # endif
 
-# ifndef __STL_INTERNAL_FUNCTION_H
+# if defined (_STLP_IMPORT_VENDOR_STD)
+#  include _STLP_NATIVE_HEADER(functional)
+# endif
+
+# ifndef _STLP_INTERNAL_FUNCTION_H
 #  include <stl/_function.h>
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x27)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x27)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_FUNCTIONAL */
+#endif /* _STLP_FUNCTIONAL */
 
 // Local Variables:
 // mode:C++

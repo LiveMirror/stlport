@@ -33,7 +33,7 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	bcompos1.obj bcompos2.obj \
 	bind1st1.obj bind1st2.obj \
 	bind2nd1.obj bind2nd2.obj \
-	binsert1.obj binsert2.cpp \
+	binsert1.obj binsert2.obj \
 	binsrch1.obj binsrch2.obj \
 	bnegate1.obj bnegate2.obj bvec1.obj \
 	copy1.obj copy2.obj copy3.obj copy4.obj \
@@ -72,6 +72,7 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	map1.obj \
 	max1.obj max2.obj \
 	maxelem1.obj maxelem2.obj \
+	memfunptr.obj \
 	merge0.obj merge1.obj merge2.obj \
 	min1.obj min2.obj \
 	minelem1.obj minelem2.obj \
@@ -137,12 +138,13 @@ LINK32=link.exe
 # ADD F90 /Ox /c /nologo
 F90_PROJ=/Ox /c /nologo
 
-CPP_PROJ=/nologo /W4 /MD /GX /Zd /D "WIN32" /D "__STL_DEBUG" /D "_CONSOLE" $(STL_INCL) -D__STL_NO_SGI_IOSTREAMS /I$(VC_INCL) /I.
+CPP_PROJ=/nologo /W4 /MD /GX /Zd /D "WIN32" /D "_STLP_DEBUG" /D "_CONSOLE" $(STL_INCL) -D_STLP_NO_OWN_IOSTREAMS /I$(VC_INCL) /I.
+CPP_LIBS = /link /libpath:"..\..\lib"
 
 check: stl_test.out
 
 stl_test.out : $(Dep_stl)
-	$(CPP) $(CPP_PROJ) $(Dep_stl)
+	$(CPP) $(CPP_PROJ) $(Dep_stl) $(CPP_LIBS)
 	stl_test > stl_test.out < stdin
 	echo done
 
@@ -156,7 +158,7 @@ clean :
 	$< > $@
 
 .cpp.exe:
-  $(CPP) $(CPP_PROJ) -DMAIN $<
+  $(CPP) $(CPP_PROJ) -DMAIN $< $(CPP_LIBS)
 
 .c.obj:
    $(CPP) $(CPP_PROJ) /c $<

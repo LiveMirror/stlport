@@ -19,30 +19,32 @@ int bvec1_test(int, char**)
   bit_vector b(3);
   int i;
   for(i = 0; i < b.size(); i++)
-    cout << 
-#if defined(__MRC__) || defined(__SC__)	//*TY 01/05/1999 - 
-	(bool)				//*TY 01/05/1999 - added bool() since MrCpp forgets to apply user defined conversion operator
-#endif					//*TY 01/05/1999 - 
-	b[i];
+    cout << b[i];
   cout << endl;
   b[0] = b[2] = 1;
   for(i = 0; i < b.size(); i++)
-    cout << 
-#if defined(__MRC__) || defined(__SC__)	//*TY 01/05/1999 - 
-	(bool)				//*TY 01/05/1999 - added bool() since MrCpp forgets to apply user defined conversion operator
-#endif					//*TY 01/05/1999 - 
-	b[i];
+    cout << b[i];
   cout << endl;
   b.insert(b.begin(),(bool*)ii, ii+2);
   for(i = 0; i < b.size(); i++)
-    cout << 
-#if defined(__MRC__) || defined(__SC__)	//*TY 01/05/1999 - 
-	(bool)				//*TY 01/05/1999 - added bool() since MrCpp forgets to apply user defined conversion operator
-#endif					//*TY 01/05/1999 - 
-	b[i];
+    cout << b[i];
   cout << endl;
   bit_vector bb = b;
   if (bb != b)
+    exit(1);
+
+  b[0] |= 0;
+  b[1] |= 0;
+  b[2] |= 1;
+  b[3] |= 1;
+  if ((b[0] != 1) || (b[1] != 0) || (b[2] != 1) || (b[3] != 1))
+    exit(1);
+  
+  bb[0] &= 0;
+  bb[1] &= 0;
+  bb[2] &= 1;
+  bb[3] &= 1;
+  if ((bb[0] != 0) || (bb[1] != 0) || (bb[2] != 1) || (bb[3] != 0))
     exit(1);
   
   return 0;

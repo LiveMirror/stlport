@@ -55,6 +55,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -125,12 +126,15 @@ TEST  = stl_test.out
 CC = c++
 CXX = $(CC)
 
-DEBUG_FLAGS= -D_REENTRANT
+DEBUG_FLAGS= -g -D_REENTRANT -D_POSIX_C_SOURCE=199506L -D__EXTENSIONS__ -D_STLP_DEBUG -D_STLP_USE_MALLOC
+DEBUG_FLAGS= -g -D_REENTRANT -D_POSIX_C_SOURCE=199506L -D__EXTENSIONS__ -D_STLP_USE_MALLOC
 
-CXXFLAGS = -Wall -D_STLP_NO_SGI_IOSTREAMS ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
+
+CXXFLAGS = -Wall -D_STLP_NO_OWN_IOSTREAMS ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
 # CXXFLAGS = -Wall ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS} 
 
 # LIBS = -L../../lib -lstlport_gcc_stldebug -lm 
+LIBS= ${DEBUG_FLAGS} -lpthread -lm -lc
 LIBSTDCXX = 
 
 check: $(TEST)
@@ -141,7 +145,7 @@ $(TEST) : $(OBJECTS)
 
 
 .cc.o .cxx.o .C.o .cpp.o:
-	${CXX} ${CXXFLAGS} ${DEBUG_FLAGS} ${REPO_FLAGS} ${.IMPSRC} -c -o $*.o $<
+	${CXX} ${CXXFLAGS} ${DEBUG_FLAGS} ${REPO_FLAGS} -c -o $*.o $<
 
 %.out: %.cpp
 	$(CXX) $(CXXFLAGS) ${DEBUG_FLAGS} -USINGLE -DMAIN=1 $< -c -o $*.o

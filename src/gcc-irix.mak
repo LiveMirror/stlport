@@ -6,7 +6,7 @@
 # compiler
 #
 CC = gcc 
-CXX = c++ -nostdinc++ -fexceptions
+CXX = c++ -fexceptions
 
 #
 # Basename for libraries
@@ -19,7 +19,7 @@ LIB_BASENAME = libstlport_gcc
 #
 LINK=ar cr
 # 2.95 flag
-DYN_LINK=c++ -lpthread -nostdinc++ -fexceptions -shared -o
+DYN_LINK=c++ -lpthread -fexceptions -shared -o
 
 OBJEXT=o
 DYNEXT=so
@@ -41,8 +41,8 @@ CXXFLAGS_COMMON = -I${STLPORT_DIR} ${WARNING_FLAGS}
 CXXFLAGS_RELEASE_static = $(CXXFLAGS_COMMON) -O2
 CXXFLAGS_RELEASE_dynamic = $(CXXFLAGS_COMMON) -O2 -fPIC
 
-CXXFLAGS_DEBUG_static = $(CXXFLAGS_COMMON) -g
-CXXFLAGS_DEBUG_dynamic = $(CXXFLAGS_COMMON) -g -fPIC
+CXXFLAGS_DEBUG_static = $(CXXFLAGS_COMMON) -O -g
+CXXFLAGS_DEBUG_dynamic = $(CXXFLAGS_COMMON) -O -g -fPIC
 
 CXXFLAGS_STLDEBUG_static = $(CXXFLAGS_DEBUG_static) -D_STLP_DEBUG
 CXXFLAGS_STLDEBUG_dynamic = $(CXXFLAGS_DEBUG_dynamic) -D_STLP_DEBUG

@@ -23,28 +23,32 @@
  * modified is included with the above copyright notice.
  *
  */
-#ifndef __STL_HEAP_C
-#define __STL_HEAP_C
+#ifndef _STLP_HEAP_C
+#define _STLP_HEAP_C
 
-#ifndef __SGI_STL_INTERNAL_ITERATOR_BASE_H
+#ifndef _STLP_INTERNAL_HEAP_H
+# include <stl/_heap.h>
+#endif
+
+#ifndef _STLP_INTERNAL_ITERATOR_BASE_H
 # include <stl/_iterator_base.h>
 #endif
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 template <class _RandomAccessIterator, class _Distance, class _Tp>
-__STL_INLINE_LOOP
+_STLP_INLINE_LOOP
 void 
 __push_heap(_RandomAccessIterator __first,
-            _Distance __holeIndex, _Distance __topIndex, _Tp __value)
+            _Distance __holeIndex, _Distance __topIndex, _Tp __val)
 {
   _Distance __parent = (__holeIndex - 1) / 2;
-  while (__holeIndex > __topIndex && *(__first + __parent) < __value) {
+  while (__holeIndex > __topIndex && *(__first + __parent) < __val) {
     *(__first + __holeIndex) = *(__first + __parent);
     __holeIndex = __parent;
     __parent = (__holeIndex - 1) / 2;
   }    
-  *(__first + __holeIndex) = __value;
+  *(__first + __holeIndex) = __val;
 }
 
 template <class _RandomAccessIterator, class _Distance, class _Tp>
@@ -61,24 +65,24 @@ void
 push_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
 {
   __push_heap_aux(__first, __last,
-                  __DISTANCE_TYPE(__first, _RandomAccessIterator), __VALUE_TYPE(__first, _RandomAccessIterator));
+                  _STLP_DISTANCE_TYPE(__first, _RandomAccessIterator), _STLP_VALUE_TYPE(__first, _RandomAccessIterator));
 }
 
 
 template <class _RandomAccessIterator, class _Distance, class _Tp, 
           class _Compare>
-__STL_INLINE_LOOP
+_STLP_INLINE_LOOP
 void
 __push_heap(_RandomAccessIterator __first, _Distance __holeIndex,
-            _Distance __topIndex, _Tp __value, _Compare __comp)
+            _Distance __topIndex, _Tp __val, _Compare __comp)
 {
   _Distance __parent = (__holeIndex - 1) / 2;
-  while (__holeIndex > __topIndex && __comp(*(__first + __parent), __value)) {
+  while (__holeIndex > __topIndex && __comp(*(__first + __parent), __val)) {
     *(__first + __holeIndex) = *(__first + __parent);
     __holeIndex = __parent;
     __parent = (__holeIndex - 1) / 2;
   }
-  *(__first + __holeIndex) = __value;
+  *(__first + __holeIndex) = __val;
 }
 
 template <class _RandomAccessIterator, class _Compare,
@@ -98,13 +102,13 @@ push_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
           _Compare __comp) 
 {
   __push_heap_aux(__first, __last, __comp,
-                  __DISTANCE_TYPE(__first, _RandomAccessIterator), __VALUE_TYPE(__first, _RandomAccessIterator));
+                  _STLP_DISTANCE_TYPE(__first, _RandomAccessIterator), _STLP_VALUE_TYPE(__first, _RandomAccessIterator));
 }
 
 template <class _RandomAccessIterator, class _Distance, class _Tp>
 void 
 __adjust_heap(_RandomAccessIterator __first, _Distance __holeIndex,
-              _Distance __len, _Tp __value) {
+              _Distance __len, _Tp __val) {
   _Distance __topIndex = __holeIndex;
   _Distance __secondChild = 2 * __holeIndex + 2;
   while (__secondChild < __len) {
@@ -118,7 +122,7 @@ __adjust_heap(_RandomAccessIterator __first, _Distance __holeIndex,
     *(__first + __holeIndex) = *(__first + (__secondChild - 1));
     __holeIndex = __secondChild - 1;
   }
-  __push_heap(__first, __holeIndex, __topIndex, __value);
+  __push_heap(__first, __holeIndex, __topIndex, __val);
 }
 
 
@@ -126,20 +130,20 @@ template <class _RandomAccessIterator, class _Tp>
 inline void 
 __pop_heap_aux(_RandomAccessIterator __first, _RandomAccessIterator __last, _Tp*) {
   __pop_heap(__first, __last - 1, __last - 1, 
-             _Tp(*(__last - 1)), __DISTANCE_TYPE(__first, _RandomAccessIterator));
+             _Tp(*(__last - 1)), _STLP_DISTANCE_TYPE(__first, _RandomAccessIterator));
 }
 
 template <class _RandomAccessIterator>
 void pop_heap(_RandomAccessIterator __first, 
 	      _RandomAccessIterator __last) {
-  __pop_heap_aux(__first, __last, __VALUE_TYPE(__first, _RandomAccessIterator));
+  __pop_heap_aux(__first, __last, _STLP_VALUE_TYPE(__first, _RandomAccessIterator));
 }
 
 template <class _RandomAccessIterator, class _Distance,
           class _Tp, class _Compare>
 void
 __adjust_heap(_RandomAccessIterator __first, _Distance __holeIndex,
-              _Distance __len, _Tp __value, _Compare __comp)
+              _Distance __len, _Tp __val, _Compare __comp)
 {
   _Distance __topIndex = __holeIndex;
   _Distance __secondChild = 2 * __holeIndex + 2;
@@ -154,7 +158,7 @@ __adjust_heap(_RandomAccessIterator __first, _Distance __holeIndex,
     *(__first + __holeIndex) = *(__first + (__secondChild - 1));
     __holeIndex = __secondChild - 1;
   }
-  __push_heap(__first, __holeIndex, __topIndex, __value, __comp);
+  __push_heap(__first, __holeIndex, __topIndex, __val, __comp);
 }
 
 
@@ -164,7 +168,7 @@ __pop_heap_aux(_RandomAccessIterator __first,
                _RandomAccessIterator __last, _Tp*, _Compare __comp)
 {
   __pop_heap(__first, __last - 1, __last - 1, _Tp(*(__last - 1)), __comp,
-             __DISTANCE_TYPE(__first, _RandomAccessIterator));
+             _STLP_DISTANCE_TYPE(__first, _RandomAccessIterator));
 }
 
 
@@ -173,11 +177,11 @@ void
 pop_heap(_RandomAccessIterator __first,
          _RandomAccessIterator __last, _Compare __comp)
 {
-    __pop_heap_aux(__first, __last, __VALUE_TYPE(__first, _RandomAccessIterator), __comp);
+    __pop_heap_aux(__first, __last, _STLP_VALUE_TYPE(__first, _RandomAccessIterator), __comp);
 }
 
 template <class _RandomAccessIterator, class _Tp, class _Distance>
-__STL_INLINE_LOOP
+_STLP_INLINE_LOOP
 void 
 __make_heap(_RandomAccessIterator __first,
             _RandomAccessIterator __last, _Tp*, _Distance*)
@@ -198,12 +202,12 @@ void
 make_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
 {
   __make_heap(__first, __last,
-              __VALUE_TYPE(__first, _RandomAccessIterator), __DISTANCE_TYPE(__first, _RandomAccessIterator));
+              _STLP_VALUE_TYPE(__first, _RandomAccessIterator), _STLP_DISTANCE_TYPE(__first, _RandomAccessIterator));
 }
 
 template <class _RandomAccessIterator, class _Compare,
           class _Tp, class _Distance>
-__STL_INLINE_LOOP
+_STLP_INLINE_LOOP
 void
 __make_heap(_RandomAccessIterator __first, _RandomAccessIterator __last,
             _Compare __comp, _Tp*, _Distance*)
@@ -226,12 +230,12 @@ make_heap(_RandomAccessIterator __first,
           _RandomAccessIterator __last, _Compare __comp)
 {
   __make_heap(__first, __last, __comp,
-              __VALUE_TYPE(__first, _RandomAccessIterator), __DISTANCE_TYPE(__first, _RandomAccessIterator));
+              _STLP_VALUE_TYPE(__first, _RandomAccessIterator), _STLP_DISTANCE_TYPE(__first, _RandomAccessIterator));
 }
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
-#endif /*  __STL_HEAP_C */
+#endif /*  _STLP_HEAP_C */
 
 // Local Variables:
 // mode:C++

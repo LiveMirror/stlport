@@ -32,7 +32,7 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	bcompos1.obj bcompos2.obj \
 	bind1st1.obj bind1st2.obj \
 	bind2nd1.obj bind2nd2.obj \
-	binsert1.obj binsert2.cpp \
+	binsert1.obj binsert2.obj \
 	binsrch1.obj binsrch2.obj \
 	bnegate1.obj bnegate2.obj bvec1.obj \
 	copy1.obj copy2.obj copy3.obj copy4.obj \
@@ -71,6 +71,7 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	map1.obj \
 	max1.obj max2.obj \
 	maxelem1.obj maxelem2.obj \
+	memfunptr.obj \
 	merge0.obj merge1.obj merge2.obj \
 	min1.obj min2.obj \
 	minelem1.obj minelem2.obj \
@@ -135,7 +136,8 @@ LINK32=link.exe
 # CPP_PROJ=/nologo /W3 /MDd /GX /Zd /D "WIN32" /D "_CONSOLE" $(STL_INCL) /I$(VC_INCL) /I.
 
 # Use this flags to test non-SGI iostreams
-CPP_PROJ=/nologo /W3 /MD /GX /Zd /Zi /D "WIN32" /D "_CONSOLE" $(STL_INCL) /I$(VC_INCL) /I. /D__STL_NO_NEW_IOSTREAMS
+CPP_PROJ=/nologo /W3 /MD /GX /Zi /D "WIN32" /D "_CONSOLE" $(STL_INCL) /I$(VC_INCL) /I. /D_STLP_NO_OWN_IOSTREAMS
+# CPP_PROJ=/nologo /W3 /MD /GX /Zd /Zi /D "WIN32" /D "_CONSOLE" $(STL_INCL) /I$(VC_INCL) /I.
 # linker finds proper STLport lib automatically, only path to the
 # library is needed
 CPP_LIBS = /link /libpath:"..\..\lib"

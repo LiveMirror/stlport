@@ -55,6 +55,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -125,7 +126,7 @@ TEST  = stl_test.out
 CC = c++
 CXX = $(CC)
 
-DEBUG_FLAGS= -D_STLP_DEBUG -D_NOTHREADS -DNOTHREADS -D_STLP_NO_THREADS
+DEBUG_FLAGS= -D_STLP_DEBUG
 
 CXXFLAGS = -Wall ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
 # CXXFLAGS = -Wall ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS} 

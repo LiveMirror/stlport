@@ -28,11 +28,12 @@
  * for existing functionality.
  */
 
-#ifndef __STL_C_LOCALE_IMPL_H
-# define __STL_C_LOCALE_IMPL_H
+#ifndef _STLP_C_LOCALE_IMPL_H
+# define _STLP_C_LOCALE_IMPL_H
 
 # include <stl/c_locale.h>
-# include <cwchar>
+// # include <wchar.h>
+# include <stl/_cwchar.h>
 
 #define _Locale_MAX_SIMPLE_NAME 256
 
@@ -47,7 +48,7 @@
  */
 
 #ifdef __cplusplus
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 extern "C" {
 #endif
 
@@ -55,7 +56,7 @@ extern "C" {
  * Typedefs:
  */
 
-#ifdef __GNUC__
+#if defined (__GNUC__) || defined (_KCC) || defined(__ICC)
 typedef unsigned short int _Locale_mask_t;
 #else
 typedef unsigned int _Locale_mask_t;
@@ -126,12 +127,15 @@ char * _Locale_extract_messages_name(const char *cname, char *__buf);
 char * _Locale_compose_name(char *__buf,
                             const char *__Ctype, const char *__Numeric,
                             const char *__Time, const char *__Collate,
-                            const char *__Monetary, const char *__Messages);
+                            const char *__Monetary, const char *__Messages,
+                            const char *__DefaultName);
 
 /*
  * The inputs to this function are six null-terminated strings: the
- * names of a locale's six categories.  __buf is a pointer to an array
- * large enough to store at least _Locale_MAX_COMPOSITE_NAME characters.
+ * names of a locale's six categories.  Locale names for non-standard
+ * categories are taken from __DefaultName.
+ * __buf is a pointer to an array large enough to store at least 
+ * _Locale_MAX_COMPOSITE_NAME characters.
  * This function constructs a (possibly composite) name describing the
  * locale as a whole, stores that name in buf as a null-terminated
  * string, and returns buf.
@@ -145,7 +149,7 @@ char * _Locale_compose_name(char *__buf,
  * Narrow character functions:
  */
 
-_Locale_mask_t * _Locale_ctype_table(struct _Locale_ctype *);
+const _Locale_mask_t * _Locale_ctype_table(struct _Locale_ctype *);
 
 /*
  * Returns a pointer to the beginning of the ctype table.  The table is
@@ -161,16 +165,17 @@ int _Locale_tolower(struct _Locale_ctype *, int);
  * c is either EOF, or an unsigned char value.
  */
 
-# ifndef __STL_NO_WCHAR_T
+# ifndef _STLP_NO_WCHAR_T
 /*
  * Wide character functions:
  */
-_Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype *, wint_t);
+_Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype *, wint_t, 
+	_Locale_mask_t);
 wint_t _Locale_wchar_tolower(struct _Locale_ctype *, wint_t);
 wint_t _Locale_wchar_toupper(struct _Locale_ctype *, wint_t);
 # endif
 
-# if !defined ( __STL_NO_MBSTATE_T )
+# if !defined ( _STLP_NO_MBSTATE_T )
 
 /*
  * Multibyte functions:
@@ -194,6 +199,7 @@ int _Locale_is_stateless (struct _Locale_ctype *);
  * and does not require the use of an mbstate_t value.
  */
 
+# ifndef _STLP_NO_WCHAR_T
 wint_t _Locale_btowc(struct _Locale_ctype *, int);
 int _Locale_wctob(struct _Locale_ctype *, wint_t);
 
@@ -235,6 +241,7 @@ size_t _Locale_wctomb(struct _Locale_ctype *,
  * if c is not a valid wide character, and (size_t) -2 if the length of
  * the multibyte character sequence is greater than n.
  */
+# endif
 
 size_t _Locale_unshift(struct _Locale_ctype *,
                        mbstate_t *,
@@ -249,7 +256,7 @@ size_t _Locale_unshift(struct _Locale_ctype *,
  * success, sets *next to buf + m.
  */
 
-# endif /*  __STL_NO_MBSTATE_T */
+# endif /*  _STLP_NO_MBSTATE_T */
 
 /*
  * FUNCTIONS THAT USE COLLATE
@@ -258,7 +265,7 @@ size_t _Locale_unshift(struct _Locale_ctype *,
 int _Locale_strcmp(struct _Locale_collate *,
                    const char *, size_t,
                    const char *, size_t);
-# ifndef __STL_NO_WCHAR_T
+# ifndef _STLP_NO_WCHAR_T
 int _Locale_strwcmp(struct _Locale_collate *,
                     const wchar_t *, size_t,
                     const wchar_t *, size_t);
@@ -275,7 +282,7 @@ size_t _Locale_strxfrm(struct _Locale_collate *,
                        char *, size_t,
                        const char *, size_t);
 
-# ifndef __STL_NO_WCHAR_T
+# ifndef _STLP_NO_WCHAR_T
 size_t _Locale_strwxfrm(struct _Locale_collate *,
                         wchar_t *, size_t,
                         const wchar_t *, size_t);
@@ -340,15 +347,15 @@ int          _Locale_n_sign_posn(struct _Locale_monetary *);
  * FUNCTIONS THAT USE TIME
  */
 
-const char ** _Locale_full_monthname(struct _Locale_time *);
-const char ** _Locale_abbrev_monthname(struct _Locale_time *);
+const char * _Locale_full_monthname(struct _Locale_time *, int);
+const char * _Locale_abbrev_monthname(struct _Locale_time *, int);
 
 /*
  * month is in the range [0, 12).
  */
 
-const char ** _Locale_full_dayofweek(struct _Locale_time *);
-const char ** _Locale_abbrev_dayofweek(struct _Locale_time *);
+const char * _Locale_full_dayofweek(struct _Locale_time *, int);
+const char * _Locale_abbrev_dayofweek(struct _Locale_time *, int);
 
 /*
  * day is in the range [0, 7).  Sunday is 0.
@@ -394,7 +401,7 @@ const char * _Locale_catgets(struct _Locale_messages *, int,
 
 # ifdef __cplusplus
 }
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 # endif
 
-# endif /* __STL_C_LOCALE_IMPL_H */
+# endif /* _STLP_C_LOCALE_IMPL_H */

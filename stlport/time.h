@@ -13,21 +13,21 @@
  *
  */
 
-# if !defined (__STL_OUTERMOST_HEADER_ID)
-#  define __STL_OUTERMOST_HEADER_ID 0x272
+# if !defined (_STLP_OUTERMOST_HEADER_ID)
+#  define _STLP_OUTERMOST_HEADER_ID 0x272
 #  include <stl/_prolog.h>
-# elif (__STL_OUTERMOST_HEADER_ID == 0x272) && ! defined (__STL_DONT_POP_0x272)
-#  define __STL_DONT_POP_0x272
+# elif (_STLP_OUTERMOST_HEADER_ID == 0x272) && ! defined (_STLP_DONT_POP_0x272)
+#  define _STLP_DONT_POP_0x272
 # endif
 
-# include __STL_NATIVE_C_HEADER(time.h)
+# include _STLP_NATIVE_C_HEADER(time.h)
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x272)
-#  if ! defined (__STL_DONT_POP_0x272)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x272)
+#  if ! defined (_STLP_DONT_POP_0x272)
 #   include <stl/_epilog.h>
-#   undef  __STL_OUTERMOST_HEADER_ID
+#   undef  _STLP_OUTERMOST_HEADER_ID
 #   endif
-#   undef  __STL_DONT_POP_0x272
+#   undef  _STLP_DONT_POP_0x272
 # endif
 
 // Local Variables:

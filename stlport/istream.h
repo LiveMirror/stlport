@@ -13,50 +13,51 @@
  *
  */
 
-#ifndef __STLPORT_ISTREAM_H
-# define __STLPORT_ISTREAM_H
+#ifndef _STLP_ISTREAM_H
+# define _STLP_ISTREAM_H
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2037
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2037
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# if defined (_STLP_OWN_IOSTREAMS)
 
 # include <istream>
 
-# ifndef __STL_HAS_NO_NAMESPACES
-#  ifdef __STL_BROKEN_USING_DIRECTIVE
-using namespace __STLPORT_STD;
+# ifndef _STLP_HAS_NO_NAMESPACES
+#  ifdef _STLP_BROKEN_USING_DIRECTIVE
+using namespace _STLP_STD;
 #  else
-using __STLPORT_STD::basic_istream;
-using __STLPORT_STD::basic_iostream;
-using __STLPORT_STD::istream;
-using __STLPORT_STD::iostream;
-#   ifndef __STL_NO_WCHAR_T
-using __STLPORT_STD::wistream;
-using __STLPORT_STD::wiostream;
+using _STLP_STD::basic_istream;
+using _STLP_STD::basic_iostream;
+using _STLP_STD::istream;
+using _STLP_STD::iostream;
+using _STLP_STD::ios;
+#   ifndef _STLP_NO_WCHAR_T
+using _STLP_STD::wistream;
+using _STLP_STD::wiostream;
 #   endif
-using __STLPORT_STD::ws;
+using _STLP_STD::ws;
 #  endif
 # endif
 
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 
-# include __STL_NATIVE_OLD_STREAMS_HEADER(istream.h)
+# include _STLP_NATIVE_OLD_STREAMS_HEADER(istream.h)
 
-# if defined (__STL_USE_NAMESPACES) && !defined (__STL_BROKEN_USING_DIRECTIVE)
-__STL_BEGIN_NAMESPACE
-using __STL_OLD_IO_NAMESPACE::istream;
-__STL_END_NAMESPACE
-# endif /* __STL_USE_OWN_NAMESPACE */
+# if defined (_STLP_USE_NAMESPACES) && !defined (_STLP_BROKEN_USING_DIRECTIVE)
+_STLP_BEGIN_NAMESPACE
+using _STLP_OLD_IO_NAMESPACE::istream;
+_STLP_END_NAMESPACE
+# endif /* _STLP_USE_OWN_NAMESPACE */
 
-# endif /* __SGI_STL_OWN_IOSTREAMS */
+# endif /* _STLP_OWN_IOSTREAMS */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2037)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2037)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_ISTREAM_H */
+#endif /* _STLP_ISTREAM_H */
 

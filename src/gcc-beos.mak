@@ -24,7 +24,7 @@ PATH_SEP=/
 MKDIR=mkdir -p
 COMP=GCC-BEOS
 
-all: msg all_static all_dynamic
+all: msg all_static
 
 msg:
 	mkdir -p ../stlport/beos
@@ -41,8 +41,8 @@ CXXFLAGS_COMMON = -I${STLPORT_DIR} ${WARNING_FLAGS}
 CXXFLAGS_RELEASE_static = $(CXXFLAGS_COMMON) -O2
 CXXFLAGS_RELEASE_dynamic = $(CXXFLAGS_COMMON) -O2 -fPIC
 
-CXXFLAGS_DEBUG_static = $(CXXFLAGS_COMMON) -g
-CXXFLAGS_DEBUG_dynamic = $(CXXFLAGS_COMMON) -g -fPIC
+CXXFLAGS_DEBUG_static = $(CXXFLAGS_COMMON) -O -g
+CXXFLAGS_DEBUG_dynamic = $(CXXFLAGS_COMMON) -O -g -fPIC
 
 CXXFLAGS_STLDEBUG_static = $(CXXFLAGS_DEBUG_static) -D_STLP_DEBUG
 CXXFLAGS_STLDEBUG_dynamic = $(CXXFLAGS_DEBUG_dynamic) -D_STLP_DEBUG -fPIC

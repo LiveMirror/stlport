@@ -39,8 +39,8 @@ public:
 
 };
 
-template<class _Tp> struct auto_ptr :  public __ptr_base {
-	
+template<class _Tp> class auto_ptr :  public __ptr_base {
+public:	
   typedef _Tp element_type;
   typedef auto_ptr<_Tp>           _Self;
   
@@ -60,51 +60,40 @@ template<class _Tp> struct auto_ptr :  public __ptr_base {
   _Tp* get() const { return __REINTERPRET_CAST(_Tp*,__CONST_CAST(void*,_M_p)); } 
 
 # if !defined (_STLP_NO_ARROW_OPERATOR)
-  _Tp* operator->() const { return get(); }
+  _Tp* operator->() const { 
+    _STLP_VERBOSE_ASSERT(get()!=0, _StlMsg_AUTO_PTR_NULL)
+    return get(); 
+  }
 # endif
-  _Tp& operator*() const  { return *get(); }
+  _Tp& operator*() const  { 
+    _STLP_VERBOSE_ASSERT(get()!=0, _StlMsg_AUTO_PTR_NULL)
+    return *get(); 
+  }
   
   auto_ptr() { this->_M_p = 0; }
   
   explicit auto_ptr(_Tp* __px) { this->__set(__px); }
   
 #if defined (_STLP_MEMBER_TEMPLATES)
-# ifdef _STLP_MSVC
-  template<class _Tp1> auto_ptr(const auto_ptr<_Tp1>& __r) {
-    this->__set((_Tp1*)const_cast<auto_ptr<_Tp1> >(__r).release());
-  }
-  template<class _Tp1> auto_ptr<_Tp>& operator=(const auto_ptr<_Tp1>& __r) {
-    reset((_Tp1*)const_cast<auto_ptr<_Tp1> >(__r).release());
-    return *this;
-  }
-# else
 # if !defined (_STLP_NO_TEMPLATE_CONVERSIONS)
   template<class _Tp1> auto_ptr(auto_ptr<_Tp1>& __r) {
-    this->__set((_Tp1*)__r.release());
+    _Tp* __conversionCheck = __r.release();
+    this->__set(__conversionCheck);
   }
 # endif	
   template<class _Tp1> auto_ptr<_Tp>& operator=(auto_ptr<_Tp1>& __r) {
-    reset((_Tp1*)__r.release());
+    _Tp* __conversionCheck = __r.release();
+    reset(__conversionCheck);
     return *this;
   }
-# endif
 #endif /* _STLP_MEMBER_TEMPLATES */
   
-#ifdef _STLP_MSVC
-  auto_ptr(const _Self& __r) { this->__set(const_cast<_Self&>(__r).release()); }
-  
-  _Self& operator=(const _Self& __r)  {
-    reset(const_cast<_Self&>(__r).release());
-    return *this;
-  }
-#else	
   auto_ptr(_Self& __r) { this->__set(__r.release()); }
 
   _Self& operator=(_Self& __r)  {
     reset(__r.release());
     return *this;
   }
-#endif
 
   ~auto_ptr() { /* boris : reset(0) might be better */ delete this->get(); }
 	

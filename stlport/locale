@@ -15,33 +15,37 @@
  * modified is included with the above copyright notice.
  *
  */ 
-#ifndef __SGI_STL_LOCALE
-#define __SGI_STL_LOCALE
+#ifndef _STLP_LOCALE
+#define _STLP_LOCALE
 
 // Basic framework: class locale and class locale::facet
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1041
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1041
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+# if defined (_STLP_OWN_IOSTREAMS)
 
 // Individual facets
-#ifndef __SGI_STL_INTERNAL_CTYPE_H
+#ifndef _STLP_INTERNAL_CTYPE_H
 #include <stl/_ctype.h>
 #endif
-#ifndef __SGI_STL_INTERNAL_CODECVT_H
+#ifndef _STLP_INTERNAL_CODECVT_H
 #include <stl/_codecvt.h>
 #endif
-#ifndef __SGI_STL_INTERNAL_COLLATE_H
+#ifndef _STLP_INTERNAL_COLLATE_H
 #include <stl/_collate.h>
 #endif
-#ifndef __SGI_STL_INTERNAL_NUM_PUT_H
+#ifndef _STLP_INTERNAL_NUM_PUT_H
 # include <stl/_num_put.h>
 #endif
 
-#ifndef __SGI_STL_INTERNAL_NUM_GET_H
+#ifndef _STLP_INTERNAL_NUM_GET_H
 # include <stl/_num_get.h>
 #endif
 
@@ -53,7 +57,7 @@
 // some stuff for streambuf iterators ended up defined there
 // Strictly speaking, _istream.h portion is only required for <iterator>, but it may break too many 
 // programs if we omit it
-#ifndef __SGI_STL_ISTREAM_H
+#ifndef _STLP_ISTREAM_H
 # include <stl/_istream.h>
 #endif
 
@@ -72,7 +76,7 @@
 #undef toupper
 #undef tolower
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 template <class _CharT> 
 inline bool isspace (_CharT c, const locale& loc) {
@@ -145,18 +149,18 @@ inline _CharT tolower(_CharT c, const locale& loc) {
 static ios_base::_Loc_init _LocInit;
 # endif
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 #  include <wrap_std/locale> 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1041)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1041)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_LOCALE */
+#endif /* _STLP_LOCALE */
 
 
 // Local Variables:

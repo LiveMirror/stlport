@@ -13,23 +13,23 @@
  *
  */
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x262
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x262
 #  include <stl/_prolog.h>
 # endif
 
-# ifndef __STL_WINCE
+# ifndef _STLP_WINCE
 
-# include __STL_NATIVE_C_HEADER(stddef.h)
+# include _STLP_NATIVE_C_HEADER(stddef.h)
 
 # endif /* WINCE */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x262)
-#  if ! defined (__STL_DONT_POP_0x262)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x262)
+#  if ! defined (_STLP_DONT_POP_0x262)
 #   include <stl/_epilog.h>
-#   undef  __STL_OUTERMOST_HEADER_ID
+#   undef  _STLP_OUTERMOST_HEADER_ID
 #   endif
-#   undef  __STL_DONT_POP_0x262
+#   undef  _STLP_DONT_POP_0x262
 # endif
 
 // Local Variables:

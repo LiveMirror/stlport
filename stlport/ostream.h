@@ -13,37 +13,41 @@
  *
  */
 
-#ifndef __STLPORT_OSTREAM_H
-# define __STLPORT_OSTREAM_H
+#ifndef _STLP_OSTREAM_H
+# define _STLP_OSTREAM_H
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2051
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2051
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# if defined (_STLP_OWN_IOSTREAMS)
 
+#ifdef __BORLANDC__
+#  include <ostream.>
+#else
 #  include <ostream>
+#endif
 
-#  ifdef __STL_USE_NAMESPACES
+#  ifdef _STLP_USE_NAMESPACES
 #   include <using/ostream>
 #  endif
 
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 
-#  include __STL_NATIVE_OLD_STREAMS_HEADER(ostream.h)
-#  if defined (__STL_USE_NAMESPACES) && !defined (__STL_BROKEN_USING_DIRECTIVE)
-__STL_BEGIN_NAMESPACE
+#  include _STLP_NATIVE_OLD_STREAMS_HEADER(ostream.h)
+#  if defined (_STLP_USE_NAMESPACES) && !defined (_STLP_BROKEN_USING_DIRECTIVE)
+_STLP_BEGIN_NAMESPACE
 #   include <using/h/ostream.h>
-__STL_END_NAMESPACE
-#  endif /* __STL_USE_NAMESPACES */
+_STLP_END_NAMESPACE
+#  endif /* _STLP_USE_NAMESPACES */
 
-# endif /* __STL_USE_NO_IOSTREAMS */
+# endif /* _STLP_USE_NO_IOSTREAMS */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2051)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2051)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_OSTREAM_H */
+#endif /* _STLP_OSTREAM_H */
 

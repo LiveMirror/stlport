@@ -19,7 +19,7 @@
 #include "c_locale.h"
 #include <limits.h>
 
-# ifdef __STL_REAL_LOCALE_IMPLEMENTED
+# ifdef _STLP_REAL_LOCALE_IMPLEMENTED
 
 // here, we'll put C locale implementation for those compilers where
 // it has to be done in C++
@@ -43,7 +43,7 @@ struct _Locale_monetary  /* { } */;
 struct _Locale_messages  /* { } */;
 
 # ifdef __cplusplus
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 extern "C" {
 # define __DUMMY_PAR
 # define __DUMMY_PAR1
@@ -53,6 +53,7 @@ extern "C" {
 # define __DUMMY_PAR5
 # define __DUMMY_PAR6
 # define __DUMMY_PAR7
+# define __DUMMY_PAR8
 # endif
     
  void* _Locale_ctype_create(const char * __DUMMY_PAR)
@@ -110,19 +111,19 @@ extern "C" {
 
  char* _Locale_compose_name(char*__DUMMY_PAR1, const char*__DUMMY_PAR2, const char*__DUMMY_PAR3,
                             const char*__DUMMY_PAR4,
-                            const char*__DUMMY_PAR5, const char*__DUMMY_PAR6, const char*__DUMMY_PAR7)
+                            const char*__DUMMY_PAR5, const char*__DUMMY_PAR6, const char*__DUMMY_PAR7, const char*__DUMMY_PAR8)
   { return 0; }
 
 
 /* ctype */
 
- _Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* __DUMMY_PAR)
+const  _Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* __DUMMY_PAR)
   { return 0; }
  int _Locale_toupper(struct _Locale_ctype*__DUMMY_PAR1, int __DUMMY_PAR) { return 0; }
  int _Locale_tolower(struct _Locale_ctype*__DUMMY_PAR1, int __DUMMY_PAR) { return 0; }
 
-# ifndef __STL_NO_WCHAR_T
- _Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype*__DUMMY_PAR1, wint_t __DUMMY_PAR)
+# ifndef _STLP_NO_WCHAR_T
+ _Locale_mask_t _Locale_wchar_ctype(struct _Locale_ctype*__DUMMY_PAR1, wint_t __DUMMY_PAR2, _Locale_mask_t __DUMMY_PAR3)
   { return 0; }
  wint_t _Locale_wchar_tolower(struct _Locale_ctype*__DUMMY_PAR1, wint_t __DUMMY_PAR)
   { return 0; }
@@ -130,13 +131,15 @@ extern "C" {
   { return 0; }
 # endif
 
-# ifndef __STL_NO_MBSTATE_T
+# ifndef _STLP_NO_MBSTATE_T
 
  int _Locale_mb_cur_max (struct _Locale_ctype * __DUMMY_PAR) { return 0; }
  int _Locale_mb_cur_min (struct _Locale_ctype * __DUMMY_PAR) { return 0; }
  int _Locale_is_stateless (struct _Locale_ctype * __DUMMY_PAR) { return 1; }
+#ifndef _STLP_NO_WCHAR_T
  wint_t _Locale_btowc(struct _Locale_ctype * __DUMMY_PAR1, int __DUMMY_PAR) { return 0; }
  int _Locale_wctob(struct _Locale_ctype * __DUMMY_PAR2, wint_t __DUMMY_PAR) { return 0; }
+
  size_t _Locale_mbtowc(struct _Locale_ctype *__DUMMY_PAR1,
                                  wchar_t *__DUMMY_PAR2,
                                  const char *__DUMMY_PAR3, size_t __DUMMY_PAR4,
@@ -149,13 +152,15 @@ extern "C" {
                                  mbstate_t *__DUMMY_PAR5) {
   return (size_t) -1;
 }
+# endif
+
  size_t _Locale_unshift(struct _Locale_ctype *__DUMMY_PAR1,
                                   mbstate_t *__DUMMY_PAR2,
                                   char *__DUMMY_PAR3, size_t __DUMMY_PAR4, char ** __DUMMY_PAR5) {
   return (size_t) -1;
 }
 
-# endif /*  __STL_NO_MBSTATE_T */
+# endif /*  _STLP_NO_MBSTATE_T */
 
 
 /* Collate */
@@ -165,7 +170,7 @@ extern "C" {
   return 0;
 }
 
-# ifndef __STL_NO_WCHAR_T
+# ifndef _STLP_NO_WCHAR_T
 
  int _Locale_strwcmp(struct _Locale_collate* __DUMMY_PAR1,
                      const wchar_t* __DUMMY_PAR2, size_t __DUMMY_PAR3,
@@ -181,7 +186,7 @@ extern "C" {
   return 0;
 }
 
-# ifndef __STL_NO_WCHAR_T
+# ifndef _STLP_NO_WCHAR_T
 
   size_t _Locale_strwxfrm(struct _Locale_collate* __DUMMY_PAR1,
                           wchar_t* __DUMMY_PAR2, size_t __DUMMY_PAR3,
@@ -238,13 +243,13 @@ extern "C" {
 
 
 /* Time */
- const char ** _Locale_full_monthname(struct _Locale_time * __DUMMY_PAR)
+ const char * _Locale_full_monthname(struct _Locale_time * __DUMMY_PAR1, int __DUMMY_PAR2)
   { return 0; }
- const char ** _Locale_abbrev_monthname(struct _Locale_time * __DUMMY_PAR)
+ const char * _Locale_abbrev_monthname(struct _Locale_time * __DUMMY_PAR1, int __DUMMY_PAR2)
   { return 0; }
- const char ** _Locale_full_dayofweek(struct _Locale_time * __DUMMY_PAR)
+ const char * _Locale_full_dayofweek(struct _Locale_time * __DUMMY_PAR1, int __DUMMY_PAR2)
   { return 0; }
- const char ** _Locale_abbrev_dayofweek(struct _Locale_time * __DUMMY_PAR)
+ const char * _Locale_abbrev_dayofweek(struct _Locale_time * __DUMMY_PAR1, int __DUMMY_PAR2)
   { return 0; }
 
  const char* _Locale_d_t_fmt(struct _Locale_time* __DUMMY_PAR)    { return 0; }
@@ -268,7 +273,7 @@ extern "C" {
 
 #ifdef __cplusplus    
 } /* extern C */
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 #endif
 
 #endif /* real locale */

@@ -56,6 +56,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -131,7 +132,7 @@ DEBUG_FLAGS=-D__STL_DEBUG
 DEBUG_FLAGS=
 
 
-CXXFLAGS = -D__STL_NO_SGI_IOSTREAMS ${STL_INCL} ${DEBUG_FLAGS} -I.
+CXXFLAGS = -D_STLP_NO_OWN_IOSTREAMS ${STL_INCL} ${DEBUG_FLAGS} -I.
 
 LIBS = -lm 
 LIBSTDCXX = 

@@ -29,7 +29,7 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	bcompos1.obj bcompos2.obj \
 	bind1st1.obj bind1st2.obj \
 	bind2nd1.obj bind2nd2.obj \
-	binsert1.obj binsert2.cpp \
+	binsert1.obj binsert2.obj \
 	binsrch1.obj binsrch2.obj \
 	bnegate1.obj bnegate2.obj bvec1.obj \
 	copy1.obj copy2.obj copy3.obj copy4.obj \
@@ -68,6 +68,7 @@ Dep_stl = stl_test.obj accum1.obj accum2.obj \
 	map1.obj \
 	max1.obj max2.obj \
 	maxelem1.obj maxelem2.obj \
+	memfunptr.obj \
 	merge0.obj merge1.obj merge2.obj \
 	min1.obj min2.obj \
 	minelem1.obj minelem2.obj \
@@ -144,19 +145,19 @@ IOS = SGI
 #IOS = NONE
 
 !IF "$(IOS)" == "NOSGI"
-CPP_PRJ_IOS = /D__STL_NO_SGI_IOSTREAMS
+CPP_PRJ_IOS = /D_STLP_NO_OWN_IOSTREAMS
 !ELSEIF "$(IOS)" == "NONE"
-CPP_PRJ_IOS = /D__STL_NO_IOSTREAM
+CPP_PRJ_IOS = /D_STLP_NO_IOSTREAM
 !ELSE
-CPP_PRJ_IOS = /D__SGI_STL_OWN_IOSTREAMS
+CPP_PRJ_IOS = 
 !ENDIF
 
 #MT/MD etc should be LAST in CPP_PRJ_LIBTYP string!!!
 #Library selection should be BEFORE debug processing!!!
 !IF "$(LIBTYPE)" == "STATIC"
-CPP_PRJ_LIBTYP = /D__STL_USE_STATIC_LIB /MT
+CPP_PRJ_LIBTYP = /D_STLP_USE_STATIC_LIB /MT
 !ELSE
-CPP_PRJ_LIBTYP = /D__STL_USE_DYNAMIC_LIB /MD
+CPP_PRJ_LIBTYP = /D_STLP_USE_DYNAMIC_LIB /MD
 !ENDIF
 
 !IF "$(DEBUG)" == ""
@@ -165,7 +166,7 @@ CPP_PRJ_DBG = /DNDEBUG /O2 /Qsox-
 CPP_PRJ_LIBTYP = $(CPP_PRJ_LIBTYP)d
 CPP_PRJ_DBG = /D_DEBUG /Od
 !IF "$(DEBUG)" == "STL"
-CPP_PRJ_DBG = $(CPP_PRJ_DBG) /D__STL_DEBUG
+CPP_PRJ_DBG = $(CPP_PRJ_DBG) /D_STLP_DEBUG
 !ENDIF
 CPP_PRJ_CMN = $(CPP_PRJ_CMN) /Zi
 !ENDIF
@@ -189,7 +190,7 @@ clean :
 	$< > $@
 
 .cpp.exe:
-  $(CPP) $(CPP_PROJ) -DMAIN $< 
+  $(CPP) $(CPP_PROJ) -DMAIN $< $(CPP_PRJ_LINK)
 
 .c.obj:
    $(CPP) $(CPP_PROJ) /c $<

@@ -15,34 +15,34 @@
  * modified is included with the above copyright notice.
  *
  */ 
-#ifndef __SGI_STL_OSTREAM
-#define __SGI_STL_OSTREAM
+#ifndef _STLP_OSTREAM
+#define _STLP_OSTREAM
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1050
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1050
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
 
-# if defined(__sgi) && !defined(__GNUC__) && !defined(_STANDARD_C_PLUS_PLUS)
-#  error This header file requires the -LANG:std option
-#  endif
+# if defined (_STLP_OWN_IOSTREAMS)
 
 #  include <stl/_ostream.h>
 
-# elif !defined(__STL_USE_NO_IOSTREAMS)
+# elif !defined(_STLP_USE_NO_IOSTREAMS)
 
 #  include <wrap_std/ostream>
 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1050)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1050)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_OSTREAM */
+#endif /* _STLP_OSTREAM */
 
 // Local Variables:
 // mode:C++

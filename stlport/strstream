@@ -21,21 +21,25 @@
 // header <sstream> instead.
 
 
-#ifndef __SGI_STL_STRSTREAM
-#define __SGI_STL_STRSTREAM
+#ifndef _STLP_STRSTREAM
+#define _STLP_STRSTREAM
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1070
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1070
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+# if defined (_STLP_OWN_IOSTREAMS)
 
 #  include <stl/_strstream.h>
 
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 
-#  if defined (__STL_USE_NEW_IOSTREAMS)
+#  if defined (_STLP_USE_NEW_IOSTREAMS)
 #   include <wrap_std/strstream>
 #  else
 #   include <wrap_std/h/strstream.h>
@@ -43,12 +47,12 @@
 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1070)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1070)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_STRSTREAM */
+#endif /* _STLP_STRSTREAM */
 
 // Local Variables:
 // mode:C++

@@ -4,8 +4,9 @@
  * This section sets new-style macros based on old-style ones, for compatibility
  */
 
-# if defined (__STL_NO_SGI_IOSTREAMS) && ! defined ( _STLP_NO_SGI_IOSTREAMS )
-#  define _STLP_NO_SGI_IOSTREAMS __STL_NO_SGI_IOSTREAMS
+# if (defined (__STL_NO_SGI_IOSTREAMS) || defined (_STLP_NO_SGI_IOSTREAMS)) \
+  && ! defined ( _STLP_NO_OWN_IOSTREAMS )
+#  define _STLP_NO_OWN_IOSTREAMS
 # endif
 
 # if defined (__STL_NO_NEW_IOSTREAMS) && ! defined ( _STLP_NO_NEW_IOSTREAMS )
@@ -23,8 +24,8 @@
 # if defined (__STL_NO_EXTENSIONS) && ! defined ( _STLP_NO_EXTENSIONS )
 #  define _STLP_NO_EXTENSIONS __STL_NO_EXTENSIONS
 # endif
-# if defined (__STL_NO_EXCEPTIOINS) && ! defined ( _STLP_NO_EXCEPTIOINS )
-#  define _STLP_NO_EXCEPTIOINS __STL_NO_EXCEPTIOINS
+# if defined (__STL_NO_EXCEPTIONS) && ! defined ( _STLP_NO_EXCEPTIONS )
+#  define _STLP_NO_EXCEPTIONS __STL_NO_EXCEPTIONS
 # endif
 # if defined (__STL_NO_NAMESPACES) && ! defined ( _STLP_NO_NAMESPACES )
 #  define _STLP_NO_NAMESPACES __STL_NO_NAMESPACES

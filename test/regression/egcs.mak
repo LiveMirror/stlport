@@ -55,6 +55,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -125,7 +126,7 @@ TEST  = stl_test.out
 CC = egcs-c++
 CXX = $(CC)
 
-# DEBUG_FLAGS= -D__STL_DEBUG
+# DEBUG_FLAGS= -D_STLP_DEBUG
 
 CXXFLAGS = -Wall -O ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
 
@@ -140,7 +141,7 @@ $(TEST) : $(OBJECTS)
 
 
 .cc.o .cxx.o .C.o .cpp.o:
-	${CXX} ${CXXFLAGS} ${DEBUG_FLAGS} ${REPO_FLAGS} ${.IMPSRC} -c -o $*.o $<
+	${CXX} ${CXXFLAGS} ${DEBUG_FLAGS} ${REPO_FLAGS} -c -o $*.o $<
 
 %.out: %.cpp
 	$(CXX) $(CXXFLAGS) ${DEBUG_FLAGS} -USINGLE -DMAIN=1 $< -c -o $*.o
@@ -157,7 +158,7 @@ $(STAT_MODULE): stat.cpp
 	$(CXX) $(CXXFLAGS) ${DEBUG_FLAGS} ${REPO_FLAGS} -c $< -o $@
 
 %.s: %.cpp
-	$(CXX) $(CXXFLAGS) -O3 -fno-exceptions -D__STL_NO_EXCEPTIONS -S $<  -o $*.s
+	$(CXX) $(CXXFLAGS) -O3 -fno-exceptions -D_STLP_NO_EXCEPTIONS -S $<  -o $*.s
 
 clean:
 	-rm -rf *.exe *.out *.o *.rpo core *.out Templates.DB

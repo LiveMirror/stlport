@@ -13,11 +13,11 @@
  *
  */
 
-#ifndef __STLPORT_CWCTYPE
-# define __STLPORT_CWCTYPE
+#ifndef _STLP_CWCTYPE
+# define _STLP_CWCTYPE
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x121
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x121
 #  include <stl/_prolog.h>
 # endif
 
@@ -25,8 +25,8 @@
 # include <cctype>
 #endif
 
-# if defined (__STL_USE_NEW_C_HEADERS)
-#  include __STL_NATIVE_CPP_C_HEADER(cwctype)
+# if defined (_STLP_USE_NEW_C_HEADERS)
+#  include _STLP_NATIVE_CPP_C_HEADER(cwctype)
 #  if defined  (__MSL__)
 namespace std {
 	typedef wchar_t wctrans_t;
@@ -35,46 +35,46 @@ namespace std {
 }
 #  endif
 # else
-#  include __STL_NATIVE_C_HEADER(wctype.h)
+#  include _STLP_NATIVE_C_HEADER(wctype.h)
 # endif
 
-# ifdef __STL_IMPORT_VENDOR_CSTD
-__STL_BEGIN_NAMESPACE
-using __STL_VENDOR_CSTD::wctype_t;
-using __STL_VENDOR_CSTD::wint_t;
-# ifndef __STL_NO_CSTD_FUNCTION_IMPORTS
+# ifdef _STLP_IMPORT_VENDOR_CSTD
+_STLP_BEGIN_NAMESPACE
+using _STLP_VENDOR_CSTD::wctype_t;
+using _STLP_VENDOR_CSTD::wint_t;
+# ifndef _STLP_NO_CSTD_FUNCTION_IMPORTS
 #  if ! defined (__BORLANDC__)
-using __STL_VENDOR_CSTD::wctrans_t;
-using __STL_VENDOR_CSTD::towctrans;
-using __STL_VENDOR_CSTD::wctrans;
-using __STL_VENDOR_CSTD::wctype;
-using __STL_VENDOR_CSTD::iswctype;
+using _STLP_VENDOR_CSTD::wctrans_t;
+using _STLP_VENDOR_CSTD::towctrans;
+using _STLP_VENDOR_CSTD::wctrans;
+using _STLP_VENDOR_CSTD::wctype;
+using _STLP_VENDOR_CSTD::iswctype;
 #  endif
-using __STL_VENDOR_CSTD::iswalnum;
-using __STL_VENDOR_CSTD::iswalpha;
-using __STL_VENDOR_CSTD::iswcntrl;
+using _STLP_VENDOR_CSTD::iswalnum;
+using _STLP_VENDOR_CSTD::iswalpha;
+using _STLP_VENDOR_CSTD::iswcntrl;
 
-using __STL_VENDOR_CSTD::iswdigit;
-using __STL_VENDOR_CSTD::iswgraph;
-using __STL_VENDOR_CSTD::iswlower;
-using __STL_VENDOR_CSTD::iswprint;
-using __STL_VENDOR_CSTD::iswpunct;
-using __STL_VENDOR_CSTD::iswspace;
-using __STL_VENDOR_CSTD::iswupper;
-using __STL_VENDOR_CSTD::iswxdigit;
+using _STLP_VENDOR_CSTD::iswdigit;
+using _STLP_VENDOR_CSTD::iswgraph;
+using _STLP_VENDOR_CSTD::iswlower;
+using _STLP_VENDOR_CSTD::iswprint;
+using _STLP_VENDOR_CSTD::iswpunct;
+using _STLP_VENDOR_CSTD::iswspace;
+using _STLP_VENDOR_CSTD::iswupper;
+using _STLP_VENDOR_CSTD::iswxdigit;
 
-using __STL_VENDOR_CSTD::towlower;
-using __STL_VENDOR_CSTD::towupper;
-#  endif /* __STL_NO_CSTD_FUNCTION_IMPORTS */
-__STL_END_NAMESPACE
-#endif /* __STL_IMPORT_VENDOR_CSTD */
+using _STLP_VENDOR_CSTD::towlower;
+using _STLP_VENDOR_CSTD::towupper;
+#  endif /* _STLP_NO_CSTD_FUNCTION_IMPORTS */
+_STLP_END_NAMESPACE
+#endif /* _STLP_IMPORT_VENDOR_CSTD */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x121)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x121)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_CWCTYPE */
+#endif /* _STLP_CWCTYPE */
 
 // Local Variables:
 // mode:C++

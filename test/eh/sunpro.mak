@@ -2,14 +2,11 @@
 # Generated automatically from Makefile.in by configure.
 # This requires GNU make.
 
-# SHELL=/bin/sh
-# srcdir = .
-# VPATH = .
 
 SHELL=/bin/sh
 
 # point this to proper location
-STL_INCL= -I../../stlport/SC5
+STL_INCL= -I${PWD}/../../stlport
 
 # STL_INCL= -DEH_NO_SGI_STL
 
@@ -33,21 +30,25 @@ TEST  = eh_test.out
 CC = CC
 CXX = $(CC)
 
-CXXFLAGS = $(ARCHF) +w2 -mt -features=rtti ${STL_INCL}
-# CXXFLAGS = +w2 ${STL_INCL}
+# CXXFLAGS = ${STL_INCL} -library=no%Cstd -qoption ccfe -instlib=../../lib/libstlport_sunpro.so -features=rtti -DEH_VECTOR_OPERATOR_NEW -DEH_DELETE_HAS_THROW_SPEC
 
+CXXFLAGS = ${STL_INCL} -library=no%Cstd -features=rtti -DEH_VECTOR_OPERATOR_NEW -DEH_DELETE_HAS_THROW_SPEC
+
+# This is to test with native STL
+# CXXFLAGS = +w2 -xildoff -D_STLP_USE_NEWALLOC -DEH_NO_SGI_STL -DEH_NEW_HEADERS -DEH_VECTOR_OPERATOR_NEW -DEH_DELETE_HAS_THROW_SPEC
 
 
 LIBS = -lm 
+LIBSTDCXX = 
 
-LIBSTLPORT = -L../../lib -lstlport_sunpro
+LIBSTLPORT = -library=no%Cstd -L../../lib -lstlport_sunpro
+
 
 check: $(TEST)
 
 $(TEST) : $(OBJECTS)
-	echo 'Info: For CC 4.x, warnings from ld in the form "symbol `XXX' has differing sizes" are normal.'
 	$(CXX) $(CXXFLAGS) $(OBJECTS) ${LIBSTLPORT} $(LIBS) -o $(TEST_EXE)
-	LD_LIBRARY_PATH="../../lib:$(LD_LIBRARY_PATH)" ./$(TEST_EXE) -s 100
+	LD_LIBRARY_PATH="../../lib;${LD_LIBRARY_PATH}" ./$(TEST_EXE) -s 100
 
 SUFFIXES: .cpp.o.out.res
 
@@ -59,18 +60,12 @@ SUFFIXES: .cpp.o.out.res
 
 %.out: %.cpp
 	$(CXX) $(CXXFLAGS) $< -c -USINGLE -DMAIN -g -o $*.o
-	$(CXX) $(CXXFLAGS) $*.o $(LIBSTLPORT) $(LIBS) -o $*
-	./$* -q
-	-rm -f $*
+	$(CXX) $(CXXFLAGS) $*.o $(LIBS) ${LIBSTLPORT} -o $*
+	LD_LIBRARY_PATH="../../lib;${LD_LIBRARY_PATH}" ./$* 
+
 
 %.s: %.cpp
 	$(CXX) $(CXXFLAGS) -O4 -S -pto $<  -o $@
 
 clean:
 	-rm -fr ${TEST_EXE} *.o *.rpo *.obj *.out core *~ Templates.DB SunWS_cache
-
-
-
-
-
-

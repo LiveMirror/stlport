@@ -15,43 +15,48 @@
  * modified is included with the above copyright notice.
  *
  */ 
-#ifndef __STLPORT_STREAMBUF_H
-# define __STLPORT_STREAMBUF_H
+#ifndef _STLP_STREAMBUF_H
+# define _STLP_STREAMBUF_H
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2067
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2067
 #  include <stl/_prolog.h>
 # endif
 
-# if defined ( __SGI_STL_OWN_IOSTREAMS )
+# if defined ( _STLP_OWN_IOSTREAMS )
 
-# include <streambuf>
+#ifdef __BORLANDC__
+#  include <streambuf.>
+#else
+#  include <streambuf>
+#endif
+
 # include <ios.h>
 
-# ifndef __STL_HAS_NO_NAMESPACES
-#  ifdef __STL_BROKEN_USING_DIRECTIVE
-   using namespace __STLPORT_STD;
+# ifndef _STLP_HAS_NO_NAMESPACES
+#  ifdef _STLP_BROKEN_USING_DIRECTIVE
+   using namespace _STLP_STD;
 #  else
-using __STLPORT_STD::basic_streambuf;
-using __STLPORT_STD::streambuf;
-#   ifndef __STL_NO_WCHAR_T
-using __STLPORT_STD::wstreambuf;
+using _STLP_STD::basic_streambuf;
+using _STLP_STD::streambuf;
+#   ifndef _STLP_NO_WCHAR_T
+using _STLP_STD::wstreambuf;
 #   endif
 #  endif
-# endif /* __STL_HAS_NO_NAMESPACES */
+# endif /* _STLP_HAS_NO_NAMESPACES */
 
-# elif !defined (__STL_USE_NO_IOSTREAMS)
+# elif !defined (_STLP_USE_NO_IOSTREAMS)
 
-# include __STL_NATIVE_OLD_STREAMS_HEADER(streambuf.h)
+# include _STLP_NATIVE_OLD_STREAMS_HEADER(streambuf.h)
 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2067)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2067)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_STREAMBUF_H */
+#endif /* _STLP_STREAMBUF_H */
 
 // Local Variables:
 // mode:C++

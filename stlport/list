@@ -23,28 +23,32 @@
  *
  */
 
-#ifndef __SGI_STL_LIST
-#define __SGI_STL_LIST
+#ifndef _STLP_LIST
+#define _STLP_LIST
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x40
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x40
 #  include <stl/_prolog.h>
 # endif
 
-#ifndef __SGI_STL_INTERNAL_LIST_H
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+#ifndef _STLP_INTERNAL_LIST_H
 # include <stl/_list.h>
 #endif
 
-#if defined (__STL_WHOLE_NATIVE_STD)
-# include __STL_NATIVE_HEADER(list)
-# endif
+#if defined (_STLP_WHOLE_VENDOR_STD)
+# include _STLP_NATIVE_HEADER(list)
+#endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x40)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x40)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_LIST */
+#endif /* _STLP_LIST */
 
 // Local Variables:
 // mode:C++

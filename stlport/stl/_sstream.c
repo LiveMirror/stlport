@@ -15,21 +15,26 @@
  * modified is included with the above copyright notice.
  *
  */ 
-#ifndef __STL_SSTREAM_C
-#define __STL_SSTREAM_C
 
-# if defined (__STL_EXPOSE_STREAM_IMPLEMENTATION)
+#ifndef _STLP_SSTREAM_C
+#define _STLP_SSTREAM_C
 
-# if defined ( __STL_NESTED_TYPE_PARAM_BUG )
+#ifndef _STLP_SSTREAM_H
+# include <stl/_sstream.h>
+#endif
+
+# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
+
+# if defined ( _STLP_NESTED_TYPE_PARAM_BUG )
 // no wint_t is supported for this mode
 # define __BSB_int_type__ int
 # define __BSB_pos_type__ streampos
 # else
-# define __BSB_int_type__ __STL_TYPENAME_ON_RETURN_TYPE basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
-# define __BSB_pos_type__ __STL_TYPENAME_ON_RETURN_TYPE basic_stringbuf<_CharT, _Traits, _Alloc>::pos_type
+# define __BSB_int_type__ _STLP_TYPENAME_ON_RETURN_TYPE basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
+# define __BSB_pos_type__ _STLP_TYPENAME_ON_RETURN_TYPE basic_stringbuf<_CharT, _Traits, _Alloc>::pos_type
 # endif
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------
 // Non-inline stringbuf member functions.
@@ -48,15 +53,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>
   ::basic_stringbuf(const basic_string<_CharT, _Traits, _Alloc>& __s, ios_base::openmode __mode)
     : basic_streambuf<_CharT, _Traits>(), _M_mode(__mode), _M_str(__s)
 {
-  _CharT* __data_ptr = __CONST_CAST(_CharT*,_M_str.data());
-  _CharT* __data_end = __data_ptr + _M_str.size();
-  // The initial read position is the beginning of the string.
-  if (_M_mode & ios_base::in)
-    this->setg(__data_ptr, __data_ptr, __data_end);
-
-  // The initial write position is the beginning of the string.
-  if (_M_mode & ios_base::out)
-    this->setp(__data_ptr, __data_end);
+  _M_set_ptrs();
 }
 
 template <class _CharT, class _Traits, class _Alloc>
@@ -69,18 +66,26 @@ void
 basic_stringbuf<_CharT, _Traits, _Alloc>::str(const basic_string<_CharT, _Traits, _Alloc>& __s)
 {
   _M_str = __s;
-  // dwa 02/07/00 - BUG STOMPER DAVE!
+  _M_set_ptrs();
+}
+
+template <class _CharT, class _Traits, class _Alloc>
+void 
+basic_stringbuf<_CharT, _Traits, _Alloc>::_M_set_ptrs() {
   _CharT* __data_ptr = __CONST_CAST(_CharT*,_M_str.data());
   _CharT* __data_end = __data_ptr + _M_str.size();
   // The initial read position is the beginning of the string.
   if (_M_mode & ios_base::in)
     this->setg(__data_ptr, __data_ptr, __data_end);
-
+  
   // The initial write position is the beginning of the string.
-  if (_M_mode & ios_base::out)
-    this->setp(__data_ptr, __data_end);
+  if (_M_mode & ios_base::out) {
+    if (_M_mode & ios_base::app)
+      this->setp(__data_end, __data_end);
+    else
+      this->setp(__data_ptr, __data_end);
+  }
 }
-
 
 // Precondition: gptr() >= egptr().  Returns a character, if one is available.
 template <class _CharT, class _Traits, class _Alloc>
@@ -528,12 +533,11 @@ template <class _CharT, class _Traits, class _Alloc>
 basic_stringstream<_CharT, _Traits, _Alloc>::~basic_stringstream()
 {}
 
-__STL_END_NAMESPACE
-
+_STLP_END_NAMESPACE
 
 # undef __BSB_int_type__
 # undef __BSB_pos_type__
 
 # endif /* EXPOSE */
 
-#endif /* __STL_SSTREAM_C */
+#endif /* _STLP_SSTREAM_C */

@@ -13,16 +13,20 @@
  *
  */
 
-#ifndef __STLPORT_FSTREAM_H
-# define __STLPORT_FSTREAM_H
+#ifndef _STLP_FSTREAM_H
+# define _STLP_FSTREAM_H
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2026
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2026
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# if defined (_STLP_OWN_IOSTREAMS)
+#ifdef __BORLANDC__
+#  include <fstream.>
+#else
 #  include <fstream>
+#endif
 // get desired pollution
 #  include <iostream.h>
 
@@ -32,20 +36,20 @@
 static ios_base::_Loc_init _LocInit;
 # endif
 
-#  ifndef __STL_HAS_NO_NAMESPACES
+#  ifndef _STLP_HAS_NO_NAMESPACES
 #   include <using/fstream>
 #  endif
 
-# elif ! defined (__STL_USE_NO_IOSTREAMS)
+# elif ! defined (_STLP_USE_NO_IOSTREAMS)
 # include <wrap_std/h/fstream.h>
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2026)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2026)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_FSTREAM_H */
+#endif /* _STLP_FSTREAM_H */
 
 // Local Variables:
 // mode:C++

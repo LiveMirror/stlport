@@ -41,22 +41,23 @@ PATHPAS = .;
 PATHASM = .;
 PATHRC = .;
 
-# USERDEFINES = __STL_NO_SGI_IOSTREAMS
+# USERDEFINES = _STLP_NO_OWN_IOSTREAMS
 
 USERDEFINES = _DEBUG
 
 SYSDEFINES = _RTLDLL;NO_STRICT;USEPACKAGES
-SYSDEFINES = NO_STRICT;USEPACKAGES
+# SYSDEFINES = NO_STRICT;USEPACKAGES
  # ---------------------------------------------------------------------------
 CFLAG1 = -w- -jb -j1  -I.;..\..\stlport;$(BCB)\include; -Od -v -N -x -xp -tWC -D$(SYSDEFINES);$(USERDEFINES)
 
-LDFLAGS = -L..\..\lib
+LDFLAGS = -L..\..\lib;$(BCB)\..\lib cw32i.lib stlp.4.5.lib
 
 .autodepend
 # ---------------------------------------------------------------------------
 
 all : $(PROJECT)
-	eh_test.exe -s 100
+        cd ..\..\lib
+	..\test\eh\eh_test.exe -s 100
 
 $(PROJECT) : $(OBJFILES)
 	$(BCC32) -e$(PROJECT) $(CFLAG1) $(LDFLAGS) $(OBJFILES)
@@ -66,8 +67,12 @@ clean:
 
 # ---------------------------------------------------------------------------
 .cpp.obj:
-    $(BCB)\BIN\$(BCC32) $(CFLAG1) -n$(@D) -c $<
+    $(BCC32) $(CFLAG1) -n$(@D) -c $<
+
+.cpp.exe:
+    $(BCC32) $(CFLAG1) $(LDFLAGS) -n$(@D) $<
 
 .cpp.i:
-    $(BCB)\BIN\$(CPP32) $(CFLAG1) -n. -Sr -Ss -Sd {$< }
+    $(CPP32) $(CFLAG1) -n. -Sr -Ss -Sd {$< }
 # ---------------------------------------------------------------------------
+

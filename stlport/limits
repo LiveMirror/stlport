@@ -16,28 +16,28 @@
  *
  */
 
-#ifndef __STLPORT_LIMITS
-#define __STLPORT_LIMITS
+#ifndef _STLP_LIMITS
+#define _STLP_LIMITS
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x39
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x39
 #  include <stl/_prolog.h>
 # endif
 
-# ifndef __STLPORT_LIMITS_H
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+# ifndef _STLP_LIMITS_H
 #  include <stl/_limits.h>
 # endif
 
-# ifdef __STL_WHOLE_NATIVE_STD
-# include __STL_NATIVE_HEADER(limits)
-# endif
-
-# if (__STL_OUTERMOST_HEADER_ID == 0x39)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x39)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_CPP_LIMITS */
+#endif /* _STLP_LIMITS */
 
 // Local Variables:
 // mode:C++

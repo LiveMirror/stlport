@@ -9,7 +9,7 @@ VPATH = .
 
 
 # PWD is here because SC5 wants absolute path ;(
-STL_INCL=-I${PWD}/../../stlport/SC5
+STL_INCL=-I${PWD}/../../stlport
 
 LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	adjdiff0.cpp adjdiff1.cpp adjdiff2.cpp \
@@ -58,6 +58,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -129,22 +130,21 @@ CXX = $(CC)
 # DEBUG_FLAGS=-g
 # DEBUG_FLAGS=-O
 
-# DEBUG_FLAGS=-D__STL_DEBUG
+# DEBUG_FLAGS=-D_STLP_DEBUG
 
 # DEBUG_FLAGS=-compat=4
 
 
-CXXFLAGS = +w2 -pta ${STL_INCL} ${DEBUG_FLAGS} -I. -D__STL_NO_SGI_IOSTREAMS 
+CXXFLAGS = +w2 ${STL_INCL} ${DEBUG_FLAGS} -library=no%Cstd  -I. -qoption ccfe -expand=1000 -qoption ccfe -instlib=../../lib/libstlport_sunpro.so
 
-
-LIBS = -lm 
+LIBS = -L../../lib -lstlport_sunpro -lm
 LIBSTDCXX = 
 
 check: $(TEST)
 
 $(TEST) : $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(DEBUG_FLAGS) $(OBJECTS) $(LIBS) -o $(TEST_EXE)
-	echo 'a string' | ./$(TEST_EXE) > $(TEST)
+	LD_LIBRARY_PATH="../../lib;${LD_LIBRARY_PATH}" ./$(TEST_EXE) < stdin > $(TEST)
 
 SUFFIXES: .cpp.o.exe.out.res
 
@@ -155,10 +155,10 @@ SUFFIXES: .cpp.o.exe.out.res
 	$(CXX) $(CXXFLAGS) $< -E -H > $@
 
 %.out: %.cpp
-	$(CXX) $(CXXFLAGS) $< -c -USINGLE -DMAIN -o $*.o
-	$(CXX) $(CXXFLAGS) $*.o $(LIBS) -g -o $*.exe
-	./$*.exe > $@
-	-rm -f $*.exe
+	$(CXX) $(CXXFLAGS) $< -c -USINGLE -DMAIN -D_REENTRANT -o $*.o
+	$(CXX) $(CXXFLAGS) $*.o -L../../lib -lstlport_sunpro -lpthread -xildoff -lm -g -o $*.exe
+	env LD_LIBRARY_PATH=../../lib ./$*.exe > $@
+#	-rm -f $*.exe
 
 istmit1.out: istmit1.cpp
 	$(CXX) $(CXXFLAGS) $< $(STAT_MODULE) $(LIBSTDCXX) -lstdc++ $(LIBS) -o istmit1
@@ -169,11 +169,11 @@ $(STAT_MODULE): stat.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 %.s: %.cpp
-	$(CXX) $(CXXFLAGS) -O5 -D__STL_USE_MALLOC -S -pto $<  -o $@
+	$(CXX) $(CXXFLAGS) -O5 -D_STLP_USE_MALLOC -S -pto $<  -o $@
 
-#	$(CXX) $(CXXFLAGS) -O5 -D__STL_USE_MALLOC -noex -D__STL_NO_EXCEPTIONS -S -pto $<  -o $@
+#	$(CXX) $(CXXFLAGS) -O5 -D_STLP_USE_MALLOC -noex -D_STLP_NO_EXCEPTIONS -S -pto $<  -o $@
 
-#	$(CXX) $(CXXFLAGS) -O4 -noex -D__STL_NO_EXCEPTIONS -D__STL_NO_EXCEPTIONS -S -pta $<  -o $@
+#	$(CXX) $(CXXFLAGS) -O4 -noex -D_STLP_NO_EXCEPTIONS -D_STLP_NO_EXCEPTIONS -S -pta $<  -o $@
 
 clean:
 	-rm -fr *.exe *.o *.rpo *.obj *.out Templates.DB SunWS_cache

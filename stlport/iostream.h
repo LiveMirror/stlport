@@ -13,45 +13,48 @@
  *
  */
 
-#ifndef __STLPORT_IOSTREAM_H
-# define __STLPORT_IOSTREAM_H
+#ifndef _STLP_IOSTREAM_H
+# define _STLP_IOSTREAM_H
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x2035
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x2035
 #  include <stl/_prolog.h>
 # endif
 
-# ifdef __SGI_STL_OWN_IOSTREAMS
+# ifdef _STLP_OWN_IOSTREAMS
 
+#ifdef __BORLANDC__
+# include <iostream.>
+#else
 # include <iostream>
+#endif
 
 // Those should be included all separately, as they do contain using declarations
 # include <streambuf.h>
 # include <ostream.h>
 # include <istream.h>
 
+# ifndef _STLP_HAS_NO_NAMESPACES
 
-# ifndef __STL_HAS_NO_NAMESPACES
-
-#  ifdef __STL_BROKEN_USING_DIRECTIVE
-using namespace __STLPORT_STD;
+#  ifdef _STLP_BROKEN_USING_DIRECTIVE
+using namespace _STLP_STD;
 #  else
-using __STLPORT_STD::cin;
-using __STLPORT_STD::cout;
-using __STLPORT_STD::clog;
-using __STLPORT_STD::cerr;
-using __STLPORT_STD::iostream;
+using _STLP_STD::cin;
+using _STLP_STD::cout;
+using _STLP_STD::clog;
+using _STLP_STD::cerr;
+using _STLP_STD::iostream;
 
-#   ifndef __STL_NO_WCHAR_T
-using __STLPORT_STD::wcin;
-using __STLPORT_STD::wcout;
-using __STLPORT_STD::wclog;
-using __STLPORT_STD::wcerr;
+#   ifndef _STLP_NO_WCHAR_T
+using _STLP_STD::wcin;
+using _STLP_STD::wcout;
+using _STLP_STD::wclog;
+using _STLP_STD::wcerr;
 #   endif
 
 #  endif
 
-# endif /* __STL_HAS_NO_NAMESPACES */
+# endif /* _STLP_HAS_NO_NAMESPACES */
 
 // Obsolete classes for old-style backwards compatibility
 
@@ -100,16 +103,16 @@ class iostream_withassign : public iostream {
   }
 } ;
 
-# elif ! defined (__STL_USE_NO_IOSTREAMS)
+# elif ! defined (_STLP_USE_NO_IOSTREAMS)
 #  include <wrap_std/h/iostream.h>
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x2035)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x2035)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_IOSTREAM_H */
+#endif /* _STLP_IOSTREAM_H */
 
 // Local Variables:
 // mode:C++

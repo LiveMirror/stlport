@@ -136,6 +136,7 @@ OBJFILES = \
    ostmit.obj\
    iterswp1.obj\
    min1.obj\
+   memfunptr.obj \
    merge2.obj\
    merge1.obj\
    merge0.obj\
@@ -248,7 +249,7 @@ PATHPAS = .;
 PATHASM = .;
 PATHRC = .;
 
-# USERDEFINES = __STL_NO_SGI_IOSTREAMS
+# USERDEFINES = _STLP_NO_OWN_IOSTREAMS
 SYSDEFINES = _RTLDLL;NO_STRICT;USEPACKAGES;_DEBUG
 
  # ---------------------------------------------------------------------------

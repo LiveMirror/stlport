@@ -16,37 +16,37 @@
  *
  */ 
 
-#ifndef __SGI_STL_ISTREAM
-#define __SGI_STL_ISTREAM
+#ifndef _STLP_ISTREAM
+#define _STLP_ISTREAM
 
-#if defined(__sgi) && !defined(__GNUC__) && !defined(_STANDARD_C_PLUS_PLUS)
-#error This header file requires the -LANG:std option
-#endif
-
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1036
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1036
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+# ifdef _STLP_PRAGMA_ONCE
+#  pragma once
+# endif
+
+# if defined (_STLP_OWN_IOSTREAMS)
 
 // boris : apparently, needed to resolve some
 // circular dependancies
 // #  include <iterator>
 #  include <stl/_istream.h>
 
-# elif !defined(__STL_USE_NO_IOSTREAMS)
+# elif !defined(_STLP_USE_NO_IOSTREAMS)
 
 #  include <wrap_std/istream>
 
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1036)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1036)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_ISTREAM */
+#endif /* _STLP_ISTREAM */
 
 // Local Variables:
 // mode:C++

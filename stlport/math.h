@@ -13,31 +13,32 @@
  *
  */
 
-# if !defined (__STL_OUTERMOST_HEADER_ID)
-#  define __STL_OUTERMOST_HEADER_ID 0x244
+# if !defined (_STLP_OUTERMOST_HEADER_ID)
+#  define _STLP_OUTERMOST_HEADER_ID 0x244
 #  include <stl/_prolog.h>
-# elif (__STL_OUTERMOST_HEADER_ID == 0x244) && ! defined (__STL_DONT_POP_0x244)
-#  define __STL_DONT_POP_0x244
+# elif (_STLP_OUTERMOST_HEADER_ID == 0x244) && ! defined (_STLP_DONT_POP_0x244)
+#  define _STLP_DONT_POP_0x244
 # endif
 
-# if ! defined (exception)
+# if ! defined (exception) && (! defined (__KCC) || (__KCC_VERSION < 4000)) && \
+   ! (defined(__IBMCPP__) && (500 <= __IBMCPP__))
 #  define __EXCEPTION_WAS_REDEFINED 1
 #  define exception __math_exception
 # endif
 
-# include __STL_NATIVE_C_HEADER(math.h)
+# include _STLP_NATIVE_C_HEADER(math.h)
 
 # if defined (__EXCEPTION_WAS_REDEFINED)
 #  undef exception
 #  undef __EXCEPTION_WAS_REDEFINED
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x244)
-#  if ! defined (__STL_DONT_POP_0x244)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x244)
+#  if ! defined (_STLP_DONT_POP_0x244)
 #   include <stl/_epilog.h>
-#   undef  __STL_OUTERMOST_HEADER_ID
+#   undef  _STLP_OUTERMOST_HEADER_ID
 #   endif
-#   undef  __STL_DONT_POP_0x244
+#   undef  _STLP_DONT_POP_0x244
 # endif
 
 // Local Variables:

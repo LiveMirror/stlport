@@ -27,20 +27,20 @@
  *   You should not attempt to use it directly.
  */
 
-#ifndef __SGI_STL_INTERNAL_SET_H
-#define __SGI_STL_INTERNAL_SET_H
+#ifndef _STLP_INTERNAL_SET_H
+#define _STLP_INTERNAL_SET_H
 
-#ifndef __SGI_STL_INTERNAL_TREE_H
+#ifndef _STLP_INTERNAL_TREE_H
 #include <stl/_tree.h>
 #endif
 
 #define set __WORKAROUND_RENAME(set)
 #define multiset __WORKAROUND_RENAME(multiset)
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
-                     __STL_DEFAULT_ALLOCATOR_SELECT(_Key) >
+                     _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class set {
 public:
 // typedefs:
@@ -75,19 +75,20 @@ public:
 	       const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) {}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIterator>
   set(_InputIterator __first, _InputIterator __last)
     : _M_t(_Compare(), allocator_type())
     { _M_t.insert_unique(__first, __last); }
 
+# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   set(_InputIterator __first, _InputIterator __last, const _Compare& __comp)
     : _M_t(__comp, allocator_type()) { _M_t.insert_unique(__first, __last); }
-
+# endif
   template <class _InputIterator>
   set(_InputIterator __first, _InputIterator __last, const _Compare& __comp,
-      const allocator_type& __a)
+      const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
     : _M_t(__comp, __a) { _M_t.insert_unique(__first, __last); }
 #else
   set(const value_type* __first, const value_type* __last) 
@@ -106,7 +107,7 @@ public:
   set(const_iterator __first, const_iterator __last, const _Compare& __comp,
       const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) { _M_t.insert_unique(__first, __last); }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
   set(const set<_Key,_Compare,_Alloc>& __x) : _M_t(__x._M_t) {}
   set<_Key,_Compare,_Alloc>& operator=(const set<_Key, _Compare, _Alloc>& __x)
@@ -140,7 +141,7 @@ public:
     typedef typename _Rep_type::iterator _Rep_iterator;
     return _M_t.insert_unique((_Rep_iterator&)__position, __x);
   }
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIterator>
   void insert(_InputIterator __first, _InputIterator __last) {
     _M_t.insert_unique(__first, __last);
@@ -152,7 +153,7 @@ public:
   void insert(const value_type* __first, const value_type* __last) {
     _M_t.insert_unique(__first, __last);
   }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
   void erase(iterator __position) { 
     typedef typename _Rep_type::iterator _Rep_iterator;
     _M_t.erase((_Rep_iterator&)__position); 
@@ -167,7 +168,7 @@ public:
   void clear() { _M_t.clear(); }
 
   // set operations:
-# if defined(__STL_MEMBER_TEMPLATES) && ! defined ( __STL_NO_EXTENSIONS )
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
   template <class _KT>
   iterator find(const _KT& __x) const { return _M_t.find(__x); }
 # else
@@ -188,7 +189,7 @@ public:
 };
 
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
-                     __STL_DEFAULT_ALLOCATOR_SELECT(_Key) >
+                     _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class multiset {
 public:
   // typedefs:
@@ -223,22 +224,23 @@ public:
                     const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) {}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 
   template <class _InputIterator>
   multiset(_InputIterator __first, _InputIterator __last)
     : _M_t(_Compare(), allocator_type())
     { _M_t.insert_equal(__first, __last); }
 
+# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   multiset(_InputIterator __first, _InputIterator __last,
            const _Compare& __comp)
     : _M_t(__comp, allocator_type()) { _M_t.insert_equal(__first, __last); }
-
+# endif
   template <class _InputIterator>
   multiset(_InputIterator __first, _InputIterator __last,
            const _Compare& __comp,
-           const allocator_type& __a)
+           const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
     : _M_t(__comp, __a) { _M_t.insert_equal(__first, __last); }
 
 #else
@@ -261,7 +263,7 @@ public:
            const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) { _M_t.insert_equal(__first, __last); }
    
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
   multiset(const multiset<_Key,_Compare,_Alloc>& __x) : _M_t(__x._M_t) {}
   multiset<_Key,_Compare,_Alloc>&
@@ -294,7 +296,7 @@ public:
     return _M_t.insert_equal((_Rep_iterator&)__position, __x);
   }
 
-#ifdef __STL_MEMBER_TEMPLATES  
+#ifdef _STLP_MEMBER_TEMPLATES  
   template <class _InputIterator>
   void insert(_InputIterator __first, _InputIterator __last) {
     _M_t.insert_equal(__first, __last);
@@ -306,7 +308,7 @@ public:
   void insert(const_iterator __first, const_iterator __last) {
     _M_t.insert_equal(__first, __last);
   }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
   void erase(iterator __position) { 
     typedef typename _Rep_type::iterator _Rep_iterator;
     _M_t.erase((_Rep_iterator&)__position); 
@@ -322,7 +324,7 @@ public:
 
   // multiset operations:
 
-# if defined(__STL_MEMBER_TEMPLATES) && ! defined ( __STL_NO_EXTENSIONS )
+# if defined(_STLP_MEMBER_TEMPLATES) && ! defined ( _STLP_NO_EXTENSIONS )
   template <class _KT>
   iterator find(const _KT& __x) const { return _M_t.find(__x); }
 # else
@@ -340,16 +342,16 @@ public:
   }
 };
 
-# define __STL_TEMPLATE_HEADER template <class _Key, class _Compare, class _Alloc>
-# define __STL_TEMPLATE_CONTAINER set<_Key,_Compare,_Alloc>
+# define _STLP_TEMPLATE_HEADER template <class _Key, class _Compare, class _Alloc>
+# define _STLP_TEMPLATE_CONTAINER set<_Key,_Compare,_Alloc>
 # include <stl/_relops_cont.h>
-# undef  __STL_TEMPLATE_CONTAINER
-# define __STL_TEMPLATE_CONTAINER multiset<_Key,_Compare,_Alloc>
+# undef  _STLP_TEMPLATE_CONTAINER
+# define _STLP_TEMPLATE_CONTAINER multiset<_Key,_Compare,_Alloc>
 # include <stl/_relops_cont.h>
-# undef  __STL_TEMPLATE_CONTAINER
-# undef  __STL_TEMPLATE_HEADER
+# undef  _STLP_TEMPLATE_CONTAINER
+# undef  _STLP_TEMPLATE_HEADER
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
 // do a cleanup
 # undef set
@@ -358,11 +360,11 @@ __STL_END_NAMESPACE
 # define __set__  __FULL_NAME(set)
 # define __multiset__  __FULL_NAME(multiset)
 
-# ifdef __STL_USE_WRAPPER_FOR_ALLOC_PARAM
+# ifdef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
 # include <stl/wrappers/_set.h>
 # endif
 
-#endif /* __SGI_STL_INTERNAL_SET_H */
+#endif /* _STLP_INTERNAL_SET_H */
 
 // Local Variables:
 // mode:C++

@@ -15,16 +15,30 @@
  * modified is included with the above copyright notice.
  *
  */ 
-#ifndef __STL_MONETARY_C
-#define __STL_MONETARY_C
+#ifndef _STLP_MONETARY_C
+#define _STLP_MONETARY_C
 
-# if defined (__STL_EXPOSE_STREAM_IMPLEMENTATION)
+# ifndef _STLP_INTERNAL_MONETARY_H
+#  include <stl/_monetary.h>
+# endif
 
-#ifndef __SGI_STL_IOS_H
+# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
+
+#ifndef _STLP_INTERNAL_IOS_H
 # include <stl/_ios.h>
 #endif
 
-__STL_BEGIN_NAMESPACE
+#ifndef _STLP_INTERNAL_NUM_PUT_H
+# include <stl/_num_put.h>
+#endif
+
+#ifndef _STLP_INTERNAL_NUM_GET_H
+# include <stl/_num_get.h>
+#endif
+
+_STLP_BEGIN_NAMESPACE
+
+# if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
 
 template <class _CharT, class _InputIterator>
 locale::id money_get<_CharT, _InputIterator>::id;
@@ -32,7 +46,35 @@ locale::id money_get<_CharT, _InputIterator>::id;
 template <class _CharT, class _OutputIterator>
 locale::id money_put<_CharT, _OutputIterator>::id;
 
+# else /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
+
+typedef money_get<char, const char*> money_get_char;
+typedef money_put<char, char*> money_put_char;
+typedef money_get<char, istreambuf_iterator<char, char_traits<char> > > money_get_char_2;
+typedef money_put<char, ostreambuf_iterator<char, char_traits<char> > > money_put_char_2;
+
+__DECLARE_INSTANCE(locale::id, money_get_char::id, );
+__DECLARE_INSTANCE(locale::id, money_put_char::id, );
+__DECLARE_INSTANCE(locale::id, money_get_char_2::id, );
+__DECLARE_INSTANCE(locale::id, money_put_char_2::id, );
+
+# ifndef _STLP_NO_WCHAR_T
+
+typedef money_get<wchar_t, const wchar_t*> money_get_wchar_t;
+typedef money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > money_get_wchar_t_2;
+typedef money_put<wchar_t, wchar_t*> money_put_wchar_t;
+typedef money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > money_put_wchar_t_2;
+
+__DECLARE_INSTANCE(locale::id, money_get_wchar_t::id, );
+__DECLARE_INSTANCE(locale::id, money_put_wchar_t::id, );
+__DECLARE_INSTANCE(locale::id, money_get_wchar_t_2::id, );
+__DECLARE_INSTANCE(locale::id, money_put_wchar_t_2::id, );
+
+# endif
+# endif /* ( _STLP_STATIC_TEMPLATE_DATA > 0 ) */
+
 // money_get facets
+
 
 // helper functions for do_get
 template <class _InIt1, class _InIt2>
@@ -42,77 +84,21 @@ pair<_InIt1, bool> __get_string(_InIt1 __first,     _InIt1 __last,
   return make_pair(__pr.first, __pr.second == __str_last);
 }
 
-#if !(defined(__MRC__)||defined(__SC__))		//*TY 02/26/2000 - mpw compilers have difficulty matching complex template arguments
 template <class _InIt, class _OuIt, class _CharT>
-pair<_InIt, bool> __get_monetary_value(_InIt __first, _InIt __last,
-                                       _OuIt    __out,
-                                       const ctype<_CharT>& __c_type,
-                                       _CharT   __point,
-                                       size_t      __frac_digits,
-				       bool&    __syntax_ok)
-#else											//*TY 02/26/2000 - added workaround for MPW compilers
-template <class _InIt, class _OuIt, class _CharT, class _CType>		//*TY 02/26/2000 - added _CType
-pair<_InIt, bool> __get_monetary_value(_InIt __first, _InIt __last,
-                                       _OuIt    __out,
-                                       const _CType& __c_type,		//*TY 02/26/2000 - simplified parameter type
-                                       _CharT   __point,
-                                       size_t      __frac_digits,
-				       bool&    __syntax_ok)
-#endif											//*TY 02/26/2000 - 
-{
-  if (__first == __last || !__c_type.is(ctype_base::digit, *__first))
-    return make_pair(__first, false);
-
-  while (__first != __last && __c_type.is(ctype_base::digit, *__first))
-    *__out++ = *__first++;
-
-  if (__first == __last || *__first != __point) {
-    for (int __digits = 0; __digits != __frac_digits; ++__digits)
-      *__out++ = _CharT('0');
-    return make_pair(__first, true);
-  }
-
-  ++__first;
-
-  size_t __digits = 0;
-
-  while (__first != __last && __c_type.is(ctype_base::digit, *__first)) {
-    *__out++ = *__first++;
-    ++__digits;
-  }
-
-  __syntax_ok = (__digits == __frac_digits);  
-
-  return pair<_InIt, bool>(__first, true);
-}
-
-#if !(defined(__MRC__)||defined(__SC__))
-//*TY 02/26/2000 - mpw compilers have difficulty matching complex template arguments
-template <class _InIt, class _OuIt, class _CharT>
-pair<_InIt, bool>
-__get_monetary_value(_InIt __first, _InIt __last, _OuIt __out,
+bool
+__get_monetary_value(_InIt& __first, _InIt __last, _OuIt __out,
                      const ctype<_CharT>& _c_type,
                      _CharT   __point,
                      int      __frac_digits,
                      _CharT __sep,
                      const string& __grouping,
-		     bool&         __syntax_ok)
-#else											//*TY 02/26/2000 - added workaround for MPW compilers
-template <class _InIt, class _OuIt, class _CharT, class _CType>		//*TY 02/26/2000 - added _CType
-pair<_InIt, bool>
-__get_monetary_value(_InIt __first, _InIt __last, _OuIt __out,
-                     const _CType& _c_type,		//*TY 02/26/2000 - simplified parameter type
-                     _CharT   __point,
-                     int      __frac_digits,
-                     _CharT __sep,
-                     const string& __grouping,
-		     bool&         __syntax_ok)
-#endif
+                     bool&         __syntax_ok)
 {
   if (__first == __last || !_c_type.is(ctype_base::digit, *__first))
-    return pair<_InIt, bool>(__first, false);
+    return false;
 
-  string __group_sizes;
+  char __group_sizes[128];
+  char* __group_sizes_end = __grouping.size() == 0 ? 0 : __group_sizes;
   char   __current_group_size = 0;
 
   while (__first != __last) {
@@ -120,30 +106,37 @@ __get_monetary_value(_InIt __first, _InIt __last, _OuIt __out,
       ++__current_group_size;
       *__out++ = *__first++;
     }
-    else
-    if (*__first == __sep) {
-      __group_sizes.push_back(__current_group_size);
-      __current_group_size = 0;
-      ++__first;
+    else if (__group_sizes_end) {
+      if (*__first == __sep) {
+	*__group_sizes_end++ = __current_group_size;
+	__current_group_size = 0;
+	++__first;
+      }
+      else break;
     }
     else
       break;
   }
 
-  if (__group_sizes.size() != 0)
-    __group_sizes.push_back(__current_group_size);
-
-  __syntax_ok = __valid_grouping(__group_sizes, __grouping);  
-
-  if (__first == __last || *__first != __point) {
-    for (int __digits = 0; __digits != __frac_digits; ++__digits)
-      *__out++ = _CharT('0');
-    return make_pair(__first, true); // OK not to have decimal point
+  if (__grouping.size() == 0)
+    __syntax_ok = true;
+  else {
+    if (__group_sizes_end != __group_sizes)
+      *__group_sizes_end++ = __current_group_size;
+    
+    __syntax_ok = __valid_grouping(__group_sizes, __group_sizes_end,
+                                   __grouping.data(), __grouping.data()+ __grouping.size());  
+    
+    if (__first == __last || *__first != __point) {
+      for (int __digits = 0; __digits != __frac_digits; ++__digits)
+        *__out++ = _CharT('0');
+      return true; // OK not to have decimal point
+    }
   }
 
   ++__first;
 
-  int __digits = 0;
+  size_t __digits = 0;
 
   while (__first != __last && _c_type.is(ctype_base::digit, *__first)) {
       *__out++ = *__first++;
@@ -152,8 +145,10 @@ __get_monetary_value(_InIt __first, _InIt __last, _OuIt __out,
 
   __syntax_ok = __syntax_ok && (__digits == __frac_digits);
 
-  return pair<_InIt, bool>(__first, true);
+  return true;
 }
+
+# ifndef _STLP_NO_LONG_DOUBLE
 
 //===== methods ======
 template <class _CharT, class _InputIter>
@@ -169,12 +164,13 @@ money_get<_CharT, _InputIter>::do_get(_InputIter __s, _InputIter  __end, bool  _
     typename string_type::iterator __b = __buf.begin(), __e = __buf.end();
     // Can't use atold, since it might be wchar_t. Don't get confused by name below :
     // it's perfectly capable of reading long double.
-    __get_integer_nogroup(__b, __e, 10, __units, 0, false);
+    __get_decimal_integer(__b, __e, __units);
   }
   if (__s == __end)
     __err |= ios_base::eofbit;
   return __s;
 }
+# endif
 
 template <class _CharT, class _InputIter>
 _InputIter 
@@ -232,10 +228,10 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
         ++__s;
       break;
     case money_base::symbol: {
-      string_type __cs = __intl ? __punct_intl.curr_symbol()
+      string_type __curs = __intl ? __punct_intl.curr_symbol()
                                 : __punct.curr_symbol();
       pair<iter_type, bool>
-      __result  = __get_string(__s, __end, __cs.begin(), __cs.end());
+      __result  = __get_string(__s, __end, __curs.begin(), __curs.end());
       if (!__result.second && __symbol_required)
         __err = ios_base::failbit;
       __s = __result.first;
@@ -291,36 +287,28 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
       string __grouping = __intl ? __punct_intl.grouping()
                                  : __punct.grouping();
       bool __syntax_ok = true;
-      pair<_InputIter, bool> __result;
-      if (__grouping.size() == 0) {
-        __result = __get_monetary_value(__s, __end, __out, __c_type,
-                                        __point, __frac_digits,
-					__syntax_ok);
-        if (!__syntax_ok)
-	  __err |= ios_base::failbit;
-	if (!__result.second) {
-	  __err |= ios_base::failbit;
-	  return __result.first;
-	}
+
+      bool __result;
+
+      _CharT __sep = __grouping.size() == 0 ? _CharT() : 
+	__intl ? __punct_intl.thousands_sep() : __punct.thousands_sep();
+
+      __result = __get_monetary_value(__s, __end, __out, __c_type,
+                                      __point, __frac_digits,
+                                      __sep,
+                                      __grouping, __syntax_ok);      
+
+      if (!__syntax_ok)
+        __err |= ios_base::failbit;
+      if (!__result) {
+        __err = ios_base::failbit;
+        return __s;
       }
-      else {
-        _CharT __sep = __intl ? __punct_intl.thousands_sep()
-                              : __punct.thousands_sep();
-        __result = __get_monetary_value(__s, __end, __out, __c_type,
-                                        __point, __frac_digits,
-                                        __sep,
-                                        __grouping, __syntax_ok);
-      
-	if (!__syntax_ok)
-	  __err |= ios_base::failbit;
-        if (!__result.second) {
-          __err = ios_base::failbit;
-	  return __result.first;
-        }
-      }
-      __s = __result.first;
       break;
+      
     }                           // Close money_base::value case
+
+
     }                           // Close switch statement
   }                             // Close for loop
 
@@ -350,6 +338,7 @@ money_get<_CharT, _InputIter>::do_get(iter_type __s,
   }
   if (__s == __end)
     __err |= ios::eofbit;
+
   return __s;
 }
 
@@ -448,10 +437,10 @@ money_put<_CharT, _OutputIter>
     
   size_t __width        = __str.width();
 
-#if !defined(__STL_DEBUG) || !defined(__HP_aCC) || (__HP_aCC > 1)
-  size_t __value_length = __digits_last - __digits_first;
-#else // --ptr: workaround for aCC A.03.13, with , __HP_aCC == 1
+#if defined(_STLP_DEBUG) && (defined(__HP_aCC) || (__HP_aCC <= 1))
   size_t __value_length = operator -(__digits_last, __digits_first);
+#else
+  size_t __value_length = __digits_last - __digits_first;
 #endif
 
   size_t __length       = __value_length;
@@ -528,14 +517,11 @@ money_put<_CharT, _OutputIter>
   if (!(__fill_pos & (ios_base::right | ios_base::internal)))
     __s = fill_n(__s, __fill_amt, __fill);
   
-
   return __s;
 }
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
 # endif /* EXPOSE */
 
-
-
-#endif /* __STL_MONETARY_C */
+#endif /* _STLP_MONETARY_C */

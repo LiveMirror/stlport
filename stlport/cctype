@@ -13,17 +13,17 @@
  *
  */
 
-#ifndef __STLPORT_CCTYPE
-# define __STLPORT_CCTYPE
+#ifndef _STLP_CCTYPE
+# define _STLP_CCTYPE
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x104
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x104
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__STL_USE_NEW_C_HEADERS)
+# if defined (_STLP_USE_NEW_C_HEADERS)
 
-#  include __STL_NATIVE_CPP_C_HEADER(cctype)
+#  include _STLP_NATIVE_CPP_C_HEADER(cctype)
 
 # else
 
@@ -44,34 +44,34 @@
 #undef toupper
 #undef tolower
 
-# endif /* __STL_USE_NEW_C_HEADERS */
+# endif /* _STLP_USE_NEW_C_HEADERS */
 
-# if ! defined (__STL_NO_CSTD_FUNCTION_IMPORTS)
-#  if defined ( __STL_IMPORT_VENDOR_CSTD )
-__STL_BEGIN_NAMESPACE
-using __STL_VENDOR_CSTD::isalnum;
-using __STL_VENDOR_CSTD::isalpha;
-using __STL_VENDOR_CSTD::iscntrl;
-using __STL_VENDOR_CSTD::isdigit;
-using __STL_VENDOR_CSTD::isgraph;
-using __STL_VENDOR_CSTD::islower;
-using __STL_VENDOR_CSTD::isprint;
-using __STL_VENDOR_CSTD::ispunct;
-using __STL_VENDOR_CSTD::isspace;
-using __STL_VENDOR_CSTD::isupper;
-using __STL_VENDOR_CSTD::isxdigit;
-using __STL_VENDOR_CSTD::tolower;
-using __STL_VENDOR_CSTD::toupper;
-__STL_END_NAMESPACE
-#   endif /* __STL_IMPORT_VENDOR_CSTD*/
-#  endif /* __STL_NO_CSTD_FUNCTION_IMPORTS */
+# if ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
+#  if defined ( _STLP_IMPORT_VENDOR_CSTD )
+_STLP_BEGIN_NAMESPACE
+using _STLP_VENDOR_CSTD::isalnum;
+using _STLP_VENDOR_CSTD::isalpha;
+using _STLP_VENDOR_CSTD::iscntrl;
+using _STLP_VENDOR_CSTD::isdigit;
+using _STLP_VENDOR_CSTD::isgraph;
+using _STLP_VENDOR_CSTD::islower;
+using _STLP_VENDOR_CSTD::isprint;
+using _STLP_VENDOR_CSTD::ispunct;
+using _STLP_VENDOR_CSTD::isspace;
+using _STLP_VENDOR_CSTD::isupper;
+using _STLP_VENDOR_CSTD::isxdigit;
+using _STLP_VENDOR_CSTD::tolower;
+using _STLP_VENDOR_CSTD::toupper;
+_STLP_END_NAMESPACE
+#   endif /* _STLP_IMPORT_VENDOR_CSTD*/
+#  endif /* _STLP_NO_CSTD_FUNCTION_IMPORTS */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x104 )
+# if (_STLP_OUTERMOST_HEADER_ID == 0x104 )
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_CCTYPE */
+#endif /* _STLP_CCTYPE */
 
 // Local Variables:
 // mode:C++

@@ -100,7 +100,7 @@ struct hash_void
   size_t operator()(void* x) const { return (size_t)x; }
 };
 
-typedef std::hash_set<void*, ::hash_void, std::equal_to<void*> > allocation_set;
+typedef EH_STD::hash_set<void*, ::hash_void, EH_STD::equal_to<void*> > allocation_set;
 # endif
 
 static allocation_set& alloc_set()
@@ -222,7 +222,7 @@ static void* OperatorNew( size_t s )
     return p;
 }
 
-void* __STL_CALL operator new(size_t s) 
+void* _STLP_CALL operator new(size_t s) 
 #ifdef EH_DELETE_HAS_THROW_SPEC
 throw(EH_STD::bad_alloc)
 #endif
@@ -231,7 +231,7 @@ throw(EH_STD::bad_alloc)
 }
 
 #ifdef EH_USE_NOTHROW
-void* __STL_CALL operator new(size_t size, const EH_STD::nothrow_t&) throw()
+void* _STLP_CALL operator new(size_t size, const EH_STD::nothrow_t&) throw()
 {
 	try
 	{
@@ -245,13 +245,13 @@ void* __STL_CALL operator new(size_t size, const EH_STD::nothrow_t&) throw()
 #endif
 
 # if defined (EH_VECTOR_OPERATOR_NEW)
-void* __STL_CALL operator new[](size_t size ) throw(EH_STD::bad_alloc)
+void* _STLP_CALL operator new[](size_t size ) throw(EH_STD::bad_alloc)
 {
 	return OperatorNew( size );
 }
 
 #ifdef EH_USE_NOTHROW
-void* __STL_CALL operator new[](size_t size, const EH_STD::nothrow_t&) throw()
+void* _STLP_CALL operator new[](size_t size, const EH_STD::nothrow_t&) throw()
 {
 	try
 	{
@@ -264,16 +264,16 @@ void* __STL_CALL operator new[](size_t size, const EH_STD::nothrow_t&) throw()
 }
 #endif
 
-void __STL_CALL operator delete[](void* ptr) throw()
+void _STLP_CALL operator delete[](void* ptr) throw()
 {
 	operator delete( ptr );
 }
 # endif
 
 # if defined (EH_DELETE_HAS_THROW_SPEC)
-void __STL_CALL operator delete(void* s) throw()
+void _STLP_CALL operator delete(void* s) throw()
 # else
-void __STL_CALL operator delete(void* s)
+void _STLP_CALL operator delete(void* s)
 # endif
 {
 	if ( s != 0 )

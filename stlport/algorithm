@@ -23,33 +23,37 @@
  *
  */
 
-#ifndef __SGI_STL_ALGORITHM
-#define __SGI_STL_ALGORITHM
+#ifndef _STLP_ALGORITHM
+#define _STLP_ALGORITHM
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1
 #  include <stl/_prolog.h>
 # endif
 
-# if ! defined (__STL_USE_NAMESPACES)
+#ifdef _STLP_PRAGMA_ONCE
+# pragma once
+#endif
+
+# if ! defined (_STLP_USE_NAMESPACES)
 // remove() conflicts, <cstdio> should always go first
 #  include <cstdio>
 # endif
 
-# ifndef __SGI_STL_INTERNAL_ALGO_H
+# ifndef _STLP_INTERNAL_ALGO_H
 #  include <stl/_algo.h>
 # endif
 
-#if defined (__STL_IMPORT_VENDOR_STD)
-# include __STL_NATIVE_HEADER(algorithm)
-#endif /* __STL_IMPORT_VENDOR_STD */
+#if defined (_STLP_IMPORT_VENDOR_STD)
+# include _STLP_NATIVE_HEADER(algorithm)
+#endif /* _STLP_IMPORT_VENDOR_STD */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1 )
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1 )
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_ALGORITHM */
+#endif /* _STLP_ALGORITHM */
 
 // Local Variables:
 // mode:C++

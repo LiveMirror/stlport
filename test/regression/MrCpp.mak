@@ -7,7 +7,7 @@ Needed_SysLibs = ¶
 #		"{PPCLibraries}MrCIOStreams.o" ¶
 		"{STL}:lib:STLportLib{config_}.o" ¶
 		"{SharedLibraries}InterfaceLib" ¶
-		"{SharedLibraries}StdCLib_3.5" ¶
+		"{SharedLibraries}StdCLib_3.7" ¶
 		"{SharedLibraries}MathLib" ¶
 		"{PPCLibraries}StdCRuntime.o" ¶
 		"{PPCLibraries}PPCCRuntime.o" ¶
@@ -126,6 +126,7 @@ Regression_Objects_PPC  = ¶
 	"{ObjDir}max2.cpp.x" ¶
 	"{ObjDir}maxelem1.cpp.x" ¶
 	"{ObjDir}maxelem2.cpp.x" ¶
+	"{ObjDir}memfunptr.cpp.x" ¶
 	"{ObjDir}merge0.cpp.x" ¶
 	"{ObjDir}merge1.cpp.x" ¶
 	"{ObjDir}merge2.cpp.x" ¶

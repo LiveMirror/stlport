@@ -58,6 +58,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -134,19 +135,20 @@ CXX = $(CC)
 # DEBUG_FLAGS=-compat=4
 
 
-CXXFLAGS = -xarch=v9 +w2 ${STL_INCL} ${DEBUG_FLAGS} -I. -D_STLP_NO_OWN_IOSTREAMS -D_STLP_HAS_NO_NEW_IOSTREAMS
-# CXXFLAGS = +w2 ${STL_INCL} ${DEBUG_FLAGS} -I. -D_STLP_NO_OWN_IOSTREAMS
+# CXXFLAGS = -xarch=v9 +w2 ${STL_INCL} ${DEBUG_FLAGS} -I. -D_STLP_NO_OWN_IOSTREAMS -D_STLP_HAS_NO_NEW_IOSTREAMS
+CXXFLAGS = -xarch=v9 +w2 ${STL_INCL} ${DEBUG_FLAGS} -I. -library=no%Cstd  -I. -qoption ccfe -expand=1000 -qoption ccfe -instlib=../../lib/libstlport_sunpro64.so
 
 
 
-LIBS = -lm -liostream 
+# LIBS = -lm -liostream 
+LIBS = -L../../lib -lstlport_sunpro64 -lm
 LIBSTDCXX = 
 
 check: $(TEST)
 
 $(TEST) : $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(DEBUG_FLAGS) $(OBJECTS) $(LIBS) -o $(TEST_EXE)
-	echo 'a string' | ./$(TEST_EXE) > $(TEST)
+	LD_LIBRARY_PATH=../../lib:${LD_LIBRARY_PATH} ./$(TEST_EXE) < stdin > $(TEST)
 
 SUFFIXES: .cpp.o.exe.out.res
 
@@ -157,9 +159,9 @@ SUFFIXES: .cpp.o.exe.out.res
 	$(CXX) $(CXXFLAGS) $< -E -H > $@
 
 %.out: %.cpp
-	$(CXX) $(CXXFLAGS) $< -c -USINGLE -DMAIN -o $*.o
-	$(CXX) $(CXXFLAGS) $*.o $(LIBS) -g -o $*.exe
-	./$*.exe > $@
+	$(CXX) $(CXXFLAGS) $< -c -USINGLE -DMAIN -D_REENTRANT -o $*.o
+	$(CXX) $(CXXFLAGS) $*.o $(LIBS) -lpthread -g -o $*.exe
+	LD_LIBRARY_PATH=../../lib:${LD_LIBRARY_PATH} ./$*.exe < stdin > $@
 	-rm -f $*.exe
 
 istmit1.out: istmit1.cpp

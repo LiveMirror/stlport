@@ -13,30 +13,20 @@
  *
  */
 
-#ifndef __STLPORT_CSTDLIB
-# define __STLPORT_CSTDLIB
+#ifndef _STLP_CSTDLIB
+# define _STLP_CSTDLIB
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x116
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x116
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__STL_USE_NEW_C_HEADERS)
-#  include __STL_NATIVE_CPP_C_HEADER(cstdlib)
+# if defined (_STLP_USE_NEW_C_HEADERS)
+#  include _STLP_NATIVE_CPP_C_HEADER(cstdlib)
 # else
-#  include __STL_NATIVE_C_HEADER(stdlib.h)
+#  include _STLP_NATIVE_C_HEADER(stdlib.h)
 # endif
 
-# if 0 /* defined (__sun) */
-#  define __STL_LLABS   llabs
-#  define __STL_LLDIV   lldiv
-#  define __STL_LLDIV_T lldiv_t
-# endif
-
-// dwa 2/28/99 - work around MSL bugs. Not strictly correct (actual
-// namespace where div_t is defined is detectable), but probably the
-// best we can do. We expect this to be fixed by the time Pro5 is
-// released.
 # if defined( __MSL__ ) && __MSL__ <= 0x5003
 namespace std {
 	typedef ::div_t div_t;
@@ -47,71 +37,77 @@ namespace std {
 }
 # endif
 
-# ifdef __STL_IMPORT_VENDOR_CSTD 
-__STL_BEGIN_NAMESPACE
-using __STL_VENDOR_CSTD::div_t;
-using __STL_VENDOR_CSTD::ldiv_t;
-using __STL_VENDOR_CSTD::size_t;
+# ifdef _STLP_IMPORT_VENDOR_CSTD 
+_STLP_BEGIN_NAMESPACE
+using _STLP_VENDOR_CSTD::div_t;
+using _STLP_VENDOR_CSTD::ldiv_t;
+using _STLP_VENDOR_CSTD::size_t;
 
-#  ifndef __STL_NO_CSTD_FUNCTION_IMPORTS
-using __STL_VENDOR_CSTD::abort;
-using __STL_VENDOR_CSTD::atexit;
-using __STL_VENDOR_CSTD::exit;
-using __STL_VENDOR_CSTD::getenv;
-using __STL_VENDOR_CSTD::calloc;
-using __STL_VENDOR_CSTD::free;
-using __STL_VENDOR_CSTD::malloc;
-using __STL_VENDOR_CSTD::realloc;
-using __STL_VENDOR_CSTD::atof;
-using __STL_VENDOR_CSTD::atoi;
-using __STL_VENDOR_CSTD::atol;
-using __STL_VENDOR_CSTD::mblen;
-using __STL_VENDOR_CSTD::mbstowcs;
-using __STL_VENDOR_CSTD::mbtowc;
-using __STL_VENDOR_CSTD::strtod;
-using __STL_VENDOR_CSTD::strtol;
-using __STL_VENDOR_CSTD::strtoul;
-using __STL_VENDOR_CSTD::system;
+#  ifndef _STLP_NO_CSTD_FUNCTION_IMPORTS
+using _STLP_VENDOR_CSTD::abort;
+using _STLP_VENDOR_CSTD::atexit;
+using _STLP_VENDOR_CSTD::exit;
+using _STLP_VENDOR_CSTD::getenv;
+using _STLP_VENDOR_CSTD::calloc;
+using _STLP_VENDOR_CSTD::free;
+using _STLP_VENDOR_CSTD::malloc;
+using _STLP_VENDOR_CSTD::realloc;
+using _STLP_VENDOR_CSTD::atof;
+using _STLP_VENDOR_CSTD::atoi;
+using _STLP_VENDOR_CSTD::atol;
+using _STLP_VENDOR_CSTD::mblen;
+using _STLP_VENDOR_CSTD::mbstowcs;
+using _STLP_VENDOR_CSTD::mbtowc;
+using _STLP_VENDOR_CSTD::strtod;
+using _STLP_VENDOR_CSTD::strtol;
+using _STLP_VENDOR_CSTD::strtoul;
+using _STLP_VENDOR_CSTD::system;
 
-#if ! (defined (__STL_NO_NATIVE_WIDE_STREAMS) || defined (__STL_NO_MBSTATE_T))
-using __STL_VENDOR_CSTD::wcstombs;
-using __STL_VENDOR_CSTD::wctomb;
+#if ! (defined (_STLP_NO_NATIVE_WIDE_STREAMS) || defined (_STLP_NO_MBSTATE_T) )
+using _STLP_VENDOR_CSTD::wcstombs;
+using _STLP_VENDOR_CSTD::wctomb;
 #endif
-using __STL_VENDOR_CSTD::bsearch;
-using __STL_VENDOR_CSTD::qsort;
-using __STL_VENDOR_CSTD::abs;
-using __STL_VENDOR_CSTD::div;
-using __STL_VENDOR_CSTD::labs;
-using __STL_VENDOR_CSTD::ldiv;
-using __STL_VENDOR_CSTD::rand;
-using __STL_VENDOR_CSTD::srand;
-#  endif /* __STL_NO_CSTD_FUNCTION_IMPORTS */
-__STL_END_NAMESPACE
-#endif /* __STL_IMPORT_VENDOR_CSTD */
+using _STLP_VENDOR_CSTD::bsearch;
+using _STLP_VENDOR_CSTD::qsort;
+// boris : if we do not have native float abs, we define ours; then we cannot do "using" for "other" abs 
+# ifdef _STLP_HAS_NATIVE_FLOAT_ABS 
+using _STLP_VENDOR_CSTD::abs;
+# endif
+using _STLP_VENDOR_CSTD::div;
+using _STLP_VENDOR_CSTD::labs;
+using _STLP_VENDOR_CSTD::ldiv;
+using _STLP_VENDOR_CSTD::rand;
+using _STLP_VENDOR_CSTD::srand;
+#  endif /* _STLP_NO_CSTD_FUNCTION_IMPORTS */
+_STLP_END_NAMESPACE
+#endif /* _STLP_IMPORT_VENDOR_CSTD */
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
-# ifdef __STL_HAS_NO_NEW_C_HEADERS
-inline long   abs(long __x) { return __STL_VENDOR_CSTD::labs(__x); }
-inline ldiv_t div(long __x, long __y) { return __STL_VENDOR_CSTD::ldiv(__x, __y); } 
+# if defined(_STLP_HAS_NO_NEW_C_HEADERS) && defined(__cplusplus)
+# if !defined ( _STLP_LABS )
+inline long   abs(long __x) { return _STLP_VENDOR_CSTD::labs(__x); }
+# endif
+# if !defined ( _STLP_LDIV )
+inline ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); } 
+# endif
 # endif
 
-#  if defined ( __STL_LLABS )
-__STL_LONG_LONG   abs(__STL_LONG_LONG __x) { return __STL_VENDOR_CSTD::__STL_LLABS(__x); }
+#  if defined ( _STLP_LLABS )
+_STLP_LONG_LONG   abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::_STLP_LLABS(__x); }
 #  endif
-#  if defined ( __STL_LLDIV )
-__STL_LLDIV_T div(__STL_LONG_LONG __x, __STL_LONG_LONG __y) { return __STL_VENDOR_CSTD::__STL_LLDIV(__x, __y); } 
+#  if defined ( _STLP_LLDIV )
+_STLP_LLDIV_T div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDOR_CSTD::_STLP_LLDIV(__x, __y); } 
 #  endif
 
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 
-
-# if (__STL_OUTERMOST_HEADER_ID == 0x116)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x116)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_CSTDLIB */
+#endif /* _STLP_CSTDLIB */
 
 // Local Variables:
 // mode:C++

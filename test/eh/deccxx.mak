@@ -2,7 +2,8 @@
 # Generated automatically from Makefile.in by configure.
 # This requires GNU make.
 
-# SHELL=/bin/sh
+SHELL=/bin/sh
+
 # srcdir = .
 # VPATH = .
 
@@ -39,10 +40,10 @@ CXXFLAGS = ${STL_INCL} -std strict_ansi_errors -DEH_VECTOR_OPERATOR_NEW -DEH_DEL
 # CXXFLAGS = ${STL_INCL} -std strict_ansi_errors -DEH_VECTOR_OPERATOR_NEW -DEH_DELETE_HAS_THROW_SPEC
 
 # This is to test with native STL
-# CXXFLAGS = +w2 -xildoff -D__STL_USE_NEWALLOC -DEH_NO_SGI_STL -DEH_NEW_HEADERS -DEH_VECTOR_OPERATOR_NEW -DEH_DELETE_HAS_THROW_SPEC
+# CXXFLAGS = +w2 -xildoff -D_STLP_USE_NEWALLOC -DEH_NO_SGI_STL -DEH_NEW_HEADERS -DEH_VECTOR_OPERATOR_NEW -DEH_DELETE_HAS_THROW_SPEC
 
 
-LIBS = -lm 
+LIBS = -L../../lib -lstlport_dec -lm 
 LIBSTDCXX = 
 
 .SUFFIXES: .cpp .i .o .out .res
@@ -51,7 +52,7 @@ check: $(TEST)
 
 $(TEST) : $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LIBS) -o $(TEST_EXE)
-	$(TEST_EXE)
+	LD_LIBRARY_PATH="../../lib:$(LD_LIBRARY_PATH)" ./$(TEST_EXE) -s 100
 
 .cpp.o:
 	$(CXX) $(CXXFLAGS) $< -c -o $@

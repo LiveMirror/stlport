@@ -59,7 +59,8 @@ public:
 
 public:
   istreambuf_iterator(streambuf_type* __p = 0) { this->_M_init(__p); }
-  istreambuf_iterator(basic_istream<_CharT, _Traits>& __is) { this->_M_init(_M_get_istreambuf(__is)); }
+  //  istreambuf_iterator(basic_istream<_CharT, _Traits>& __is) { this->_M_init(_M_get_istreambuf(__is)); }
+  inline istreambuf_iterator(basic_istream<_CharT, _Traits>& __is);
 
   char_type operator*() const { this->_M_getc(); return _M_c; }
   istreambuf_iterator<_CharT, _Traits>& operator++() { this->_M_bumpc(); return *this; }
@@ -111,6 +112,10 @@ private:
 };
 
 template<class _CharT, class _Traits>
+inline istreambuf_iterator<_CharT, _Traits>::istreambuf_iterator(basic_istream<_CharT, _Traits>& __is) 
+{ this->_M_init(_M_get_istreambuf(__is)); }
+
+template<class _CharT, class _Traits>
 inline bool _STLP_CALL operator==(const istreambuf_iterator<_CharT, _Traits>& __x,
                                   const istreambuf_iterator<_CharT, _Traits>& __y) {
   return __x.equal(__y);
@@ -137,8 +142,8 @@ _STLP_EXPORT_TEMPLATE_CLASS istreambuf_iterator<wchar_t, char_traits<wchar_t> >;
 template <class _CharT, class _Traits>
 inline input_iterator_tag _STLP_CALL iterator_category(const istreambuf_iterator<_CharT, _Traits>&) { return input_iterator_tag(); }
 template <class _CharT, class _Traits>
-inline streamoff _STLP_CALL 
-distance_type(const istreambuf_iterator<_CharT, _Traits>&) { typedef streamoff __off_type; return __off_type(); }
+inline streamoff* _STLP_CALL 
+distance_type(const istreambuf_iterator<_CharT, _Traits>&) { return (streamoff*)0; }
 template <class _CharT, class _Traits>
 inline _CharT* _STLP_CALL value_type(const istreambuf_iterator<_CharT, _Traits>&) { return (_CharT*)0; }
 # endif

@@ -58,6 +58,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -130,7 +131,7 @@ DEBUG_FLAGS=
 # DEBUG_FLAGS=-O
 # DEBUG_FLAGS=-O4
 
-CXXFLAGS = -D__STL_NO_SGI_IOSTREAMS ${STL_INCL} ${DEBUG_FLAGS} -I.
+CXXFLAGS = -D_STLP_NO_OWN_IOSTREAMS ${STL_INCL} ${DEBUG_FLAGS} -I.
 
 LIBS = -lm 
 LIBSTDCXX = 
@@ -161,11 +162,11 @@ $(STAT_MODULE): stat.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 %.s: %.cpp
-	$(CXX) $(CXXFLAGS) -O5 -D__STL_USE_MALLOC -S -pto $<  -o $@
+	$(CXX) $(CXXFLAGS) -O5 -D_STLP_USE_MALLOC -S -pto $<  -o $@
 
-#	$(CXX) $(CXXFLAGS) -O5 -D__STL_USE_MALLOC -noex -D__STL_NO_EXCEPTIONS -S -pto $<  -o $@
+#	$(CXX) $(CXXFLAGS) -O5 -D_STLP_USE_MALLOC -noex -D_STLP_NO_EXCEPTIONS -S -pto $<  -o $@
 
-#	$(CXX) $(CXXFLAGS) -O4 -noex -D__STL_NO_EXCEPTIONS -D__STL_NO_EXCEPTIONS -S -pta $<  -o $@
+#	$(CXX) $(CXXFLAGS) -O4 -noex -D_STLP_NO_EXCEPTIONS -D_STLP_NO_EXCEPTIONS -S -pta $<  -o $@
 
 clean:
 	-rm -fr *.exe *.o *.rpo *.obj *.out tempinc

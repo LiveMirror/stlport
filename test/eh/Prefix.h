@@ -23,14 +23,19 @@
 // considerably if your malloc is slow.
 #define TESTCLASS_DEEP_DATA 1
 
+# ifndef NO_FAST_ALLOCATOR
+// #  define NO_FAST_ALLOCATOR
+# endif
+
 // Define this to use the SGI STL. Undefine it to test a different installation
 #ifndef EH_NO_SGI_STL
 # define EH_USE_SGI_STL 1
 #endif
 
+
 #if EH_USE_SGI_STL
 
-#define EH_ASSERT __STL_ASSERT
+#define EH_ASSERT _STLP_ASSERT
 
 //=========================================================================
 // SGI STL-specific #defines
@@ -38,44 +43,44 @@
 //	STL. They have no effect when testing other STL implementations.
 //=========================================================================
 
-# define __STL_USE_RAW_SGI_ALLOCATORS
-# ifndef __STL_USE_NEWALLOC
-#  define __STL_USE_NEWALLOC
+// # define _STLP_USE_RAW_SGI_ALLOCATORS
+# ifndef _STLP_USE_NEWALLOC
+#  define _STLP_USE_NEWALLOC
 # endif
-# if !defined  (__STL_NO_CUSTOM_IO) && ! defined (__BORLANDC__)
-#  define __STL_NO_CUSTOM_IO
+# if !defined  (_STLP_NO_CUSTOM_IO) && ! defined (__BORLANDC__)
+#  define _STLP_NO_CUSTOM_IO
 # endif
 
 // Just include something to get whatever configuration header we're using.
 # include <stl/_config.h>
 
-# ifndef __STL_CALL
-#  define __STL_CALL
+# ifndef _STLP_CALL
+#  define _STLP_CALL
 # endif
 
-# if defined(__STL_USE_NAMESPACES)
-#  define EH_USE_NAMESPACES __STL_USE_NAMESPACES
+# if defined(_STLP_USE_NAMESPACES)
+#  define EH_USE_NAMESPACES _STLP_USE_NAMESPACES
 # endif
 
-# define EH_BEGIN_NAMESPACE __STL_BEGIN_NAMESPACE
-# define EH_END_NAMESPACE __STL_END_NAMESPACE
+# define EH_BEGIN_NAMESPACE _STLP_BEGIN_NAMESPACE
+# define EH_END_NAMESPACE _STLP_END_NAMESPACE
 
 #  define EH_NEW_HEADERS 1
 
-# if defined (__STL_USE_NEW_IOSTREAMS)
+# if defined (_STLP_USE_NEW_IOSTREAMS)
 #  define EH_NEW_IOSTREAMS 1
 # endif
 
-# if !defined (__STL_USE_EXCEPTIONS)
+# if !defined (_STLP_USE_EXCEPTIONS)
 #  define EH_NO_EXCEPTIONS
 # endif
 
-# if defined (__STL_TEMPLATE_PARAM_SUBTYPE_BUG)
-#  define EH_TEMPLATE_PARAM_SUBTYPE_BUG __STL_TEMPLATE_PARAM_SUBTYPE_BUG
+# if defined (_STLP_TEMPLATE_PARAM_SUBTYPE_BUG)
+#  define EH_TEMPLATE_PARAM_SUBTYPE_BUG _STLP_TEMPLATE_PARAM_SUBTYPE_BUG
 # endif
 
-# if defined(__STL_MULTI_CONST_TEMPLATE_ARG_BUG)
-#  define EH_MULTI_CONST_TEMPLATE_ARG_BUG __STL_MULTI_CONST_TEMPLATE_ARG_BUG
+# if defined(_STLP_MULTI_CONST_TEMPLATE_ARG_BUG)
+#  define EH_MULTI_CONST_TEMPLATE_ARG_BUG _STLP_MULTI_CONST_TEMPLATE_ARG_BUG
 # endif
 
 # if defined (STLPORT)
@@ -100,7 +105,7 @@
 # define EH_SLIST_IMPLEMENTED 1
 # define EH_SELECT1ST_HINT __select1st_hint
 // fbp : DEC cxx is unable to compile it for some reason
-# if !( defined (__DECCXX)  || (defined (__GNUC__) && (__GNUC_MINOR__ < 8)))
+# if !( defined (__DECCXX)  || defined (__amigaos__) || (defined (__GNUC__) && (__GNUC_MINOR__ < 8)))
 #  define EH_ROPE_IMPLEMENTED 1
 # endif
 # define EH_STRING_IMPLEMENTED 1
@@ -110,14 +115,72 @@
 # define stl_destroy EH_STD::destroy
 # include <memory>
 
-# define eh_allocator(T) EH_STD::__allocator<T, EH_STD::__debug_alloc<EH_STD::__new_alloc> >
+template <class _Tp>
+class _STLP_CLASS_DECLSPEC EH_allocator;
+
+template <class _Tp>
+class _STLP_CLASS_DECLSPEC EH_allocator {
+public:
+
+  typedef _Tp        value_type;
+  typedef value_type *       pointer;
+  typedef const _Tp* const_pointer;
+  typedef _Tp&       reference;
+  typedef const _Tp& const_reference;
+  typedef size_t     size_type;
+  typedef ptrdiff_t  difference_type;
+# if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
+  template <class _Tp1> struct rebind {
+    typedef EH_allocator<_Tp1> other;
+  };
+# endif
+  EH_allocator() _STLP_NOTHROW {}
+ # if defined (_STLP_MEMBER_TEMPLATES)
+  template <class _Tp1> EH_allocator(const EH_allocator<_Tp1>&) _STLP_NOTHROW {}
+ # endif    
+  EH_allocator(const EH_allocator<_Tp>&) _STLP_NOTHROW {}
+  ~EH_allocator() _STLP_NOTHROW {}
+  pointer address(reference __x) { return &__x; }
+  const_pointer address(const_reference __x) const { return &__x; }
+  // __n is permitted to be 0.  The C++ standard says nothing about what the return value is when __n == 0.
+  _Tp* allocate(size_type __n, const void* = 0) const { 
+    return __n != 0 ? __REINTERPRET_CAST(value_type*,EH_STD::__new_alloc::allocate(__n * sizeof(value_type))) : 0;
+  }
+  // __p is permitted to be a null pointer, only if n==0.
+  void deallocate(pointer __p, size_type __n) const {
+    _STLP_ASSERT( (__p == 0) == (__n == 0) )
+      if (__p != 0) EH_STD::__new_alloc::deallocate((void*)__p, __n * sizeof(value_type));
+  }
+  // backwards compatibility
+  void deallocate(pointer __p) const {  if (__p != 0) EH_STD::__new_alloc::deallocate((void*)__p, sizeof(value_type)); }
+  size_type max_size() const _STLP_NOTHROW  { return size_t(-1) / sizeof(value_type); }
+  void construct(pointer __p, const _Tp& __val) const { _STLP_STD::construct(__p, __val); }
+  void destroy(pointer __p) const { _STLP_STD::destroy(__p); }
+
+};
+
+template <class _T1> inline bool  _STLP_CALL operator==(const EH_allocator<_T1>&, const EH_allocator<_T1>&)  { return true; }
+template <class _T1> inline bool  _STLP_CALL operator!=(const EH_allocator<_T1>&, const EH_allocator<_T1>&) { return false; }
+
+_STLP_BEGIN_NAMESPACE
+// If custom allocators are being used without member template classes support :
+// user (on purpose) is forced to define rebind/get operations !!!
+template <class _Tp1, class _Tp2>
+inline EH_allocator<_Tp2>& _STLP_CALL
+__stl_alloc_rebind(EH_allocator<_Tp1>& __a, const _Tp2*) {  return (EH_allocator<_Tp2>&)(__a); }
+template <class _Tp1, class _Tp2>
+inline EH_allocator<_Tp2> _STLP_CALL
+__stl_alloc_create(const EH_allocator<_Tp1>&, const _Tp2*) { return EH_allocator<_Tp2>(); }
+_STLP_END_NAMESPACE
+
+# define eh_allocator(T) ::EH_allocator<T>
 
 # define EH_BIT_VECTOR_IMPLEMENTED
 
-# if defined(__STL_CLASS_PARTIAL_SPECIALIZATION) && !defined(__STL_NO_BOOL)
+# if defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) && !defined(_STLP_NO_BOOL)
 #  define EH_BIT_VECTOR EH_STD::vector<bool, eh_allocator(bool) >
 # else
-#  ifdef __STL_NO_BOOL
+#  ifdef _STLP_NO_BOOL
 #  undef   EH_BIT_VECTOR_IMPLEMENTED
 #  else
 #   define EH_BIT_VECTOR EH_STD::__vector__<bool, eh_allocator(bool) >
@@ -243,8 +306,8 @@ struct eh_select1st_hint : public unary_function<Pair, U> {
 # define EH_USE_STD
 #endif
 
-#if defined (EH_USE_NAMESPACES) && !defined(__STL_VENDOR_GLOBAL_CSTD)
-# define USING_CSTD_NAME(name) using EH_STD :: name;
+#if defined (EH_USE_NAMESPACES) && !defined(_STLP_VENDOR_GLOBAL_CSTD)
+# define USING_CSTD_NAME(name) using EH_CSTD :: name;
 #else
 # define USING_CSTD_NAME(name)
 #endif

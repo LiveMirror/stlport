@@ -13,32 +13,32 @@
  *
  */
 
-#ifndef __STLPORT_CSTDARG
-# define __STLPORT_CSTDARG
+#ifndef _STLP_CSTDARG
+# define _STLP_CSTDARG
 
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x113
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x113
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__STL_USE_NEW_C_HEADERS)
-#  include __STL_NATIVE_CPP_C_HEADER(cstdarg)
+# if defined (_STLP_USE_NEW_C_HEADERS)
+#  include _STLP_NATIVE_CPP_C_HEADER(cstdarg)
 # else
-#  include __STL_NATIVE_C_HEADER(stdarg.h)
+#  include _STLP_NATIVE_C_HEADER(stdarg.h)
 # endif
 
-# ifdef __STL_IMPORT_VENDOR_CSTD
-__STL_BEGIN_NAMESPACE
-using __STL_VENDOR_CSTD::va_list;
-__STL_END_NAMESPACE
-#endif /* __STL_IMPORT_VENDOR_CSTD */
+# ifdef _STLP_IMPORT_VENDOR_CSTD
+_STLP_BEGIN_NAMESPACE
+using _STLP_VENDOR_CSTD::va_list;
+_STLP_END_NAMESPACE
+#endif /* _STLP_IMPORT_VENDOR_CSTD */
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x113 )
+# if (_STLP_OUTERMOST_HEADER_ID == 0x113 )
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __STLPORT_CSTDARG */
+#endif /* _STLP_CSTDARG */
 
 // Local Variables:
 // mode:C++

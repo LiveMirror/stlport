@@ -21,39 +21,39 @@
 // basic_ofstream, and basic_fstream.  These classes represent
 // streambufs and streams whose sources or destinations are files.
 
-#ifndef __SGI_STL_FSTREAM
-#define __SGI_STL_FSTREAM
+#ifndef _STLP_FSTREAM
+#define _STLP_FSTREAM
 
-#  if defined(__sgi) && !defined(__GNUC__) && !defined(_STANDARD_C_PLUS_PLUS)
-#   error New-style iostreams header files require the -LANG:std option
-#  endif
-
-# ifndef __STL_OUTERMOST_HEADER_ID
-#  define __STL_OUTERMOST_HEADER_ID 0x1025
+# ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x1025
 #  include <stl/_prolog.h>
 # endif
 
-# if defined (__SGI_STL_OWN_IOSTREAMS)
+#ifdef _STLP_PRAGMA_ONCE
+# pragma once
+#endif
+
+# if defined (_STLP_OWN_IOSTREAMS)
 #  include <stl/_fstream.h>
 
 # ifndef __LOCALE_INITIALIZED
 #  define __LOCALE_INITIALIZED
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 // Global initializer object, to ensure construction of static objects.
 static ios_base::_Loc_init _LocInit;
-__STL_END_NAMESPACE
+_STLP_END_NAMESPACE
 # endif
 
-# elif !defined(__STL_USE_NO_IOSTREAMS)
+# elif !defined(_STLP_USE_NO_IOSTREAMS)
 #  include <wrap_std/fstream>
 # endif
 
-# if (__STL_OUTERMOST_HEADER_ID == 0x1025)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x1025)
 #  include <stl/_epilog.h>
-#  undef __STL_OUTERMOST_HEADER_ID
+#  undef _STLP_OUTERMOST_HEADER_ID
 # endif
 
-#endif /* __SGI_STL_FSTREAM */
+#endif /* _STLP_FSTREAM */
 
 
 // Local Variables:

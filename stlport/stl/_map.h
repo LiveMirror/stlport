@@ -27,20 +27,20 @@
  *   You should not attempt to use it directly.
  */
 
-#ifndef __SGI_STL_INTERNAL_MAP_H
-#define __SGI_STL_INTERNAL_MAP_H
+#ifndef _STLP_INTERNAL_MAP_H
+#define _STLP_INTERNAL_MAP_H
 
-#ifndef __SGI_STL_INTERNAL_TREE_H
+#ifndef _STLP_INTERNAL_TREE_H
 # include <stl/_tree.h>
 #endif
 
 #define map __WORKAROUND_RENAME(map)
 #define multimap __WORKAROUND_RENAME(multimap)
 
-__STL_BEGIN_NAMESPACE
+_STLP_BEGIN_NAMESPACE
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
-          __STL_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
+          _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
 class map {
 public:
 
@@ -65,7 +65,7 @@ public:
   };
 
 private:
-# ifdef __STL_MULTI_CONST_TEMPLATE_ARG_BUG
+# ifdef _STLP_MULTI_CONST_TEMPLATE_ARG_BUG
   typedef _Rb_tree<key_type, value_type, 
                    _Select1st_hint<value_type, _Key>, key_compare, _Alloc> _Rep_type;
 # else
@@ -93,7 +93,7 @@ public:
                const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) {}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIterator>
   map(_InputIterator __first, _InputIterator __last)
     : _M_t(_Compare(), allocator_type())
@@ -101,12 +101,15 @@ public:
 
   template <class _InputIterator>
   map(_InputIterator __first, _InputIterator __last, const _Compare& __comp,
-      const allocator_type& __a)
+      const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
     : _M_t(__comp, __a) { _M_t.insert_unique(__first, __last); }
 
+# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   map(_InputIterator __first, _InputIterator __last, const _Compare& __comp)
     : _M_t(__comp, allocator_type()) { _M_t.insert_unique(__first, __last); }
+# endif
+
 #else
   map(const value_type* __first, const value_type* __last)
     : _M_t(_Compare(), allocator_type())
@@ -125,7 +128,7 @@ public:
       const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) { _M_t.insert_unique(__first, __last); }
 
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
   map(const map<_Key,_Tp,_Compare,_Alloc>& __x) : _M_t(__x._M_t) {}
   map<_Key,_Tp,_Compare,_Alloc>&
@@ -156,7 +159,7 @@ public:
     iterator __i = lower_bound(__k);
     // __i->first is greater than or equivalent to __k.
     if (__i == end() || key_comp()(__k, (*__i).first))
-      __i = insert(__i, value_type(__k, _Tp()));
+      __i = insert(__i, value_type(__k, _STLP_DEFAULT_CONSTRUCTED(_Tp)));
     return (*__i).second;
   }
   void swap(map<_Key,_Tp,_Compare,_Alloc>& __x) { _M_t.swap(__x._M_t); }
@@ -167,7 +170,7 @@ public:
     { return _M_t.insert_unique(__x); }
   iterator insert(iterator position, const value_type& __x)
     { return _M_t.insert_unique(position, __x); }
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIterator>
   void insert(_InputIterator __first, _InputIterator __last) {
     _M_t.insert_unique(__first, __last);
@@ -179,7 +182,7 @@ public:
   void insert(const_iterator __first, const_iterator __last) {
     _M_t.insert_unique(__first, __last);
   }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
   void erase(iterator __position) { _M_t.erase(__position); }
   size_type erase(const key_type& __x) { return _M_t.erase(__x); }
@@ -213,7 +216,7 @@ public:
 
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
-          __STL_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
+          _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
 class multimap {
 public:
 
@@ -237,7 +240,7 @@ public:
   };
 
 private:
-# ifdef __STL_MULTI_CONST_TEMPLATE_ARG_BUG
+# ifdef _STLP_MULTI_CONST_TEMPLATE_ARG_BUG
   typedef _Rb_tree<key_type, value_type, 
                   _Select1st_hint<value_type, _Key>, key_compare, _Alloc> _Rep_type;
 # else
@@ -265,21 +268,21 @@ public:
                     const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) { }
 
-#ifdef __STL_MEMBER_TEMPLATES  
+#ifdef _STLP_MEMBER_TEMPLATES  
   template <class _InputIterator>
   multimap(_InputIterator __first, _InputIterator __last)
     : _M_t(_Compare(), allocator_type())
     { _M_t.insert_equal(__first, __last); }
-
+# ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   multimap(_InputIterator __first, _InputIterator __last,
            const _Compare& __comp)
     : _M_t(__comp, allocator_type()) { _M_t.insert_equal(__first, __last); }
-
+#  endif
   template <class _InputIterator>
   multimap(_InputIterator __first, _InputIterator __last,
            const _Compare& __comp,
-           const allocator_type& __a )
+           const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
     : _M_t(__comp, __a) { _M_t.insert_equal(__first, __last); }
 #else
   multimap(const value_type* __first, const value_type* __last)
@@ -297,7 +300,7 @@ public:
            const _Compare& __comp,
            const allocator_type& __a = allocator_type())
     : _M_t(__comp, __a) { _M_t.insert_equal(__first, __last); }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
 
   multimap(const multimap<_Key,_Tp,_Compare,_Alloc>& __x) : _M_t(__x._M_t) { }
   multimap<_Key,_Tp,_Compare,_Alloc>&
@@ -331,7 +334,7 @@ public:
   iterator insert(iterator __position, const value_type& __x) {
     return _M_t.insert_equal(__position, __x);
   }
-#ifdef __STL_MEMBER_TEMPLATES  
+#ifdef _STLP_MEMBER_TEMPLATES  
   template <class _InputIterator>
   void insert(_InputIterator __first, _InputIterator __last) {
     _M_t.insert_equal(__first, __last);
@@ -343,7 +346,7 @@ public:
   void insert(const_iterator __first, const_iterator __last) {
     _M_t.insert_equal(__first, __last);
   }
-#endif /* __STL_MEMBER_TEMPLATES */
+#endif /* _STLP_MEMBER_TEMPLATES */
   void erase(iterator __position) { _M_t.erase(__position); }
   size_type erase(const key_type& __x) { return _M_t.erase(__x); }
   void erase(iterator __first, iterator __last)
@@ -371,23 +374,23 @@ public:
   }
 };
 
-# define __STL_TEMPLATE_HEADER template <class _Key, class _Tp, class _Compare, class _Alloc>
+# define _STLP_TEMPLATE_HEADER template <class _Key, class _Tp, class _Compare, class _Alloc>
 
-# define __STL_TEMPLATE_CONTAINER map<_Key,_Tp,_Compare,_Alloc>
-
-// fbp : if this template header gets protected against your will, report it !
-# include <stl/_relops_cont.h>
-
-# undef  __STL_TEMPLATE_CONTAINER
-# define __STL_TEMPLATE_CONTAINER multimap<_Key,_Tp,_Compare,_Alloc>
+# define _STLP_TEMPLATE_CONTAINER map<_Key,_Tp,_Compare,_Alloc>
 
 // fbp : if this template header gets protected against your will, report it !
 # include <stl/_relops_cont.h>
 
-# undef  __STL_TEMPLATE_CONTAINER
-# undef  __STL_TEMPLATE_HEADER
+# undef  _STLP_TEMPLATE_CONTAINER
+# define _STLP_TEMPLATE_CONTAINER multimap<_Key,_Tp,_Compare,_Alloc>
 
-__STL_END_NAMESPACE
+// fbp : if this template header gets protected against your will, report it !
+# include <stl/_relops_cont.h>
+
+# undef  _STLP_TEMPLATE_CONTAINER
+# undef  _STLP_TEMPLATE_HEADER
+
+_STLP_END_NAMESPACE
 
 // do a cleanup
 #  undef map
@@ -396,11 +399,11 @@ __STL_END_NAMESPACE
 # define __map__  __FULL_NAME(map)
 # define __multimap__  __FULL_NAME(multimap)
 
-# ifdef __STL_USE_WRAPPER_FOR_ALLOC_PARAM
+# ifdef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
 # include <stl/wrappers/_map.h>
 # endif
 
-#endif /* __SGI_STL_INTERNAL_MAP_H */
+#endif /* _STLP_INTERNAL_MAP_H */
 
 // Local Variables:
 // mode:C++

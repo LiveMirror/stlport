@@ -8,61 +8,32 @@
 #   define WIN32_LEAN_AND_MEAN
 #   define NOSERVICE
 #  endif
-#  if ! defined (__CYGWIN__)
-#   define __STL_REAL_LOCALE_IMPLEMENTED
+#  if !(defined (__CYGWIN__) || defined(_WIN32_WCE))
+#   define _STLP_REAL_LOCALE_IMPLEMENTED
 #  endif
 # endif
 
-#   undef __STL_NO_FORCE_INSTANTIATE
+#   undef _STLP_NO_FORCE_INSTANTIATE
 
 /* Please add extra compilation switches for particular compilers here */
 
 # include <stl/_config.h>
 
-# if defined (__STL_USE_TEMPLATE_EXPORT) && defined (__STL_USE_DECLSPEC)
-#  define __STL_EXPOSE_GLOBALS_IMPLEMENTATION
+# if defined (_STLP_USE_TEMPLATE_EXPORT) && defined (_STLP_USE_DECLSPEC) && ! defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
+#  define _STLP_EXPOSE_GLOBALS_IMPLEMENTATION
 # endif
 
 # ifdef __cplusplus
-// This section is only for compilers that support precompiled headers !
-// Currently there are : Visual C++
-// Please remember to make sure to turn on precompiled header option in
-// the platform makefile when addinf compilers to this list, otherwise 
-// this will result in worse build performance.
 
-# if defined (__STL_MSVC)
-# ifndef __STL_USE_DECLSPEC
-# include <climits>
-# include <cmath>
-# include <cstdlib>
-# include <cstring>
 # include <ctime>
-# include <new>
-# include <exception>
-# include <functional>
-# include <memory>
-# include <utility>
-# include <limits>
-# include <algorithm>
-# include <iosfwd>
-# include <ios>
-
-# include <stdexcept>
-# include <string>
-// # include <locale>
-
-# ifdef __STL_MSVC
-#  pragma hdrstop
+# if defined (_STLP_USE_NAMESPACES) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
+using _STLP_VENDOR_CSTD::time_t;
 # endif
 
-# endif
-
-# endif /* precompiler headers */
-
-# if defined (__STL_FUNCTION_TMPL_PARTIAL_ORDER) || defined (__BORLANDC__)
-#  define __STL_OPERATOR_SPEC __STL_DECLSPEC 
+# if defined (_STLP_FUNCTION_TMPL_PARTIAL_ORDER) || defined (__BORLANDC__)
+#  define _STLP_OPERATOR_SPEC _STLP_DECLSPEC 
 # else
-#  define __STL_OPERATOR_SPEC __STL_TEMPLATE_NULL __STL_DECLSPEC
+#  define _STLP_OPERATOR_SPEC _STLP_TEMPLATE_NULL _STLP_DECLSPEC
 # endif
 
 # endif /* __cplusplus */

@@ -9,9 +9,8 @@ VPATH = .
 
 STL_INCL=-I../../stlport
 
-HP_VERSION=`uname -r`
-
-ifeq ($HP_VERSION,B.10.20)
+HP_VERSION=$(shell uname -r)
+ifeq (${HP_VERSION},B.10.20)
 PTHREAD_LIB=-lcma
 else
 PTHREAD_LIB=-lpthread
@@ -64,6 +63,7 @@ LIST  = stl_test.cpp accum1.cpp accum2.cpp \
 	map1.cpp \
 	max1.cpp max2.cpp \
 	maxelem1.cpp maxelem2.cpp \
+	memfunptr.cpp \
 	merge0.cpp merge1.cpp merge2.cpp \
 	min1.cpp min2.cpp \
 	minelem1.cpp minelem2.cpp \
@@ -134,11 +134,12 @@ TEST  = stl_test.out
 CC = aCC
 CXX = $(CC)
 
-# DEBUG_FLAGS= -D__STL_DEBUG
+# DEBUG_FLAGS= -D_STLP_DEBUG
 
-CXXFLAGS = -Wl,+vshlibunsats -Aa ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
+# CXXFLAGS = -Wl,+vshlibunsats -AA ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
+CXXFLAGS = -AA ${STL_INCL} -I. ${CXX_EXTRA_FLAGS} ${STL_VERSION_FLAGS}
 
-LIBS = -L../../lib -lstlport_aCC -lm ${PTHREAD_LIB}
+LIBS = +nostl -L../../lib -lstlport_aCC -lm ${PTHREAD_LIB}
 LIBSTDCXX = 
 
 check: $(TEST)
@@ -152,7 +153,7 @@ $(TEST) : $(OBJECTS)
 
 
 .cc.o .cxx.o .C.o .cpp.o:
-	${CXX} ${CXXFLAGS} ${DEBUG_FLAGS} ${REPO_FLAGS} ${.IMPSRC} -c -o $*.o $<
+	${CXX} ${CXXFLAGS} ${DEBUG_FLAGS} ${REPO_FLAGS} -c -o $*.o $<
 
 %.out: %.cpp
 	$(CXX) $(CXXFLAGS) ${DEBUG_FLAGS} -USINGLE -DMAIN=1 $< -c -o $*.o
@@ -169,7 +170,7 @@ $(STAT_MODULE): stat.cpp
 	$(CXX) $(CXXFLAGS) ${DEBUG_FLAGS} ${REPO_FLAGS} -c $< -o $@
 
 %.s: %.cpp
-	$(CXX) $(CXXFLAGS) +O3 +noeh -D__STL_NO_EXCEPTIONS -S $<  -o $*.s
+	$(CXX) $(CXXFLAGS) +O3 +noeh -D_STLP_NO_EXCEPTIONS -S $<  -o $*.s
 
 %.i: %.cpp
 	$(CXX) $(CXXFLAGS) ${DEBUG_FLAGS} -E $<  > $@
@@ -178,5 +179,5 @@ clean:
 
 #Work around bug in compiler: disable inlining
 hmap1.o: hmap1.cpp
-	aCC +d -g0 -Wl,+vshlibunsats -Aa -I../../stlport -I. hmap1.cpp -c -o hmap1.o
+	aCC +d -g0 -Wl,+vshlibunsats -AA -I../../stlport -I. hmap1.cpp -c -o hmap1.o
 
