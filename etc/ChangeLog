@@ -1,6 +1,11 @@
+2004-07-09  Francois Dumont  <dums@...>
+
+	* src/sgi_mipspro.mak: add the -LANG:libc_in_namespace_std:OFF
+	thanks Jack Perdue.
+
 2004-07-08  Francois Dumont  <dums@...>
 
-  * doc/README.evc3: additionnal doc thanks Michael Fink
+	* doc/README.evc3: additionnal doc thanks Michael Fink
 
 2004-07-08  Petr Ovtchenkov  <ptr@Island...>
 

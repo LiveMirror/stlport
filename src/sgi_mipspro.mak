@@ -38,7 +38,7 @@ msg:
 
 include common_macros.mak
 
-CXXFLAGS_COMMON = -J 4 -ansi -LANG:std -I. -D_PTHREADS ${STL_INCL} 
+CXXFLAGS_COMMON = -J 4 -ansi -LANG:libc_in_namespace_std=OFF -LANG:std -I. -D_PTHREADS ${STL_INCL} 
 
 DEBUG_FLAGS = -g +w2 -D_STLP_DEBUG
 RELEASE_FLAGS = -O2
