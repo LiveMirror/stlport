@@ -426,7 +426,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
       }
       _STLP_mutex::_M_acquire_lock();
       _id = _c_id;
-      _count = 0;
+      ++_count;
     }
 
     void _M_release_lock() {
