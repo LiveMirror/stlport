@@ -491,13 +491,8 @@ public:
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 _STLP_END_NAMESPACE
 
-// do a cleanup
-#  undef hash_set
-#  undef hash_multiset
-
-// provide a uniform way to access full funclionality 
-#  define __hash_set__       __FULL_NAME(hash_set)
-#  define __hash_multiset__  __FULL_NAME(hash_multiset)
+#undef hash_set
+#undef hash_multiset
 
 # if defined ( _STLP_USE_WRAPPER_FOR_ALLOC_PARAM )
 #  include <stl/wrappers/_hash_set.h>

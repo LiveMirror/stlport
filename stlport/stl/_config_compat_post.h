@@ -22,10 +22,32 @@
 #  define __STL_VENDOR_STD _STLP_VENDOR_STD
 #  define __STL_VENDOR_CSTD _STLP_VENDOR_CSTD
 # endif
+# endif
 
 /*
 # if defined (_STLP_XXX) && ! defined ( __STL_XXX )
 #  define __STL_XXX _STLP_XXX
 # endif
 */
+
+/* 5.0 -> 4.6 compatibility section */
+#if 1 /* def _STLP_46_COMPATIBILITY */
+
+# define _STLP_USE_NEW_IOSTREAMS 1
+# define _STLP_OWN_IOSTREAMS 1
+# define _STLP_USING_NAMESPACE_BUG
+
+// provide a uniform way to access full funclionality
+# define __slist__  __FULL_NAME(slist)
+# define __map__  __FULL_NAME(map)
+# define __multimap__  __FULL_NAME(multimap)
+# define __set__  __FULL_NAME(set)
+# define __multiset__  __FULL_NAME(multiset)
+# define __list__ __FULL_NAME(list)
+# define __hash_map__ __FULL_NAME(hash_map)
+# define __hash_multimap__ __FULL_NAME(hash_multimap)
+# define __hash_set__       __FULL_NAME(hash_set)
+# define __hash_multiset__  __FULL_NAME(hash_multiset)
+# define __vector__ __FULL_NAME(vector)
+
 

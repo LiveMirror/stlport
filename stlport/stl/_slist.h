@@ -912,15 +912,12 @@ public:
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 #undef _SLIST_IMPL
-
-#ifdef _STLP_DEBUG
-#  undef  slist
-#endif
+#undef  slist
 
 _STLP_END_NAMESPACE
 
 #if defined ( _STLP_USE_WRAPPER_FOR_ALLOC_PARAM )
-//#  include <stl/wrappers/_slist.h>
+#  include <stl/wrappers/_slist.h>
 #endif
 
 #endif /* _STLP_INTERNAL_SLIST_H */

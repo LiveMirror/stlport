@@ -413,9 +413,6 @@ _STLP_END_NAMESPACE
 // do a cleanup
 # undef set
 # undef multiset
-// provide a way to access full funclionality 
-# define __set__  __FULL_NAME(set)
-# define __multiset__  __FULL_NAME(multiset)
 
 # ifdef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
 # include <stl/wrappers/_set.h>

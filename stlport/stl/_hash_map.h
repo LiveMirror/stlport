@@ -395,11 +395,10 @@ public:
     { return _M_ht.elems_in_bucket(__n); }
 };
 
+# undef _STLP_EQUAL_OPERATOR_SPECIALIZED
 #define _STLP_TEMPLATE_HEADER template <class _Key, class _Tp, class _HashFcn, class _EqlKey, class _Alloc>
 #define _STLP_TEMPLATE_CONTAINER hash_map<_Key,_Tp,_HashFcn,_EqlKey,_Alloc>
-
 #include <stl/_relops_hash_cont.h>
-
 #undef _STLP_TEMPLATE_CONTAINER
 #define _STLP_TEMPLATE_CONTAINER hash_multimap<_Key,_Tp,_HashFcn,_EqlKey,_Alloc>
 #include <stl/_relops_hash_cont.h>
@@ -475,14 +474,10 @@ public:
 
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
-// do a cleanup
+_STLP_END_NAMESPACE
+
 # undef hash_map
 # undef hash_multimap
-
-# define __hash_map__ __FULL_NAME(hash_map)
-# define __hash_multimap__ __FULL_NAME(hash_multimap)
-
-_STLP_END_NAMESPACE
 
 # if defined (_STLP_USE_WRAPPER_FOR_ALLOC_PARAM) 
 #  include <stl/wrappers/_hash_map.h>

@@ -688,7 +688,6 @@ _STLP_END_NAMESPACE
 // do a cleanup
 # undef _LIST_IMPL
 # undef list
-# define __list__ __FULL_NAME(list)
 
 #if defined (_STLP_DEBUG)
 # include <stl/debug/_list.h>

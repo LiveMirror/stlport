@@ -399,18 +399,13 @@ public:
   }
 };
 
+# undef _STLP_EQUAL_OPERATOR_SPECIALIZED
 # define _STLP_TEMPLATE_HEADER template <class _Key, class _Tp, class _Compare, class _Alloc>
 # define _STLP_TEMPLATE_CONTAINER map<_Key,_Tp,_Compare,_Alloc>
-
-// fbp : if this template header gets protected against your will, report it !
 # include <stl/_relops_cont.h>
-
 # undef  _STLP_TEMPLATE_CONTAINER
 # define _STLP_TEMPLATE_CONTAINER multimap<_Key,_Tp,_Compare,_Alloc>
-
-// fbp : if this template header gets protected against your will, report it !
 # include <stl/_relops_cont.h>
-
 # undef  _STLP_TEMPLATE_CONTAINER
 # undef  _STLP_TEMPLATE_HEADER
 
@@ -431,9 +426,6 @@ _STLP_END_NAMESPACE
 // do a cleanup
 #  undef map
 #  undef multimap
-// provide a way to access full funclionality 
-# define __map__  __FULL_NAME(map)
-# define __multimap__  __FULL_NAME(multimap)
 
 # ifdef _STLP_USE_WRAPPER_FOR_ALLOC_PARAM
 # include <stl/wrappers/_map.h>
