@@ -399,7 +399,7 @@ public:
   // __p is permitted to be a null pointer, only if n==0.
   void deallocate(pointer __p, size_type __n) {
     _STLP_ASSERT( (__p == 0) == (__n == 0) )
-      if (__p != 0) __sgi_alloc::deallocate((void*)__p, __n * sizeof(value_type));
+    if (__p != 0) __sgi_alloc::deallocate((void*)__p, __n * sizeof(value_type));
   }
   // backwards compatibility
   void deallocate(pointer __p) const {  if (__p != 0) __sgi_alloc::deallocate((void*)__p, sizeof(value_type)); }

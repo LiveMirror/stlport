@@ -1,3 +1,10 @@
+2004-05-24  Francois Dumont  <dums@...>
+
+  * stlport/stl/_iostream_string.h:
+  Fix of the iostring_allocator rebind embedded struct and implementation
+  of the missing __stl_alloc_rebind and __stl_alloc_create usefull for compiler
+  not supporting or buggy on the member template feature (VC6 for instance).
+
 2004-05-22  Francois Dumont  <dums@...>
 
 	* src/num_put_float.cpp, stlport/stl/_num_put.h, stlport/stl/_num_put.c:
