@@ -1,3 +1,11 @@
+2005-01-02  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_sum.h, _string_operators.h: Fix of a assignment bug
+	in the append method taking a C string wrapper. Modification of the __bstr_sum
+	get_allocator method to avoid an unusefull allocation.
+
+	* build/lib/nmake-src-prefix.mak: Add of missing rules for .c and .rc file type.
+
 2004-12-29  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.c: Fix missing allocator argument in new slist

@@ -79,14 +79,17 @@ private:
      _STLP_STD::_Copy_Construct(__buf, __c.getValue());
      return __buf + 1;
   }
+  _CharT* _M_append_fast(_CharT const* __s, size_type __s_size, _CharT *__buf) {
+    return uninitialized_copy(__s, __s + __s_size, __buf);
+  }
   _CharT* _M_append_fast(__cstr_wrapper<_CharT> const& __s, _CharT *__buf) {
-    return uninitialized_copy(__s.c_str(), __s.c_str() + __s.size(), __buf);
+    return _M_append_fast(__s.c_str(), __s.size(), __buf);
   }
   _CharT* _M_append_fast(__bstr_wrapper<_CharT, _Traits, _Alloc> __s, _CharT *__buf) {
     return _M_append_fast(__s.b_str(), __buf);
   }
   _CharT* _M_append_fast(_Self const& __s, _CharT *__buf) {
-    return uninitialized_copy(__s.begin(), __s.begin() + __s.size(), __buf);
+    return _M_append_fast(__s.data(), __s.size(), __buf);
   }
   _CharT* _M_append_fast(__sum_storage_elem<_CharT, _Traits, _Alloc> const& __s, _CharT *__buf) {
     return __buf;
@@ -103,9 +106,13 @@ private:
     _STLP_STD::_Copy_Construct(__buf, __c.getValue());
     return __buf + 1;
   }
+  _CharT* _M_append_fast_pos(_CharT const* __s, size_type __s_size, _CharT *__buf,
+                             size_type __pos, size_type __n) {
+    return uninitialized_copy(__s + __pos, __s + __pos + (min)(__n, __s_size - __pos), __buf);
+  }
   _CharT* _M_append_fast_pos(__cstr_wrapper<_CharT> const& __s, _CharT *__buf, 
                              size_type __pos, size_type __n) {
-    return uninitialized_copy(__s.c_str() + __pos, __s.c_str() + (min)(__pos + __n, __s.size()), __buf);
+    return _M_append_fast_pos(__s.c_str(), __s.size(), __buf, __pos, __n);
   }
   _CharT* _M_append_fast_pos(__bstr_wrapper<_CharT, _Traits, _Alloc> __s, _CharT *__buf, 
                              size_type __pos, size_type __n) {
@@ -113,7 +120,7 @@ private:
   }
   _CharT* _M_append_fast_pos(_Self const& __s, _CharT *__buf, 
                              size_type __pos, size_type __n) {
-    return uninitialized_copy(__s.begin() + __pos, __s.begin() + __pos + (min)(__n, __s.size() - __pos), __buf);
+    return _M_append_fast_pos(__s.data(), __s.size(), __buf, __pos, __n);
   }
   _CharT* _M_append_fast_pos(__sum_storage_elem<_CharT, _Traits, _Alloc> const& __s, _CharT *__buf, 
                              size_type __pos, size_type __n) {

@@ -28,9 +28,9 @@ operator+(const basic_string<_CharT,_Traits,_Alloc>& __s,
   typedef typename _Str::_Reserve_t _Reserve_t;
 #  ifdef __GNUC__
   // gcc counts this as a function
-  _Str __result  = _Str(_Reserve_t(),__s.size() + __y.size());
+  _Str __result  = _Str(_Reserve_t(),__s.size() + __y.size(), __s.get_allocator());
 #  else
-  _Str __result(_Reserve_t(), __s.size() + __y.size());
+  _Str __result(_Reserve_t(), __s.size() + __y.size(), __s.get_allocator());
 #  endif
   __result.append(__s);
   __result.append(__y);
@@ -51,9 +51,9 @@ operator+(const _CharT* __s,
   typedef typename _Str::_Reserve_t _Reserve_t;
   const size_t __n = _Traits::length(__s);
 #  ifdef _STLP_INIT_AMBIGUITY
-  _Str __result = _Str(_Reserve_t(), __n + __y.size());
+  _Str __result = _Str(_Reserve_t(), __n + __y.size(), __y.get_allocator());
 #  else
-  _Str __result(_Reserve_t(), __n + __y.size());
+  _Str __result(_Reserve_t(), __n + __y.size(), __y.get_allocator());
 #  endif
   __result.append(__s, __s + __n);
   __result.append(__y);
@@ -67,9 +67,9 @@ operator+(_CharT __c,
   typedef basic_string<_CharT,_Traits,_Alloc> _Str;
   typedef typename _Str::_Reserve_t _Reserve_t;
 #  ifdef _STLP_INIT_AMBIGUITY
-  _Str __result = _Str(_Reserve_t(), 1 + __y.size());
+  _Str __result = _Str(_Reserve_t(), 1 + __y.size(), __y.get_allocator());
 #  else
-  _Str __result(_Reserve_t(), 1 + __y.size());
+  _Str __result(_Reserve_t(), 1 + __y.size(), __y.get_allocator());
 #  endif
   __result.push_back(__c);
   __result.append(__y);
@@ -124,7 +124,7 @@ inline __bstr_sum<_CharT, _Traits, _Alloc,
 operator+(const basic_string<_CharT,_Traits,_Alloc>& __lhs,
           const basic_string<_CharT,_Traits,_Alloc>& __rhs) {
   typedef __bstr_sum<_CharT, _Traits, _Alloc, __bstr_wrapper<_CharT,_Traits,_Alloc>, __sum_storage_elem<_CharT, _Traits, _Alloc>, __on_right> __root_type;
-  __root_type __root(__rhs, __sum_storage_elem<_CharT, _Traits, _Alloc>());
+  __root_type __root(__rhs, __sum_storage_elem<_CharT, _Traits, _Alloc>(__lhs.get_allocator()));
   return __bstr_sum<_CharT, _Traits, _Alloc, __bstr_wrapper<_CharT,_Traits,_Alloc>, __root_type, __on_right>(__lhs, __root);
 }
 
@@ -153,7 +153,7 @@ operator+(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const _CharT* __s) {
   const size_t __n = _Traits::length(__s);
   typedef __bstr_sum<_CharT, _Traits, _Alloc, __cstr_wrapper<_CharT>, __sum_storage_elem<_CharT, _Traits, _Alloc>, __on_right> __root_type;
-  __root_type __root(__cstr_wrapper<_CharT>(__s, __n), __sum_storage_elem<_CharT, _Traits, _Alloc>());
+  __root_type __root(__cstr_wrapper<_CharT>(__s, __n), __sum_storage_elem<_CharT, _Traits, _Alloc>(__x.get_allocator()));
   return __bstr_sum<_CharT, _Traits, _Alloc, __bstr_wrapper<_CharT,_Traits,_Alloc> ,__root_type, __on_right>(__x, __root);
 }
 
@@ -167,7 +167,7 @@ operator+(const _CharT* __s,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   const size_t __n = _Traits::length(__s);
   typedef __bstr_sum<_CharT, _Traits, _Alloc, __bstr_wrapper<_CharT,_Traits,_Alloc>, __sum_storage_elem<_CharT, _Traits, _Alloc>, __on_right> __root_type;
-  __root_type __root(__y, __sum_storage_elem<_CharT, _Traits, _Alloc>());
+  __root_type __root(__y, __sum_storage_elem<_CharT, _Traits, _Alloc>(__y.get_allocator()));
   return __bstr_sum<_CharT, _Traits, _Alloc, __cstr_wrapper<_CharT>, __root_type, __on_right>(__cstr_wrapper<_CharT>(__s, __n), __root);
 }
 
@@ -196,7 +196,7 @@ inline __bstr_sum<_CharT, _Traits, _Alloc,
                              __sum_storage_elem<_CharT, _Traits, _Alloc>, __on_right>, __on_right> _STLP_CALL
 operator+(const basic_string<_CharT,_Traits,_Alloc>& __x, const _CharT __c) {
   typedef __bstr_sum<_CharT, _Traits, _Alloc, __char_wrapper<_CharT>, __sum_storage_elem<_CharT, _Traits, _Alloc>, __on_right> __root_type;
-  __root_type __root(__c, __sum_storage_elem<_CharT, _Traits, _Alloc>());
+  __root_type __root(__c, __sum_storage_elem<_CharT, _Traits, _Alloc>(__x.get_allocator()));
   return __bstr_sum<_CharT, _Traits, _Alloc, __bstr_wrapper<_CharT,_Traits,_Alloc>, __root_type, __on_right>(__x, __root);
 }
 
@@ -208,7 +208,7 @@ inline __bstr_sum<_CharT, _Traits, _Alloc,
                              __sum_storage_elem<_CharT, _Traits, _Alloc>, __on_right>, __on_right> _STLP_CALL
 operator+(const _CharT __c, const basic_string<_CharT,_Traits,_Alloc>& __x) {
   typedef __bstr_sum<_CharT, _Traits, _Alloc, __bstr_wrapper<_CharT,_Traits,_Alloc>, __sum_storage_elem<_CharT, _Traits, _Alloc>, __on_right> __root_type;
-  __root_type __root(__x, __sum_storage_elem<_CharT, _Traits, _Alloc>());
+  __root_type __root(__x, __sum_storage_elem<_CharT, _Traits, _Alloc>(__x.get_allocator()));
   return __bstr_sum<_CharT, _Traits, _Alloc, __char_wrapper<_CharT>, __root_type, __on_right>(__c, __root);
 }
 

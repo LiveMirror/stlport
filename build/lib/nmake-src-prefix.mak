@@ -22,3 +22,39 @@ ALLRESS = $(ALLRESS:../../src/=)
 {../../src}.cpp{$(OUTPUT_DIR_A_STLDBG)}.o:
 	$(COMPILE_cc_STATIC_STLDBG) $(OUTPUT_OPTION_STATIC_STLDBG) $<
 
+{../../src}.c{$(OUTPUT_DIR)}.o:
+	$(COMPILE_c_REL) $(OUTPUT_OPTION) $<
+
+{../../src}.c{$(OUTPUT_DIR_DBG)}.o:
+	$(COMPILE_c_DBG) $(OUTPUT_OPTION_DBG) $<
+
+{../../src}.c{$(OUTPUT_DIR_STLDBG)}.o:
+	$(COMPILE_c_DBG) $(OUTPUT_OPTION_STLDBG) $<
+
+{../../src}.c{$(OUTPUT_DIR_A)}.o:
+	$(COMPILE_c_STATIC_REL) $(OUTPUT_OPTION) $<
+
+{../../src}.c{$(OUTPUT_DIR_A_DBG)}.o:
+	$(COMPILE_c_STATIC_DBG) $(OUTPUT_OPTION_STATIC_DBG) $<
+
+{../../src}.c{$(OUTPUT_DIR_A_STLDBG)}.o:
+	$(COMPILE_c_STATIC_DBG) $(OUTPUT_OPTION_STATIC_STLDBG) $<
+
+{../../src}.rc{$(OUTPUT_DIR)}.res:
+	$(COMPILE_rc_REL) $(RC_OUTPUT_OPTION) $<
+
+{../../src}.rc{$(OUTPUT_DIR_DBG)}.res:
+	$(COMPILE_rc_DBG) $(RC_OUTPUT_OPTION_DBG) $<
+
+{../../src}.rc{$(OUTPUT_DIR_STLDBG)}.res:
+	$(COMPILE_rc_STLDBG) $(RC_OUTPUT_OPTION_STLDBG) $<
+
+{../../src}.rc{$(OUTPUT_DIR_A)}.res:
+	$(COMPILE_rc_STATIC_REL) $(RC_OUTPUT_OPTION) $<
+
+{../../src}.rc{$(OUTPUT_DIR_A_DBG)}.res:
+	$(COMPILE_rc_STATIC_DBG) $(RC_OUTPUT_OPTION_DBG) $<
+
+{../../src}.rc{$(OUTPUT_DIR_A_STLDBG)}.res:
+	$(COMPILE_rc_STATIC_STLDBG) $(RC_OUTPUT_OPTION_STLDBG) $<
+
