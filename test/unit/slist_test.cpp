@@ -17,11 +17,15 @@ class SlistTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE(SlistTest);
   CPPUNIT_TEST(slist1);
   CPPUNIT_TEST(erase);
+  CPPUNIT_TEST(insert);
+  CPPUNIT_TEST(splice);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void slist1();
   void erase();
+  void insert();
+  void splice();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SlistTest);
@@ -118,3 +122,178 @@ void SlistTest::erase()
   sl.erase_after(sl.before_begin());
   CPPUNIT_ASSERT( sl.front() == 3 );
 }
+
+void SlistTest::insert()
+{
+  int array[] = { 0, 1, 2, 3, 4 };
+
+  //insert
+  {
+    slist<int> sl;
+
+    sl.insert(sl.begin(), 5);
+    CPPUNIT_ASSERT( sl.front() == 5 );
+    CPPUNIT_ASSERT( sl.size() == 1 );
+
+    //debug mode check:
+    //sl.insert(sl.before_begin(), array, array + 5);
+
+    sl.insert(sl.begin(), array, array + 5);
+    CPPUNIT_ASSERT( sl.size() == 6 );
+    int i;
+    slist<int>::iterator slit(sl.begin());
+    for (i = 0; slit != sl.end(); ++slit, ++i) {
+      CPPUNIT_ASSERT( *slit == i );
+    }
+  }
+
+  //insert_after
+  {
+    slist<int> sl;
+
+    //debug check:
+    //sl.insert_after(sl.begin(), 5);
+
+    sl.insert_after(sl.before_begin(), 5);
+    CPPUNIT_ASSERT( sl.front() == 5 );
+    CPPUNIT_ASSERT( sl.size() == 1 );
+
+    sl.insert_after(sl.before_begin(), array, array + 5);
+    CPPUNIT_ASSERT( sl.size() == 6 );
+    int i;
+    slist<int>::iterator slit(sl.begin());
+    for (i = 0; slit != sl.end(); ++slit, ++i) {
+      CPPUNIT_ASSERT( *slit == i );
+    }
+  }
+}
+
+void SlistTest::splice()
+{
+  int array[] = { 0, 1, 2, 3, 4 };
+
+  //splice
+  {
+    slist<int> sl1(array, array + 5);
+    slist<int> sl2(array, array + 5);
+    slist<int>::iterator slit;
+
+    //a no op:
+    sl1.splice(sl1.begin(), sl1, sl1.begin());
+    CPPUNIT_ASSERT( sl1 == sl2 );
+
+    slit = sl1.begin(); ++slit;
+    //a no op:
+    sl1.splice(slit, sl1, sl1.begin());
+    CPPUNIT_ASSERT( sl1 == sl2 );
+
+    sl1.splice(sl1.end(), sl1, sl1.begin());
+    slit = sl1.begin();
+    CPPUNIT_ASSERT( *(slit++) == 1 );
+    CPPUNIT_ASSERT( *(slit++) == 2 );
+    CPPUNIT_ASSERT( *(slit++) == 3 );
+    CPPUNIT_ASSERT( *(slit++) == 4 );
+    CPPUNIT_ASSERT( *slit == 0 );
+    sl1.splice(sl1.begin(), sl1, slit);
+    CPPUNIT_ASSERT( sl1 == sl2 );
+
+    sl1.splice(sl1.begin(), sl2);
+    size_t i;
+    for (i = 0, slit = sl1.begin(); slit != sl1.end(); ++slit, ++i) {
+      if (i == 5) i = 0;
+      CPPUNIT_ASSERT( *slit == array[i] );
+    }
+
+    slit = sl1.begin();
+    advance(slit, 5);
+    CPPUNIT_ASSERT( *slit == 0 );
+    sl2.splice(sl2.begin(), sl1, sl1.begin(), slit);
+    CPPUNIT_ASSERT( sl1 == sl2 );
+
+    slit = sl1.begin(); ++slit;
+    sl1.splice(sl1.begin(), sl1, slit, sl1.end());
+    slit = sl1.begin();
+    CPPUNIT_ASSERT( *(slit++) == 1 );
+    CPPUNIT_ASSERT( *(slit++) == 2 );
+    CPPUNIT_ASSERT( *(slit++) == 3 );
+    CPPUNIT_ASSERT( *(slit++) == 4 );
+    CPPUNIT_ASSERT( *slit == 0 );
+
+    // a no op
+    sl2.splice(sl2.end(), sl2, sl2.begin(), sl2.end());
+    for (i = 0, slit = sl2.begin(); slit != sl2.end(); ++slit, ++i) {
+      CPPUNIT_ASSERT( i < 5 );
+      CPPUNIT_ASSERT( *slit == array[i] );
+    }
+
+    slit = sl2.begin();
+    advance(slit, 3);
+    sl2.splice(sl2.end(), sl2, sl2.begin(), slit);
+    slit = sl2.begin();
+    CPPUNIT_ASSERT( *(slit++) == 3 );
+    CPPUNIT_ASSERT( *(slit++) == 4 );
+    CPPUNIT_ASSERT( *(slit++) == 0 );
+    CPPUNIT_ASSERT( *(slit++) == 1 );
+    CPPUNIT_ASSERT( *slit == 2 );
+  }
+
+  //splice_after
+  {
+    slist<int> sl1(array, array + 5);
+    slist<int> sl2(array, array + 5);
+    slist<int>::iterator slit;
+
+    //a no op:
+    sl1.splice_after(sl1.begin(), sl1.begin());
+    CPPUNIT_ASSERT( sl1 == sl2 );
+
+    sl1.splice_after(sl1.before_begin(), sl1.begin());
+    slit = sl1.begin();
+    CPPUNIT_ASSERT( *(slit++) == 1 );
+    CPPUNIT_ASSERT( *(slit++) == 0 );
+    CPPUNIT_ASSERT( *(slit++) == 2 );
+    CPPUNIT_ASSERT( *(slit++) == 3 );
+    CPPUNIT_ASSERT( *slit == 4 );
+    sl1.splice_after(sl1.before_begin(), sl1.begin());
+    CPPUNIT_ASSERT( sl1 == sl2 );
+
+    sl1.splice_after(sl1.before_begin(), sl2);
+    size_t i;
+    for (i = 0, slit = sl1.begin(); slit != sl1.end(); ++slit, ++i) {
+      if (i == 5) i = 0;
+      CPPUNIT_ASSERT( *slit == array[i] );
+    }
+
+    slit = sl1.begin();
+    advance(slit, 4);
+    CPPUNIT_ASSERT( *slit == 4 );
+    sl2.splice_after(sl2.before_begin(), sl1.before_begin(), slit);
+    CPPUNIT_ASSERT( sl1 == sl2 );
+
+    sl1.splice_after(sl1.before_begin(), sl1.begin(), sl1.previous(sl1.end()));
+    slit = sl1.begin();
+    CPPUNIT_ASSERT( *(slit++) == 1 );
+    CPPUNIT_ASSERT( *(slit++) == 2 );
+    CPPUNIT_ASSERT( *(slit++) == 3 );
+    CPPUNIT_ASSERT( *(slit++) == 4 );
+    CPPUNIT_ASSERT( *slit == 0 );
+
+    // a no op
+    sl2.splice_after(sl2.before_begin(), sl2.before_begin(), sl2.previous(sl2.end()));
+    for (i = 0, slit = sl2.begin(); slit != sl2.end(); ++slit, ++i) {
+      CPPUNIT_ASSERT( i < 5 );
+      CPPUNIT_ASSERT( *slit == array[i] );
+    }
+
+    slit = sl2.begin();
+    advance(slit, 2);
+    sl2.splice_after(sl2.previous(sl2.end()), sl2.before_begin(), slit);
+    slit = sl2.begin();
+    CPPUNIT_ASSERT( *(slit++) == 3 );
+    CPPUNIT_ASSERT( *(slit++) == 4 );
+    CPPUNIT_ASSERT( *(slit++) == 0 );
+    CPPUNIT_ASSERT( *(slit++) == 1 );
+    CPPUNIT_ASSERT( *slit == 2 );
+  }
+}
+

@@ -525,7 +525,7 @@ private:
 #endif /* _STLP_MEMBER_TEMPLATES */
     //We use a temporary slist to avoid the auto reference troubles (infinite loop)
     _Self __tmp(__first, __last);
-    splice_after(__pos, __tmp.before_begin());
+    splice_after(__pos, __tmp);
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES
@@ -621,7 +621,7 @@ public:
     _M_insert_after_fill(_STLP_PRIV::_Sl_global_inst::__previous(&this->_M_head._M_data, __pos._M_node), __n, __x);
   } 
     
-#ifdef _STLP_MEMBER_TEMPLATES
+#if defined (_STLP_MEMBER_TEMPLATES)
   // We don't need any dispatching tricks here, because _M_insert_after_range
   // already does them.
   template <class _InIter>

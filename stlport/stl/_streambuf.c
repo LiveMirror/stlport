@@ -26,7 +26,7 @@ _STLP_BEGIN_NAMESPACE
 //----------------------------------------------------------------------
 // Non-inline basic_streambuf<> member functions.
 
-#if !defined (_STLP_MSVC) || (_STLP_MSVC > 1200) || !defined (_STLP_USE_STATIC_LIB)
+#if !defined (_STLP_MSVC) || (_STLP_MSVC >= 1300) || !defined (_STLP_USE_STATIC_LIB)
 template <class _CharT, class _Traits>
 basic_streambuf<_CharT, _Traits>::basic_streambuf()
   : _M_gbegin(0), _M_gnext(0), _M_gend(0),

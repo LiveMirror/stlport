@@ -96,7 +96,7 @@ bool _CompareIt(const _Iterator& __x, const _Iterator& __y, const random_access_
 
 template <class _Iterator>
 bool _Dereferenceable(const _Iterator& __it) {
-  return (__it._Get_container_ptr() !=0) && !(__it._M_iterator == (__it._Get_container_ptr())->end());
+  return (__it._Get_container_ptr() != 0) && !(__it._M_iterator == (__it._Get_container_ptr())->end());
 }
 
 

@@ -332,13 +332,13 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _STLP_DEBUG_CHECK(__check_range(__first, __last, __x.begin(), __x.end()))
     _STLP_DEBUG_CHECK(this == &__x ? !__check_range(__pos, __first, __last) : true)
-    _Base::splice(__pos._M_iterator, __x, __first._M_iterator, __last._M_iterator);
 #if (_STLP_DEBUG_LEVEL == _STLP_STANDARD_DBG_LEVEL)
     // Std: 23.2.2.4:12
     __x._Invalidate_iterators(__first, __last);
 #else
     __change_range_owner(__first, __last, &_M_iter_list);
 #endif
+    _Base::splice(__pos._M_iterator, __x, __first._M_iterator, __last._M_iterator);
   }
 
   void merge(_Self& __x) {

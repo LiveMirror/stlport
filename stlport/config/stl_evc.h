@@ -34,14 +34,6 @@
 // This is defined for all platforms using Windows CE
 # define _STLP_WCE
 
-
-// When compiling on evc4 / ARM, _MSC_VER is 1201; change that
-# if defined(_STLP_WCE_NET) && (defined(_ARM_) || defined(_MIPS_))
-// pretend i am _MSC_VER 1200 not 1201
-#  undef _STLP_MSVC
-#  define _STLP_MSVC 1200
-# endif
-
 // inherit all msvc6 options
 # include <config/stl_msvc.h>
 

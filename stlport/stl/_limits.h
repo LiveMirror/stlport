@@ -210,9 +210,9 @@ public:
   is_signed = true, 
 
   //IEC 559 specify the floating point representation of
-  //infinity, quite and signaling Not a Number. Not supporting
+  //infinity, quiet and signaling Not a Number. Not supporting
   //it is concider as not being able to grant those values.
-#if (defined(_STLP_MSVC) && (_STLP_MSVC <= 1200))
+#if (defined(_STLP_MSVC) && (_STLP_MSVC < 1300))
   //MSVC 6 do not fully support IEC 599 but grant a good infinity value.
   has_infinity      = true,
 #else

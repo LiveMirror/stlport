@@ -1,3 +1,21 @@
+2005-02-25  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_slist.h: Fix _M_splice_after method.
+
+	* stlport/stl/debug/_slist.h: Add of many missing checks for the special
+	slist before_begin iterator which returns true to the _Dereferenceable
+	function call but is not dereferenceable in reality. Passing this
+	iterator to method like erase or insert was invalid but was not detected
+	by the _Dereferenceable function.
+
+	* test/unit/slist_test.cpp: Add checks for insert, insert_after, splice
+	splice_after methods.
+
+	* Patch from Ulrich Eckhardt:
+	- Fix macro _MSC_VER macro checks, VC6 should be found using _MSC_VER < 1300
+	check rather than _MSC_VER == 1200 to take into account compilers like 
+	EVC4 that is a VC6 based compiler with _MSC_VER == 1202.
+
 2005-02-25  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_algobase.h: wrong parameters order in call to memchr,

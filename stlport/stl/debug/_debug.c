@@ -17,23 +17,23 @@
  *
  */
 
-# ifndef _STLP_DEBUG_C
-#  define  _STLP_DEBUG_C
+#ifndef _STLP_DEBUG_C
+#define  _STLP_DEBUG_C
 
 #if defined ( _STLP_DEBUG )
 
-# ifdef _STLP_THREADS
+#ifdef _STLP_THREADS
 #  ifndef _STLP_NEED_MUTABLE 
-#   define _STLP_ACQUIRE_LOCK(_Lock) _Lock._M_acquire_lock();
-#   define _STLP_RELEASE_LOCK(_Lock) _Lock._M_release_lock();
+#    define _STLP_ACQUIRE_LOCK(_Lock) _Lock._M_acquire_lock();
+#    define _STLP_RELEASE_LOCK(_Lock) _Lock._M_release_lock();
 #  else
-#   define _STLP_ACQUIRE_LOCK(_Lock) ((_STLP_mutex&)_Lock)._M_acquire_lock();
-#   define _STLP_RELEASE_LOCK(_Lock) ((_STLP_mutex&)_Lock)._M_release_lock();
+#    define _STLP_ACQUIRE_LOCK(_Lock) ((_STLP_mutex&)_Lock)._M_acquire_lock();
+#    define _STLP_RELEASE_LOCK(_Lock) ((_STLP_mutex&)_Lock)._M_release_lock();
 #  endif /* _STLP_NEED_MUTABLE */
-# else
+#else
 #  define _STLP_ACQUIRE_LOCK(_Lock)
 #  define _STLP_RELEASE_LOCK(_Lock)
-# endif /* _STLP_THREADS */
+#endif /* _STLP_THREADS */
 
 _STLP_BEGIN_NAMESPACE
 
@@ -50,18 +50,18 @@ __in_range_aux(const _Iterator& __it, const _Iterator& __first,
 }
 
 template <class _Iterator1, class _Iterator>
-# if defined (_STLP_MSVC) && (_STLP_MSVC >= 1100)
+#if defined (_STLP_MSVC) && (_STLP_MSVC >= 1100)
 inline bool _STLP_CALL  __in_range_aux(_Iterator1 __it, const _Iterator& __first,
-# else
+#else
 inline bool _STLP_CALL  __in_range_aux(const _Iterator1& __it, const _Iterator& __first,
-# endif
+#endif
                                        const _Iterator& __last, const forward_iterator_tag &) {
   _Iterator1 __i(__first);
   for (;  __i != __last && __i != __it; ++__i);
   return (__i!=__last);
 }
 
-# if defined (_STLP_NONTEMPL_BASE_MATCH_BUG)
+#if defined (_STLP_NONTEMPL_BASE_MATCH_BUG)
 template <class _Iterator1, class _Iterator>
 inline bool  _STLP_CALL
 __in_range_aux(const _Iterator1& __it, const _Iterator& __first,
@@ -70,7 +70,7 @@ __in_range_aux(const _Iterator1& __it, const _Iterator& __first,
   for (;  __i != __last && __i != __it; ++__i);
   return (__i !=__last);
 }
-# endif
+#endif
 
 template <class _Iterator>
 bool _STLP_CALL __check_range_aux(const _Iterator& __first, const _Iterator& __last, 
@@ -117,9 +117,9 @@ bool _STLP_CALL __check_ptr_range(const _Tp* __first, const _Tp* __last) {
 
 //===============================================================
 template <class _Iterator>
-void  _STLP_CALL __invalidate_range(const __owned_list* __base, 
-                                    const _Iterator& __first,
-                                    const _Iterator& __last) {
+void _STLP_CALL __invalidate_range(const __owned_list* __base, 
+                                   const _Iterator& __first,
+                                   const _Iterator& __last) {
   typedef __owned_link _L_type;
   _STLP_ACQUIRE_LOCK(__base->_M_lock)
   _L_type* __prev = __CONST_CAST(_L_type*, &__base->_M_node);
@@ -142,8 +142,8 @@ void  _STLP_CALL __invalidate_range(const __owned_list* __base,
 }
 
 template <class _Iterator>
-void  _STLP_CALL __invalidate_iterator(const __owned_list* __base, 
-                                       const _Iterator& __it) {
+void _STLP_CALL __invalidate_iterator(const __owned_list* __base, 
+                                      const _Iterator& __it) {
   typedef __owned_link   _L_type;
   _STLP_ACQUIRE_LOCK(__base->_M_lock)
   _L_type* __prev = __CONST_CAST(_L_type*, &__base->_M_node);
@@ -198,8 +198,8 @@ void _STLP_CALL  __change_range_owner(const _Iterator& __first,
 }
 
 template <class _Iterator>
-void  _STLP_CALL __change_ite_owner(const _Iterator& __it,
-                                    const __owned_list* __dst) {
+void _STLP_CALL __change_ite_owner(const _Iterator& __it,
+                                   const __owned_list* __dst) {
   if (__it._Owner() == __dst)
     return;
 
@@ -231,42 +231,42 @@ void  _STLP_CALL __change_ite_owner(const _Iterator& __it,
 
 _STLP_END_NAMESPACE
 
-# endif /* _STLP_DEBUG */
+#endif /* _STLP_DEBUG */
 
-# if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
+#if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
 
 // dwa 12/26/99 -- for abort
 #  if defined (_STLP_USE_NEW_C_HEADERS)
-#   include <cstdlib>
+#    include <cstdlib>
 #  else
-#   include <stdlib.h>
+#    include <stdlib.h>
 #  endif /* _STLP_USE_NEW_C_HEADERS */
 
-# if defined (_STLP_WIN32)
-#  include <stl/_windows.h>
-# endif /* _STLP_WIN32 */
+#  if defined (_STLP_WIN32)
+#    include <stl/_windows.h>
+#  endif /* _STLP_WIN32 */
 
 //==========================================================
 // .c section
 //  owned_list non-inline methods and global functions 
 //==========================================================
 
-#if defined ( _STLP_ASSERTIONS )
+#  if defined (_STLP_ASSERTIONS)
 
 _STLP_BEGIN_NAMESPACE
 
-# ifndef _STLP_STRING_LITERAL
-# define _STLP_STRING_LITERAL(__x) __x
-# endif
+#    ifndef _STLP_STRING_LITERAL
+#      define _STLP_STRING_LITERAL(__x) __x
+#    endif
 
-# ifdef _STLP_USE_WIDE_INTERFACE
+#    ifdef _STLP_USE_WIDE_INTERFACE
 // note: WinCE needs this to format single-byte strings in __stl_debug_engine::_Message
-#  define _STLP_PERCENT_S "%hs" 
-# else
-#  define _STLP_PERCENT_S "%s" 
-# endif /* _STLP_USE_WIDE_INTERFACE */
+#      define _STLP_PERCENT_S "%hs" 
+#    else
+#      define _STLP_PERCENT_S "%s" 
+#    endif /* _STLP_USE_WIDE_INTERFACE */
 
-# define _STLP_MESSAGE_TABLE_BODY = { \
+#    define _STLP_MESSAGE_TABLE_BODY = { \
 _STLP_STRING_LITERAL("\n" _STLP_PERCENT_S "(%d): STL error: " _STLP_PERCENT_S "\n"), \
 _STLP_STRING_LITERAL(_STLP_PERCENT_S "(%d): STL assertion failure : " _STLP_PERCENT_S "\n" _STLP_ASSERT_MSG_TRAILER), \
 _STLP_STRING_LITERAL("\n" _STLP_PERCENT_S "(%d): STL error : " _STLP_PERCENT_S "\n" _STLP_PERCENT_S "(%d): STL assertion failure:     " _STLP_PERCENT_S " \n" _STLP_ASSERT_MSG_TRAILER), \
@@ -297,11 +297,11 @@ _STLP_STRING_LITERAL("Attempt to dereference null pointer returned by auto_ptr::
 _STLP_STRING_LITERAL("Unknown problem") \
   }
 
-#if ( _STLP_STATIC_TEMPLATE_DATA > 0 )
+#    if (_STLP_STATIC_TEMPLATE_DATA > 0)
 template <class _Dummy>
 const char* __stl_debug_engine<_Dummy>::_Message_table[_StlMsg_MAX]  _STLP_MESSAGE_TABLE_BODY;
 
-#  if (defined(__CYGWIN__) || defined(__MINGW32__)) && defined(_STLP_USE_DYNAMIC_LIB)
+#      if (defined(__CYGWIN__) || defined(__MINGW32__)) && defined(_STLP_USE_DYNAMIC_LIB)
 /*
  * Under cygwin, when STLport is used as a shared library, the id needs
  * to be specified as imported otherwise they will be duplicated in the
@@ -309,63 +309,61 @@ const char* __stl_debug_engine<_Dummy>::_Message_table[_StlMsg_MAX]  _STLP_MESSA
  */
 template <>
 _STLP_DECLSPEC const char* __stl_debug_engine<bool>::_Message_table[_StlMsg_MAX];
-#  endif
+#      endif
 
-#else
+#    else
 __DECLARE_INSTANCE(const char*, __stl_debug_engine<bool>::_Message_table[_StlMsg_MAX],
              _STLP_MESSAGE_TABLE_BODY);
-#endif
+#    endif
 
-# undef _STLP_STRING_LITERAL
-# undef _STLP_PERCENT_S
+#    undef _STLP_STRING_LITERAL
+#    undef _STLP_PERCENT_S
 _STLP_END_NAMESPACE
 
 // abort()
 #    include <cstdlib>
 
-#  if !defined( _STLP_DEBUG_MESSAGE )
-
-#    include <cstdarg>
-#    include <cstdio>
+#    if !defined (_STLP_DEBUG_MESSAGE)
+#      include <cstdarg>
+#      include <cstdio>
 
 _STLP_BEGIN_NAMESPACE
 
 template <class _Dummy>
 void _STLP_CALL  
 __stl_debug_engine<_Dummy>::_Message(const char * __format_str, ...) {
-     STLPORT_CSTD::va_list __args;
-     va_start( __args, __format_str );
+  STLPORT_CSTD::va_list __args;
+  va_start( __args, __format_str );
 
-# if defined (_STLP_USE_WIDE_INTERFACE)
-     TCHAR __buffer[512];
-     int _convert = strlen(__format_str) + 1;
-     LPWSTR _lpw = (LPWSTR)alloca(_convert*sizeof(wchar_t));
-     _lpw[0] = '\0';
-     MultiByteToWideChar(GetACP(), 0, __format_str, -1, _lpw, _convert);
-     wvsprintf(__buffer, _lpw, __args);
-     //     wvsprintf(__buffer, __format_str, __args);
-     _STLP_WINCE_TRACE(__buffer);
-# elif defined (_STLP_WIN32) && ( defined(_STLP_MSVC) || defined (__ICL) || defined (__BORLANDC__))
-    char __buffer [4096];
-    vsnprintf(__buffer, sizeof(__buffer) / sizeof(char), __format_str, __args);
-    OutputDebugStringA(__buffer);
-# elif defined (__amigaos__)
-    STLPORT_CSTD::vfprintf(stderr, __format_str, (char *)__args);
-# else
-    STLPORT_CSTD::vfprintf(stderr, __format_str, __args);
-# endif /* WINCE */
+#      if defined (_STLP_USE_WIDE_INTERFACE)
+  TCHAR __buffer[512];
+  int _convert = strlen(__format_str) + 1;
+  LPWSTR _lpw = (LPWSTR)alloca(_convert*sizeof(wchar_t));
+  _lpw[0] = '\0';
+  MultiByteToWideChar(GetACP(), 0, __format_str, -1, _lpw, _convert);
+  wvsprintf(__buffer, _lpw, __args);
+  //wvsprintf(__buffer, __format_str, __args);
+  _STLP_WINCE_TRACE(__buffer);
+#      elif defined (_STLP_WIN32) && ( defined(_STLP_MSVC) || defined (__ICL) || defined (__BORLANDC__))
+  char __buffer [4096];
+  vsnprintf(__buffer, sizeof(__buffer) / sizeof(char), __format_str, __args);
+  OutputDebugStringA(__buffer);
+#      elif defined (__amigaos__)
+  STLPORT_CSTD::vfprintf(stderr, __format_str, (char *)__args);
+#      else
+  STLPORT_CSTD::vfprintf(stderr, __format_str, __args);
+#      endif /* WINCE */
 
-# ifdef _STLP_DEBUG_MESSAGE_POST
-     _STLP_DEBUG_MESSAGE_POST
-# endif
+#      ifdef _STLP_DEBUG_MESSAGE_POST
+  _STLP_DEBUG_MESSAGE_POST
+#      endif
 
-    va_end(__args);
-
+  va_end(__args);
 }
 
 _STLP_END_NAMESPACE
 
-#  endif /* _STLP_DEBUG_MESSAGE */
+#    endif /* _STLP_DEBUG_MESSAGE */
 
 _STLP_BEGIN_NAMESPACE
 
@@ -400,18 +398,18 @@ __stl_debug_engine<_Dummy>::_Terminate() {
 //# ifdef _STLP_USE_NAMESPACES
 //  using namespace _STLP_STD;
 //# endif
-# if defined (_STLP_USE_EXCEPTIONS) && ! defined (_STLP_NO_DEBUG_EXCEPTIONS)
+#    if defined (_STLP_USE_EXCEPTIONS) && ! defined (_STLP_NO_DEBUG_EXCEPTIONS)
   throw __stl_debug_exception();
-# else
+#    else
   _STLP_ABORT();
-# endif
+#    endif
 }
 
 _STLP_END_NAMESPACE
 
-# endif /* _STLP_ASSERTIONS */
+#  endif /* _STLP_ASSERTIONS */
 
-#ifdef _STLP_DEBUG
+#  if defined (_STLP_DEBUG)
 
 _STLP_BEGIN_NAMESPACE
 
@@ -589,7 +587,7 @@ __stl_debug_engine<_Dummy>::_Check_if_not_owner( const __owned_list * __l, const
 
 _STLP_END_NAMESPACE
 
-#endif /* _STLP_DEBUG */
+#  endif /* _STLP_DEBUG */
 
 #endif /* if defined (EXPOSE_GLOBALS_IMPLEMENTATION) */
 

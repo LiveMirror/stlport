@@ -78,7 +78,7 @@ public:                         // Destructor.
 
 protected:                      // The default constructor.
   basic_streambuf()
-#if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200) && defined (_STLP_USE_STATIC_LIB)
+#if defined (_STLP_MSVC) && (_STLP_MSVC < 1300) && defined (_STLP_USE_STATIC_LIB)
     //We make it inline to avoid unresolved symbol.
     : _M_gbegin(0), _M_gnext(0), _M_gend(0),
       _M_pbegin(0), _M_pnext(0), _M_pend(0),

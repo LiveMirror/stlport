@@ -1,3 +1,8 @@
+/* This header turns off warnings that STLport headers generate for compiled user code.
+ * This file is intended to work with compilers from Microsoft.
+ * For warnings while compiling STLport, see src/vc_warning_disable.h.
+ */
+
 #if (_MSC_VER > 1000)
 #  if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
 /*
@@ -7,7 +12,7 @@
 #    pragma warning ( disable : 4251 )	// ignore template classes being exported in .dll's
 #  endif
 
-#  if (_MSC_VER < 1200)
+#  if (_MSC_VER < 1200) // VC5 and earlier
 #    pragma warning( disable : 4389 ) // '==' : signed/unsigned mismatch
 // multiple copy constructors/assignment operators specified,
 // with member templates are bogus...
@@ -15,7 +20,7 @@
 #    pragma warning( disable : 4522 )
 #  endif
 
-#  if (_MSC_VER <= 1200)
+#  if (_MSC_VER < 1300) // VC6, eVC3, eVC4
 #    pragma warning( disable : 4097 ) // typedef-name used as based class of (...)
 #    pragma warning( disable : 4231 ) // non standard extension : 'extern' before template instanciation
 #    pragma warning( disable : 4244 ) // implicit conversion: possible loss of data

@@ -71,7 +71,7 @@
 #  endif	//	(_STLP_MSVC >= 1310)
 
 #  if (_STLP_MSVC >= 1300)
-//Starting with MSVC 7.0 we concider that it is the new SDK that is granted:
+//Starting with MSVC 7.0 we assume that the new SDK is granted:
 #    define _STLP_NEW_PLATFORM_SDK 1
 #    undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 #    if !defined (_STLP_DONT_USE_EXCEPTIONS)
@@ -100,7 +100,7 @@
 #    define _STLP_HAS_NATIVE_FLOAT_ABS 1
 #  endif
 
-#  if (_STLP_MSVC <= 1200)
+#  if (_STLP_MSVC < 1300)
 /*
  * dums: VC6 do not handle correctly member templates of class that are explicitely
  * instanciated to be exported. There is a workaround, seperate the non template methods
@@ -131,11 +131,11 @@
 #  define _STLP_VENDOR_GLOBAL_CSTD
 #endif /* (_MSC_VER <= 1310) */
 
-#if (_MSC_VER <= 1200)
+#if (_MSC_VER < 1300)
 #  define _STLP_NO_IEC559_SUPPORT 1
 #endif
 
-#if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
+#if (_MSC_VER < 1300) || defined(UNDER_CE) // including MSVC 6.0
 //  these work, as long they are inline
 #  define _STLP_INLINE_MEMBER_TEMPLATES 1
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
@@ -144,7 +144,7 @@
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
 #  define _STLP_VENDOR_UNEXPECTED_STD 1
 #  define _STLP_USING_NAMESPACE_BUG 1
-#endif /* (_MSC_VER <= 1200) */
+#endif
 
 #if (_STLP_MSVC > 1100)
 typedef char __stl_char;
@@ -219,7 +219,7 @@ typedef char __stl_char;
 #    include <config/stl_wince.h>
 #endif /* UNDER_CE */
 
-#if (_MSC_VER <= 1200) // including MSVC 6.0
+#if (_MSC_VER < 1300) // MSVC 6.0 and earlier
 // defined for DEBUG and NDEBUG too, to allow user mix own debug build with STLP release library
 #  define _STLP_USE_ABBREVS
 #endif
@@ -261,7 +261,7 @@ typedef char __stl_char;
 #if defined(_STLP_USE_DYNAMIC_LIB)
 #  undef  _STLP_USE_DECLSPEC
 #  define _STLP_USE_DECLSPEC 1
-#  if (_STLP_MSVC == 1200)
+#  if (_STLP_MSVC >= 1200) && (_STLP_MSVC < 1300)
 #    define _STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND 1
 #  endif
 #endif
