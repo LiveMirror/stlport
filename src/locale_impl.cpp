@@ -34,9 +34,9 @@
 
 _STLP_BEGIN_NAMESPACE
 
-#ifdef _STLP_USE_OWN_NAMESPACE
-using _STLP_VENDOR_EXCEPT_STD::bad_cast;
-#endif
+// #ifdef _STLP_USE_OWN_NAMESPACE
+// using _STLP_VENDOR_EXCEPT_STD::bad_cast;
+// #endif
 
 _Locale_impl::_Locale_impl(const char* s) : name(s) {}
 _Locale_impl::~_Locale_impl() {}
