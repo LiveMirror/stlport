@@ -119,8 +119,8 @@ void LimitTest::test() {
   CPPUNIT_ASSERT(test_signed_integral_limits(signed_char()));
   typedef unsigned char unsigned_char;
   CPPUNIT_ASSERT(test_unsigned_integral_limits(unsigned_char()));
-#  if defined (_STLP_HAS_WCHAR_T)
-  CPPUNIT_ASSERT(test_unsigned_integral_limits(wchar_t()));
+#  if defined (_STLP_HAS_WCHAR_T) && !defined (_STLP_WCHAR_T_IS_USHORT)
+  CPPUNIT_ASSERT(test_integral_limits(wchar_t()));
 #  endif
   CPPUNIT_ASSERT(test_signed_integral_limits(short()));
   typedef unsigned short unsigned_short;
