@@ -1,4 +1,6 @@
 #include <limits>
+
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
 #include <iomanip>
 #include <string>
 #include <sstream>
@@ -180,3 +182,5 @@ int main (int argc, char *argv[]) {
   return 0;
 }
 */
+
+#endif // NO_IOSTREAMS

@@ -30,22 +30,18 @@
 #ifndef _STLP_INTERNAL_CONSTRUCT_H
 #define _STLP_INTERNAL_CONSTRUCT_H
 
-# if defined (_STLP_DEBUG_UNINITIALIZED) && ! defined (_STLP_CSTRING)
-# include <cstring>
-# endif
+#if defined (_STLP_DEBUG_UNINITIALIZED) && ! defined (_STLP_CSTRING)
+#  include <cstring>
+#endif
 
-//# ifndef _STLP_INTERNAL_NEW_HEADER
-//#  include <stl/_new.h>
-//# endif
 #include <new>
 
-
 #ifndef _STLP_INTERNAL_ITERATOR_BASE_H
-# include <stl/_iterator_base.h>
+#  include <stl/_iterator_base.h>
 #endif
 
 #ifndef _STLP_MOVE_CONSTRUCT_FWK_H
-# include <stl/_move_construct_fwk.h>
+#  include <stl/_move_construct_fwk.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE

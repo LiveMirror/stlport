@@ -2,20 +2,22 @@
 #include <deque>
 #include <string>
 #include <algorithm>
-#include <sstream>
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
+#  include <sstream>
+#endif
 
-#if defined (_STLP_USE_EXCEPTIONS)
+#if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
 #  include <stdexcept>
 #endif
 
-#ifdef _STLP_THREADS
-# ifdef _STLP_PTHREADS
-#  include <pthread.h>
-# endif
+#if defined (STLPORT) && defined (_STLP_THREADS)
+#  ifdef _STLP_PTHREADS
+#    include <pthread.h>
+#  endif
 
-# ifdef _STLP_WIN32THREADS
-#  include <windows.h>
-# endif
+#  ifdef _STLP_WIN32THREADS
+#    include <windows.h>
+#  endif
 #endif
 
 #include "cppunit/cppunit_proxy.h"
@@ -39,13 +41,15 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(short_string);
   CPPUNIT_TEST(find);
   CPPUNIT_TEST(assign);
-#ifdef _STLP_THREADS
+#if defined (STLPORT) && defined (_STLP_THREADS)
   CPPUNIT_TEST(mt);
 #endif
   CPPUNIT_TEST(short_string_optim_bug);
   CPPUNIT_TEST(compare);
   CPPUNIT_TEST(template_expresion);
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
   CPPUNIT_TEST(io);
+#endif
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -58,20 +62,22 @@ protected:
   void short_string();
   void find();
   void assign();
-#ifdef _STLP_THREADS
+#if defined (STLPORT) && defined (_STLP_THREADS)
   void mt();
 #endif
   void short_string_optim_bug();
   void compare();
   void template_expresion();
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
   void io();
+#endif
 
   static string func(const string& par) {
     string tmp( par );
     return tmp;
   }
 
-#if defined (_STLP_THREADS)
+#if defined (STLPORT) && defined (_STLP_THREADS)
 #  if defined (_STLP_PTHREADS)
   static void* f(void*)
 #  elif defined (_STLP_WIN32THREADS)
@@ -97,7 +103,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(StringTest);
 //
 // tests implementation
 //
-#ifdef _STLP_THREADS
+#if defined (STLPORT) && defined (_STLP_THREADS)
 void StringTest::mt()
 {
   const int nth = 2;
@@ -683,7 +689,7 @@ void StringTest::template_expresion()
     result = (one + ' ' + two).at(3);
     CPPUNIT_CHECK( result == ' ' );
 
-#ifdef _STLP_USE_EXCEPTIONS
+#if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
     for (;;) {
       try {
         result = (one + ' ' + two).at(10);
@@ -702,6 +708,7 @@ void StringTest::template_expresion()
   }
 }
 
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
 void StringTest::io()
 {
   string str("STLport");
@@ -719,4 +726,4 @@ void StringTest::io()
     CPPUNIT_ASSERT( istr_content == str );
   }
 }
-
+#endif

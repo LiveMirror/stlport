@@ -1,5 +1,6 @@
-#include <sstream>
 #include <algorithm>
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
+#include <sstream>
 #include <functional>
 #include <iterator>
 
@@ -50,3 +51,5 @@ void IstmitTest::istmit1()
 
   CPPUNIT_ASSERT(!strcmp(buffer, buff));
 }
+
+#endif

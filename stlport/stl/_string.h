@@ -1351,6 +1351,11 @@ wstring __ASCIIToWide(const char *ascii);
 string __WideToASCII(const wchar_t *wide);
 #endif
 
+inline const char*  _STLP_CALL
+__get_c_string(const string& __str) {
+  return __str.c_str();
+}
+
 _STLP_END_NAMESPACE
 
 #include <stl/_string_operators.h>

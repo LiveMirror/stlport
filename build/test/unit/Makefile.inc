@@ -33,6 +33,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/finsert_test.cpp \
 	../../../test/unit/floatio_test.cpp \
 	../../../test/unit/foreach_test.cpp \
+	../../../test/unit/fstream_test.cpp \
 	../../../test/unit/func_test.cpp \
 	../../../test/unit/generator_test.cpp \
 	../../../test/unit/greater_test.cpp \
@@ -50,6 +51,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/lexcmp_test.cpp \
 	../../../test/unit/list_test.cpp \
 	../../../test/unit/limits_test.cpp \
+	../../../test/unit/locale_test.cpp \
 	../../../test/unit/logic_test.cpp \
 	../../../test/unit/map_test.cpp \
 	../../../test/unit/max_test.cpp \
@@ -72,6 +74,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/ptrspec_test.cpp \
 	../../../test/unit/queue_test.cpp \
 	../../../test/unit/rawriter_test.cpp \
+	../../../test/unit/resolve_name.cpp \
 	../../../test/unit/reviter_test.cpp \
 	../../../test/unit/rm_cp_test.cpp \
 	../../../test/unit/rndshf_test.cpp \
@@ -84,6 +87,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/setunion_test.cpp \
 	../../../test/unit/slist_test.cpp \
 	../../../test/unit/sort_test.cpp \
+	../../../test/unit/sstream_test.cpp \
 	../../../test/unit/stack_test.cpp \
 	../../../test/unit/string_test.cpp \
 	../../../test/unit/swap_test.cpp \
@@ -94,8 +98,4 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/unique_test.cpp \
 	../../../test/unit/unordered_test.cpp \
 	../../../test/unit/valarray_test.cpp \
-	../../../test/unit/vector_test.cpp \
-	../../../test/unit/sstream_test.cpp \
-	../../../test/unit/fstream_test.cpp \
-	../../../test/unit/locale_test.cpp \
-	../../../test/unit/resolve_name.cpp
+	../../../test/unit/vector_test.cpp 

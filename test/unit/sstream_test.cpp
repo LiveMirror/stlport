@@ -1,14 +1,16 @@
 #include <string>
-#include <sstream>
-#include <memory>
 
-#include "full_streambuf.h"
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
+#  include <sstream>
+#  include <memory>
 
-#include "cppunit/cppunit_proxy.h"
+#  include "full_streambuf.h"
 
-#if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
+#  include "cppunit/cppunit_proxy.h"
+
+#  if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
 using namespace std;
-#endif
+#  endif
 
 //
 // TestCase class
@@ -269,7 +271,7 @@ void SstreamTest::streambuf_output()
     CPPUNIT_ASSERT( ostr.str() == "0123456789" );
   }
 
-#if defined (_STLP_USE_EXCEPTIONS)
+#  if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
   {
     //If the output stream buffer throws:
     istringstream in("01234567890123456789");
@@ -296,7 +298,7 @@ void SstreamTest::streambuf_output()
     CPPUNIT_ASSERT( in );
     CPPUNIT_ASSERT( ostr.str() == "01234567890123456789" );
   }
-#endif
+#  endif
 }
 
 void SstreamTest::seek()
@@ -316,3 +318,5 @@ void SstreamTest::seek()
   is.seekg( -3, ios::cur );
   CPPUNIT_ASSERT( is.tellg() == stringstream::pos_type(3) );
 }
+
+#endif

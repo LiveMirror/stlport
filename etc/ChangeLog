@@ -1,3 +1,15 @@
+2005-03-18  Francois Dumont  <dums@stlport...>
+
+	* test/unit: Modified some test in order to check the _STLP_NO_IOSTREAMS
+	mode. This new mode of tests reveals the following bugs:
+	
+	* stlport/stl/_rope.c: Add check of _STLP_USE_NO_IOSTREAMS macro before
+	include of iostream header.
+	
+	* src/dll_main.cpp, stlport/stl/_string_fwd.h: Removed implementation 
+	of __get_c_string, moved to _string.h header, once string has been defined,
+	as an inline function.
+	
 2005-03-18  Petr Ovtchenkov  <ptr@island...>
 
 	* src/complex_trig.cpp: avoid call log functions during static

@@ -108,18 +108,13 @@ void _STLP_DECLSPEC _STLP_CALL __stl_throw_overflow_error(const char* __msg) {
   _STLP_THROW_MSG(overflow_error, __msg); 
 }
 
-_STLP_DECLSPEC const char*  _STLP_CALL
-__get_c_string(const string& __str) { 
-  return __str.c_str(); 
-}
-
 #if defined (_STLP_NO_EXCEPTION_HEADER) || defined (_STLP_BROKEN_EXCEPTION_CLASS)
 exception::exception() _STLP_NOTHROW {}
 exception::~exception() _STLP_NOTHROW {}
 bad_exception::bad_exception() _STLP_NOTHROW {}
 bad_exception::~bad_exception() _STLP_NOTHROW {}
-const char* exception::what() const _STLP_NOTHROW {return "class exception";}
-const char* bad_exception::what() const _STLP_NOTHROW {return "class bad_exception";}
+const char* exception::what() const _STLP_NOTHROW { return "class exception"; }
+const char* bad_exception::what() const _STLP_NOTHROW { return "class bad_exception"; }
 #endif
 
 #ifdef _STLP_OWN_STDEXCEPT

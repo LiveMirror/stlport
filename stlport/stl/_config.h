@@ -185,12 +185,12 @@
 #  endif
 #endif
 
-# if defined (_STLP_NO_IOSTREAMS)
+#if defined (_STLP_NO_IOSTREAMS)
 #  define _STLP_USE_NO_IOSTREAMS
-# endif
+#endif
 
 /* Operating system recognition (basic) */
-# if defined (__unix) || defined (__linux__) || defined (__QNX__) || defined (_AIX)  || defined (__NetBSD__) || defined(__OpenBSD__) || defined (__Lynx__)
+#if defined (__unix) || defined (__linux__) || defined (__QNX__) || defined (_AIX)  || defined (__NetBSD__) || defined(__OpenBSD__) || defined (__Lynx__)
 #  define _STLP_UNIX 1
 #  if defined (__linux__)
 /* This is defined wether library in use is glibc or not.
@@ -198,107 +198,106 @@
    header files (these define is not really intended to check
    for the presence of a particular library, but rather is used
    to define an INTERFACE.) */
-#   ifndef _STLP_USE_GLIBC
-#    define _STLP_USE_GLIBC 1
-#   endif
+#    ifndef _STLP_USE_GLIBC
+#      define _STLP_USE_GLIBC 1
+#    endif
 
-#   if defined(__UCLIBC__) && !defined(_STLP_USE_UCLIBC)
-#    define _STLP_USE_UCLIBC 1
-#   endif
+#    if defined(__UCLIBC__) && !defined(_STLP_USE_UCLIBC)
+#      define _STLP_USE_UCLIBC 1
+#    endif
 
-#   ifdef _STLP_USE_UCLIBC
+#    ifdef _STLP_USE_UCLIBC
      /* see into uClib (c runtime lib) configuration */
-#    if !defined(__UCLIBC_HAS_WCHAR__)
-#     ifndef _STLP_NO_WCHAR_T
-#      define _STLP_NO_WCHAR_T
-#     endif
-#     ifndef _STLP_NO_MBSTATE_T
-#      define _STLP_NO_MBSTATE_T
-#     endif
-#     ifndef _STLP_NO_NATIVE_WIDE_STREAMS
-#      define _STLP_NO_NATIVE_WIDE_STREAMS
-#     endif
-#    endif /* __UCLIBC_HAS_WCHAR__ */
+#      if !defined(__UCLIBC_HAS_WCHAR__)
+#        ifndef _STLP_NO_WCHAR_T
+#          define _STLP_NO_WCHAR_T
+#        endif
+#        ifndef _STLP_NO_MBSTATE_T
+#          define _STLP_NO_MBSTATE_T
+#        endif
+#        ifndef _STLP_NO_NATIVE_WIDE_STREAMS
+#          define _STLP_NO_NATIVE_WIDE_STREAMS
+#        endif
+#      endif /* __UCLIBC_HAS_WCHAR__ */
      /* Hmm, bogus _GLIBCPP_USE_NAMESPACES seems undefined... */
-#    define _STLP_VENDOR_GLOBAL_CSTD 1
-#    if defined(_STLP_REAL_LOCALE_IMPLEMENTED)
+#      define _STLP_VENDOR_GLOBAL_CSTD 1
+#      if defined(_STLP_REAL_LOCALE_IMPLEMENTED)
       /* locale in uClibc is very restricted */
       /* recheck if __UCLIBC_HAS_LOCALE__ defined...*/
-#     undef _STLP_REAL_LOCALE_IMPLEMENTED
-#    endif
-#    ifndef _STLP_DONT_USE_PTHREAD_SPINLOCK
+#        undef _STLP_REAL_LOCALE_IMPLEMENTED
+#      endif
+#      ifndef _STLP_DONT_USE_PTHREAD_SPINLOCK
       /* in uClibc (0.9.26) pthread_spinlock* declared in headers
        * but absent in library */
-#     define _STLP_DONT_USE_PTHREAD_SPINLOCK
-#    endif
-#   endif /* _STLP_USE_UCLIBC */
-
+#        define _STLP_DONT_USE_PTHREAD_SPINLOCK
+#      endif
+#    endif /* _STLP_USE_UCLIBC */
 #  endif /* __linux__ */
-# elif defined(macintosh) || defined (_MAC)
+#elif defined(macintosh) || defined (_MAC)
 #  define _STLP_MAC  1
-# elif defined (_WIN32) || defined (__WIN32) || defined (WIN32) || defined (__WIN32__)
+#elif defined (_WIN32) || defined (__WIN32) || defined (WIN32) || defined (__WIN32__)
 #  define _STLP_WIN32 1
-# elif defined (__WIN16) || defined (WIN16) || defined (_WIN16)
+#elif defined (__WIN16) || defined (WIN16) || defined (_WIN16)
 #  define _STLP_WIN16
-# endif /* __unix */
+#endif /* __unix */
 
-# if defined (_STLP_WIN16)
+#if defined (_STLP_WIN16)
 #  define _STLP_LDOUBLE_80
-# elif defined(_STLP_WIN32)
+#elif defined(_STLP_WIN32)
 #  if defined (_STLP_MSVC) || defined (__ICL) || defined (__BORLANDC__) || defined (__CYGWIN__)
 #    define _STLP_LDOUBLE_64
 #  else
 #    define _STLP_LDOUBLE_96
 #  endif
-# elif defined (_STLP_UNIX)
+#elif defined (_STLP_UNIX)
 #   if defined (__CYGWIN__)
 #     define _STLP_LDOUBLE_96
 #   endif
-# endif
+#endif
 
-# if !defined (_STLP_LDOUBLE_64) && !defined (_STLP_LDOUBLE_80) && !defined (_STLP_LDOUBLE_96) && !defined (_STLP_LDOUBLE_128)
-#   define _STLP_LDOUBLE_128
-# endif /*_STLP_LDOUBLE_??*/
+#if !defined (_STLP_LDOUBLE_64) && !defined (_STLP_LDOUBLE_80) && !defined (_STLP_LDOUBLE_96) && !defined (_STLP_LDOUBLE_128)
+#  define _STLP_LDOUBLE_128
+#endif /*_STLP_LDOUBLE_??*/
 
-# if !defined (_STLP_NO_LONG_DOUBLE)
-#   define _STLP_LONG_DOUBLE long double
-# else
-#   define _STLP_LONG_DOUBLE double
-# endif
+#if !defined (_STLP_NO_LONG_DOUBLE)
+#  define _STLP_LONG_DOUBLE long double
+#else
+#  define _STLP_LONG_DOUBLE double
+#endif
 
-# if !defined(_STLP_MAKE_HEADER)
+#if !defined(_STLP_MAKE_HEADER)
 #  define _STLP_MAKE_HEADER(path, header) <path/header>
-# endif
+#endif
 
 #if !defined (_STLP_NATIVE_HEADER)
-# if !defined (_STLP_NATIVE_INCLUDE_PATH)
-#  define _STLP_NATIVE_INCLUDE_PATH ../include
-# endif
-# define _STLP_NATIVE_HEADER(header) _STLP_MAKE_HEADER(_STLP_NATIVE_INCLUDE_PATH,header)
+#  if !defined (_STLP_NATIVE_INCLUDE_PATH)
+#    define _STLP_NATIVE_INCLUDE_PATH ../include
+#  endif
+#  define _STLP_NATIVE_HEADER(header) _STLP_MAKE_HEADER(_STLP_NATIVE_INCLUDE_PATH,header)
 #endif
 
 /* For some compilers, C headers like <stdio.h> are located in separate directory */
 #if !defined (_STLP_NATIVE_C_HEADER)
-# if !defined (_STLP_NATIVE_C_INCLUDE_PATH)
-#  define _STLP_NATIVE_C_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
-# endif
-# define _STLP_NATIVE_C_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_C_INCLUDE_PATH,header)
+#  if !defined (_STLP_NATIVE_C_INCLUDE_PATH)
+#    define _STLP_NATIVE_C_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
+#  endif
+#  define _STLP_NATIVE_C_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_C_INCLUDE_PATH,header)
 #endif
 
 /* For some compilers, C-library headers like <cstdio> are located in separate directory */
 #if !defined (_STLP_NATIVE_CPP_C_HEADER)
-# if !defined (_STLP_NATIVE_CPP_C_INCLUDE_PATH)
-#  define _STLP_NATIVE_CPP_C_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
-# endif
-# define _STLP_NATIVE_CPP_C_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_CPP_C_INCLUDE_PATH,header)
+#  if !defined (_STLP_NATIVE_CPP_C_INCLUDE_PATH)
+#    define _STLP_NATIVE_CPP_C_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
+#  endif
+#  define _STLP_NATIVE_CPP_C_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_CPP_C_INCLUDE_PATH,header)
 #endif
 
 /* Some compilers locate basic C++ runtime support headers (<new>, <typeinfo>, <exception>) in separate directory */
 #if !defined ( _STLP_NATIVE_CPP_RUNTIME_HEADER )
-# if !defined (_STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH)
-#  define _STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
-# endif
-# define _STLP_NATIVE_CPP_RUNTIME_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH,header)
+#  if !defined (_STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH)
+#    define _STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH
+#  endif
+#  define _STLP_NATIVE_CPP_RUNTIME_HEADER(header)  _STLP_MAKE_HEADER(_STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH,header)
 #endif
 
 /*  shared library tune-up */
@@ -310,192 +309,192 @@
 #endif
 
 /* Use own namespace always if possible and not explicitly instructed otherwise */
-# if defined (_STLP_USE_NAMESPACES) && !defined (_STLP_BROKEN_USING_DIRECTIVE) && \
-     !defined(_STLP_NO_OWN_NAMESPACE)
+#if defined (_STLP_USE_NAMESPACES) && !defined (_STLP_BROKEN_USING_DIRECTIVE) && \
+   !defined(_STLP_NO_OWN_NAMESPACE)
 #  undef  _STLP_USE_OWN_NAMESPACE
 #  define _STLP_USE_OWN_NAMESPACE  1
-# else
+#else
 #  undef _STLP_WHOLE_NATIVE_STD
-# endif
+#endif
 
-#  undef _STLP_NAMESPACE
+#undef _STLP_NAMESPACE
 
-# if !defined(_NOTHREADS) && ! defined (_STLP_THREADS_DEFINED)
+#if !defined(_NOTHREADS) && ! defined (_STLP_THREADS_DEFINED)
 
 #  if defined(_PTHREADS)
-#     define _STLP_PTHREADS
-#     define _STLP_THREADS
+#    define _STLP_PTHREADS
+#    define _STLP_THREADS
 #  endif
 #  if defined(_UITHREADS)
-#     define _STLP_UITHREADS
-#     define _STLP_THREADS
+#    define _STLP_UITHREADS
+#    define _STLP_THREADS
 #  endif
 
-#   if defined (__sgi) && ! defined (__KCC) && ! defined (__GNUC__)  
+#  if defined (__sgi) && ! defined (__KCC) && ! defined (__GNUC__)  
 #    define _STLP_SGI_THREADS
-#   elif defined(__DECC) || defined(__DECCXX)
+#  elif defined(__DECC) || defined(__DECCXX)
 #    define _STLP_DEC_THREADS
-#   elif defined (_STLP_WIN32) && ! defined (_STLP_PTHREADS)
+#  elif defined (_STLP_WIN32) && ! defined (_STLP_PTHREADS)
 #    define _STLP_WIN32THREADS 1
-#   elif ((defined (__sun) && !defined (__linux__)) \
-     || defined(_UITHREADS) ) && !defined(_STLP_PTHREADS)
-#     define _STLP_UITHREADS
-#   elif defined (__OS2__)
-#     define _STLP_OS2THREADS
-#   elif defined(__BEOS__)
-#     define _STLP_BETHREADS
-#   else
-#     define _STLP_PTHREADS
-#   endif /* __sgi */
-#   define _STLP_THREADS_DEFINED
-# endif
+#  elif ((defined (__sun) && !defined (__linux__)) || \
+          defined(_UITHREADS) ) && !defined(_STLP_PTHREADS)
+#    define _STLP_UITHREADS
+#  elif defined (__OS2__)
+#    define _STLP_OS2THREADS
+#  elif defined(__BEOS__)
+#    define _STLP_BETHREADS
+#  else
+#    define _STLP_PTHREADS
+#  endif /* __sgi */
+#  define _STLP_THREADS_DEFINED
+#endif
 
-# if (defined(_REENTRANT) || defined(_THREAD_SAFE) || \
-      (defined(_POSIX_THREADS) && defined(__OpenBSD__))) \
-     && !defined (_STLP_THREADS)
+#if (defined(_REENTRANT) || defined(_THREAD_SAFE) || \
+    (defined(_POSIX_THREADS) && defined(__OpenBSD__))) && \
+    !defined (_STLP_THREADS)
 #  define _STLP_THREADS
-# endif /* _REENTRANT */
+#endif /* _REENTRANT */
 
-# if defined(__linux__) && defined(_STLP_PTHREADS)
+#if defined(__linux__) && defined(_STLP_PTHREADS)
 /* #  include <features.h> */
 
 #  if defined(__USE_XOPEN2K) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
-#   define _STLP_USE_PTHREAD_SPINLOCK
-#   define _STLP_STATIC_MUTEX _STLP_mutex
+#    define _STLP_USE_PTHREAD_SPINLOCK
+#    define _STLP_STATIC_MUTEX _STLP_mutex
 #  endif /* __USE_XOPEN2K */
-# endif /* __linux__ && _STLP_PTHREADS */
+#endif /* __linux__ && _STLP_PTHREADS */
 
-# if defined(__OpenBSD__) && defined(_POSIX_THREADS) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
+#if defined(__OpenBSD__) && defined(_POSIX_THREADS) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
 #  define _STLP_USE_PTHREAD_SPINLOCK
 #  define _STLP_STATIC_MUTEX _STLP_mutex
-# endif
-
-# ifndef _STLP_STATIC_MUTEX
-#  define _STLP_STATIC_MUTEX _STLP_mutex_base
-# endif
-
-
-# if defined (_MFC_VER) && !defined (_STLP_USE_MFC)
-#  define _STLP_USE_MFC 1
-# endif
-
-#if defined (_STLP_THREADS)
-#   define _STLP_VOLATILE volatile
-/* windows.h _MUST be included before bool definition ;( */
-# if defined  (_STLP_WIN32THREADS) && defined (_STLP_NO_BOOL)
-#   undef  NOMINMAX
-#   define NOMINMAX
-#   ifdef _STLP_USE_MFC
-#    include <afx.h>
-#   else
-#    include <windows.h>
-#   endif
-#   define _STLP_WINDOWS_H_INCLUDED
-# endif
-#else
-#   define _STLP_VOLATILE
 #endif
 
-# if !defined ( _STLP_USE_NEW_C_HEADERS ) && !defined ( _STLP_HAS_NO_NEW_C_HEADERS )
+#ifndef _STLP_STATIC_MUTEX
+#  define _STLP_STATIC_MUTEX _STLP_mutex_base
+#endif
+
+
+#if defined (_MFC_VER) && !defined (_STLP_USE_MFC)
+#  define _STLP_USE_MFC 1
+#endif
+
+#if defined (_STLP_THREADS)
+#  define _STLP_VOLATILE volatile
+/* windows.h _MUST be included before bool definition ;( */
+#  if defined  (_STLP_WIN32THREADS) && defined (_STLP_NO_BOOL)
+#    undef  NOMINMAX
+#    define NOMINMAX
+#    ifdef _STLP_USE_MFC
+#      include <afx.h>
+#    else
+#      include <windows.h>
+#    endif
+#    define _STLP_WINDOWS_H_INCLUDED
+#  endif
+#else
+#  define _STLP_VOLATILE
+#endif
+
+#if !defined ( _STLP_USE_NEW_C_HEADERS ) && !defined ( _STLP_HAS_NO_NEW_C_HEADERS )
 #  define _STLP_USE_NEW_C_HEADERS
-# endif
+#endif
 /* disable new-style headers if requested */
-# if defined ( _STLP_NO_NEW_C_HEADERS )
+#if defined ( _STLP_NO_NEW_C_HEADERS )
 #  undef _STLP_USE_NEW_C_HEADERS
-# endif
+#endif
 
-# if !defined ( _STLP_STATIC_TEMPLATE_DATA )
-# define _STLP_STATIC_TEMPLATE_DATA 1
-# endif
+#if !defined ( _STLP_STATIC_TEMPLATE_DATA )
+#  define _STLP_STATIC_TEMPLATE_DATA 1
+#endif
 
-# if defined (_STLP_BASE_TYPEDEF_BUG)
+#if defined (_STLP_BASE_TYPEDEF_BUG)
 #  undef  _STLP_BASE_TYPEDEF_OUTSIDE_BUG
 #  define _STLP_BASE_TYPEDEF_OUTSIDE_BUG 1
-# endif
+#endif
 
-# if defined ( _STLP_NESTED_TYPE_PARAM_BUG ) || (defined (_STLP_MSVC) && (_STLP_MSVC < 1100))
+#if defined ( _STLP_NESTED_TYPE_PARAM_BUG ) || (defined (_STLP_MSVC) && (_STLP_MSVC < 1100))
 #  define _STLP_GLOBAL_NESTED_RETURN_TYPE_PARAM_BUG
-# endif
+#endif
 
 /* SUNpro 4.2 inline string literal bug */
 #ifdef _STLP_INLINE_STRING_LITERAL_BUG
-# define _STLP_FIX_LITERAL_BUG(__x) __x=__x;
+#  define _STLP_FIX_LITERAL_BUG(__x) __x=__x;
 #else
-# define _STLP_FIX_LITERAL_BUG(__x)
+#  define _STLP_FIX_LITERAL_BUG(__x)
 #endif
 
-# if defined (_STLP_NON_TYPE_TMPL_PARAM_BUG)
+#if defined (_STLP_NON_TYPE_TMPL_PARAM_BUG)
 #  undef  _STLP_NO_DEFAULT_NON_TYPE_PARAM
 #  define _STLP_NO_DEFAULT_NON_TYPE_PARAM 1
-# endif
+#endif
 
-# define _STLP_NEW new
-# define _STLP_PLACEMENT_NEW new
+#define _STLP_NEW new
+#define _STLP_PLACEMENT_NEW new
 
-# ifdef _STLP_DEBUG
+#ifdef _STLP_DEBUG
 #  define _STLP_ASSERTIONS 1
-# endif
+#endif
 
 /* apple mpw exception handling bug */
 #ifndef _STLP_MPWFIX_TRY
-# define _STLP_MPWFIX_TRY
+#  define _STLP_MPWFIX_TRY
 #endif
 #ifndef _STLP_MPWFIX_CATCH
-# define _STLP_MPWFIX_CATCH
+#  define _STLP_MPWFIX_CATCH
 #endif
 #ifndef _STLP_MPWFIX_CATCH_ACTION
-# define _STLP_MPWFIX_CATCH_ACTION(action)
+#  define _STLP_MPWFIX_CATCH_ACTION(action)
 #endif
 
 /* if _STLP_DEBUG or _STLP_ASSERTIONS are set, stl/debug/_debug.h defines those */
 
-# if !defined( _STLP_ASSERTIONS ) && !defined(_STLP_DEBUG) && !defined(_STLP_DEBUG_ALLOC)
+#if !defined( _STLP_ASSERTIONS ) && !defined(_STLP_DEBUG) && !defined(_STLP_DEBUG_ALLOC)
 #  define _STLP_ASSERT(expr)
-# endif
+#endif
 
-# ifndef _STLP_DEBUG
+#ifndef _STLP_DEBUG
 #  define _STLP_VERBOSE_ASSERT(expr,diagnostic)
 #  define _STLP_DEBUG_CHECK(expr)
 #  define _STLP_DEBUG_DO(expr)
-# endif
+#endif
 
-#  if !defined (_STLP_WEAK)
-#   define _STLP_WEAK 
-#  endif
+#if !defined (_STLP_WEAK)
+#  define _STLP_WEAK 
+#endif
 
 /* default parameters as template types derived from arguments ( not always supported ) */
-#  if defined (_STLP_LIMITED_DEFAULT_TEMPLATES)
-#   define __DFL_TMPL_PARAM( classname, defval ) class classname
-#   define __DFL_TMPL_ARG(classname) , classname
-#  else
-#   define _STLP_DEFAULT_TYPE_PARAM 1
-#   define __DFL_TMPL_PARAM( classname, defval ) class classname = defval
-#   define __DFL_TMPL_ARG(classname)  
-#  endif
+#if defined (_STLP_LIMITED_DEFAULT_TEMPLATES)
+#  define __DFL_TMPL_PARAM( classname, defval ) class classname
+#  define __DFL_TMPL_ARG(classname) , classname
+#else
+#  define _STLP_DEFAULT_TYPE_PARAM 1
+#  define __DFL_TMPL_PARAM( classname, defval ) class classname = defval
+#  define __DFL_TMPL_ARG(classname)  
+#endif
 
 /* default parameters as complete types */
-# if defined ( _STLP_DEFAULT_TYPE_PARAM )
-#   define __DFL_TYPE_PARAM( classname, defval ) class classname = defval
-#   define __DFL_NON_TYPE_PARAM(type,name,val) type name = val
-#   define __DFL_TYPE_ARG(classname)
-# else
-#   define __DFL_TYPE_PARAM( classname, defval ) class classname
-#   define __DFL_NON_TYPE_PARAM(type,name,val) type name
-#   define __DFL_TYPE_ARG(classname) , classname
-# endif
+#if defined ( _STLP_DEFAULT_TYPE_PARAM )
+#  define __DFL_TYPE_PARAM( classname, defval ) class classname = defval
+#  define __DFL_NON_TYPE_PARAM(type,name,val) type name = val
+#  define __DFL_TYPE_ARG(classname)
+#else
+#  define __DFL_TYPE_PARAM( classname, defval ) class classname
+#  define __DFL_NON_TYPE_PARAM(type,name,val) type name
+#  define __DFL_TYPE_ARG(classname) , classname
+#endif
 
 /* SGI compatibility */
 
 #ifdef _STLP_NO_WCHAR_T
-# ifndef _STLP_NO_NATIVE_WIDE_STREAMS
-#  define  _STLP_NO_NATIVE_WIDE_STREAMS 1
-# endif
+#  ifndef _STLP_NO_NATIVE_WIDE_STREAMS
+#    define  _STLP_NO_NATIVE_WIDE_STREAMS 1
+#  endif
 #else
-# define _STLP_HAS_WCHAR_T 1
+#  define _STLP_HAS_WCHAR_T 1
 #endif
 
 #if !defined (_STLP_NO_AT_MEMBER_FUNCTION)
-# define _STLP_CAN_THROW_RANGE_ERRORS 1
+#  define _STLP_CAN_THROW_RANGE_ERRORS 1
 #endif
 
 #if !defined (_STLP_USE_RAW_SGI_ALLOCATORS)

@@ -1,6 +1,8 @@
 #include <slist>
 #include <algorithm>
-#include <sstream>
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
+#  include <sstream>
+#endif
 #include <iterator>
 
 #include "cppunit/cppunit_proxy.h"
@@ -15,14 +17,18 @@ using namespace std;
 class SlistTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(SlistTest);
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
   CPPUNIT_TEST(slist1);
+#endif
   CPPUNIT_TEST(erase);
   CPPUNIT_TEST(insert);
   CPPUNIT_TEST(splice);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
   void slist1();
+#endif
   void erase();
   void insert();
   void splice();
@@ -33,6 +39,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(SlistTest);
 //
 // tests implementation
 //
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
 void SlistTest::slist1()
 {
 /*
@@ -88,14 +95,15 @@ sorted: lst
   CPPUNIT_ASSERT(!strcmp(result.c_str(),"lst"));
 
   //A small compilation time check to be activated from time to time:
-#if 0
+#  if 0
   {
     slist<char>::iterator sl_char_ite;
     slist<int>::iterator sl_int_ite;
     CPPUNIT_ASSERT( sl_char_ite != sl_int_ite );
   }
-#endif
+#  endif
 }
+#endif
 
 void SlistTest::erase()
 {

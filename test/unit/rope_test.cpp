@@ -1,4 +1,5 @@
 #include <rope>
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
 #include <sstream>
 
 #include "cppunit/cppunit_proxy.h"
@@ -38,3 +39,5 @@ void RopeTest::io()
     CPPUNIT_ASSERT( ostr.str() == cstr );
   }
 }
+
+#endif

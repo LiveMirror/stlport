@@ -31,49 +31,49 @@
 // a pointer value.
 
 #ifndef _STLP_INTERNAL_ROPE_H
-# define _STLP_INTERNAL_ROPE_H
+#define _STLP_INTERNAL_ROPE_H
 
-# ifndef _STLP_INTERNAL_ALGOBASE_H
+#ifndef _STLP_INTERNAL_ALGOBASE_H
 #  include <stl/_algobase.h>
-# endif
+#endif
 
-# ifndef _STLP_IOSFWD
+#ifndef _STLP_IOSFWD
 #  include <iosfwd>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ALLOC_H
+#ifndef _STLP_INTERNAL_ALLOC_H
 #  include <stl/_alloc.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ITERATOR_H
+#ifndef _STLP_INTERNAL_ITERATOR_H
 #  include <stl/_iterator.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_ALGO_H
+#ifndef _STLP_INTERNAL_ALGO_H
 #  include <stl/_algo.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_FUNCTION_H
+#ifndef _STLP_INTERNAL_FUNCTION_H
 #  include <stl/_function.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_NUMERIC_H
+#ifndef _STLP_INTERNAL_NUMERIC_H
 #  include <stl/_numeric.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_HASH_FUN_H
+#ifndef _STLP_INTERNAL_HASH_FUN_H
 #  include <stl/_hash_fun.h>
-# endif
+#endif
 
-# ifndef _STLP_CHAR_TRAITS_H
+#ifndef _STLP_CHAR_TRAITS_H
 #  include <stl/char_traits.h>
-# endif
+#endif
 
-# include <stl/_threads.h>
+#include <stl/_threads.h>
 
-# ifdef _STLP_SGI_THREADS
-#    include <mutex.h>
-# endif
+#ifdef _STLP_SGI_THREADS
+#  include <mutex.h>
+#endif
 
 #ifndef _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE
 #  define _STLP_CREATE_ALLOCATOR(__atype,__a, _Tp) (_Alloc_traits<_Tp,__atype>::create_allocator(__a)) 

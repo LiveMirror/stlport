@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <cstring>
-#include <sstream>
+#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
+#  include <sstream>
+#endif
 #include <vector>
 #include <iterator>
 #include "cppunit/cppunit_proxy.h"
@@ -16,19 +18,23 @@ class CopyTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(CopyTest);
   CPPUNIT_TEST(copy1);
+#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
   CPPUNIT_TEST(copy2);
   CPPUNIT_TEST(copy3);
   CPPUNIT_TEST(copy4);
   CPPUNIT_TEST(copyb);
+#endif
   CPPUNIT_TEST(copyb0);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void copy1();
+#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
   void copy2();
   void copy3();
   void copy4();
   void copyb();
+#endif
   void copyb0();
 };
 
@@ -44,6 +50,7 @@ void CopyTest::copy1()
   copy(string, string + 23, result);
   CPPUNIT_ASSERT(!strncmp(string, result, 23));
 }
+#if !defined(STLPORT) || !defined (_STLP_NO_IOSTREAMS)
 void CopyTest::copy2()
 {
   vector<int> v(10);
@@ -99,6 +106,7 @@ void CopyTest::copyb()
   CPPUNIT_ASSERT( os.good() );
   CPPUNIT_ASSERT( os.str() == "0 1 2 3 4 5 6 7 8 9 " );
 }
+#endif
 void CopyTest::copyb0()
 {
   int numbers[5] = { 1, 2, 3, 4, 5 };

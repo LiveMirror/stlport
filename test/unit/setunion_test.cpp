@@ -1,6 +1,5 @@
 #include <numeric>
 #include <string>
-#include <sstream>
 #include <iterator>
 #include <vector>
 #include <algorithm>
@@ -56,22 +55,25 @@ void SetUnionTest::setunon1()
   iota(v1.begin(), v1.end(), 0);
   vector <int> v2(10);
   iota(v2.begin(), v2.end(), 7);
-  ostringstream os;
-  ostream_iterator <int> iter(os, " ");
 
-  set_union(v1.begin(), v1.end(), v2.begin(), v2.end(), iter);
-  CPPUNIT_ASSERT(os.good());
-  CPPUNIT_ASSERT(os.str() == "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ");
+  vector<int> diff;
+  set_union(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(diff));
+  CPPUNIT_ASSERT( diff.size() == 17 );
+  for (int i = 0; i < 17; ++i) {
+    CPPUNIT_ASSERT( diff[i] == i );
+  }
 }
 
 void SetUnionTest::setunon2()
 {
   char* word1 = "ABCDEFGHIJKLMNO";
   char* word2 = "LMNOPQRSTUVWXYZ";
-  ostringstream os;
-  ostream_iterator <char> iter(os, " ");
 
-  set_union(word1, word1 + ::strlen(word1), word2, word2 + ::strlen(word2), iter, less<char>());
-  CPPUNIT_ASSERT(os.good());
-  CPPUNIT_ASSERT(os.str() == "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ");
+  string diff;
+  set_union(word1, word1 + ::strlen(word1), word2, word2 + ::strlen(word2), 
+            back_inserter(diff), less<char>());
+  CPPUNIT_ASSERT( diff.size() == 26 );
+  for (int i = 0; i < 26; ++i) {
+    CPPUNIT_ASSERT( diff[i] == ('A' + i) );
+  }
 }

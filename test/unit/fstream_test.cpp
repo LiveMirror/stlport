@@ -1,12 +1,13 @@
 #include <string>
-#include <fstream>
-#include <iostream>
-#include <iomanip>
-#include <sstream>
-#include <vector>
+#if !defined (STLPORT) || !defined (_STLP_NO_IOSTREAMS)
+#  include <fstream>
+#  include <iostream>
+#  include <iomanip>
+#  include <sstream>
+#  include <vector>
 
-#include "full_streambuf.h"
-#include "cppunit/cppunit_proxy.h"
+#  include "full_streambuf.h"
+#  include "cppunit/cppunit_proxy.h"
 
 #if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
 using namespace std;
@@ -254,7 +255,7 @@ void FstreamTest::streambuf_output()
     CPPUNIT_ASSERT( ostr.str() == "0123456789" );
   }
 
-#if defined (_STLP_USE_EXCEPTIONS)
+#  if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
   {
     //If the output stream buffer throws:
     ifstream in("test_file.txt", ios_base::binary);
@@ -281,7 +282,7 @@ void FstreamTest::streambuf_output()
     CPPUNIT_ASSERT( in );
     CPPUNIT_ASSERT( ostr.str() == "0123456789" );
   }
-#endif
+#  endif
 }
 
 /*
@@ -316,7 +317,7 @@ void FstreamTest::file_traits()
 }
 */
 
-#if defined (CHECK_BIG_FILE)
+#  if defined (CHECK_BIG_FILE)
 void FstreamTest::big_file()
 {
   vector<pair<streamsize, streamoff> > file_pos;
@@ -390,4 +391,6 @@ void FstreamTest::big_file()
   }
   */
 }
+#  endif
+
 #endif

@@ -1,5 +1,4 @@
 #include <string>
-#include <sstream>
 #include <iterator>
 #include <vector>
 #include <algorithm>
@@ -66,14 +65,9 @@ void TransformTest::trnsfrm2()
   char n[] = "Larry Mullen";
   const size_t count = ::strlen(n);
 
-  ostringstream os;
-  ostream_iterator<char> iter(os);
-
-  transform(n, n + count, trans, iter, map_char);
-
-  stringbuf* buff=os.rdbuf();
-  string result=buff->str();
-  CPPUNIT_ASSERT(!strcmp(result.c_str(), "Hello World!"))
+  string res;
+  transform(n, n + count, trans, back_inserter(res), map_char);
+  CPPUNIT_ASSERT( res == "Hello World!" )
 }
 
 void TransformTest::self_str()

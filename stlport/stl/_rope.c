@@ -24,22 +24,24 @@
 // if necessary.  Assumes path_end[leaf_index] and leaf_pos are correct.
 // Results in a valid buf_ptr if the iterator can be legitimately
 // dereferenced.
-# ifndef _STLP_ROPEIMPL_H
-# define _STLP_ROPEIMPL_H
+#ifndef _STLP_ROPEIMPL_H
+#define _STLP_ROPEIMPL_H
 
 #ifndef _STLP_INTERNAL_ROPE_H
-# include <stl/_rope.h>
+#  include <stl/_rope.h>
 #endif
 
-# ifndef _STLP_CSTDIO
+#ifndef _STLP_CSTDIO
 #  include <cstdio>
-# endif
-
-#ifndef _STLP_IOSTREAM
-# include <iostream>
 #endif
 
-# include <stl/_range_errors.h>
+#if !defined (_STLP_USE_NO_IOSTREAMS)
+#  ifndef _STLP_IOSTREAM
+#    include <iostream>
+#  endif
+#endif
+
+#include <stl/_range_errors.h>
 
 _STLP_BEGIN_NAMESPACE
 
@@ -818,7 +820,7 @@ _Rope_insert_char_consumer<char>::operator()
 
 #    endif /* _STLP_METHOD_SPECIALIZATION */
 #  endif /* _STLP_USE_NEW_IOSTREAM */
-#endif /* if !defined (_STLP_USE_NO_IOSTREAMS) */
+#endif /* !_STLP_USE_NO_IOSTREAMS */
 
 template <class _CharT, class _Alloc, class _CharConsumer>
 bool _S_apply_to_pieces(_CharConsumer __c,
