@@ -86,6 +86,8 @@
 #  endif	//	(_STLP_MSVC >= 1310)
 
 #  if (_STLP_MSVC >= 1300)
+//Starting with MSVC 7.0 we concider that it is the new SDK that is granted:
+#    define _STLP_NEW_PLATFORM_SDK 1
 #    undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 #    if !defined (_STLP_DONT_USE_EXCEPTIONS)
 #      define _STLP_NOTHROW throw()
@@ -292,7 +294,7 @@ typedef char __stl_char;
 #  undef _STLP_NO_CUSTOM_IO
 #endif
 
-#if !defined (__BUILDING_STLPORT) && defined (_STLP_USE_AUTO_LINK)
+#if !defined (__BUILDING_STLPORT) && !defined (_STLP_NO_IOSTREAMS) && defined (_STLP_USE_AUTO_LINK)
 
 #  define _STLP_STRINGIZE(X) _STLP_STRINGIZE_AUX(X)
 #  define _STLP_STRINGIZE_AUX(X) #X
