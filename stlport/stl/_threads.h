@@ -74,6 +74,68 @@ using namespace _STLP_VENDOR_CSTD;
 
 #  define _STLP_ATOMIC_INCREMENT(__x) __add_and_fetch(__x, 1)
 #  define _STLP_ATOMIC_DECREMENT(__x) __add_and_fetch(__x, (size_t) -1)
+
+
+#elif __linux__
+# ifdef __GNUC__ 
+  // This enables the memory caching on x86 linux.  It is critical for SMP
+  // without it the performace is DISMAL!
+static inline unsigned long __xchg(volatile __stl_atomic_t* target, int source)
+{
+
+   // The target is refernce in memory rather than the register
+   // because making a copy of it from memory to the register and
+   // back again would ruin the atomic nature of the call.
+   // the source does not need to be delt with atomicly so it can
+   // be copied about as needed.
+   //
+   // The casting of the source is used to prevent gcc from optimizing 
+   // in such a way that breaks the atomic nature of this call.
+   //
+   __asm__ __volatile__("xchgl %1,%0"
+      :"=m" (*(volatile long *) target), "=r" (source)
+      :"m" (*(volatile long *) target), "r" (source) );
+	return source;
+
+   //  The assembly above does the following atomicly:
+   //   int temp=source;
+   //   source=(int)(*target);
+   //   (int)(*target)=temp;
+   // return source
+}
+
+static inline void __inc_and_fetch(volatile __stl_atomic_t* __x)
+{
+   // Referenced in memory rather than register to preserve the atomic nature.
+   //
+   __asm__ __volatile__(
+      "lock; incl %0"
+      :"=m" (*__x)
+      :"m" (*__x) );
+
+   //  The assembly above does the following atomicly:
+   //   ++(int)(*__x);
+
+}
+static inline void __dec_and_fetch(volatile __stl_atomic_t* __x)
+{
+   // Referenced in memory rather than register to preserve the atomic nature.
+   //
+   __asm__ __volatile__(
+      "lock; decl %0"
+      :"=m" (*__x)
+      :"m" (*__x) );
+
+   //  The assembly above does the following atomicly:
+   //   --(int)(*__x);
+}
+
+#  define _STLP_ATOMIC_EXCHANGE(target, newValue) ((__xchg(target, newValue)))
+#  define _STLP_ATOMIC_INCREMENT(__x) __inc_and_fetch(__x)
+#  define _STLP_ATOMIC_DECREMENT(__x) __dec_and_fetch(__x)
+
+# endif  
+
 # elif defined(_STLP_PTHREADS)
 #  include <pthread.h>
 #  if defined (PTHREAD_MUTEX_INITIALIZER) && ! defined (_STLP_MUTEX_INITIALIZER) && defined (_REENTRANT)
@@ -266,6 +328,8 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 	asm(" stbar ");
 #    endif
         *__lock = 0;	
+#   elif defined (__linux__) && defined (__GNUC__)
+        *__lock = 0;
 #   else
         *__lock = 0;
         // This is not sufficient on many multiprocessors, since

@@ -1,6 +1,8 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
-	* Added GCC-3.x configurations
+	* Added Linux spin lock code ()
+	---
+        * Added GCC-3.x configurations
 
 	* Fixed HP aCC support
 

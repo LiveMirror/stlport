@@ -48,8 +48,6 @@
 # endif
 
 // # define _STLP_STATIC_CONST_INIT_BUG   1
-# define _STLP_DEFAULT_CONSTRUCTOR_BUG 1
-
 #  define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
 
 // # ifndef __BUILDING_STLPORT
@@ -57,17 +55,25 @@
 // # endif
 
 #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
-#  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
-// fails to properly resolve call to sin() from within sin()
-#  define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
 
 #  if (_STLP_MSVC > 1100)
      typedef char __stl_char;
 #   define _STLP_DEFAULTCHAR __stl_char
 #  endif /* (_STLP_MSVC < 1100 ) */
 
+# if (_STLP_MSVC==1310)
+# define _STLP_NO_METHOD_SPECIALIZATION 1
+# endif
+
+// MSVC 7.1 (_.NET_2003)
+# if (_STLP_MSVC <= 1310) 
+#  define _STLP_DEFAULT_CONSTRUCTOR_BUG 1
 #  define _STLP_NO_TYPENAME_ON_RETURN_TYPE 1 
 //  using ::func_name results in ambiguity
+#  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
+// fails to properly resolve call to sin() from within sin()
+#  define _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG
+# endif
 
 # if (_STLP_MSVC <= 1300) 
 
