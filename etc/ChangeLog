@@ -3,6 +3,9 @@
 	* stlport/stl/debug/_string.h: Fix of missing scopes thanks arabesc and
 	Benjamin Redelings
 	
+	*stlport/config/stl_gcc.h: include schema fix for gcc >= 4.0.0 thanks 
+	Oliver Stoeneberg
+	
 2004-12-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.c: Fix copy method thanks KL report.

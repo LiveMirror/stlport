@@ -288,21 +288,22 @@ __GIVE_UP_WITH_STL(GCC_272);
 
 #if (__GNUC__ >= 3)
 
-#  if ((__GNUC_MINOR__ == 0) || ((__GNUC_MINOR__ < 3) && __APPLE__))
+#  if (((__GNUC__ == 3 ) && (__GNUC_MINOR__ == 0)) || ((__GNUC_MINOR__ < 3) && __APPLE__))
 #    define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
 #  else
 #    if ((__GNUC_MINOR__ >= 3) && __APPLE__)
 #      define _STLP_NATIVE_INCLUDE_PATH ../c++
 /*
- * Before version 3.4.0 the 0 patch level was not part of the include path:
- */
-#    elif defined(__GNUC_PATCHLEVEL__) && ((__GNUC_PATCHLEVEL__ > 0) || \
-                                           (__GNUC__ == 3 && __GNUC_MINOR__ >= 4))
+* Before version 3.4.0 the 0 patch level was not part of the include path:
+*/
+#    elif defined (__GNUC_PATCHLEVEL__) && ((__GNUC_PATCHLEVEL__ > 0) || \
+                                            (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || \
+                                            (__GNUC__ > 3))
 #      define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__
 #    else
 #      define _STLP_NATIVE_INCLUDE_PATH ../__GNUC__.__GNUC_MINOR__
 #    endif
-#  endif
+#  endif 
 #  define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH _STLP_NATIVE_INCLUDE_PATH/backward
 
 /* Instantiation scheme that used (default) in gcc 3 made void of sense explicit
