@@ -1,3 +1,8 @@
+2004-10-30  Francois Dumont  <dums@stlport...>
+
+	* src/explore/Makefiles/nmake/vc-common.mak: introductions of the LDFLAGS_A_REL
+	macro to fix config problem under VC71 and VC8 beta.
+
 2004-10-29  Petr Ovtchenkov  <ptr@island...>
 
 	* src/explore/Makefiles/gmake/app/gcc.mak: use -fPIC for gcc 2.95.x when build
