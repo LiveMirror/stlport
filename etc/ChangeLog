@@ -1,6 +1,11 @@
 
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+2003-10-16  Francois Dumont
+
+  * _valarray.h: correction of the missing slice_array copy constructor and assignment
+  operator in the private section (thanks Tanaka)
+
 2003-10-11  Petr Ovchenkov
 
 	* _sstream.c: [io]?stringstream must do equivalent of seek at end,

@@ -1201,6 +1201,8 @@ private:
 
 private:                        // Disable assignment and default constructor
   slice_array();
+  slice_array(const slice_array&);
+  slice_array& operator=(const slice_array&);
 };
 
 // valarray member functions dealing with slice and slice_array
