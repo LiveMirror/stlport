@@ -49,12 +49,12 @@ Operational environment:        cross for Linux 2.6.9 uClibc 0.9.26, IA32
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.3 (cross-compiler)
 -----------------------------------------------------------------------
-Date:                           2005-03-02
+Date:                           2005-03-03
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
-Status (release-shared):        Build library; fail compile tests
+Status (release-shared):        Build library; fail link tests
 Notes:                          problem with cmath tests
-Status (stldbg-shared):         Build library; fail compile tests
+Status (stldbg-shared):         Build library; fail link tests
 Notes:                          problem with cmath tests
 
 
@@ -65,7 +65,7 @@ Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
-Date:                           2005-03-02
+Date:                           2005-03-04
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
 Status (release-shared):        All pass (319 tests)
