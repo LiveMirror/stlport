@@ -140,7 +140,8 @@
 #  define _STLP_USE_SHORT_STRING_OPTIM 1
 #endif
 
-#if defined (_STLP_NO_CLASS_PARTIAL_SPECIALIZATION) && !defined (_STLP_DONT_USE_PTR_SPECIALIZATIONS)
+#if (defined (_STLP_NO_CLASS_PARTIAL_SPECIALIZATION) || !defined (_STLP_USE_PTR_SPECIALIZATIONS)) && \
+    !defined (_STLP_DONT_USE_PTR_SPECIALIZATIONS)
 #  define _STLP_DONT_USE_PTR_SPECIALIZATIONS 1
 #endif
 
@@ -1044,10 +1045,6 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #    define  _STLP_CLASS_DECLSPEC  _STLP_CLASS_IMPORT_DECLSPEC
 #  endif
 
-#  ifndef _STLP_STATIC_CONST_INIT_BUG
-// constant data members cannot be exported; using workaround here
-#    define _STLP_STATIC_CONST_INIT_BUG
-#  endif
 #else /* Not using DLL export/import specifications */
 
 #  define _STLP_DECLSPEC

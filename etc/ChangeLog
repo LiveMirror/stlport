@@ -1,3 +1,18 @@
+2005-01-25  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl_user_config.h: Pointer specialization feature is now off 
+	by default as it do not handle pointer to function and pointer to member
+	methods correctly yet. Feature documentation has been updated to report
+	this limitation.
+	
+	* src/ctype.h: removal of the '>= 0' for wchar_t variables reported as a 
+	always true test by gcc.
+	
+	* stlport/stl/_hashtable.c: Removal of an unused variable in hashtable::resize
+	method thanks Jeff Grills report.
+	
+	* stlport/stl/_algo.c: Fix of the search_n algo thanks Jim Xochellis report.
+
 2005-01-24  Francois Dumont  <dums@stlport...>
 
 	* Some more warning fixes. Mostly add of missing char_traits::to_char_type calls.

@@ -53,6 +53,7 @@ TEST_INSTANCIATE_CONTAINER(slist);
 TEST_INSTANCIATE_CONTAINER(deque);
 #endif
 
+void FTypeInstance() {}
 //
 // tests implementation
 //
@@ -67,6 +68,13 @@ void PtrSpecTest::ptr_specialization_test()
     list<void*> void_list;
     slist<void*> void_slist;
   }
+
+  {
+    typedef void (*FType)();
+    vector<FType> func_vector;
+    func_vector.push_back(&FTypeInstance);
+  }
+
   vector<int*> pint_vect;
   vector<int*> pint_vect2;
   vector<int const*> pcint_vect;
