@@ -115,8 +115,8 @@
 #  define _STLP_MEMBER_TEMPLATE_CLASSES 1
 # endif
 
-# if !defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES) && !defined (_STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM) && !defined (_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM)
-#  define _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
+# if defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES) && !defined (_STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE)
+#  define _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE 1
 # endif
 
 #if !defined (_STLP_NO_CLASS_PARTIAL_SPECIALIZATION) && !defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
@@ -566,7 +566,7 @@
 #  define _STLP_NO_CSTD_FUNCTION_IMPORTS
 # endif
 
-#define  _STLP_USING_NAMESPACE(x) using namespace x ;
+#define _STLP_USING_NAMESPACE(x) using namespace x ;
 
 namespace std { }
 namespace __std_alias = std;
@@ -612,24 +612,25 @@ namespace __std_alias = std;
 #  define _STLP_VENDOR_EXCEPT_STD
 # endif
 
-# if defined (_STLP_USE_NAMESPACES)
+#if defined (_STLP_USE_NAMESPACES)
 
 #  if defined (_STLP_USE_OWN_NAMESPACE)
-#   define _STLP_STD      _STL
-/* reverse namespace injection schema */
+#    define _STLP_STD      _STL
 namespace _STLP_STD { }
-/*namespace std {
-  using namespace _STLP_STD;
-}*/
 #  else
-#   ifdef _STLP_DEBUG
+#    ifdef _STLP_DEBUG
 namespace stdD = std;
-#   endif
-#   define _STLP_STD      std
+#    endif
+#  define _STLP_STD      std
 #  endif /* _STLP_USE_OWN_NAMESPACE */
+
+#  define _STLP_PRIV     stlp_private
+namespace _STLP_PRIV {}
 
 #  define _STLP_BEGIN_NAMESPACE namespace _STLP_STD {
 #  define _STLP_END_NAMESPACE }
+#  define _STLP_MOVE_TO_PRIV_NAMESPACE } namespace _STLP_PRIV {
+#  define _STLP_MOVE_TO_STD_NAMESPACE } namespace _STLP_STD {
 
 // _STLP_BEGIN_NAMESPACE _STLP_END_NAMESPACE
 
@@ -652,8 +653,11 @@ namespace stlport = _STLP_STD;
 # else /* _STLP_USE_NAMESPACES */
 /* STLport is being put into global namespace */
 #  define _STLP_STD
+#  define _STLP_PRIV
 #  define _STLP_BEGIN_NAMESPACE
 #  define _STLP_END_NAMESPACE
+#  define _STLP_MOVE_TO_PRIV_NAMESPACE
+#  define _STLP_MOVE_TO_STD_NAMESPACE
 
 /* boris : it was found out that _STLP_USE_SEPARATE_RELOPS_NAMESPACE 
    causes less problems than having relational operator templates in global namespace

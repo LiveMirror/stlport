@@ -39,6 +39,9 @@
 
 _STLP_BEGIN_NAMESPACE
 
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(SetTraitsT, Const_traits);
+
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class set
@@ -56,7 +59,7 @@ public:
 
 protected:
   //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(SetTraits, Const_traits, value_type);
+  typedef _STLP_PRIV::_SetTraitsT<value_type> _SetTraits;
 
 public:
   //dums: need the following public for the __move_traits framework
@@ -207,6 +210,9 @@ public:
   }
 };
 
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(MultisetTraitsT, Const_traits);
+
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class multiset 
@@ -225,7 +231,7 @@ public:
  
 protected:
   //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(MultisetTraits, Const_traits, value_type);
+  typedef _STLP_PRIV::_MultisetTraitsT<value_type> _MultisetTraits;
 
 public:
   //dums: need the following public for the __move_traits framework

@@ -65,14 +65,14 @@ public:
   }
 };
 
-# if !defined (_STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM) || !defined (_STLP_MEMBER_TEMPLATES)
+# if defined (_STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE) || !defined (_STLP_MEMBER_TEMPLATES)
 template <class _Tp1, class _Tp2>
 inline __iostring_allocator<_Tp2>& _STLP_CALL
 __stl_alloc_rebind(__iostring_allocator<_Tp1>& __a, const _Tp2*) {  return (__iostring_allocator<_Tp2>&)(__a); }
 template <class _Tp1, class _Tp2>
 inline __iostring_allocator<_Tp2> _STLP_CALL
 __stl_alloc_create(const __iostring_allocator<_Tp1>&, const _Tp2*) { return __iostring_allocator<_Tp2>(); }
-#endif /* _STLP_USE_NESTED_TCLASS_THROUGHT_TPARAM */
+#endif /* _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE */
 
 
 

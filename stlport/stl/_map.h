@@ -39,6 +39,9 @@
 
 _STLP_BEGIN_NAMESPACE
 
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(MapTraitsT, traits);
+
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
 class map
@@ -70,8 +73,7 @@ public:
   };
 
 protected:
-  //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(MapTraits, traits, value_type);
+  typedef _STLP_PRIV::_MapTraitsT<value_type> _MapTraits;
 
 public:
   //dums: need the following public for the __move_traits framework
@@ -223,6 +225,9 @@ public:
   }
 };
 
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(MultimapTraitsT, traits);
+
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
 class multimap 
@@ -254,7 +259,7 @@ public:
 
 protected:
   //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(MultimapTraits, traits, value_type);
+  typedef _STLP_PRIV::_MultimapTraitsT<value_type> _MultimapTraits;
 
 public:
   //dums: need the following public for the __move_traits framework

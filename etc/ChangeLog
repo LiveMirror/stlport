@@ -1,3 +1,17 @@
+2004-09-09  Francois Dumont  <dums@...>
+
+	* stlport/stl/_config.h: _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 
+	renamed to the more intuitive _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE.
+
+	* stlport/stl/_config.h: Introduction of a new namespace stlp_private
+	defined in the global namespace. Everything that is STLport implementation
+	details should be in this namespace to avoid polution of the std namespace.
+	
+	* stlport/stl/_iterator_base.h: Modification of the macro used to create
+	iterator traits for all tree and hashtable based containers to move it in
+	the stlp_private namespace rather than defining it as nested struct, limits
+	the symbol size.
+	
 2004-09-08  Francois Dumont  <dums@...>
 
 	* test/unit/fstream_test.cpp: restauration of the test added by Petr

@@ -6,6 +6,7 @@
  *
  * It is known that this code compiled by following compilers:
  *   
+ *   MSVC 6
  */
 
 /*

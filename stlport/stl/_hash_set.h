@@ -39,6 +39,9 @@
 
 _STLP_BEGIN_NAMESPACE
 
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(HashSetTraitsT, Const_traits);
+
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
@@ -49,7 +52,7 @@ class hash_set
 {
   typedef hash_set<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
   //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(HashSetTraits, Const_traits, _Value);
+  typedef _STLP_PRIV::_HashSetTraitsT<_Value> _HashSetTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
                     _HashSetTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;
@@ -224,6 +227,9 @@ public:
   }
 };
 
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(HashMultisetTraits, Const_traits);
+
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
@@ -234,7 +240,7 @@ class hash_multiset
 {
   typedef hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> _Self;
   //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(HashMultisetTraits, Const_traits, _Value);
+  typedef _STLP_PRIV::_HashMultisetTraitsT<_Value> _HashMultisetTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
                     _HashMultisetTraits, _Identity<_Value>, _EqualKey, _Alloc> _Ht;

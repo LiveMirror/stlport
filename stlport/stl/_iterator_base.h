@@ -373,7 +373,6 @@ distance(const _InputIterator& __first, const _InputIterator& __last) {
   return __distance(__first, __last, _STLP_ITERATOR_CATEGORY(__first, _InputIterator));  
 }
 
-
 // fbp: those are being used for iterator/const_iterator definitions everywhere
 template <class _Tp>
 struct _Nonconst_traits;
@@ -425,16 +424,21 @@ struct _Nonconst_Const_traits {
  * dums: a macro to generate a new iterator traits from one of the
  * previous one.
  */
-#define _STLP_CREATE_ITERATOR_TRAITS(Motif, Traits, Type) \
-struct _##Motif;                                          \
-struct _Const##Motif : public _Const_##Traits<Type> {     \
-  typedef _Const##Motif _ConstTraits;                     \
-  typedef _##Motif _NonConstTraits;                       \
-};                                                        \
-struct _##Motif : public _Nonconst_##Traits<Type> {       \
-  typedef _Const##Motif _ConstTraits;                     \
-  typedef _##Motif _NonConstTraits;                       \
-}
+#define _STLP_CREATE_ITERATOR_TRAITS(Motif, Traits)             \
+_STLP_MOVE_TO_PRIV_NAMESPACE                                    \
+template <class _Tp>                                            \
+struct _##Motif;                                                \
+template <class _Tp>                                            \
+struct _Const##Motif : public _STLP_STD::_Const_##Traits<_Tp> { \
+  typedef _Const##Motif<_Tp> _ConstTraits;                      \
+  typedef _##Motif<_Tp> _NonConstTraits;                        \
+};                                                              \
+template <class _Tp>                                            \
+struct _##Motif : public _STLP_STD::_Nonconst_##Traits<_Tp> {   \
+  typedef _Const##Motif<_Tp> _ConstTraits;                      \
+  typedef _##Motif<_Tp> _NonConstTraits;                        \
+};                                                              \
+_STLP_MOVE_TO_STD_NAMESPACE
 
 /*
 #  if defined (_STLP_BASE_TYPEDEF_BUG)

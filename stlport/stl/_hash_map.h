@@ -39,6 +39,9 @@ _STLP_BEGIN_NAMESPACE
 # define  hash_map      __WORKAROUND_RENAME(hash_map)
 # define  hash_multimap __WORKAROUND_RENAME(hash_multimap)
 
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(HashMapTraitsT, traits);
+
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
@@ -56,7 +59,7 @@ public:
   typedef pair<const key_type, data_type> value_type;
 private:
   //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(HashMapTraits, traits, value_type);
+  typedef _STLP_PRIV::_HashMapTraitsT<value_type> _HashMapTraits;
 
 public:
   typedef hashtable<value_type, key_type, _HashFcn, _HashMapTraits,
@@ -219,8 +222,8 @@ public:
   }
 };
 
-//idem _HashMap
-struct _HashMultimap {};
+//Specific iterator traits creation
+_STLP_CREATE_ITERATOR_TRAITS(HashMultimapTraitsT, traits);
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
@@ -239,7 +242,7 @@ public:
   typedef pair<const key_type, data_type> value_type;
 private:
   //Specific iterator traits creation
-  _STLP_CREATE_ITERATOR_TRAITS(HashMultimapTraits, traits, value_type);
+  typedef _STLP_PRIV::_HashMultimapTraitsT<value_type> _HashMultimapTraits;
 
 public:
   typedef hashtable<value_type, key_type, _HashFcn, _HashMultimapTraits,
