@@ -259,11 +259,27 @@ void MoveConstructorTest::move_traits()
       CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 3 );
       CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 7 );
 
+      // Following test violate requirements to sequiences (23.1.1 Table 67)
+      /*
       vect.insert(vect.begin() + 2, vect.begin(), vect.end());
-
       // vect contains 8 elements
       CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
       CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 8 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 7 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 11 );
+      */
+
+      vector<MovableStruct> v2 = vect;
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 8 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 3 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 7 );
+
+      vect.insert(vect.begin() + 2, v2.begin(), v2.end() );
+
+      // vect contains 8 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 12 );
       CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 7 );
       CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 11 );
 
@@ -279,7 +295,8 @@ void MoveConstructorTest::move_traits()
       CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 18 );
       CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 25 );
     }
-    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 30 );
+    // CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 30 );
+    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 34 );
   }
 
   {
@@ -296,11 +313,24 @@ void MoveConstructorTest::move_traits()
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 3 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
 
+      // Following test violate requirements to sequiences (23.1.1 Table 67)
+      /*
       vect.insert(vect.begin() + 2, vect.begin(), vect.end());
 
       // vect contains 8 elements
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 8 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 7 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
+      */
+
+      vector<CompleteMovableStruct> v2 = vect;
+
+      vect.insert(vect.begin() + 2, v2.begin(), v2.end());
+
+      // vect contains 8 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 12 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 7 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
 
@@ -316,7 +346,8 @@ void MoveConstructorTest::move_traits()
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 18 );
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 7 );
     }
-    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 12 );
+    //CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 12 );
+    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 16 );
   }
 #endif //STLPORT
 }

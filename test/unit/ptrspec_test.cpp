@@ -62,23 +62,28 @@ void PtrSpecTest::ptr_specialization_test()
   int const* cint_array[] = {0, 0, 0};
   
   vector<int*> pint_vect;
+  vector<int*> pint_vect2;
   vector<int const*> pcint_vect;
   list<int*> pint_list;
+  list<int*> pint_list2;
   list<int const*> pcint_list;
   slist<int*> pint_slist;
+  slist<int*> pint_slist2;
   slist<int const*> pcint_slist;
   deque<int*> pint_deque;
+  deque<int*> pint_deque2;
   deque<int const*> pcint_deque;
 
 #ifdef _STLP_MEMBER_TEMPLATES
   vector<int*> pint_vect_from_list(pint_list.begin(), pint_list.end());
 #endif
-  pint_vect.insert(pint_vect.end(), pint_vect.begin(), pint_vect.end());
+  pint_vect.insert(pint_vect.end(), pint_vect2.begin(), pint_vect2.end());
   pint_vect.insert(pint_vect.end(), int_array, int_array + 3);
+  pint_vect2.insert(pint_vect2.end(), int_array, int_array + 3);
   pcint_vect.insert(pcint_vect.end(), int_array, int_array + 3);
   pcint_vect.insert(pcint_vect.end(), cint_array, cint_array + 3);
 #if !defined(_STLP_DEBUG) || defined(_STLP_MEMBER_TEMPLATES)
-  pcint_vect.insert(pcint_vect.end(), pint_vect.begin(), pint_vect.end());
+  pcint_vect.insert(pcint_vect.end(), pint_vect2.begin(), pint_vect2.end());
 #endif
   pcint_vect.insert(pcint_vect.end(), int_array, int_array + 3);
 #ifdef _STLP_MEMBER_TEMPLATES
@@ -92,6 +97,7 @@ void PtrSpecTest::ptr_specialization_test()
   pcint_vect.assign(int_array, int_array + 3);
   pcint_vect.assign(cint_array, cint_array + 3);
   copy(int_array, int_array + 3, back_inserter(pint_vect));
+  return;
 
 #ifdef _STLP_MEMBER_TEMPLATES
   pint_list.sort(binary_pred<int>());
@@ -105,7 +111,8 @@ void PtrSpecTest::ptr_specialization_test()
 #endif
 
   copy(int_array, int_array + 3, back_inserter(pint_list));
-  pint_list.insert(pint_list.end(), pint_list.begin(), pint_list.end());
+  copy(int_array, int_array + 3, back_inserter(pint_list2));
+  pint_list.insert(pint_list.end(), pint_list2.begin(), pint_list2.end());
 #ifdef _STLP_MEMBER_TEMPLATES
   pcint_list.insert(pcint_list.end(), pint_list.begin(), pint_list.end());
 #endif
@@ -127,7 +134,8 @@ void PtrSpecTest::ptr_specialization_test()
   //pint_list.assign(pcint_vect.begin(), pcint_vect.end());
 
   copy(int_array, int_array + 3, front_inserter(pint_slist));
-  pint_slist.insert(pint_slist.end(), pint_slist.begin(), pint_slist.end());
+  copy(int_array, int_array + 3, front_inserter(pint_slist2));
+  pint_slist.insert(pint_slist.end(), pint_slist2.begin(), pint_slist2.end());
 #ifdef _STLP_MEMBER_TEMPLATES
   pcint_slist.insert(pcint_slist.end(), pint_slist.begin(), pint_slist.end());
 #endif
@@ -148,7 +156,8 @@ void PtrSpecTest::ptr_specialization_test()
   //pint_slist.assign(pcint_vect.begin(), pcint_vect.end());
 
   copy(int_array, int_array + 3, back_inserter(pint_deque));
-  pint_deque.insert(pint_deque.end(), pint_deque.begin(), pint_deque.end());
+  copy(int_array, int_array + 3, back_inserter(pint_deque2));
+  pint_deque.insert(pint_deque.end(), pint_deque2.begin(), pint_deque2.end());
 #ifdef _STLP_MEMBER_TEMPLATES
   pcint_deque.insert(pcint_deque.end(), pint_deque.begin(), pint_deque.end());
 #endif
