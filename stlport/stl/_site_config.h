@@ -218,4 +218,4 @@
 // with the option to be turned off later in compiler-specific file
 
 # define _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
-
+# define _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT

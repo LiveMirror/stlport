@@ -177,14 +177,14 @@ _STLP_END_NAMESPACE
 
 #  define _STLP_STDEXCEPT 1
 
-# if (_STLP_OUTERMOST_HEADER_ID == 0x63)
+#if (_STLP_OUTERMOST_HEADER_ID == 0x63)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)
-#   include <stl/_epilog.h>
-#   undef  _STLP_OUTERMOST_HEADER_ID
+#    include <stl/_epilog.h>
+#    undef  _STLP_OUTERMOST_HEADER_ID
 #  else
-#   undef  _STLP_DONT_POP_HEADER_ID
+#    undef  _STLP_DONT_POP_HEADER_ID
 #  endif
-# endif
+#endif
 
 #endif /* _STLP_STDEXCEPT */
 

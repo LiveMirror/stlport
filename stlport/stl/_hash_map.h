@@ -39,13 +39,6 @@ _STLP_BEGIN_NAMESPACE
 # define  hash_map      __WORKAROUND_RENAME(hash_map)
 # define  hash_multimap __WORKAROUND_RENAME(hash_multimap)
 
-/*
- * Internal small type used to instanciate the iterator traits pass
- * to the hashtable class. We do not use the hash_map type to limit
- * the generated symbol size.
- */
-struct _HashMap {};
-
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
@@ -62,7 +55,9 @@ public:
   typedef _Tp mapped_type;
   typedef pair<const key_type, data_type> value_type;
 private:
-  typedef _Container_traits<_Const_traits<value_type>, _HashMap> _HashMapTraits;
+  //Specific iterator traits creation
+  _STLP_CREATE_ITERATOR_TRAITS(HashMapTraits, traits, value_type);
+
 public:
   typedef hashtable<value_type, key_type, _HashFcn, _HashMapTraits,
                     _STLP_SELECT1ST(value_type,  _Key), _EqualKey, _Alloc > _Ht;
@@ -243,7 +238,9 @@ public:
   typedef _Tp mapped_type;
   typedef pair<const key_type, data_type> value_type;
 private:
-  typedef _Container_traits<_Const_traits<value_type>, _HashMultimap> _HashMultimapTraits;
+  //Specific iterator traits creation
+  _STLP_CREATE_ITERATOR_TRAITS(HashMultimapTraits, traits, value_type);
+
 public:
   typedef hashtable<value_type, key_type, _HashFcn, _HashMultimapTraits,
                     _STLP_SELECT1ST(value_type,  _Key), _EqualKey, _Alloc > _Ht;

@@ -422,18 +422,19 @@ struct _Nonconst_Const_traits {
 };
 
 /*
- * dums: an iterator traits wrapper adding the container_type information
+ * dums: a macro to generate a new iterator traits from one of the
+ * previous one.
  */
-template <class _Traits, class _Container>
-struct _Container_traits : public _Traits {
-  typedef _Container container_type;
-
-  typedef typename _Traits::_ConstTraits _WrapConstTraits;
-  typedef typename _Traits::_NonConstTraits _WrapNonConstTraits;
-
-  typedef _Container_traits<_WrapConstTraits, _Container> _ConstTraits;
-  typedef _Container_traits<_WrapNonConstTraits, _Container> _NonConstTraits;
-};
+#define _STLP_CREATE_ITERATOR_TRAITS(Motif, Traits, Type) \
+struct _##Motif;                                          \
+struct _Const##Motif : public _Const_##Traits<Type> {     \
+  typedef _Const##Motif _ConstTraits;                     \
+  typedef _##Motif _NonConstTraits;                       \
+};                                                        \
+struct _##Motif : public _Nonconst_##Traits<Type> {       \
+  typedef _Const##Motif _ConstTraits;                     \
+  typedef _##Motif _NonConstTraits;                       \
+}
 
 /*
 #  if defined (_STLP_BASE_TYPEDEF_BUG)

@@ -118,9 +118,9 @@ void MapTest::mmap2()
 
 void MapTest::iterators()
 {
+  typedef map<int, char, less<int> > int_map;
+  int_map imap;
   {
-    typedef map<int, char, less<int> > int_map;
-    int_map imap;
     int_map::iterator ite(imap.begin());
     int_map::const_iterator cite(imap.begin());
     CPPUNIT_ASSERT( ite == cite );
@@ -159,6 +159,28 @@ void MapTest::iterators()
     CPPUNIT_ASSERT( cite == ite );
     CPPUNIT_ASSERT( !(cite != ite) );
   }
+
+#if 0
+  /*
+   * A check that map and multimap iterators are NOT comparable
+   * the following code should generate a compile time error
+   */
+  {
+    int_map::iterator mite(imap.begin());
+    int_map::const_iterator mcite(imap.begin());
+    mmap::iterator mmite(m.begin());
+    mmap::const_iterator mmcite(m.begin());
+    CPPUNIT_ASSERT( !(mite == mmite) );
+    CPPUNIT_ASSERT( !(mcite == mmcite) );
+    CPPUNIT_ASSERT( mite != mmite );
+    CPPUNIT_ASSERT( mcite != mmcite );
+    CPPUNIT_ASSERT( !(mite == mmcite) );
+    CPPUNIT_ASSERT( !(mite == mmcite) );
+    CPPUNIT_ASSERT( mite != mmcite );
+    CPPUNIT_ASSERT( mite != mmcite );
+  }
+
+#endif
 
   mmap::reverse_iterator ri = m.rbegin();
   CPPUNIT_ASSERT( ri != m.rend() );

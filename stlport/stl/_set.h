@@ -39,9 +39,6 @@
 
 _STLP_BEGIN_NAMESPACE
 
-//Idem _HashMap
-struct _Set {};
-
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class set
@@ -56,15 +53,16 @@ public:
   typedef _Key     value_type;
   typedef _Compare key_compare;
   typedef _Compare value_compare;
-  
+
 protected:
-  typedef _Container_traits<_Const_Const_traits<value_type>, _Set> _ConstSetTraits;
+  //Specific iterator traits creation
+  _STLP_CREATE_ITERATOR_TRAITS(SetTraits, Const_traits, value_type);
 
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
                    value_type, _Identity<value_type>, 
-                   _ConstSetTraits, _Alloc> _Rep_type;
+                   _SetTraits, _Alloc> _Rep_type;
 
 public:
   typedef typename _Rep_type::pointer pointer;
@@ -209,9 +207,6 @@ public:
   }
 };
 
-//Idem _HashMap
-struct _Multiset {};
-
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
 class multiset 
@@ -227,14 +222,16 @@ public:
   typedef _Key     value_type;
   typedef _Compare key_compare;
   typedef _Compare value_compare;
-  
+ 
 protected:
-  typedef _Container_traits<_Const_Const_traits<value_type>, _Multiset> _ConstMultisetTraits;
+  //Specific iterator traits creation
+  _STLP_CREATE_ITERATOR_TRAITS(MultisetTraits, Const_traits, value_type);
+
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
                    value_type, _Identity<value_type>, 
-                   _ConstMultisetTraits, _Alloc> _Rep_type;
+                   _MultisetTraits, _Alloc> _Rep_type;
                   
 public:                  
   typedef typename _Rep_type::pointer pointer;

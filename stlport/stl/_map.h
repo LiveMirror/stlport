@@ -39,9 +39,6 @@
 
 _STLP_BEGIN_NAMESPACE
 
-//Idem _HashMap
-struct _Map {};
-
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
 class map
@@ -73,13 +70,14 @@ public:
   };
 
 protected:
-  typedef _Container_traits<_Const_traits<value_type>, _Map> _ConstMapTraits;
+  //Specific iterator traits creation
+  _STLP_CREATE_ITERATOR_TRAITS(MapTraits, traits, value_type);
 
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare,
                    value_type, _STLP_SELECT1ST(value_type, _Key), 
-                   _ConstMapTraits, _Alloc> _Rep_type;
+                   _MapTraits, _Alloc> _Rep_type;
   _Rep_type _M_t;  // red-black tree representing map
 public:
   typedef typename _Rep_type::pointer pointer;
@@ -225,9 +223,6 @@ public:
   }
 };
 
-//Idem _HashMap
-struct _Multimap {};
-
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
 class multimap 
@@ -258,13 +253,14 @@ public:
   };
 
 protected:
-  typedef _Container_traits<_Const_traits<value_type>, _Multimap> _ConstMultimapTraits;
+  //Specific iterator traits creation
+  _STLP_CREATE_ITERATOR_TRAITS(MultimapTraits, traits, value_type);
 
 public:
   //dums: need the following public for the __move_traits framework
   typedef _Rb_tree<key_type, key_compare, 
                    value_type, _STLP_SELECT1ST(value_type, _Key), 
-                   _ConstMultimapTraits, _Alloc> _Rep_type;
+                   _MultimapTraits, _Alloc> _Rep_type;
   _Rep_type _M_t;  // red-black tree representing multimap
 public:
   typedef typename _Rep_type::pointer pointer;

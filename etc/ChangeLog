@@ -1,3 +1,18 @@
+2004-09-02  Francois Dumont  <dums@...>
+
+	* stlport/exception, stlport/stl/_site_config.h, test/unit/exception_test.cpp:
+	Creation of the _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT macro to signal support of
+	the unexpected exception mecanism. Related type/function are only brought to the
+	STLport namespace if correctly supported, exception_test.cpp check that.
+	
+	* New modification of the _Rb_tree and _Hashtable associated iterator structs.
+	Removal of the container_type pass through the iterator traits; iterator traits
+	is the type that will make each derived container iterator type real different
+	type making them uncomparable.
+	
+	* stlport/ctype.h: rollback of the above rollback ;-) only of course for the 
+	Win CE code fix that was part of the previous commitment.
+	
 2004-09-01  Petr Ovtchenkov  <ptr@Island...>
 
 	* Rollback include schema: code is broken.
