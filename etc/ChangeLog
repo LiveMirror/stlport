@@ -1,5 +1,9 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
+  * stdexcept: Correction of the mysterious 50 messages from VC7.Net (thanks Krish S)
+
+  ----
+
   * _vector.h: implementation of the max_size method based on the allocator::max_size method 
                (thanks Gennaro Prota from the boost forum).
 
