@@ -198,7 +198,7 @@ Operational environment:        Windows CE 3.0 Pocket PC 2002 (iPAQ h3950)
 -----------------------------------------------------------------------
 Compiler:                       eMbedded Visual C++ 3.0
 -----------------------------------------------------------------------
-Date:                           2004-02-16
+Date:                           2005-02-16
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       mfink (Michael Fink)
 Status (release-shared):        All pass (312 tests)
@@ -222,7 +222,7 @@ Operational environment:        Windows CE 3.0 Pocket PC 2002 Emulator
 -----------------------------------------------------------------------
 Compiler:                       eMbedded Visual C++ 3.0
 -----------------------------------------------------------------------
-Date:                           2004-02-16
+Date:                           2005-02-16
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       mfink (Michael Fink)
 Status (release-shared):        All pass (312 tests)
@@ -245,7 +245,7 @@ Operational environment:        Windows CE 4.2 Pocket PC 2003 (iPAQ h6340)
 -----------------------------------------------------------------------
 Compiler:                       eMbedded Visual C++ .NET SP4
 -----------------------------------------------------------------------
-Date:                           2004-02-16
+Date:                           2005-02-16
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       mfink (Michael Fink)
 Status (release-shared):        All pass (313 tests)
@@ -269,7 +269,7 @@ Operational environment:        Windows CE 4.2 Pocket PC 2003 Emulator
 -----------------------------------------------------------------------
 Compiler:                       eMbedded Visual C++ .NET SP4
 -----------------------------------------------------------------------
-Date:                           2004-02-16
+Date:                           2005-02-16
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       mfink (Michael Fink)
 Status (release-shared):        All pass (313 tests)
