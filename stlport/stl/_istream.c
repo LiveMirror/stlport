@@ -180,39 +180,6 @@ __pushback(basic_streambuf<_CharT, _Traits>* __buf, _CharT __c)
   return ret;
 }
 
-// Helper functions for istream<>::sentry constructor.
-template <class _CharT, class _Traits>
-bool
-_M_init_skip(basic_istream<_CharT, _Traits>& __is) {
-  if (__is.good()) {
-    if (__is.tie())
-      __is.tie()->flush();
-    
-    __is._M_skip_whitespace(true);
-  }
-  
-  if (!__is.good()) {
-    __is.setstate(ios_base::failbit);
-    return false;
-  } else
-    return true;
-}
-
-template <class _CharT, class _Traits>
-bool
-_M_init_noskip(basic_istream<_CharT, _Traits>& __is) {
-  if (__is.good()) {
-    if (__is.tie())
-      __is.tie()->flush();
-    
-    if (!__is.rdbuf())
-      __is.setstate(ios_base::badbit);
-  }
-  else
-    __is.setstate(ios_base::failbit);
-  return __is.good();
-}
-
 //----------------------------------------------------------------------
 // Definitions of basic_istream<>'s noninline member functions.
 
@@ -237,6 +204,107 @@ _M_get_num(basic_istream<_CharT, _Traits>& __that, _Number& __val) {
   return __err;
 }
 
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (short& __val) {
+  long __lval;
+  unsigned short __uval;
+  _M_get_num(*this, __lval);
+  if ( this->fail() ) {
+    return *this;
+  }
+  __val = __STATIC_CAST(short, __lval);
+  __uval = __lval;
+  // check if we lose digits
+  //    if ((__val != __lval) && ((unsigned short)__val != __lval))
+  if ((__val != __lval) && ((long)__uval != __lval))
+    this->setstate(ios_base::failbit); 
+  return *this; 
+}
+
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (int& __val) { 
+  long __lval;
+  unsigned int __uval;
+  _M_get_num(*this, __lval);
+  if ( this->fail() ) {
+    return *this;
+  }
+  __val = __lval;
+  __uval = __lval;
+  // check if we lose digits
+  //    if ((__val != __lval) && ((unsigned int)__val != __lval))
+  if ((__val != __lval) && ((long)__uval != __lval))
+    this->setstate(ios_base::failbit); 
+  return *this;
+}
+
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (unsigned short& __val) {
+  _M_get_num(*this, __val); 
+  return *this; 
+}
+
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (unsigned int& __val) {
+  _M_get_num(*this, __val);
+  return *this; 
+}
+
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (long& __val) {
+  _M_get_num(*this, __val);
+  return *this; 
+}
+
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (unsigned long& __val) {
+  _M_get_num(*this, __val);
+  return *this;
+}
+
+#ifdef _STLP_LONG_LONG
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (_STLP_LONG_LONG& __val) {
+  _M_get_num(*this, __val);
+  return *this;
+}
+
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (unsigned _STLP_LONG_LONG& __val) {
+  _M_get_num(*this, __val);
+  return *this;
+}
+#endif 
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (float& __val) {
+  _M_get_num(*this, __val);
+  return *this;
+}
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (double& __val) {
+  _M_get_num(*this, __val);
+  return *this;
+}
+#ifndef _STLP_NO_LONG_DOUBLE
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (long double& __val) {
+  _M_get_num(*this, __val);
+  return *this;
+}
+#endif
+#ifndef _STLP_NO_BOOL
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (bool& __val) {
+  _M_get_num(*this, __val);
+  return *this;
+}
+# endif
+
+template <class _CharT, class _Traits>
+basic_istream<_CharT, _Traits>& basic_istream<_CharT, _Traits>::operator>> (void*& __val) {
+  _M_get_num(*this, __val); 
+  return *this; 
+}
 
 // Unformatted input
 

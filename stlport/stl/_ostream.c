@@ -33,8 +33,7 @@ _STLP_BEGIN_NAMESPACE
 
 // Helper functions for istream<>::sentry constructor.
 template <class _CharT, class _Traits>
-bool
-_M_init(basic_ostream<_CharT, _Traits>& __str) {
+bool _M_init(basic_ostream<_CharT, _Traits>& __str) {
   if (__str.good()) {
     // boris : check if this is needed !
     if (!__str.rdbuf())
@@ -54,8 +53,7 @@ _M_init(basic_ostream<_CharT, _Traits>& __str) {
 template <class _CharT, class _Traits>
 basic_ostream<_CharT, _Traits>
   ::basic_ostream(basic_streambuf<_CharT, _Traits>* __buf)
-    : basic_ios<_CharT, _Traits>() 
-{
+    : basic_ios<_CharT, _Traits>() {
   this->init(__buf);
 }
 
@@ -66,8 +64,7 @@ basic_ostream<_CharT, _Traits>::~basic_ostream()
 // Output directly from a streambuf.
 template <class _CharT, class _Traits>
 basic_ostream<_CharT, _Traits>& 
-basic_ostream<_CharT, _Traits>::operator<<(basic_streambuf<_CharT, _Traits>* __from)
-{
+basic_ostream<_CharT, _Traits>::operator<<(basic_streambuf<_CharT, _Traits>* __from) {
   sentry __sentry(*this);
   if (__sentry) {
     if (__from) {
@@ -92,8 +89,7 @@ basic_ostream<_CharT, _Traits>::operator<<(basic_streambuf<_CharT, _Traits>* __f
 template <class _CharT, class _Traits>
 bool basic_ostream<_CharT, _Traits>
   ::_M_copy_buffered(basic_streambuf<_CharT, _Traits>* __from,
-                     basic_streambuf<_CharT, _Traits>* __to)
-{
+                     basic_streambuf<_CharT, _Traits>* __to) {
   bool __any_inserted = false;
 
   while (__from->egptr() != __from->gptr()) {
@@ -137,8 +133,7 @@ bool basic_ostream<_CharT, _Traits>
 template <class _CharT, class _Traits>
 bool basic_ostream<_CharT, _Traits>
   ::_M_copy_unbuffered(basic_streambuf<_CharT, _Traits>* __from,
-                       basic_streambuf<_CharT, _Traits>* __to)
-{
+                       basic_streambuf<_CharT, _Traits>* __to) {
   bool __any_inserted = false;
 
   while (true) {
@@ -180,11 +175,9 @@ bool basic_ostream<_CharT, _Traits>
 }
 
 // Helper function for numeric output.
-
 template <class _CharT, class _Traits, class _Number>
 basic_ostream<_CharT, _Traits>&  _STLP_CALL
-_M_put_num(basic_ostream<_CharT, _Traits>& __os, _Number __x)
-{
+_M_put_num(basic_ostream<_CharT, _Traits>& __os, _Number __x) {
   typedef typename basic_ostream<_CharT, _Traits>::sentry _Sentry;
   _Sentry __sentry(__os);
   bool __failed = true;
@@ -192,8 +185,7 @@ _M_put_num(basic_ostream<_CharT, _Traits>& __os, _Number __x)
   if (__sentry) {
     _STLP_TRY {
       typedef num_put<_CharT, ostreambuf_iterator<_CharT, _Traits> > _NumPut;      
-      __failed = (use_facet<_NumPut>(__os.getloc())).put(
-                                                         ostreambuf_iterator<_CharT, _Traits>(__os.rdbuf()), 
+      __failed = (use_facet<_NumPut>(__os.getloc())).put(ostreambuf_iterator<_CharT, _Traits>(__os.rdbuf()), 
                                                          __os, __os.fill(),
                                                          __x).failed();
     }
@@ -206,22 +198,85 @@ _M_put_num(basic_ostream<_CharT, _Traits>& __os, _Number __x)
   return __os;
 }
 
-# if defined (_STLP_USE_TEMPLATE_EXPORT)  && defined (__BUILDING_STLPORT)
-_STLP_EXPORT_TEMPLATE _STLP_DECLSPEC basic_ostream<char, char_traits<char> >& _STLP_CALL
-_M_put_num(basic_ostream<char, char_traits<char> >&, unsigned long);
-_STLP_EXPORT_TEMPLATE _STLP_DECLSPEC basic_ostream<char, char_traits<char> >&  _STLP_CALL
-_M_put_num(basic_ostream<char, char_traits<char> >&, long);
-#  if defined (_STLP_LONG_LONG)
-_STLP_EXPORT_TEMPLATE _STLP_DECLSPEC basic_ostream<char, char_traits<char> >&  _STLP_CALL
-_M_put_num(basic_ostream<char, char_traits<char> >&, unsigned _STLP_LONG_LONG);
-_STLP_EXPORT_TEMPLATE _STLP_DECLSPEC basic_ostream<char, char_traits<char> >&  _STLP_CALL
-_M_put_num(basic_ostream<char, char_traits<char> >&, _STLP_LONG_LONG );
-#  endif
-# endif
+/*
+ * In the following operators we try to limit code bloat by limiting the
+ * number of _M_put_num instanciations.
+ */
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(short __x) {
+  long __tmp = ((this->flags() & _Basic_ios::basefield) != ios_base::dec)?(unsigned short)__x:__x;
+  return _M_put_num(*this,  __tmp);
+}
 
 template <class _CharT, class _Traits>
-void basic_ostream<_CharT, _Traits>::_M_put_char(_CharT __c)
-{
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(unsigned short __x) {
+  return _M_put_num(*this,  __STATIC_CAST(unsigned long,__x)); 
+}
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(int __x) {
+  long __tmp = ((this->flags() & _Basic_ios::basefield) != ios_base::dec)?(unsigned int)__x:__x;
+  return _M_put_num(*this,  __tmp);
+}
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(unsigned int __x) {
+  return _M_put_num(*this,  __STATIC_CAST(unsigned long,__x)); 
+}
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(long __x) { 
+  return _M_put_num(*this,  __x); 
+}
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(unsigned long __x) {
+  return _M_put_num(*this,  __x); 
+}
+
+#ifdef _STLP_LONG_LONG
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<< (_STLP_LONG_LONG __x) {
+  return _M_put_num(*this,  __x); 
+}
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<< (unsigned _STLP_LONG_LONG __x) {
+  return _M_put_num(*this,  __x); 
+}
+#endif 
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(float __x) {
+  return _M_put_num(*this,  __STATIC_CAST(double,__x)); 
+}
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(double __x) {
+  return _M_put_num(*this,  __x); 
+}
+
+#ifndef _STLP_NO_LONG_DOUBLE
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(long double __x) {
+  return _M_put_num(*this,  __x); 
+}
+#endif
+
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(const void* __x) {
+  return _M_put_num(*this,  __x); 
+}
+
+#ifndef _STLP_NO_BOOL
+template <class _CharT, class _Traits>
+basic_ostream<_CharT, _Traits>& basic_ostream<_CharT, _Traits>::operator<<(bool __x) {
+  return _M_put_num(*this,  __x); 
+}
+#endif
+
+template <class _CharT, class _Traits>
+void basic_ostream<_CharT, _Traits>::_M_put_char(_CharT __c) {
   sentry __sentry(*this);
   if (__sentry) {
     bool __failed = true;
@@ -252,8 +307,7 @@ void basic_ostream<_CharT, _Traits>::_M_put_char(_CharT __c)
 }
 
 template <class _CharT, class _Traits>
-void basic_ostream<_CharT, _Traits>::_M_put_nowiden(const _CharT* __s)
-{
+void basic_ostream<_CharT, _Traits>::_M_put_nowiden(const _CharT* __s) {
   sentry __sentry(*this);
   if (__sentry) {
     bool __failed = true;
@@ -285,8 +339,7 @@ void basic_ostream<_CharT, _Traits>::_M_put_nowiden(const _CharT* __s)
 }
 
 template <class _CharT, class _Traits>
-void basic_ostream<_CharT, _Traits>::_M_put_widen(const char* __s)
-{
+void basic_ostream<_CharT, _Traits>::_M_put_widen(const char* __s) {
   sentry __sentry(*this);
   if (__sentry) {
     bool __failed = true;
@@ -319,8 +372,7 @@ void basic_ostream<_CharT, _Traits>::_M_put_widen(const char* __s)
 
 template <class _CharT, class _Traits>
 bool basic_ostream<_CharT, _Traits>::_M_put_widen_aux(const char* __s,
-                                                      streamsize __n)
-{
+                                                      streamsize __n) {
   basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
 
   for ( ; __n > 0 ; --__n)
@@ -332,8 +384,7 @@ bool basic_ostream<_CharT, _Traits>::_M_put_widen_aux(const char* __s,
 // Unformatted output of a single character.
 template <class _CharT, class _Traits>
 basic_ostream<_CharT, _Traits>&
-basic_ostream<_CharT, _Traits>::put(char_type __c)
-{
+basic_ostream<_CharT, _Traits>::put(char_type __c) {
   sentry __sentry(*this);
   bool __failed = true;
 
@@ -355,8 +406,7 @@ basic_ostream<_CharT, _Traits>::put(char_type __c)
 // Unformatted output of a single character.
 template <class _CharT, class _Traits>
 basic_ostream<_CharT, _Traits>&
-basic_ostream<_CharT, _Traits>::write(const char_type* __s, streamsize __n)
-{
+basic_ostream<_CharT, _Traits>::write(const char_type* __s, streamsize __n) {
   sentry __sentry(*this);
   bool __failed = true;
 

@@ -30,10 +30,6 @@
 
 _STLP_BEGIN_NAMESPACE
 
-template <class _CharT, class _Traits, class _Number> 
-basic_ostream<_CharT, _Traits>& _STLP_CALL
-_M_put_num(basic_ostream<_CharT, _Traits>& __os, _Number __x);
-
 # if defined (_STLP_USE_TEMPLATE_EXPORT)
 template <class _CharT, class _Traits>
 class _Osentry;
@@ -95,31 +91,24 @@ public:                         // Formatted output.
   // this is needed for compiling with option char = unsigned
   _Self& operator<<(unsigned char __x) { _M_put_char(__x); return *this; }
 # endif
-  _Self& operator<<(short __x) { 
-    long __tmp = ((this->flags() & _Basic_ios::basefield) != ios_base::dec)?(unsigned short)__x:__x;
-    return _M_put_num(*this,  __tmp);
-  }
-  _Self& operator<<(unsigned short __x) { return _M_put_num(*this,  __STATIC_CAST(unsigned long,__x)); }
-  _Self& operator<<(int __x) { 
-    long __tmp = ((this->flags() & _Basic_ios::basefield) != ios_base::dec)?(unsigned int)__x:__x;
-    return _M_put_num(*this,  __tmp);
-  }
-  _Self& operator<<(unsigned int __x) { return _M_put_num(*this,  __STATIC_CAST(unsigned long,__x)); }
-  _Self& operator<<(long __x) { return _M_put_num(*this,  __x); }
-  _Self& operator<<(unsigned long __x) { return _M_put_num(*this,  __x); }
+  _Self& operator<<(short __x);
+  _Self& operator<<(unsigned short __x);
+  _Self& operator<<(int __x);
+  _Self& operator<<(unsigned int __x);
+  _Self& operator<<(long __x);
+  _Self& operator<<(unsigned long __x);
 #ifdef _STLP_LONG_LONG
-  _Self& operator<< (_STLP_LONG_LONG __x)     { return _M_put_num(*this,  __x); }
-  _Self& operator<< (unsigned _STLP_LONG_LONG __x) { return _M_put_num(*this,  __x); }
+  _Self& operator<< (_STLP_LONG_LONG __x);
+  _Self& operator<< (unsigned _STLP_LONG_LONG __x);
 #endif 
-  _Self& operator<<(float __x)
-    { return _M_put_num(*this,  __STATIC_CAST(double,__x)); }
-  _Self& operator<<(double __x) { return _M_put_num(*this,  __x); }
+  _Self& operator<<(float __x);
+  _Self& operator<<(double __x);
 # ifndef _STLP_NO_LONG_DOUBLE
-  _Self& operator<<(long double __x) { return _M_put_num(*this,  __x); }
+  _Self& operator<<(long double __x);
 # endif
-  _Self& operator<<(const void* __x) { return _M_put_num(*this,  __x); }
+  _Self& operator<<(const void* __x);
 # ifndef _STLP_NO_BOOL
-  _Self& operator<<(bool __x) { return _M_put_num(*this,  __x); }
+  _Self& operator<<(bool __x);
 # endif
 
 public:                         // Buffer positioning and manipulation.

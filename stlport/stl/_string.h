@@ -1789,9 +1789,10 @@ _STLP_END_NAMESPACE
 
 #include <stl/_string_operators.h>
 
-# if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)
+#if (defined(_STLP_NO_IOSTREAM) || defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)) && \
+    !defined (_STLP_LINK_TIME_INSTANTIATION)
 #  include <stl/_string.c>
-# endif
+#endif
 
 # include <stl/_string_io.h>  
 # include <stl/_string_hash.h>
