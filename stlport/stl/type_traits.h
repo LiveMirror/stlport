@@ -486,9 +486,10 @@ inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*) {
  * and partial function ordering
  */
 #ifdef _STLP_USE_PARTIAL_SPEC_WORKAROUND
-class __stlport_class {};
-#define _STLP_STLPORT_CLASS_1 : public __stlport_class
-#define _STLP_STLPORT_CLASS_N , public __stlport_class
+template <class _Tp>
+struct __stlport_class {
+  typedef _Tp _Type;
+};
 
 #  if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
 template <class _CondT>
@@ -520,9 +521,9 @@ struct _IsStlportClass {
   typedef typename _Is_rational<_Tp>::_Rational _Tr2;
   typedef typename _Lor2<_Tr1, _Tr2>::_Ret _Tr3;
 
-  typedef typename _IsConvertibleCondNot<_Tr3, _Tp, __stlport_class>::_Ret _Ret;
+  typedef typename _IsConvertibleCondNot<_Tr3, _Tp, __stlport_class<_Tp> >::_Ret _Ret;
 #  else
-  typedef typename _IsConvertible<_Tp, __stlport_class>::_Type _Ret;
+  typedef typename _IsConvertible<_Tp, __stlport_class<_Tp> >::_Type _Ret;
 #  endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
 };
 

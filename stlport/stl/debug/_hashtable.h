@@ -114,7 +114,7 @@ public:
     _M_iter_list(_Get_base()) {}
   
   _DBG_hashtable(__move_source<_Self> src) :
-    _STLP_DBG_HT_SUPER(_AsMoveSource<_STLP_DBG_HT_SUPER >(src.get())), _M_iter_list(_Get_base()) {
+    _STLP_DBG_HT_SUPER(__move_source<_Base>(src.get())), _M_iter_list(_Get_base()) {
     src.get()._M_iter_list._M_invalidate_all();
   }
   

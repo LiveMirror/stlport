@@ -60,7 +60,11 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_LIST_BASE >&) {
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
 class _DBG_list : private _STLP_RANGE_CHECKER(_STLP_DBG_LIST_BASE),
-                  public _STLP_DBG_LIST_BASE {
+                  public _STLP_DBG_LIST_BASE
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                  , public __stlport_class<_DBG_list<_Tp, _Alloc> >
+#endif
+{
   typedef _STLP_DBG_LIST_BASE _Base;
   typedef _DBG_list<_Tp, _Alloc> _Self;
   typedef _STLP_RANGE_CHECKER(_STLP_DBG_LIST_BASE) _CheckRange;
@@ -108,7 +112,7 @@ public:
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   _DBG_list(__move_source<_Self> src)
-    : _STLP_DBG_LIST_BASE(_AsMoveSource<_STLP_DBG_LIST_BASE >(src.get())), 
+    : _STLP_DBG_LIST_BASE(__move_source<_Base>(src.get())), 
       _M_iter_list(_Get_base()) {}
   
 #if defined (_STLP_MEMBER_TEMPLATES)

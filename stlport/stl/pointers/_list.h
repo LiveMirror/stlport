@@ -279,7 +279,7 @@ public:
 #endif /* _STLP_MEMBER_TEMPLATES */
   list(const _Self& __x) : _M_impl(__x._M_impl) {}
 
-  list(__move_source<_Self> src) : _M_impl(_AsMoveSource<_Base>(src.get()._M_impl)) {}
+  list(__move_source<_Self> src) : _M_impl(__move_source<_Base>(src.get()._M_impl)) {}
 
   iterator begin()             { return _M_impl.begin()._M_node; }
   const_iterator begin() const { return _M_impl.begin()._M_node; }

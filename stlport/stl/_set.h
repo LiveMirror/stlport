@@ -41,7 +41,11 @@ _STLP_BEGIN_NAMESPACE
 
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
-class set {
+class set
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+          : public __stlport_class<set<_Key, _Compare, _Alloc> >
+#endif
+{
   typedef set<_Key, _Compare, _Alloc> _Self;
 public:
 // typedefs:
@@ -202,7 +206,11 @@ public:
 
 template <class _Key, __DFL_TMPL_PARAM(_Compare,less<_Key>), 
                      _STLP_DEFAULT_ALLOCATOR_SELECT(_Key) >
-class multiset _STLP_STLPORT_CLASS_1 {
+class multiset 
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+               : public __stlport_class<multiset<_Key, _Compare, _Alloc> >
+#endif
+{
   typedef multiset<_Key, _Compare, _Alloc> _Self;
 public:
   // typedefs:

@@ -56,7 +56,11 @@ inline random_access_iterator_tag iterator_category(const  _DBG_iter_base< _STLP
 
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
 class _DBG_deque : private _STLP_RANGE_CHECKER(_STLP_DEQUE_SUPER),
-                   public _STLP_DEQUE_SUPER {
+                   public _STLP_DEQUE_SUPER
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                    , public __stlport_class<_DBG_deque<_Tp, _Alloc> >
+#endif
+{
   typedef _DBG_deque<_Tp,_Alloc> _Self;
   typedef _STLP_DEQUE_SUPER _Base;
   typedef _STLP_RANGE_CHECKER(_STLP_DEQUE_SUPER) _CheckRange;
@@ -145,7 +149,7 @@ public:                         // Constructor, destructor.
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   _DBG_deque(__move_source<_Self> src)
-    : _STLP_DEQUE_SUPER(_AsMoveSource<_STLP_DEQUE_SUPER >(src.get())), _M_iter_list(_Get_base()) {
+    : _STLP_DEQUE_SUPER(__move_source<_Base>(src.get())), _M_iter_list(_Get_base()) {
     src.get()._Invalidate_all();
   }
 

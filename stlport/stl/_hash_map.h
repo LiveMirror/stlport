@@ -42,7 +42,11 @@ _STLP_BEGIN_NAMESPACE
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class hash_map _STLP_STLPORT_CLASS_1 {
+class hash_map
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+               : public __stlport_class<hash_map<_Key, _Tp, _HashFcn, _EqualKey, _Alloc> >
+#endif
+{
 private:
   typedef hash_map<_Key, _Tp, _HashFcn, _EqualKey, _Alloc> _Self;
 public:
@@ -88,7 +92,7 @@ public:
     : _M_ht(__n, __hf, __eql, __a) {}
 
   hash_map(__move_source<_Self> src)
-    : _M_ht(_AsMoveSource(src.get()._M_ht)) {
+    : _M_ht(__move_source<_Ht>(src.get()._M_ht)) {
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES
@@ -216,7 +220,11 @@ public:
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_HashFcn,hash<_Key>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Key>),
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class hash_multimap _STLP_STLPORT_CLASS_1 {
+class hash_multimap
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                    : public __stlport_class<hash_multimap<_Key, _Tp, _HashFcn, _EqualKey, _Alloc> >
+#endif
+{
 private:
   typedef hash_multimap<_Key, _Tp, _HashFcn, _EqualKey, _Alloc> _Self;
 public:
@@ -261,7 +269,7 @@ public:
     : _M_ht(__n, __hf, __eql, __a) {}
 
   hash_multimap(__move_source<_Self> src)
-    : _M_ht(_AsMoveSource(src.get()._M_ht)) {
+    : _M_ht(__move_source<_Ht>(src.get()._M_ht)) {
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES

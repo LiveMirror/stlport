@@ -44,8 +44,15 @@ template <class _Tp>
 # else
 template <class _Tp, class _Sequence>
 # endif
-class stack {
-
+class stack 
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#  if defined (_STLP_STACK_ARGS)
+            : public __stlport_class<stack<_Tp> >
+#  else
+            : public __stlport_class<stack<_Tp, _Sequence> >
+#  endif
+#endif
+{
 # ifdef _STLP_STACK_ARGS 
   typedef deque<_Tp> _Sequence;
   typedef stack<_Tp> _Self;

@@ -41,7 +41,10 @@ _STLP_BEGIN_NAMESPACE
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class map _STLP_STLPORT_CLASS_1
+class map
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+               : public __stlport_class<map<_Key, _Tp, _Compare, _Alloc> >
+#endif
 {
   typedef map<_Key, _Tp, _Compare, _Alloc> _Self;
 public:
@@ -134,7 +137,7 @@ public:
   map(const _Self& __x) : _M_t(__x._M_t) {}
 
   map(__move_source<_Self> src)
-    : _M_t(_AsMoveSource(src.get()._M_t)) {
+    : _M_t(__move_source<_Rep_type>(src.get()._M_t)) {
   }
 
   _Self& operator=(const _Self& __x) {
@@ -221,7 +224,11 @@ public:
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class multimap _STLP_STLPORT_CLASS_1 {
+class multimap 
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+               : public __stlport_class<multimap<_Key, _Tp, _Compare, _Alloc> >
+#endif
+{
   typedef multimap<_Key, _Tp, _Compare, _Alloc> _Self;
 public:
 
@@ -308,7 +315,7 @@ public:
   multimap(const _Self& __x) : _M_t(__x._M_t) { }
 
   multimap(__move_source<_Self> src)
-    : _M_t(_AsMoveSource(src.get()._M_t)) {
+    : _M_t(__move_source<_Rep_type>(src.get()._M_t)) {
   }
 
   _Self& operator=(const _Self& __x) {

@@ -106,14 +106,17 @@ protected:
   _AllocProxy _M_end_of_storage;
 };
 
-# ifndef _STLP_DONT_USE_PTR_SPECIALIZATIONS
+#ifndef _STLP_DONT_USE_PTR_SPECIALIZATIONS
 #  define _VECTOR_IMPL _Vector_impl
-# else
+#else
 #  define _VECTOR_IMPL vector
-# endif
+#endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _VECTOR_IMPL : protected _Vector_base<_Tp, _Alloc> _STLP_STLPORT_CLASS_N
+class _VECTOR_IMPL : protected _Vector_base<_Tp, _Alloc>
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                     , public __stlport_class<_VECTOR_IMPL<_Tp, _Alloc> >
+#endif
 {
 private:
   typedef _Vector_base<_Tp, _Alloc> _Base;

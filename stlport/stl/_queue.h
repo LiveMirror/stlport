@@ -60,7 +60,15 @@ template <class _Tp>
 # else
 template <class _Tp, class _Sequence>
 # endif
-class queue {
+class queue 
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#  if defined (_STLP_QUEUE_ARGS)
+            : public __stlport_class<queue<_Tp> >
+#  else
+            : public __stlport_class<queue<_Tp, _Sequence> >
+#  endif
+#endif
+{
 # if defined ( _STLP_QUEUE_ARGS )
   typedef deque<_Tp> _Sequence;
   typedef queue<_Tp> _Self;
@@ -127,7 +135,14 @@ template <class _Tp>
 # else
 template <class _Tp, class _Sequence, class _Compare>
 # endif
-class  priority_queue _STLP_STLPORT_CLASS_1
+class priority_queue
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+#  if defined (_STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS)
+            : public __stlport_class<priority_queue<_Tp> >
+#  else
+            : public __stlport_class<priority_queue<_Tp, _Sequence> >
+#  endif
+#endif
 {
 # ifdef _STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS
   typedef vector<_Tp> _Sequence;

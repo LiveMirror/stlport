@@ -24,8 +24,12 @@
 _STLP_BEGIN_NAMESPACE
 
 template <class _CharT, class _Traits, class _Alloc> 
-class basic_string : private __range_checker_mem_t,
-                     public _STLP_NON_DBG_STRING_BASE {
+class basic_string : private __range_checker_mem_t
+                   , public _STLP_NON_DBG_STRING_BASE
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                   , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
+#endif
+{
 private:
   typedef _STLP_NON_DBG_STRING_BASE _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;

@@ -210,7 +210,7 @@ typedef _Stl_prime<bool> _Stl_prime_type;
  */
 template <class _Val, class _Key, class _HF,
           class _ConstTraits, class _ExK, class _EqK, class _All>
-class hashtable _STLP_STLPORT_CLASS_1 {
+class hashtable {
   typedef hashtable<_Val, _Key, _HF, _ConstTraits, _ExK, _EqK, _All> _Self;
 public:
   typedef _Key key_type;

@@ -42,7 +42,11 @@ _STLP_BEGIN_NAMESPACE
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
-class hash_set _STLP_STLPORT_CLASS_1 {
+class hash_set 
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+               : public __stlport_class<hash_set<_Value, _HashFcn, _EqualKey, _Alloc> >
+#endif
+{
   typedef _Const_Const_traits<_Value> _ConstTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
@@ -86,7 +90,7 @@ public:
     : _M_ht(__n, __hf, __eql, __a) {}
 
   hash_set(__move_source<_Self> src)
-    : _M_ht(_AsMoveSource(src.get()._M_ht)) {
+    : _M_ht(__move_source<_Ht>(src.get()._M_ht)) {
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES
@@ -223,7 +227,11 @@ public:
 template <class _Value, __DFL_TMPL_PARAM(_HashFcn,hash<_Value>),
           __DFL_TMPL_PARAM(_EqualKey,equal_to<_Value>),
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) >
-class hash_multiset _STLP_STLPORT_CLASS_1 {
+class hash_multiset 
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+               : public __stlport_class<hash_multiset<_Value, _HashFcn, _EqualKey, _Alloc> >
+#endif
+{
   typedef _Const_Const_traits<_Value> _ConstTraits;
 public:
   typedef hashtable<_Value, _Value, _HashFcn, 
@@ -270,7 +278,7 @@ public:
     : _M_ht(__n, __hf, __eql, __a) {}
 
   hash_multiset(__move_source<_Self> src)
-    : _M_ht(_AsMoveSource(src.get()._M_ht)) {
+    : _M_ht(__move_source<_Ht>(src.get()._M_ht)) {
   }
 
 #ifdef _STLP_MEMBER_TEMPLATES

@@ -1,3 +1,9 @@
+2004-08-05  Francois Dumont <dums@...>
+
+	* Fixes of the internal move framework for compilers not supporting partial
+	template specialization. The problem was detected thanks to the boost regression
+	test suite.
+
 2004-08-04  Francois Dumont <dums@...>
 
 	* stlport/stl/debug/_list.h, _slist.h: small review of the stlport debug code.

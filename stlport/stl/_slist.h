@@ -181,7 +181,11 @@ public:
 # endif /* _STLP_DONT_USE_PTR_SPECIALIZATIONS */
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _SLIST_IMPL : protected _Slist_base<_Tp,_Alloc> _STLP_STLPORT_CLASS_N {
+class _SLIST_IMPL : protected _Slist_base<_Tp,_Alloc> 
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                    , public __stlport_class<_SLIST_IMPL<_Tp, _Alloc> >
+#endif
+{
 private:
   typedef _Slist_base<_Tp,_Alloc> _Base;
   typedef _SLIST_IMPL<_Tp,_Alloc> _Self;

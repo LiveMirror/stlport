@@ -103,7 +103,11 @@ struct _Vector_const_traits<bool, _Bit_iterator> {
  */
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
 class _DBG_vector : private __range_checker<_STLP_DBG_VECTOR_BASE >,
-                    public _STLP_DBG_VECTOR_BASE {
+                    public _STLP_DBG_VECTOR_BASE
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                     , public __stlport_class<_DBG_vector<_Tp, _Alloc> >
+#endif
+{
 private:
   typedef _STLP_DBG_VECTOR_BASE _Base;
   typedef _DBG_vector<_Tp, _Alloc> _Self;
@@ -189,7 +193,7 @@ public:
     : _CheckRange(__x), _STLP_DBG_VECTOR_BASE(__x), _M_iter_list(_Get_base()) {}
 
   _DBG_vector(__move_source<_Self> src)
-    : _STLP_DBG_VECTOR_BASE(_AsMoveSource<_STLP_DBG_VECTOR_BASE >(src.get())), _M_iter_list(_Get_base()) {
+    : _STLP_DBG_VECTOR_BASE(__move_source<_Base>(src.get())), _M_iter_list(_Get_base()) {
     src.get()._Invalidate_all();
   }
 

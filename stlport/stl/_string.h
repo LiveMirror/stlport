@@ -112,7 +112,11 @@ struct _String_reserve_t {};
 #endif
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_string : protected _String_base<_CharT,_Alloc> _STLP_STLPORT_CLASS_N {
+class basic_string : protected _String_base<_CharT,_Alloc>
+#if !defined(basic_string) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                   , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
+#endif
+{
 protected:                        // Protected members inherited from base.
   typedef _String_base<_CharT,_Alloc> _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
@@ -915,7 +919,11 @@ _STLP_BEGIN_NAMESPACE
 #  define _STLP_STRING_BASE_NAME _STLP_NO_MEM_T_NAME(str)<_CharT, _Traits, _Alloc>
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_string : public _STLP_STRING_BASE_NAME {
+class basic_string : public _STLP_STRING_BASE_NAME
+#if !defined(basic_string) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                   , public __stlport_class<basic_string<_CharT, _Traits, _Alloc> >
+#endif
+{
 protected:                        // Protected members inherited from base.
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
   typedef _STLP_STRING_BASE_NAME _Base;

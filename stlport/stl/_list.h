@@ -230,7 +230,11 @@ template <class _Tp, class _Alloc, class _StrictWeakOrdering>
 void _S_sort(_LIST_IMPL<_Tp, _Alloc>& __that, _StrictWeakOrdering __comp);
 
 template <class _Tp, class _Alloc>
-class _LIST_IMPL : public _List_base<_Tp, _Alloc> _STLP_STLPORT_CLASS_N {
+class _LIST_IMPL : public _List_base<_Tp, _Alloc>
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                   , public __stlport_class<_LIST_IMPL<_Tp, _Alloc> >
+#endif
+{
   typedef _List_base<_Tp, _Alloc> _Base;
   typedef _LIST_IMPL<_Tp, _Alloc> _Self;
   typedef _List_node<_Tp> _Node;

@@ -54,7 +54,11 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_SLIST_BASE >&) {
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
 class _DBG_slist : private _STLP_RANGE_CHECKER(_STLP_DBG_SLIST_BASE),
-                   public _STLP_DBG_SLIST_BASE {
+                   public _STLP_DBG_SLIST_BASE
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                   , public __stlport_class<_DBG_slist<_Tp, _Alloc> >
+#endif
+{
 private:
   typedef _STLP_DBG_SLIST_BASE _Base;
   typedef _DBG_slist<_Tp,_Alloc> _Self;
@@ -104,7 +108,7 @@ public:
 #endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   _DBG_slist(__move_source<_Self> src)
-    : _STLP_DBG_SLIST_BASE(_AsMoveSource<_STLP_DBG_SLIST_BASE >(src.get())) , _M_iter_list(_Get_base()) {
+    : _STLP_DBG_SLIST_BASE(__move_source<_Base>(src.get())) , _M_iter_list(_Get_base()) {
     _Invalidate_all();
   }
   

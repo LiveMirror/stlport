@@ -102,7 +102,7 @@ public:
     _STLP_DBG_TREE_SUPER(__x), _M_iter_list(_Get_base()) {}
 
   _DBG_Rb_tree(__move_source<_Self> src):
-    _STLP_DBG_TREE_SUPER(_AsMoveSource<_STLP_DBG_TREE_SUPER >(src.get())), _M_iter_list(_Get_base()) {
+    _STLP_DBG_TREE_SUPER(__move_source<_Base>(src.get())), _M_iter_list(_Get_base()) {
     src.get()._M_iter_list._Invalidate_all();
   }
 

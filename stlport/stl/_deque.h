@@ -379,7 +379,10 @@ protected:
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DEQUE_IMPL : protected _Deque_base<_Tp, _Alloc> _STLP_STLPORT_CLASS_N
+class _DEQUE_IMPL : protected _Deque_base<_Tp, _Alloc>
+#if !defined (_STLP_DEBUG) && defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+                    , public __stlport_class<_DEQUE_IMPL<_Tp, _Alloc> >
+#endif
 {
   typedef _Deque_base<_Tp, _Alloc> _Base;
   typedef _DEQUE_IMPL<_Tp, _Alloc> _Self;
