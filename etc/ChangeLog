@@ -1,3 +1,15 @@
+2004-09-24  Francois Dumont  <dums@...>
+
+	* stlport/config/stl_gcc.h: Fix of the relative include path used to access the
+	native gcc headers. Before version 3.4.0 the 0 patch level was not part of the 
+	include	path.
+	
+	* stlport/stl/type_traits.h, _vector.h, _algobase.h, _construct.h: Removal
+	of the __action_on_move type traits replaced by a generalization of the 
+	already existing __move_traits.
+	
+	* test/unit/mvctor_test.cpp: New test case for the __move_traits feature.
+	
 2004-09-24  Petr Ovtchenkov  <ptr@island...>
 
 	* src/explore/Makefiles/gmake/sunos: 'explore' makesystem adopted to work
@@ -42,7 +54,7 @@
 	* src/explore/Makefiles/gmake/cygwin, mingw: Build configuration files merges
 	within a single build system: cygming. Future portage of STLport for compilers
 	using the GNU tools will be available from both systems. Removal of the vc6 build
-	under cygwin, for mono platform compiler lets support only one build system.
+	under cygwin, for mono-platform compilers we support only one build system.
 
 	* stlport/stl/_vector.h: Modification of the destructor implementation to destroyed
 	object instances in a reverse order taking advantage of the way elements are
@@ -1463,7 +1475,7 @@ The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
 	* dll_main.cpp : forced link of Bs_G static data members (thanks  Sandy Martel). Function wrapped in STLport namespace.
 
-	* _alloc.c : fixed _STLP_CHUNK_MALLOC for debug malloc configuration (thanks  Markus Sch pflin)
+	* _alloc.c : fixed _STLP_CHUNK_MALLOC for debug malloc configuration (thanks  Markus Sch pflin)
 
 	* _config_compat.h : fixed compatibility section for _STLP_NO_OWN_IOSTREAMS
 
