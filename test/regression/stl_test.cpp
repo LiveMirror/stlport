@@ -488,9 +488,11 @@ int main(int argc, char** argv) {
         cout.flush();
         string1_test (argc, argv);
         cout.flush();
-	      bitset1_test (argc, argv); 
+        bitset1_test (argc, argv); 
         cout.flush();
         move_construct_test (argc, argv);
+        cout.flush();
+        ioiter_test (argc, argv);
         cout.flush();
     }
     return 0;
