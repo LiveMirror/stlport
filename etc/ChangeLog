@@ -1,3 +1,12 @@
+2004-07-13  Francois Dumont <dums@...>
+
+	* stlport/numeric: removal of the _function.h header include.
+
+	* test/unit/divide_test.cpp: add the missing functionnal header
+	inclusion.
+
+	* doc/README.msvc: new doc specific to the MSVC++ family compiler.
+
 2004-07-12  Petr Ovtchenkov  <ptr@Island...>
 
 	* test/fstream_test.cpp: tests for unformatted extraction bug.
