@@ -97,7 +97,7 @@ typedef long double max_double_type;
 # include <algorithm>
 
 
-#if defined(__hpux) && !defined(_INCLUDE_HPUX_SOURCE)
+#if defined(__hpux) && (!defined(_INCLUDE_HPUX_SOURCE) || defined(__GNUC__))
      extern "C" double erf(double);
      extern "C" double erfc(double);
      extern "C" double gamma(double);                             /* obsolescent */
