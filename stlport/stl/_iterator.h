@@ -192,7 +192,7 @@ public:
   }
   back_insert_iterator<_Container>& operator*() { return *this; }
   back_insert_iterator<_Container>& operator++() { return *this; }
-  back_insert_iterator<_Container>& operator++(int) { return *this; }
+  back_insert_iterator<_Container>  operator++(int) { return *this; }
 };
 
 template <class _Container>
@@ -217,7 +217,7 @@ public:
   }
   front_insert_iterator<_Container>& operator*() { return *this; }
   front_insert_iterator<_Container>& operator++() { return *this; }
-  front_insert_iterator<_Container>& operator++(int) { return *this; }
+  front_insert_iterator<_Container>  operator++(int) { return *this; }
 };
 
 template <class _Container>
