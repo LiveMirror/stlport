@@ -1,3 +1,17 @@
+2005-04-06  Petr Ovtchenkov  <ptr@island...>
+
+	* test/unit/cppunit/test_main.cpp: windows.h required here
+	[see 2005-04-04; patch by Michael Fink].
+
+	* stlport/stl/_istream.h: __is replaced by __istr, due
+	to MS privatize __is.
+
+	* stlport/stl/_num_get.h: __in replaced by __ii, due to MS
+	privatize __in too.
+
+	* stlport/stl/_config.h: Visual C++ 8 uses _M_AMD64 to identify
+	EM64T and AMD64 platforms [thanks Mike Roberts].
+
 2005-04-05  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_evc.h: apply patch from Michael Fink to add support for
