@@ -1,7 +1,10 @@
 2004-09-06  Francois Dumont  <dums@...>
 
+	* test/unit/nmake-evc-common.mak: Use of the dynamic runtime for the
+	*-shared rules rather than the previous static thanks Michael Fink.
+	
 	* test/unit/nmake-evc*.mak: end of build code factorisation, use of 
-	nmake-evc-common.mak within all makefiles.
+	nmake-evc-common.mak within all makefiles thanks Michael Fink.
 	
 	* test/unit/locale_test.cpp: Application of a patch from Michael Fink
 	to check the "C" locale on all platforms. Fix of the money_get_put test
