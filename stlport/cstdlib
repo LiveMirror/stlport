@@ -90,7 +90,7 @@ _STLP_END_NAMESPACE
 #if defined(_MSC_EXTENSIONS) && (defined(_STLP_MSVC) && _STLP_MSVC <= 1300)
 # pragma warning (push)
 # pragma warning (disable: 4162)
-# pragma function (abs,div)
+# pragma function (abs)
 #endif
 
 #if !defined(_STLP_MSVC) || (_STLP_MSVC > 1300)
@@ -102,7 +102,7 @@ inline ldiv_t div(long __x, long __y) { return (ldiv(__x, __y)); }
 #endif
 
 #if defined(_MSC_EXTENSIONS) && (defined(_STLP_MSVC) && _STLP_MSVC <= 1300)
-# pragma intrinsic (abs,div)
+# pragma intrinsic (abs)
 # pragma warning (pop)
 #endif
 
