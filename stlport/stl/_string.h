@@ -303,7 +303,7 @@ private:                        // Helper functions used by constructors
     *__p = 0;
   }
 
-  void _M_force_construct_null(_CharT* __p, const __true_type& /* _Is_POD */) const{
+  void _M_force_construct_null(_CharT*, const __true_type& /* _Is_POD */) const{
     /*Nothing to do*/
   }
   void _M_force_construct_null(_CharT* __p, const __false_type& /* _Is_POD */) const {
