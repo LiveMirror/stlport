@@ -27,6 +27,7 @@ class SstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(buf);
   CPPUNIT_TEST(rdbuf);
   CPPUNIT_TEST(streambuf_output);
+  CPPUNIT_TEST(seek);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -41,6 +42,7 @@ class SstreamTest : public CPPUNIT_NS::TestCase
     void buf();
     void rdbuf();
     void streambuf_output();
+    void seek();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SstreamTest);
@@ -293,4 +295,15 @@ void SstreamTest::streambuf_output()
     CPPUNIT_ASSERT( ostr.str() == "01234567890123456789" );
   }
 #endif
+}
+
+void SstreamTest::seek()
+{
+  stringstream s( "0123456789" );
+
+  CPPUNIT_ASSERT( s.tellg() == stringstream::pos_type(0) );
+  s.seekg( 6, ios::beg );
+  CPPUNIT_ASSERT( s.tellg() == stringstream::pos_type(6) );
+  s.seekg( -3, ios::cur );
+  CPPUNIT_ASSERT( s.tellg() == stringstream::pos_type(3) );
 }

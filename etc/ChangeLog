@@ -1,3 +1,9 @@
+2004-10-25  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_sstream.c: cur direction missed in seekoff. Thanks David Obermann.
+
+	* sstream_test.cpp: test for problem above.
+
 2004-10-24  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ios_base.h, src/ios.cpp: definition of the ios_base::failure

@@ -343,7 +343,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::seekoff(off_type __off,
   bool __out = false;
   
   if ((__mode & (ios_base::in | ios_base::out)) == (ios_base::in | ios_base::out) ) {
-    if (__dir == ios_base::beg || __dir == ios_base::end)
+    if (__dir == ios_base::beg || __dir == ios_base::end || __dir == ios_base::cur)
       __in = __out = true;
   }
   else if (__mode & ios_base::in)
