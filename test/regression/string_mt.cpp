@@ -6,6 +6,10 @@
 # include <pthread.h>
 #endif
 
+#ifdef _STLP_WIN32THREADS
+# include <windows.h>
+#endif
+
 #ifdef MAIN
 #define string_mt_test main
 #endif
@@ -21,7 +25,11 @@ string func( const string& par )
   return tmp;
 }
 
+#if defined (_PTHREAD)
 void *f( void * )
+#elif defined (_STLP_WIN32THREADS)
+DWORD __stdcall f (void *)
+#endif
 {
   string s( "qyweyuewunfkHBUKGYUGL,wehbYGUW^(@T@H!BALWD:h^&@#*@(#:JKHWJ:CND" );
 
@@ -32,10 +40,10 @@ void *f( void * )
   return 0;
 }
 
-int string_mt_test( int, char * const * )
+int string_mt_test( int, char *const* )
 {
   const int nth = 2;
-#ifdef _PTHREADS
+#if defined(_PTHREADS)
   pthread_t t[nth];
 
   for ( int i = 0; i < nth; ++i ) {
@@ -46,6 +54,18 @@ int string_mt_test( int, char * const * )
     pthread_join( t[i], 0 );
   }
 #endif // _PTHREADS
+
+#if defined (_STLP_WIN32THREADS)
+  HANDLE t[nth];
+
+  for ( int i = 0; i < nth; ++i ) {
+    t[i] = CreateThread(NULL, 0, f, 0, 0, NULL);
+  }
+
+  for ( int i = 0; i < nth; ++i ) {
+    WaitForSingleObject(t[i], INFINITE);
+  }
+#endif
 
   return 0;
 }
