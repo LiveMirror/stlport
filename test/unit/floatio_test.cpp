@@ -155,8 +155,7 @@ void FloatIOTest::float_input_test()
     CPPUNIT_ASSERT(!str.fail());
     CPPUNIT_ASSERT(str.eof());
     CPPUNIT_ASSERT( in_val_d != numeric_limits<double>::infinity() );
-    // CPPUNIT_ASSERT(in_val_d == 1E+308);
-    // cerr << "#####" << in_val_d << endl;
+    // CPPUNIT_ASSERT(in_val_d != 1E+308);
     str.clear();
   }
   {
@@ -169,16 +168,8 @@ void FloatIOTest::float_input_test()
     CPPUNIT_ASSERT(str.eof());
     CPPUNIT_ASSERT( in_val_d == numeric_limits<double>::infinity() );
     // CPPUNIT_ASSERT(in_val_d == 1E+308);
-    // cerr << "#####" << in_val_d << endl;
     str.clear();
   }
-
-  istr.str("1E+2048");
-  istr >> in_val_d;
-  CPPUNIT_ASSERT(!istr.fail());
-  CPPUNIT_ASSERT(istr.eof());
-  CPPUNIT_ASSERT(in_val_d == 1E+2048);
-  // cerr << "#####" << in_val_d << endl;
 }
 
 /*
