@@ -120,8 +120,8 @@ public:
   typedef typename _Base::first_argument_type first_argument_type;
   typedef typename _Base::second_argument_type second_argument_type;
 private:
-  typedef __call_traits<first_argument_type>::param_type _FstArgParamType;
-  typedef __call_traits<second_argument_type>::param_type _SndArgParamType;
+  typedef typename __call_traits<first_argument_type>::param_type _FstArgParamType;
+  typedef typename __call_traits<second_argument_type>::param_type _SndArgParamType;
 protected:
   _Predicate _M_pred;
 public:
@@ -212,7 +212,7 @@ public:
   typedef typename _Base::argument_type argument_type;
   typedef typename _Base::result_type result_type;
 private:
-  typedef __call_traits<argument_type>::param_type _ArgParamType;
+  typedef typename __call_traits<argument_type>::param_type _ArgParamType;
 protected:
   _Operation1 _M_fn1;
   _Operation2 _M_fn2;
@@ -241,7 +241,7 @@ public:
   typedef typename _Base::argument_type argument_type;
   typedef typename _Base::result_type result_type;
 private:
-  typedef __call_traits<argument_type>::param_type _ArgParamType;
+  typedef typename __call_traits<argument_type>::param_type _ArgParamType;
 protected:
   _Operation1 _M_fn1;
   _Operation2 _M_fn2;
