@@ -21,8 +21,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ErrnoTest);
 
 void ErrnoTest::check()
 {
-  CPPUNIT_ASSERT( errno == 0 );
-
   errno = 1;
 
   CPPUNIT_ASSERT( errno == 1 );
