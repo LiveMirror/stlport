@@ -31,7 +31,7 @@ template class _STLP_CLASS_DECLSPEC _String_base<wchar_t, allocator<wchar_t> >;
 
 #    ifdef _STLP_DEBUG
 template class _STLP_CLASS_DECLSPEC _STLP_NON_DBG_NO_MEM_T_NAME(str)<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
-template class _STLP_CLASS_DECLSPEC __range_checker<_STLP_NON_DBG_NO_MEM_T_NAME(str)<wchar_t, char_traits<wchar_t>, allocator<wchar_t> > >;
+template class _STLP_CLASS_DECLSPEC __construct_checker<_STLP_NON_DBG_NO_MEM_T_NAME(str)<wchar_t, char_traits<wchar_t>, allocator<wchar_t> > >;
 #    endif
 
 template class _STLP_CLASS_DECLSPEC _STLP_NO_MEM_T_NAME(str)<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;

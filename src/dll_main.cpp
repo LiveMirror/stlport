@@ -171,7 +171,7 @@ template class _STLP_alloc_proxy<void**, void*, allocator<void*> >;
 template class _Vector_base<void*,allocator<void*> >;
 #  if defined (_STLP_DEBUG) && ! defined (__SUNPRO_CC)
 template class __WORKAROUND_DBG_RENAME(vector) <void*,allocator<void*> >;
-template class __range_checker<__WORKAROUND_DBG_RENAME(vector) <void*,allocator<void*> > >;
+template class __construct_checker<__WORKAROUND_DBG_RENAME(vector) <void*,allocator<void*> > >;
 #  endif
 template class vector<void*,allocator<void*> >;
 
@@ -203,7 +203,7 @@ template class _String_base<char, allocator<char> >;
 
 #  if defined (_STLP_DEBUG) && ! defined (__SUNPRO_CC)
 template class _STLP_NON_DBG_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> >;
-template class __range_checker<_STLP_NON_DBG_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> > >;
+template class __construct_checker<_STLP_NON_DBG_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> > >;
 #  endif
 
 template class _STLP_NO_MEM_T_NAME(str)<char, char_traits<char>, allocator<char> >;
