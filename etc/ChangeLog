@@ -1,3 +1,11 @@
+2004-10-24  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_deque.h, _deque.c: Modification of the deque implementation
+	to use the internal move framework.
+	
+	* test/unit/mvctor_test.cpp: New test case for the use of the move
+	framework within the deque container.
+	
 2004-10-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_iostring_stream.h: Simplification of the __stl_alloc_rebind
