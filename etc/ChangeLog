@@ -1,10 +1,19 @@
 2005-03-30  Petr Ovtchenkov  <ptr@island...>
 
-	* stlport/assert.h, float.h, iso646.h, limits.h: added in accordance
-	with Standard D.5 [compatibility with standard C library] to prevent
-	wrong std interpretation in ill-formed native headers [definition
-	of namespace std in C headers].
-	
+	* stlport/assert.h, float.h, iso646.h, limits.h, errno.h:
+	added in accordance with Standard D.5 [compatibility with standard
+	C library] to prevent wrong std interpretation in ill-formed native
+	headers [definition of namespace std in C headers].
+
+	* test/unit/test_errno.cpp: check correct processing of errno.h
+	header.
+
+	* build/test/eh: build eh tests again.
+
+	* test/eh/LeakCheck.h, TestClass.cpp, TestClass.h: fix and clear.
+
+	* test/eh/test_hash_map.cpp, test_hash_set.cpp: mutiset/multimap
+	has no == operator [no container equality]; this fix is quick-and-dirty
 
 2005-03-29  Petr Ovtchenkov  <ptr@island...>
 
