@@ -238,38 +238,57 @@ void SstreamTest::rdbuf()
   CPPUNIT_ASSERT( os.str() == "1234567" );
 }
 
-
 void SstreamTest::streambuf_output()
 {
-  istringstream in("00000000000000000000");
-  CPPUNIT_ASSERT( in );
-
   {
-    auto_ptr<streambuf> pfull_buf(new full_streambuf(10));
+    istringstream in("01234567890123456789");
+    CPPUNIT_ASSERT( in );
+
+    auto_ptr<full_streambuf> pfull_buf(new full_streambuf(10));
     ostream out(pfull_buf.get());
     CPPUNIT_ASSERT( out );
 
     out << in.rdbuf();
     CPPUNIT_ASSERT( out );
     CPPUNIT_ASSERT( in );
+    //out is good we can check what has been extracted:
+    CPPUNIT_ASSERT( pfull_buf->str() == "0123456789" );
 
     out << in.rdbuf();
     CPPUNIT_ASSERT( out.fail() );
     CPPUNIT_ASSERT( in );
+
+    ostringstream ostr;
+    ostr << in.rdbuf();
+    CPPUNIT_ASSERT( ostr );
+    CPPUNIT_ASSERT( in );
+    CPPUNIT_ASSERT( ostr.str() == "0123456789" );
   }
 
   {
     //If the output stream buffer throws:
-    auto_ptr<streambuf> pfull_buf(new full_streambuf(10, true));
+    istringstream in("01234567890123456789");
+    CPPUNIT_ASSERT( in );
+
+    auto_ptr<full_streambuf> pfull_buf(new full_streambuf(10, true));
     ostream out(pfull_buf.get());
     CPPUNIT_ASSERT( out );
 
     out << in.rdbuf();
-    CPPUNIT_ASSERT( out );
+    CPPUNIT_ASSERT( out.bad() );
+    CPPUNIT_ASSERT( in );
+    //out is bad we have no guaranty on what has been extracted:
+    //CPPUNIT_ASSERT( pfull_buf->str() == "0123456789" );
+
+    out.clear();
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out.fail() && out.bad() );
     CPPUNIT_ASSERT( in );
 
-    out << in.rdbuf();
-    CPPUNIT_ASSERT( out.fail() );
+    ostringstream ostr;
+    ostr << in.rdbuf();
+    CPPUNIT_ASSERT( ostr );
     CPPUNIT_ASSERT( in );
+    CPPUNIT_ASSERT( ostr.str() == "01234567890123456789" );
   }
 }

@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <sstream>
 
+#include "full_streambuf.h"
 #include "cppunit/cppunit_proxy.h"
 
 #if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
@@ -23,6 +24,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(tellg);
   CPPUNIT_TEST(buf);
   CPPUNIT_TEST(rdbuf);
+  CPPUNIT_TEST(streambuf_output);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -33,6 +35,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
     void tellg();
     void buf();
     void rdbuf();
+    void streambuf_output();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FstreamTest);
@@ -199,4 +202,67 @@ void FstreamTest::rdbuf()
   CPPUNIT_ASSERT( !ss.fail() );
   CPPUNIT_ASSERT( c == '\n' ); // 27.6.1.3 paragraph 12
   CPPUNIT_ASSERT( os.str() == "1234567" );
+}
+
+void FstreamTest::streambuf_output()
+{
+  {
+    ofstream ofstr("bin_datas.txt", ios_base::binary);
+    if (!ofstr)
+      //No test if we cannot create the file
+      return;
+    ofstr << "01234567890123456789";
+    CPPUNIT_ASSERT( ofstr );
+  }
+
+  {
+    ifstream in("bin_datas.txt", ios_base::binary);
+    CPPUNIT_ASSERT( in );
+
+    auto_ptr<full_streambuf> pfull_buf(new full_streambuf(10));
+    ostream out(pfull_buf.get());
+    CPPUNIT_ASSERT( out );
+
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out );
+    CPPUNIT_ASSERT( in );
+    CPPUNIT_ASSERT( pfull_buf->str() == "0123456789" );
+
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out.fail() );
+    CPPUNIT_ASSERT( in );
+
+    ostringstream ostr;
+    ostr << in.rdbuf();
+    CPPUNIT_ASSERT( ostr );
+    CPPUNIT_ASSERT( in );
+    CPPUNIT_ASSERT( ostr.str() == "0123456789" );
+  }
+
+  {
+    //If the output stream buffer throws:
+    ifstream in("bin_datas.txt", ios_base::binary);
+    CPPUNIT_ASSERT( in );
+
+    auto_ptr<full_streambuf> pfull_buf(new full_streambuf(10, true));
+    ostream out(pfull_buf.get());
+    CPPUNIT_ASSERT( out );
+
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out.bad() );
+    CPPUNIT_ASSERT( in );
+    //out is bad we have no guaranty on what has been extracted:
+    //CPPUNIT_ASSERT( pfull_buf->str() == "0123456789" );
+
+    out.clear();
+    out << in.rdbuf();
+    CPPUNIT_ASSERT( out.fail() && out.bad() );
+    CPPUNIT_ASSERT( in );
+
+    ostringstream ostr;
+    ostr << in.rdbuf();
+    CPPUNIT_ASSERT( ostr );
+    CPPUNIT_ASSERT( in );
+    CPPUNIT_ASSERT( ostr.str() == "0123456789" );
+  }
 }
