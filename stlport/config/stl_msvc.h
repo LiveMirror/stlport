@@ -150,9 +150,6 @@
 #  define _STLP_DONT_RETURN_VOID 1
 #  define _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
-#  ifdef _DEBUG
-#   define _STLP_USE_ABBREVS
-#  endif
 # endif /* (_MSC_VER <= 1200) */
 
 # if (_STLP_MSVC > 1100)
@@ -230,6 +227,13 @@
 #   include <config/stl_evc.h>
 #  endif
 # endif /* UNDER_CE */
+
+#if (_MSC_VER <= 1200) || defined(UNDER_CE) // including MSVC 6.0
+#  ifdef _DEBUG
+//Defined here to take into account Windows CE specificities about the _DEBUG macro.
+#    define _STLP_USE_ABBREVS
+#  endif
+#endif
 
 # if !( defined(_STLP_WINCE) )
 #  define _STLP_EXPORT_DECLSPEC __declspec(dllexport)

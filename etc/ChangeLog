@@ -1,3 +1,21 @@
+2004-08-24  Francois Dumont  <dums@...>
+	* stlport/stl/_tree.h, _tree.c: Modification of the _Rb_tree_iterator	struct
+	to be able to distiguish iterator types from different tree based containers
+	Removal of the == and != member operators of the _Rb_tree_base_iterator struct
+	replaced by global operators taking _Rb_tree_iterator as parameters and checking
+	that the iterators are of the same container type thanks Haroon Nassiry report.
+	
+	* stlport/stl/_map.h, _set.h: Modification of the iterator traits used to 
+	instanciate the _Rb_tree class.
+	
+	* stlport/stl/_hashtable.h, _hashtable.c, _hash_set.h, _hash_map.h: Similar
+	modifications to the previous one in order to make for instance the iterator
+	from hash_map and hash_multimap not comparable anymore.
+	
+	* stlport/config/stl_wince.h, stlport/ctype.h: Move of the isspace C function
+	Windows CE specific code from the config file to the ctype.h file. This fix
+	will also apply to Embedded C++ .Net thanks Dirk report.
+
 2004-08-23  Petr Ovtchenkov  <ptr@Island...>
 
 	* test/unit/cppunit/cppunit_proxy.h, test/init/gcc.mak: CPPUNIT_MINI removed.
@@ -27,7 +45,7 @@
 	but more portable. Fix link problem with MSVC compilers family when using STLport
 	static library.
 	
-	* stlport/stl_bitset.h, _bitset.c: Ditto for the _Bs_G class.
+	* stlport/stl/_bitset.h, _bitset.c: Ditto for the _Bs_G class.
 	
 	* stlport/stl/_hashtable.h, _hashtable.c: Ditto for the _Stl_prime class.
 	

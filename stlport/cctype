@@ -29,21 +29,6 @@
 
 #  include <ctype.h>
 
-// Undef convenience interfaces
-#undef isspace
-#undef isprint
-#undef iscntrl
-#undef isupper
-#undef islower
-#undef isalpha
-#undef isdigit
-#undef ispunct
-#undef isxdigit
-#undef isalnum
-#undef isgraph
-#undef toupper
-#undef tolower
-
 # endif /* _STLP_USE_NEW_C_HEADERS */
 
 # if ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
