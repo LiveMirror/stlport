@@ -591,7 +591,7 @@ public:
   pair<iterator,iterator> equal_range_unique(const key_type& __x) {
     pair<iterator, iterator> __p;
     __p.second = lower_bound(__x);
-    if (!_M_key_compare(__x, *__p.second)) {
+    if (!_M_key_compare(__x, _S_key(__p.second._M_node))) {
       __p.first = __p.second++;
     }
     else {
@@ -602,7 +602,7 @@ public:
   pair<const_iterator, const_iterator> equal_range_unique(const key_type& __x) const {
     pair<const_iterator, const_iterator> __p;
     __p.second = lower_bound(__x);
-    if (!_M_key_compare(__x, *__p.second)) {
+    if (!_M_key_compare(__x, _S_key(__p.second._M_node))) {
       __p.first = __p.second++;
     }
     else {
