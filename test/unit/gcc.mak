@@ -32,14 +32,14 @@ release-shared : LDLIBS = -lstlport_r${LIB_VERSION}
 dbg-shared     : LDLIBS = -lstlport_d${LIB_VERSION}
 stldbg-shared  : LDLIBS = -lstlport_stld${LIB_VERSION}
 else
-release-shared : LDLIBS = -lstlport_gcc
-dbg-shared     : LDLIBS = -lstlport_gcc_debug
-stldbg-shared  : LDLIBS = -lstlport_gcc_stldebug
+release-shared : LDLIBS = -lstlport
+dbg-shared     : LDLIBS = -lstlportg
+stldbg-shared  : LDLIBS = -lstlportstlg
 endif
 
 ifeq ($(OSNAME),sunos)
-release-shared : LDLIBS = -lstlport_gcc -lrt
-stldbg-shared  : LDLIBS = -lstlport_gcc_debug -lrt
-dbg-shared     : LDLIBS = -lstlport_gcc_stldebug -lrt
+release-shared : LDLIBS = -lstlport -lrt
+stldbg-shared  : LDLIBS = -lstlportg -lrt
+dbg-shared     : LDLIBS = -lstlportstlg -lrt
 endif
 
