@@ -1,3 +1,8 @@
+2004-07-08  Petr Ovtchenkov  <ptr@Island...>
+
+	* test/unit/sstream_test.cpp: added two test for unformatted extraction
+	and newline character. Inspired by Joerg Becker.
+
 2004-07-07  Francois Dumont  <dums@...>
 
 	* stlport/stl/_hashtable.h, stlport/stl/_hashtable.c, 
