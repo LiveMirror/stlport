@@ -260,7 +260,9 @@ public:
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
-  ~_VECTOR_IMPL() { _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish); }
+  //As the vector container is a back insert container it seems rather logical
+  //to destroy elements in reverse order.
+  ~_VECTOR_IMPL() { _STLP_STD::_Destroy_Range(rbegin(), rend()); }
 
   _Self& operator=(const _Self& __x);
 
