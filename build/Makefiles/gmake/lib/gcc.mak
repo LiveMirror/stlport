@@ -37,7 +37,7 @@ ifeq ($(OSNAME),sunos)
 #END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
 endif
 #END_A_OBJ := $(shell for o in crtn.o; do ${CXX} -print-file-name=$$o; done)
-STDLIBS := -lsupc++ -lgcc_s -lpthread -lc -lm
+STDLIBS := -Wl,--whole-archive -lsupc++ -Wl,--no-whole-archive -lgcc_s -lpthread -lc -lm
 NOSTDLIB := -nostdlib
 endif
 endif
