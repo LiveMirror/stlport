@@ -671,8 +671,7 @@ private:
 // Class basic_fstream<>
 
 template <class _CharT, class _Traits>
-class basic_fstream : public basic_iostream<_CharT, _Traits>
-{
+class basic_fstream : public basic_iostream<_CharT, _Traits> {
 public:                         // Types
   typedef _CharT                     char_type;
   typedef typename _Traits::int_type int_type;
@@ -699,7 +698,7 @@ public:                         // Constructors, destructor.
       	this->setstate(ios_base::failbit);
   }
 
-# ifndef _STLP_NO_EXTENSIONS
+#if !defined (_STLP_NO_EXTENSIONS)
   explicit basic_fstream(int __id,
                          ios_base::openmode __mod = ios_base::in | ios_base::out) :
     basic_ios<_CharT, _Traits>(), basic_iostream<_CharT, _Traits>(0), _M_buf() {
@@ -713,7 +712,7 @@ public:                         // Constructors, destructor.
     if (!_M_buf.open(__s, __m, __protection))
       this->setstate(ios_base::failbit);  
   }
-# endif    
+#endif    
   ~basic_fstream() {}
 
 public:                         // File and buffer operations.
@@ -739,6 +738,11 @@ public:                         // File and buffer operations.
 
 private:
   basic_filebuf<_CharT, _Traits> _M_buf;
+
+  typedef basic_fstream<_CharT, _Traits> _Self;
+  //explicitely defined as private to avoid warnings:
+  basic_fstream(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 _STLP_END_NAMESPACE

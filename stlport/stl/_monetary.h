@@ -24,15 +24,15 @@
 #define _STLP_INTERNAL_MONETARY_H
 
 #ifndef _STLP_INTERNAL_CTYPE_H
-# include <stl/_ctype.h>
+#  include <stl/_ctype.h>
 #endif
 
 #ifndef _STLP_INTERNAL_OSTREAMBUF_ITERATOR_H
-# include <stl/_ostreambuf_iterator.h>
+#  include <stl/_ostreambuf_iterator.h>
 #endif
 
 #ifndef _STLP_INTERNAL_ISTREAMBUF_ITERATOR_H
-# include <stl/_istreambuf_iterator.h>
+#  include <stl/_istreambuf_iterator.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -274,8 +274,7 @@ protected:
 template <class _charT, __DFL_NON_TYPE_PARAM(bool , _International , false) > class moneypunct_byname {};
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC moneypunct_byname<char, true> : public moneypunct<char, true> 
-{
+class _STLP_CLASS_DECLSPEC moneypunct_byname<char, true> : public moneypunct<char, true> {
 public:
   typedef money_base::pattern   pattern;
   typedef char                  char_type;
@@ -295,6 +294,12 @@ protected:
   virtual string_type do_positive_sign() const;
   virtual string_type do_negative_sign() const;
   virtual int         do_frac_digits()   const;
+
+private:
+  typedef moneypunct_byname<char, true> _Self;
+  //explicitely defined as private to avoid warnings:
+  moneypunct_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 _STLP_TEMPLATE_NULL
@@ -319,9 +324,15 @@ protected:
   virtual string_type do_positive_sign() const;
   virtual string_type do_negative_sign() const;
   virtual int         do_frac_digits()   const;
+
+private:
+  typedef moneypunct_byname<char, false> _Self;
+  //explicitely defined as private to avoid warnings:
+  moneypunct_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
-# ifndef _STLP_NO_WCHAR_T
+#if !defined (_STLP_NO_WCHAR_T)
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct_byname<wchar_t, true> : public moneypunct<wchar_t, true> 
 {
@@ -344,6 +355,12 @@ protected:
   virtual string_type do_positive_sign() const;
   virtual string_type do_negative_sign() const;
   virtual int         do_frac_digits()   const;
+
+private:
+  typedef moneypunct_byname<wchar_t, true> _Self;
+  //explicitely defined as private to avoid warnings:
+  moneypunct_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 _STLP_TEMPLATE_NULL
@@ -368,8 +385,14 @@ protected:
   virtual string_type do_positive_sign() const;
   virtual string_type do_negative_sign() const;
   virtual int         do_frac_digits()   const;
+
+private:
+  typedef moneypunct_byname<wchar_t, false> _Self;
+  //explicitely defined as private to avoid warnings:
+  moneypunct_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
-# endif
+#endif
 
 //===== methods ======
 

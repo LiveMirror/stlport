@@ -24,11 +24,16 @@
 #define _STLP_INTERNAL_TIME_FACETS_H
 
 #ifndef _STLP_CTIME
-# include <ctime>                // Needed (for struct tm) by time facets
+#  include <ctime>                // Needed (for struct tm) by time facets
 #endif
 
-#include <stl/c_locale.h>
-#include <stl/_ios_base.h>
+#ifndef _STLP_C_LOCALE_H
+#  include <stl/c_locale.h>
+#endif
+
+#ifndef _STLP_IOS_BASE_H
+#  include <stl/_ios_base.h>
+#endif
 
 _STLP_BEGIN_NAMESPACE
 
@@ -181,6 +186,11 @@ protected:
   dateorder do_date_order() const { return __get_date_order(_M_time); }
 private:
   _Locale_time* _M_time;
+
+  typedef time_get_byname<_Ch, _InIt> _Self;
+  //explicitely defined as private to avoid warnings:
+  time_get_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 // time_put facet
@@ -264,6 +274,11 @@ protected:
 
 private:
   _Locale_time* _M_time;
+
+  typedef time_put_byname<_Ch, _InIt> _Self;
+  //explicitely defined as private to avoid warnings:
+  time_put_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 # ifdef _STLP_USE_TEMPLATE_EXPORT

@@ -38,6 +38,10 @@ public:
 
   _Tp* release() const { _M_r.__set((void*)0); return _M_p; }
 
+private:
+  //explicitely defined as private to avoid warnings:
+  typedef auto_ptr_ref<_Tp> _Self;
+  _Self& operator = (_Self const&);
 };
 
 template<class _Tp>

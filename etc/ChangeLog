@@ -1,3 +1,8 @@
+2005-02-20  Francois Dumont  <dums@stlport...>
+
+	* Add many private definition of copy constructor and assignment operators
+	to avoid very anying warnings under some compilers (MSVC 7.0 7.1).
+
 2005-02-19  Francois Dumont  <dums@stlport...>
 
 	* stlport/stdexcept: Removal of a MSVC 7.0 and 7.1 workaround. Those compilers

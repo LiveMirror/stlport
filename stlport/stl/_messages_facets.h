@@ -25,15 +25,15 @@
 #define _STLP_INTERNAL_MESSAGES_H
 
 #ifndef _STLP_IOS_BASE_H
-# include <stl/_ios_base.h>
+#  include <stl/_ios_base.h>
 #endif
 
-# ifndef _STLP_C_LOCALE_H
+#ifndef _STLP_C_LOCALE_H
 #  include <stl/c_locale.h>
-# endif
+#endif
 
 #ifndef _STLP_INTERNAL_STRING_H
-# include <stl/_string.h>
+#  include <stl/_string.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -142,9 +142,15 @@ public:
 
 protected:
   ~messages_byname();
+
+private:
+  typedef messages_byname<char> _Self;
+  //explicitely defined as private to avoid warnings:
+  messages_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
-# ifndef _STLP_NO_WCHAR_T
+#if !defined (_STLP_NO_WCHAR_T)
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC messages_byname<wchar_t> : public messages<wchar_t> {
 public:
@@ -155,8 +161,14 @@ public:
 
 protected:
   ~messages_byname();
+
+private:
+  typedef messages_byname<wchar_t> _Self;
+  //explicitely defined as private to avoid warnings:
+  messages_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
-# endif /* WCHAR_T */
+#endif /* WCHAR_T */
 
 _STLP_END_NAMESPACE
 

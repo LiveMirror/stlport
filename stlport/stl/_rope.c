@@ -755,10 +755,15 @@ class _Rope_insert_char_consumer : public _Rope_char_consumer<_CharT> {
 private:
 #  if defined (_STLP_USE_NEW_IOSTREAMS)
   typedef basic_ostream<_CharT,_Traits> _Insert_ostream;
+  typedef _Rope_insert_char_consumer<_CharT,_Traits> _Self;
 #  else
   typedef ostream _Insert_ostream;
+  typedef _Rope_insert_char_consumer<_CharT> _Self;
 #  endif
   _Insert_ostream& _M_o;
+
+  //explicitely defined as private to avoid warnings:
+  _Self& operator = (_Self const&);
 public:
   _Rope_insert_char_consumer(_Insert_ostream& __writer) 
     : _M_o(__writer) {};

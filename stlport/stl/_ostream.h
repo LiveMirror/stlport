@@ -21,11 +21,11 @@
 #define _STLP_INTERNAL_OSTREAM_H
 
 #ifndef _STLP_INTERNAL_IOS_H
-# include <stl/_ios.h>                  // For basic_ios<>.  Includes <iosfwd>.
+#  include <stl/_ios.h>                  // For basic_ios<>.  Includes <iosfwd>.
 #endif
 
 #ifndef _STLP_INTERNAL_OSTREAMBUF_ITERATOR_H
-# include <stl/_ostreambuf_iterator.h>
+#  include <stl/_ostreambuf_iterator.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -43,9 +43,12 @@ _M_init(basic_ostream<_CharT, _Traits>& __str);
 // class basic_ostream<>
 
 template <class _CharT, class _Traits>
-class basic_ostream : virtual public basic_ios<_CharT, _Traits>
-{
+class basic_ostream : virtual public basic_ios<_CharT, _Traits> {
   typedef basic_ostream<_CharT, _Traits> _Self;
+
+  //explicitely defined as private to avoid warnings:
+  basic_ostream(_Self const&);
+  _Self& operator = (_Self const&);
   
 public:                         // Types
   typedef _CharT                     char_type;

@@ -19,20 +19,20 @@
 #define _STLP_INTERNAL_ISTREAM_H
 
 // this block is included by _ostream.h, we include it here to lower #include level
-# if defined (_STLP_HAS_WCHAR_T) && !defined (_STLP_CWCHAR_H)
+#if defined (_STLP_HAS_WCHAR_T) && !defined (_STLP_CWCHAR_H)
 #  include <stl/_cwchar.h>
-# endif
+#endif
 
-# ifndef _STLP_INTERNAL_IOS_H
+#ifndef _STLP_INTERNAL_IOS_H
 #  include <stl/_ios.h>                  // For basic_ios<>.  Includes <iosfwd>.
-# endif
+#endif
 
 #ifndef _STLP_INTERNAL_OSTREAM_H
-# include <stl/_ostream.h>              // Needed as a base class of basic_iostream.
+#  include <stl/_ostream.h>              // Needed as a base class of basic_iostream.
 #endif
 
 #ifndef _STLP_INTERNAL_ISTREAMBUF_ITERATOR_H
-# include <stl/_istreambuf_iterator.h>
+#  include <stl/_istreambuf_iterator.h>
 #endif
 
 #include <stl/_ctraits_fns.h>    // Helper functions that allow char traits
@@ -61,6 +61,12 @@ bool _M_init_noskip(basic_istream<_CharT, _Traits>& __is);
 
 template <class _CharT, class _Traits>
 class basic_istream : virtual public basic_ios<_CharT, _Traits> {
+  typedef basic_istream<_CharT, _Traits> _Self;
+
+  //explicitely defined as private to avoid warnings:
+  basic_istream(_Self const&);
+  _Self& operator = (_Self const&);
+  
 public:
                          // Types
   typedef _CharT                     char_type;
@@ -69,7 +75,6 @@ public:
   typedef typename _Traits::off_type off_type;
   typedef _Traits                    traits_type;
   typedef basic_ios<_CharT, _Traits>     _Basic_ios;
-  typedef basic_istream<_CharT, _Traits> _Self;
 
   typedef basic_ios<_CharT, _Traits>& (_STLP_CALL *__ios_fn)(basic_ios<_CharT, _Traits>&);
   typedef ios_base& (_STLP_CALL *__ios_base_fn)(ios_base&);

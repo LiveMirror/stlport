@@ -125,6 +125,10 @@ struct SortTestAux {
   }
 
   bool &_b;
+
+private:
+  //explicitely defined as private to avoid warnings:
+  SortTestAux& operator = (SortTestAux const&);
 };
 
 template <class _Tp>

@@ -163,8 +163,13 @@ public:
   virtual const char* do_tolower(char*, const char*) const;
 
 private:
-    mask _M_byname_table[table_size];
-    _Locale_ctype* _M_ctype;
+  mask _M_byname_table[table_size];
+  _Locale_ctype* _M_ctype;
+
+  //explicitely defined as private to avoid warnings:
+  typedef ctype_byname<char> _Self;
+  ctype_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 
@@ -255,6 +260,11 @@ protected:
 
 private:
   _Locale_ctype* _M_ctype;
+
+  //explicitely defined as private to avoid warnings:
+  typedef ctype_byname<wchar_t> _Self;
+  ctype_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 # endif /* WCHAR_T */

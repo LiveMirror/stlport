@@ -39,6 +39,10 @@ protected:
 
     int _limit;
     size_t &_nb_calls;
+
+  private:
+    //explicitely defined as private to avoid warnings:
+    less_n& operator = (less_n const&);
   };
 };
 

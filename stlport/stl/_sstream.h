@@ -26,15 +26,15 @@
 #define _STLP_SSTREAM_H
 
 #ifndef _STLP_INTERNAL_STREAMBUF
-# include <stl/_streambuf.h>
+#  include <stl/_streambuf.h>
 #endif
 
 #ifndef _STLP_INTERNAL_ISTREAM_H
-# include <stl/_istream.h> // Includes <ostream>, <ios>, <iosfwd>
+#  include <stl/_istream.h> // Includes <ostream>, <ios>, <iosfwd>
 #endif
 
 #ifndef _STLP_INTERNAL_STRING_H
-# include <stl/_string.h>
+#  include <stl/_string.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE
@@ -52,8 +52,7 @@ _STLP_BEGIN_NAMESPACE
 // for read-write streambufs.
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_stringbuf : public basic_streambuf<_CharT, _Traits>
-{
+class basic_stringbuf : public basic_streambuf<_CharT, _Traits> {
 public:                         // Typedefs.
   typedef _CharT                     char_type;
   typedef typename _Traits::int_type int_type;
@@ -118,8 +117,7 @@ _STLP_EXPORT_TEMPLATE_CLASS basic_stringbuf<wchar_t, char_traits<wchar_t>, alloc
 // Class basic_istringstream, an input stream that uses a stringbuf.
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_istringstream : public basic_istream<_CharT, _Traits>
-{
+class basic_istringstream : public basic_istream<_CharT, _Traits> {
 public:                         // Typedefs
   typedef typename _Traits::char_type   char_type;
   typedef typename _Traits::int_type    int_type;
@@ -148,6 +146,11 @@ public:                         // Member functions
   
 private:
   basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
+
+  typedef basic_istringstream<_CharT, _Traits> _Self;
+  //explicitely defined as private to avoid warnings:
+  basic_istringstream(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 
@@ -155,8 +158,7 @@ private:
 // Class basic_ostringstream, an output stream that uses a stringbuf.
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_ostringstream : public basic_ostream<_CharT, _Traits>
-{
+class basic_ostringstream : public basic_ostream<_CharT, _Traits> {
 public:                         // Typedefs
   typedef typename _Traits::char_type   char_type;
   typedef typename _Traits::int_type    int_type;
@@ -186,6 +188,11 @@ public:                         // Member functions.
 
 private:
   basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
+
+  typedef basic_ostringstream<_CharT, _Traits> _Self;
+  //explicitely defined as private to avoid warnings:
+  basic_ostringstream(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 
@@ -193,8 +200,7 @@ private:
 // Class basic_stringstream, a bidirectional stream that uses a stringbuf.
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_stringstream : public basic_iostream<_CharT, _Traits>
-{
+class basic_stringstream : public basic_iostream<_CharT, _Traits> {
 public:                         // Typedefs
   typedef typename _Traits::char_type char_type;
   typedef typename _Traits::int_type  int_type;
@@ -225,6 +231,11 @@ public:                         // Member functions.
 
 private:
   basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
+
+  typedef basic_stringstream<_CharT, _Traits> _Self;
+  //explicitely defined as private to avoid warnings:
+  basic_stringstream(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 

@@ -18,7 +18,7 @@
 
 
 #ifndef _STLP_C_LOCALE_H
-# define _STLP_C_LOCALE_H
+#define _STLP_C_LOCALE_H
 
 /*
  * Implementation dependent definitions

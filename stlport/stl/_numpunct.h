@@ -136,6 +136,11 @@ protected:
 
 private:
   _Locale_numeric* _M_numeric;
+
+  //explicitely defined as private to avoid warnings:
+  typedef numpunct_byname<char> _Self;
+  numpunct_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 # ifndef _STLP_NO_WCHAR_T
@@ -157,6 +162,11 @@ protected:
 
 private:
   _Locale_numeric* _M_numeric;
+
+  //explicitely defined as private to avoid warnings:
+  typedef numpunct_byname<wchar_t> _Self;
+  numpunct_byname(_Self const&);
+  _Self& operator = (_Self const&);
 };
 
 # endif /* WCHAR_T */
