@@ -1,3 +1,13 @@
+2004-08-13  Petr Ovtchenkov  <ptr@Island...>
+
+	* test/unit/cppunit/cppunit_mini.h, file_reporter.h, test_main.cpp:
+	add funcion to print mess; remove def of CPPUNIT_MINI, not required; add const
+	qualifiers.
+
+	* test/unit/locale_test.cpp: print checked locale name; restore table with format
+	symbols--partially rollback changes 2004-07-29; add test for possible locale
+	init/deinit problem---I don't see problem. Test inspired by Alex Kosilin.
+
 2004-08-11  Francois Dumont  <dums@...>
 
 	* src/explore/Makefiles/nmake: extension of the new build system for VC.Net
