@@ -313,6 +313,8 @@ inline void _FILE_O_set(FILE *__f, char* __begin, char* __next, char*
 
 # undef _STLP_FILE_I_O_IDENTICAL
 
+#elif defined(_STLP_USE_UCLIBC) /* should be before _STLP_USE_GLIBC */
+inline int   _FILE_fd(const FILE *__f) { return fileno(__CONST_CAST(FILE *,__f)); }
 #elif defined(_STLP_USE_GLIBC)
 
 inline int   _FILE_fd(const FILE *__f) { return __f->_fileno; }

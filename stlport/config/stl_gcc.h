@@ -3,9 +3,18 @@
  */
 
 /* Systems having GLIBC installed have different traits */
-#if ! defined (_STLP_USE_GLIBC) && (defined (__linux__) || defined(__CYGWIN__))
-#  define _STLP_USE_GLIBC
+#if defined (__linux__) || defined(__CYGWIN__)
+# ifndef _STLP_USE_GLIBC
+#  define _STLP_USE_GLIBC 1
+//#  ifdef _GLIBCPP_USE_NAMESPACES
+//#   undef _GLIBCPP_USE_NAMESPACES
+//#  endif
+# endif
+# if defined(__UCLIBC__) && !defined(_STLP_USE_UCLIBC)
+#  define _STLP_USE_UCLIBC 1
+# endif
 #endif
+
 
 #if (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ <= 3))
 //define for gcc versions before 3.4.0.
@@ -176,7 +185,9 @@ typedef unsigned int wint_t;
 
 #if (__GNUC__ >= 3)
 #  ifndef _STLP_HAS_NO_NEW_C_HEADERS
+#   ifndef _STLP_USE_UCLIBC
 #    define _STLP_HAS_NATIVE_FLOAT_ABS
+#   endif
 #  else
 #    ifdef _STLP_USE_GLIBC
 #      define _STLP_VENDOR_LONG_DOUBLE_MATH  1 // - ptr: with new c headers no needs
@@ -406,3 +417,9 @@ __GIVE_UP_WITH_STL(GCC_272);
 #if defined (__hpux) && defined(__GNUC__)
 #  define _STLP_NO_LONG_DOUBLE
 #endif
+
+/*
+ Local Variables:
+ mode:C++
+ End:
+*/

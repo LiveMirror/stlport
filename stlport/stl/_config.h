@@ -27,7 +27,7 @@
 #define _STLP_CONFIG_H
 
 /*
- * Purpose of this file :
+ * Purpose of this file:
  *
  * Defines all STLport settings.
  * This file is actually a wrapper : it includes compiler-specific
@@ -48,6 +48,13 @@
  * _STLP_ASSERT, either as a test or as a null macro, depending on
    whether or not _STLP_ASSERTIONS is defined.
 */
+
+/* Include useful information about system:
+ */
+# ifdef __linux__
+#  include <features.h>
+# endif
+
 
 /* Definition of the STLport version informations */
 #include <stl/_stlport_version.h>
@@ -185,9 +192,42 @@
 /* Operating system recognition (basic) */
 # if defined (__unix) || defined (__linux__) || defined (__QNX__) || defined (_AIX)  || defined (__NetBSD__) || defined(__OpenBSD__) || defined (__Lynx__)
 #  define _STLP_UNIX 1
-#  if defined (__linux__) && ! defined (_STLP_USE_GLIBC)
-#   define _STLP_USE_GLIBC 1
-#  endif
+#  if defined (__linux__)
+/* This is defined wether library in use is glibc or not.
+   This may be treated as presence of GNU libc compatible
+   header files (these define is not really intended to check
+   for the presence of a particular library, but rather is used
+   to define an INTERFACE.) */
+#   ifndef _STLP_USE_GLIBC
+#    define _STLP_USE_GLIBC 1
+#   endif
+
+#   if defined(__UCLIBC__) && !defined(_STLP_USE_UCLIBC)
+#    define _STLP_USE_UCLIBC 1
+#   endif
+
+#   ifdef _STLP_USE_UCLIBC
+#    if !defined(__UCLIBC_HAS_WCHAR__)
+#     ifndef _STLP_NO_WCHAR_T
+#      define _STLP_NO_WCHAR_T
+#     endif
+#     ifndef _STLP_NO_MBSTATE_T
+#      define _STLP_NO_MBSTATE_T
+#     endif
+#     ifndef _STLP_NO_NATIVE_WIDE_STREAMS
+#      define _STLP_NO_NATIVE_WIDE_STREAMS
+#     endif
+#    endif /* */
+     /* Hmm, bogus _GLIBCPP_USE_NAMESPACES seems undefined... */
+#    define _STLP_VENDOR_GLOBAL_CSTD 1
+#    if defined(_STLP_REAL_LOCALE_IMPLEMENTED)
+      /* locale in uClibc is very restricted */
+      /* recheck if __UCLIBC_HAS_LOCALE__ defined...*/
+#     undef _STLP_REAL_LOCALE_IMPLEMENTED
+#    endif
+#   endif /* _STLP_USE_UCLIBC */
+
+#  endif /* __linux__ */
 # elif defined(macintosh) || defined (_MAC)
 #  define _STLP_MAC  1
 # elif defined (_WIN32) || defined (__WIN32) || defined (WIN32) || defined (__WIN32__)
@@ -311,7 +351,7 @@
 # endif /* _REENTRANT */
 
 # if defined(__linux__) && defined(_STLP_PTHREADS)
-#  include <features.h>
+/* #  include <features.h> */
 
 #  if defined(__USE_XOPEN2K) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
 #   define _STLP_USE_PTHREAD_SPINLOCK

@@ -186,7 +186,8 @@ using _STLP_VENDOR_CSTD::vfwprintf;
 using _STLP_VENDOR_CSTD::vwprintf;
 using _STLP_VENDOR_CSTD::vswprintf;
 
-#   if (!defined(__MSL__) || __MSL__ > 0x7001 ) && !defined(_STLP_WCE_NET)
+#   if (!defined(__MSL__) || __MSL__ > 0x7001 ) && !defined(_STLP_WCE_NET) \
+      && !defined(_STLP_USE_UCLIBC) /* at least in uClibc 0.9.26 */
 
 using _STLP_VENDOR_CSTD::wcsftime;
 #   endif

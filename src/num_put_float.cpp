@@ -54,7 +54,7 @@ typedef long double max_double_type;
 #  include <nan.h>
 # endif
 
-# if defined (__QNXNTO__) || ( defined(__GNUC__) && defined(__APPLE__) )
+# if defined (__QNXNTO__) || ( defined(__GNUC__) && defined(__APPLE__) ) || defined(_STLP_USE_UCLIBC) /* 0.9.26 */
 #  define USE_SPRINTF_INSTEAD
 # endif
 
