@@ -92,7 +92,11 @@ static _Stl_aligned_buffer<_Locale_impl> _S_classic_locale;
 
 static _Stl_aligned_buffer<collate<char> > _S_collate_char;
 static _Stl_aligned_buffer<ctype<char> > _S_ctype_char;
+
+# ifndef _STLP_NO_MBSTATE_T
 static _Stl_aligned_buffer<codecvt<char, char, mbstate_t> > _S_codecvt_char;
+# endif
+
 static _Stl_aligned_buffer<moneypunct<char, true> > _S_moneypunct_true_char;
 static _Stl_aligned_buffer<moneypunct<char, false> > _S_moneypunct_false_char;
 static _Stl_aligned_buffer<numpunct<char> > _S_numpunct_char;
@@ -108,7 +112,9 @@ static _Stl_aligned_buffer<time_put<char, ostreambuf_iterator<char, char_traits<
 # ifndef _STLP_NO_WCHAR_T
 static _Stl_aligned_buffer<collate<wchar_t> > _S_collate_wchar;
 static _Stl_aligned_buffer<ctype<wchar_t> > _S_ctype_wchar;
+# ifndef _STLP_NO_MBSTATE_T
 static _Stl_aligned_buffer<codecvt<wchar_t, char, mbstate_t> > _S_codecvt_wchar;
+# endif
 static _Stl_aligned_buffer<moneypunct<wchar_t, true> > _S_moneypunct_true_wchar;
 static _Stl_aligned_buffer<moneypunct<wchar_t, false> > _S_moneypunct_false_wchar;
 static _Stl_aligned_buffer<numpunct<wchar_t> > _S_numpunct_wchar;
@@ -129,7 +135,11 @@ static locale::facet* _S_classic_facets[] = {
   (locale::facet*)0,
   (locale::facet*)&_S_collate_char,
   (locale::facet*)&_S_ctype_char, 
-  (locale::facet*)&_S_codecvt_char,
+# ifndef _STLP_NO_MBSTATE_T
+    (locale::facet*)&_S_codecvt_char,
+# else
+    (locale::facet*)0, 
+# endif
   (locale::facet*)&_S_moneypunct_true_char,
   (locale::facet*)&_S_moneypunct_false_char,
   (locale::facet*)&_S_numpunct_char,
@@ -151,7 +161,12 @@ static locale::facet* _S_classic_facets[] = {
 # ifndef _STLP_NO_WCHAR_T
   (locale::facet*)&_S_collate_wchar,
   (locale::facet*)&_S_ctype_wchar, 
+
+# ifndef _STLP_NO_MBSTATE_T
   (locale::facet*)&_S_codecvt_wchar,
+# else
+(locale::facet*)0
+# endif
   (locale::facet*)&_S_moneypunct_true_wchar,
   (locale::facet*)&_S_moneypunct_false_wchar,
   (locale::facet*)&_S_numpunct_wchar,
@@ -425,8 +440,10 @@ locale::global(const locale& L)
   }
 
                                 // Set the global C locale, if appropriate.
+#if !defined(_STLP_WINCE)
   if (L.name() != _Nameless)
     setlocale(LC_ALL, L.name().c_str());
+#endif
 
   return old;
 }
@@ -454,19 +471,4 @@ _STLP_END_NAMESPACE
 //
 
 
-# if 0
-# include "ctype.cpp"
-# include "collate.cpp"
-# include "codecvt.cpp"
-
-# include "num_put_float.cpp"
-# include "num_put.cpp"
-# include "numpunct.cpp"
-# include "num_get.cpp"
-# include "num_get_float.cpp"
-
-# include "monetary.cpp"
-# include "time_facets.cpp"
-# include "messages.cpp"
-# endif
 

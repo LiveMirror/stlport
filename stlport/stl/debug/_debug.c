@@ -260,6 +260,8 @@ __stl_debug_engine<_Dummy>::_Message(const char * __format_str, ...)
     vsnprintf(__buffer, sizeof(__buffer) / sizeof(char),
                __format_str, __args);
     OutputDebugStringA(__buffer);
+# elif defined (__amigaos__)
+    STLPORT_CSTD::vfprintf(stderr, __format_str, (char *)__args);
 # else
     STLPORT_CSTD::vfprintf(stderr, __format_str, __args);
 # endif /* WINCE */

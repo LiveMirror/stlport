@@ -20,7 +20,7 @@
 #  define _STLP_DONT_POP_0x280
 # endif
 
-# if defined (__SUNPRO_CC)
+# if defined (__SUNPRO_CC) || defined (__HP_aCC)
 # include "/usr/include/pthread.h"
 # else
 # include _STLP_NATIVE_C_HEADER(pthread.h)

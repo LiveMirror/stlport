@@ -484,11 +484,17 @@ private:
   typedef _STLP_alloc_proxy<_Value, _Tp, _MaybeReboundAlloc> _Self;
 public:
   _Value _M_data;
-  // construction/destruction
-  inline _STLP_alloc_proxy(const _Self& __x) : _MaybeReboundAlloc(__x), _M_data(__x._M_data) {} 
   inline _STLP_alloc_proxy(const _MaybeReboundAlloc& __a, _Value __p) : _MaybeReboundAlloc(__a), _M_data(__p) {}
-  inline _Self& operator = (const _Self& __x) { _M_data = __x._M_data; return *this; } 
+
+# if 0
+  inline _STLP_alloc_proxy(const _Self& __x) : _MaybeReboundAlloc(__x), _M_data(__x._M_data) {} 
+  // construction/destruction
+  inline _Self& operator = (const _Self& __x) { 
+    *(_MaybeReboundAlloc*)this = *(_MaybeReboundAlloc*)__x;
+    _M_data = __x._M_data; return *this; 
+  } 
   inline _Self& operator = (const _Base& __x) { ((_Base&)*this) = __x; return *this; } 
+# endif
   // Unified interface to perform allocate()/deallocate() with limited
   // language support
 #if ! defined (_STLP_MEMBER_TEMPLATE_CLASSES)

@@ -18,6 +18,10 @@
 #ifndef _STLP_MONETARY_C
 #define _STLP_MONETARY_C
 
+# ifndef _STLP_INTERNAL_MONETARY_H
+#  include <stl/_monetary.h>
+# endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 #ifndef _STLP_INTERNAL_IOS_H

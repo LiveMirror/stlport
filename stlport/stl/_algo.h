@@ -113,10 +113,10 @@ adjacent_find(_ForwardIter __first, _ForwardIter __last,
 # ifndef _STLP_NO_ANACHRONISMS
 template <class _InputIter, class _Tp, class _Size>
 _STLP_INLINE_LOOP void 
-count(_InputIter __first, _InputIter __last, const _Tp& __value, _Size& __n) {
+count(_InputIter __first, _InputIter __last, const _Tp& __val, _Size& __n) {
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
     for ( ; __first != __last; ++__first)
-      if (*__first == __value)
+      if (*__first == __val)
         ++__n;
 }
 
@@ -247,10 +247,10 @@ generate_n(_OutputIter __first, _Size __n, _Generator __gen) {
 
 template <class _InputIter, class _OutputIter, class _Tp>
 _STLP_INLINE_LOOP _OutputIter 
-remove_copy(_InputIter __first, _InputIter __last,_OutputIter __result, const _Tp& __value) {
+remove_copy(_InputIter __first, _InputIter __last,_OutputIter __result, const _Tp& __val) {
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
   for ( ; __first != __last; ++__first)
-    if (!(*__first == __value)) {
+    if (!(*__first == __val)) {
       *__result = *__first;
       ++__result;
     }
@@ -271,14 +271,14 @@ remove_copy_if(_InputIter __first, _InputIter __last, _OutputIter __result, _Pre
 
 template <class _ForwardIter, class _Tp>
 _STLP_INLINE_LOOP _ForwardIter 
-remove(_ForwardIter __first, _ForwardIter __last, const _Tp& __value) {
+remove(_ForwardIter __first, _ForwardIter __last, const _Tp& __val) {
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
-  __first = find(__first, __last, __value);
+  __first = find(__first, __last, __val);
   if (__first == __last)
     return __first;
   else { 
     _ForwardIter __next = __first;
-    return remove_copy(++__next, __last, __first, __value);
+    return remove_copy(++__next, __last, __first, __val);
   }
 }
 

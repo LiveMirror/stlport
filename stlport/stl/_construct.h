@@ -78,11 +78,11 @@ inline void _Destroy(_Tp* __pointer) {
 # endif 
 
 template <class _T1, class _T2>
-inline void _Construct(_T1* __p, const _T2& __value) {
+inline void _Construct(_T1* __p, const _T2& __val) {
 # ifdef _STLP_DEBUG_UNINITIALIZED
 	memset((char*)__p, _STLP_SHRED_BYTE, sizeof(_T1));
 # endif
-    _STLP_PLACEMENT_NEW (__p) _T1(__value);
+    _STLP_PLACEMENT_NEW (__p) _T1(__val);
 }
 
 template <class _T1>
@@ -133,7 +133,7 @@ inline void _Destroy(const wchar_t*, const wchar_t*) {}
 // Old names from the HP STL.
 
 template <class _T1, class _T2>
-inline void construct(_T1* __p, const _T2& __value) {_Construct(__p, __value); }
+inline void construct(_T1* __p, const _T2& __val) {_Construct(__p, __val); }
 template <class _T1>
 inline void construct(_T1* __p) { _Construct(__p); }
 template <class _Tp>

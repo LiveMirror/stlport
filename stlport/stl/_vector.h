@@ -198,10 +198,10 @@ public:
   explicit vector(const allocator_type& __a = allocator_type()) : 
     _Vector_base<_Tp, _Alloc>(__a) {}
 
-  vector(size_type __n, const _Tp& __value,
+  vector(size_type __n, const _Tp& __val,
          const allocator_type& __a = allocator_type()) 
     : _Vector_base<_Tp, _Alloc>(__n, __a) { 
-    this->_M_finish = uninitialized_fill_n(this->_M_start, __n, __value); 
+    this->_M_finish = uninitialized_fill_n(this->_M_start, __n, __val); 
   }
 
   explicit vector(size_type __n)
@@ -218,10 +218,10 @@ public:
 #if defined (_STLP_MEMBER_TEMPLATES)
 
   template <class _Integer>
-  void _M_initialize_aux(_Integer __n, _Integer __value, const __true_type&) {
+  void _M_initialize_aux(_Integer __n, _Integer __val, const __true_type&) {
     this->_M_start = this->_M_end_of_storage.allocate(__n);
     this->_M_end_of_storage._M_data = this->_M_start + __n; 
-    this->_M_finish = uninitialized_fill_n(this->_M_start, __n, __value);
+    this->_M_finish = uninitialized_fill_n(this->_M_start, __n, __val);
   }
 
   template <class _InputIterator>
@@ -340,7 +340,7 @@ public:
   void swap(vector<_Tp, _Alloc>& __x) {
     _STLP_STD::swap(this->_M_start, __x._M_start);
     _STLP_STD::swap(this->_M_finish, __x._M_finish);
-    _STLP_STD::swap(this->_M_end_of_storage._M_data, __x._M_end_of_storage._M_data);
+    _STLP_STD::swap(this->_M_end_of_storage, __x._M_end_of_storage);
   }
 
   iterator insert(iterator __position, const _Tp& __x) {

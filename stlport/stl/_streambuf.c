@@ -18,6 +18,10 @@
 #ifndef _STLP_STREAMBUF_C
 #define _STLP_STREAMBUF_C
 
+#ifndef _STLP_INTERNAL_STREAMBUF
+# include <stl/_streambuf.h>
+#endif
+
 # if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION)
 
 _STLP_BEGIN_NAMESPACE

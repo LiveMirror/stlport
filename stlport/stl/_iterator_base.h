@@ -143,9 +143,7 @@ struct iterator_traits<_Tp* const> {
 #  define _STLP_POINTERS_SPECIALIZE( _TpP )
 #  define _STLP_DEFINE_ARROW_OPERATOR  pointer operator->() const { return &(operator*()); }
 # else 
-   _STLP_END_NAMESPACE
 #  include <stl/_ptrs_specialize.h>
-   _STLP_BEGIN_NAMESPACE
 # endif
 
 # ifndef _STLP_USE_OLD_HP_ITERATOR_QUERIES

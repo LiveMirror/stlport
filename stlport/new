@@ -21,20 +21,6 @@
 #  include <stl/_prolog.h>
 # endif
 
-#ifdef _STLP_WINCE
-_STLP_BEGIN_NAMESPACE
-
-inline void* _STLP_CALL __stl_new(size_t __n) {
-  return ::malloc(__n);
-}
-
-inline void _STLP_CALL __stl_delete(void* __p) {
-  free(__p);
-}
-_STLP_END_NAMESPACE
-
-#else
-
 #ifndef _STLP_CSTDDEF
 // size_t
 # include <cstddef>
@@ -48,7 +34,7 @@ using _STLP_VENDOR_CSTD::malloc;
 
 # if !defined (_STLP_NO_NEW_NEW_HEADER)
 #   include _STLP_NATIVE_CPP_RUNTIME_HEADER(new)
-#  else
+# elif !defined(_STLP_WINCE)
 #   include  <new.h>
 # endif
 
@@ -113,8 +99,6 @@ inline void*  _STLP_CALL __stl_new(size_t __n)   { _STLP_CHECK_NULL_ALLOC(::oper
 inline void   _STLP_CALL __stl_delete(void* __p) { ::operator delete(__p); }
 #endif
 _STLP_END_NAMESPACE
-
-#endif /* WINCE */
 
 # if (_STLP_OUTERMOST_HEADER_ID == 0x447)
 #  include <stl/_epilog.h>

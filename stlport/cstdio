@@ -16,8 +16,6 @@
 #ifndef _STLP_CSTDIO
 # define _STLP_CSTDIO
 
-# if ! defined (_STLP_WINCE)
-
 # ifndef _STLP_OUTERMOST_HEADER_ID
 #  define _STLP_OUTERMOST_HEADER_ID 15
 #  include <stl/_prolog.h>
@@ -56,6 +54,7 @@ using _STLP_VENDOR_CSTD::FILE;
 using _STLP_VENDOR_CSTD::fpos_t;
 using _STLP_VENDOR_CSTD::size_t;
 
+# if !defined(__amigaos__)
 // undef obsolete macros
 # undef putc
 # undef getc
@@ -63,6 +62,7 @@ using _STLP_VENDOR_CSTD::size_t;
 # undef putchar
 # undef feof
 # undef ferror
+# endif
 
 #  ifndef _STLP_NO_CSTD_FUNCTION_IMPORTS
 using _STLP_VENDOR_CSTD::clearerr;
@@ -122,8 +122,6 @@ _STLP_END_NAMESPACE
 #  include <stl/_epilog.h>
 #  undef _STLP_OUTERMOST_HEADER_ID
 # endif
-
-# endif /* ! defined (_STLP_WINCE) */
 
 #endif
 

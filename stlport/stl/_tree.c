@@ -31,6 +31,10 @@
 #ifndef _STLP_TREE_C
 #define _STLP_TREE_C
 
+#ifndef _STLP_INTERNAL_TREE_H
+# include <stl/_tree.h>
+#endif
+
 // fbp: these defines are for outline methods definitions.
 // needed for definitions to be portable. Should not be used in method bodies.
 # if defined  ( _STLP_NESTED_TYPE_PARAM_BUG )

@@ -88,7 +88,7 @@ using _STLP_VENDOR_CSTD::size_t;
 #  endif
 
 # elif defined(_STLP_WIN32)
-#  if !defined (_STLP_WINDOWS_H_INCLUDED) && ! defined (_WINDOWS_) && ! defined (__WINDOWS__) && ! defined (_WINDOWS_H)
+#  if !defined (_STLP_WINDOWS_H_INCLUDED) && ! defined (_WINDOWS_H)
 #   if ! (defined ( _STLP_MSVC ) || defined (__BORLANDC__) || defined (__ICL) || defined (__WATCOMC__) || defined (__MINGW32__)) 
 #    ifdef _STLP_USE_MFC
 #     include <afx.h>
@@ -138,7 +138,7 @@ _STLP_IMPORT_DECLSPEC void _STLP_STDCALL OutputDebugStringA( const char* lpOutpu
 
 #   define _STLP_WINDOWS_H_INCLUDED
 
-#  endif /* _WINDOWS_ */
+#  endif /* _STLP_WIN32 */
 
 #  ifndef _STLP_ATOMIC_INCREMENT
 #   define _STLP_ATOMIC_INCREMENT(__x)           InterlockedIncrement((long*)__x)
@@ -148,8 +148,8 @@ _STLP_IMPORT_DECLSPEC void _STLP_STDCALL OutputDebugStringA( const char* lpOutpu
 # elif defined(__DECC) || defined(__DECCXX)
 #  include <machine/builtins.h>
 #  define _STLP_ATOMIC_EXCHANGE __ATOMIC_EXCH_LONG
-#  define _STLP_ATOMIC_INCREMENT(__x, __y) __ATOMIC_ADD_LONG(__x, 1)
-#  define _STLP_ATOMIC_DECREMENT(__x, __y) __ATOMIC_ADD_LONG(__x, -1)
+#  define _STLP_ATOMIC_INCREMENT(__x) __ATOMIC_ADD_LONG(__x, 1)
+#  define _STLP_ATOMIC_DECREMENT(__x) __ATOMIC_ADD_LONG(__x, -1)
 # elif defined(_STLP_SPARC_SOLARIS_THREADS)
 #  include <stl/_sparc_atomic.h>
 # elif defined (_STLP_UITHREADS)
@@ -323,6 +323,8 @@ false); }
      status_t t = release_sem(sem);
      assert(t == B_NO_ERROR);
   }
+#else		//*ty 11/24/2001 - added configuration check
+#error "Unknown thread facility configuration"
 #endif
 #else /* No threads */
   inline void _M_initialize() {}
@@ -497,7 +499,18 @@ private:
   _STLP_auto_lock(const _STLP_auto_lock&);
 };
 
+struct _STLP_CLASS_DECLSPEC _STLP_mutex_lock
+{
+  _STLP_mutex_indirect& _M_lock;
+  
+  _STLP_mutex_lock(_STLP_mutex_indirect& __lock) : _M_lock(__lock)
+    { _M_lock._M_acquire_lock(); }
+  ~_STLP_mutex_lock() { _M_lock._M_release_lock(); }
 
+private:
+  void operator=(const _STLP_mutex_lock&);
+  _STLP_mutex_lock(const _STLP_mutex_lock&);
+};
 
 #ifdef _STLP_BETHREADS
 

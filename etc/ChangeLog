@@ -1,3 +1,52 @@
+The following changes were made in 4.5.3 since 4.5.1 release:
+
+	* iostreams ported to Windows CE (thanks Andrew Waters)
+
+	* iostreams ported to AmigaOS (thanks Steven Solie)
+
+	* iostreams ported to NCR 3.x (thanks Emmanuel Soden)
+	
+	* _hash_map::operator[] : enhanced to avoid calling default object constructor
+	 (Thanks Yuri Taranenko for the report)
+
+	* Identifier "__value" changed everywhere to "__val" to avoid clashes with Microsoft's "managed C++" keyword (thanks Crow for the report)
+
+	* Most containers : swap() fixed to swap non-stateless allocators correctly (thanks Scott Meyers)
+
+	* _sstream : fix to account for ios_base::app flag properly
+
+	* type_traits.h : _IsOKToMemCpy() fixed to only allow memcpy() for same type arguments (thanks  Ed Brey for the report)
+	
+	* stl/_num_put.c, stl/_list.c : workarounds for Debian gcc (thanks Levente Farkas)
+	
+	* <typeinfo> : fixed MS workaround (thanks  Wil Evers,  Andrew Ushakov)
+
+	* _pthread_alloc.h : added per_thread_allocator class; returns memory to the same thread it's been allocated in.
+
+	* _iterator_old.h : restored ->() operator for MSVC (thanks Daniel Anderson)
+
+	* a bunch of MPW fixes (thanks Tsutomu Yoshida)
+
+	* _config_compat.h : fixed compatibility definition for _STLP_NO_EXCEPTIONS (thanks Nicolas)
+
+	* _fstream.c : fixed bug in _M_seek_init (thanks Pavel Kuznetsov)
+	
+	* _rope.h : rope<>::swap() methods fixed for non-partial ordering case (thanks Eric Musser)
+ 	
+	* comlex_trig.cpp : fixed bug on SGI (thanks Mortis)
+
+	* A bunch of fixes for HP aCC compilation with -AA option (thanks  John Bossom)
+
+	* *.c files : added conditional inclusion of corresponding *.h file to fix xlC issues with -tempinc option (thanks Alla Bogolyubov for the report)
+
+	* _auto_ptr.h : "struct" changed to "class" (thanks Alex Pinsker for the report)
+
+	* _config.h/stl_user_config.h : handling of macro _STLP_WHOLE_VENDOR_STD rectified
+
+	* _num_put.c : do_put(const void*) changed to output pointers in hex format (thanks  Alex Rosenberg)
+
+	* test/eh/test_algobase.cpp : fixed alignment to work on 64-bit architectures
+
 The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
 	* _config.h, _epilog.h : new namespace inclusion schema implemented for own iostreams mode
@@ -109,12 +158,16 @@ The following changes were made in 4.5.1 beta 1 since 4.5 release:
 
 	* _alloc.h : allocator::construct uses std::_Construct (thanks Gert Grossmann)
 
-	* stl?_alloc_old.h : restored (thanks Gert Grossmann)
-	
+	* stl/_alloc_old.h : restored (thanks Gert Grossmann)
+
+	* stl/_threads.h : fixed _STLP_ATOMIC_xxx macros for DEC (thanks Gert Grossman)
+
+	* src/_locale_impl.cpp : added missing guards for codecvt<> in _STLP_NO_MBSTATE_T case
+ 	
 	
 The following changes were made in 4.5 release since 4.5 beta 8 :
 	
-	* _threads.h, debug/_debug.h etc : STLport iostreams library made binary compatible with user code compiler w/o multithreaded switch (-D_REENTRANT is not necessary anymore)
+	* _threads.h, debug/_debug.h etc : STLport iostreams library made binary compatible with user code compiler w/o multithreaded switch, for some platforms
 	
 	* config/stl_msvc.h, <cmath> : corrected _STLP_NO_USING_FOR_GLOBAL_FUNCTIONS for VC++ 6.0 SP5 
 	  (Thanks Alberto Barbati)
