@@ -1,3 +1,13 @@
+2004-09-08  Francois Dumont  <dums@...>
+
+	* test/unit/fstream_test.cpp: restauration of the test added by Petr
+	the 2004-09-03, it is finaly a different test from the one in sstream_test.cpp.
+	Some more checks have also been integrated.
+	
+	* stlport/stl/_ostream.c: New fix of the _M_unbuffured_copy method that was
+	still bugged in case of a throwing output streambuf, detected thanks to the
+	test case.
+	
 2004-09-07  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_msvc.h: Add defines of the _STLP_USE_STATIC_LIB

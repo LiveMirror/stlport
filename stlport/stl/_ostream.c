@@ -117,10 +117,8 @@ bool basic_ostream<_CharT, _Traits>
         return false;
       }
     }
-
     else if (__nwritten != 0)
       return true;
-
     else
       return __any_inserted;
   }
@@ -130,10 +128,34 @@ bool basic_ostream<_CharT, _Traits>
   return __any_inserted || this->_M_copy_unbuffered(__from, __to);
 }
 
+/*
+ * Helper struct (guard) to put back a character in a streambuf
+ * whenever an exception or an eof occur.
+ */
+template <class _CharT, class _Traits>
+struct _SPutBackC {
+  typedef basic_streambuf<_CharT, _Traits> _StreamBuf;
+  typedef typename _StreamBuf::int_type int_type;
+  _SPutBackC(_StreamBuf *pfrom, int_type c)
+    : __pfrom(pfrom), __c(c) {}
+  ~_SPutBackC() {
+    if (__pfrom != 0) {
+      __pfrom->sputbackc(__c);
+    }
+  }
+
+  void dontPutBack() { __pfrom = 0; }
+
+private:
+  _StreamBuf *__pfrom;
+  int_type __c;
+};
+
 template <class _CharT, class _Traits>
 bool basic_ostream<_CharT, _Traits>
   ::_M_copy_unbuffered(basic_streambuf<_CharT, _Traits>* __from,
                        basic_streambuf<_CharT, _Traits>* __to) {
+  typedef _SPutBackC<_CharT, _Traits> _SPutBackCGuard;
   bool __any_inserted = false;
   int_type __c;
 
@@ -150,19 +172,19 @@ bool basic_ostream<_CharT, _Traits>
       if ( this->_S_eof(__c) )
         return __any_inserted;
 
+      _SPutBackCGuard __cguard(__from, __c);
       if ( this->_S_eof( __to->sputc(__c) ) ) {
-        __from->sputbackc(__c);
         return __any_inserted;
       }
+
+      __cguard.dontPutBack();
       __any_inserted = true;
     }
   }
   _STLP_CATCH_ALL {
     this->_M_handle_exception(ios_base::badbit);
-    // return __any_inserted;
+    return __any_inserted;
   }
-  // we reach this only via catch( ... ) above; this line is here to make happy some compilers
-  return __any_inserted;
 }
 
 // Helper function for numeric output.
