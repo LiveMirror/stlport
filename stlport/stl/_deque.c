@@ -279,6 +279,7 @@ __deque__<_Tp,_Alloc>::_M_push_back_aux_v(const value_type& __t)
 				      this->buffer_size()));
 }
 
+# ifndef _STLP_NO_ANACHRONISMS
 // Called only if this->_M_finish._M_cur == this->_M_finish._M_last - 1.
 template <class _Tp, class _Alloc >
 void
@@ -294,6 +295,7 @@ __deque__<_Tp,_Alloc>::_M_push_back_aux()
   _STLP_UNWIND(this->_M_map_size.deallocate(*(this->_M_finish._M_node + 1), 
 				      this->buffer_size()));
 }
+# endif
 
 // Called only if this->_M_start._M_cur == this->_M_start._M_first.
 template <class _Tp, class _Alloc >
@@ -312,6 +314,8 @@ __deque__<_Tp,_Alloc>::_M_push_front_aux_v(const value_type& __t)
 		this->_M_map_size.deallocate(*(this->_M_start._M_node - 1), this->buffer_size())));
 } 
 
+
+# ifndef _STLP_NO_ANACHRONISMS
 // Called only if this->_M_start._M_cur == this->_M_start._M_first.
 template <class _Tp, class _Alloc >
 void 
@@ -327,6 +331,7 @@ __deque__<_Tp,_Alloc>::_M_push_front_aux()
   _STLP_UNWIND((++this->_M_start, this->_M_map_size.deallocate(*(this->_M_start._M_node - 1), 
 						   this->buffer_size() )));
 } 
+# endif
 
 // Called only if this->_M_finish._M_cur == this->_M_finish._M_first.
 template <class _Tp, class _Alloc >

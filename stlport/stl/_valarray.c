@@ -28,6 +28,14 @@
 
 _STLP_BEGIN_NAMESPACE
 
+template <class _Tp>
+_Valarray_bool valarray<_Tp>:: operator!() const {
+  _Valarray_bool __tmp(this->size(), _Valarray_bool::_NoInit());
+  for (size_t __i = 0; __i < this->size(); ++__i)
+    __tmp[__i] = !(*this)[__i];
+  return __tmp;
+}
+
 // Behavior is undefined if __x and *this have different sizes
 template <class _Tp>
 valarray<_Tp>& valarray<_Tp>::operator=(const slice_array<_Tp>& __x)

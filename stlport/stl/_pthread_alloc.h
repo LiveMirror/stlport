@@ -282,12 +282,14 @@ inline bool operator!=(const pthread_allocator<_T1>&,
 
 #ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 
+# ifdef _STLP_USE_RAW_SGI_ALLOCATORS
 template <class _Tp, size_t _Max_size>
 struct _Alloc_traits<_Tp, _Pthread_alloc<_Max_size> >
 {
   typedef __allocator<_Tp, _Pthread_alloc<_Max_size> > 
           allocator_type;
 };
+# endif
 
 template <class _Tp, class _Atype>
 struct _Alloc_traits<_Tp, pthread_allocator<_Atype> >
