@@ -1,3 +1,7 @@
+2004-10-11  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_rope.h: add typename.
+
 2004-10-08  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_deque.h, _hashtable.h, _tree.h, _bvector.h: Specialization of the
@@ -5,7 +9,7 @@
 	
 	* stlport/stl/_uninitialized.h, _vector.h: Relax of the rules to perform some 
 	optimizations, no more POD check, rather use of the trivial copy constructor, 
-	trivial assignment operator	informations.
+	trivial assignment operator informations.
 	
 	* stlport/stl/_config.h, _epilog.h: Adoption of stlport as the official STLport
 	namespace when users cannot use the std namespace.
@@ -31,7 +35,7 @@
 	* src/explore/Makefiles/nmake: Application of a patch from Mickeal Fink to simplify
 	the evc make system.
 	
-	* doc/README.evc4: New version from Zednek Nemec.
+	* doc/README.evc4: New version from Zdenek Nemec.
 	
 2004-10-04  Francois Dumont  <dums@stlport...>
 
@@ -50,7 +54,7 @@
 	
 	* src/explore/Makefiles/nmake/lib/vc-common.mak, app/vc-common.mak: Creation
 	of the STLP_BUILD_FORCE_STATIC_RUNTIME that forces use of the static version
-	of the native	runtime.
+	of the native runtime.
 	
 	* test/unit: fix of some tests that failed to compile using the 
 	_STLP_NO_ANACHRONISMS macro.
