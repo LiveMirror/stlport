@@ -1,3 +1,9 @@
+2004-09-15  Francois Dumont  <dums@...>
+
+	* stlport/stl/_list.c: Modification of the _S_sort implementation, the __carry 
+	list instance is created using the __that allocator instance copy to be more
+	allocator friendly.
+	
 2004-09-11  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_intel.h: Configuration update for Win32 Intel 8.0 
