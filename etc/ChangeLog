@@ -1,3 +1,8 @@
+2005-02-24  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/char_traits.h: Patch from Ulrich Eckhardt fixing a wrong
+	_STLP_CALL specification on member operators and some cosmetic changes.
+
 2005-02-22  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/limits_test.cpp: wchar_t is treated as signed, except when it

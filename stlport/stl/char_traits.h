@@ -81,27 +81,27 @@ public:                         // From table 88 of the C++ standard.
 
   operator streamoff() const { return _M_pos; }
 
-  bool  _STLP_CALL operator==(const fpos<_StateT>& __y) const
+  bool operator==(const fpos& __y) const
     { return _M_pos == __y._M_pos; }
-  bool _STLP_CALL operator!=(const fpos<_StateT>& __y) const
+  bool operator!=(const fpos& __y) const
     { return _M_pos != __y._M_pos; }
 
-  fpos<_StateT>& operator+=(streamoff __off) {
+  fpos& operator+=(streamoff __off) {
     _M_pos += __off;
     return *this;
   }
-  fpos<_StateT>& operator-=(streamoff __off) {
+  fpos& operator-=(streamoff __off) {
     _M_pos -= __off;
     return *this;
   }
 
-  fpos<_StateT> operator+(streamoff __off) {
-    fpos<_StateT> __tmp(*this);
+  fpos operator+(streamoff __off) {
+    fpos __tmp(*this);
     __tmp += __off;
     return __tmp;
   }
-  fpos<_StateT> operator-(streamoff __off) {
-    fpos<_StateT> __tmp(*this);
+  fpos operator-(streamoff __off) {
+    fpos __tmp(*this);
     __tmp -= __off;
     return __tmp;
   }
@@ -134,26 +134,26 @@ public:
 # endif
 
   static void _STLP_CALL assign(char_type& __c1, const char_type& __c2) { __c1 = __c2; }
-  static bool _STLP_CALL eq(const _CharT& __c1, const _CharT& __c2) 
+  static bool _STLP_CALL eq(const char_type& __c1, const char_type& __c2) 
     { return __c1 == __c2; }
-  static bool _STLP_CALL lt(const _CharT& __c1, const _CharT& __c2) 
+  static bool _STLP_CALL lt(const char_type& __c1, const char_type& __c2) 
     { return __c1 < __c2; }
 
-  static int _STLP_CALL compare(const _CharT* __s1, const _CharT* __s2, size_t __n) {
+  static int _STLP_CALL compare(const char_type* __s1, const char_type* __s2, size_t __n) {
     for (size_t __i = 0; __i < __n; ++__i)
       if (!eq(__s1[__i], __s2[__i]))
         return __s1[__i] < __s2[__i] ? -1 : 1;
     return 0;
   }
 
-  static size_t _STLP_CALL length(const _CharT* __s) {
-    const _CharT _NullChar = _STLP_DEFAULT_CONSTRUCTED(_CharT);
+  static size_t _STLP_CALL length(const char_type* __s) {
+    const char_type _NullChar = _STLP_DEFAULT_CONSTRUCTED(char_type);
     size_t __i(0);
     for (; !eq(__s[__i], _NullChar); ++__i) {}
     return __i;
   }
 
-  static const _CharT* _STLP_CALL find(const _CharT* __s, size_t __n, const _CharT& __c) {
+  static const char_type* _STLP_CALL find(const char_type* __s, size_t __n, const char_type& __c) {
     for ( ; __n > 0 ; ++__s, --__n)
       if (eq(*__s, __c))
         return __s;
@@ -161,16 +161,16 @@ public:
   }
 
 
-  static _CharT* _STLP_CALL move(_CharT* __s1, const _CharT* __s2, size_t _Sz) {    
-    return (_Sz == 0 ? __s1 : (_CharT*)memmove(__s1, __s2, _Sz * sizeof(_CharT)));
+  static char_type* _STLP_CALL move(char_type* __s1, const char_type* __s2, size_t _Sz) {    
+    return (_Sz == 0 ? __s1 : (char_type*)memmove(__s1, __s2, _Sz * sizeof(char_type)));
   }
   
-  static _CharT* _STLP_CALL copy(_CharT* __s1, const _CharT* __s2, size_t __n) {
+  static char_type* _STLP_CALL copy(char_type* __s1, const char_type* __s2, size_t __n) {
     return (__n == 0 ? __s1 :
-      (_CharT*)memcpy(__s1, __s2, __n * sizeof(_CharT)));
+      (char_type*)memcpy(__s1, __s2, __n * sizeof(char_type)));
     } 
 
-  static _CharT* _STLP_CALL assign(_CharT* __s, size_t __n, _CharT __c) {
+  static char_type* _STLP_CALL assign(char_type* __s, size_t __n, char_type __c) {
     for (size_t __i = 0; __i < __n; ++__i)
       __s[__i] = __c;
     return __s;
