@@ -26,6 +26,9 @@ release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 
+dbg-shared:	DEFS += -D_STLP_DEBUG_UNINITIALIZED 
+stldbg-shared:	DEFS += -D_STLP_DEBUG_UNINITIALIZED 
+
 ifeq ($(OSNAME),cygming)
 LIB_VERSION = ${LIBMAJOR}${LIBMINOR}
 release-shared : LDLIBS = -lstlport_r${LIB_VERSION}
