@@ -89,7 +89,11 @@
 #   else
 #    define _STLP_PTHREAD_ATTR_DEFAULT 0
 #   endif
-#  endif // !_STLP_USE_PTHREAD_SPINLOCK 
+#  else // _STLP_USE_PTHREAD_SPINLOCK
+#   ifdef __OpenBSD__
+#    include <spinlock.h>
+#   endif
+#  endif // _STLP_USE_PTHREAD_SPINLOCK 
 
 # elif defined(_STLP_WIN32THREADS)
 
@@ -228,6 +232,7 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
   }
 # elif defined(_STLP_PTHREADS)
 #  ifdef _STLP_USE_PTHREAD_SPINLOCK
+#   ifndef __OpenBSD__
   pthread_spinlock_t _M_lock;
   inline void _M_initialize() { pthread_spin_init( &_M_lock, 0 ); }
   inline void _M_destroy() { pthread_spin_destroy( &_M_lock ); }
@@ -244,6 +249,13 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base
 
   inline void _M_acquire_lock() { pthread_spin_lock( &_M_lock ); }
   inline void _M_release_lock() { pthread_spin_unlock( &_M_lock ); }
+#   else // __OpenBSD__
+  spinlock_t _M_lock;
+  inline void _M_initialize() { _SPINLOCK_INIT( &_M_lock ); }
+  inline void _M_destroy() { }
+  inline void _M_acquire_lock() { _SPINLOCK( &_M_lock ); }
+  inline void _M_release_lock() { _SPINUNLOCK( &_M_lock ); }
+#   endif // __OpenBSD__
 #  else // !_STLP_USE_PTHREAD_SPINLOCK
   pthread_mutex_t _M_lock;
   inline void _M_initialize() {
