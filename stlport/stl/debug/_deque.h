@@ -62,7 +62,7 @@ inline random_access_iterator_tag iterator_category(const  _DBG_iter_base< _STLP
 # endif
 
 template <class _Tp, _STLP_DBG_ALLOCATOR_SELECT(_Tp) >
-class _DBG_deque : public _STLP_DEQUE_SUPER
+class _DBG_deque : private __range_checker<_Tp>, public _STLP_DEQUE_SUPER
 {
   typedef _DBG_deque<_Tp,_Alloc> _Self;
   typedef _STLP_DEQUE_SUPER _Base;
@@ -164,26 +164,30 @@ public:                         // Constructor, destructor.
   template <class _InputIterator>
   _DBG_deque(_InputIterator __first, _InputIterator __last,
         const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_DEQUE_SUPER(__first, __last, __a) ,
+    : __range_checker<_Tp>(__first, __last),
+      _STLP_DEQUE_SUPER(__first, __last, __a) ,
       _M_iter_list(_Get_base()) {
     }
 # ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   _DBG_deque(_InputIterator __first, _InputIterator __last)
-    : _STLP_DEQUE_SUPER(__first, __last) , 
+    : __range_checker<_Tp>(__first, __last),
+      _STLP_DEQUE_SUPER(__first, __last) , 
       _M_iter_list(_Get_base()) {
     }
 # endif
 #else /* _STLP_MEMBER_TEMPLATES */
   _DBG_deque(const value_type* __first, const value_type* __last,
         const allocator_type& __a = allocator_type()) 
-    : _STLP_DEQUE_SUPER(__first, __last, __a), 
+    : __range_checker<_Tp>(__first, __last),
+      _STLP_DEQUE_SUPER(__first, __last, __a), 
       _M_iter_list(_Get_base()) {
     }
 
   _DBG_deque(const_iterator __first, const_iterator __last,
         const allocator_type& __a = allocator_type()) 
-    : _STLP_DEQUE_SUPER(__first._M_iterator, __last._M_iterator, __a), 
+    : __range_checker<_Tp>(__first._M_iterator, __last._M_iterator),
+      _STLP_DEQUE_SUPER(__first._M_iterator, __last._M_iterator, __a), 
       _M_iter_list(_Get_base()) {
     }
 #endif /* _STLP_MEMBER_TEMPLATES */

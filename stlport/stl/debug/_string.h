@@ -45,7 +45,7 @@ iterator_category(const  _DBG_iter_base< _STLP_DBG_STRING_BASE >&) {
 # endif
 
 template <class _CharT, class _Traits, class _Alloc> 
-class basic_string : public _STLP_DBG_STRING_BASE
+class basic_string : private __range_checker<_CharT>, public _STLP_DBG_STRING_BASE
 {
 private:
   typedef _STLP_DBG_STRING_BASE _Base;
@@ -128,28 +128,28 @@ public:
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l,
 		 		     const allocator_type & __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {
-    //insert(this->begin(), __f, __l);
+    : __range_checker<_CharT>(__f, __l), 
+      _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {
   }
 # ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l)
-    : _STLP_DBG_STRING_BASE(__f, __l), _M_iter_list(_Get_base()) {
-    //insert(this->begin(), __f, __l);
+    : __range_checker<_CharT>(__f, __l), 
+      _STLP_DBG_STRING_BASE(__f, __l), _M_iter_list(_Get_base()) {
   }
 #  endif
 #else /* _STLP_MEMBER_TEMPLATES */
-  basic_string(const_iterator __f, const_iterator __l, 
-		 		     const allocator_type & __a = allocator_type())
-    : _STLP_DBG_STRING_BASE(__f._M_iterator, __l._M_iterator, __a), _M_iter_list(_Get_base()) {
-    //insert(this->begin(), __f, __l);
-  }
-
   basic_string(const _CharT* __f, const _CharT* __l,
                const allocator_type& __a = allocator_type())
-    : _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {
-    //insert(this->begin(), __f, __l);
+    : __range_checker<_CharT>(__f, __l),
+      _STLP_DBG_STRING_BASE(__f, __l, __a), _M_iter_list(_Get_base()) {
   }
+  basic_string(const_iterator __f, const_iterator __l, 
+		 		     const allocator_type & __a = allocator_type())
+    : __range_checker<_CharT>(__f._M_iterator, __l._M_iterator),
+      _STLP_DBG_STRING_BASE(__f._M_iterator, __l._M_iterator, __a), _M_iter_list(_Get_base()) {
+  }
+
 #endif
 
 # ifdef _STLP_USE_NATIVE_STRING
@@ -640,9 +640,11 @@ public:                         // Other modifier member functions.
 
 // This is a hook to instantiate STLport exports in a designated DLL
 # if defined (_STLP_USE_TEMPLATE_EXPORT)
-_STLP_EXPORT template class _STLP_CLASS_DECLSPEC basic_string<char, char_traits<char>, allocator<char> >;
+_STLP_EXPORT_TEMPLATE_CLASS __range_checker <char>;
+_STLP_EXPORT_TEMPLATE_CLASS basic_string<char, char_traits<char>, allocator<char> >;
 #  if defined (_STLP_HAS_WCHAR_T)
-_STLP_EXPORT template class _STLP_CLASS_DECLSPEC basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
+_STLP_EXPORT_TEMPLATE_CLASS __range_checker <wchar_t>;
+_STLP_EXPORT_TEMPLATE_CLASS basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
 #  endif
 # endif /* _STLP_USE_TEMPLATE_EXPORT */
 

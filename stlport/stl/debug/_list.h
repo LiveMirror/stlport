@@ -67,7 +67,7 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_LIST_BASE >&) {
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_list : public _STLP_DBG_LIST_BASE
+class _DBG_list : private __range_checker<_Tp>, public _STLP_DBG_LIST_BASE
 {
   typedef _STLP_DBG_LIST_BASE _Base;
   typedef _DBG_list<_Tp, _Alloc> _Self;
@@ -131,28 +131,27 @@ public:
   template <class _InputIterator>
   _DBG_list(_InputIterator __first, _InputIterator __last,
 						const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
-      //call insert in order to check the input range
-      //insert(this->begin(), __first, __last);
+    : __range_checker<_Tp>(__first, __last), 
+      _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
     }
 #  ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   _DBG_list(_InputIterator __first, _InputIterator __last)
-    : _STLP_DBG_LIST_BASE(__first, __last), _M_iter_list(_Get_base()) {
-      //insert(this->begin(), __first, __last);
+    : __range_checker<_Tp>(__first, __last), 
+      _STLP_DBG_LIST_BASE(__first, __last), _M_iter_list(_Get_base()) {
     }
 #  endif
 #else /* _STLP_MEMBER_TEMPLATES */
 
   _DBG_list(const _Tp* __first, const _Tp* __last,
 						const allocator_type& __a = allocator_type())
-    : _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
-      //insert(this->begin(), __first, __last);
+    : __range_checker<_Tp>(__first, __last), 
+      _STLP_DBG_LIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
     }
   _DBG_list(const_iterator __first, const_iterator __last,
 						const allocator_type& __a = allocator_type())
-		: _STLP_DBG_LIST_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
-      //insert(this->begin(), __first, __last);
+		: __range_checker<_Tp>(__first._M_iterator, __last._M_iterator), 
+      _STLP_DBG_LIST_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
     }
 
 #endif /* _STLP_MEMBER_TEMPLATES */

@@ -385,6 +385,33 @@ template <class _Iterator>
 void  _STLP_CALL __invalidate_iterator(const __owned_list* __base, 
                                        const _Iterator& __it);
 
+template <class _Tp>
+class __range_checker {
+protected:
+  __range_checker() {}
+
+#if defined (_STLP_MEMBER_TEMPLATES)
+  template <class _InputIter>
+  __range_checker(const _InputIter& __f, const _InputIter& __l) {
+    typedef typename _Is_integer<_InputIter>::_Integral _Integral;
+    _M_check_dispatch(__f, __l, _Integral());
+  }
+
+  template <class _Integer>
+  void _M_check_dispatch(_Integer , _Integer, const __true_type& /*IsIntegral*/) {
+  }
+
+  template <class _InputIter>
+  void _M_check_dispatch(const _InputIter& __f, const _InputIter& __l, const __false_type& /*IsIntegral*/) {
+    _STLP_DEBUG_CHECK(__check_range(__f,__l))
+  }
+#else //_STLP_MEMBER_TEMPLATES
+  __range_checker(const _Tp *__f, const _Tp *__l) {
+    _STLP_DEBUG_CHECK(__check_range(__f,__l))
+  }
+#endif //_STLP_MEMBER_TEMPLATES
+};
+
 //============================================================
 
 inline bool _STLP_CALL 

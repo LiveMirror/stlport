@@ -27,31 +27,32 @@ int string1_test(int, char**)
   cout << v << endl;
   v.clear(); // Erase all.
 
-  const char* strorg = "This is test string for insert\n";
+  const char* strorg = "This is test string for string calls";
   string str;
+  //size it correctly to avoid reallocation
   str.reserve(50);
   str = strorg;
 
   //test self insertion:
   str.insert(10, str.c_str() + 5, 15);
-  //Should be: This is teis test string st string for insert
-  cout << str;
+  //Should be: This is teis test string st string for string calls
+  cout << str << endl;
 
   //An other one using an other implementation
   str = strorg;
   str.insert(15, str.c_str() + 5, 25);
-  //Should be: This is test stis test string for insertring for insert
-  cout << str;
+  //Should be: This is test stis test string for stringring for string calls
+  cout << str << endl;
 
   str = strorg;
   str.replace(5, 15, str.c_str(), 10);
-  //Should be: This This is tefor insert
-  cout << str;
+  //Should be: This This is tefor string calls
+  cout << str << endl;
 
   str = strorg;
   str.replace(5, 5, str.c_str(), 10);
-  //Should be: This This is test string for insert
-  cout << str;
+  //Should be: This This is test string for string calls
+  cout << str << endl;
   cout << endl;
 
   return 0;

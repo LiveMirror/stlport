@@ -860,9 +860,9 @@ Hello, World!
 v[0] = H
 v[1] = !
 Hello, World!
-This is teis test string st string for insert
-This is test stis test string for insertring for insert
-This This is tefor insert
-This This is test string for insert
+This is teis test string st string for string calls
+This is test stis test string for stringring for string calls
+This This is tefor string calls
+This This is test string for string calls
 
 Results of bitset1_test:

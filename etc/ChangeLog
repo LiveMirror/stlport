@@ -3,19 +3,24 @@ The following changes were made in 4.5.5 since 4.5.3 release:
 
 2003-10-16  Francois Dumont
 
+  * debug/: add of the iterator range check on all container constructors.
+
+  * _string.h: correction of a bug on string auto referencing throught some
+  method like insert and replace. (thanks Tanaka)
+
   * _valarray.h: correction of the missing slice_array copy constructor and assignment
   operator in the private section (thanks Tanaka)
 
 2003-10-11  Petr Ovchenkov
 
-	* _sstream.c: [io]?stringstream must do equivalent of seek at end,
-	after opened with ios_base::ate; this behaviour useful only when buffer
-	initialized by string (thanks Tanaka)
+  * _sstream.c: [io]?stringstream must do equivalent of seek at end,
+  after opened with ios_base::ate; this behaviour useful only when buffer
+  initialized by string (thanks Tanaka)
 	
 2003-10-07  Francois Dumont
 
-	* _[i,o]streambuf_iterator.h: correction of the missing iterator base class
-	(Thanks Tanaka)
+  * _[i,o]streambuf_iterator.h: correction of the missing iterator base class
+  (Thanks Tanaka)
   
   ----
   

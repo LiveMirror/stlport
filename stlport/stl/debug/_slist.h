@@ -56,7 +56,7 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_SLIST_BASE >&) {
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_slist : public _STLP_DBG_SLIST_BASE
+class _DBG_slist : private __range_checker<_Tp>, public _STLP_DBG_SLIST_BASE
 {
 private:
   typedef _STLP_DBG_SLIST_BASE _Base;
@@ -121,31 +121,31 @@ public:
   template <class _InputIterator>
   _DBG_slist(_InputIterator __first, _InputIterator __last,
 		      const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_DBG_SLIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
-      //insert(this->begin(), __first, __last);
+    : __range_checker<_Tp>(__first, __last), 
+      _STLP_DBG_SLIST_BASE(__first, __last, __a), _M_iter_list(_Get_base()) {
     } 
 
 # ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   _DBG_slist(_InputIterator __first, _InputIterator __last)
-    : _STLP_DBG_SLIST_BASE(__first, __last), _M_iter_list(_Get_base()) {
-      //insert(this->begin(), __first, __last);
+    : __range_checker<_Tp>(__first, __last), 
+      _STLP_DBG_SLIST_BASE(__first, __last), _M_iter_list(_Get_base()) {
     } 
 # endif
 #else /* _STLP_MEMBER_TEMPLATES */
 
-  _DBG_slist(const_iterator __first, const_iterator __last,
-		      const allocator_type& __a = allocator_type() )
-    : _STLP_DBG_SLIST_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
-      //insert(this->begin(), __first, __last);
-    }
-  
   _DBG_slist(const value_type* __first, const value_type* __last,
         const allocator_type& __a =  allocator_type())
-    : _STLP_DBG_SLIST_BASE(__first, __last, __a), _M_iter_list(_Get_base())  {
-      //insert(this->begin(), __first, __last);
+    : __range_checker<_Tp>(__first, __last), 
+      _STLP_DBG_SLIST_BASE(__first, __last, __a), _M_iter_list(_Get_base())  {
     }
 
+  _DBG_slist(const_iterator __first, const_iterator __last,
+		      const allocator_type& __a = allocator_type() )
+    : __range_checker<_Tp>(__first._M_iterator, __last._M_iterator), 
+      _STLP_DBG_SLIST_BASE(__first._M_iterator, __last._M_iterator, __a), _M_iter_list(_Get_base()) {
+    }
+  
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   _DBG_slist(const _Self& __x) : _STLP_DBG_SLIST_BASE(__x), _M_iter_list(_Get_base()) {}
