@@ -680,6 +680,12 @@ namespace stlport = _STLP_STD;
 #  endif
 # endif
 
+//When the compiler do not correctly initialized the basic types value in default parameters we prefer
+//to avoid them to be able to correct this bug.
+# if defined (_STLP_DEF_CONST_DEF_PARAM_BUG)
+#  define _STLP_DONT_SUP_DFLT_PARAM 1
+# endif
+
 # if defined (__SGI_STL_NO_ARROW_OPERATOR) && ! defined (_STLP_NO_ARROW_OPERATOR)
 # define _STLP_NO_ARROW_OPERATOR
 # endif
@@ -793,6 +799,12 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #   define _STLP_RETHROW throw
 #   define _STLP_UNWIND(action) catch(...) { action; throw; }
 
+#   ifdef _STLP_THROW_RETURN_BUG
+#     define _STLP_RET_AFTER_THROW(data) return data
+#   else
+#     define _STLP_RET_AFTER_THROW(data)
+#   endif
+
 #   if !defined ( _STLP_NO_EXCEPTION_SPEC )
 #    define _STLP_THROWS_INHERENTLY(x) throw x
 #    define _STLP_NOTHROW_INHERENTLY throw()
@@ -812,7 +824,8 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #   define _STLP_RETHROW {}
 #   define _STLP_UNWIND(action) 
 #   define _STLP_THROWS(x)
-#   define _STLP_NOTHROW 
+#   define _STLP_NOTHROW
+#   define _STLP_RET_AFTER_THROW(data)
 #   define _STLP_THROWS_INHERENTLY(x)
 #   define _STLP_NOTHROW_INHERENTLY 
 # endif
@@ -976,6 +989,16 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 # else
 #  define _STLP_OPSPEC2(t1,t2)	/* nothing */
 # endif
+
+//Used in partial template simulation:
+# ifndef _STLP_CLASS_PARTIAL_SPECIALIZATION
+# define _STLP_FIRST_DERIVE(base) : public base
+# define _STLP_DERIVE(base) , public base
+# else
+# define _STLP_FIRST_DERIVE(base)
+# define _STLP_DERIVE(base)
+#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+
 
 # if defined (_STLP_OWN_IOSTREAMS)
 #  define _STLP_NEW_IO_NAMESPACE _STLP_STD

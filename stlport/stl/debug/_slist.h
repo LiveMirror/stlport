@@ -81,12 +81,28 @@ public:
   explicit _DBG_slist(const allocator_type& __a = allocator_type()) :
     _STLP_DBG_SLIST_BASE(__a) , _M_iter_list(_Get_base()) {}
   
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  explicit _DBG_slist(size_type __n, const value_type& __x = _Tp(),
+#else
   _DBG_slist(size_type __n, const value_type& __x,
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 	     const allocator_type& __a =  allocator_type()) :
     _STLP_DBG_SLIST_BASE(__n, __x, __a), _M_iter_list(_Get_base()) {}
   
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit _DBG_slist(size_type __n) : _STLP_DBG_SLIST_BASE(__n) , _M_iter_list(_Get_base()) {}
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
+
+  explicit _DBG_slist(__partial_move_source<_Self> src)
+	  : _STLP_DBG_SLIST_BASE(_AsPartialMoveSource<_STLP_DBG_SLIST_BASE >(src.get())) , _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all();
+  }
   
+  /*explicit _DBG_slist(__full_move_source<_Self> src)
+	  : _STLP_DBG_SLIST_BASE(_FullMoveSource<_STLP_DBG_SLIST_BASE >(src.get())) , _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all();
+  }*/
+
 #ifdef _STLP_MEMBER_TEMPLATES
   // We don't need any dispatching tricks here, because _M_insert_after_range
   // already does them.
@@ -124,7 +140,7 @@ public:
   ~_DBG_slist() {}
 
 public:
-  void assign(size_type __n, const _Tp& __val) {
+  void assign(size_type __n, const value_type& __val) {
     // fbp :check invalidation here !
     _Base::assign(__n, __val); 
   }
@@ -170,13 +186,19 @@ public:
 
 public:
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  iterator insert_after(iterator __pos, const value_type& __x = _Tp()) {
+#else
   iterator insert_after(iterator __pos, const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     return iterator(&_M_iter_list,_Base::insert_after(__pos._M_iterator, __x));
   }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   iterator insert_after(iterator __pos) {
     return iterator(&_M_iter_list,_Base::insert_after(__pos._M_iterator));
   }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void insert_after(iterator __pos, size_type __n, const value_type& __x) {
     _Base::insert_after(__pos._M_iterator, __n, __x);
@@ -228,15 +250,20 @@ public:
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  iterator insert(iterator __pos, const value_type& __x = _Tp()) {
+#else
   iterator insert(iterator __pos, const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
     return iterator(&_M_iter_list, _Base::insert(__pos._M_iterator, __x));
   }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   iterator insert(iterator __pos) {
-    _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
-    return iterator(&_M_iter_list, _Base::insert(__pos._M_iterator));
+    return insert(__pos, _STLP_DEFAULT_CONSTRUCTED(_Tp));
   }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void insert(iterator __pos, size_type __n, const value_type& __x) {
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__pos))
@@ -266,10 +293,17 @@ public:
 		    _Base::erase(__first._M_iterator, __last._M_iterator));
   }
 
-  void resize(size_type __new_size, const _Tp& __x) {
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type __new_size, const value_type& __x = _Tp()) {
+#else
+  void resize(size_type __new_size, const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     _Base::resize(__new_size, __x);
   }
-  void resize(size_type new_size) { resize(new_size, _Tp()); }
+
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type new_size) { resize(new_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void clear() {
     _Invalidate_all();      
@@ -339,7 +373,7 @@ public:
 
 public:
 
-  void remove(const _Tp& __val) {
+  void remove(const value_type& __val) {
     _Base::remove(__val);
     //    __x._Invalidate_all();    
   }

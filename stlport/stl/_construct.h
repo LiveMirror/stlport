@@ -43,6 +43,10 @@
 # include <stl/_iterator_base.h>
 #endif
 
+#ifndef _STLP_MOVE_CONSTRUCT_FWK_H
+# include <stl/_move_construct_fwk.h>
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 # ifdef _STLP_TRIVIAL_DESTRUCTOR_BUG
@@ -77,7 +81,7 @@ inline void _Destroy(_Tp* __pointer) {
 #   undef new
 # endif 
 
-# ifdef _STLP_DEFAULT_CONSTRUCTOR_BUG
+# ifdef _STLP_DEF_CONST_PLCT_NEW_BUG
 template <class _T1>
 inline void _Construct_aux (_T1* __p, const __false_type&) {
 _STLP_PLACEMENT_NEW (__p) _T1();
@@ -87,27 +91,34 @@ template <class _T1>
 inline void _Construct_aux (_T1* __p, const __true_type&) {
 _STLP_PLACEMENT_NEW (__p) _T1(0);
 }
-# endif
-
-template <class _T1, class _T2>
-inline void _Construct(_T1* __p, const _T2& __val) {
-# ifdef _STLP_DEBUG_UNINITIALIZED
-	memset((char*)__p, _STLP_SHRED_BYTE, sizeof(_T1));
-# endif
-    _STLP_PLACEMENT_NEW (__p) _T1(__val);
-}
+# endif /* _STLP_DEF_CONST_PLCT_NEW_BUG */
 
 template <class _T1>
 inline void _Construct(_T1* __p) {
 # ifdef _STLP_DEBUG_UNINITIALIZED
   memset((char*)__p, _STLP_SHRED_BYTE, sizeof(_T1));
 # endif
-# ifdef _STLP_DEFAULT_CONSTRUCTOR_BUG
-typedef typename _Is_integer<_T1>::_Integral _Is_Integral;
-_Construct_aux (__p, _Is_Integral() );
+# ifdef _STLP_DEF_CONST_PLCT_NEW_BUG
+_Construct_aux (__p, _HasDefaultZeroValue(__p)._Answer() );
 # else
   _STLP_PLACEMENT_NEW (__p) _T1();
+# endif /* _STLP_DEF_CONST_PLCT_NEW_BUG */
+}
+
+template <class _T1, class _T2>
+inline void _Copy_Construct(_T1* __p, const _T2& __val) {
+# ifdef _STLP_DEBUG_UNINITIALIZED
+	memset((char*)__p, _STLP_SHRED_BYTE, sizeof(_T1));
 # endif
+  _STLP_PLACEMENT_NEW (__p) _T1(__val);
+}
+
+template <class _T1, class _T2>
+inline void _Move_Construct(_T1* __p, _T2& __val) {
+# ifdef _STLP_DEBUG_UNINITIALIZED
+	memset((char*)__p, _STLP_SHRED_BYTE, sizeof(_T1));
+# endif
+  _STLP_PLACEMENT_NEW (__p) _T1(_AsMoveSource(__val));
 }
 
 # if defined(_STLP_NEW_REDEFINE)
@@ -125,7 +136,8 @@ __destroy_aux(_ForwardIterator __first, _ForwardIterator __last, const __false_t
 }
 
 template <class _ForwardIterator> 
-inline void __destroy_aux(_ForwardIterator, _ForwardIterator, const __true_type&) {}
+inline void
+__destroy_aux(_ForwardIterator, _ForwardIterator, const __true_type&) {}
 
 template <class _ForwardIterator, class _Tp>
 inline void 
@@ -135,29 +147,76 @@ __destroy(_ForwardIterator __first, _ForwardIterator __last, _Tp*) {
 }
 
 template <class _ForwardIterator>
-inline void _Destroy(_ForwardIterator __first, _ForwardIterator __last) {
+inline void _Destroy_Range(_ForwardIterator __first, _ForwardIterator __last) {
   __destroy(__first, __last, _STLP_VALUE_TYPE(__first, _ForwardIterator));
 }
 
-inline void _Destroy(char*, char*) {}
+inline void _Destroy_Range(char*, char*) {}
 # ifdef _STLP_HAS_WCHAR_T // dwa 8/15/97
-inline void _Destroy(wchar_t*, wchar_t*) {}
-inline void _Destroy(const wchar_t*, const wchar_t*) {}
+inline void _Destroy_Range(wchar_t*, wchar_t*) {}
+inline void _Destroy_Range(const wchar_t*, const wchar_t*) {}
 # endif
+
+template <class _ForwardIterator, class _Tp>
+_STLP_INLINE_LOOP void
+__destroy_mv_srcs_aux(_ForwardIterator __first, _ForwardIterator __last, _Tp*, const __false_type& /*full_move*/) {
+  typedef typename __type_traits<_Tp>::has_trivial_destructor _Trivial_destructor;
+  __destroy_aux(__first, __last, _Trivial_destructor());
+}
+
+template <class _ForwardIterator, class _Tp> 
+inline void
+__destroy_mv_srcs_aux(_ForwardIterator, _ForwardIterator, _Tp*, const __true_type&/*full_move*/) {}
+
+template <class _ForwardIterator, class _Tp>
+inline void 
+__destroy_mv_srcs(_ForwardIterator __first, _ForwardIterator __last, _Tp* __p) {
+  typedef typename __full_move_traits<_Tp>::_Supported _Full_move;
+  __destroy_mv_srcs_aux(__first, __last, __p, _Full_move());
+}
+
+template <class _ForwardIterator>
+inline void _Destroy_Mvd_Sources(_ForwardIterator __first, _ForwardIterator __last) {
+  __destroy_mv_srcs(__first, __last, _STLP_VALUE_TYPE(__first, _ForwardIterator));
+}
+
+# ifdef _STLP_DEF_CONST_DEF_PARAM_BUG
+// Those adaptors are here to fix common compiler bug regarding builtins:
+// expressions like int k = int() should initialize k to 0
+template <class _Tp>
+inline _Tp __default_constructed_aux(_Tp*, const __false_type&) {
+  return _Tp();
+}
+template <class _Tp>
+inline _Tp __default_constructed_aux(_Tp*, const __true_type&) {
+  return _Tp(0);
+}
+
+template <class _Tp>
+inline _Tp __default_constructed(_Tp* __p) {
+  return __default_constructed_aux(__p, _HasDefaultZeroValue(__p)._Answer());
+}
+
+#  define _STLP_DEFAULT_CONSTRUCTED(_TTp) __default_constructed((_TTp*)0)
+# else
+#  define _STLP_DEFAULT_CONSTRUCTED(_TTp) _TTp()
+# endif /* _STLP_DEF_CONST_DEF_PARAM_BUG */
+
 
 # ifndef _STLP_NO_ANACHRONISMS
 // --------------------------------------------------
 // Old names from the HP STL.
 
 template <class _T1, class _T2>
-inline void construct(_T1* __p, const _T2& __val) {_Construct(__p, __val); }
+inline void construct(_T1* __p, const _T2& __val) {_Copy_Construct(__p, __val); }
 template <class _T1>
 inline void construct(_T1* __p) { _Construct(__p); }
 template <class _Tp>
 inline void destroy(_Tp* __pointer) {  _STLP_STD::_Destroy(__pointer); }
 template <class _ForwardIterator>
-inline void destroy(_ForwardIterator __first, _ForwardIterator __last) { _STLP_STD::_Destroy(__first, __last); }
-# endif
+inline void destroy(_ForwardIterator __first, _ForwardIterator __last) { _STLP_STD::_Destroy_Range(__first, __last); }
+# endif /* _STLP_NO_ANACHRONISMS */
+
 _STLP_END_NAMESPACE
 
 #endif /* _STLP_INTERNAL_CONSTRUCT_H */

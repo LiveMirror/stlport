@@ -357,7 +357,8 @@ protected:
 
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class deque : protected _Deque_base<_Tp, _Alloc> {
+class deque : protected _Deque_base<_Tp, _Alloc> _STLP_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+{
   typedef _Deque_base<_Tp, _Alloc> _Base;
   typedef deque<_Tp, _Alloc> _Self;
 public:                         // Basic types
@@ -437,13 +438,19 @@ public:                         // Constructor, destructor.
       __uninitialized_copy(__x.begin(), __x.end(), this->_M_start, _IsPODType()); 
   }
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  explicit deque(size_type __n, const value_type& __val = _Tp(),
+#else
   deque(size_type __n, const value_type& __val,
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
         const allocator_type& __a = allocator_type()) : 
     _Deque_base<_Tp, _Alloc>(__a, __n)
     { _M_fill_initialize(__val); }
   // int,long variants may be needed 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit deque(size_type __n) : _Deque_base<_Tp, _Alloc>(allocator_type(), __n)
-    { _M_fill_initialize(value_type()); }
+    { _M_fill_initialize(_STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
 #ifdef _STLP_MEMBER_TEMPLATES
 
@@ -492,8 +499,17 @@ public:                         // Constructor, destructor.
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
+  /*explicit deque(__full_move_source<_Self> src)
+	  : _Deque_base<_Tp, _Alloc>(_FullMoveSource<_Deque_base<_Tp, _Alloc> >(src.get())) {
+  }*/
+
+  explicit deque(__partial_move_source<_Self> src)
+	  : _Deque_base<_Tp, _Alloc>(src.get()) {
+	  src.get()._M_map._M_data = 0;
+  }
+
   ~deque() { 
-    _STLP_STD::_Destroy(this->_M_start, this->_M_finish); 
+    _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish); 
   }
 
   _Self& operator= (const _Self& __x);
@@ -575,24 +591,32 @@ private:                        // helper functions for assign()
 
 public:                         // push_* and pop_*
   
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  void push_back(const value_type& __t = _Tp()) {
+#else
   void push_back(const value_type& __t) {
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
     if (this->_M_finish._M_cur != this->_M_finish._M_last - 1) {
-      _Construct(this->_M_finish._M_cur, __t);
+      _Copy_Construct(this->_M_finish._M_cur, __t);
       ++this->_M_finish._M_cur;
     }
     else
       _M_push_back_aux_v(__t);
   }
-  void push_front(const value_type& __t) {
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  void push_front(const value_type& __t = _Tp())   {
+#else
+  void push_front(const value_type& __t)   {
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
     if (this->_M_start._M_cur != this->_M_start._M_first) {
-      _Construct(this->_M_start._M_cur - 1, __t);
+      _Copy_Construct(this->_M_start._M_cur - 1, __t);
       --this->_M_start._M_cur;
     }
     else
       _M_push_front_aux_v(__t);
   }
 
-# ifndef _STLP_NO_ANACHRONISMS
+# if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
   void push_back() {
     if (this->_M_finish._M_cur != this->_M_finish._M_last - 1) {
       _Construct(this->_M_finish._M_cur);
@@ -609,7 +633,7 @@ public:                         // push_* and pop_*
     else
       _M_push_front_aux();
   }
-# endif
+# endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
   void pop_back() {
     if (this->_M_finish._M_cur != this->_M_finish._M_first) {
@@ -631,7 +655,11 @@ public:                         // push_* and pop_*
 
 public:                         // Insert
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  iterator insert(iterator __position, const value_type& __x = _Tp()) {
+#else
   iterator insert(iterator __position, const value_type& __x) {
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
     if (__position._M_cur == this->_M_start._M_cur) {
       push_front(__x);
       return this->_M_start;
@@ -647,8 +675,10 @@ public:                         // Insert
     }
   }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
   iterator insert(iterator __position)
-    { return insert(__position, value_type()); }
+    { return insert(__position, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
   void insert(iterator __pos, size_type __n, const value_type& __x) {
     _M_fill_insert(__pos, __n, __x);
@@ -687,7 +717,11 @@ public:                         // Insert
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type __new_size, const value_type& __x = _Tp()) {
+#else
   void resize(size_type __new_size, const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     const size_type __len = size();
     if (__new_size < __len) 
       erase(this->_M_start + __new_size, this->_M_finish);
@@ -695,7 +729,9 @@ public:                         // Insert
       insert(this->_M_finish, __new_size - __len, __x);
   }
 
-  void resize(size_type new_size) { resize(new_size, value_type()); }
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type new_size) { resize(new_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
 public:                         // Erase
   iterator erase(iterator __pos) {
@@ -751,7 +787,7 @@ protected:                        // Internal construction/destruction
     }
     uninitialized_copy(__first, __last, this->_M_finish._M_first);
    }
-  _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_start, iterator(*__cur_node, __cur_node)));
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(this->_M_start, iterator(*__cur_node, __cur_node)));
  }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
@@ -759,10 +795,10 @@ protected:                        // Internal push_* and pop_*
 
   void _M_push_back_aux_v(const value_type&);
   void _M_push_front_aux_v(const value_type&);
-# ifndef _STLP_NO_ANACHRONISMS
+# if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
   void _M_push_back_aux();
   void _M_push_front_aux();
-# endif
+# endif /*_STLP_DONT_SUP_DFLT_PARAM !_STLP_NO_ANACHRONISMS*/
   void _M_pop_back_aux();
   void _M_pop_front_aux();
 
@@ -808,8 +844,12 @@ void  insert(iterator __pos,
 }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  iterator _M_insert_aux(iterator __pos, const value_type& __x = _Tp());
+#else
   iterator _M_insert_aux(iterator __pos, const value_type& __x);
   iterator _M_insert_aux(iterator __pos);
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM*/
   iterator _M_insert_aux_prepare(iterator __pos);
 
   void _M_insert_aux(iterator __pos, size_type __n, const value_type& __x);

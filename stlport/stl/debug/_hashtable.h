@@ -62,7 +62,8 @@ iterator_category(const  _DBG_iter_base< _STLP_DBG_HT_SUPER >&) {
 
 template <class _Val, class _Key, class _HF,
           class _ExK, class _EqK, class _All>
-class _DBG_hashtable : public _STLP_DBG_HT_SUPER {
+class _DBG_hashtable : public _STLP_DBG_HT_SUPER
+{
   typedef _DBG_hashtable<_Val, _Key, _HF, _ExK, _EqK, _All> _Self;
   typedef _STLP_DBG_HT_SUPER _Base;
 
@@ -80,14 +81,14 @@ public:
   typedef typename _Base::const_iterator _Base_const_iterator;
 
 protected:
-  void _Invalidate_all() {_M_iter_list._Invalidate_all();}
-
+  void _Invalidate_all_iterators() {
+    _M_iter_list._Invalidate_all();
+  }
   void _Invalidate_iterator(const const_iterator& __it) { 
     __invalidate_iterator(&_M_iter_list,__it); 
   }
   void _Invalidate_iterators(const const_iterator& __first, const const_iterator& __last) {
-    const_iterator __cur = __first;
-    while (__cur != __last) __invalidate_iterator(&_M_iter_list, __cur++); 
+    __invalidate_range(&_M_iter_list, __first, __last);
   }
 
   const _Base* _Get_base() const { return (const _Base*)this; }
@@ -114,8 +115,20 @@ public:
     _STLP_DBG_HT_SUPER(__ht),
     _M_iter_list(_Get_base()) {}
   
+  explicit _DBG_hashtable(__partial_move_source<_Self> src) :
+    _STLP_DBG_HT_SUPER(_AsPartialMoveSource<_STLP_DBG_HT_SUPER >(src.get())),
+    _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all_iterators();
+  }
+  
+  /*explicit _DBG_hashtable(__full_move_source<_Self> src) :
+    _STLP_DBG_HT_SUPER(_FullMoveSource<_STLP_DBG_HT_SUPER >(src.get())),
+    _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all_iterators();
+  }*/
+  
   _Self& operator= (const _Self& __ht) {
-    _Invalidate_all();
+    _Invalidate_all_iterators();
     _Base::operator=(__ht);
     return *this;
   }
@@ -232,7 +245,7 @@ public:
   }
   
   void clear() {
-    _Invalidate_all();
+    _Invalidate_all_iterators();
     _Base::clear();
   }
 

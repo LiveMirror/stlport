@@ -56,7 +56,8 @@ iterator_category(const  _DBG_iter_base< _STLP_DBG_TREE_SUPER >&) {
 
 template <class _Key, class _Value, class _KeyOfValue, class _Compare,
           _STLP_DBG_ALLOCATOR_SELECT(_Value) >
-class _DBG_Rb_tree : public _STLP_DBG_TREE_SUPER {
+class _DBG_Rb_tree : public _STLP_DBG_TREE_SUPER 
+{
   typedef _STLP_DBG_TREE_SUPER _Base;
   typedef _DBG_Rb_tree<_Key, _Value, _KeyOfValue, _Compare, _Alloc> _Self;
 protected:
@@ -99,6 +100,14 @@ public:
     _STLP_DBG_TREE_SUPER(__comp, __a), _M_iter_list(_Get_base()) {}
   _DBG_Rb_tree(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x):
     _STLP_DBG_TREE_SUPER(__x), _M_iter_list(_Get_base()) {}
+
+  explicit _DBG_Rb_tree(__partial_move_source<_Self> src):
+    _STLP_DBG_TREE_SUPER(_AsPartialMoveSource<_STLP_DBG_TREE_SUPER >(src.get())), _M_iter_list(_Get_base()) {}
+
+  /*explicit _DBG_Rb_tree(__full_move_source<_Self> src):
+    _STLP_DBG_TREE_SUPER(_FullMoveSource<_STLP_DBG_TREE_SUPER >(src.get())), _M_iter_list(_Get_base()) {
+  }*/
+
   ~_DBG_Rb_tree() { _Invalidate_all(); }
 
   _Self& operator=(const _Self& __x) {

@@ -205,7 +205,8 @@ typedef _Stl_prime<bool> _Stl_prime_type;
 //  wouldn't, for example, simplify the exception-handling code.
 template <class _Val, class _Key, class _HF,
           class _ExK, class _EqK, class _All>
-class hashtable {
+class hashtable _STLP_FIRST_DERIVE(__partial_move_supported)
+{
   typedef hashtable<_Val, _Key, _HF, _ExK, _EqK, _All> _Self;
 public:
   typedef _Key key_type;
@@ -294,6 +295,14 @@ public:
   {
     _M_copy_from(__ht);
   }
+
+  explicit hashtable(__partial_move_source<_Self> src)
+	  : _M_hash(src.get()._M_hash),
+		  _M_equals(src.get()._M_equals),
+		  _M_get_key(src.get()._M_get_key),
+		  _M_buckets(_AsPartialMoveSource(src.get()._M_buckets)),
+		  _M_num_elements(src.get()._M_num_elements) {
+  }	
 
   _Self& operator= (const _Self& __ht)
   {
@@ -567,7 +576,7 @@ private:
     _Node* __n = _M_num_elements.allocate(1);
     __n->_M_next = 0;
     _STLP_TRY {
-      _Construct(&__n->_M_val, __obj);
+      _Copy_Construct(&__n->_M_val, __obj);
       //      return __n;
     }
     _STLP_UNWIND(_M_num_elements.deallocate(__n, 1));

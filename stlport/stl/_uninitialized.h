@@ -51,7 +51,7 @@ _STLP_BEGIN_NAMESPACE
 template <class _InputIter, class _ForwardIter>
 inline _ForwardIter 
 __uninitialized_copy(_InputIter __first, _InputIter __last, _ForwardIter __result,
-                     const __true_type&) {
+                     const __true_type& /*IsPOD*/) {
   return __copy_aux(__first, __last, __result, _BothPtrType< _InputIter, _ForwardIter> :: _Ret());
 }
 
@@ -59,18 +59,16 @@ template <class _InputIter, class _ForwardIter>
 _STLP_INLINE_LOOP
 _ForwardIter 
 __uninitialized_copy(_InputIter __first, _InputIter __last, _ForwardIter __result,
-                     const __false_type&)
+                     const __false_type& /*IsPOD*/)
 {
   _ForwardIter __cur = __result;
   _STLP_TRY {
     for ( ; __first != __last; ++__first, ++__cur)
-      _Construct(&*__cur, *__first);
+      _Copy_Construct(&*__cur, *__first);
     return __cur;
   }
-  _STLP_UNWIND(_STLP_STD::_Destroy(__result, __cur));
-# ifdef _STLP_THROW_RETURN_BUG
-  return __cur;
-# endif
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __cur));
+  _STLP_RET_AFTER_THROW(__cur);
 }
 
 template <class _InputIter, class _ForwardIter>
@@ -104,13 +102,11 @@ __uninitialized_copy_n(_InputIter __first, _Size __count,
   _ForwardIter __cur = __result;
   _STLP_TRY {
     for ( ; __count > 0 ; --__count, ++__first, ++__cur) 
-      _Construct(&*__cur, *__first);
+      _Copy_Construct(&*__cur, *__first);
     return pair<_InputIter, _ForwardIter>(__first, __cur);
   }
-  _STLP_UNWIND(_STLP_STD::_Destroy(__result, __cur));
-# ifdef _STLP_THROW_RETURN_BUG
-  return pair<_InputIter, _ForwardIter>(__first, __cur);
-# endif
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __cur));
+  _STLP_RET_AFTER_THROW((pair<_InputIter, _ForwardIter>(__first, __cur)));
 }
 
 # if defined(_STLP_NONTEMPL_BASE_MATCH_BUG) 
@@ -166,9 +162,9 @@ __uninitialized_fill(_ForwardIter __first, _ForwardIter __last,
   _ForwardIter __cur = __first;
   _STLP_TRY {
     for ( ; __cur != __last; ++__cur)
-      _Construct(&*__cur, __x);
+      _Copy_Construct(&*__cur, __x);
   }
-  _STLP_UNWIND(_STLP_STD::_Destroy(__first, __cur));
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__first, __cur));
 }
 
 template <class _ForwardIter, class _Tp>
@@ -193,13 +189,11 @@ __uninitialized_fill_n(_ForwardIter __first, _Size __n,
   _ForwardIter __cur = __first;
   _STLP_TRY {
     for ( ; __n > 0; --__n, ++__cur)
-      _Construct(&*__cur, __x);
+      _Copy_Construct(&*__cur, __x);
     return __cur;
   }
-  _STLP_UNWIND(_STLP_STD::_Destroy(__first, __cur));
-# ifdef _STLP_THROW_RETURN_BUG
-  return __cur;
-# endif
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__first, __cur));
+  _STLP_RET_AFTER_THROW(__cur);
 }
 
 template <class _ForwardIter, class _Size, class _Tp>
@@ -236,10 +230,8 @@ __uninitialized_copy_copy(_InputIter1 __first1, _InputIter1 __last1,
   _STLP_TRY {
     return __uninitialized_copy(__first2, __last2, __mid , _IS_POD_ITER(__result, _ForwardIter));
   }
-  _STLP_UNWIND(_STLP_STD::_Destroy(__result, __mid));
-# ifdef _STLP_THROW_RETURN_BUG
-  return __mid;
-# endif
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __mid));
+  _STLP_RET_AFTER_THROW(__mid);
 }
 
 // __uninitialized_fill_copy
@@ -255,10 +247,8 @@ __uninitialized_fill_copy(_ForwardIter __result, _ForwardIter __mid, const _Tp& 
   _STLP_TRY {
     return __uninitialized_copy(__first, __last, __mid, _I_POD());
   }
-  _STLP_UNWIND(_STLP_STD::_Destroy(__result, __mid));
-# ifdef _STLP_THROW_RETURN_BUG
-  return __result;
-# endif
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __mid));
+  _STLP_RET_AFTER_THROW(__result);
 }
 
 // __uninitialized_copy_fill
@@ -275,7 +265,31 @@ __uninitialized_copy_fill(_InputIter __first1, _InputIter __last1,
   _STLP_TRY {
     __uninitialized_fill(__mid2, __last2, __x, _I_POD());
   }
-  _STLP_UNWIND(_STLP_STD::_Destroy(__first2, __mid2));
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__first2, __mid2));
+}
+
+// __uninitialized_move
+template <class _InputIter, class _ForwardIter>
+inline _ForwardIter 
+__uninitialized_move(_InputIter __first, _InputIter __last, _ForwardIter __result,
+                     const __true_type& /*IsPOD*/) {
+  return __copy_aux(__first, __last, __result, _BothPtrType< _InputIter, _ForwardIter> :: _Ret());
+}
+
+template <class _InputIter, class _ForwardIter>
+_STLP_INLINE_LOOP
+_ForwardIter 
+__uninitialized_move(_InputIter __first, _InputIter __last, _ForwardIter __result,
+                     const __false_type& /*IsPOD*/)
+{
+  _ForwardIter __cur = __result;
+  _STLP_TRY {
+    for ( ; __first != __last; ++__first, ++__cur)
+      _Move_Construct(&*__cur, *__first);
+    return __cur;
+  }
+  _STLP_UNWIND(_STLP_STD::_Destroy_Range(__result, __cur));
+  _STLP_RET_AFTER_THROW(__cur);
 }
 
 _STLP_END_NAMESPACE

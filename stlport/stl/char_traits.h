@@ -42,8 +42,12 @@
 // class mbstate_t;
 #endif
 
-#ifndef __TYPE_TRAITS_H
+/*#ifndef __TYPE_TRAITS_H
 # include <stl/type_traits.h>
+#endif*/
+
+#ifndef _STLP_INTERNAL_CONSTRUCT_H
+# include <stl/_construct.h>
 #endif
 
 # if !defined (_STLP_CWCHAR)

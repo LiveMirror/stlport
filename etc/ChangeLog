@@ -1,7 +1,16 @@
 The following changes were made in 4.5.5 since 4.5.3 release:
 
-  * iostream.cpp, locale_impl.cpp : static initioanlization made robust for case of 
-    dynamic loader circular depandancies (Thanks Alexey Sarytchev for the report)
+  * move constructor framework integration (thanks Francois Dumont)
+
+  ----
+
+  * containers interface correction for standard compliance when using explicit
+    intanciation of not default constructible type. (thanks Alexei Agafonov report)
+
+  ----
+
+  * iostream.cpp, locale_impl.cpp : static initialization made robust for case of 
+    dynamic loader circular dependancies (Thanks Alexey Sarytchev for the report)
 	
   ----
 	

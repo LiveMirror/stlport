@@ -81,6 +81,9 @@
 // types as default parameters for class templates
 // #  define _STLP_DEFAULT_TYPE_PARAM 1
 
+// Uncomment this if your compiler do not support default parameters in template class methods
+// #  define _STLP_DONT_SUP_DFLT_PARAM 1
+
 // Uncomment this if your compiler has problem with not-type
 // default template parameters
 // #  define _STLP_NO_DEFAULT_NON_TYPE_PARAM 1
@@ -202,7 +205,10 @@
 // # define _STLP_STATIC_CONST_INIT_BUG
 
 // Define if default constructor for builtin integer type fails to initialize it to 0
-// #  define _STLP_DEFAULT_CONSTRUCTOR_BUG    1
+// In expression like new(&char) char():
+//# define _STLP_DEF_CONST_PLCT_NEW_BUG 1
+// In default function parameter like _M_method(_Tp __x = _Tp())
+//# define _STLP_DEF_CONST_DEF_PARAM_BUG 1
 
 // Defined if constructor
 // required to explicitly call member's default constructors for const objects

@@ -55,7 +55,7 @@ public:
   explicit raw_storage_iterator(_ForwardIterator __x) : _M_iter(__x) {}
   raw_storage_iterator<_ForwardIterator, _Tp>& operator*() { return *this; }
   raw_storage_iterator<_ForwardIterator, _Tp>& operator=(const _Tp& __element) {
-    _Construct(&*_M_iter, __element);
+    _Copy_Construct(&*_M_iter, __element);
     return *this;
   }        
   raw_storage_iterator<_ForwardIterator, _Tp>& operator++() {

@@ -39,17 +39,18 @@ iterator_category(const  _DBG_iter_base< _STLP_DBG_STRING_BASE >&) {
 # endif
 
 template <class _CharT, class _Traits, class _Alloc> 
-class basic_string : public _STLP_DBG_STRING_BASE {
+class basic_string : public _STLP_DBG_STRING_BASE
+{
 private:
   typedef _STLP_DBG_STRING_BASE _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
-protected:
-  mutable __owned_list _M_iter_list;
+
 public:
   __IMPORT_CONTAINER_TYPEDEFS(_Base)
   typedef _DBG_iter<_Base, _Nonconst_traits<value_type> > iterator;
   typedef _DBG_iter<_Base, _Const_traits<value_type> > const_iterator;
   _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS;
+
 # ifdef _STLP_USE_NATIVE_STRING
   // this typedef is being used for conversions
   typedef _STLP_VENDOR_STD::basic_string<_CharT,_Traits, 
@@ -58,9 +59,26 @@ public:
 public:                         // Constructor, destructor, assignment.
   typedef typename _Base::_Reserve_t _Reserve_t;
 
+protected:
   const _Base* _Get_base() const { return (const _Base*)this; }
   _Base* _Get_base() { return (_Base*)this; }
 
+  mutable __owned_list _M_iter_list;
+  void _Invalidate_all_iterators() {
+    _M_iter_list._Invalidate_all();
+  }
+  void _Check_Overflow(size_type __nb) {
+    if (this->size()+__nb > this->capacity())
+      _Invalidate_all_iterators();  
+  }
+  void _Invalidate_iterator(const iterator& __it) {
+    __invalidate_iterator(&_M_iter_list, __it); 
+  }
+  void _Invalidate_iterators(const iterator& __first, const iterator& __last) {
+    __invalidate_range(&_M_iter_list, __first, __last);
+  }
+
+public:
   basic_string() :_STLP_DBG_STRING_BASE(), _M_iter_list(_Get_base()) {}
   
   explicit basic_string(const allocator_type& __a): 
@@ -89,7 +107,17 @@ public:                         // Constructor, destructor, assignment.
 		    const allocator_type& __a = allocator_type()):
     _STLP_DBG_STRING_BASE(__n, __c, __a), _M_iter_list(_Get_base()) {}
 
-#if defined (_STLP_MEMBER_TEMPLATES) && !(defined(__MRC__)||(defined(__SC__) && !defined(__DMC__)))
+  explicit basic_string(__partial_move_source<_Self> src):
+    _STLP_DBG_STRING_BASE(_AsPartialMoveSource<_STLP_DBG_STRING_BASE >(src.get())), _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all_iterators();
+  }
+
+  /*explicit basic_string(__full_move_source<_Self> src):
+    _STLP_DBG_STRING_BASE(_FullMoveSource<_STLP_DBG_STRING_BASE >(src.get())), _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all_iterators();
+  }*/
+
+#if defined (_STLP_MEMBER_TEMPLATES) && !(defined(__MRC__)||defined(__SC__))
 # ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l):
@@ -123,17 +151,20 @@ public:                         // Constructor, destructor, assignment.
     : _STLP_DBG_STRING_BASE(__x), _M_iter_list(_Get_base()) {}
 
   _Self& operator=(const _Self& __s) {
+    _Invalidate_all_iterators();
     _Base::operator=(__s);
     return *this;
   }
 
-  _Self& operator=(const _CharT* __s) { 
+  _Self& operator=(const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__s)
+    _Invalidate_all_iterators();
     _Base::operator=(__s);
     return *this;
   }
 
   _Self& operator=(_CharT __c) {
+    _Invalidate_all_iterators();
     _Base::operator=(__c);
     return *this;
   }
@@ -145,7 +176,7 @@ public:                         // Iterators.
   iterator end() { return iterator(&_M_iter_list,this->_M_finish); }
   const_iterator end() const { return const_iterator(&_M_iter_list,this->_M_finish); }
   void _M_deallocate_block() {
-    _M_iter_list._Invalidate_all();
+    _Invalidate_all_iterators();
     _Base::_M_deallocate_block();
   }
 
@@ -161,25 +192,31 @@ public:                         // Iterators.
 public:                         // Size, capacity, etc.
 
   void resize(size_type __n, _CharT __c) {
+    if (__n > this->size()) _Invalidate_all_iterators();
     _Base::resize(__n, __c);
   }
   void resize(size_type __n) { resize(__n, this->_M_null()); }
 
   void reserve(size_type __s= 0) {
+    if (__s > this->size()) _Invalidate_all_iterators();
     _Base::reserve(__s);
   }
 
   void clear() {
-    _M_iter_list._Invalidate_all();
+    _Invalidate_all_iterators();
     _Base::clear();
   } 
 
 public:                         // Element access.
 
-  const_reference operator[](size_type __n) const
-    { return *(begin() + __n); }
-  reference operator[](size_type __n)
-    { return *(begin() + __n); }
+  const_reference operator[](size_type __n) const {
+    _STLP_VERBOSE_ASSERT(__n < this->size(), _StlMsg_OUT_OF_BOUNDS)
+    return *(begin() + __n); 
+  }
+  reference operator[](size_type __n) {
+    _STLP_VERBOSE_ASSERT(__n < this->size(), _StlMsg_OUT_OF_BOUNDS)
+    return *(begin() + __n); 
+  }
 
   const_reference at(size_type __n) const {
     if (__n >= this->size())
@@ -202,19 +239,24 @@ public:                         // Append, operator+=, push_back.
   _Self& append(const _Self& __s) { return append(__s._M_start, __s._M_finish); }
 
   _Self& append(const _Self& __s,
-                       size_type __pos, size_type __n)
-  {
+                       size_type __pos, size_type __n) {
+    _Check_Overflow((min) (__s.size() - __pos, __n));
     _Base::append(__s, __pos, __n);
     return *this;
   }
 
-  _Self& append(const _CharT* __s, size_type __n) 
-    { _STLP_FIX_LITERAL_BUG(__s) return append(__s, __s+__n); }
+  _Self& append(const _CharT* __s, size_type __n) {
+    _STLP_FIX_LITERAL_BUG(__s)
+    return append(__s, __s+__n);
+  }
 
-  _Self& append(const _CharT* __s) 
-    { _STLP_FIX_LITERAL_BUG(__s) return append(__s, __s + _Traits::length(__s)); }
+  _Self& append(const _CharT* __s) {
+    _STLP_FIX_LITERAL_BUG(__s)
+    return append(__s, __s + _Traits::length(__s)); 
+  }
 
-  _Self& append(size_type __n, _CharT __c){
+  _Self& append(size_type __n, _CharT __c) {
+    _Check_Overflow(__n);
 	  _Base::append(__n, __c);
 	  return *this;
   }
@@ -225,6 +267,7 @@ public:                         // Append, operator+=, push_back.
   // it can't be an iterator.
   template <class _InputIter>
   _Self& append(_InputIter __first, _InputIter __last) {
+    _Check_Overflow(_STLP_STD::distance(__first, __last));
     _Base::append(__first, __last);
     return *this;
   }
@@ -235,6 +278,7 @@ public:                         // Append, operator+=, push_back.
  inline _Self& append(iterator __f, iterator __l) {
  _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
   __check_range(__f, __l);
+  _Check_Overflow(_STLP_STD::distance(__f._M_iterator, __l._M_iterator));
   _Base::append(__f._M_iterator, __l._M_iterator);
   return *this;
  }
@@ -243,35 +287,39 @@ public:                         // Append, operator+=, push_back.
 #else /* _STLP_MEMBER_TEMPLATES */
 
   _Self& append(const _CharT* __first, const _CharT* __last) {
+    _Check_Overflow(_STLP_STD::distance(__first, __last));
     _Base::append(__first, __last);
     return *this;
   }
 
   _Self& append(const_iterator __first, const_iterator __last) {
+    _Check_Overflow(_STLP_STD::distance(__first._M_iterator, __last._M_iterator));
     _Base::append(__first._M_iterator, __last._M_iterator);
     return *this;
   }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
   void push_back(_CharT __c) {
+    _Check_Overflow(1);
     _Base::push_back(__c);
   }
 
   void pop_back() {
-    __invalidate_iterator(&_M_iter_list,end());
+    _Invalidate_iterator(end());
     _Base::pop_back();
   }
-
 
 public:                         // Assign
   
   _Self& assign(const _Self& __s) {
+    if (__s.size() > this->capacity()) _Invalidate_all_iterators();
     _Base::assign(__s); 
     return *this; 
   }
 
   _Self& assign(const _Self& __s, 
                        size_type __pos, size_type __n) {
+    if (((min)(__s.size()-__pos, __n)) > this->capacity()) _Invalidate_all_iterators();
     _Base::assign(__s, __pos, __n);
     return *this;
   }
@@ -283,6 +331,7 @@ public:                         // Assign
     { _STLP_FIX_LITERAL_BUG(__s) return assign(__s, __s + _Traits::length(__s)); }
 
   _Self& assign(size_type __n, _CharT __c) {
+    if (__n > this->capacity()) _Invalidate_all_iterators();
     _Base::assign(__n, __c);
     return *this;    
   }
@@ -290,10 +339,10 @@ public:                         // Assign
 #ifdef _STLP_MEMBER_TEMPLATES
   template <class _InputIter>
   inline _Self& assign(_InputIter __first, _InputIter __last) {
-      _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
-      __check_range(__first, __last);
-      _Base::assign(__first, __last);
-      return *this;    
+    _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
+    __check_range(__first, __last);
+    _Base::assign(__first, __last);
+    return *this;    
   }
 
 #ifdef _STLP_MSVC
@@ -389,7 +438,7 @@ public:                         // Erase.
   }  
   iterator erase(iterator __position) {
     __check_if_owner(&_M_iter_list, __position);
-    __invalidate_iterator(&_M_iter_list,end());
+    __invalidate_iterator(&_M_iter_list, __position);
     return iterator(&_M_iter_list, _Base::erase(__position._M_iterator));
   }
   iterator erase(iterator __first, iterator __last) {

@@ -205,6 +205,7 @@ template <class _Tp, class _Alloc> struct _Rb_tree_base
       _M_header._M_data = _M_header.allocate(1); 
   }
   ~_Rb_tree_base() { 
+	  if (_M_header._M_data != 0)
     _M_header.deallocate(_M_header._M_data,1); 
   }
   allocator_type get_allocator() const { 
@@ -219,6 +220,7 @@ protected:
 template <class _Key, class _Value, class _KeyOfValue, class _Compare,
           _STLP_DEFAULT_ALLOCATOR_SELECT(_Value) > class _Rb_tree : public _Rb_tree_base<_Value, _Alloc> {
   typedef _Rb_tree_base<_Value, _Alloc> _Base;
+  typedef _Rb_tree<_Key, _Value, _KeyOfValue, _Compare, _Alloc> _Self;
 protected:
   typedef _Rb_tree_node_base* _Base_ptr;
   typedef _Rb_tree_node<_Value> _Node;
@@ -242,7 +244,7 @@ protected:
   {
     _Link_type __tmp = this->_M_header.allocate(1);
     _STLP_TRY {
-      _Construct(&__tmp->_M_value_field, __x);
+      _Copy_Construct(&__tmp->_M_value_field, __x);
     }
     _STLP_UNWIND(this->_M_header.deallocate(__tmp,1));
     return __tmp;
@@ -324,7 +326,7 @@ public:
     : _Rb_tree_base<_Value, _Alloc>(__a), _M_node_count(0), _M_key_compare(__comp) 
     { _M_empty_initialize(); }
 
-  _Rb_tree(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x) 
+  _Rb_tree(const _Self& __x) 
     : _Rb_tree_base<_Value, _Alloc>(__x.get_allocator()),
       _M_node_count(0), _M_key_compare(__x._M_key_compare)
   { 
@@ -338,8 +340,19 @@ public:
     }
     _M_node_count = __x._M_node_count;
   }
+
+  /*explicit _Rb_tree(__full_move_source<_Self> src)
+	  : _Rb_tree_base<_Value, _Alloc>(_FullMoveSource<_Rb_tree_base<_Value, _Alloc> >(src.get())) {
+  }*/
+
+  explicit _Rb_tree(__partial_move_source<_Self> src)
+	  : _Rb_tree_base<_Value, _Alloc>(src.get()) {
+	  src.get()._M_header._M_data = 0;
+	  src.get()._M_node_count = 0;
+  }
+
   ~_Rb_tree() { clear(); }
-  _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& operator=(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x);
+  _Self& operator=(const _Self& __x);
 
 private:
   void _M_empty_initialize() {
@@ -371,7 +384,7 @@ public:
   size_type size() const { return _M_node_count; }
   size_type max_size() const { return size_type(-1); }
 
-  void swap(_Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __t) {
+  void swap(_Self& __t) {
     _STLP_STD::swap(this->_M_header, __t._M_header);
     _STLP_STD::swap(_M_node_count, __t._M_node_count);
     _STLP_STD::swap(_M_key_compare, __t._M_key_compare);
@@ -524,66 +537,11 @@ public:
   bool __rb_verify() const;
 };
 
-template <class _Key, class _Value, class _KeyOfValue, 
-          class _Compare, class _Alloc> inline bool _STLP_CALL 
-operator==(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x, 
-           const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __y)
-{
-  return __x.size() == __y.size() && equal(__x.begin(), __x.end(), __y.begin());
-}
-
-template <class _Key, class _Value, class _KeyOfValue, 
-          class _Compare, class _Alloc> inline bool _STLP_CALL 
-operator<(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x, 
-          const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __y)
-{
-  return lexicographical_compare(__x.begin(), __x.end(), 
-                                 __y.begin(), __y.end());
-}
-
-#ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
-
-template <class _Key, class _Value, class _KeyOfValue, 
-          class _Compare, class _Alloc> inline bool _STLP_CALL 
-operator!=(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x, 
-           const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __y) {
-  return !(__x == __y);
-}
-
-template <class _Key, class _Value, class _KeyOfValue, 
-          class _Compare, class _Alloc> inline bool _STLP_CALL 
-operator>(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x, 
-          const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __y) {
-  return __y < __x;
-}
-
-template <class _Key, class _Value, class _KeyOfValue, 
-          class _Compare, class _Alloc> inline bool _STLP_CALL 
-operator<=(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x, 
-           const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __y) {
-  return !(__y < __x);
-}
-
-template <class _Key, class _Value, class _KeyOfValue, 
-          class _Compare, class _Alloc> inline bool _STLP_CALL 
-operator>=(const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x, 
-           const _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __y) {
-  return !(__x < __y);
-}
-
-#endif /* _STLP_USE_SEPARATE_RELOPS_NAMESPACE */
-
-#ifdef _STLP_FUNCTION_TMPL_PARTIAL_ORDER
-
-template <class _Key, class _Value, class _KeyOfValue, 
-          class _Compare, class _Alloc> inline void _STLP_CALL 
-swap(_Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __x, 
-     _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>& __y)
-{
-  __x.swap(__y);
-}
-
-#endif /* _STLP_FUNCTION_TMPL_PARTIAL_ORDER */
+# define _STLP_TEMPLATE_HEADER template <class _Key, class _Value, class _KeyOfValue, class _Compare, class _Alloc>
+# define _STLP_TEMPLATE_CONTAINER _Rb_tree<_Key,_Value,_KeyOfValue,_Compare,_Alloc>
+# include <stl/_relops_cont.h>
+# undef _STLP_TEMPLATE_CONTAINER
+# undef _STLP_TEMPLATE_HEADER
          
 _STLP_END_NAMESPACE
 

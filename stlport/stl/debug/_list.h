@@ -56,8 +56,8 @@ iterator_category(const _DBG_iter_base< _STLP_DBG_LIST_BASE >&) {
 # endif
 
 template <class _Tp, _STLP_DEFAULT_ALLOCATOR_SELECT(_Tp) >
-class _DBG_list : public _STLP_DBG_LIST_BASE {
-
+class _DBG_list : public _STLP_DBG_LIST_BASE
+{
   typedef _STLP_DBG_LIST_BASE _Base;
   typedef _DBG_list<_Tp, _Alloc> _Self;
 
@@ -79,11 +79,29 @@ public:
   _Base* _Get_base() { return (_Base*)this; }
   explicit _DBG_list(const allocator_type& __a = allocator_type()) :
     _STLP_DBG_LIST_BASE(__a), _M_iter_list(_Get_base()) {}
+
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  explicit _DBG_list(size_type __n, const _Tp& __value = _Tp(),
+#else
   _DBG_list(size_type __n, const _Tp& __value,
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM*/
 	    const allocator_type& __a = allocator_type())
     : _STLP_DBG_LIST_BASE(__n, __value, __a), _M_iter_list(_Get_base()) {}
+
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit _DBG_list(size_type __n)
     : _STLP_DBG_LIST_BASE(__n), _M_iter_list(_Get_base()) {}
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
+
+  explicit _DBG_list(__partial_move_source<_Self> src)
+	  : _STLP_DBG_LIST_BASE(_AsPartialMoveSource<_STLP_DBG_LIST_BASE >(src.get())), _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all();
+  }
+  
+  /*explicit _DBG_list(__full_move_source<_Self> src)
+	  : _STLP_DBG_LIST_BASE(_FullMoveSource<_STLP_DBG_LIST_BASE >(src.get())), _M_iter_list(_Get_base()) {
+    src.get()._Invalidate_all();
+  }*/
   
 #ifdef _STLP_MEMBER_TEMPLATES
 
@@ -143,14 +161,18 @@ public:
     _Base::swap(__x); 
   }
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  iterator insert(iterator __position, const _Tp& __x = _Tp()) {
+#else
   iterator insert(iterator __position, const _Tp& __x) {
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list,__position))
       return iterator(&_M_iter_list,_Base::insert(__position._M_iterator, __x) );
   }
 
-# ifndef _STLP_NO_ANACHRONISMS
-  iterator insert(iterator __position) { return insert(__position, _Tp()); }
-# endif
+#if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  iterator insert(iterator __position) { return insert(__position, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
 #ifdef _STLP_MEMBER_TEMPLATES
 
@@ -206,7 +228,11 @@ public:
     return __last;
   }
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type __new_size, const _Tp& __x = _Tp()) {
+#else
   void resize(size_type __new_size, const _Tp& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     typename _Base::iterator __i = _Base::begin();
     size_type __len = 0;
     for ( ; __i != _Base::end() && __len < __new_size; ++__i, ++__len);
@@ -217,7 +243,9 @@ public:
       _Base::insert(_Base::end(), __new_size - __len, __x);
   }
 
-  void resize(size_type __new_size) { this->resize(__new_size, _Tp()); }
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type __new_size) { this->resize(__new_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void remove(const _Tp& __value) {
     typename _Base::iterator __first = _Base::begin();

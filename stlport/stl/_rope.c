@@ -68,7 +68,7 @@ _Rope_RopeRep<_CharT, _Alloc>::_M_free_c_string()
   _CharT* __cstr = _M_c_string;
   if (0 != __cstr) {
     size_t _p_size = _M_size._M_data + 1;
-    _STLP_STD::_Destroy(__cstr, __cstr + _p_size);
+    _STLP_STD::_Destroy_Range(__cstr, __cstr + _p_size);
     _M_size.deallocate(__cstr, _p_size);
   }
 }
@@ -616,9 +616,7 @@ rope<_CharT,_Alloc>::_S_concat_rep(_RopeRep* __left, _RopeRep* __right)
       return(_S_tree_concat(__left, __right));
     }
     _STLP_UNWIND(_S_unref(__left); _S_unref(__right));
-#ifdef _STLP_THROW_RETURN_BUG
-	return 0;
-#endif
+    _STLP_RET_AFTER_THROW(0);
 }
 
 template <class _CharT, class _Alloc>
@@ -1455,7 +1453,7 @@ const _CharT* rope<_CharT,_Alloc>::c_str() const {
 	// It must have been added in the interim.  Hence it had to have been
 	// separately allocated.  Deallocate the old copy, since we just
 	// replaced it.
-	_STLP_STD::_Destroy(__old_c_string, __old_c_string + __s + 1);
+	_STLP_STD::_Destroy_Range(__old_c_string, __old_c_string + __s + 1);
       _STLP_CREATE_ALLOCATOR(allocator_type,(const allocator_type&)_M_tree_ptr, _CharT).deallocate(__old_c_string, __s + 1);
       }
 #   endif

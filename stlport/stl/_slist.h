@@ -192,16 +192,21 @@ private:
   typedef _Slist_node_base      _Node_base;
   typedef _Slist_iterator_base  _Iterator_base;
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  _Node* _M_create_node(const value_type& __x = _Tp()) {
+#else
   _Node* _M_create_node(const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     _Node* __node = this->_M_head.allocate(1);
     _STLP_TRY {
-      _Construct(&__node->_M_data, __x);
+      _Copy_Construct(&__node->_M_data, __x);
       __node->_M_next = 0;
     }
     _STLP_UNWIND(this->_M_head.deallocate(__node, 1));
     return __node;
   }
   
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   _Node* _M_create_node() {
     _Node* __node = this->_M_head.allocate(1);
     _STLP_TRY {
@@ -211,18 +216,25 @@ private:
     _STLP_UNWIND(this->_M_head.deallocate(__node, 1));
     return __node;
   }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
 public:
   allocator_type get_allocator() const { return _Base::get_allocator(); }
 
   explicit slist(const allocator_type& __a = allocator_type()) : _Slist_base<_Tp,_Alloc>(__a) {}
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  explicit slist(size_type __n, const value_type& __x = _Tp(),
+#else
   slist(size_type __n, const value_type& __x,
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
         const allocator_type& __a =  allocator_type()) : _Slist_base<_Tp,_Alloc>(__a)
     { _M_insert_after_fill(&this->_M_head._M_data, __n, __x); }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit slist(size_type __n) : _Slist_base<_Tp,_Alloc>(allocator_type())
-    { _M_insert_after_fill(&this->_M_head._M_data, __n, value_type()); }
+    { _M_insert_after_fill(&this->_M_head._M_data, __n, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
 #ifdef _STLP_MEMBER_TEMPLATES
   // We don't need any dispatching tricks here, because _M_insert_after_range
@@ -252,6 +264,15 @@ public:
 
   slist(const _Self& __x) : _Slist_base<_Tp,_Alloc>(__x.get_allocator())
     { _M_insert_after_range(&this->_M_head._M_data, __x.begin(), __x.end()); }
+
+  /*explicit slist(__full_move_source<_Self> src)
+	  : _Slist_base<_Tp, _Alloc>(_FullMoveSource<_Slist_base<_Tp, _Alloc> >(src.get())) {
+  }*/
+
+  explicit slist(__partial_move_source<_Self> src)
+	  : _Slist_base<_Tp, _Alloc>(src.get()) {
+	  src.get()._M_head._M_data._M_next = 0;
+  }
 
   _Self& operator= (const _Self& __x);
 
@@ -333,13 +354,17 @@ public:
   reference front() { return ((_Node*) this->_M_head._M_data._M_next)->_M_data; }
   const_reference front() const 
     { return ((_Node*) this->_M_head._M_data._M_next)->_M_data; }
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  void push_front(const value_type& __x = _Tp())   {
+#else
   void push_front(const value_type& __x)   {
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
     __slist_make_link(&this->_M_head._M_data, _M_create_node(__x));
   }
 
-# ifndef _STLP_NO_ANACHRONISMS
+# if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
   void push_front() { __slist_make_link(&this->_M_head._M_data, _M_create_node());}
-# endif
+# endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
   void pop_front() {
     _Node* __node = (_Node*) this->_M_head._M_data._M_next;
@@ -356,13 +381,19 @@ public:
   }
 
 private:
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  _Node* _M_insert_after(_Node_base* __pos, const value_type& __x = _Tp()) {
+#else
   _Node* _M_insert_after(_Node_base* __pos, const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     return (_Node*) (__slist_make_link(__pos, _M_create_node(__x)));
   }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   _Node* _M_insert_after(_Node_base* __pos) {
     return (_Node*) (__slist_make_link(__pos, _M_create_node()));
   }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void _M_insert_after_fill(_Node_base* __pos,
                             size_type __n, const value_type& __x) {
@@ -418,13 +449,19 @@ private:
 
 public:
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  iterator insert_after(iterator __pos, const value_type& __x = _Tp()) {
+#else
   iterator insert_after(iterator __pos, const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     return iterator(_M_insert_after(__pos._M_node, __x));
   }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   iterator insert_after(iterator __pos) {
-    return insert_after(__pos, value_type());
+    return insert_after(__pos, _STLP_DEFAULT_CONSTRUCTED(_Tp));
   }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void insert_after(iterator __pos, size_type __n, const value_type& __x) {
     _M_insert_after_fill(__pos._M_node, __n, __x);
@@ -452,15 +489,21 @@ public:
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  iterator insert(iterator __pos, const value_type& __x = _Tp()) {
+#else
   iterator insert(iterator __pos, const value_type& __x) {
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
     return iterator(_M_insert_after(_Sl_global_inst::__previous(&this->_M_head._M_data, __pos._M_node),
                     __x));
   }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   iterator insert(iterator __pos) {
     return iterator(_M_insert_after(_Sl_global_inst::__previous(&this->_M_head._M_data, __pos._M_node),
-                                    value_type()));
+                                    _STLP_DEFAULT_CONSTRUCTED(_Tp)));
   }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
   void insert(iterator __pos, size_type __n, const value_type& __x) {
     _M_insert_after_fill(_Sl_global_inst::__previous(&this->_M_head._M_data, __pos._M_node), __n, __x);
@@ -509,8 +552,16 @@ public:
       _Sl_global_inst::__previous(&this->_M_head._M_data, __first._M_node), __last._M_node));
   }
 
-  void resize(size_type new_size, const _Tp& __x);
-  void resize(size_type new_size) { resize(new_size, _Tp()); }
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type new_size, const value_type& __x = _Tp());
+#else
+  void resize(size_type new_size, const value_type& __x);
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
+
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type new_size) { resize(new_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
+
   void clear() {
     this->_M_erase_after(&this->_M_head._M_data, 0); 
   }

@@ -32,10 +32,14 @@ inline void _STLP_CALL swap(_STLP_TEMPLATE_CONTAINER& __x, _STLP_TEMPLATE_CONTAI
 
 #endif /* _STLP_FUNCTION_TMPL_PARTIAL_ORDER */
 
-#if 0 /* def _STLP_CLASS_PARTIAL_SPECIALIZATION */
+#ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+_STLP_TEMPLATE_HEADER
+struct __partial_move_traits<_STLP_TEMPLATE_CONTAINER > {
+  typedef __true_type _Supported;
+};
 
 _STLP_TEMPLATE_HEADER
-struct __type_traits<_STLP_STD::_STLP_TEMPLATE_CONTAINER > : __type_traits_aux<0, 1>
-{};
-
+struct __full_move_traits<_STLP_TEMPLATE_CONTAINER > {
+  typedef __true_type _Supported;
+};
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */

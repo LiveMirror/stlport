@@ -362,7 +362,7 @@ public:
   // backwards compatibility
   void deallocate(pointer __p) const {  if (__p != 0) __sgi_alloc::deallocate((void*)__p, sizeof(value_type)); }
   size_type max_size() const _STLP_NOTHROW  { return size_t(-1) / sizeof(value_type); }
-  void construct(pointer __p, const _Tp& __val) const { _STLP_STD::_Construct(__p, __val); }
+  void construct(pointer __p, const _Tp& __val) const { _STLP_STD::_Copy_Construct(__p, __val); }
   void destroy(pointer __p) const { _STLP_STD::_Destroy(__p); }
 # if defined(__MRC__)||(defined(__SC__) && !defined(__DMC__))
   template <class _T2> bool operator==(const allocator<_T2>&) const  { return true; }

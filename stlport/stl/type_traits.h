@@ -59,33 +59,11 @@ template <class T> inline void copy(T* source,T* destination,int n) {
 # include <stl/_cwchar.h>
 #endif
 
+#ifndef _STLP_TYPE_MANIPS_H
+# include <stl/type_manips.h>
+#endif
+
 _STLP_BEGIN_NAMESPACE
-
-struct __true_type {};
-struct __false_type {};
-
-
-template <int _Is> struct __bool2type {
-  typedef __false_type _Ret; 
-};
-
-_STLP_TEMPLATE_NULL
-struct __bool2type<1> { typedef __true_type _Ret; };
-
-_STLP_TEMPLATE_NULL
-struct __bool2type<0> { typedef __false_type _Ret; };
-
-// logical end of 3 predicated
-template <class _P1, class _P2, class _P3>
-struct _Land3 {
-  typedef __false_type _Ret;
-};
-
-_STLP_TEMPLATE_NULL
-struct _Land3<__true_type, __true_type, __true_type> {
-  typedef __true_type _Ret;
-};
-
 
 // Forward declarations.
 template <class _Tp> struct __type_traits; 
@@ -116,68 +94,6 @@ struct __type_traits_aux<1> {
 };
 
 # ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
-
-// Boris : simulation technique is used here according to Adobe Open Source License Version 1.0.
-// Copyright 2000 Adobe Systems Incorporated and others. All rights reserved.
-// Authors: Mat Marcus and Jesse Jones
-// The original version of this source code may be found at
-// http://opensource.adobe.com.
-
-struct _PointerShim {
-  // Since the compiler only allows at most one non-trivial
-  // implicit conversion we can make use of a shim class to
-  // be sure that IsPtr below doesn't accept classes with
-  // implicit pointer conversion operators
-  _PointerShim(const volatile void*); // no implementation
-};
-
-// These are the discriminating functions
-
-char _STLP_CALL _IsP(bool, _PointerShim); // no implementation is required
-char* _STLP_CALL _IsP(bool, ...);          // no implementation is required
-
-template <class _Tp>
-char _STLP_CALL _IsSameFun(bool, _Tp*, _Tp*); // no implementation is required
-char* _STLP_CALL _IsSameFun(bool, ...);          // no implementation is required
-
-template <class _Tp1, class _Tp2>
-struct _IsSame {
-  // boris : check!
-  static _Tp1* __null_rep1();
-  static _Tp2* __null_rep2();
-  enum { _Ret = (sizeof(_IsSameFun(false,__null_rep1(),__null_rep2())) == sizeof(char)) };
-};
-
-template <class _Tp>
-struct _IsPtr {
-  
-  // This template meta function takes a type T
-  // and returns true exactly when T is a pointer.
-  // One can imagine meta-functions discriminating on
-  // other criteria.
-  static _Tp& __null_rep();
-  enum { _Ret = (sizeof(_IsP(false,__null_rep())) == sizeof(char)) };
-
-};
-
-template <class _Tp>
-struct _IsPtrType {
-  enum { _Is =  _IsPtr<_Tp>::_Ret } ;
-  typedef __bool2type< _Is > _BT;
-  typedef typename _BT::_Ret _Type;
-  static _Type _Ret() { return _Type(); }
-};
-
-template <class _Tp1, class _Tp2>
-struct _BothPtrType {
-  typedef __bool2type< _IsPtr<_Tp1>::_Ret> _B1;
-  typedef __bool2type< _IsPtr<_Tp2>::_Ret> _B2;
-  typedef typename _B1::_Ret _Type1;
-  typedef typename _B2::_Ret _Type2;
-  typedef typename _Land3<_Type1, _Type2, __true_type>::_Ret _Type;
-  static _Type _Ret() { return _Type(); }
-};
-
 // we make general case dependant on the fact the type is actually a pointer.
  
 template <class _Tp>
@@ -209,33 +125,6 @@ struct __type_traits {
    typedef __false_type    has_trivial_destructor;
    typedef __false_type    is_POD_type;
 };
-
-
-template <class _Tp>  struct _IsPtr { enum { _Ret = 0 }; };
-template <class _Tp>  struct _IsPtrType { 
-  static __false_type _Ret() { return __false_type();} 
-};
-template <class _Tp1, class _Tp2>  struct _BothPtrType { 
-  static __false_type _Ret() { return __false_type();} 
-};
-
-template <class _Tp1, class _Tp2>
-struct _IsSame { enum { _Ret = 0 }; };
-
-// template <class _Tp1, class _Tp2>
-// struct _IsSameType {   static __false_type _Ret() { return __false_type(); }  };
-
-#  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
-template <class _Tp>  struct _IsPtr<_Tp*> { enum { _Ret = 1 }; };
-template <class _Tp>  struct _IsPtrType<_Tp*> { 
-  static __true_type _Ret() { return __true_type();} 
-};
-template <class _Tp1, class _Tp2>  struct _BothPtrType<_Tp1*, _Tp2*> { 
-  static __true_type _Ret() { return __true_type();} 
-};
-template <class _Tp>
-struct _IsSame<_Tp, _Tp> { enum { _Ret = 1 }; };
-#  endif
 
 # endif /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
 
@@ -351,6 +240,24 @@ _STLP_TEMPLATE_NULL struct _Is_integer<unsigned _STLP_LONG_LONG> {
 
 #endif /* _STLP_LONG_LONG */
 
+template <class _Tp> struct _Is_float_point {
+  typedef __false_type _FloatingPoint;
+};
+
+_STLP_TEMPLATE_NULL struct _Is_float_point<float> {
+  typedef __true_type _FloatingPoint;
+};
+
+_STLP_TEMPLATE_NULL struct _Is_float_point<double> {
+  typedef __true_type _FloatingPoint;
+};
+
+# if !defined ( _STLP_NO_LONG_DOUBLE )
+_STLP_TEMPLATE_NULL struct _Is_float_point<long double> {
+  typedef __true_type _FloatingPoint;
+};
+# endif
+
 template <class _Tp1, class _Tp2>
 struct _OKToMemCpy {
   enum { _Same = _IsSame<_Tp1,_Tp2>::_Ret } ;
@@ -358,7 +265,7 @@ struct _OKToMemCpy {
   typedef typename __type_traits<_Tp2>::has_trivial_assignment_operator _Tr2;
   typedef typename __bool2type< _Same >::_Ret _Tr3;
   typedef typename _Land3<_Tr1, _Tr2, _Tr3>::_Ret _Type;
-  static _Type _Ret() { return _Type(); }
+  static _Type _Answer() { return _Type(); }
 };
 
 template <class _Tp1, class _Tp2>
@@ -369,11 +276,26 @@ inline _OKToMemCpy<_Tp1, _Tp2> _IsOKToMemCpy(_Tp1*, _Tp2*)  {
 template <class _Tp> 
 struct _IsPOD {
   typedef typename __type_traits<_Tp>::is_POD_type _Type;
-  static _Type _Ret() { return _Type(); }
+  static _Type _Answer() { return _Type(); }
 };
 
 template <class _Tp> 
 inline _IsPOD<_Tp>  _Is_POD (_Tp*) { return _IsPOD<_Tp>(); } 
+
+template <class _Tp>
+struct _DefaultZeroValue {
+  typedef typename _Is_integer<_Tp>::_Integral _Tr1;
+  typedef typename _Is_float_point<_Tp>::_FloatingPoint _Tr2;
+  typedef typename __bool2type< _IsPtr<_Tp>::_Ret>::_Ret _Tr3;
+
+  typedef typename _Lor3<_Tr1, _Tr2, _Tr3>::_Ret _Type;
+  static _Type _Answer() { return _Type(); }
+};
+
+template <class _Tp>
+inline _DefaultZeroValue<_Tp> _HasDefaultZeroValue(_Tp*)  {
+  return _DefaultZeroValue<_Tp>();
+}
 
 #  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
 #   if defined (__BORLANDC__) || defined (__SUNPRO_CC) || ( defined (__MWERKS__) && (__MWERKS__ <= 0x2303)) || ( defined (__sgi) && defined (_COMPILER_VERSION)) || defined (__DMC__)
@@ -382,31 +304,8 @@ inline _IsPOD<_Tp>  _Is_POD (_Tp*) { return _IsPOD<_Tp>(); }
 #   define _IS_POD_ITER(_It, _Tp) typename __type_traits< typename iterator_traits< _Tp >::value_type >::is_POD_type()
 #   endif
 #  else
-#   define _IS_POD_ITER(_It, _Tp) _Is_POD( _STLP_VALUE_TYPE( _It, _Tp ) )._Ret()
+#   define _IS_POD_ITER(_It, _Tp) _Is_POD( _STLP_VALUE_TYPE( _It, _Tp ) )._Answer()
 #  endif
-
-# ifdef _STLP_DEFAULT_CONSTRUCTOR_BUG
-// Those adaptors are here to fix common compiler bug regarding builtins:
-// expressions like int k = int() should initialize k to 0
-template <class _Tp>
-inline _Tp __default_constructed_aux(_Tp*, const __false_type&) {
-  return _Tp();
-}
-template <class _Tp>
-inline _Tp __default_constructed_aux(_Tp*, const __true_type&) {
-  return _Tp(0);
-}
-
-template <class _Tp>
-inline _Tp __default_constructed(_Tp* __p) {
-  typedef typename _Is_integer<_Tp>::_Integral _Is_Integral;
-  return __default_constructed_aux(__p, _Is_Integral());
-}
-
-#  define _STLP_DEFAULT_CONSTRUCTED(_TTp) __default_constructed((_TTp*)0)
-# else
-#  define _STLP_DEFAULT_CONSTRUCTED(_TTp) _TTp()
-# endif
 
 _STLP_END_NAMESPACE
 

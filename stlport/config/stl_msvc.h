@@ -70,7 +70,7 @@
 # endif	//	(_STLP_MSVC <= 1310)
 
 # if (_STLP_MSVC <= 1300) 
-#  define _STLP_DEFAULT_CONSTRUCTOR_BUG 1
+#  define _STLP_DEF_CONST_PLCT_NEW_BUG 1
 #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG
 #  define _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
 // fails to properly resolve call to sin() from within sin()
@@ -112,6 +112,7 @@
 #  define _STLP_GLOBAL_NEW_HANDLER
 #  define _STLP_DONT_RETURN_VOID 1
 #  define _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 1
+#  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
 # endif /* (_MSC_VER <= 1200) */
 
 # if ( _MSC_VER<=1010 )
@@ -132,6 +133,7 @@
 #  define _STLP_NON_TYPE_TMPL_PARAM_BUG 1 
 #  define _STLP_THROW_RETURN_BUG 1
 #  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
+#  define _STLP_DEF_CONST_DEF_PARAM_BUG 1
 # endif
 
 # if defined (_STLP_MSVC) && ( _STLP_MSVC < 1100 )
@@ -179,8 +181,10 @@
 # ifdef __ICL
 #  define _STLP_LIB_BASENAME "stlport_icl"
 # else
-# if (_MSC_VER >= 1300) 
-#   define _STLP_LIB_BASENAME "stlport_vc7"
+# if (_MSC_VER >= 1310) 
+#   define _STLP_LIB_BASENAME "stlport_vc71"
+# elif (_MSC_VER >= 1300) 
+#   define _STLP_LIB_BASENAME "stlport_vc70"
 # elif (_MSC_VER >= 1200)
 //#   ifdef _UNICODE
 //#    define _STLP_LIB_BASENAME "stlport_vc6_unicode"

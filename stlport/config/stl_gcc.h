@@ -175,8 +175,9 @@ typedef unsigned int wint_t;
 
 #   if (__GNUC_MINOR__ < 95)  && (__GNUC__ < 3)
 /* egcs fails to initialize builtin types in expr. like this : new(p) char();  */
-#     define _STLP_DEFAULT_CONSTRUCTOR_BUG 1
 #     define _STLP_INCOMPLETE_EXCEPTION_HEADER
+#     define _STLP_DEF_CONST_PLCT_NEW_BUG 1
+#     define _STLP_DEF_CONST_DEF_PARAM_BUG 1
 #   endif
 
 #   if (__GNUC_MINOR__ < 9)  && (__GNUC__ < 3) /* gcc 2.8 */

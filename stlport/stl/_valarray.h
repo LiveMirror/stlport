@@ -101,7 +101,7 @@ public:
   // Basic constructors
   valarray() : _Valarray_base<_Tp>() {}
   valarray(size_t __n) : _Valarray_base<_Tp>(__n)
-    { uninitialized_fill_n(this->_M_first, this->_M_size, value_type()); }
+    { uninitialized_fill_n(this->_M_first, this->_M_size, _STLP_DEFAULT_CONSTRUCTED(value_type)); }
   valarray(const value_type& __x, size_t __n) : _Valarray_base<_Tp>(__n)
     { uninitialized_fill_n(this->_M_first, this->_M_size, __x); }
   valarray(const value_type* __p, size_t __n) : _Valarray_base<_Tp>(__n)
@@ -118,14 +118,14 @@ public:
   valarray(const indirect_array<_Tp>&);
 
   // Destructor
-  ~valarray() { _STLP_STD::_Destroy(this->_M_first, this->_M_first + this->_M_size); }
+  ~valarray() { _STLP_STD::_Destroy_Range(this->_M_first, this->_M_first + this->_M_size); }
 
   // Extension: constructor that doesn't initialize valarray elements to a
   // specific value.  This is faster for types such as int and double.
 private:
   void _M_initialize(const __true_type&) {}
   void _M_initialize(const __false_type&)
-    { uninitialized_fill_n(this->_M_first, this->_M_size, value_type()); }
+    { uninitialized_fill_n(this->_M_first, this->_M_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
 
 public:
   struct _NoInit {};
@@ -345,7 +345,7 @@ public:                         // Other member functions.
   }
   
   void resize(size_t __n, value_type __x = value_type()) {
-    _STLP_STD::_Destroy(this->_M_first, this->_M_first + this->_M_size);
+    _STLP_STD::_Destroy_Range(this->_M_first, this->_M_first + this->_M_size);
     this->_Valarray_base<_Tp>::_M_deallocate();
     this->_Valarray_base<_Tp>::_M_allocate(__n);
     uninitialized_fill_n(this->_M_first, this->_M_size, __x);

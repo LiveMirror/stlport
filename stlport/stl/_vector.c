@@ -67,7 +67,7 @@ __vector__<_Tp, _Alloc>::_M_fill_insert(
       const size_type __elems_after = this->_M_finish - __position;
       pointer __old_finish = this->_M_finish;
       if (__elems_after > __n) {
-        __uninitialized_copy(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
+        __uninitialized_move(this->_M_finish - __n, this->_M_finish, this->_M_finish, _IsPODType());
         this->_M_finish += __n;
         __copy_backward_ptrs(__position, __old_finish - __n, __old_finish, _TrivialAss());
         _STLP_STD::fill(__position, __position + __n, __x_copy);
@@ -75,7 +75,7 @@ __vector__<_Tp, _Alloc>::_M_fill_insert(
       else {
         uninitialized_fill_n(this->_M_finish, __n - __elems_after, __x_copy);
         this->_M_finish += __n - __elems_after;
-        __uninitialized_copy(__position, __old_finish, this->_M_finish, _IsPODType());
+        __uninitialized_move(__position, __old_finish, this->_M_finish, _IsPODType());
         this->_M_finish += __elems_after;
         _STLP_STD::fill(__position, __old_finish, __x_copy);
       }
@@ -92,18 +92,18 @@ __vector__<_Tp,_Alloc>::operator=(const __vector__<_Tp, _Alloc>& __x)
   if (&__x != this) {
     const size_type __xlen = __x.size();
     if (__xlen > capacity()) {
-      pointer __tmp = _M_allocate_and_copy(__xlen, (const_pointer)__x._M_start+0, (const_pointer)__x._M_finish+0);
+      pointer __tmp = _M_allocate_and_copy(__xlen, __CONST_CAST(const_pointer, __x._M_start)+0, __CONST_CAST(const_pointer, __x._M_finish)+0);
       _M_clear();
       this->_M_start = __tmp;
       this->_M_end_of_storage._M_data = this->_M_start + __xlen;
     }
     else if (size() >= __xlen) {
-      pointer __i = __copy_ptrs((const_pointer)__x._M_start+0, (const_pointer)__x._M_finish+0, (pointer)this->_M_start, _TrivialAss());
-      _STLP_STD::_Destroy(__i, this->_M_finish);
+      pointer __i = __copy_ptrs(__CONST_CAST(const_pointer, __x._M_start)+0, __CONST_CAST(const_pointer, __x._M_finish)+0, this->_M_start, _TrivialAss());
+      _STLP_STD::_Destroy_Range(__i, this->_M_finish);
     }
     else {
-      __copy_ptrs((const_pointer)__x._M_start, (const_pointer)__x._M_start + size(), (pointer)this->_M_start, _TrivialAss());
-      __uninitialized_copy((const_pointer)__x._M_start + size(), (const_pointer)__x._M_finish+0, this->_M_finish, _IsPODType());
+      __copy_ptrs(__CONST_CAST(const_pointer, __x._M_start), __CONST_CAST(const_pointer, __x._M_start) + size(), this->_M_start, _TrivialAss());
+      __uninitialized_copy(__CONST_CAST(const_pointer, __x._M_start) + size(), __CONST_CAST(const_pointer, __x._M_finish)+0, this->_M_finish, _IsPODType());
     }
     this->_M_finish = this->_M_start + __xlen;
   }

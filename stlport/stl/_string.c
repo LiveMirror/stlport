@@ -66,10 +66,10 @@ template <class _CharT, class _Traits, class _Alloc> void basic_string<_CharT,_T
     __new_finish = uninitialized_copy(this->_M_start, this->_M_finish, __new_start);
     _M_construct_null(__new_finish);
   }
-  _STLP_UNWIND((_STLP_STD::_Destroy(__new_start, __new_finish), 
+  _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start, __new_finish), 
                 this->_M_end_of_storage.deallocate(__new_start, __n)));
 
-  _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
+  _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
   this->_M_deallocate_block();
   this->_M_start = __new_start;
   this->_M_finish = __new_finish;
@@ -86,7 +86,7 @@ template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT,_Traits
     _STLP_TRY {
       _M_construct_null(this->_M_finish + __n);
     }
-    _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_finish + 1, this->_M_finish + __n));
+    _STLP_UNWIND(_STLP_STD::_Destroy_Range(this->_M_finish + 1, this->_M_finish + __n));
     _Traits::assign(*end(), __c);
     this->_M_finish += __n;
   }
@@ -112,9 +112,9 @@ template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT, _Trait
         __new_finish = uninitialized_copy(__first, __last, __new_finish);
         _M_construct_null(__new_finish);
       }
-      _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish),
+      _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
                     this->_M_end_of_storage.deallocate(__new_start,__len)));
-      _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
+      _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
       this->_M_deallocate_block();
       this->_M_start = __new_start;
       this->_M_finish = __new_finish;
@@ -127,7 +127,7 @@ template <class _CharT, class _Traits, class _Alloc> basic_string<_CharT, _Trait
       _STLP_TRY {
         _M_construct_null(this->_M_finish + __n);
       }
-      _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_finish + 1, this->_M_finish + __n));
+      _STLP_UNWIND(_STLP_STD::_Destroy_Range(this->_M_finish + 1, this->_M_finish + __n));
       _Traits::assign(*end(), *__first);
       this->_M_finish += __n;
     }
@@ -170,14 +170,14 @@ basic_string<_CharT,_Traits,_Alloc> ::_M_insert_aux(_CharT* __p,
     pointer __new_finish = __new_start;
     _STLP_TRY {
       __new_pos = uninitialized_copy(this->_M_start, __p, __new_start);
-      _Construct(__new_pos, __c);
+      _Copy_Construct(__new_pos, __c);
       __new_finish = __new_pos + 1;
       __new_finish = uninitialized_copy(__p, this->_M_finish, __new_finish);
       _M_construct_null(__new_finish);
     }
-    _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish), 
+    _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish), 
                   this->_M_end_of_storage.deallocate(__new_start,__len)));
-    _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
+    _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
     this->_M_deallocate_block();
     this->_M_start = __new_start;
     this->_M_finish = __new_finish;
@@ -208,7 +208,7 @@ template <class _CharT, class _Traits, class _Alloc> void basic_string<_CharT,_T
           uninitialized_copy(__position, __old_finish + 1, this->_M_finish);
           this->_M_finish += __elems_after;
         }
-        _STLP_UNWIND((_STLP_STD::_Destroy(__old_finish + 1, this->_M_finish), 
+        _STLP_UNWIND((_STLP_STD::_Destroy_Range(__old_finish + 1, this->_M_finish), 
                       this->_M_finish = __old_finish));
         _Traits::assign(__position, __elems_after + 1, __c);
       }
@@ -225,9 +225,9 @@ template <class _CharT, class _Traits, class _Alloc> void basic_string<_CharT,_T
                                           __new_finish);
         _M_construct_null(__new_finish);
       }
-      _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish),
+      _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
                     this->_M_end_of_storage.deallocate(__new_start,__len)));
-      _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
+      _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
       this->_M_deallocate_block();
       this->_M_start = __new_start;
       this->_M_finish = __new_finish;
@@ -265,7 +265,7 @@ basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
           uninitialized_copy(__position, __old_finish + 1, this->_M_finish);
           this->_M_finish += __elems_after;
         }
-        _STLP_UNWIND((_STLP_STD::_Destroy(__old_finish + 1, this->_M_finish), 
+        _STLP_UNWIND((_STLP_STD::_Destroy_Range(__old_finish + 1, this->_M_finish), 
                       this->_M_finish = __old_finish));
         _M_copy(__first, __mid, __position);
       }
@@ -283,9 +283,9 @@ basic_string<_CharT,_Traits,_Alloc>::insert(iterator __position,
           = uninitialized_copy(__position, this->_M_finish, __new_finish);
         _M_construct_null(__new_finish);
       }
-      _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish),
+      _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
                     this->_M_end_of_storage.deallocate(__new_start,__len)));
-      _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
+      _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
       this->_M_deallocate_block();
       this->_M_start = __new_start;
       this->_M_finish = __new_finish;
@@ -370,7 +370,7 @@ basic_string<_CharT,_Traits,_Alloc> ::rfind(const _CharT* __s, size_type __pos, 
     return (min) (__len, __pos);
   else {
     const_pointer __last = this->_M_start + (min) (__len - __n, __pos) + __n;
-    const_pointer __result = _STLP_STD::find_end((const_pointer)this->_M_start, __last,
+    const_pointer __result = _STLP_STD::find_end(__CONST_CAST(const_pointer, this->_M_start), __last,
 						 __s, __s + __n,
 						 _Eq_traits<_Traits>());
     return __result != __last ? __result - this->_M_start : npos;
@@ -432,10 +432,10 @@ basic_string<_CharT,_Traits,_Alloc> ::find_first_not_of(const _CharT* __s, size_
   if (__pos > size())
     return npos;
   else {
-    const_pointer __result = _STLP_STD::find_if((const _CharT*)this->_M_start + __pos, 
-				      (const _CharT*)this->_M_finish,
-                                _Not_within_traits<_Traits>((const _CharType*)__s, 
-							    (const _CharType*)__s + __n));
+    const_pointer __result = _STLP_STD::find_if(__CONST_CAST(const_pointer, this->_M_start) + __pos, 
+                                                __CONST_CAST(const_pointer, this->_M_finish),
+                                                _Not_within_traits<_Traits>(__CONST_CAST(const _CharType*, __s), 
+                                                                            __CONST_CAST(const _CharType*, __s) + __n));
     return __result != this->_M_finish ? __result - this->_M_start : npos;
   }
 }
@@ -446,7 +446,8 @@ basic_string<_CharT,_Traits,_Alloc> ::find_first_not_of(_CharT __c, size_type __
   if (__pos > size())
     return npos;
   else {
-    const_pointer __result = _STLP_STD::find_if((const _CharT*)this->_M_start + __pos, (const _CharT*)this->_M_finish,
+    const_pointer __result = _STLP_STD::find_if(__CONST_CAST(const_pointer, this->_M_start) + __pos,
+                                                __CONST_CAST(const_pointer, this->_M_finish),
 						_Neq_char_bound<_Traits>(__c));
     return __result != this->_M_finish ? __result - this->_M_start : npos;
   }

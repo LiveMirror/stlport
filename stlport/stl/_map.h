@@ -41,7 +41,9 @@ _STLP_BEGIN_NAMESPACE
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class map {
+class map _STLP_FIRST_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+{
+  typedef map<_Key, _Tp, _Compare, _Alloc> _Self;
 public:
 
 // typedefs:
@@ -130,9 +132,17 @@ public:
 
 #endif /* _STLP_MEMBER_TEMPLATES */
 
-  map(const map<_Key,_Tp,_Compare,_Alloc>& __x) : _M_t(__x._M_t) {}
-  map<_Key,_Tp,_Compare,_Alloc>&
-  operator=(const map<_Key, _Tp, _Compare, _Alloc>& __x)
+  map(const _Self& __x) : _M_t(__x._M_t) {}
+
+  /*explicit map(__full_move_source<_Self> src)
+    : _M_t(_FullMoveSource<_Rep_type>(src.get()._M_t)) {
+  }*/
+
+  explicit map(__partial_move_source<_Self> src)
+    : _M_t(_AsPartialMoveSource(src.get()._M_t)) {
+  }
+
+  _Self& operator=(const _Self& __x)
   {
     _M_t = __x._M_t;
     return *this; 
@@ -162,7 +172,7 @@ public:
       __i = insert(__i, value_type(__k, _STLP_DEFAULT_CONSTRUCTED(_Tp)));
     return (*__i).second;
   }
-  void swap(map<_Key,_Tp,_Compare,_Alloc>& __x) { _M_t.swap(__x._M_t); }
+  void swap(_Self& __x) { _M_t.swap(__x._M_t); }
 
   // insert/erase
 
@@ -217,7 +227,9 @@ public:
 
 template <class _Key, class _Tp, __DFL_TMPL_PARAM(_Compare, less<_Key> ), 
           _STLP_DEFAULT_PAIR_ALLOCATOR_SELECT(const _Key, _Tp) >
-class multimap {
+class multimap _STLP_FIRST_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+{
+  typedef multimap<_Key, _Tp, _Compare, _Alloc> _Self;
 public:
 
 // typedefs:
@@ -302,9 +314,17 @@ public:
     : _M_t(__comp, __a) { _M_t.insert_equal(__first, __last); }
 #endif /* _STLP_MEMBER_TEMPLATES */
 
-  multimap(const multimap<_Key,_Tp,_Compare,_Alloc>& __x) : _M_t(__x._M_t) { }
-  multimap<_Key,_Tp,_Compare,_Alloc>&
-  operator=(const multimap<_Key,_Tp,_Compare,_Alloc>& __x) {
+  multimap(const _Self& __x) : _M_t(__x._M_t) { }
+
+  /*explicit multimap(__full_move_source<_Self> src)
+    : _M_t(_FullMoveSource<_Rep_type>(src.get()._M_t)) {
+  }*/
+
+  explicit multimap(__partial_move_source<_Self> src)
+    : _M_t(_AsPartialMoveSource(src.get()._M_t)) {
+  }
+
+  _Self& operator=(const _Self& __x) {
     _M_t = __x._M_t;
     return *this; 
   }
@@ -326,7 +346,7 @@ public:
   bool empty() const { return _M_t.empty(); }
   size_type size() const { return _M_t.size(); }
   size_type max_size() const { return _M_t.max_size(); }
-  void swap(multimap<_Key,_Tp,_Compare,_Alloc>& __x) { _M_t.swap(__x._M_t); }
+  void swap(_Self& __x) { _M_t.swap(__x._M_t); }
 
   // insert/erase
 

@@ -36,6 +36,7 @@
 #endif
 
 # include <stl/_ctraits_fns.h>  
+
 #ifndef _STLP_INTERNAL_ALGOBASE_H
 # include <stl/_algobase.h> 
 #endif
@@ -120,8 +121,10 @@ public:
   _STLP_alloc_proxy<_Tp*, _Tp, allocator_type> _M_end_of_storage;
                                 // Precondition: 0 < __n <= max_size().
   void _M_allocate_block(size_t);
-  void _M_deallocate_block() 
-    { _M_end_of_storage.deallocate(_M_start, _M_end_of_storage._M_data - _M_start); }
+  void _M_deallocate_block() {
+	  if (_M_start != 0)
+		_M_end_of_storage.deallocate(_M_start, _M_end_of_storage._M_data - _M_start); 
+  }
   
   size_t max_size() const { return (size_t(-1) / sizeof(_Tp)) - 1; }
 
@@ -163,12 +166,13 @@ _STLP_EXPORT_TEMPLATE_CLASS _String_base<wchar_t, allocator<wchar_t> >;
 
 struct _String_reserve_t {};
 
-template <class _CharT, class _Traits, class _Alloc> class basic_string : protected _String_base<_CharT,_Alloc> {
+template <class _CharT, class _Traits, class _Alloc>
+class basic_string : protected _String_base<_CharT,_Alloc> {
 private:                        // Protected members inherited from base.
   typedef _String_base<_CharT,_Alloc> _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
   // fbp : used to optimize char/wchar_t cases, and to simplify
-  // _STLP_DEFAULT_CONSTRUCTOR_BUG problem workaround
+  // _STLP_DEF_CONST_PLCT_NEW_BUG problem workaround
   typedef typename _Is_integer<_CharT>::_Integral _Char_Is_Integral;
 public:
   typedef _CharT value_type;
@@ -229,7 +233,7 @@ public:                         // Constructor, destructor, assignment.
     _M_terminate_string(); 
   }
 
-  basic_string(const basic_string<_CharT, _Traits, _Alloc>&);
+  basic_string(const _Self&);
 
   basic_string(const _Self& __s, size_type __pos, size_type __n = npos,
                const allocator_type& __a = allocator_type()) 
@@ -302,7 +306,7 @@ public:                         // Constructor, destructor, assignment.
   operator __std_string() const { return __std_string(this->data(), this->size()); }
 # endif
 
-  ~basic_string() { _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1); }
+  ~basic_string() { _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1); }
     
   _Self& operator=(const _Self& __s) {
     if (&__s != this) 
@@ -344,7 +348,7 @@ private:
     _STLP_TRY {
       _M_construct_null(this->_M_finish);
     }
-    _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_start, this->_M_finish));
+    _STLP_UNWIND(_STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish));
   }
 
   void _M_terminate_string_aux(const __true_type&) {
@@ -364,7 +368,7 @@ private:
     _STLP_TRY {
       append(__f, __l);
     }
-    _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1));
+    _STLP_UNWIND(_STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1));
   }
 
   template <class _ForwardIter> void _M_range_initialize(_ForwardIter __f, _ForwardIter __l, 
@@ -437,7 +441,7 @@ public:                         // Size, capacity, etc.
   void clear() {
     if (!empty()) {
       _Traits::assign(*(this->_M_start), _M_null());
-      _STLP_STD::_Destroy(this->_M_start+1, this->_M_finish+1);
+      _STLP_STD::_Destroy_Range(this->_M_start+1, this->_M_finish+1);
       this->_M_finish = this->_M_start;
     }
   } 
@@ -544,9 +548,9 @@ private:                        // Helper functions for append.
 	        __new_finish = uninitialized_copy(__first, __last, __new_finish);
 	        _M_construct_null(__new_finish);
 	      }
-	      _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish),
+	      _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
 	                    this->_M_end_of_storage.deallocate(__new_start,__len)));
-	      _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
+	      _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
 	      this->_M_deallocate_block();
 	      this->_M_start = __new_start;
 	      this->_M_finish = __new_finish;
@@ -559,7 +563,7 @@ private:                        // Helper functions for append.
 	      _STLP_TRY {
 	        _M_construct_null(this->_M_finish + __n);
 	      }
-	      _STLP_UNWIND(_STLP_STD::_Destroy(this->_M_finish + 1, this->_M_finish + __n));
+	      _STLP_UNWIND(_STLP_STD::_Destroy_Range(this->_M_finish + 1, this->_M_finish + __n));
 	      _Traits::assign(*end(), *__first);
 	      this->_M_finish += __n;
 	    }
@@ -765,7 +769,7 @@ private:                        // Helper functions for insert.
 	          uninitialized_copy(__position, __old_finish + 1, this->_M_finish);
 	          this->_M_finish += __elems_after;
 	        }
-	        _STLP_UNWIND((_STLP_STD::_Destroy(__old_finish + 1, this->_M_finish), 
+	        _STLP_UNWIND((_STLP_STD::_Destroy_Range(__old_finish + 1, this->_M_finish), 
 	                      this->_M_finish = __old_finish));
 	        _M_copy(__first, __mid, __position);
 	}
@@ -783,9 +787,9 @@ private:                        // Helper functions for insert.
 	          = uninitialized_copy(__position, this->_M_finish, __new_finish);
 	        _M_construct_null(__new_finish);
 	      }
-	      _STLP_UNWIND((_STLP_STD::_Destroy(__new_start,__new_finish),
+	      _STLP_UNWIND((_STLP_STD::_Destroy_Range(__new_start,__new_finish),
 	                    this->_M_end_of_storage.deallocate(__new_start,__len)));
-	      _STLP_STD::_Destroy(this->_M_start, this->_M_finish + 1);
+	      _STLP_STD::_Destroy_Range(this->_M_start, this->_M_finish + 1);
 	      this->_M_deallocate_block();
 	      this->_M_start = __new_start;
 	      this->_M_finish = __new_finish;
@@ -841,7 +845,7 @@ public:                         // Erase.
                                 // The move includes the terminating _CharT().
       traits_type::move(__first, __last, (this->_M_finish - __last) + 1);
       pointer __new_finish = this->_M_finish - (__last - __first);
-      _STLP_STD::_Destroy(__new_finish + 1, this->_M_finish + 1);
+      _STLP_STD::_Destroy_Range(__new_finish + 1, this->_M_finish + 1);
       this->_M_finish = __new_finish;
     }
     return __first;

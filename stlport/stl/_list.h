@@ -186,8 +186,10 @@ public:
     _M_node._M_data = __n;
   }
   ~_List_base() {
+	  if (_M_node._M_data != 0) {
     clear();
     _M_node.deallocate(_M_node._M_data, 1);
+  }
   }
 
   void clear();
@@ -214,7 +216,8 @@ template <class _Tp, class _Alloc, class _StrictWeakOrdering>
 void _S_sort(list<_Tp, _Alloc>& __that, _StrictWeakOrdering __comp);
 
 template <class _Tp, class _Alloc>
-class list : public _List_base<_Tp, _Alloc> {
+class list : public _List_base<_Tp, _Alloc> _STLP_DERIVE(__partial_move_supported) /*_STLP_DERIVE(__full_move_supported)*/
+{
   typedef _List_base<_Tp, _Alloc> _Base;
   typedef list<_Tp, _Alloc> _Self;
 public:      
@@ -236,16 +239,21 @@ public:
   _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS;
 
 protected:
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  _Node* _M_create_node(const _Tp& __x = _Tp())
+#else
   _Node* _M_create_node(const _Tp& __x)
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM*/
   {
     _Node* __p = this->_M_node.allocate(1);
     _STLP_TRY {
-      _Construct(&__p->_M_data, __x);
+      _Copy_Construct(&__p->_M_data, __x);
     }
     _STLP_UNWIND(this->_M_node.deallocate(__p, 1));
     return __p;
   }
 
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   _Node* _M_create_node()
   {
     _Node* __p = this->_M_node.allocate(1);
@@ -255,6 +263,7 @@ protected:
     _STLP_UNWIND(this->_M_node.deallocate(__p, 1));
     return __p;
   }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
 public:
 # if !(defined(__MRC__)||(defined(__SC__) && !defined(__DMC__)))
@@ -295,8 +304,11 @@ public:
     _STLP_STD::swap(this->_M_node, __x._M_node); 
   }
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  iterator insert(iterator __position, const _Tp& __x = _Tp()) {
+#else
   iterator insert(iterator __position, const _Tp& __x) {
-
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
     _Node* __tmp = _M_create_node(__x);
     _List_node_base* __n = __position._M_node;
     _List_node_base* __p = __n->_M_prev;
@@ -344,11 +356,11 @@ public:
   void push_front(const _Tp& __x) { insert(begin(), __x); }
   void push_back(const _Tp& __x) { insert(end(), __x); }
 
-# ifndef _STLP_NO_ANACHRONISMS
-  iterator insert(iterator __position) { return insert(__position, _Tp()); }
+#if defined(_STLP_DONT_SUP_DFLT_PARAM) && !defined(_STLP_NO_ANACHRONISMS)
+  iterator insert(iterator __position) { return insert(__position, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
   void push_front() {insert(begin());}
   void push_back() {insert(end());}
-# endif
+# endif /*_STLP_DONT_SUP_DFLT_PARAM && !_STLP_NO_ANACHRONISMS*/
 
   iterator erase(iterator __position) {
     _List_node_base* __next_node = __position._M_node->_M_next;
@@ -367,21 +379,32 @@ public:
     return __last;
   }
 
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  void resize(size_type __new_size, const _Tp& __x = _Tp());
+#else
   void resize(size_type __new_size, const _Tp& __x);
-  void resize(size_type __new_size) { this->resize(__new_size, _Tp()); }
+  void resize(size_type __new_size) { this->resize(__new_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*!_STLP_DONT_SUP_DFLT_PARAM*/
 
   void pop_front() { erase(begin()); }
   void pop_back() { 
     iterator __tmp = end();
     erase(--__tmp);
   }
+#if !defined(_STLP_DONT_SUP_DFLT_PARAM)
+  explicit list(size_type __n, const _Tp& __val = _Tp(),
+#else
   list(size_type __n, const _Tp& __val,
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
        const allocator_type& __a = allocator_type())
     : _List_base<_Tp, _Alloc>(__a)
     { this->insert(begin(), __n, __val); }
+
+#if defined(_STLP_DONT_SUP_DFLT_PARAM)
   explicit list(size_type __n)
     : _List_base<_Tp, _Alloc>(allocator_type())
-    { this->insert(begin(), __n, _Tp()); }
+    { this->insert(begin(), __n, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+#endif /*_STLP_DONT_SUP_DFLT_PARAM*/
 
 #ifdef _STLP_MEMBER_TEMPLATES
   // We don't need any dispatching tricks here, because insert does all of
@@ -412,6 +435,15 @@ public:
 #endif /* _STLP_MEMBER_TEMPLATES */
   list(const list<_Tp, _Alloc>& __x) : _List_base<_Tp, _Alloc>(__x.get_allocator())
     { insert(begin(), __x.begin(), __x.end()); }
+
+  /*explicit list(__full_move_source<_Self> src)
+	  : _List_base<_Tp, _Alloc>(_FullMoveSource<_List_base<_Tp, _Alloc> >(src.get())) {
+  }*/
+
+  explicit list(__partial_move_source<_Self> src)
+	  : _List_base<_Tp, _Alloc>(src.get()) {
+	  src.get()._M_node._M_data = 0;
+  }
 
   ~list() { }
 
