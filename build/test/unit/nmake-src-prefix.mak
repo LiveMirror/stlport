@@ -3,22 +3,39 @@
 
 ALLOBJS = $(ALLOBJS:../../../test/unit/=)
 ALLOBJS = $(ALLOBJS:cppunit/=)
-ALLRESS = $(ALLRESS:../../../test/unit/=)
 
-{cppunit}.cpp{$(OUTPUT_DIR)}.o:
+{../../../test/unit}.cpp{$(OUTPUT_DIR)}.o:
 	$(COMPILE_cc_REL) $(OUTPUT_OPTION) $<
 
-{cppunit}.cpp{$(OUTPUT_DIR_DBG)}.o:
+{../../../test/unit}.cpp{$(OUTPUT_DIR_DBG)}.o:
 	$(COMPILE_cc_DBG) $(OUTPUT_OPTION_DBG) $<
 
-{cppunit}.cpp{$(OUTPUT_DIR_STLDBG)}.o:
+{../../../test/unit}.cpp{$(OUTPUT_DIR_STLDBG)}.o:
 	$(COMPILE_cc_STLDBG) $(OUTPUT_OPTION_STLDBG) $<
 
-{cppunit}.cpp{$(OUTPUT_DIR_A)}.o:
+{../../../test/unit}.cpp{$(OUTPUT_DIR_A)}.o:
 	$(COMPILE_cc_STATIC_REL) $(OUTPUT_OPTION) $<
 
-{cppunit}.cpp{$(OUTPUT_DIR_A_DBG)}.o:
+{../../../test/unit}.cpp{$(OUTPUT_DIR_A_DBG)}.o:
 	$(COMPILE_cc_STATIC_DBG) $(OUTPUT_OPTION_STATIC_DBG) $<
 
-{cppunit}.cpp{$(OUTPUT_DIR_A_STLDBG)}.o:
+{../../../test/unit}.cpp{$(OUTPUT_DIR_A_STLDBG)}.o:
+	$(COMPILE_cc_STATIC_STLDBG) $(OUTPUT_OPTION_STATIC_STLDBG) $<
+
+{../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR)}.o:
+	$(COMPILE_cc_REL) $(OUTPUT_OPTION) $<
+
+{../../../test/unit/cppunit/}.cpp{$(OUTPUT_DIR_DBG)}.o:
+	$(COMPILE_cc_DBG) $(OUTPUT_OPTION_DBG) $<
+
+{../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR_STLDBG)}.o:
+	$(COMPILE_cc_STLDBG) $(OUTPUT_OPTION_STLDBG) $<
+
+{../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR_A)}.o:
+	$(COMPILE_cc_STATIC_REL) $(OUTPUT_OPTION) $<
+
+{../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR_A_DBG)}.o:
+	$(COMPILE_cc_STATIC_DBG) $(OUTPUT_OPTION_STATIC_DBG) $<
+
+{../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR_A_STLDBG)}.o:
 	$(COMPILE_cc_STATIC_STLDBG) $(OUTPUT_OPTION_STATIC_STLDBG) $<
