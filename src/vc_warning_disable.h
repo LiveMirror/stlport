@@ -18,6 +18,11 @@
 #  pragma warning( disable : 4786 ) // identifier truncated to 255 characters
 #endif
 
+#if (_MSC_VER < 1300) && defined(UNDER_CE)
+#  pragma warning( disable : 4201 ) // nonstandard extension used : nameless struct/union
+#  pragma warning( disable : 4214 ) // nonstandard extension used : bit field types other than int
+#endif
+
 #pragma warning( disable : 4075 ) // initializers put in unrecognized initialization area
 //This warning is disable only for the c_locale_win32.c file compilation:
 #pragma warning( disable : 4100 ) // unreferenced formal parameter

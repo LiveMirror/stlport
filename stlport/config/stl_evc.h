@@ -108,6 +108,11 @@
 #  define _STLP_DONT_USE_SHORT_STRING_OPTIM
 # endif
 
+// when using MFC, disable another placement new declaration, since there is one in wcealt.h
+#  if !defined(__BUILDING_STLPORT) && defined(_STLP_USE_MFC)
+#   define __PLACEMENT_NEW_INLINE
+#  endif
+
 // Ensure _DEBUG is defined.
 # if defined(DEBUG) && !defined(_DEBUG)
 #  define _DEBUG

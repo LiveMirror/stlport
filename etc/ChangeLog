@@ -1,3 +1,14 @@
+2005-02-04  Francois Dumont  <dums@stlport...>
+
+	* stlport/new, config/stl_evc.h: EVC patch for MFC support from Michael Fink.
+
+	* build/Makefiles/nmake/evc3.mak, evc4.mak: Warning level raised to 4
+	by Michael Fink.
+
+	* doc/README.evc3, README.evc4 doc update from Michael Fink.
+
+	* src/vc_warning_disable.h: Add warning 4201 and 4214 disabling for EVC.
+
 2005-01-31  Francois Dumont  <dums@stlport...>
 
 	* Mac OS X portage thanks Zdenek Nemec.
@@ -16,7 +27,7 @@
 
 2005-01-28  Francois Dumont  <dums@stlport...>
 
-	* Application of a patch from Michael Fink for EVC MIPSS.
+	* Application of a patch from Michael Fink for EVC MIPS.
 
 2005-01-27  Francois Dumont  <dums@stlport...>
 

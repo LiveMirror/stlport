@@ -3,7 +3,7 @@
 STLport README for eMbedded Visual C++ 4
 ========================================
 
-by: Zdenek Nemec, zero@mapfactor.com, last edited 3/10/2004
+by: Zdenek Nemec, zero@mapfactor.com, last edited 2005-02-01
 
 ============
 Introduction
@@ -40,6 +40,8 @@ At the end of build process you should have some libs installed in STLport/lib/e
 
 You might want to repeat all those steps if you would like to have both ARM and x86 emulator binaries, just don't forget to do 'nmake /f nmake-evc4.mak clobber' before new build.
 
+Note: MIPS platform is also available for build, but it may not compile or work properly. Use with caution!
+
 ===============
 Testing STLport
 ===============
@@ -58,15 +60,10 @@ Before you start using STLport you have to set proper include and libraries sear
 Go to 'Tools'>'Options' menu in your eVC 4.0 and then to 'Directories' tab.
 For every platform you want to use STLport add STLport/stlport directory to the FIRST place in 'Include Files'
 and STLport/lib directory in 'Library files' section.
+When using STLport together with MFC, you have to define _STLP_USE_MFC to properly include and use STLport.
 Now you should be ready to use STLport.
 
 ============
 Known issues
 ============
- - C4275 warning while building dynamic libs, non – DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
-    Please ignore this warning, it is caused by Microsoft std::exception class declaration.
-    Since everything is inline here it really doesn't matter.
-
- - RC(Resource Compiler) fails to build resources
-    This is one of the nastiest problems, it is beacause RC is including more than it has to and is not capable to handle STLP's macros.
-    One of the workarounds is to put include path to the original headers first(eg. in resource tab of project settings dialog).
+none
