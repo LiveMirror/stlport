@@ -130,13 +130,13 @@ using _STLP_VENDOR_MB_NAMESPACE::mbstate_t;
 
 # if !defined (_STLP_NO_CSTD_FUNCTION_IMPORTS) && !defined(_STLP_WCHAR_BORLAND_EXCLUDE) \
   && (!defined(__MSL__) || __MSL__ > 0x6001)
-#  if ! (defined (__KCC) || defined (__GNUC__))
+#  if ! (defined (__KCC) || defined (__GNUC__)) && !defined(_STLP_WCE_NET)
 using _STLP_VENDOR_MB_NAMESPACE::btowc;
 #   if (!defined(__MSL__) || __MSL__ > 0x7001)
 using _STLP_VENDOR_MB_NAMESPACE::mbsinit;
 #   endif
 #  endif
-# if ! defined (__GNUC__)
+# if ! defined (__GNUC__) && !defined(_STLP_WCE_NET)
 using _STLP_VENDOR_MB_NAMESPACE::mbrlen;
 using _STLP_VENDOR_MB_NAMESPACE::mbrtowc;
 using _STLP_VENDOR_MB_NAMESPACE::mbsrtowcs;
@@ -167,10 +167,14 @@ using _STLP_VENDOR_CSTD::getwchar;
 #  endif
 
 # ifndef _STLP_WCHAR_BORLAND_EXCLUDE
+#  ifndef _STLP_WCE_NET
 using _STLP_VENDOR_CSTD::getwc;
+#  endif
 using _STLP_VENDOR_CSTD::ungetwc;
 
+#  ifndef _STLP_WCE_NET
 using _STLP_VENDOR_CSTD::putwc;
+#  endif
 using _STLP_VENDOR_CSTD::putwchar;
 # endif
 
@@ -182,7 +186,8 @@ using _STLP_VENDOR_CSTD::vfwprintf;
 using _STLP_VENDOR_CSTD::vwprintf;
 using _STLP_VENDOR_CSTD::vswprintf;
 
-#   if !defined(__MSL__) || __MSL__ > 0x7001
+#   if (!defined(__MSL__) || __MSL__ > 0x7001 ) && !defined(_STLP_WCE_NET)
+
 using _STLP_VENDOR_CSTD::wcsftime;
 #   endif
 using _STLP_VENDOR_CSTD::wcstok;
@@ -190,10 +195,13 @@ using _STLP_VENDOR_CSTD::wcstok;
 #  endif
 
 # if !(defined (__BORLANDC__) && (__BORLANDC__ < 0x540))
+#  ifndef _STLP_WCE_NET
+using _STLP_VENDOR_CSTD::wcscoll;
+using _STLP_VENDOR_CSTD::wcsxfrm;
+#  endif
 using _STLP_VENDOR_CSTD::wcscat;
 using _STLP_VENDOR_CSTD::wcsrchr;
 using _STLP_VENDOR_CSTD::wcscmp;
-using _STLP_VENDOR_CSTD::wcscoll;
 
 using _STLP_VENDOR_CSTD::wcscpy;
 using _STLP_VENDOR_CSTD::wcscspn;
@@ -206,7 +214,6 @@ using _STLP_VENDOR_CSTD::wcspbrk;
 using _STLP_VENDOR_CSTD::wcschr;
 
 using _STLP_VENDOR_CSTD::wcsspn;
-using _STLP_VENDOR_CSTD::wcsxfrm;
 
 # endif
 
@@ -225,7 +232,9 @@ using _STLP_VENDOR_CSTD::wmemchr;
 #  if !defined (_STLP_WCHAR_BORLAND_EXCLUDE)
 
 #ifndef __DMC__
+# ifndef _STLP_WCE_NET
 using _STLP_VENDOR_CSTD::wctob;
+# endif
 using _STLP_VENDOR_CSTD::wmemcmp;
 #endif
 using _STLP_VENDOR_CSTD::wmemmove;

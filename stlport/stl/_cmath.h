@@ -126,6 +126,22 @@ inline double abs(double __x)                 { return _STLP_DO_ABS(double)(__x)
 inline float abs (float __x)                  { return _STLP_DO_ABS(float)(__x); }
 #    endif
 
+#    ifdef _STLP_WCE_NET
+inline double abs(double __x) { return _STLP_DO_ABS(double)(__x); }
+inline float abs(float __x) {return (fabsf(__x)); }
+#    endif
+
+# ifdef _STLP_WCE
+inline double abs(double __x) { return _STLP_DO_ABS(double)(__x); }
+// evc3 doesn't have fabsf(), but evc4 has
+#  ifdef _STLP_WCE_EVC3
+inline float abs (float __x) { return _STLP_DO_ABS(float)(__x); }
+#  endif
+#  ifdef _STLP_WCE_NET
+inline float abs(float __x) {return (fabsf(__x)); }
+#  endif
+# endif
+
 inline double pow(double __x, int __y)        { return _STLP_DO_POW(double)(__x, __y); }
 inline float acos (float __x)                 { return _STLP_DO_ACOS(float)(__x); }
 inline float asin (float __x)                 { return _STLP_DO_ASIN(float)(__x); }
@@ -210,10 +226,10 @@ _STLP_END_NAMESPACE
 
 #  endif /* _STLP_USE_NEW_C_HEADERS */
 
-#  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200)
+#  if defined (_STLP_MSVC) && (_STLP_MSVC <= 1200) && !defined(_STLP_WCE)
 _STLP_BEGIN_NAMESPACE
 
-#    if defined (_MSC_EXTENSIONS)
+#    if defined (_MSC_EXTENSIONS) && !defined(_STLP_WCE_NET)
 /*
  * dums: VC6 has all the required C++ functions but only define them if
  * _MSC_EXTENSIONS is not defined (a bug?). STLport just do the same

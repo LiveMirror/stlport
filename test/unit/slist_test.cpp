@@ -114,4 +114,7 @@ void SlistTest::erase()
   slit = sl.begin(); ++slit; ++slit;
   slit = sl.erase_after(sl.begin(), slit);
   CPPUNIT_ASSERT( *slit == 3 );
+
+  sl.erase_after(sl.before_begin());
+  CPPUNIT_ASSERT( sl.front() == 3 );
 }

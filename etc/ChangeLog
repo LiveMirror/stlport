@@ -5,7 +5,13 @@
 	patch.
 
 	* stlport/cstdlib: extension of the div overload for long input up to MSVC7.1
-	thanks Micheal Fink report.
+	thanks Michael Fink report.
+
+	* test/unit/string_test.cpp: patch from Michael Fink for EVC which has limited
+	support of the WaitForMultipleObjects API function.
+
+	* stlport/cstdlib, cwchar, using/cstring: patch from Michael Fink to remove
+	imports of missing native C functions.
 
 2004-11-16  Francois Dumont  <dums@stlport...>
 

@@ -107,7 +107,14 @@ void StringTest::mt()
     t[i] = CreateThread(NULL, 0, f, 0, 0, NULL);
   }
 
+#ifdef _STLP_WCE
+  // on evc3/evc4 WaitForMultipleObjects() with fWaitAll == TRUE is not supported
+  for ( i = 0; i < nth; ++i ) {
+    WaitForSingleObject(t[i], INFINITE);
+  }
+#else
   WaitForMultipleObjects(nth, t, TRUE, INFINITE);
+#endif
 
   /*
   DWORD duration = GetTickCount() - start;
