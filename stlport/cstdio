@@ -19,7 +19,7 @@
 # if ! defined (_STLP_WINCE)
 
 # ifndef _STLP_OUTERMOST_HEADER_ID
-#  define _STLP_OUTERMOST_HEADER_ID 15
+#  define _STLP_OUTERMOST_HEADER_ID 0x15
 #  include <stl/_prolog.h>
 # endif
 
@@ -118,7 +118,7 @@ using _STLP_VENDOR_CSTD::vsnprintf;
 _STLP_END_NAMESPACE
 # endif /* _STLP_IMPORT_VENDOR_CSTD */
 
-# if (_STLP_OUTERMOST_HEADER_ID == 15)
+# if (_STLP_OUTERMOST_HEADER_ID == 0x15)
 #  include <stl/_epilog.h>
 #  undef _STLP_OUTERMOST_HEADER_ID
 # endif
