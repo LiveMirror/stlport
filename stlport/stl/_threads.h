@@ -393,7 +393,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 #  if defined(_STLP_UITHREADS)
         ,_id( __STATIC_CAST(thread_t,-1) )
 #  elif defined(_STLP_PTHREADS)
-#   if !defined(__FreeBSD__)
+#   if !defined(__FreeBSD__) && !defined(__DECCXX)
         ,_id( __STATIC_CAST(pthread_t,-1) )
 #   else
         ,_id( __STATIC_CAST(pthread_t,0) )
@@ -434,7 +434,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex_RS : public _STLP_mutex
 #  if defined(_STLP_UITHREADS)
         _id = __STATIC_CAST(thread_t,-1);
 #  elif defined(_STLP_PTHREADS)
-#   if !defined(__FreeBSD__)
+#   if !defined(__FreeBSD__) && !defined(__DECCXX)
         _id =  __STATIC_CAST(pthread_t,-1);
 #   else
         _id =  __STATIC_CAST(pthread_t,0);
