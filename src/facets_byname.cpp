@@ -901,7 +901,7 @@ _STLP_END_NAMESPACE
 
 _STLP_BEGIN_NAMESPACE
 
-void _Catalog_locale_map::insert(int key, const locale& L) {
+void _Catalog_locale_map::insert(nl_catd_type key, const locale& L) {
   _STLP_TRY {
 #if !defined(_STLP_NO_TYPEINFO) && !defined(_STLP_NO_RTTI)
     // Don't bother to do anything unless we're using a non-default ctype facet
@@ -916,12 +916,12 @@ void _Catalog_locale_map::insert(int key, const locale& L) {
     if (typeid(wct) != typeid(wctype)) {
 # endif /* _STLP_NO_TYPEINFO */
       if (!M)
-        M = new hash_map<int, locale, hash<int>, equal_to<int> >;
+        M = new map_type;
 
 #if defined(__SC__)
       if (!M) delete M;
 #endif
-      M->insert(pair<const int, locale>(key, L));
+      M->insert(pair<long, locale>((long)key, L));
 #if !defined(_STLP_NO_TYPEINFO) && !defined(_STLP_NO_RTTI)
     }
 # endif /* _STLP_NO_TYPEINFO */
@@ -929,14 +929,14 @@ void _Catalog_locale_map::insert(int key, const locale& L) {
   _STLP_CATCH_ALL {}
 }
 
-void _Catalog_locale_map::erase(int key) {
+void _Catalog_locale_map::erase(nl_catd_type key) {
   if (M)
-    M->erase(key);
+    M->erase((long)key);
 }
 
-locale _Catalog_locale_map::lookup(int key) const {
+locale _Catalog_locale_map::lookup(nl_catd_type key) const {
   if (M) {
-    hash_map<int, locale, hash<int>, equal_to<int> >::iterator i = M->find(key);
+    map_type::const_iterator i = M->find((long)key);
     return i != M->end() ? (*i).second : locale::classic();
   }
   else
@@ -968,21 +968,20 @@ _Messages_impl::~_Messages_impl() {
   if (_M_map) delete _M_map;
 }
 
-int _Messages_impl::do_open(const string& filename, const locale& L) const {  
-  int result = _M_message_obj
-    ? _Locale_catopen(_M_message_obj, filename.c_str())
-    : -1;
+_Messages::catalog _Messages_impl::do_open(const string& filename, const locale& L) const {  
+  nl_catd_type result = _M_message_obj ? _Locale_catopen(_M_message_obj, filename.c_str())
+    : (nl_catd_type)(-1);
 
-  if (result >= 0 && _M_map != 0)
+  if (result != (nl_catd_type)(-1) && _M_map != 0)
     _M_map->insert(result, L);
 
-  return result;
+  return (_Messages::catalog)result;
 }
 
 string _Messages_impl::do_get(catalog cat,
                               int set, int p_id, const string& dfault) const {
   return _M_message_obj != 0 && cat >= 0
-    ? string(_Locale_catgets(_M_message_obj, cat, set, p_id, dfault.c_str()))
+    ? string(_Locale_catgets(_M_message_obj, (nl_catd_type)cat, set, p_id, dfault.c_str()))
     : dfault;
 }
 
@@ -992,15 +991,15 @@ wstring
 _Messages_impl::do_get(catalog thecat,
                        int set, int p_id, const wstring& dfault) const {
   typedef ctype<wchar_t> wctype;
-  const wctype& ct = use_facet<wctype>(_M_map->lookup(thecat));
+  const wctype& ct = use_facet<wctype>(_M_map->lookup((nl_catd_type)thecat));
 
-  const char* str = _Locale_catgets(_M_message_obj, thecat, set, p_id, "");
+  const char* str = _Locale_catgets(_M_message_obj, (nl_catd_type)thecat, set, p_id, "");
 
   // Verify that the lookup failed; an empty string might represent success.
   if (!str)
     return dfault;
   else if (str[0] == '\0') {
-    const char* str2 = _Locale_catgets(_M_message_obj, thecat, set, p_id, "*");
+    const char* str2 = _Locale_catgets(_M_message_obj, (nl_catd_type)thecat, set, p_id, "*");
     if (!str2 || ((str2[0] == '*') && (str2[1] == '\0')))
       return dfault;
   }
@@ -1019,8 +1018,8 @@ _Messages_impl::do_get(catalog thecat,
 
 void _Messages_impl::do_close(catalog thecat) const {
   if (_M_message_obj)
-    _Locale_catclose(_M_message_obj, thecat);
-  if (_M_map) _M_map->erase(thecat);
+    _Locale_catclose(_M_message_obj, (nl_catd_type)thecat);
+  if (_M_map) _M_map->erase((nl_catd_type)thecat);
 }
 
 

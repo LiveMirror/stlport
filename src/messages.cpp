@@ -32,7 +32,7 @@ messages<char>::~messages()
   if (_M_impl && _M_impl->_M_delete)  delete _M_impl; 
 }
 
-int messages<char>::do_open(const string& filename, const locale& l) const
+messages<char>::catalog messages<char>::do_open(const string& filename, const locale& l) const
 {
   return _M_impl->do_open(filename, l);
 }
@@ -54,7 +54,7 @@ _Messages::_Messages()
 _Messages::~_Messages()
 {}
 
-int _Messages::do_open(const string&, const locale&) const
+_Messages::catalog _Messages::do_open(const string&, const locale&) const
 {  
   return -1;
 }
@@ -77,7 +77,7 @@ messages<wchar_t>::messages(_Messages* imp)  :
 messages<wchar_t>::~messages()
 { if (_M_impl && _M_impl->_M_delete) delete _M_impl; }
 
-int messages<wchar_t>::do_open(const string& filename, const locale& L) const
+messages<wchar_t>::catalog messages<wchar_t>::do_open(const string& filename, const locale& L) const
 {
   return _M_impl->do_open(filename, L);
 }

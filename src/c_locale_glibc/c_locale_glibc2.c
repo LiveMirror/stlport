@@ -244,45 +244,60 @@ void _Locale_monetary_destroy( void *__loc )
 void _Locale_messages_destroy( void* __loc )
 { __LOCALE_DESTROY(__loc); }
 
-char *_Locale_extract_ctype_name(const char* __DUMMY_PAR1, char* __DUMMY_PAR)
-{
-  printf( "%s:%d\n", __FILE__, __LINE__ );
+/*
+ * locale loc expected either locale name indeed (platform-specific)
+ * or string like "LC_CTYPE=LocaleNameForCType;LC_NUMERIC=LocaleNameForNum;"
+ *
+ */
 
-  return 0;
+char *__Extract_locale_name( const char *loc, const char *category, char *buf )
+{
+  char *expr;
+  size_t len_name;
+  buf[0] = 0;
+
+  if( loc[0]=='L' && loc[1]=='C' && loc[2]=='_') {
+    expr = strstr( (char*)loc, category );
+    if ( expr == NULL )
+      return NULL; // Category not found.
+    ++expr;
+    len_name = strcspn( expr, ";" );
+    len_name = len_name > _Locale_MAX_SIMPLE_NAME ? _Locale_MAX_SIMPLE_NAME : len_name;
+    strncpy( buf, expr, len_name );
+    buf[len_name] = 0;
+    return buf;
+  }
+  return strncpy( buf, loc, _Locale_MAX_SIMPLE_NAME );
 }
 
-char *_Locale_extract_numeric_name(const char*__DUMMY_PAR1, char* __DUMMY_PAR)
+char *_Locale_extract_ctype_name( const char *loc, char *buf )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
-  return 0;
+  return __Extract_locale_name( loc, "LC_CTYPE=", buf );
 }
 
-char *_Locale_extract_time_name(const char*__DUMMY_PAR1, char* __DUMMY_PAR)
+char *_Locale_extract_numeric_name( const char *loc, char *buf )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
-  return 0;
+  return __Extract_locale_name( loc, "LC_NUMERIC=", buf );
 }
 
-char *_Locale_extract_collate_name(const char*__DUMMY_PAR1, char* __DUMMY_PAR)
+char *_Locale_extract_time_name( const char *loc, char *buf )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
-  return 0;
+  return __Extract_locale_name( loc, "LC_TIME=", buf );
 }
 
-char *_Locale_extract_monetary_name(const char*__DUMMY_PAR1, char* __DUMMY_PAR)
+char *_Locale_extract_collate_name( const char *loc, char *buf )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
-  return 0;
+  return __Extract_locale_name( loc, "LC_COLLATE=", buf );
 }
 
-char *_Locale_extract_messages_name(const char*__DUMMY_PAR1, char* __DUMMY_PAR)
+char *_Locale_extract_monetary_name( const char *loc, char *buf )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-  return 0;
+  return __Extract_locale_name( loc, "LC_MONETARY=", buf );
+}
+
+char *_Locale_extract_messages_name( const char *loc, char *buf )
+{
+  return __Extract_locale_name( loc, "LC_MESSAGES=", buf );
 }
 
 char *_Locale_compose_name(char*__DUMMY_PAR1, const char*__DUMMY_PAR2, const char*__DUMMY_PAR3,
@@ -505,13 +520,11 @@ const char *_Locale_false(struct _Locale_numeric *__loc)
 
 const char *_Locale_int_curr_symbol(struct _Locale_monetary *__loc)
 {
-  printf( "%xd %s:%d\n", __loc, __FILE__, __LINE__ );
   return __loc != 0 ? __nl_langinfo_l(INT_CURR_SYMBOL, (__c_locale)__loc) : 0;
 }
 
 const char *_Locale_currency_symbol(struct _Locale_monetary *__loc)
 {
-  printf( "%xd %s:%d\n", __loc, __FILE__, __LINE__ );
   return __loc != 0 ? __nl_langinfo_l(CURRENCY_SYMBOL, (__c_locale)__loc) : 0;
 }
 
@@ -645,24 +658,18 @@ const char *_Locale_t_fmt_ampm(struct _Locale_time *__loc )
 
 /* Messages */
 
-int _Locale_catopen(struct _Locale_messages *__loc, const char *__cat_name )
+nl_catd_type _Locale_catopen(struct _Locale_messages *__loc, const char *__cat_name )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
   return catopen( __cat_name, NL_CAT_LOCALE );
 }
 
-void _Locale_catclose(struct _Locale_messages *__loc, int __cat )
+void _Locale_catclose(struct _Locale_messages *__loc, nl_catd_type __cat )
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
   catclose( __cat );
 }
 
-const char *_Locale_catgets(struct _Locale_messages *__loc, int __cat,
+const char *_Locale_catgets(struct _Locale_messages *__loc, nl_catd_type __cat,
                             int __setid, int __msgid, const char *dfault)
 {
-  printf( "%s:%d\n", __FILE__, __LINE__ );
-
   return catgets( __cat, __setid, __msgid, dfault );
 }

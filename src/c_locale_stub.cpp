@@ -263,10 +263,10 @@ const  _Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* __DUMMY_PAR)
 
 /* Messages */
 
- int _Locale_catopen(struct _Locale_messages* __DUMMY_PAR1, const char* __DUMMY_PAR)
+ nl_catd_type _Locale_catopen(struct _Locale_messages* __DUMMY_PAR1, const char* __DUMMY_PAR)
   { return -1; }
- void _Locale_catclose(struct _Locale_messages* __DUMMY_PAR1, int __DUMMY_PAR) {}
- const char* _Locale_catgets(struct _Locale_messages* __DUMMY_PAR1, int __DUMMY_PAR2,
+ void _Locale_catclose(struct _Locale_messages* __DUMMY_PAR1, nl_catd_type __DUMMY_PAR) {}
+ const char* _Locale_catgets(struct _Locale_messages* __DUMMY_PAR1, nl_catd_type __DUMMY_PAR2,
                                        int __DUMMY_PAR3, int __DUMMY_PAR4,
                                        const char *dfault)
   { return dfault; }

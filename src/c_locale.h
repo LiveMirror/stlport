@@ -35,6 +35,12 @@
 // # include <wchar.h>
 # include <stl/_cwchar.h>
 
+# ifdef _STLP_REAL_LOCALE_IMPLEMENTED
+#  if defined (_STLP_USE_GLIBC) && !defined (__CYGWIN__)
+#   include <nl_types.h>
+#  endif
+# endif
+
 #define _Locale_MAX_SIMPLE_NAME 256
 
 /*
@@ -376,21 +382,34 @@ const char * _Locale_t_fmt_ampm(struct _Locale_time *);
  * FUNCTIONS THAT USE MESSAGES
  */
 
-int _Locale_catopen(struct _Locale_messages*, const char*);
+# ifdef _STLP_REAL_LOCALE_IMPLEMENTED
+#  if defined (WIN32) || defined (_WIN32)
+typedef int nl_catd_type;
+#  elif defined (_STLP_USE_GLIBC) && !defined (__CYGWIN__)
+typedef nl_catd nl_catd_type;
+#  else
+typedef int nl_catd_type;
+#  endif
+# else
+typedef int nl_catd_type;
+# endif /* _STLP_REAL_LOCALE_IMPLEMENTED */
+
+
+nl_catd_type _Locale_catopen(struct _Locale_messages*, const char*);
 
 /*
  * Very similar to catopen, except that it uses L to determine
  * which catalog to open.
  */
 
-void _Locale_catclose(struct _Locale_messages*, int);
+void _Locale_catclose(struct _Locale_messages*, nl_catd_type);
 
 /*
  * catalog is a value that was returned by a previous call to
  * _Locale_catopen
  */
 
-const char * _Locale_catgets(struct _Locale_messages *, int,
+const char * _Locale_catgets(struct _Locale_messages *, nl_catd_type,
                              int, int,const char *);
 
 /*
