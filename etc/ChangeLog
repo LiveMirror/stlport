@@ -1,3 +1,8 @@
+2004-08-19  Petr Ovtchenkov  <ptr@Island...>
+
+	* src/explore/configure.bat: setting up compiling STLport under Windows.
+	Contribution by Michael Fink.
+
 2004-08-13  Francois Dumont  <dums@...>
 
 	* test/unit/gcc.mak: Addition of the _STLP_NO_CUSTOM_IO define to make test
