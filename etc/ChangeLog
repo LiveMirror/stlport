@@ -1,3 +1,15 @@
+2004-06-23  Francois Dumont  <dums@...>
+
+  * extension of the cygwin link problem workaround for mingw32.
+
+  * src/locale_catalog.cpp: Move of the _STLP_lock object instance 
+  declaration to limit the critical section and improve performace.
+
+  * stlport/stl/_pthread_alloc.h: fix of the pthread_allocator and
+  per_thread_allocator allocate method to check for the required 
+  number of element before multiplication with the size of the objects
+  to instanciate.
+
 2004-06-22  Francois Dumont  <dums@...>
 
   * src/locale_catalog.cpp: fix of the locale facets registration system.
