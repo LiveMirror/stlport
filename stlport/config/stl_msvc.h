@@ -25,6 +25,8 @@
 #  define _STLP_LONG_LONG  __int64
 # endif
 
+# define _STLP_PRAGMA_ONCE
+
 // these switches depend on compiler flags
 # ifndef _CPPUNWIND
 #  define _STLP_HAS_NO_EXCEPTIONS 1

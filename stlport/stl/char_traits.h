@@ -47,7 +47,7 @@
 # include <mem.h>
 # include <string.h>
 # include <_stddef.h>
-class mbstate_t;
+// class mbstate_t;
 #endif
 
 _STLP_BEGIN_NAMESPACE

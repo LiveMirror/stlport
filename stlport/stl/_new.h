@@ -1,6 +1,33 @@
 
-#ifndef _STLP_INTERNAL_NEW_HEADER
-# define _STLP_INTERNAL_NEW_HEADER
+#ifndef _STLP_NEW_H_HEADER
+# define _STLP_NEW_H_HEADER
+
+# ifdef _STLP_NO_BAD_ALLOC
+
+#  include <exception>
+
+_STLP_BEGIN_NAMESPACE
+
+class nothrow_t {};
+
+# ifdef _STLP_OWN_IOSTREAMS
+extern _STLP_DECLSPEC const nothrow_t nothrow;
+# else
+#  define nothrow nothrow_t()
+# endif
+
+class bad_alloc : public _STLP_EXCEPTION_BASE { 
+public:
+  bad_alloc () _STLP_NOTHROW_INHERENTLY { }
+  bad_alloc(const bad_alloc&) _STLP_NOTHROW_INHERENTLY { }
+  bad_alloc& operator=(const bad_alloc&) _STLP_NOTHROW_INHERENTLY {return *this;}
+  ~bad_alloc () _STLP_NOTHROW_INHERENTLY { }
+  const char* what() const _STLP_NOTHROW_INHERENTLY { return "bad alloc"; }
+};
+
+_STLP_END_NAMESPACE
+
+#endif /* _STLP_NO_BAD_ALLOC */
 
 #ifdef _STLP_WINCE
 _STLP_BEGIN_NAMESPACE
