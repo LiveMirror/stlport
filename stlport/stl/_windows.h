@@ -59,40 +59,48 @@ _STLP_IMPORT_DECLSPEC void* _STLP_STDCALL STLPInterlockedExchangePointer(void* v
 #      endif
 _STLP_IMPORT_DECLSPEC long _STLP_STDCALL InterlockedCompareExchange(long volatile *, long, long);
 #    elif defined (_STLP_WCE)
-long _STLP_STDCALL InterlockedIncrement(long*);
-long _STLP_STDCALL InterlockedDecrement(long*);
-long _STLP_STDCALL InterlockedExchange(long*, long);
+
+// start of eMbedded Visual C++ specific section
 
 #include <windef.h> // needed for basic windows types
 
+long WINAPI InterlockedIncrement(long*);
+long WINAPI InterlockedDecrement(long*);
+long WINAPI InterlockedExchange(long*, long);
+
+#if defined(x86)
+#include <winbase.h> // needed for inline versions of Interlocked* functions
+#endif
+
 #define MessageBox MessageBoxW
-int _STLP_CALL MessageBoxW(HWND hWnd, LPCWSTR lpText, LPCWSTR lpCaption, UINT uType);
+int WINAPI MessageBoxW(HWND hWnd, LPCWSTR lpText, LPCWSTR lpCaption, UINT uType);
 
 #define wvsprintf wvsprintfW
-int _STLP_CALL wvsprintfW(LPWSTR, LPCWSTR, va_list ArgList);
+int WINAPI wvsprintfW(LPWSTR, LPCWSTR, va_list ArgList);
 
-void _STLP_CALL ExitThread(DWORD dwExitCode);
+void WINAPI ExitThread(DWORD dwExitCode);
 
-int _STLP_CALL MultiByteToWideChar(UINT CodePage, DWORD dwFlags, LPCSTR lpMultiByteStr,
+#if !defined(COREDLL)
+#define _STLP_WCE_WINBASEAPI DECLSPEC_IMPORT
+#else
+#define _STLP_WCE_WINBASEAPI
+#endif
+
+_STLP_WCE_WINBASEAPI int WINAPI MultiByteToWideChar(UINT CodePage, DWORD dwFlags, LPCSTR lpMultiByteStr,
      int      cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar);
 
-UINT _STLP_CALL GetACP();
+_STLP_WCE_WINBASEAPI UINT WINAPI GetACP();
 
-BOOL _STLP_CALL TerminateProcess(HANDLE hProcess, DWORD uExitCode);
-
-//#define GetCurrentProcess _Stlp_Wce_GetCurrentProcess
-//_inline HANDLE _Stlp_Wce_GetCurrentProcess(void){ return (HANDLE)66; }
+_STLP_WCE_WINBASEAPI BOOL WINAPI TerminateProcess(HANDLE hProcess, DWORD uExitCode);
 
 #define OutputDebugString OutputDebugStringW
-void _STLP_CALL OutputDebugStringW(LPCWSTR);
+void WINAPI OutputDebugStringW(LPCWSTR);
 
-#      if defined (_ARM_)
-void _STLP_STDCALL Sleep(DWORD);
-#      else
-_STLP_IMPORT_DECLSPEC void _STLP_STDCALL Sleep(DWORD);
-#      endif
+_STLP_WCE_WINBASEAPI void WINAPI Sleep(DWORD);
 
-DWORD _STLP_STDCALL GetCurrentThreadId();
+#undef _STLP_WCE_WINBASEAPI
+
+// end of eMbedded Visual C++ specific section
 
 #    else
 // boris : for the latest SDK, you may actually need the other version of the declaration (above)
@@ -111,12 +119,6 @@ _STLP_IMPORT_DECLSPEC long _STLP_STDCALL InterlockedExchange(long*, long);
 #    if !defined(_STLP_WCE)
 _STLP_IMPORT_DECLSPEC void _STLP_STDCALL Sleep(unsigned long);
 _STLP_IMPORT_DECLSPEC void _STLP_STDCALL OutputDebugStringA(const char* lpOutputString);
-
-#      if defined (_STLP_DEBUG)
-typedef unsigned long DWORD;
-_STLP_IMPORT_DECLSPEC DWORD _STLP_STDCALL GetCurrentThreadId();
-#      endif /* _STLP_DEBUG */
-
 #    endif
 
 #    if defined (InterlockedIncrement)

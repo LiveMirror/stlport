@@ -6,12 +6,9 @@
 	* stl_evc.h, _windows.h, test_main.cpp: workaround to not include
 	<windows.h> in STLport headers (it is still needed for building
 	the lib and the unit tests, but that should be no problem).
-	I [Michael Fink] wanted to forward-define GetCurrentProcess(), but
-	under WinCE that is an inline function that returns a pseudo-HANDLE.
-	I [Michael Fink] just replaced the only usage (in the _STLP_ABORT)
-	macro with the value from the inline function.
-	Not including <windows.h> in the headers should fix above problem
-	with include order. [patch by Michael Fink]
+	Occurences of GetCurrentProcess() used in _STLP_ABORT were replaced
+	with the result of the inline function, which returns a pseudo-
+	HANDLE value. [patch by Michael Fink]
 
 2005-04-02  Francois Dumont  <dums@stlport...>
 
@@ -51,7 +48,7 @@
 	call under WinCE.
 	
 	* stlport/stl/_cmath.h: Fix missing non Standard hypot function under
-	WinCE thanks Micheal Fink.
+	WinCE thanks Michael Fink.
 	
 	* stlport/stl/_cmath.h: Attempt to fix the WinCE math function support
 	where neither *f nor *l functions are present even if the compiler
@@ -260,7 +257,7 @@
 	function calls.
 	
 	* src/fstream.cpp: Add INVALID_SET_FILE_POINTER definition when missing for
-	Win32 IO implementation thanks Micheal Fink report. Add compilation check 
+	Win32 IO implementation thanks Michael Fink report. Add compilation check 
 	of right STLport file descriptor definition.
 	
 2005-03-12  Francois Dumont  <dums@stlport...>
