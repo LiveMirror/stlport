@@ -17,7 +17,7 @@ OPTIM=+O2 +Onolimit
 #
 LINK=ar cr
 # 2.95 flag
-DYN_LINK=aCC -b ${OPTIM} -o
+DYN_LINK=aCC -b ${OPTIM} +nostl -o
 
 OBJEXT=o
 DYNEXT=sl
