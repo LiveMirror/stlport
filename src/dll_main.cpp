@@ -28,9 +28,9 @@
 
 #include "stlport_prefix.h"
 
-#if defined (_STLP_MSVC) && defined (_STLP_USE_DYNAMIC_LIB)
-# define _STLP_LEAKS_PEDANTIC
-#endif
+// #if defined (_STLP_MSVC) && defined (_STLP_USE_DYNAMIC_LIB)
+// # define _STLP_LEAKS_PEDANTIC
+// #endif
 
 #if !defined(_STLP_DEBUG) && ! defined (_STLP_ASSERTIONS)
 #  if !(defined(__APPLE__) && ((__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3))))

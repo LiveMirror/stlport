@@ -1,4 +1,5 @@
 //==========================================
+#if 1 /* def _STLP_3_COMPATIBILITY */
 
 # define __SGI_STL_PORT  _STLPORT_VERSION
 
