@@ -1,3 +1,11 @@
+2004-08-09  Petr Ovtchenkov  <ptr@Island...>
+
+	* test/compiler: tests to check whether compiler understand or not some
+	language construction. It is NOT tests for language support libraries,
+	only tests for compiler. The main purposes of this tests is to help
+	for developers to find correct workarounds, if compiler don't understand
+	some language constructions.
+
 2004-08-09  Francois Dumont <dums@...>
 
 	* stlport/stl/_limits.h, stlport/config/stl_mycomp.h: introduction of a new macro
@@ -108,7 +116,7 @@
 
 2004-07-12  Petr Ovtchenkov  <ptr@Island...>
 
-	* test/fstream_test.cpp: tests for unformatted extraction bug.
+	* test/unit/fstream_test.cpp: tests for unformatted extraction bug.
 
 	* stlport/stl/_istream.c: _M_read_unbuffered should leave delimiter
 	in the stream in case of unformatted input. Thanks Joerg Becker.
