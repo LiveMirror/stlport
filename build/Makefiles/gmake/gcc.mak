@@ -56,7 +56,7 @@ endif
 ifeq ($(OSNAME),cygming)
 CCFLAGS = $(OPT)
 CFLAGS = $(OPT)
-CXXFLAGS = -Wall -fexceptions -fident $(OPT)
+CXXFLAGS = -fexceptions -fident $(OPT)
 COMPILE.rc = $(RC) $(RCFLAGS)
 endif
 
