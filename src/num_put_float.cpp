@@ -65,6 +65,7 @@ typedef long double max_double_type;
 
 # endif
 
+# include <cstdio>
 # include <cstdlib>
 
 //#if defined(_CRAY)
@@ -251,7 +252,7 @@ bool _Stl_is_nan_or_inf(double x) { return isnan(x) || !isfinite(x); }
 bool _Stl_is_inf(double x)        { return !isfinite(x); }
 bool _Stl_is_neg_inf(double x)    { return !isfinite(x) && signbit(x); }
 bool _Stl_is_neg_nan(double x)    { return isnan(x) && signbit(x); }
-#elif /* defined (__FreeBSD__) */ ( defined (__GNUC__) && defined (__APPLE__) )
+#elif /* defined (__FreeBSD__) || */ ( defined (__GNUC__) && defined (__APPLE__) )
 inline bool _Stl_is_nan_or_inf(double x) { return !finite(x); }
 inline bool _Stl_is_inf(double x)        {   return _Stl_is_nan_or_inf(x) && ! isnan(x); }
 inline bool _Stl_is_neg_inf(double x)    {   return _Stl_is_inf(x) && x < 0 ; }
@@ -682,7 +683,7 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
   char static_buf[128];
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
-  snprintf(static_buf, 128, fmtbuf, precision, x);
+  sprintf(static_buf, fmtbuf, precision, x);
   buf = static_buf;
 # else
   char cvtbuf[NDIG+2];
@@ -713,7 +714,7 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
   char static_buf[128];
   char fmtbuf[64];
   int i = fill_fmtbuf(fmtbuf, flags, 'L');
-  snprintf(static_buf, 128, fmtbuf, precision, x);    
+  sprintf(static_buf, fmtbuf, precision, x);    
   // we should be able to return buf + sprintf(), but we do not trust'em...
   buf = static_buf;
 # else
