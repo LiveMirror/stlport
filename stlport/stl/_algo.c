@@ -870,7 +870,7 @@ template <class _RandomAccessIter, class _Tp, class _Compare>
 inline void __linear_insert(_RandomAccessIter __first, 
                             _RandomAccessIter __last, _Tp __val, _Compare __comp) {
   //*TY 12/26/1998 - added __val as a paramter
-  //  _Tp __val = *__last;		    //*TY 12/26/1998 - __val supplied by caller
+  //  _Tp __val = *__last;        //*TY 12/26/1998 - __val supplied by caller
   if (__comp(__val, *__first)) {
     copy_backward(__first, __last, __last + 1);
     *__first = __val;
@@ -1839,7 +1839,7 @@ bool is_heap(_RandomAccessIter __first, _RandomAccessIter __last) {
 
 template <class _RandomAccessIter, class _StrictWeakOrdering>
 bool is_heap(_RandomAccessIter __first, _RandomAccessIter __last,
-	     _StrictWeakOrdering __comp) {
+       _StrictWeakOrdering __comp) {
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
   return __is_heap(__first, __comp, __last - __first);
 }
