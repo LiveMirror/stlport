@@ -21,16 +21,16 @@
 
 // Define char_traits
 
-# if ! defined (_STLP_CSTDDEF)
-#  include <cstddef>
-# endif
-
-#if ! defined (_STLP_CSTRING)
-#  include <cstring>
+#if !defined(_STLP_CSTDDEF)
+# include <cstddef>
 #endif
 
-#ifdef __unix // defined (_STLP_UNIX) && defined (_STLP_HAS_NO_NEW_C_HEADERS)
-#include <sys/types.h>          // For off_t
+#if !defined(_STLP_CSTRING)
+# include <cstring>
+#endif
+
+#ifdef __unix
+# include <sys/types.h>          // For off_t
 #endif /* __unix */
 
 #ifdef __BORLANDC__
@@ -48,9 +48,9 @@
 # include <stl/_construct.h>
 #endif
 
-# if !defined (_STLP_CWCHAR)
-#  include <stl/_cwchar.h>
-# endif
+#if !defined (_STLP_CWCHAR)
+# include <stl/_cwchar.h>
+#endif
 
 _STLP_BEGIN_NAMESPACE
 
@@ -59,13 +59,11 @@ template <class _Tp> class allocator;
 #define _STLP_NULL_CHAR_INIT(_ChT) _STLP_DEFAULT_CONSTRUCTED(_ChT)
 
 #if defined (__sgi) && defined (_STLP_HAS_NO_NEW_C_HEADERS) /* IRIX */
-typedef off64_t   streamoff;
-// #elif defined (__unix) && defined (_STLP_HAS_NO_NEW_C_HEADERS) /* Other version of UNIX */
-# else
-typedef off_t     streamoff;
-//#else /* __unix */
-// boris : here, it's not ptrdiff_t as some Solaris systems have confusing definitions of these.
-//typedef long streamoff;
+typedef off64_t streamoff;
+#elif defined(_STLP_WCE)
+typedef long    streamoff;
+#else // __unix, VC
+typedef off_t   streamoff;
 #endif /* _STLP_HAS_NO_NEW_C_HEADERS */
 
 typedef ptrdiff_t streamsize;
