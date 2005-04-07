@@ -76,19 +76,16 @@ public:
   _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS;
 
 protected:
-
   //typedef typename _Base::key_param_type key_param_type;
   //typedef typename _Base::val_param_type val_param_type;
 
+  _Base* _Get_base() { return this; }
   void _Invalidate_iterator(const iterator& __it) { 
     __invalidate_iterator(&_M_iter_list,__it); 
   }
   void _Invalidate_iterators(const iterator& __first, const iterator& __last) {
     __invalidate_range(&_M_iter_list, __first, __last);
   }
-
-  const _Base* _Get_base() const { return (const _Base*)this; }
-  _Base* _Get_base() { return (_Base*)this; }
 
   typedef typename _Base::iterator _Base_iterator;
   typedef typename _Base::const_iterator _Base_const_iterator;

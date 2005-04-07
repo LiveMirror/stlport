@@ -87,6 +87,7 @@ public:
 
 protected:
   __owned_list _M_iter_list;
+  _Base* _Get_base() { return this; }
   void _Invalidate_all() {
     _M_iter_list._Invalidate_all();
   }
@@ -100,11 +101,6 @@ protected:
   typedef typename _Base::iterator _Base_iterator;
 
 public:
-  const _Base* _Get_base() const { return __STATIC_CAST(const _Base*, this); }
-  _Base* _Get_base() { return __STATIC_CAST(_Base*, this); }
-
-public:
-
   explicit slist(const allocator_type& __a = allocator_type()) 
     : _STLP_DBG_SLIST_BASE(__a) , _M_iter_list(_Get_base()) {}
   

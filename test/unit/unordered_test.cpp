@@ -142,9 +142,10 @@ void UnorderedTest::umap()
     typedef unordered_map<int, umaptype> uumaptype;
     uumaptype uus;
     umaptype const& uref = uus[0];
-    //Avoids warning:
-    (void*)&uref;
     umaptype ucopy = uus[0];
+    ucopy = uref;
+    //Avoids warning:
+    //(void*)&uref;
   }
 
   int i;

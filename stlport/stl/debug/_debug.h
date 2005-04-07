@@ -294,21 +294,21 @@ public:
     _Invalidate();
   }
   
-  const __owned_list* _Owner() const { 
-    return _M_owner; 
+  const __owned_list* _Owner() const {
+    return _M_owner;
   }
-  __owned_list* _Owner() { 
-    return _M_owner; 
+  __owned_list* _Owner() {
+    return _M_owner;
   }
-  void _Set_owner(const __owned_list* __o)  { 
-    _M_owner= __CONST_CAST(__owned_list*,__o); 
+  void _Set_owner(const __owned_list* __o) {
+    _M_owner= __CONST_CAST(__owned_list*,__o);
   }
   bool  _Valid() const { 
-    return _M_owner !=0; 
+    return _M_owner != 0;
   }
 
-  void _Invalidate() { _M_owner=0; _M_next = 0; }
-  void _Link_to_self() { _M_next= 0; }
+  void _Invalidate() { _M_owner = 0; _M_next = 0; }
+  void _Link_to_self() { _M_next = 0; }
 
   __owned_link* _Next() { return _M_next; }
   const __owned_link* _Next() const { return _M_next; }
@@ -321,10 +321,10 @@ public:
 
 class _STLP_CLASS_DECLSPEC __owned_list {
 public:
-  __owned_list(const void* __o) {
+  __owned_list(void* __o) {
     //    fprintf(stderr, "__owned_list(): %p\n",(void*)this);
-    _M_node._M_owner = __CONST_CAST(__owned_list*, __REINTERPRET_CAST(const __owned_list*,__o)); 
-    _M_node._M_next=0;
+    _M_node._M_owner = __REINTERPRET_CAST(__owned_list*,__o);
+    _M_node._M_next = 0;
   }
   ~__owned_list() {
     //    fprintf(stderr, "~__owned_list(): %p\n",(void*)this);
@@ -339,9 +339,9 @@ public:
     return (void*)_M_node._M_owner; 
   }
   bool  _Valid() const { 
-    return _M_node._M_owner!=0; 
+    return _M_node._M_owner != 0; 
   }
-  void _Invalidate() { _M_node._M_owner=0; }
+  void _Invalidate() { _M_node._M_owner = 0; }
   
   __owned_link* _First() { return _M_node._Next(); }
   __owned_link* _Last() { return 0 ; }
@@ -369,10 +369,10 @@ public:
   mutable _STLP_mutex  _M_lock;
   
 private:
-  // should never be called, should be left undefined,
+  // should never be called, should be left not implemented,
   // but some compilers complain about it ;(
   __owned_list(const __owned_list&){}
-  void operator=(const __owned_list&) {}
+  __owned_list& operator = (const __owned_list&) { return *this; }
 
   friend class __owned_link;
   friend struct __stl_debug_engine<bool>;

@@ -1,3 +1,20 @@
+2005-04-07  Francois Dumont  <dums@stlport...>
+
+	* build/lib/nmake-vc-common.mak: Removed useless add of STLport/lib to 
+	library paths when building STLport lib.
+	
+	* build/Makefiles/nmake/*: Removed useless specification of the MSVC default
+	install	directory, all the job is done by the vcvcars32.bat script that sets
+	the LIB env variable to the real MSVC install directory.
+	
+	* test/unit/unordered_test.cpp, locale_test.cpp: Removed gcc mingw warnings.
+	
+	* build/Makefiles/nmake/icl.mak, app/icl.mak, lib/icl.mak: Removed the
+	whole program optimization option, looks like it is confusing icl.
+	
+	* stlport/stl/debug/*.h: Removed useless _Get_base non-const overload. 
+	In addition to being useless Intel compiler emit compilation error about it.
+
 2005-04-06  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/cppunit/test_main.cpp: windows.h required here

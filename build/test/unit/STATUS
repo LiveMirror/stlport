@@ -227,31 +227,11 @@ Operational environment:        Windows XP Professionnal 2002 SP1
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 6 SP5
 -----------------------------------------------------------------------
-Date:                           2005-03-23
+Date:                           2005-04-08
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (317 tests)
+Status (release-shared):        All pass (318 tests)
 Notes:                          
-Status (dbg-shared):            All pass (317 tests)
-Notes:
-Status (stldbg-shared):         All pass (317 tests)
-Notes:
-Status (release-static):        All pass (317 tests)
-Notes:                          
-Status (dbg-static):            All pass (317 tests)
-Notes:
-Status (stldbg-static):         All pass (317 tests)
-Notes:
-
------------------------------------------------------------------------
-Compiler:                       Visual C++ 2005 Beta1 Version 8.0.40607.16
------------------------------------------------------------------------
-Date:                           2005-03-15
-STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:                       dums (Francois Dumont)
-Status (release-shared):        runtime fail
-Notes:                          Microsoft do not grant the msvcp80.dll file
-                                in their free package.
 Status (dbg-shared):            All pass (318 tests)
 Notes:
 Status (stldbg-shared):         All pass (318 tests)
@@ -261,6 +241,26 @@ Notes:
 Status (dbg-static):            All pass (318 tests)
 Notes:
 Status (stldbg-static):         All pass (318 tests)
+Notes:
+
+-----------------------------------------------------------------------
+Compiler:                       Visual C++ 2005 Beta1 Version 8.0.40607.16
+-----------------------------------------------------------------------
+Date:                           2005-04-08
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       dums (Francois Dumont)
+Status (release-shared):        runtime fail
+Notes:                          Microsoft do not grant the msvcp80.dll file
+                                in their free package.
+Status (dbg-shared):            All pass (319 tests)
+Notes:
+Status (stldbg-shared):         All pass (319 tests)
+Notes:
+Status (release-static):        All pass (319 tests)
+Notes:                          
+Status (dbg-static):            All pass (319 tests)
+Notes:
+Status (stldbg-static):         All pass (319 tests)
 Notes:
 
 -----------------------------------------------------------------------

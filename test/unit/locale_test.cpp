@@ -60,8 +60,10 @@ LColl::LColl( const char *loc_dir )
   }
   closedir( d );
 #  else
+#    ifdef _MSC_VER
   //Avoids warning:
   (void*)loc_dir;
+#    endif
 #  endif
 #  if defined (WIN32) && !defined (_STLP_WCE)
   // real list of installed locales should be here...

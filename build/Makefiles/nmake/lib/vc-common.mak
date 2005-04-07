@@ -11,7 +11,10 @@
 LDLIBS =
 !endif
 
-LDSEARCH = $(LDSEARCH) /LIBPATH:"$(MSVC_LIB_DIR)"
+#Per default MSVC vcvars32.bat script set the LIB environment
+#variable to get the native library, there is no need to add
+#them here
+#LDSEARCH = $(LDSEARCH) /LIBPATH:"$(MSVC_LIB_DIR)"
 
 LDFLAGS_REL = $(LDFLAGS_REL) /DLL $(LDSEARCH)
 LDFLAGS_DBG = $(LDFLAGS_DBG) /DLL $(LDSEARCH)

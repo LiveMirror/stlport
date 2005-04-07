@@ -22,7 +22,7 @@
 #  endif
 #endif
 
-#if (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ <= 3))
+#if (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ < 4))
 //define for gcc versions before 3.4.0.
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD
 #endif
@@ -81,24 +81,11 @@
 #  define _STLP_LITTLE_ENDIAN
 #endif 
 
-#if defined(__MINGW32__)
+#if defined (__MINGW32__)
 /* Mingw32, egcs compiler using the Microsoft C runtime */
 #  undef  _STLP_NO_DRAND48
 #  define _STLP_NO_DRAND48
-#  define _STLP_IMPORT_DECLSPEC __attribute__((dllimport))
-#  define _STLP_EXPORT_DECLSPEC __attribute__((dllexport))
-#  define _STLP_CLASS_IMPORT_DECLSPEC __attribute__((dllimport))
-#  define _STLP_CLASS_EXPORT_DECLSPEC __attribute__((dllexport))
 #  define _STLP_CALL
-
-#  if defined (_STLP_USE_DYNAMIC_LIB)
-#    define _STLP_USE_DECLSPEC 1
-// #   define _STLP_USE_TEMPLATE_EXPORT 1
-/* Using dynamic library in MinGW requires _STLP_NO_CUSTOM_IO */
-#    if !defined(_STLP_NO_CUSTOM_IO)
-#      define _STLP_NO_CUSTOM_IO
-#    endif
-#  endif /* _STLP_USE_DYNAMIC_LIB */
 
 #  if defined (_STLP_NEW_PLATFORM_SDK)
 //For the moment the SDK coming with Mingw still mimik the old platform SDK.
@@ -106,7 +93,8 @@
 #  endif
 #endif /* __MINGW32__ */
 
-#if defined (__CYGWIN__) && defined (_STLP_USE_DYNAMIC_LIB)
+#if (defined (__CYGWIN__) || defined (__MINGW32__)) && \
+     !defined (__BUILDING_STLPORT) && defined (_STLP_USE_DYNAMIC_LIB)
 /*
  * We use the import/export mechanism only to import symbols to
  * an exe or an other dynamic lib. During library built all symbols

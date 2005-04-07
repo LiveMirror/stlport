@@ -1,9 +1,9 @@
 # Time-stamp: <03/09/28 13:44:57 ptr>
 # $Id$
 
-!ifndef MSVC_LIB_DIR
-MSVC_LIB_DIR = $(MSVC_DIR)\Lib
-!endif
+#!ifndef MSVC_LIB_DIR
+#MSVC_LIB_DIR = $(MSVC_DIR)\Lib
+#!endif
 
 !ifndef SOAP_DIR
 SOAP_DIR = /opt/gSOAP-2.2.3

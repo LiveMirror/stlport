@@ -125,8 +125,8 @@ endif
 ifeq ($(OSNAME),cygming)
 OPT := 
 dbg-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT_DBG},--export-all-symbols
-stldbg-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT_STLDBG},--export-all-symbols
-release-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT},--export-all-symbols
+stldbg-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT_STLDBG},--export-all-symbols,--enable-auto-import
+release-shared:	LDFLAGS += -shared -Wl,--out-implib=${LIB_NAME_OUT},--export-all-symbols,--enable-auto-import
 dbg-static:	LDFLAGS += -static ${LDSEARCH}
 stldbg-static:	LDFLAGS += -static ${LDSEARCH}
 release-static:	LDFLAGS += -static ${LDSEARCH}

@@ -89,15 +89,13 @@ public:
   typedef typename _Base::const_iterator _Base_const_iterator;
 
 protected:
+  _Base* _Get_base() { return this; }
   void _Invalidate_iterator(const const_iterator& __it) { 
     __invalidate_iterator(&_M_iter_list,__it); 
   }
   void _Invalidate_iterators(const const_iterator& __first, const const_iterator& __last) {
     __invalidate_range(&_M_iter_list, __first, __last);
   }
-
-  const _Base* _Get_base() const { return (const _Base*)this; }
-  _Base* _Get_base() { return (_Base*)this; }
 
 public:
   hashtable(size_type __n,

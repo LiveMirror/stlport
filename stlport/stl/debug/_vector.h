@@ -125,6 +125,7 @@ public:
       _DbgTraits<_Vector_const_traits<value_type, typename _Base::iterator> > > const_iterator;
 
 protected:
+  _Base* _Get_base() { return this; }
   void _Invalidate_all() {
     _M_iter_list._Invalidate_all();
   }
@@ -167,12 +168,7 @@ public:
     return _Base::operator[](__n);
   }
 
-protected:
-  _Base* _Get_base() { return (_Base*)this; }
-  const _Base* _Get_base() const { return (const _Base*)this; }
-
 public:
-
   explicit _DBG_vector(const allocator_type& __a = allocator_type())
     : _STLP_DBG_VECTOR_BASE(__a), _M_iter_list(_Get_base())  {}
 

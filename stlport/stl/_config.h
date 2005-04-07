@@ -323,7 +323,7 @@
 
 #undef _STLP_NAMESPACE
 
-#if !defined(_NOTHREADS) && ! defined (_STLP_THREADS_DEFINED)
+#if !defined(_NOTHREADS) && !defined (_STLP_THREADS_DEFINED)
 
 #  if defined(_PTHREADS)
 #    define _STLP_PTHREADS
@@ -338,7 +338,7 @@
 #    define _STLP_SGI_THREADS
 #  elif defined(__DECC) || defined(__DECCXX)
 #    define _STLP_DEC_THREADS
-#  elif defined (_STLP_WIN32) && ! defined (_STLP_PTHREADS)
+#  elif defined (_STLP_WIN32) && !defined (_STLP_PTHREADS)
 #    define _STLP_WIN32THREADS 1
 #  elif ((defined (__sun) && !defined (__linux__)) || \
           defined(_UITHREADS) ) && !defined(_STLP_PTHREADS)
@@ -471,13 +471,15 @@
 #  define __DFL_TMPL_PARAM( classname, defval ) class classname
 #  define __DFL_TMPL_ARG(classname) , classname
 #else
-#  define _STLP_DEFAULT_TYPE_PARAM 1
+#  if !defined (_STLP_DEFAULT_TYPE_PARAM)
+#    define _STLP_DEFAULT_TYPE_PARAM 1
+#  endif
 #  define __DFL_TMPL_PARAM( classname, defval ) class classname = defval
 #  define __DFL_TMPL_ARG(classname)  
 #endif
 
 /* default parameters as complete types */
-#if defined ( _STLP_DEFAULT_TYPE_PARAM )
+#if defined (_STLP_DEFAULT_TYPE_PARAM)
 #  define __DFL_TYPE_PARAM( classname, defval ) class classname = defval
 #  define __DFL_NON_TYPE_PARAM(type,name,val) type name = val
 #  define __DFL_TYPE_ARG(classname)
@@ -1072,7 +1074,7 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define  _STLP_EXPORT_TEMPLATE _STLP_EXPORT template
 # endif
 
-#if defined(_STLP_USE_DECLSPEC) /* using export/import technique */
+#if defined (_STLP_USE_DECLSPEC) /* using export/import technique */
 
 #  ifndef _STLP_EXPORT_DECLSPEC
 #    define _STLP_EXPORT_DECLSPEC

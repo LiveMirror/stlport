@@ -80,6 +80,7 @@ public:
 
 protected:
   __owned_list _M_iter_list;
+  _Base* _Get_base() { return this; }
   void _Invalidate_iterator(const iterator& __it) { 
     __invalidate_iterator(&_M_iter_list,__it);
   }
@@ -93,8 +94,6 @@ protected:
   typedef typename _Base::iterator _Base_iterator;
 
 public:
-  const _Base* _Get_base() const { return this; }
-  _Base* _Get_base() { return this; }
   explicit _DBG_list(const allocator_type& __a = allocator_type()) :
     _STLP_DBG_LIST_BASE(__a), _M_iter_list(_Get_base()) {}
 
