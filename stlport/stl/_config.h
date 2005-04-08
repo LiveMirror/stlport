@@ -123,21 +123,21 @@
 
 /* SGI terms */
 
-# if !defined (_STLP_NO_MEMBER_TEMPLATES) && !defined (_STLP_MEMBER_TEMPLATES)
+#if !defined (_STLP_NO_MEMBER_TEMPLATES) && !defined (_STLP_MEMBER_TEMPLATES)
 #  define _STLP_MEMBER_TEMPLATES 1
-# endif
+#endif
 
-# if !defined (_STLP_NO_FRIEND_TEMPLATES) && !defined (_STLP_FRIEND_TEMPLATES)
+#if !defined (_STLP_NO_FRIEND_TEMPLATES) && !defined (_STLP_FRIEND_TEMPLATES)
 #  define _STLP_FRIEND_TEMPLATES 1
-# endif
+#endif
 
-# if !defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES) && !defined (_STLP_MEMBER_TEMPLATE_CLASSES)
+#if !defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES) && !defined (_STLP_MEMBER_TEMPLATE_CLASSES)
 #  define _STLP_MEMBER_TEMPLATE_CLASSES 1
-# endif
+#endif
 
-# if defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES) && !defined (_STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE)
+#if defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES) && !defined (_STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE)
 #  define _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE 1
-# endif
+#endif
 
 #if !defined (_STLP_NO_CLASS_PARTIAL_SPECIALIZATION) && !defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 #  define _STLP_CLASS_PARTIAL_SPECIALIZATION 1
@@ -157,26 +157,26 @@
 #endif
 
 
-# if !defined (_STLP_BIG_ENDIAN) && ! defined (_STLP_LITTLE_ENDIAN)
+#if !defined (_STLP_BIG_ENDIAN) && ! defined (_STLP_LITTLE_ENDIAN)
 #  if defined(_MIPSEB) || defined (__sparc) || \
       defined (_AIX) || defined (__hpux) || defined(macintosh) || defined (_MAC)
-#   define _STLP_BIG_ENDIAN 1
+#    define _STLP_BIG_ENDIAN 1
 #  elif defined(__i386) || defined(_M_IX86) || defined(_M_ARM) || defined (__amd64__) || defined(_M_AMD64)
-#   define _STLP_LITTLE_ENDIAN 1
+#    define _STLP_LITTLE_ENDIAN 1
 #  else
-#   define _STLP_UNKNOWN_ENDIAN 1
+#    define _STLP_UNKNOWN_ENDIAN 1
 #  endif
-# endif /* _STLP_BIG_ENDIAN */
+#endif /* _STLP_BIG_ENDIAN */
 
 /* ==========================================================
  * final workaround tuning based on given flags
  * ========================================================== */
 
 #ifndef _STLP_UINT32_T
-# define _STLP_UINT32_T unsigned long
+#  define _STLP_UINT32_T unsigned long
 #endif
 #ifndef _STLP_ABORT
-# define _STLP_ABORT() abort()
+#  define _STLP_ABORT() abort()
 #endif
 
 #if !defined (_STLP_HAS_NO_NAMESPACES)
@@ -254,9 +254,9 @@
 #    define _STLP_LDOUBLE_96
 #  endif
 #elif defined (_STLP_UNIX)
-#   if defined (__CYGWIN__)
-#     define _STLP_LDOUBLE_96
-#   endif
+#  if defined (__CYGWIN__)
+#    define _STLP_LDOUBLE_96
+#  endif
 #endif
 
 #if !defined (_STLP_LDOUBLE_64) && !defined (_STLP_LDOUBLE_80) && !defined (_STLP_LDOUBLE_96) && !defined (_STLP_LDOUBLE_128)
@@ -314,7 +314,7 @@
 
 /* Use own namespace always if possible and not explicitly instructed otherwise */
 #if defined (_STLP_USE_NAMESPACES) && !defined (_STLP_BROKEN_USING_DIRECTIVE) && \
-   !defined(_STLP_NO_OWN_NAMESPACE)
+   !defined (_STLP_NO_OWN_NAMESPACE)
 #  undef  _STLP_USE_OWN_NAMESPACE
 #  define _STLP_USE_OWN_NAMESPACE  1
 #else
@@ -323,7 +323,7 @@
 
 #undef _STLP_NAMESPACE
 
-#if !defined(_NOTHREADS) && !defined (_STLP_THREADS_DEFINED)
+#if !defined (_NOTHREADS) && !defined (_STLP_THREADS_DEFINED)
 
 #  if defined(_PTHREADS)
 #    define _STLP_PTHREADS
@@ -334,18 +334,18 @@
 #    define _STLP_THREADS
 #  endif
 
-#  if defined (__sgi) && ! defined (__KCC) && ! defined (__GNUC__)  
+#  if defined (__sgi) && !defined (__KCC) && !defined (__GNUC__)  
 #    define _STLP_SGI_THREADS
-#  elif defined(__DECC) || defined(__DECCXX)
+#  elif defined (__DECC) || defined (__DECCXX)
 #    define _STLP_DEC_THREADS
 #  elif defined (_STLP_WIN32) && !defined (_STLP_PTHREADS)
 #    define _STLP_WIN32THREADS 1
-#  elif ((defined (__sun) && !defined (__linux__)) || \
-          defined(_UITHREADS) ) && !defined(_STLP_PTHREADS)
+#  elif ((defined (__sun) && !defined (__linux__)) || defined (_UITHREADS) ) && \
+        !defined(_STLP_PTHREADS)
 #    define _STLP_UITHREADS
 #  elif defined (__OS2__)
 #    define _STLP_OS2THREADS
-#  elif defined(__BEOS__)
+#  elif defined (__BEOS__)
 #    define _STLP_BETHREADS
 #  else
 #    define _STLP_PTHREADS
@@ -359,16 +359,16 @@
 #  define _STLP_THREADS
 #endif /* _REENTRANT */
 
-#if defined(__linux__) && defined(_STLP_PTHREADS)
+#if defined (__linux__) && defined (_STLP_PTHREADS)
 /* #  include <features.h> */
 
-#  if defined(__USE_XOPEN2K) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
+#  if defined (__USE_XOPEN2K) && !defined (_STLP_DONT_USE_PTHREAD_SPINLOCK)
 #    define _STLP_USE_PTHREAD_SPINLOCK
 #    define _STLP_STATIC_MUTEX _STLP_mutex
 #  endif /* __USE_XOPEN2K */
 #endif /* __linux__ && _STLP_PTHREADS */
 
-#if defined(__OpenBSD__) && defined(_POSIX_THREADS) && !defined(_STLP_DONT_USE_PTHREAD_SPINLOCK)
+#if defined (__OpenBSD__) && defined (_POSIX_THREADS) && !defined (_STLP_DONT_USE_PTHREAD_SPINLOCK)
 #  define _STLP_USE_PTHREAD_SPINLOCK
 #  define _STLP_STATIC_MUTEX _STLP_mutex
 #endif
@@ -376,7 +376,6 @@
 #ifndef _STLP_STATIC_MUTEX
 #  define _STLP_STATIC_MUTEX _STLP_mutex_base
 #endif
-
 
 #if defined (_MFC_VER) && !defined (_STLP_USE_MFC)
 #  define _STLP_USE_MFC 1
@@ -399,15 +398,15 @@
 #  define _STLP_VOLATILE
 #endif
 
-#if !defined ( _STLP_USE_NEW_C_HEADERS ) && !defined ( _STLP_HAS_NO_NEW_C_HEADERS )
+#if !defined (_STLP_USE_NEW_C_HEADERS) && !defined (_STLP_HAS_NO_NEW_C_HEADERS)
 #  define _STLP_USE_NEW_C_HEADERS
 #endif
 /* disable new-style headers if requested */
-#if defined ( _STLP_NO_NEW_C_HEADERS )
+#if defined (_STLP_NO_NEW_C_HEADERS)
 #  undef _STLP_USE_NEW_C_HEADERS
 #endif
 
-#if !defined ( _STLP_STATIC_TEMPLATE_DATA )
+#if !defined (_STLP_STATIC_TEMPLATE_DATA)
 #  define _STLP_STATIC_TEMPLATE_DATA 1
 #endif
 
@@ -416,7 +415,7 @@
 #  define _STLP_BASE_TYPEDEF_OUTSIDE_BUG 1
 #endif
 
-#if defined ( _STLP_NESTED_TYPE_PARAM_BUG ) || (defined (_STLP_MSVC) && (_STLP_MSVC < 1100))
+#if defined (_STLP_NESTED_TYPE_PARAM_BUG) || (defined (_STLP_MSVC) && (_STLP_MSVC < 1100))
 #  define _STLP_GLOBAL_NESTED_RETURN_TYPE_PARAM_BUG
 #endif
 
@@ -575,7 +574,7 @@
 /* if using stlport:: namespace or if C library stuff is not in vendor's std::,
  * try importing 'em.
  * MSVC has ambiguity problem when we try to import C-style std:: stuff back into global namespace */
-#  if defined (_STLP_USE_NAMESPACES) && (defined(_STLP_USE_OWN_NAMESPACE) || defined(_STLP_VENDOR_GLOBAL_CSTD))
+#  if defined (_STLP_USE_NAMESPACES) && (defined(_STLP_USE_OWN_NAMESPACE) || defined (_STLP_VENDOR_GLOBAL_CSTD))
 #    define  _STLP_IMPORT_VENDOR_CSTD 1
 #  endif
 
@@ -726,163 +725,165 @@ namespace _STL = _STLP_STD_NAME;
 #  define _STLP_SIMPLE_TYPE(T) T
 #endif
 
-# ifndef _STLP_RAND48
-# define _STLP_NO_DRAND48
-# endif
+#ifndef _STLP_RAND48
+#  define _STLP_NO_DRAND48
+#endif
 
 /* advanced keywords usage */
-#  ifndef  _STLP_NO_NEW_STYLE_CASTS
-#   define __CONST_CAST(__x,__y) const_cast<__x>(__y)
-#   define __STATIC_CAST(__x,__y) static_cast<__x>(__y)
-#   define __REINTERPRET_CAST(__x,__y) reinterpret_cast<__x>(__y)
-#   define __DYNAMIC_CAST(__x,__y) dynamic_cast<__x>(__y)
-#  else
-#   define __STATIC_CAST(__x,__y) ((__x)(__y))
-#   define __CONST_CAST(__x,__y) ((__x)(__y))
-#   define __REINTERPRET_CAST(__x,__y) ((__x)(__y))
-#   define __DYNAMIC_CAST(__x,__y) ((__x)(__y))
-#  endif
-#  if defined (_STLP_NEED_TYPENAME) && ! defined (typename)
-#   define typename
-#  endif
-#  if defined (_STLP_NEED_TYPENAME) || defined (_STLP_NO_TYPENAME_ON_RETURN_TYPE )
-#    define _STLP_TYPENAME_ON_RETURN_TYPE
-#  else
-#    define _STLP_TYPENAME_ON_RETURN_TYPE typename
-#  endif
-# ifdef _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
+#ifndef  _STLP_NO_NEW_STYLE_CASTS
+#  define __CONST_CAST(__x,__y) const_cast<__x>(__y)
+#  define __STATIC_CAST(__x,__y) static_cast<__x>(__y)
+#  define __REINTERPRET_CAST(__x,__y) reinterpret_cast<__x>(__y)
+#  define __DYNAMIC_CAST(__x,__y) dynamic_cast<__x>(__y)
+#else
+#  define __STATIC_CAST(__x,__y) ((__x)(__y))
+#  define __CONST_CAST(__x,__y) ((__x)(__y))
+#  define __REINTERPRET_CAST(__x,__y) ((__x)(__y))
+#  define __DYNAMIC_CAST(__x,__y) ((__x)(__y))
+#endif
+
+#if defined (_STLP_NEED_TYPENAME) && ! defined (typename)
+#  define typename
+#endif
+
+#if defined (_STLP_NEED_TYPENAME) || defined (_STLP_NO_TYPENAME_ON_RETURN_TYPE )
+#  define _STLP_TYPENAME_ON_RETURN_TYPE
+#else
+#  define _STLP_TYPENAME_ON_RETURN_TYPE typename
+#endif
+
+#ifdef _STLP_NO_TYPENAME_IN_TEMPLATE_HEADER
 #  define _STLP_HEADER_TYPENAME
-# else
+#else
 #  define _STLP_HEADER_TYPENAME typename
-# endif
-# ifndef _STLP_NO_MEMBER_TEMPLATE_KEYWORD
-#   define _STLP_TEMPLATE template
-# else
-#   define _STLP_TEMPLATE
-# endif
-#  if defined (_STLP_NEED_EXPLICIT) && ! defined (explicit)
-#   define explicit
-#  endif
-#  ifndef _STLP_NEED_MUTABLE
-#   define __ASSIGN_MUTABLE(type,x,y) x=y
-#  else
-#   define __ASSIGN_MUTABLE(type,x,y) __CONST_CAST(type,x)=y
-#   define mutable
+#endif
 
-#  endif
-# if defined (_STLP_NO_SIGNED_BUILTINS)
+#ifndef _STLP_NO_MEMBER_TEMPLATE_KEYWORD
+#  define _STLP_TEMPLATE template
+#else
+#  define _STLP_TEMPLATE
+#endif
+
+#if defined (_STLP_NEED_EXPLICIT) && !defined (explicit)
+#  define explicit
+#endif
+
+#ifndef _STLP_NEED_MUTABLE
+#  define __ASSIGN_MUTABLE(type,x,y) x = y
+#else
+#  define __ASSIGN_MUTABLE(type,x,y) __CONST_CAST(type,x)=y
+#  define mutable
+#endif
+
+#if defined (_STLP_NO_SIGNED_BUILTINS)
 /* old HP-UX doesn't understand "signed" keyword */
-
-
-
 #  define signed
-# endif
+#endif
 
-#  if defined (_STLP_LOOP_INLINE_PROBLEMS)
-#   define _STLP_INLINE_LOOP
-#  else
-#   define _STLP_INLINE_LOOP inline 
-#  endif
+#if defined (_STLP_LOOP_INLINE_PROBLEMS)
+#  define _STLP_INLINE_LOOP
+#else
+#  define _STLP_INLINE_LOOP inline 
+#endif
 
-#  define _STLP_PRIVATE public
+#define _STLP_PRIVATE public
 
-#  ifndef _STLP_NO_PARTIAL_SPECIALIZATION_SYNTAX
-#   define _STLP_TEMPLATE_NULL template<>
-#  else
-#   define _STLP_TEMPLATE_NULL
-#  endif
+#ifndef _STLP_NO_PARTIAL_SPECIALIZATION_SYNTAX
+#  define _STLP_TEMPLATE_NULL template<>
+#else
+#  define _STLP_TEMPLATE_NULL
+#endif
 
 #ifdef _STLP_FUNCTION_TMPL_PARTIAL_ORDER
 #  define _STLP_OPERATOR_TEMPLATE
-# else 
+#else 
 #  define _STLP_OPERATOR_TEMPLATE _STLP_TEMPLATE_NULL
 #endif
 
-# ifndef _STLP_CLASS_PARTIAL_SPECIALIZATION
+#ifndef _STLP_CLASS_PARTIAL_SPECIALIZATION
 /* unless we have other compiler problem, try simulating partial spec here */
-# if ! defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS)
-#  define  _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
-# endif
+#  if !defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS)
+#    define _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
+#  endif
 /* For your own iterators, please use inheritance from iterator<> instead of these obsolete queries. */
-#  if  ( defined (_STLP_NESTED_TYPE_PARAM_BUG) || !defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS))
-#   if ! defined ( _STLP_USE_OLD_HP_ITERATOR_QUERIES )
-#    define _STLP_USE_OLD_HP_ITERATOR_QUERIES
-#   endif
+#  if  (defined (_STLP_NESTED_TYPE_PARAM_BUG) || !defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS))
+#    if ! defined ( _STLP_USE_OLD_HP_ITERATOR_QUERIES )
+#      define _STLP_USE_OLD_HP_ITERATOR_QUERIES
+#    endif
 #  elif defined ( _STLP_NO_ANACHRONISMS )
-#   undef _STLP_USE_OLD_HP_ITERATOR_QUERIES
+#    undef _STLP_USE_OLD_HP_ITERATOR_QUERIES
 #  endif
-# endif
+#endif
 
-# ifndef _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS
-#   define _STLP_NULL_TMPL_ARGS <>
+#ifndef _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS
+#  define _STLP_NULL_TMPL_ARGS <>
 # else
-#   define _STLP_NULL_TMPL_ARGS
-# endif
+#  define _STLP_NULL_TMPL_ARGS
+#endif
 
-# ifndef _STLP_ALLOCATOR_TYPE_DFL
+#ifndef _STLP_ALLOCATOR_TYPE_DFL
 #  ifdef _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS 
-#   define _STLP_ALLOCATOR_TYPE_DFL 
+#    define _STLP_ALLOCATOR_TYPE_DFL 
 #  else
-#   define _STLP_ALLOCATOR_TYPE_DFL = allocator_type()
+#    define _STLP_ALLOCATOR_TYPE_DFL = allocator_type()
 #  endif
-# endif
+#endif
 
 //When the compiler do not correctly initialized the basic types value in default parameters we prefer
 //to avoid them to be able to correct this bug.
-# if defined (_STLP_DEF_CONST_DEF_PARAM_BUG)
+#if defined (_STLP_DEF_CONST_DEF_PARAM_BUG)
 #  define _STLP_DONT_SUP_DFLT_PARAM 1
-# endif
+#endif
 
-# if defined (__SGI_STL_NO_ARROW_OPERATOR) && ! defined (_STLP_NO_ARROW_OPERATOR)
-# define _STLP_NO_ARROW_OPERATOR
-# endif
+#if defined (__SGI_STL_NO_ARROW_OPERATOR) && ! defined (_STLP_NO_ARROW_OPERATOR)
+#  define _STLP_NO_ARROW_OPERATOR
+#endif
 
-
-# if !defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
-#  if !( defined (_STLP_NO_ARROW_OPERATOR)) \
-      && !defined (_STLP_NO_MSVC50_COMPATIBILITY) && !defined (_STLP_MSVC50_COMPATIBILITY)
+#if !defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+#  if !(defined (_STLP_NO_ARROW_OPERATOR)) && \
+       !defined (_STLP_NO_MSVC50_COMPATIBILITY) && !defined (_STLP_MSVC50_COMPATIBILITY)
 /* this one is needed for proper reverse_iterator<> operator ->() handling */
-#   define _STLP_MSVC50_COMPATIBILITY 1
+#    define _STLP_MSVC50_COMPATIBILITY 1
 #  endif
-# endif
+#endif
 
 #if defined ( _STLP_CLASS_PARTIAL_SPECIALIZATION )
-# if (defined(__IBMCPP__) && (500 <= __IBMCPP__) && (__IBMCPP__ < 600) )
-# define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
+#  if (defined(__IBMCPP__) && (500 <= __IBMCPP__) && (__IBMCPP__ < 600) )
+#    define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
    typedef typename _STLP_STD :: reverse_iterator<const_iterator> const_reverse_iterator; \
    typedef typename _STLP_STD :: reverse_iterator<iterator> reverse_iterator
-# elif (defined (__sgi) && ! defined (__GNUC__)) || defined (__SUNPRO_CC) || defined (__xlC__)
-#  define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
+#  elif (defined (__sgi) && ! defined (__GNUC__)) || defined (__SUNPRO_CC) || defined (__xlC__)
+#    define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
    typedef _STLP_STD:: _STLP_TEMPLATE reverse_iterator<const_iterator> const_reverse_iterator; \
    typedef _STLP_STD:: _STLP_TEMPLATE reverse_iterator<iterator> reverse_iterator
-# else
-#  define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
+#  else
+#    define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
    typedef _STLP_STD::reverse_iterator<const_iterator> const_reverse_iterator; \
    typedef _STLP_STD::reverse_iterator<iterator> reverse_iterator
-# endif
+#  endif
 #else /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
-# if defined (_STLP_MSVC50_COMPATIBILITY)
-# define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
+#  if defined (_STLP_MSVC50_COMPATIBILITY)
+#    define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
   typedef _STLP_STD::__reverse_iterator<const_iterator, value_type, const_reference, \
     const_pointer, difference_type>  const_reverse_iterator; \
   typedef _STLP_STD::__reverse_iterator<iterator, value_type, reference, pointer, difference_type> \
     reverse_iterator
-# else
-# define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
+#  else
+#    define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
   typedef _STLP_STD::__reverse_iterator<const_iterator, value_type, const_reference, \
     difference_type>  const_reverse_iterator; \
   typedef _STLP_STD::__reverse_iterator<iterator, value_type, \
     reference, difference_type> \
     reverse_iterator
-# endif
+#  endif
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
-# define _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS \
-         _STLP_DECLARE_REVERSE_ITERATORS(reverse_bidirectional_iterator)
-# define _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS \
-         _STLP_DECLARE_REVERSE_ITERATORS(reverse_iterator)
+#define _STLP_DECLARE_BIDIRECTIONAL_REVERSE_ITERATORS \
+        _STLP_DECLARE_REVERSE_ITERATORS(reverse_bidirectional_iterator)
+#define _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS \
+        _STLP_DECLARE_REVERSE_ITERATORS(reverse_iterator)
 
-#  define __IMPORT_CONTAINER_TYPEDEFS(_Super)                            \
+#define __IMPORT_CONTAINER_TYPEDEFS(_Super)                              \
     typedef typename _Super::value_type value_type;                      \
     typedef typename _Super::size_type size_type;                        \
     typedef typename _Super::difference_type difference_type;            \
@@ -893,44 +894,45 @@ namespace _STL = _STLP_STD_NAME;
     typedef typename _Super::allocator_type allocator_type;
 
 
-#  define __IMPORT_ITERATORS(_Super)                                     \
-    typedef typename _Super::iterator iterator;                                   \
+#define __IMPORT_ITERATORS(_Super)                                       \
+    typedef typename _Super::iterator iterator;                          \
     typedef typename _Super::const_iterator const_iterator; 
 
-#  define __IMPORT_REVERSE_ITERATORS(_Super)                             \
-    typedef typename _Super::const_reverse_iterator  const_reverse_iterator;      \
+#define __IMPORT_REVERSE_ITERATORS(_Super)                                   \
+    typedef typename _Super::const_reverse_iterator  const_reverse_iterator; \
     typedef typename _Super::reverse_iterator reverse_iterator;
 
-#  define  __IMPORT_SUPER_COPY_ASSIGNMENT(__derived_name, _Self, _SUPER)         \
-    __derived_name(const _Super& __x) : _SUPER(__x) {}          \
-    _Self& operator=(const _Super& __x) {                       \
-        *(_Super*)this = __x;                                   \
-        return *this;                                           \
-    }  \
-    __derived_name(const _Self& __x) : _SUPER(__x) {}          \
-    _Self& operator=(const _Self& __x) {                       \
-        *(_Super*)this = __x;                                   \
-        return *this;                                           \
+#define  __IMPORT_SUPER_COPY_ASSIGNMENT(__derived_name, _Self, _SUPER)       \
+    __derived_name(const _Super& __x) : _SUPER(__x) {}                       \
+    _Self& operator=(const _Super& __x) {                                    \
+        *(_Super*)this = __x;                                                \
+        return *this;                                                        \
+    }                                                                        \
+    __derived_name(const _Self& __x) : _SUPER(__x) {}                        \
+    _Self& operator=(const _Self& __x) {                                     \
+        *(_Super*)this = __x;                                                \
+        return *this;                                                        \
     }
 
-# define __IMPORT_WITH_ITERATORS(_Super) \
-__IMPORT_CONTAINER_TYPEDEFS(_Super) __IMPORT_ITERATORS(_Super)
+#define __IMPORT_WITH_ITERATORS(_Super) \
+  __IMPORT_CONTAINER_TYPEDEFS(_Super) __IMPORT_ITERATORS(_Super)
 
-# define __IMPORT_WITH_REVERSE_ITERATORS(_Super) \
-__IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
+#define __IMPORT_WITH_REVERSE_ITERATORS(_Super) \
+  __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 
-# if defined (_STLP_TRIVIAL_CONSTRUCTOR_BUG) 
+#if defined (_STLP_TRIVIAL_CONSTRUCTOR_BUG) 
 #  define __TRIVIAL_CONSTRUCTOR(__type) __type() {}  
-# else
+#else
 #  define __TRIVIAL_CONSTRUCTOR(__type)
-# endif
-# if defined (_STLP_TRIVIAL_DESTRUCTOR_BUG)
-#  define __TRIVIAL_DESTRUCTOR(__type) ~__type() {}  
-# else
-#  define __TRIVIAL_DESTRUCTOR(__type) 
-# endif
+#endif
 
-#  define __TRIVIAL_STUFF(__type)  \
+#if defined (_STLP_TRIVIAL_DESTRUCTOR_BUG)
+#  define __TRIVIAL_DESTRUCTOR(__type) ~__type() {}  
+#else
+#  define __TRIVIAL_DESTRUCTOR(__type) 
+#endif
+
+#define __TRIVIAL_STUFF(__type)  \
   __TRIVIAL_CONSTRUCTOR(__type) __TRIVIAL_DESTRUCTOR(__type)
 
 #if defined (_STLP_HAS_NO_EXCEPTIONS)
@@ -941,7 +943,7 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  define _STLP_USE_EXCEPTIONS
 #endif 
 
-#ifdef _STLP_USE_EXCEPTIONS
+#if defined (_STLP_USE_EXCEPTIONS)
 #  define _STLP_TRY try
 #  define _STLP_CATCH_ALL catch(...)
 #  ifndef _STLP_THROW
@@ -958,10 +960,10 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #  endif
 
 /* We do not use exception throw specifications unless we are forced to */
-#  if !defined(_STLP_THROWS)
+#  if !defined (_STLP_THROWS)
 #    define _STLP_THROWS(x)
 #  endif
-#  if !defined(_STLP_NOTHROW)
+#  if !defined (_STLP_NOTHROW)
 #    define _STLP_NOTHROW
 #  endif
 #else
@@ -991,60 +993,60 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #endif
 
 #if defined(_STLP_NO_BOOL)
-# if (defined (__IBMCPP__) && (__IBMCPP__ < 400)) && ! defined (_AIX)
-#  include <isynonym.hpp>
-#  if defined (__OS400__)
-    typedef int bool;
-#  elif !( defined (__xlC__) || defined (_AIX))
-    typedef Boolean bool;
-#  endif
-# else
-#  if defined(_STLP_YVALS_H)
-#   include <yvals.h>
-#  else
-#    if defined (_STLP_DONT_USE_BOOL_TYPEDEF)
-#     define bool int
-#    else
-      typedef int bool;
+#  if (defined (__IBMCPP__) && (__IBMCPP__ < 400)) && ! defined (_AIX)
+#    include <isynonym.hpp>
+#    if defined (__OS400__)
+typedef int bool;
+#    elif !( defined (__xlC__) || defined (_AIX))
+typedef Boolean bool;
 #    endif
-#    define true 1
-#    define false 0
-#  endif
-# endif /* __IBMCPP__ */
+#  else
+#    if defined(_STLP_YVALS_H)
+#      include <yvals.h>
+#    else
+#      if defined (_STLP_DONT_USE_BOOL_TYPEDEF)
+#        define bool int
+#      else
+typedef int bool;
+#      endif
+#      define true 1
+#      define false 0
+#    endif
+#  endif /* __IBMCPP__ */
 #else
-#    define _STLP_BOOL_KEYWORD 1
+#  define _STLP_BOOL_KEYWORD 1
 #endif /* _STLP_NO_BOOL */
 
-# ifndef _STLP_MPW_EXTRA_CONST
+#ifndef _STLP_MPW_EXTRA_CONST
 #  define _STLP_MPW_EXTRA_CONST
-# endif
+#endif
 
-# ifndef _STLP_DEFAULTCHAR
+#ifndef _STLP_DEFAULTCHAR
 #  define _STLP_DEFAULTCHAR char
-# endif
+#endif
 
-# if defined (_STLP_DEBUG_ALLOC) && ! defined (_STLP_ASSERTIONS)
+#if defined (_STLP_DEBUG_ALLOC) && ! defined (_STLP_ASSERTIONS)
 #  define _STLP_ASSERTIONS 1
-# endif
+#endif
 
 /* uninitialized value filler */
-# ifndef _STLP_SHRED_BYTE
+#ifndef _STLP_SHRED_BYTE
 /* This value is designed to cause problems if an error occurs */
-#   define _STLP_SHRED_BYTE 0xA3
-# endif /* _STLP_SHRED_BYTE */
+#  define _STLP_SHRED_BYTE 0xA3
+#endif /* _STLP_SHRED_BYTE */
 
 /* shared library tune-up */
-# ifndef _STLP_IMPORT_DECLSPEC
+#ifndef _STLP_IMPORT_DECLSPEC
 #  define _STLP_IMPORT_DECLSPEC
-# endif
+#endif
 
 /* a keyword used to instantiate export template */
-#  ifndef _STLP_EXPORT_TEMPLATE_KEYWORD
-#   define _STLP_EXPORT_TEMPLATE_KEYWORD
-#  endif
-# ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
+#ifndef _STLP_EXPORT_TEMPLATE_KEYWORD
+#  define _STLP_EXPORT_TEMPLATE_KEYWORD
+#endif
+#ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
 #  define _STLP_IMPORT_TEMPLATE_KEYWORD
-# endif
+#endif
 
 #ifdef _STLP_USE_NO_IOSTREAMS
 /*
@@ -1052,27 +1054,32 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
  * techniques to avoid build of the STLport library.
  */
 #  undef _STLP_USE_DECLSPEC
+/* We also undef USE_DYNAMIC_LIB macro as this macro add some code
+ * to use the dynamic (shared) STLport library for some platform/compiler
+ * configuration leading to problem when do not link to the STLport lib.
+ */
+#  undef _STLP_USE_DYNAMIC_LIB
 #endif
 
-# if  defined (_STLP_DLLEXPORT_NEEDS_PREDECLARATION) && defined (_STLP_USE_DECLSPEC)
+#if  defined (_STLP_DLLEXPORT_NEEDS_PREDECLARATION) && defined (_STLP_USE_DECLSPEC)
 #  if ! defined (_STLP_USE_TEMPLATE_EXPORT)
 /* this setting turns on "extern template" extension use */
-#   define _STLP_USE_TEMPLATE_EXPORT
+#    define _STLP_USE_TEMPLATE_EXPORT
 #  endif
 #  if defined (_STLP_DESIGNATED_DLL) && ! defined (_STLP_NO_FORCE_INSTANTIATE)
-#   define _STLP_NO_FORCE_INSTANTIATE
+#    define _STLP_NO_FORCE_INSTANTIATE
 #  endif
-# endif
+#endif
 
-#   if defined (_STLP_DESIGNATED_DLL) /* This is a lib which will contain STLport exports */
-#    define  _STLP_EXPORT          _STLP_EXPORT_TEMPLATE_KEYWORD
-#   else
-#    define  _STLP_EXPORT          _STLP_IMPORT_TEMPLATE_KEYWORD
-#  endif
+#if defined (_STLP_DESIGNATED_DLL) /* This is a lib which will contain STLport exports */
+#  define  _STLP_EXPORT _STLP_EXPORT_TEMPLATE_KEYWORD
+#else
+#  define  _STLP_EXPORT _STLP_IMPORT_TEMPLATE_KEYWORD
+#endif
 
-# ifndef _STLP_EXPORT_TEMPLATE
+#ifndef _STLP_EXPORT_TEMPLATE
 #  define  _STLP_EXPORT_TEMPLATE _STLP_EXPORT template
-# endif
+#endif
 
 #if defined (_STLP_USE_DECLSPEC) /* using export/import technique */
 
@@ -1159,32 +1166,32 @@ __IMPORT_WITH_ITERATORS(_Super) __IMPORT_REVERSE_ITERATORS(_Super)
 #endif
 
 #ifdef _STLP_USE_SEPARATE_RELOPS_NAMESPACE
-# define _STLP_RELOPS_OPERATORS(_TMPL, _TP) \
+#  define _STLP_RELOPS_OPERATORS(_TMPL, _TP) \
 _TMPL inline bool _STLP_CALL operator!=(const _TP& __x, const _TP& __y) {return !(__x == __y);}\
 _TMPL inline bool _STLP_CALL operator>(const _TP& __x, const _TP& __y)  {return __y < __x;}\
 _TMPL inline bool _STLP_CALL operator<=(const _TP& __x, const _TP& __y) { return !(__y < __x);}\
 _TMPL inline bool _STLP_CALL operator>=(const _TP& __x, const _TP& __y) { return !(__x < __y);}
-# else
+#else
 #  define _STLP_RELOPS_OPERATORS(_TMPL, _TP)
-# endif
+#endif
 
 #if defined (_STLP_USE_TEMPLATE_EXPRESSION) && defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES)
 #  error Your compiler is not able to handle template expressions. \
 Please turn off _STLP_USE_TEMPLATE_EXPRESSION switch.
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION && _STLP_NO_MEMBER_TEMPLATE_CLASSES */
 
-# if defined ( _STLP_USE_ABBREVS )
+#if defined ( _STLP_USE_ABBREVS )
 #  include <stl/_abbrevs.h>
-# endif
+#endif
 
 /* some cleanup */
-# undef _STLP_DONT_USE_BOOL_TYPEDEF
-# undef _STLP_YVALS_H
-# undef _STLP_LOOP_INLINE_PROBLEMS
-# undef _STLP_NEED_EXPLICIT
-# undef _STLP_NEED_TYPENAME
-# undef _STLP_NO_NEW_STYLE_CASTS
-# undef __AUTO_CONFIGURED
+#undef _STLP_DONT_USE_BOOL_TYPEDEF
+#undef _STLP_YVALS_H
+#undef _STLP_LOOP_INLINE_PROBLEMS
+#undef _STLP_NEED_EXPLICIT
+#undef _STLP_NEED_TYPENAME
+#undef _STLP_NO_NEW_STYLE_CASTS
+#undef __AUTO_CONFIGURED
 
 #endif /* _STLP_CONFIG_H */
 

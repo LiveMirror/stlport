@@ -1,3 +1,12 @@
+2005-04-08  Francois Dumont  <dums@stlport...>
+
+	* test/unit/locale_test.cpp: Add __FreeBSD__ macro check for the wordaround
+	announced as Free BSD specific by the comment next to it.
+	
+	* stlport/stl/_config.h: Add undef of _STLP_USE_DYNAMIC_LIB when in NO_IOSTREAMS
+	mode, this macro was generating buggy code in this case for some commpilers
+	(gcc mingwin).
+	
 2005-04-07  Francois Dumont  <dums@stlport...>
 
 	* build/lib/nmake-vc-common.mak: Removed useless add of STLport/lib to 
