@@ -122,7 +122,8 @@ A5.0
      http://www.stlport.com/cgi-bin/forum/dcboard.cgi?az=list&forum=DCForumID6&conf=DCConfID1
      (for stable, fixed release) or here
      http://www.stlport.com/cgi-bin/forum/dcboard.cgi?az=list&forum=DCForumID5&conf=DCConfID1
-     (for betas).
+     (for betas). Don't foget to describe you operational environment, compiler
+     version and STLport version.
 
 ========================================================================
 
