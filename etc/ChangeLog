@@ -1,3 +1,11 @@
+2005-04-11  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/errno.h: save original errno definition
+
+2005-04-10  Petr Ovtchenkov  <ptr@island...>
+
+	* STLport (repository): STLport 5.0 RC3
+
 2005-04-08  Francois Dumont  <dums@stlport...>
 
 	* test/unit/locale_test.cpp: Add __FreeBSD__ macro check for the wordaround
