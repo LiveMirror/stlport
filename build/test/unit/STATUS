@@ -68,7 +68,7 @@ Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
-Date:                           2005-04-10
+Date:                           2005-04-11
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
 Status (release-shared):        All pass (322 tests)
@@ -176,7 +176,7 @@ Compiler:                       gcc 3.3.2
 -----------------------------------------------------------------------
 Date:                           2005-04-04
 STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:                       Maxim Fomtchev
+Reporter:                       Maxim Fomitchev
 Status (release-shared):        Most tests pass
 Notes:                          Runtime crash near test UnorderedTest::hash_policy
 Status (stlg-shared):           All pass (322 tests)
@@ -193,7 +193,7 @@ Compiler:                       gcc 3.3.2
 -----------------------------------------------------------------------
 Date:                           2005-04-04
 STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:                       Maxim Fomtchev
+Reporter:                       Maxim Fomitchev
 Status (release-shared):        Most tests pass
 Notes:                          Runtime crash near test UnorderedTest::hash_policy
 Status (stlg-shared):           All pass (322 tests)
