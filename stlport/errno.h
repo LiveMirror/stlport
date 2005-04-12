@@ -34,7 +34,7 @@
 
 # include _STLP_NATIVE_C_HEADER(errno.h)
 
-# if defined (errno)
+# if defined (errno) || defined(__save_errno)
 #  ifdef __save_errno
 #    define errno __save_errno
 #    undef __save_errno

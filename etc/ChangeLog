@@ -1,3 +1,7 @@
+2005-04-12  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/errno.h: check if we undefine previously defined errno
+
 2005-04-11  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/errno.h: save original errno definition
