@@ -35,9 +35,8 @@
 # include _STLP_NATIVE_C_HEADER(errno.h)
 
 # if defined (errno) || defined(__save_errno)
-#  ifdef __save_errno
+#  if defined(__save_errno) && !defined(errno)
 #    define errno __save_errno
-#    undef __save_errno
 #  endif
 # else
 _STLP_BEGIN_NAMESPACE
