@@ -23,26 +23,14 @@
 #ifdef _STLP_WCE
 # pragma message("eMbedded Visual C++ 3 and .NET don't have a errno.h header; STLport won't include native errno.h here")
 #else
-# if defined (errno)
-/* We are forced to undef errno otherwise the include of the native
- * errno.h file would fail with a message like:
- * unable to find file ../include/(errno_macro_replacement).h
- */
-#  define __save_errno errno
-#  undef errno
-# endif
-
-# include _STLP_NATIVE_C_HEADER(errno.h)
-
-# if defined (errno) || defined(__save_errno)
-#  if defined(__save_errno) && !defined(errno)
-#    define errno __save_errno
-#  endif
-# else
+# ifndef errno
+#  include _STLP_NATIVE_C_HEADER(errno.h)
+# endif /* errno */
+# ifndef errno /* errno still not defined */
 _STLP_BEGIN_NAMESPACE
 using ::errno;
 _STLP_END_NAMESPACE
-# endif
+# endif /* errno */
 #endif // _STLP_WCE
 
 
