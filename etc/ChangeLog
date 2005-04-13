@@ -1,3 +1,8 @@
+2005-04-13  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_list.h, _slist.h: Add missing get_allocator() call when
+	building temporary list or slist instances in insert methods.
+
 2005-04-12  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/errno.h: solution 2005-04-12 not useful. Simplified schema,

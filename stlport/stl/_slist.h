@@ -524,7 +524,7 @@ private:
                              const_iterator __first, const_iterator __last) {
 #endif /* _STLP_MEMBER_TEMPLATES */
     //We use a temporary slist to avoid the auto reference troubles (infinite loop)
-    _Self __tmp(__first, __last);
+    _Self __tmp(__first, __last, get_allocator());
     splice_after(__pos, __tmp);
   }
 
@@ -561,7 +561,7 @@ private:
                        const_iterator __first, const_iterator __last) {
 #endif /* _STLP_MEMBER_TEMPLATES */
     //We use a temporary slist to avoid the auto reference troubles (infinite loop)
-    _Self __tmp(__first, __last);
+    _Self __tmp(__first, __last, get_allocator());
     splice(__pos, __tmp);
   }
 
