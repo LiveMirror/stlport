@@ -1,5 +1,11 @@
 2005-04-12  Petr Ovtchenkov  <ptr@island...>
 
+	* stlport/errno.h: solution 2005-04-12 not useful. Simplified schema,
+	semantically equivalent to Francois', but without extra function definition
+	[see records 2005-03-31 and 2005-04-01]
+
+2005-04-12  Petr Ovtchenkov  <ptr@island...>
+
 	* stlport/errno.h: check if we undefine previously defined errno
 
 2005-04-11  Petr Ovtchenkov  <ptr@island...>
