@@ -1,3 +1,8 @@
+2005-04-14  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_list.h, _slist.h: add this-> resolution to get_allocator
+	[required in the member templates to resolve possible ambiguity]
+
 2005-04-13  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_list.h, _slist.h: Add missing get_allocator() call when
