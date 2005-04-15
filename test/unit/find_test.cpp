@@ -39,11 +39,15 @@ void FindTest::find0()
 {
   int numbers[10] = { 0, 1, 4, 9, 16, 25, 36, 49, 64 };
 
-  int* location;
-  location = find((int*)numbers, (int*)numbers + 10, 25);
+  int *location = find((int*)numbers, (int*)numbers + 10, 25);
   
   CPPUNIT_ASSERT((location - numbers)==5);
+
+  int *out_range = find((int*)numbers, (int*)numbers + 10, 128);
+
+  CPPUNIT_ASSERT( out_range == (int *)(numbers + 10) );
 }
+
 void FindTest::find1()
 {
   int years[] = { 1942, 1952, 1962, 1972, 1982, 1992 };
@@ -53,13 +57,21 @@ void FindTest::find1()
 
   CPPUNIT_ASSERT((location - years)==3);
 }
+
 void FindTest::findif0()
 {
   int numbers[6] = { 2, 4, 8, 15, 32, 64 };
-  int* location = find_if((int*)numbers, (int*)numbers + 6, odd);
+  int *location = find_if((int*)numbers, (int*)numbers + 6, odd);
 
   CPPUNIT_ASSERT((location - numbers)==3);
+
+  int numbers_even[6] = { 2, 4, 8, 16, 32, 64 };
+
+  int *out_range = find_if((int*)numbers_even, (int*)numbers_even + 6, odd);
+
+  CPPUNIT_ASSERT( out_range == (int *)(numbers_even + 6) );
 }
+
 void FindTest::findif1()
 {
   typedef vector <int> IntVec;
@@ -70,14 +82,17 @@ void FindTest::findif1()
   iter = find_if(v.begin(), v.end(), div_3);
   CPPUNIT_ASSERT((iter - v.begin())==2);
 }
+
 bool FindTest::odd(int a_)
 {
   return (a_ % 2) != 0;
 }
+
 bool FindTest::div_3(int a_)
 {
   return a_ % 3 ? 0 : 1;
 }
+
 void FindTest::find_char()
 {
   char str[] = "abcdefghij";
@@ -86,4 +101,10 @@ void FindTest::find_char()
 
   const char *e = find((const char*)str, (const char*)str + sizeof(str) / sizeof(char), 'e');
   CPPUNIT_ASSERT( *e == 'e' );
+
+  char *last = find((char*)str, (char*)str + sizeof(str) / sizeof(char), 'x');
+  CPPUNIT_ASSERT( last == (char *)(str + sizeof(str) / sizeof(char)));
+
+  const char *clast = find((const char*)str, (const char*)str + sizeof(str) / sizeof(char), 'x');
+  CPPUNIT_ASSERT( clast == (const char *)(str + sizeof(str) / sizeof(char)));
 }

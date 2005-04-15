@@ -1,3 +1,12 @@
+2005-04-16  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_algobase.c: memchr return NULL if value not found,
+	while find() [specializtion for char *] should return last
+	[see record 2005-02-27 below]. Thanks Joshua Berne for report.
+
+	* test/unit/find_test.cpp: if char not found, char specialization of
+	find() should return last, not NULL.
+
 2005-04-14  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_list.h, _slist.h: add this-> resolution to get_allocator

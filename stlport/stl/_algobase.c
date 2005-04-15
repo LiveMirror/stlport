@@ -131,11 +131,13 @@ _STLP_INLINE_LOOP _RandomAccessIter __find(_RandomAccessIter __first, _RandomAcc
 #if !defined (__BORLANDC__)
 inline char* 
 __find(char* __first, char* __last, char __val, const random_access_iterator_tag &) {
-  return __STATIC_CAST(char*, memchr(__first, __val, __last - __first));
+  void *res =  memchr(__first, __val, __last - __first);
+  return res != 0 ? __STATIC_CAST(char*,res) : __last;
 }
 inline const char* 
 __find(const char* __first, const char* __last, char __val, const random_access_iterator_tag &) {
-  return __STATIC_CAST(const char*, memchr(__first, __val, __last - __first));
+  void *res =  memchr(__first, __val, __last - __first);
+  return res != 0 ? __STATIC_CAST(const char*,res) : __last;
 }
 #endif
 
