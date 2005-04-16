@@ -136,7 +136,7 @@ __find(char* __first, char* __last, char __val, const random_access_iterator_tag
 }
 inline const char* 
 __find(const char* __first, const char* __last, char __val, const random_access_iterator_tag &) {
-  void *res =  memchr(__first, __val, __last - __first);
+  const void *res =  memchr(__first, __val, __last - __first);
   return res != 0 ? __STATIC_CAST(const char*,res) : __last;
 }
 #endif

@@ -5,9 +5,16 @@
 
 	* build/test/unit/STATUS: Update from Michael Fink and myself.
 
+
 	* build/Makefiles/nmake: Apply Michael Fink patch to generate .pdb file
+
 	even in release mode and to install them in bin and lib folders next to
+
 	the .dll and .lib files.
+
+
+	* stlport/stl/_algobase.c: Add missing const in return type of the const 
+	version of find specialized for const char*.
 
 2005-04-16  Petr Ovtchenkov  <ptr@island...>
 
