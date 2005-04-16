@@ -57,12 +57,12 @@ Notes:                          FloatIOTest::float_output_test
 
                                 ../../../test/unit/floatio_test.cpp(64) : CPPUNIT_ASSERT(output.substr(18) == ".000000");
                                 Use -fno-builtin option, as in uClibc build!
-Status (stldbg-shared):		Fail 1 of 320 tests
+Status (stldbg-shared):         Fail 1 of 320 tests
 Notes:                          Same as notes for release (above)
 
 
 =======================================================================
-Operational environment:	Linux 2.4.26/SMP glibc 2.2.5, IA32
+Operational environment:   Linux 2.4.26/SMP glibc 2.2.5, IA32
 =======================================================================
 
 -----------------------------------------------------------------------
@@ -72,74 +72,74 @@ Date:                           2005-04-15
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
 Status (release-shared):        All pass (322 tests)
-Notes:				
+Notes:
 Status (stldbg-shared):         All pass (322 tests)
-Notes:				
+Notes:
 
 -----------------------------------------------------------------------
-Compiler:			gcc 3.4.1
+Compiler:                       gcc 3.4.1
 -----------------------------------------------------------------------
-Date:				2004-10-18
+Date:                           2004-10-18
 STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (298 tests)
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        All pass (298 tests)
 Notes:
 Status (stldbg-shared):         All pass (298 tests)
 Notes:
 
 -----------------------------------------------------------------------
-Compiler:			gcc 3.3.3
+Compiler:                       gcc 3.3.3
 -----------------------------------------------------------------------
-Date:				2004-08-26
+Date:                           2004-08-26
 STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (282 tests)
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        All pass (282 tests)
 Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
 -----------------------------------------------------------------------
-Compiler:			gcc 3.3.1
+Compiler:         gcc 3.3.1
 -----------------------------------------------------------------------
-Date:				2004-08-26
+Date:                           2004-08-26
 STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (282 tests)
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        All pass (282 tests)
 Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
 -----------------------------------------------------------------------
-Compiler:			gcc 3.2.3
+Compiler:                       gcc 3.2.3
 -----------------------------------------------------------------------
-Date:				2004-08-27
+Date:                           2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (282 tests)
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        All pass (282 tests)
 Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
 -----------------------------------------------------------------------
-Compiler:			gcc 3.1.1
+Compiler:                       gcc 3.1.1
 -----------------------------------------------------------------------
-Date:				2004-08-27
+Date:                           2004-08-27
 STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:			ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (282 tests)
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        All pass (282 tests)
 Notes:
 Status (stldbg-shared):         All pass (282 tests)
 Notes:
 
 -----------------------------------------------------------------------
-Compiler:			gcc 2.95.4 20011002 (Debian prerelease)
+Compiler:                       gcc 2.95.4 20011002 (Debian prerelease)
 -----------------------------------------------------------------------
-Date:				2004-10-29
+Date:                           2004-10-29
 STLP Version:                   current CVS STLPORT_5_0 branch + some uncommited changes (locale-related)
 Reporter:                       ptr (Petr Ovtchenkov)
-Status (release-shared):	All pass (300 tests)
+Status (release-shared):        All pass (300 tests)
 Notes:                          use -fPIC both in lib and app; avoid code that run in static objects
-				(compiler problems)
+                                (compiler problems)
 Status (stldbg-shared):         All pass (300 tests)
 Notes:                          see notes above
 
@@ -182,7 +182,7 @@ Notes:                          Runtime crash near test UnorderedTest::hash_poli
 Status (stlg-shared):           All pass (322 tests)
 Notes:
 Status (stldbg-shared):         All pass (322 tests)
-Notes:                          
+Notes:
 
 =======================================================================
 Operational environment:        FreeBSD 4.10-RELEASE
@@ -231,13 +231,13 @@ Date:                           2005-04-08
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
 Status (release-shared):        All pass (318 tests)
-Notes:                          
+Notes:
 Status (dbg-shared):            All pass (318 tests)
 Notes:
 Status (stldbg-shared):         All pass (318 tests)
 Notes:
 Status (release-static):        All pass (318 tests)
-Notes:                          
+Notes:
 Status (dbg-static):            All pass (318 tests)
 Notes:
 Status (stldbg-static):         All pass (318 tests)
@@ -257,7 +257,7 @@ Notes:
 Status (stldbg-shared):         All pass (319 tests)
 Notes:
 Status (release-static):        All pass (319 tests)
-Notes:                          
+Notes:
 Status (dbg-static):            All pass (319 tests)
 Notes:
 Status (stldbg-static):         All pass (319 tests)
@@ -312,7 +312,7 @@ Notes:
 Status (stldbg-shared):         All pass (317 tests)
 Notes:
 Status (release-static):        All pass (317 tests)
-Notes:                          
+Notes:
 Status (dbg-static):            All pass (317 tests)
 Notes:
 Status (stldbg-static):         All pass (317 tests)
@@ -363,19 +363,19 @@ Operational environment:        Windows CE 3.0 Pocket PC 2002 (iPAQ h3950)
 -----------------------------------------------------------------------
 Compiler:                       eMbedded Visual C++ 3.0
 -----------------------------------------------------------------------
-Date:                           2005-02-16
+Date:                           2005-04-13
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       mfink (Michael Fink)
-Status (release-shared):        All pass (312 tests)
+Status (release-shared):        All pass (316 tests)
 Notes:
-Status (dbg-shared):            All pass (312 tests)
+Status (dbg-shared):            All pass (316 tests)
 Notes:
 Status (stldbg-shared):         Runtime failure
 Notes:                          Fails probably due to a bug in the ARM
                                 compiler
-Status (release-static):        All pass (312 tests)
+Status (release-static):        All pass (316 tests)
 Notes:
-Status (dbg-static):            All pass (312 tests)
+Status (dbg-static):            All pass (316 tests)
 Notes:
 Status (stldbg-static):         Runtime failure
 Notes:                          Idem stldbg-shared
@@ -387,20 +387,20 @@ Operational environment:        Windows CE 3.0 Pocket PC 2002 Emulator
 -----------------------------------------------------------------------
 Compiler:                       eMbedded Visual C++ 3.0
 -----------------------------------------------------------------------
-Date:                           2005-02-16
+Date:                           2005-04-13
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       mfink (Michael Fink)
-Status (release-shared):        All pass (312 tests)
+Status (release-shared):        All pass (316 tests)
 Notes:
-Status (dbg-shared):            All pass (312 tests)
+Status (dbg-shared):            All pass (316 tests)
 Notes:
-Status (stldbg-shared):         All pass (312 tests)
+Status (stldbg-shared):         All pass (316 tests)
 Notes:
-Status (release-static):        All pass (312 tests)
+Status (release-static):        All pass (316 tests)
 Notes:
-Status (dbg-static):            All pass (312 tests)
+Status (dbg-static):            All pass (316 tests)
 Notes:
-Status (stldbg-static):         All pass (312 tests)
+Status (stldbg-static):         All pass (316 tests)
 Notes:
 
 =======================================================================

@@ -1,3 +1,10 @@
+2005-04-16  Francois Dumont  <dums@stlport...>
+
+	* test/unit/cppunit/test_main.cpp: Patch from Michael Fink to improve
+	the macro filter for including windows.h (UNDER_CE rather than WIN32).
+
+	* build/test/unit/STATUS: Update from Michael Fink.
+
 2005-04-16  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_algobase.c: memchr return NULL if value not found,

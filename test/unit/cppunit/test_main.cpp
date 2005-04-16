@@ -16,7 +16,7 @@
 #include "cppunit_proxy.h"
 #include "file_reporter.h"
 
-#ifdef WIN32
+#ifdef UNDER_CE
 # include <windows.h>
 #endif
 
