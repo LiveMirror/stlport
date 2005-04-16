@@ -4,6 +4,10 @@
 ALLOBJS = $(ALLOBJS:../../../test/unit/=)
 ALLOBJS = $(ALLOBJS:cppunit/=)
 
+#
+# rules for .cpp --> .o
+#
+
 {../../../test/unit}.cpp{$(OUTPUT_DIR)}.o:
 	$(COMPILE_cc_REL) $(OUTPUT_OPTION) $<
 
@@ -14,13 +18,17 @@ ALLOBJS = $(ALLOBJS:cppunit/=)
 	$(COMPILE_cc_STLDBG) $(OUTPUT_OPTION_STLDBG) $<
 
 {../../../test/unit}.cpp{$(OUTPUT_DIR_A)}.o:
-	$(COMPILE_cc_STATIC_REL) $(OUTPUT_OPTION) $<
+	$(COMPILE_cc_STATIC_REL) $(OUTPUT_OPTION_STATIC) $<
 
 {../../../test/unit}.cpp{$(OUTPUT_DIR_A_DBG)}.o:
 	$(COMPILE_cc_STATIC_DBG) $(OUTPUT_OPTION_STATIC_DBG) $<
 
 {../../../test/unit}.cpp{$(OUTPUT_DIR_A_STLDBG)}.o:
 	$(COMPILE_cc_STATIC_STLDBG) $(OUTPUT_OPTION_STATIC_STLDBG) $<
+
+#
+# rules for cppunit/.cpp --> .o
+#
 
 {../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR)}.o:
 	$(COMPILE_cc_REL) $(OUTPUT_OPTION) $<
@@ -32,7 +40,7 @@ ALLOBJS = $(ALLOBJS:cppunit/=)
 	$(COMPILE_cc_STLDBG) $(OUTPUT_OPTION_STLDBG) $<
 
 {../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR_A)}.o:
-	$(COMPILE_cc_STATIC_REL) $(OUTPUT_OPTION) $<
+	$(COMPILE_cc_STATIC_REL) $(OUTPUT_OPTION_STATIC) $<
 
 {../../../test/unit/cppunit}.cpp{$(OUTPUT_DIR_A_DBG)}.o:
 	$(COMPILE_cc_STATIC_DBG) $(OUTPUT_OPTION_STATIC_DBG) $<

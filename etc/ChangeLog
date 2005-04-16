@@ -3,7 +3,11 @@
 	* test/unit/cppunit/test_main.cpp: Patch from Michael Fink to improve
 	the macro filter for including windows.h (UNDER_CE rather than WIN32).
 
-	* build/test/unit/STATUS: Update from Michael Fink.
+	* build/test/unit/STATUS: Update from Michael Fink and myself.
+
+	* build/Makefiles/nmake: Apply Michael Fink patch to generate .pdb file
+	even in release mode and to install them in bin and lib folders next to
+	the .dll and .lib files.
 
 2005-04-16  Petr Ovtchenkov  <ptr@island...>
 

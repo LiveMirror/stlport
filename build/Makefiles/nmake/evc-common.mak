@@ -23,15 +23,12 @@ OPT_STATIC_DBG = $(OPT) $(OPT_STATIC_DBG)
 OPT_STATIC_STLDBG = $(OPT) $(OPT_STATIC_STLDBG)
 !endif
 
-OUTPUT_OPTION = /Fo$@
-# The sentence below is bit strange: ...$(PRGNAME)$(LIBNAME).pdb
-# In this place I don't know what I build : library or application.
-# But in real projects only one will be defined---either $(PRGNAME) or
-# $(LIBNAME), so .pdb name will be correct.
-OUTPUT_OPTION_DBG = /Fo$@ /Fd"$(OUTPUT_DIR_DBG)/$(PRGNAME)$(LIBNAME).pdb"
-OUTPUT_OPTION_STATIC_DBG = /Fo$@ /Fd"$(OUTPUT_DIR_A_DBG)/$(PRGNAME)$(LIBNAME).pdb"
-OUTPUT_OPTION_STLDBG = /Fo$@ /Fd"$(OUTPUT_DIR_STLDBG)/$(PRGNAME)$(LIBNAME).pdb"
-OUTPUT_OPTION_STATIC_STLDBG = /Fo$@ /Fd"$(OUTPUT_DIR_A_STLDBG)/$(PRGNAME)$(LIBNAME).pdb"
+OUTPUT_OPTION = /Fo$@ /Fd"$(PDB_NAME_OUT)"
+OUTPUT_OPTION_DBG = /Fo$@ /Fd"$(PDB_NAME_OUT_DBG)"
+OUTPUT_OPTION_STLDBG = /Fo$@ /Fd"$(PDB_NAME_OUT_STLDBG)"
+OUTPUT_OPTION_STATIC = /Fo$@ /Fd"$(A_PDB_NAME_OUT)"
+OUTPUT_OPTION_STATIC_DBG = /Fo$@ /Fd"$(A_PDB_NAME_OUT_DBG)"
+OUTPUT_OPTION_STATIC_STLDBG = /Fo$@ /Fd"$(A_PDB_NAME_OUT_STLDBG)"
 LINK_OUTPUT_OPTION = /OUT:$@
 RC_OUTPUT_OPTION = /fo $@
 RC_OUTPUT_OPTION_DBG = /fo $@
@@ -67,12 +64,12 @@ COMPILE_rc_DBG = $(RC) $(RC_FLAGS_DBG) /DBUILD=d /D "BUILD_INFOS=$(CPPFLAGS_DBG)
 COMPILE_rc_STATIC_DBG = $(RC) $(RC_FLAGS_DBG) /DBUILD=d /D "BUILD_INFOS=$(CPPFLAGS_STATIC_DBG)"
 COMPILE_rc_STLDBG = $(RC) $(RC_FLAGS_STLDBG) /DBUILD=stld /D "BUILD_INFOS=$(CPPFLAGS_STLDBG) /D_STLP_DEBUG"
 COMPILE_rc_STATIC_STLDBG = $(RC) $(RC_FLAGS_STLDBG) /DBUILD=stld /D "BUILD_INFOS=$(CPPFLAGS_STATIC_STLDBG) /D_STLP_DEBUG"
-LINK_cc_REL = $(LINK) /nologo /incremental:no $(LDFLAGS_REL)
-LINK_cc_DBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(OUTPUT_DIR_DBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_DBG)
-LINK_cc_STLDBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(OUTPUT_DIR_STLDBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_STLDBG)
-LINK_cc_A_REL = $(LINK) /nologo /incremental:no $(LDFLAGS_REL)
-LINK_cc_A_DBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(OUTPUT_DIR_A_DBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_DBG)
-LINK_cc_A_STLDBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(OUTPUT_DIR_A_STLDBG)/$(PRGNAME)$(LIBNAME).pdb" $(LDFLAGS_STLDBG)
+LINK_cc_REL = $(LINK) /nologo /incremental:no /debug /pdb:"$(PDB_NAME_OUT)" $(LDFLAGS_REL)
+LINK_cc_DBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(PDB_NAME_OUT_DBG)" $(LDFLAGS_DBG)
+LINK_cc_STLDBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(PDB_NAME_OUT_STLDBG)" $(LDFLAGS_STLDBG)
+LINK_cc_A_REL = $(LINK) /nologo /incremental:no /debug /pdb:"$(A_PDB_NAME_OUT)" $(LDFLAGS_REL)
+LINK_cc_A_DBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(A_PDB_NAME_OUT_DBG)" $(LDFLAGS_DBG)
+LINK_cc_A_STLDBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(A_PDB_NAME_OUT_STLDBG)" $(LDFLAGS_STLDBG)
 
 CDEPFLAGS = /FD /E
 CCDEPFLAGS = /FD /E
@@ -86,9 +83,9 @@ DEFS_STATIC_DBG = $(DEFS_STATIC_DBG) /D_DEBUG /DDEBUG /D_STLP_NO_FORCE_INSTANTIA
 DEFS_STATIC_REL = $(DEFS_STATIC_REL) /DNDEBUG /D_STLP_NO_FORCE_INSTANTIATE
 
 # optimization and debug compiler flags
-OPT_REL = $(OPT_REL) /O2 /Og $(OPT_COMMON)
+OPT_REL = $(OPT_REL) /Zi /O2 /Og $(OPT_COMMON)
 OPT_DBG = $(OPT_DBG) /Zi /Od $(OPT_COMMON)
 OPT_STLDBG = $(OPT_STLDBG) /Zi /Od $(OPT_COMMON)
-OPT_STATIC_REL = $(OPT_STATIC_REL) /O2 /Og $(OPT_COMMON)
+OPT_STATIC_REL = $(OPT_STATIC_REL) /Zi /O2 /Og $(OPT_COMMON)
 OPT_STATIC_DBG = $(OPT_STATIC_DBG) /Zi /Od $(OPT_COMMON)
 OPT_STATIC_STLDBG = $(OPT_STATIC_STLDBG) /Zi /Od $(OPT_COMMON)
