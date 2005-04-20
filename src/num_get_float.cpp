@@ -73,18 +73,20 @@ _Initialize_get_float( const ctype<wchar_t>& ct,
  * to us.
  */
 
-typedef unsigned int uint32;
+
 # if defined (_STLP_MSVC) || defined (__BORLANDC__) || defined (__ICL)
-# define ULL(x) x##Ui64
-typedef uint64_t uint64;
-# elif defined (_STLP_LONG_LONG)
-typedef uint64_t uint64;
-# define ULL(x) x##ULL
+typedef unsigned long uint32;
+typedef unsigned __int64 uint64;
+#  define ULL(x) x##Ui64
 # elif defined(__MRC__) || defined(__SC__)    //*TY 02/25/2000 - added support for MPW compilers
-# include "uint64.h"    //*TY 03/25/2000 - added 64bit math type definition
+typedef unsigned long uint32;
+#  include "uint64.h"    //*TY 03/25/2000 - added 64bit math type definition
+# elif defined(__unix)
+typedef uint32_t uint32;
+typedef uint64_t uint64;
+#  define ULL(x) x##ULL
 # else
-#  error "there should be some long long type on the system!"
-#  define NUMERIC_NO_64 1
+#  error "there shoild hould be some unsigned 64-bit integer on the system!"
 # endif
 
 // Multiplication of two 64-bit integers, giving a 128-bit result.
