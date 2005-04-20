@@ -1,3 +1,8 @@
+2005-04-20  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/debug/_debug.c: Small Borland compiler fix to avoid call to
+	vsnprintf before version 0x550 thanks esanfo.
+	
 2005-04-20  Petr Ovtchenkov  <ptr@island...>
 
 	* src/num_get_float.c: use uint64_t for 64-bit, but unsigned long long
