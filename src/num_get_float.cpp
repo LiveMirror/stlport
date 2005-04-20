@@ -76,9 +76,9 @@ _Initialize_get_float( const ctype<wchar_t>& ct,
 typedef unsigned int uint32;
 # if defined (_STLP_MSVC) || defined (__BORLANDC__) || defined (__ICL)
 # define ULL(x) x##Ui64
-typedef unsigned _STLP_LONG_LONG uint64;
+typedef uint64_t uint64;
 # elif defined (_STLP_LONG_LONG)
-typedef unsigned _STLP_LONG_LONG uint64;
+typedef uint64_t uint64;
 # define ULL(x) x##ULL
 # elif defined(__MRC__) || defined(__SC__)    //*TY 02/25/2000 - added support for MPW compilers
 # include "uint64.h"    //*TY 03/25/2000 - added 64bit math type definition

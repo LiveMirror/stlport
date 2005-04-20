@@ -1,3 +1,8 @@
+2005-04-20  Petr Ovtchenkov  <ptr@island...>
+
+	* src/num_get_float.c: use uint64_t for 64-bit, but unsigned long long
+	for constants. [this is problem exploration, not final fix]
+
 2005-04-16  Francois Dumont  <dums@stlport...>
 
 	* test/unit/cppunit/test_main.cpp: Patch from Michael Fink to improve
