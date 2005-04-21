@@ -8,7 +8,7 @@
 2005-04-20  Petr Ovtchenkov  <ptr@island...>
 
 	* src/num_get_float.c: use uint64_t for 64-bit, but unsigned long long
-	for constants. [this is problem exploration, not final fix]
+	for constants. This fix problem on linux x86_64 [amd64].
 
 2005-04-16  Francois Dumont  <dums@stlport...>
 
@@ -19,11 +19,8 @@
 
 
 	* build/Makefiles/nmake: Apply Michael Fink patch to generate .pdb file
-
 	even in release mode and to install them in bin and lib folders next to
-
 	the .dll and .lib files.
-
 
 	* stlport/stl/_algobase.c: Add missing const in return type of the const 
 	version of find specialized for const char*.
