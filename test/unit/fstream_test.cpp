@@ -25,6 +25,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE(FstreamTest);
   CPPUNIT_TEST(output);
   CPPUNIT_TEST(input);
+  CPPUNIT_TEST(input_char);
   CPPUNIT_TEST(io);
   CPPUNIT_TEST(err);
   CPPUNIT_TEST(tellg);
@@ -40,6 +41,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   protected:
     void output();
     void input();
+    void input_char();
     void io();
     void err();
     void tellg();
@@ -91,6 +93,17 @@ void FstreamTest::input()
   getline( f, str );
   CPPUNIT_ASSERT( f.eof() );
   CPPUNIT_ASSERT( str == "abcd ef" );
+}
+
+void FstreamTest::input_char()
+{
+  char buf[16] = { 0, '1', '2', '3' };
+  ifstream s( "test_file.txt" );
+  s >> buf;
+
+  CPPUNIT_ASSERT( buf[0] == '1' );
+  CPPUNIT_ASSERT( buf[1] == 0 );
+  CPPUNIT_ASSERT( buf[2] == '2' );
 }
 
 void FstreamTest::io()
