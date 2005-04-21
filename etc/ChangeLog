@@ -1,3 +1,10 @@
+2005-04-21  Petr Ovtchenkov  <ptr@island...>
+
+	* test/unit/sstream_test.cpp, fstream_test.cpp: integral type for
+        ptrdiff_t shorter than for streamsize; this cause problem on
+	Win32 platform, that support files larger 4GB.
+	Thanks Timothy Tenebekov for report.
+
 2005-04-20  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_debug.c: Small Borland compiler fix to avoid call to
