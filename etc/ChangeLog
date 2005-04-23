@@ -1,3 +1,7 @@
+2005-04-23  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_ioerr.h: #error message modification thanks Michael Fink.
+	
 2005-04-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_istream.c: Fix _M_read_buffered function implementation, there
