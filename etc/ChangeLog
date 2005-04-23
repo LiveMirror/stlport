@@ -1,9 +1,23 @@
+2005-04-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_istream.c: Fix _M_read_buffered function implementation, there
+	used to be a wrong implicit conversion from streamsize to ptrdiff_t, which fail
+	when sizeof(streamsize) > sizeof(ptrdiff_t). see 2005-04-21 Petr report.
+	
+	* test/unit/: Replaced all _STLP_NO_IOSTREAMS occurences with the STLport internal
+	equivalent _STLP_USE_NO_IOSTREAMS. The first one is defined by the client while the
+	second depends on the first and on the compiler abilities, makes the unit tests more
+	portable.
+	
+	* stlport/stl/_cmath.h: Fix for Intel C++ compiler that also have all C math functions
+	in global namespace.
+
 2005-04-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.h: Extend the hashtable template methods extension
 	to the method computing the bucket from the key thanks Dominik Siatkowski.
 	
-	* stlport/stl/_threads.h: Disable 64 bits portability warning for MSVC compilers
+	* stlport/stl/_threads.h: Disable 64 bits portability warning for MSVC compilers.
 	MSVC do not see that the called function comes from a macro that is different
 	under Win32 and Win64.
 	
