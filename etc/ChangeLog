@@ -4,6 +4,11 @@
 	increment of target-specific macro and, may be, under condition.
 	Thanks Jeff Williams.
 
+	* build/Makefiles/gmake/icc.mak: add icc 8.1 compiler-specific libs
+
+	* build/Makefiles/gmake/icc.mak: detect icc version; add includes
+	from compiler to include path
+
 2005-04-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ioerr.h: #error message modification thanks Michael Fink.
