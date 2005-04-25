@@ -1,3 +1,13 @@
+2005-04-25  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_time_facets.c: Fix __pos type in __match function and removed
+	unused __max_pos definition and initialisation.
+	
+	* src/c_locale_win32/c_locale_win32.c: Add some cast to remove warnings.
+	
+	* stlport/stl/_moneraty.c: Fix __witdh definition to use streamsize rather
+	than size_t to avoid warnings.
+
 2005-04-25  Petr Ovtchenkov  <ptr@island...>
 
 	* build/test/gcc.mak: workaround for [bug?] gmake, that sometimes loss

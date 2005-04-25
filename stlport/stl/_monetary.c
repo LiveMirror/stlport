@@ -453,7 +453,7 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
   }
 
   // Determine the amount of padding required, if any.  
-  size_t __width = __str.width();
+  streamsize __width = __str.width();
 
 #if defined(_STLP_DEBUG) && (defined(__HP_aCC) && (__HP_aCC <= 1))
   size_t __value_length = operator -(__digits_last, __digits_first);
@@ -475,6 +475,7 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
                                         : (__is_negative ? __punct.neg_format()
                                                          : __punct.pos_format());
   {
+    //For the moment the following is commented for decoding reason.
     //No reason to add a space last if the money symbol do not have to be display
     //if (__format.field[3] == (char) money_base::symbol && !__generate_curr) {
     //  if (__format.field[2] == (char) money_base::space) {
@@ -487,7 +488,7 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
       ++__length;
   }
 
-  size_t __fill_amt = __length < __width ? __width - __length : 0;
+  streamsize __fill_amt = __length < __width ? __width - __length : 0;
 
   ios_base::fmtflags __fill_pos = __str.flags() & ios_base::adjustfield;
 
@@ -552,7 +553,7 @@ money_put<_CharT, _OutputIter>
           char_type __fill, _STLP_LONG_DOUBLE __units) const {
   _STLP_BASIC_IOSTRING(char_type) __digits;
   __get_money_digits(__digits, __str, __units);
-  return _S_do_put(__s, __intl, __str, __fill, __digits, false, (string_type*)0);
+  return _S_do_put(__s, __intl, __str, __fill, __digits, false, __STATIC_CAST(string_type*, 0));
 }
 
 template <class _CharT, class _OutputIter>
@@ -560,7 +561,7 @@ _OutputIter
 money_put<_CharT, _OutputIter>
  ::do_put(_OutputIter __s, bool __intl, ios_base& __str,
           char_type __fill, const string_type& __digits) const {
-  return _S_do_put(__s, __intl, __str, __fill, __digits, true, (string_type*)0);
+  return _S_do_put(__s, __intl, __str, __fill, __digits, true, __STATIC_CAST(string_type*, 0));
 }
 
 _STLP_END_NAMESPACE
