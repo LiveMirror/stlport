@@ -1,3 +1,9 @@
+2005-04-25  Petr Ovtchenkov  <ptr@island...>
+
+	* build/test/gcc.mak: workaround for [bug?] gmake, that sometimes loss
+	increment of target-specific macro and, may be, under condition.
+	Thanks Jeff Williams.
+
 2005-04-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ioerr.h: #error message modification thanks Michael Fink.
