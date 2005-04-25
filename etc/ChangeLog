@@ -9,6 +9,9 @@
 	* build/Makefiles/gmake/icc.mak: detect icc version; add includes
 	from compiler to include path
 
+	* test/unit/cppunit/test_main.cpp, cppunit_mini.h: add option -x, run all
+	except specified CLASS::TEST.
+
 2005-04-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ioerr.h: #error message modification thanks Michael Fink.
