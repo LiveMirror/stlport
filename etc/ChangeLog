@@ -13,8 +13,6 @@
 	* test/fstream_test.cpp: Add check in creation of test_file.txt as following tests
 	depends on its content.
 	
-	* stlport/stl/char_traits.h: streamsize defined as an unsigned integer value.
-	
 	* src/strstream.cpp, stdio_streambuf.cpp, stlport/stl/_num_put.c, _num_get.c,
 	_fstream.c, _moneraty.c: Fix potential issue because of the difference between 
 	streamsize and size_t of ptrdiff_t. Add static assertion to clearly specify how 
