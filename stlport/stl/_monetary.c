@@ -461,9 +461,8 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
   size_t __value_length = __digits_last - __digits_first;
 #endif
 
-  size_t __length = __value_length;
-      
-  __length += __sign.size();
+  size_t __length = __value_length + __sign.size();
+
   if (__frac_digits != 0)
     ++__length;
 
@@ -488,7 +487,9 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
       ++__length;
   }
 
-  streamsize __fill_amt = __length < __width ? __width - __length : 0;
+  const bool __need_fill = (((sizeof(streamsize) > sizeof(size_t)) && (__STATIC_CAST(streamsize, __length) < __width)) ||
+                            ((sizeof(streamsize) <= sizeof(size_t)) && (__length < __STATIC_CAST(size_t, __width))));
+  streamsize __fill_amt = __need_fill ? __width - __length : 0;
 
   ios_base::fmtflags __fill_pos = __str.flags() & ios_base::adjustfield;
 

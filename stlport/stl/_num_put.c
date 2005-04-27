@@ -157,12 +157,15 @@ _OutputIter _STLP_CALL
 __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
                         _OutputIter __out,
                         ios_base::fmtflags __flg, streamsize __wid, _CharT __fill,
-                        _CharT __xplus, _CharT __xminus)
-{
+                        _CharT __xplus, _CharT __xminus) {
   if (__len >= __wid)
     return copy(__buf, __buf + __len, __out);
   else {
-    ptrdiff_t __pad = __wid - __len;
+    //casting numeric_limits<ptrdiff_t>::max to streamsize only works is ptrdiff_t is signed or streamsize representation
+    //is larger than ptrdiff_t one.
+    typedef char __static_assert[(sizeof(streamsize) > sizeof(ptrdiff_t)) ||
+                                 (sizeof(streamsize) == sizeof(ptrdiff_t)) && numeric_limits<ptrdiff_t>::is_signed];
+    ptrdiff_t __pad = __STATIC_CAST(ptrdiff_t, (min) (__STATIC_CAST(streamsize, (numeric_limits<ptrdiff_t>::max)()), __wid - __len));
     ios_base::fmtflags __dir = __flg & ios_base::adjustfield;
 
     if (__dir == ios_base::left) {
@@ -196,8 +199,7 @@ template <class _OutputIter>
 _OutputIter _STLP_CALL
 __put_integer(char* __buf, char* __iend, _OutputIter __s,
               ios_base& __f,
-              ios_base::fmtflags __flags, wchar_t __fill)
-{
+              ios_base::fmtflags __flags, wchar_t __fill) {
   locale __loc = __f.getloc();
   //  const ctype<wchar_t>& __ct = use_facet<ctype<wchar_t> >(__loc);
   const ctype<wchar_t>& __ct = *(const ctype<wchar_t>*)__f._M_ctype_facet();

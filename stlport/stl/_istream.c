@@ -637,7 +637,11 @@ _M_read_buffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT,
     while (__buf->_M_egptr() != __buf->_M_gptr() && !__done) {
       const _CharT* __first = __buf->_M_gptr();
       const _CharT* __last  = __buf->_M_egptr();
-      ptrdiff_t __request = (min) (__STATIC_CAST(streamsize, (numeric_limits<ptrdiff_t>::max)()), _Num - __n);
+      //casting numeric_limits<ptrdiff_t>::max to streamsize only works is ptrdiff_t is signed or streamsize representation
+      //is larger than ptrdiff_t one.
+      typedef char __static_assert[(sizeof(streamsize) > sizeof(ptrdiff_t)) ||
+                                   (sizeof(streamsize) == sizeof(ptrdiff_t)) && numeric_limits<ptrdiff_t>::is_signed];
+      ptrdiff_t __request = __STATIC_CAST(ptrdiff_t, (min) (__STATIC_CAST(streamsize, (numeric_limits<ptrdiff_t>::max)()), _Num - __n));
 
       const _CharT* __p  = __scan_delim(__first, __last);
       ptrdiff_t __chunk = (min) (ptrdiff_t(__p - __first), __request);
@@ -851,7 +855,7 @@ void basic_istream<_CharT, _Traits>::_M_formatted_get(_CharT* __s) {
     basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
     streamsize __nmax = this->width() > 0
       ? this->width() - 1
-      : (numeric_limits<streamsize>::max)() / sizeof(_CharT) - 1;
+      : ((numeric_limits<streamsize>::max)() / sizeof(_CharT)) - 1;
 
     streamsize __n = __buf->gptr() != __buf->egptr()
       ? _M_read_buffered(this,  __buf, __nmax, __s,

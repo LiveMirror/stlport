@@ -1,3 +1,28 @@
+2005-04-27  Francois Dumont  <dums@stlport...>
+
+	* src/fstream.cpp: Fix Win32-64 file stream implementation. _M_read and _M_write
+	can now correctly handle respectively read and write of really big buffers ( > 2Go)
+	
+	* using/iosfwd.h, stlport/strstream.h, stl/_rope.h, _rope.c, _complex.h: Removed 
+	references to the _STLP_USE_NEW_IOSTREAMS macro, STLport only support "new" 
+	iostreams.
+	
+	* test/unit/max_test.cpp, min_test.cpp: Add tests to check that min and max are not
+	defined as macros.
+	
+	* test/fstream_test.cpp: Add check in creation of test_file.txt as following tests
+	depends on its content.
+	
+	* stlport/stl/char_traits.h: streamsize defined as an unsigned integer value.
+	
+	* src/strstream.cpp, stdio_streambuf.cpp, stlport/stl/_num_put.c, _num_get.c,
+	_fstream.c, _moneraty.c: Fix potential issue because of the difference between 
+	streamsize and size_t of ptrdiff_t. Add static assertion to clearly specify how 
+	streamsize must be to have a correct behavior.
+
+	* src/ctype.cpp: Restore check on wchar_t positivity as according 2005-02-22 
+	Petr Ovchenkov reports wchar_t can be unsigned.
+	
 2005-04-26  Francois Dumont  <dums@stlport...>
 
 	* src/num_get_float.cpp: Fix mingwin support for 64bits integer type 
