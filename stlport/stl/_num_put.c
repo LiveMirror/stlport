@@ -54,17 +54,17 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
     ios_base::fmtflags __dir = __flags & ios_base::adjustfield;
 
     if (__dir == ios_base::left) {
-      __oi = copy(__first, __last, __out);
+      __oi = copy(__first, __last, __oi);
       return __fill_n(__oi, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __first != __last &&
              (*__first == __xplus || *__first == __xminus)) {
       *__oi++ = *__first++;
-      __oi = __fill_n(__out, __pad, __fill);
+      __oi = __fill_n(__oi, __pad, __fill);
       return copy(__first, __last, __oi);
     }
     else {
-      __oi = __fill_n(__out, __pad, __fill);
+      __oi = __fill_n(__oi, __pad, __fill);
       return copy(__first, __last, __oi);
     }
   }
@@ -169,13 +169,13 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
     ios_base::fmtflags __dir = __flg & ios_base::adjustfield;
 
     if (__dir == ios_base::left) {
-      __oi = copy(__buf, __buf + __len, __out);
+      __oi = copy(__buf, __buf + __len, __oi);
       return __fill_n(__oi, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __len != 0 &&
              (__buf[0] == __xplus || __buf[0] == __xminus)) {
       *__oi++ = __buf[0];
-      __oi = __fill_n(__out, __pad, __fill);
+      __oi = __fill_n(__oi, __pad, __fill);
       return copy(__buf + 1, __buf + __len, __oi);
     }
     else if (__dir == ios_base::internal && __len >= 2 &&
@@ -183,11 +183,11 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
              (__flg & ios_base::basefield) == ios_base::hex) {
       *__oi++ = __buf[0];
       *__oi++ = __buf[1];
-      __oi = __fill_n(__out, __pad, __fill);
+      __oi = __fill_n(__oi, __pad, __fill);
       return copy(__buf + 2, __buf + __len, __oi);
     }
     else {
-      __oi = __fill_n(__out, __pad, __fill);
+      __oi = __fill_n(__oi, __pad, __fill);
       return copy(__buf, __buf + __len, __oi);
     }
   }
