@@ -43,29 +43,29 @@ _M_do_put_float(_OutputIter __s, ios_base& __f, _CharT __fill,_Float    __x);
 template <class _CharT, class _OutputIter>
 _OutputIter  _STLP_CALL
 __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
-                      _OutputIter __out,
+                      _OutputIter __oi,
                       ios_base::fmtflags __flags,
                       streamsize __width, _CharT __fill,
                       _CharT __xplus, _CharT __xminus) {
   if (__width <= __last - __first)
-    return copy(__first, __last, __out);
+    return copy(__first, __last, __oi);
   else {
     streamsize __pad = __width - (__last - __first);
     ios_base::fmtflags __dir = __flags & ios_base::adjustfield;
 
     if (__dir == ios_base::left) {
-      __out = copy(__first, __last, __out);
-      return __fill_n(__out, __pad, __fill);
+      __oi = copy(__first, __last, __out);
+      return __fill_n(__oi, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __first != __last &&
              (*__first == __xplus || *__first == __xminus)) {
-      *__out++ = *__first++;
-      __out = __fill_n(__out, __pad, __fill);
-      return copy(__first, __last, __out);
+      *__oi++ = *__first++;
+      __oi = __fill_n(__out, __pad, __fill);
+      return copy(__first, __last, __oi);
     }
     else {
-      __out = __fill_n(__out, __pad, __fill);
-      return copy(__first, __last, __out);
+      __oi = __fill_n(__out, __pad, __fill);
+      return copy(__first, __last, __oi);
     }
   }
 }
@@ -74,7 +74,7 @@ __copy_float_and_fill(const _CharT* __first, const _CharT* __last,
 // Helper routine for wchar_t
 template <class _OutputIter>
 _OutputIter  _STLP_CALL
-__put_float(__iostring &__str, _OutputIter __out,
+__put_float(__iostring &__str, _OutputIter __oi,
             ios_base& __f, wchar_t __fill,
             wchar_t __decimal_point, wchar_t __sep, 
             size_t __group_pos, const string& __grouping) {
@@ -89,7 +89,7 @@ __put_float(__iostring &__str, _OutputIter __out,
   }
 
   return __copy_float_and_fill(__CONST_CAST(wchar_t*, __wbuf.data()), 
-                               __CONST_CAST(wchar_t*, __wbuf.data()) + __wbuf.size(), __out,
+                               __CONST_CAST(wchar_t*, __wbuf.data()) + __wbuf.size(), __oi,
                                __f.flags(), __f.width(0), __fill, __ct.widen('+'), __ct.widen('-')); 
 }
 #endif /* WCHAR_T */
@@ -98,7 +98,7 @@ __put_float(__iostring &__str, _OutputIter __out,
 // Helper routine for char
 template <class _OutputIter>
 _OutputIter  _STLP_CALL
-__put_float(__iostring &__str, _OutputIter __out,
+__put_float(__iostring &__str, _OutputIter __oi,
             ios_base& __f, char __fill,
             char __decimal_point, char __sep, 
             size_t __group_pos, const string& __grouping) {
@@ -112,7 +112,7 @@ __put_float(__iostring &__str, _OutputIter __out,
   }
 
   return __copy_float_and_fill(__CONST_CAST(char*, __str.data()), 
-                               __CONST_CAST(char*, __str.data()) + __str.size(), __out,
+                               __CONST_CAST(char*, __str.data()) + __str.size(), __oi,
                                __f.flags(), __f.width(0), __fill, '+', '-');
 }
 
@@ -155,11 +155,11 @@ void _STLP_CALL __get_money_digits(_STLP_BASIC_IOSTRING(_CharT) &__buf, ios_base
 template <class _CharT, class _OutputIter>
 _OutputIter _STLP_CALL
 __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
-                        _OutputIter __out,
+                        _OutputIter __oi,
                         ios_base::fmtflags __flg, streamsize __wid, _CharT __fill,
                         _CharT __xplus, _CharT __xminus) {
   if (__len >= __wid)
-    return copy(__buf, __buf + __len, __out);
+    return copy(__buf, __buf + __len, __oi);
   else {
     //casting numeric_limits<ptrdiff_t>::max to streamsize only works is ptrdiff_t is signed or streamsize representation
     //is larger than ptrdiff_t one.
@@ -169,26 +169,26 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
     ios_base::fmtflags __dir = __flg & ios_base::adjustfield;
 
     if (__dir == ios_base::left) {
-      __out = copy(__buf, __buf + __len, __out);
-      return __fill_n(__out, __pad, __fill);
+      __oi = copy(__buf, __buf + __len, __out);
+      return __fill_n(__oi, __pad, __fill);
     }
     else if (__dir == ios_base::internal && __len != 0 &&
              (__buf[0] == __xplus || __buf[0] == __xminus)) {
-      *__out++ = __buf[0];
-      __out = __fill_n(__out, __pad, __fill);
-      return copy(__buf + 1, __buf + __len, __out);
+      *__oi++ = __buf[0];
+      __oi = __fill_n(__out, __pad, __fill);
+      return copy(__buf + 1, __buf + __len, __oi);
     }
     else if (__dir == ios_base::internal && __len >= 2 &&
              (__flg & ios_base::showbase) &&
              (__flg & ios_base::basefield) == ios_base::hex) {
-      *__out++ = __buf[0];
-      *__out++ = __buf[1];
-      __out = __fill_n(__out, __pad, __fill);
-      return copy(__buf + 2, __buf + __len, __out);
+      *__oi++ = __buf[0];
+      *__oi++ = __buf[1];
+      __oi = __fill_n(__out, __pad, __fill);
+      return copy(__buf + 2, __buf + __len, __oi);
     }
     else {
-      __out = __fill_n(__out, __pad, __fill);
-      return copy(__buf, __buf + __len, __out);
+      __oi = __fill_n(__out, __pad, __fill);
+      return copy(__buf, __buf + __len, __oi);
     }
   }
 }

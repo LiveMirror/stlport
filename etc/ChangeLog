@@ -1,3 +1,8 @@
+2005-04-28  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_sstream.h, _num_put.c: __in replaced by __imode, __out by __omode
+	or __oi due to MS privatize __in and __out. Thanks Michael Fink.
+
 2005-04-27  Francois Dumont  <dums@stlport...>
 
 	* src/fstream.cpp: Fix Win32-64 file stream implementation. _M_read and _M_write
@@ -19,7 +24,7 @@
 	streamsize must be to have a correct behavior.
 
 	* src/ctype.cpp: Restore check on wchar_t positivity as according 2005-02-22 
-	Petr Ovchenkov reports wchar_t can be unsigned.
+	Petr Ovtchenkov reports wchar_t can be unsigned.
 	
 2005-04-26  Francois Dumont  <dums@stlport...>
 

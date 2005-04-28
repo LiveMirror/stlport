@@ -333,13 +333,13 @@ basic_stringbuf<_CharT, _Traits, _Alloc>
             ios_base::openmode __mode) {
   __mode &= _M_mode;
 
-  bool __in  = (__mode & ios_base::in) != 0;
-  bool __out = (__mode & ios_base::out) != 0;
+  bool __imode  = (__mode & ios_base::in) != 0;
+  bool __omode = (__mode & ios_base::out) != 0;
 
-  if ( !(__in || __out) )
+  if ( !(__imode || __omode) )
     return pos_type(off_type(-1));
 
-  if ( (__in && (this->gptr() == 0)) || (__out && (this->pptr() == 0)) )
+  if ( (__imode && (this->gptr() == 0)) || (__omode && (this->pptr() == 0)) )
     return pos_type(off_type(-1));
 
   if ((_M_mode & ios_base::out) && !(_M_mode & ios_base::in))
@@ -354,7 +354,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>
     __newoff = _M_str.size();
     break;
   case ios_base::cur:
-    __newoff = __in ? this->gptr() - this->eback() : this->pptr() - this->pbase();
+    __newoff = __imode ? this->gptr() - this->eback() : this->pptr() - this->pbase();
     break;
   default:
     return pos_type(off_type(-1));
@@ -362,7 +362,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>
 
   __off += __newoff;
 
-  if (__in) {
+  if (__imode) {
     ptrdiff_t __n = this->egptr() - this->eback();
 
     if (__off < 0 || __off > __n)
@@ -370,7 +370,7 @@ basic_stringbuf<_CharT, _Traits, _Alloc>
     this->setg(this->eback(), this->eback() + __off, this->eback() + __n);
   }
 
-  if (__out) {
+  if (__omode) {
     ptrdiff_t __n = this->epptr() - this->pbase();
 
     if (__off < 0 || __off > __n)
@@ -388,26 +388,26 @@ basic_stringbuf<_CharT, _Traits, _Alloc>
   ::seekpos(pos_type __pos, ios_base::openmode __mode) {
   __mode &= _M_mode;
 
-  bool __in  = (__mode & ios_base::in) != 0;
-  bool __out = (__mode & ios_base::out) != 0;
+  bool __imode  = (__mode & ios_base::in) != 0;
+  bool __omode = (__mode & ios_base::out) != 0;
 
-  if ( !(__in || __out) )
+  if ( !(__imode || __omode) )
     return pos_type(off_type(-1));
 
-  if ( (__in && (this->gptr() == 0)) || (__out && (this->pptr() == 0)) )
+  if ( (__imode && (this->gptr() == 0)) || (__omode && (this->pptr() == 0)) )
     return pos_type(off_type(-1));
 
   const off_type __n = __pos - pos_type(off_type(0));
   if ((_M_mode & ios_base::out) && !(_M_mode & ios_base::in))
     _M_append_buffer();
 
-  if (__in) {
+  if (__imode) {
     if (__n < 0 || __n > this->egptr() - this->eback())
       return pos_type(off_type(-1));
     this->setg(this->eback(), this->eback() + __n, this->egptr());
   }
 
-  if (__out) {
+  if (__omode) {
     if (__n < 0 || size_t(__n) > _M_str.size())
       return pos_type(off_type(-1));
 
