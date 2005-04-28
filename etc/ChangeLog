@@ -1,3 +1,18 @@
+2005-04-28  Francois Dumont  <dums@stlport...>
+
+	* test/unit/limits_test.cpp: Improve integral types limit test for type of unknown
+	sign. In this case we check the min value of this integral type, if 0 the type is
+	unsigned. Moreover we check, except for the bool type, the sign of -1 cast to the
+	integral type, bool is a special type that generate warning when built from -1 (MSVC).
+	
+	* src/ctype.cpp: Creation of a small helper structure to check the validity of a wchar_t
+	value used as an index. This helper struct takes into account the compiler representation
+	of the wchar_t type, is it a sign type or not. This helper avoids warning when wchar_t
+	is unsigned.
+	
+	* src/num_get.cpp: Removed unused _Initialize_get_digit function and associated 
+	narrow_digits and narrow_xdigits arrays.
+	
 2005-04-28  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_sstream.h, _num_put.c: __in replaced by __imode, __out by __omode

@@ -271,6 +271,26 @@ const unsigned char ctype<char>::_S_lower[ctype<char>::table_size] =
   0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 };
 
+//An helper struct to check wchar_t index without generating warnings
+//under some compilers (gcc) because of a limited range of value 
+//(when wchar_t is unsigned)
+template <bool _IsSigned>
+struct _WCharIndexT;
+
+_STLP_TEMPLATE_NULL
+struct _WCharIndexT<true> {
+  static bool in_range(wchar_t c, size_t upperBound) {
+    return c >= 0 && size_t(c) < upperBound;
+  }
+};
+_STLP_TEMPLATE_NULL
+struct _WCharIndexT<false> {
+  static bool in_range(wchar_t c, size_t upperBound) {
+    return size_t(c) < upperBound;
+  }
+};
+
+typedef _WCharIndexT<wchar_t(-1) < 0> _WCharIndex;
 
 // Some helper functions used in ctype<>::scan_is and scan_is_not.
 
@@ -368,7 +388,7 @@ ctype<char>::do_narrow(const char* __low, const char* __high,
     _Ctype_w_is_mask(ctype_base::mask m, const ctype_base::mask* t)
       : M(m), table(t) {}
     bool operator()(wchar_t c) const {
-      return /*c >= 0 &&*/ size_t(c) < ctype<char>::table_size && (table[c] & M);
+      return _WCharIndex::in_range(c, ctype<char>::table_size) && (table[c] & M);
     }
   };
 
@@ -380,7 +400,7 @@ ctype<wchar_t>::~ctype() {}
 
 bool ctype<wchar_t>::do_is(ctype_base::mask  m, wchar_t c) const {
   const ctype_base::mask * table = ctype<char>::classic_table();
-  return c >= 0 && size_t(c) < ctype<char>::table_size && (m & table[c]);
+  return _WCharIndex::in_range(c, ctype<char>::table_size) && (m & table[c]);
 }
 
 const wchar_t* ctype<wchar_t>::do_is(const wchar_t* low, const wchar_t* high,
@@ -389,7 +409,7 @@ const wchar_t* ctype<wchar_t>::do_is(const wchar_t* low, const wchar_t* high,
   const ctype_base::mask * table = ctype<char>::classic_table();
   for ( ; low < high; ++low, ++vec) {
     wchar_t c = *low;
-    *vec = c >= 0 && size_t(c) < ctype<char>::table_size ? table[c] : ctype_base::mask (0);
+    *vec = _WCharIndex::in_range(c, ctype<char>::table_size) ? table[c] : ctype_base::mask(0);
   }
   return high;
 }
@@ -408,35 +428,31 @@ ctype<wchar_t>::do_scan_not(ctype_base::mask  m,
 }
 
 wchar_t ctype<wchar_t>::do_toupper(wchar_t c) const {
-  return c >= 0 && size_t(c) < ctype<char>::table_size
-    ? (wchar_t) ctype<char>::_S_upper[c]
-    : c;
+  return _WCharIndex::in_range(c, ctype<char>::table_size) ? (wchar_t)ctype<char>::_S_upper[c]
+                                                           : c;
 }
 
 const wchar_t* 
 ctype<wchar_t>::do_toupper(wchar_t* low, const wchar_t* high) const {
   for ( ; low < high; ++low) {
     wchar_t c = *low;
-    *low = c >= 0 && size_t(c) < ctype<char>::table_size
-      ? (wchar_t) ctype<char>::_S_upper[c]
-      : c;
+    *low = _WCharIndex::in_range(c, ctype<char>::table_size) ? (wchar_t)ctype<char>::_S_upper[c]
+                                                             : c;
   }
   return high;
 }
 
 wchar_t ctype<wchar_t>::do_tolower(wchar_t c) const {
-  return c >= 0 && size_t(c) < ctype<char>::table_size
-    ? (wchar_t) ctype<char>::_S_lower[c]
-    : c;
+  return _WCharIndex::in_range(c, ctype<char>::table_size) ? (wchar_t)ctype<char>::_S_lower[c]
+                                                           : c;
 }
 
 const wchar_t* 
 ctype<wchar_t>::do_tolower(wchar_t* low, const wchar_t* high) const {
   for ( ; low < high; ++low) {
     wchar_t c = *low;
-    *low = c >= 0 && size_t(c) < ctype<char>::table_size
-      ? (wchar_t) ctype<char>::_S_lower[c]
-      : c;
+    *low = _WCharIndex::in_range(c, ctype<char>::table_size) ? (wchar_t)ctype<char>::_S_lower[c]
+                                                             : c;
   }
   return high;
 }
