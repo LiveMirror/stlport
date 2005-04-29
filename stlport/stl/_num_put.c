@@ -165,7 +165,8 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
     //is larger than ptrdiff_t one.
     typedef char __static_assert[(sizeof(streamsize) > sizeof(ptrdiff_t)) ||
                                  (sizeof(streamsize) == sizeof(ptrdiff_t)) && numeric_limits<ptrdiff_t>::is_signed];
-    ptrdiff_t __pad = __STATIC_CAST(ptrdiff_t, (min) (__STATIC_CAST(streamsize, (numeric_limits<ptrdiff_t>::max)()), __wid - __len));
+    ptrdiff_t __pad = __STATIC_CAST(ptrdiff_t, (min) (__STATIC_CAST(streamsize, (numeric_limits<ptrdiff_t>::max)()),
+                                                      __STATIC_CAST(streamsize, __wid - __len)));
     ios_base::fmtflags __dir = __flg & ios_base::adjustfield;
 
     if (__dir == ios_base::left) {

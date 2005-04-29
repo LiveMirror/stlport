@@ -1,3 +1,17 @@
+2005-04-29  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_time_facets.c: gcc warnings reveal that we were missing some
+	ctype::widen method call to compare things like month or day names. Also simplified
+	implementation of the __math and __get_formatted_time that do not really need all
+	the template parameters passed to it.
+	
+	* stlport/stl/_num_put.c: Add a cast to make call to the function min more clear, it will
+	perhaps help EVC++ builds correctly.
+	
+	* src/strstream.cpp, stlport/stl/_sstream.c: Removed static assertion replaced 
+	by modified implementation that	takes into account the difference between 
+	size_t and streamsize.
+	
 2005-04-28  Francois Dumont  <dums@stlport...>
 
 	* test/unit/limits_test.cpp: Improve integral types limit test for type of unknown
