@@ -1,3 +1,8 @@
+2005-05-02  Petr Ovtchenkov  <ptr@island...>
+
+	* makesystem (repository): restore experimental support of MetroWerks
+	compiler for NetWare, with help of GNU make and Cygwin environment.
+
 2005-04-29  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_time_facets.c: gcc warnings reveal that we were missing some
