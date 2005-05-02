@@ -1,3 +1,20 @@
+2005-05-02  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/nmake/vc-common.mak: Restore of LDFLAGS_A_REL introduce the
+	2004-10-30 and lost the 2005-04-16, it avoids warning due to use of the whole
+	program optimization with VC.Net 2003 and 2005.
+	
+	* stlport/stl/_string_io.c: Modification of the basic_string i/o operators in the
+	way it deals with the size_type and streamsize difference; it is equivalent with the
+	former one but do not generate warning with gcc (mingwin).
+	
+	* stlport/stddef.h, stdlib.h, errno.h: Fix issue under MSVC compilers where native
+	stdlib.h and stddef.h are defining errno macro without including errno.h forbiding
+	STLport to do so thanks report. Now errno.h will report this problem with an explicit
+	#error.
+	
+	* test/unit/test_errno.cpp: Improvement of the test to reveal the previous issue.
+
 2005-05-02  Petr Ovtchenkov  <ptr@island...>
 
 	* makesystem (repository): restore experimental support of MetroWerks
@@ -862,7 +879,7 @@
 	compiler thanks Timothy Tenebekov report.
 
 	* build/test/unit/nmake-vc-common.mak, nmake-vc6.mak, nmake-vc70.mak: Modification
-	of the make files to avoid unusefull inclusion of vc_warning_disable.h file for
+	of the make files to avoid useless inclusion of vc_warning_disable.h file for
 	MSVC.Net 2003 and MSVC 8 compilers.
 
 	* src/locale_impl.h: Export of the locale facets container for MSVC compilers.
@@ -956,7 +973,7 @@
 
 	* stlport/stl/_string_sum.h, _string_operators.h: Fix of a assignment bug
 	in the append method taking a C string wrapper. Modification of the __bstr_sum
-	get_allocator method to avoid an unusefull allocation.
+	get_allocator method to avoid an useless allocation.
 
 	* build/lib/nmake-src-prefix.mak: Add of missing rules for .c and .rc file type.
 

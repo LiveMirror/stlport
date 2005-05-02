@@ -116,7 +116,7 @@ COMPILE_rc_STATIC_STLDBG = $(RC) $(RC_FLAGS_STLDBG) /DBUILD=stld /D "BUILD_INFOS
 LINK_cc_REL = $(LINK) /nologo /incremental:no /debug /pdb:"$(PDB_NAME_OUT)" $(LDFLAGS_REL)
 LINK_cc_DBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(PDB_NAME_OUT_DBG)" $(LDFLAGS_DBG)
 LINK_cc_STLDBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(PDB_NAME_OUT_STLDBG)" $(LDFLAGS_STLDBG)
-LINK_cc_A_REL = $(LINK) /nologo /incremental:no /debug /pdb:"$(A_PDB_NAME_OUT)" $(LDFLAGS_REL)
+LINK_cc_A_REL = $(LINK) /nologo /incremental:no /debug /pdb:"$(A_PDB_NAME_OUT)" $(LDFLAGS_A_REL)
 LINK_cc_A_DBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(A_PDB_NAME_OUT_DBG)" $(LDFLAGS_DBG)
 LINK_cc_A_STLDBG = $(LINK) /nologo /incremental:no /debug /pdb:"$(A_PDB_NAME_OUT_STLDBG)" $(LDFLAGS_STLDBG)
 
