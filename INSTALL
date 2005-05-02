@@ -18,6 +18,8 @@ This is major change since pre-4.0 releases, please read the instructions carefu
    a backup - this won't work! Most probably, you've already unpacked the archive before
    reading this file though ;)
 
+   Note: For Borland, unpack STLport archive to Borland root dir (NOT include dir).
+
 2) Make sure "stlport" directory of this distribution comes before compiler's one 
    in your search path when you compile the project;
 
@@ -33,7 +35,6 @@ This is major change since pre-4.0 releases, please read the instructions carefu
           Your compiler should be recognized by STLport source code with no configuring.
 	  Please edit appropriate configuration header for your compiler
           directly if you have to make compiler-specific configuration changes.
-
 
 4)  Go to "build/lib" subdirectory. It contains various makefiles for different
     compilers and 'make' utilities (GNU Make and Microsoft's nmake supported).
@@ -53,6 +54,7 @@ This is major change since pre-4.0 releases, please read the instructions carefu
  
    If you have decided to disable STLport iostreams and locale, you may stop reading here.
 
+   Note: Always include STLport before native 'include' dir. 
 
 ==== Building STLport iostreams library ==========
 
@@ -81,7 +83,7 @@ build process description, for a more detailed one check the doc folder:
 	make -f sunpro.mak clean install
 
 
-    Note: 'install' taget work slightly different from ordinal---it install libraries into
+    Note: 'install' target work slightly different from ordinal---it install libraries into
     <STLport root dir>/lib catalog, NOT IN SYSTEM CATALOG. You can do 'installation' with
     following commands (on UNIX-like platforms):
 
@@ -97,6 +99,11 @@ build process description, for a more detailed one check the doc folder:
 
       ....
 
+      Borland example: 
+	    Open a DOS box in Windows
+        cd F:\CBuilderX\STLport-5.0.0\build\lib               
+        make -f bc56.mak depend
+        make -f bc56.mak install
 
     If you use cross-compiler, you can find libraries in the <STLport root dir>/lib/<taget platform>
     catalog.

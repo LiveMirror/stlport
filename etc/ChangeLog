@@ -1,3 +1,8 @@
+2005-05-02  Petr Ovtchenkov  <ptr@island...>
+
+	* makesystem (repository): branch STLPORT_5_0_BC5, makefiles from
+	Eric Sanford for Borland's CBuilder 5.6.
+
 2005-04-28  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_sstream.h, _num_put.c: __in replaced by __imode, __out by __omode
@@ -1433,7 +1438,7 @@
 	specializations of const, volatile and const volatile native types.
 	
 	* stlport/stl/type_manips.h: Modification of the __bool2type default value
-	so that it concider any value as true and only the 0 value false.
+	so that it consider any value as true and only the 0 value false.
 	
 	* stlport/config/stl_msvc.h, stlport/stl/_config.h: Modification of the STLport
 	std equivalent namespace to be sure that the user rebuild correctly the STLport 

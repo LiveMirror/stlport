@@ -16,12 +16,16 @@ bin              - installation directory for STLport unit tests;
 build/lib        - build directory for STLport library (if you use
                    STLport iostreams and/or locale only)
 build/test/unit  - build directory for regression (unit) tests
+build/test/eh    - build directory for exception handling tests
 stlport          - main STLport include directory
 src              - source and makefiles for iostreams implementation
 lib              - installation directory for STLport library (if you
                    use STLport iostreams and/or locale only);
                    it may contain more subdirs, if you use
                    crosscompilation
+		   note: windows implementation may install STLport in 
+		   native lib directory by default, check compiler-specific
+		   install instructions for more information
 test/unit        - unit (regression) tests
 test/eh          - exception handling test using STLport iostreams
 etc              - miscellanous files (ChangeLog, TODO, scripts, etc.) 

@@ -1,0 +1,41 @@
+Borland C++ 5.6.4 BUGS.TXT for STLPort 5.0.0
+
+This file describes various obscure bugs and workarounds.
+Please see INSTALL.TXT and README.TXT for basic installation info.
+
+1. "Additional segments need to be defined in a .def file"
+     Add 'noinit.def' to the project.  See iostream.cpp for details.
+
+2. _STLP_STATIC_CONST_INIT_BUG
+    Borland generally has problems with static const. For example,
+    in _limits.h, a static const declared in the base class won't be
+    inherited.  It may be possible to use static const declarations by
+    declaring every static const in the base class and in every inherited
+    class, one static const per line, end each line with a semi-colon.
+    Otherwise, define _STLP_STATIC_CONST_INIT_BUG.
+
+3. CBuilderX C++ Class Browser annoyances
+    1. Files without extensions, e.g. <iostream>, <locale>
+      - excluded from searches
+      - unpredictable, intermittent syntax highlighting
+      - can't designate *. as a recognized file type
+    2. Macros:
+      - header macros aren't expanded, e.g. _STLP_NATIVE_CPP_C_HEADER(cstdio.h)
+      - template class macros aren't recognized, e.g., __BVECTOR
+      - arithmetic operators aren't recognized in macros, e.g. #if (__DEBUG > 1)
+      - empty macros aren't ignored, e.g. _STLP_PSPEC2
+    3. unsigned __int64
+      - class browser doesn't recognize it
+    4. To avoid class browser warning re missing 'oldstl/exception', copy the
+       following code to a new file, save as 'include/oldstl/exception'
+          #ifndef __OLDSTL_EXCEPTION
+          # define __OLDSTL_EXCEPTION
+          // empty header file to avoid CBuilderX class browser warning in <oldstl/new.h>
+          #endif
+    5. To avoid class browser warning re duplicate complex class, define
+       _STLP_USE_OWN_COMPLEX_CLASS in stl_bc.h and change line 96 of native
+       Borland 'include/math.h' header file from this:
+          #if defined (__cplusplus)
+       to this:
+          #if defined (__cplusplus) || defined (_STLP_USE_OWN_COMPLEX_CLASS)
+
