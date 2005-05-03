@@ -70,14 +70,16 @@
 #include <stl_user_config.h>
 
 #if defined (__BUILDING_STLPORT)
-//For the STLport implementation we can use everything:
+/* For the STLport implementation we can use everything:
+ */
 #  if defined (_STLP_NO_ANACHRONISMS)
 #    undef _STLP_NO_ANACHRONISMS
 #  endif
 #  if defined (_STLP_NO_EXTENSIONS)
 #    undef _STLP_NO_EXTENSIONS
 #  endif
-//Moreover there are things that has no sens:
+/* Moreover there are things that has no sens:
+ */
 #  if defined (_STLP_NO_IOSTREAMS)
 #    error If you do not use iostreams you do not need to build the STLport library.
 #  endif
@@ -119,7 +121,8 @@
  * Performs integrity check on user-specified parameters
  * and site-specific settings.
  */
-// # include <stl/_check_config.h>
+/* # include <stl/_check_config.h>
+ */
 
 /* SGI terms */
 
@@ -665,20 +668,21 @@ namespace _STLP_PRIV_NAME {
 #  define _STLP_BEGIN_NAMESPACE namespace _STLP_STD_NAME {
 #  define _STLP_END_NAMESPACE }
 #  if !defined (_STLP_USING_NAMESPACE_BUG)
-//We prefer to make private namespace a totaly seperated namespace...
+/* We prefer to make private namespace a totaly seperated namespace...
+ */
 #    define _STLP_PRIV ::_STLP_PRIV_NAME
 #    define _STLP_MOVE_TO_PRIV_NAMESPACE } namespace _STLP_PRIV_NAME {
 #    define _STLP_MOVE_TO_STD_NAMESPACE } namespace _STLP_STD_NAME {
 #  else
-//but sometimes we can't:
+/* but sometimes we can't:
+ */
 #    define _STLP_PRIV _STLP_PRIV_NAME
 #    define _STLP_MOVE_TO_PRIV_NAMESPACE namespace _STLP_PRIV_NAME {
 #    define _STLP_MOVE_TO_STD_NAMESPACE }
 #  endif
 
-// _STLP_BEGIN_NAMESPACE _STLP_END_NAMESPACE
-
-//Backward compatibility:
+/* Backward compatibility:
+ */
 namespace _STL = _STLP_STD_NAME;
 #undef __STLPORT_NAMESPACE
 #define __STLPORT_NAMESPACE _STLP_STD_NAME
@@ -829,8 +833,9 @@ namespace _STL = _STLP_STD_NAME;
 #  endif
 #endif
 
-//When the compiler do not correctly initialized the basic types value in default parameters we prefer
-//to avoid them to be able to correct this bug.
+/* When the compiler do not correctly initialized the basic types value in default parameters we prefer
+ * to avoid them to be able to correct this bug.
+ */
 #if defined (_STLP_DEF_CONST_DEF_PARAM_BUG)
 #  define _STLP_DONT_SUP_DFLT_PARAM 1
 #endif
@@ -1154,7 +1159,8 @@ typedef int bool;
 #  define _STLP_PSPEC3(t1,t2,t3)	/* nothing */
 #endif
 
-//Activation of the partial template workaround:
+/* Activation of the partial template workaround:
+ */
 #if !defined(_STLP_DONT_USE_PARTIAL_SPEC_WRKD) &&\
    (!defined(_STLP_CLASS_PARTIAL_SPECIALIZATION) || !defined(_STLP_FUNCTION_TMPL_PARTIAL_ORDER))
 #  define _STLP_USE_PARTIAL_SPEC_WORKAROUND

@@ -23,9 +23,10 @@
 #ifndef _STLP_WINCE
 
 #  if defined (_MSC_VER)
-//Native stddef.h contains errno macro definition making inclusion of native
-//errno.h in STLport errno.h impossible. We are then forced to include errno.h 
-//first.
+/* Native stddef.h contains errno macro definition making inclusion of native
+ * errno.h in STLport errno.h impossible. We are then forced to include errno.h 
+ * first.
+ */
 #    include "errno.h"
 #  endif
 
@@ -42,6 +43,7 @@
 #  endif
 #endif
 
-// Local Variables:
-// mode:C++
-// End:
+/* Local Variables:
+ * mode:C++
+ * End:
+ */

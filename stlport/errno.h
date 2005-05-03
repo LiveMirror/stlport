@@ -40,7 +40,7 @@
  *
  * To fix this problem you have to find where this definition comes from and include errno.h before it.
  */
-#    error errno has been defined before inclusion of errno.h file.
+#    error errno has been defined before inclusion of errno.h header.
 #  endif
 
 #  ifndef errno /* errno still not defined */
@@ -59,6 +59,7 @@ _STLP_END_NAMESPACE
 #  undef  _STLP_DONT_POP_HEADER_ID
 #endif
 
-// Local Variables:
-// mode:C++
-// End:
+/* Local Variables:
+ * mode:C++
+ * End:
+ */

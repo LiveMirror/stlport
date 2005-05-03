@@ -24,10 +24,10 @@
  */
 
  
-//==========================================================
-// User-settable macros that control compilation:
-//              Features selection
-//==========================================================
+/*==========================================================
+ * User-settable macros that control compilation:
+ *              Features selection
+ *==========================================================*/
 
 /*
  * Use this switch for embedded systems where no iostreams are available
@@ -36,7 +36,9 @@
  * If you want iostreams, you have to compile library in ../src and supply resulting
  * library at link time.
  */
-// #define _STLP_NO_IOSTREAMS 1
+/*
+#define _STLP_NO_IOSTREAMS 1
+*/
 
 /* 
  * Set _STLP_DEBUG to turn the "Debug Mode" on.
@@ -45,18 +47,22 @@
  * Please do not forget to link proper STLport library flavor
  * (e.g libstlport_gcc_stldebug.a) when you set this flag in STLport iostreams mode.
  */
-// #define   _STLP_DEBUG 1
+/*
+#define   _STLP_DEBUG 1
+*/
 /*
  * You can also choose the debug level:
- * STLport debug level: Check only what the STLport implementation concider as invalid. 
+ * STLport debug level: Default value
+ *                      Check only what the STLport implementation concider as invalid. 
  *                      It also change the iterator invalidation schema.
  * Standard debug level: Check for all operations the standard concider as "undefined behavior"
  *                       even if STlport implement it correctly. It also invalidates iterators
  *                       more often.
  */
-// #define   _STLP_DEBUG_LEVEL _STLP_STLPORT_DBG_LEVEL /*(default)*/
-// #define   _STLP_DEBUG_LEVEL _STLP_STANDARD_DBG_LEVEL
-
+/*
+#define   _STLP_DEBUG_LEVEL _STLP_STLPORT_DBG_LEVEL
+#define   _STLP_DEBUG_LEVEL _STLP_STANDARD_DBG_LEVEL
+*/
 
 /* 
  *  _STLP_NO_CUSTOM_IO : define this if you do not instantiate basic_xxx iostream classes
@@ -70,8 +76,9 @@
  *  Option does not affect STLport library build; you may use the same binary library with and without this option, 
  *  on per-project basis.
  */
-// #define _STLP_NO_CUSTOM_IO
-
+/*
+#define _STLP_NO_CUSTOM_IO
+*/
 
 /* 
  * _STLP_NO_RELOPS_NAMESPACE: if defined, don't put the relational
@@ -80,16 +87,18 @@
  * Note : if the compiler do not support namespaces, those operators are not be provided by default,
  * to simulate hiding them into rel_ops. This was proved to resolve many compiler bugs with ambiguity.
  */
-
-// #define _STLP_NO_RELOPS_NAMESPACE 1
+/*
+#define _STLP_NO_RELOPS_NAMESPACE 1
+*/
 
 /*
  * If _STLP_USE_OWN_NAMESPACE is in effect, STLport by default will try
  * to rename std:: for the user to stlport::. If you do not want this feature, 
  * please define the following switch and then use stlport::
  */
-// #define _STLP_DONT_REDEFINE_STD 1
-
+/*
+#define _STLP_DONT_REDEFINE_STD 1
+*/
 
 /*
  * _STLP_WHOLE_NATIVE_STD : only meaningful in _STLP_USE_OWN_NAMESPACE mode.
@@ -102,7 +111,9 @@
  * Otherwise this option is not recommended as it increases the size of your object files
  * and slows down compilation.
  */
-// #define _STLP_WHOLE_NATIVE_STD
+/*
+#define _STLP_WHOLE_NATIVE_STD
+*/
 
 
 /*
@@ -111,9 +122,10 @@
  * with _STLP_SHRED_BYTE (see below).
  * Note : _STLP_DEBUG and _STLP_DEBUG_ALLOC don't set this option automatically.
  */
-
-// #define _STLP_DEBUG_UNINITIALIZED 1
-// #define _STLP_DEBUG_ALLOC 1
+/*
+#define _STLP_DEBUG_UNINITIALIZED 1
+#define _STLP_DEBUG_ALLOC 1
+*/
 
 /*
  * Uncomment and provide a definition for the byte with which raw memory
@@ -122,7 +134,9 @@
  * or otherwise abused. A good value may already be defined for your platform; see
  * stl_config.h
  */
-// #define _STLP_SHRED_BYTE 0xA3
+/*
+#define _STLP_SHRED_BYTE 0xA3
+*/
 
 /*
  *  This option is for gcc users only and only affects systems where native linker
@@ -130,37 +144,46 @@
  *  It is being put in this file as there is no way to check if we are using GNU ld automatically,
  *  so it becomes user's responsibility.
  */
+/*
+#define _STLP_GCC_USES_GNU_LD
+*/
 
-// #define _STLP_GCC_USES_GNU_LD
-
-//==========================================================
-// Compatibility section
-//==========================================================
+/*==========================================================
+ * Compatibility section
+ *==========================================================*/
 
 /*
  *  Define this macro to disable anachronistic constructs (like the ones used in HP STL and
  *  not included in final standard, etc. 
  */
-// #define _STLP_NO_ANACHRONISMS 1
+/*
+#define _STLP_NO_ANACHRONISMS 1
+*/
 
 /*
  *  Define this macro to disable STLport extensions (for example, to make sure your code will 
  *  compile with some other implementation )
  */
-// #define _STLP_NO_EXTENSIONS   1
+/*
+#define _STLP_NO_EXTENSIONS 1
+*/
 
 /* 
  * You should define this macro if compiling with MFC - STLport <stl/_config.h>
  * then include <afx.h> instead of <windows.h> to get synchronisation primitives 
  */
-// #define _STLP_USE_MFC 1
+/*
+#define _STLP_USE_MFC 1
+*/
 
 /*
  * boris : this setting is here as we cannot detect precense of new Platform SDK automatically 
  * If you are using new PSDK with VC++ 6.0 or lower,
  * please define this to get correct prototypes for InterlockedXXX functions
  */
-// #define _STLP_NEW_PLATFORM_SDK 1
+/*
+#define _STLP_NEW_PLATFORM_SDK 1
+*/
 
 /*
  * Some compilers support the automatic linking feature. 
@@ -169,14 +192,18 @@
  * For the moment, this feature is only supported and implemented within STLport
  * by the Microsoft compilers.
  */
-// #define _STLP_DONT_USE_AUTO_LINK 1
+/*
+#define _STLP_DONT_USE_AUTO_LINK 1
+*/
 
 /*
  * When using automatic linking (see above), output a message that tells the 
  * user which lib is getting linked via 'pragma message(..)'.
  * This setting has no effect if automatic linking is not active.
  */
-// #define _STLP_VERBOSE_AUTO_LINK 1
+/*
+#define _STLP_VERBOSE_AUTO_LINK 1
+*/
 
 
 /*
@@ -189,7 +216,9 @@
  * Affects : map<>, multimap<>, set<>, multiset<>, hash_*<>, 
  * queue<>, priority_queue<>, stack<>, istream_iterator<>
  */
-// #define _STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS 1
+/*
+#define _STLP_MINIMUM_DEFAULT_TEMPLATE_PARAMS 1
+*/
 
 /*
  * The agregation of strings using the + operator is an expensive operation
@@ -205,7 +234,9 @@
  * The drawback can be longer compilation time and bigger executable size.
  * STLport rebuild: Yes
  */
-// #define _STLP_USE_TEMPLATE_EXPRESSION 1
+/*
+#define _STLP_USE_TEMPLATE_EXPRESSION 1
+*/
 
 /*
  * By default the STLport basic_string implementation use a little static buffer
@@ -215,7 +246,9 @@
  * prefer systematical dynamic allocation turn on this macro.
  * STLport rebuild: Yes
  */
-// #define _STLP_DONT_USE_SHORT_STRING_OPTIM 1
+/*
+#define _STLP_DONT_USE_SHORT_STRING_OPTIM 1
+*/
 
 /*
  * In theory a string implementation is not force to append a terminating character
@@ -230,8 +263,9 @@
  *         const_cast to assign the null terminated char in the c_str const method.
  * STLport rebuild: Yes
  */
-// #define _STLP_FORCE_STRING_TERMINATION 1
-
+/*
+#define _STLP_FORCE_STRING_TERMINATION 1
+*/
 
 /*
  * To reduce the famous code bloat trouble due to the use of templates STLport grant
@@ -244,7 +278,9 @@
  * and pointer to class member method. So if you have instanciating any container with
  * such a type compilation will failed.
  */
-// #define _STLP_USE_PTR_SPECIALIZATIONS 1
+/*
+#define _STLP_USE_PTR_SPECIALIZATIONS 1
+*/
 
 /*
  * To achieve many different optimizations within the template implementations STLport
@@ -255,11 +291,13 @@
  * to use this feature at STLport built time you will have to define the
  * STLP_BUILD_BOOST_PATH enrironment variable with the value of the boost library path.
  */
-// #define _STLP_USE_BOOST_SUPPORT 1
+/*
+#define _STLP_USE_BOOST_SUPPORT 1
+*/
 
-//==========================================================
+/*==========================================================*/
 
-// Local Variables:
-// mode: C++
-// End:
-
+/* Local Variables:
+ * mode: C++
+ * End:
+ */

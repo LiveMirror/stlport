@@ -1,3 +1,11 @@
+2005-05-03  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl_user_config.h, stl/_site_config.h, config/stl_gcc.h, _prolog.h
+	, _epilog.h : Use strict Ansi C comments (/**/) for headers accessible thought 
+	the STLport C headers.
+	
+	* stlport/C headers: Cleaned from C++ style comments.
+
 2005-05-02  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/nmake/vc-common.mak: Restore of LDFLAGS_A_REL introduce the

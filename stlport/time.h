@@ -13,29 +13,30 @@
  *
  */
 
-# if !defined (_STLP_OUTERMOST_HEADER_ID)
+#if !defined (_STLP_OUTERMOST_HEADER_ID)
 #  define _STLP_OUTERMOST_HEADER_ID 0x272
 #  include <stl/_prolog.h>
-# elif (_STLP_OUTERMOST_HEADER_ID == 0x272) && ! defined (_STLP_DONT_POP_HEADER_ID)
+#elif (_STLP_OUTERMOST_HEADER_ID == 0x272) && ! defined (_STLP_DONT_POP_HEADER_ID)
 #  define _STLP_DONT_POP_HEADER_ID
-# endif
+#endif
 
-# ifdef _STLP_WCE_EVC3
+#ifdef _STLP_WCE_EVC3
 #  pragma message("eMbedded Visual C++ 3 doesn't have a time.h header; STLport won't include native time.h here")
-# else
+#else
 #  include _STLP_NATIVE_C_HEADER(time.h)
-# endif // _STLP_WCE_EVC3
+#endif
 
 
-# if (_STLP_OUTERMOST_HEADER_ID == 0x272)
+#if (_STLP_OUTERMOST_HEADER_ID == 0x272)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)
-#   include <stl/_epilog.h>
-#   undef  _STLP_OUTERMOST_HEADER_ID
+#    include <stl/_epilog.h>
+#    undef  _STLP_OUTERMOST_HEADER_ID
 #  else
-#   undef  _STLP_DONT_POP_HEADER_ID
+#    undef  _STLP_DONT_POP_HEADER_ID
 #  endif
-# endif
+#endif
 
-// Local Variables:
-// mode:C++
-// End:
+/* Local Variables:
+ * mode:C++
+ * End:
+ */
