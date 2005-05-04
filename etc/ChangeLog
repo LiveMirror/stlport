@@ -1,3 +1,11 @@
+2005-05-04  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_msvc.h: Change configuration for MSVC .Net 2003 and 2005
+	that seems to have a bug in the namespace management thanks .
+	
+	* stlport/stdlib.h: Add errno.h inclusion from this file for gcc mingw as this
+	compiler version do define errno macro in stdlib.h as MSVC do.
+	
 2005-05-03  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl_user_config.h, stl/_site_config.h, config/stl_gcc.h, _prolog.h

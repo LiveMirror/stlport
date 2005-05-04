@@ -113,6 +113,22 @@
 #    define _STLP_DONT_RETURN_VOID 1
 #  endif
 
+/*
+ * MSVC6 is known to have many trouble with namespace management but
+ * MSVC .Net 2003 and 2005 also have a bug difficult to reproduce without
+ * STLport:
+ * namespace stlp_std {
+ *   typedef int foo_int;
+ * }
+ * #include <map>
+ * const foo_int bar = 0;
+ *
+ * As you can see foo is available without namespace specification as if 
+ * a using namespace stlp_std has been performed. Defining _STLP_USING_NAMESPACE_BUG
+ * restore the expected compilation error.
+ */
+#  define _STLP_USING_NAMESPACE_BUG 1
+
 #endif /* _STLP_MSVC */
 
 #if (_MSC_VER <= 1310) 
@@ -131,7 +147,6 @@
 #  define _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE 1
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
 #  define _STLP_VENDOR_UNEXPECTED_STD 1
-#  define _STLP_USING_NAMESPACE_BUG 1
 #endif
 
 #if (_STLP_MSVC > 1100)
