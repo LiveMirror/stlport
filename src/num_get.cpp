@@ -76,7 +76,7 @@ __valid_grouping(const char * first1, const char * last1,
   return *last1 <= *first2;
 }
 
-// this needed for some compilers to make sure sumbols are extern
+// this needed for some compilers to make sure symbols are extern
 extern const unsigned char __digit_val_table[];
 extern const char __narrow_atoms[];
 
