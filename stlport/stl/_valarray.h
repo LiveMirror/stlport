@@ -348,8 +348,8 @@ public:                         // Other member functions.
   
   void resize(size_t __n, value_type __x = value_type()) {
     _STLP_STD::_Destroy_Range(this->_M_first, this->_M_first + this->_M_size);
-    this->_Valarray_base<_Tp>::_M_deallocate();
-    this->_Valarray_base<_Tp>::_M_allocate(__n);
+    _Valarray_base<_Tp>::_M_deallocate();
+    _Valarray_base<_Tp>::_M_allocate(__n);
     uninitialized_fill_n(this->_M_first, this->_M_size, __x);
   }
 };
