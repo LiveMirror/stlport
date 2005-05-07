@@ -2,6 +2,8 @@
 
 	* stlport/errno.h: use C++ 'using' construction only for C++. Thanks Gary.
 
+	* build/Makefiles/gmake/lib/gcc.mak: option for libname for Darwin.
+
 2005-05-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Change configuration for MSVC .Net 2003 and 2005
