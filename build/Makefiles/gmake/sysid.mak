@@ -3,6 +3,11 @@
 
 ifndef BUILD_DATE
 
+ifeq (mwccnlm,$(COMPILER_NAME))
+# this is really cross
+TARGET_OS := netware
+endif
+
 ifndef TARGET_OS
 OSNAME := $(shell uname -s | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
 
@@ -28,10 +33,17 @@ OSREL_MINOR := $(shell echo ${OSREL} | tr '.-' ' ' | awk '{print $$2;}')
 endif
 
 else
+ifndef (mwccnlm,$(COMPILER_NAME))
 OSNAME := $(shell echo ${TARGET_OS} | sed 's/^[a-z0-9]\+-[a-z0-9]\+-\([a-z]\+\).*/\1/' )
 OSREL  := $(shell echo ${TARGET_OS} | sed 's/^[[:alnum:]]\+-[a-z0-9]\+-[a-z]\+\([a-zA-Z.0-9]*\).*/\1/' )
 M_ARCH := $(shell echo ${TARGET_OS} | sed 's/^\([a-z0-9]\+\)-.*/\1/' )
 P_ARCH := unknown
+else
+OSNAME := netware
+OSREL  := 5
+M_ARCH := i386
+P_ARCH := unknown
+endif
 endif
 
 NODENAME := $(shell uname -n | tr '[A-Z]' '[a-z]' )
