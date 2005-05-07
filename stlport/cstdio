@@ -33,7 +33,7 @@
 #  include _STLP_NATIVE_C_HEADER(stdio.h)
 # endif
 
-# ifdef __MWERKS__
+# if defined(__MWERKS__) && !defined(N_PLAT_NLM)
 #  undef stdin
 #  undef stdout
 #  undef stderr
@@ -110,7 +110,7 @@ using _STLP_VENDOR_CSTD::ungetc;
 using _STLP_VENDOR_CSTD::vfprintf;
 using _STLP_VENDOR_CSTD::vprintf;
 using _STLP_VENDOR_CSTD::vsprintf;
-#   if (defined (__MWERKS__) || (defined (_STLP_MSVC) && (_STLP_MSVC < 1400)) || defined (__ICL) || \
+#   if ((defined (__MWERKS__) && !defined(N_PLAT_NLM)) || (defined (_STLP_MSVC) && (_STLP_MSVC < 1400)) || defined (__ICL) || \
 ( defined (__BORLANDC__) && __BORLANDC__ > 0x530))
 using _STLP_VENDOR_CSTD::vsnprintf;
 #   endif

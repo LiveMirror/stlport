@@ -131,6 +131,9 @@ using _STLP_VENDOR_CSTD::time_t;
 #  include <cassert>
 #  include <stdio.h>
 #  define _STLP_MUTEX_INITIALIZER = { 0 }
+#elif defined (_STLP_NWTHREADS)
+#  include <nwthread.h>
+#  include <nwsemaph.h>
 #elif defined(_STLP_OS2THREADS)
 #  ifdef __GNUC__
 #    define INCL_DOSSEMAPHORES
@@ -312,6 +315,18 @@ struct _STLP_CLASS_DECLSPEC _STLP_mutex_base {
     status_t t = release_sem(sem);
     assert(t == B_NO_ERROR);
   }
+#  elif defined(_STLP_NWTHREADS)
+  LONG _M_lock;
+  inline void _M_initialize() {
+    _M_lock = OpenLocalSemaphore(1);
+  }
+  inline void _M_destroy() {
+    CloseLocalSemaphore(_M_lock);
+  }
+  inline void _M_acquire_lock() {
+    WaitOnLocalSemaphore(_M_lock);
+  }
+  inline void _M_release_lock() { SignalLocalSemaphore(_M_lock); }
 #  else      //*ty 11/24/2001 - added configuration check
 #    error "Unknown thread facility configuration"
 #  endif

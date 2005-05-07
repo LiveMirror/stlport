@@ -51,6 +51,37 @@ typedef long int wint_t;
 #  if defined(__OpenBSD__)
 typedef _BSD_WINT_T_ wint_t;
 #  endif /* __OpenBSD__ */
+# elif defined(__MWERKS__) && defined(N_PLAT_NLM)
+/*
+ * MSL library has wrong definition of wint_t (with -wchar_t on) in wchar_t.h header.
+ * IMHO the best way is to comment line
+ *       typedef wchar_t wint_t;
+ * (I use this way).
+ *
+ * Another solution is to define _WINT_T (to avoid conflict with wint_t definitions in
+ * Novell SDK headers, _WCHAR_T defined in nlm_prefix.h). But you should define one
+ * before include any header from Novell's SDK, so this isn't too good choice.
+ *
+ * And third solution is don't use anyware (even here) wchar_t.h
+ *
+ *      - ptr, 2003 and 2005-05-07
+ */
+/*
+#if __option(wchar_type)
+# define _WINT_T
+#endif
+*/
+#  include _STLP_NATIVE_CPP_C_HEADER(wchar_t.h)
+#  include _STLP_NATIVE_C_HEADER(stddef.h)
+#  include _STLP_NATIVE_C_HEADER(stdio.h)
+#  include <unicode.h>
+inline int wcslen( const wchar_t *_wc ) { return ::unilen( __REINTERPRET_CAST(const unicode *, _wc ) ); }
+inline int wcscmp( const wchar_t *_wc1, const wchar_t *_wc2 ) { return ::unicmp( __REINTERPRET_CAST(const unicode *, _wc1 ),  __REINTERPRET_CAST(const unicode *, _wc2 ) ); }
+inline wchar_t *wcsstr( const wchar_t *_wc1, const wchar_t *_wc2 ) { return (wchar_t *)::unistr( __REINTERPRET_CAST(const unicode *, _wc1 ),  __REINTERPRET_CAST(const unicode *, _wc2 ) ); }
+// inline wchar_t *wcschr( const wchar_t *_wc1, wchar_t _wc2 ) { return (wchar_t *)::unichr( (unicode *)_wc1,  __REINTERPRET_CAST(unicode, _wc2 ) ); }
+// inline wchar_t *wcsrchr( const wchar_t *_wc1, wchar_t _wc2 ) { return ::unirchr( __REINTERPRET_CAST(const unicode *, _wc1 ),  __REINTERPRET_CAST(unicode, _wc2 ) ); }
+// inline wchar_t *wcscpy( wchar_t *_wc1, const wchar_t *_wc2 ) { return (wchar_t *)::unicpy( __REINTERPRET_CAST(unicode *, _wc1 ),  __REINTERPRET_CAST(const unicode *, _wc2 ) ); }
+inline wchar_t *wcspbrk( const wchar_t *_wc, const wchar_t *_wc2 ) { return (wchar_t *)::unipbrk( __REINTERPRET_CAST(const unicode *, _wc ), __REINTERPRET_CAST(const unicode *, _wc2 ) ); }
 # else 
 #  include _STLP_NATIVE_C_HEADER(wchar.h)
 
@@ -115,7 +146,9 @@ _STLP_BEGIN_NAMESPACE
 typedef int wint_t;
 # else
 // gcc 3.0 has a glitch : wint_t only sucked into the global namespace if _GLIBCPP_USE_WCHAR_T is defined
-#  if defined (__GNUC__) && ! defined (_GLIBCPP_USE_WCHAR_T)
+// __MWERKS__ has definition in wchar_t.h (MSL C++), but ones differ from definition
+// in stdio.h; I prefer settings from last file.
+#  if (defined (__GNUC__) && ! defined (_GLIBCPP_USE_WCHAR_T)) // || (defined(__MWERKS__) && defined(N_PLAT_NLM))
 using ::wint_t;
 #  else
 using _STLP_VENDOR_CSTD::wint_t;
@@ -130,13 +163,13 @@ using _STLP_VENDOR_MB_NAMESPACE::mbstate_t;
 
 # if !defined (_STLP_NO_CSTD_FUNCTION_IMPORTS) && !defined(_STLP_WCHAR_BORLAND_EXCLUDE) \
   && (!defined(__MSL__) || __MSL__ > 0x6001)
-#  if ! (defined (__KCC) || defined (__GNUC__)) && !defined(_STLP_WCE_NET)
+#  if ! (defined (__KCC) || defined (__GNUC__)) && !defined(_STLP_WCE_NET) && !(defined(__MWERKS__) && defined(N_PLAT_NLM))
 using _STLP_VENDOR_MB_NAMESPACE::btowc;
 #   if (!defined(__MSL__) || __MSL__ > 0x7001)
 using _STLP_VENDOR_MB_NAMESPACE::mbsinit;
 #   endif
 #  endif
-# if ! defined (__GNUC__) && !defined(_STLP_WCE_NET)
+# if ! defined (__GNUC__) && !defined(_STLP_WCE_NET) && !(defined(__MWERKS__) && defined(N_PLAT_NLM))
 using _STLP_VENDOR_MB_NAMESPACE::mbrlen;
 using _STLP_VENDOR_MB_NAMESPACE::mbrtowc;
 using _STLP_VENDOR_MB_NAMESPACE::mbsrtowcs;
@@ -149,7 +182,7 @@ using _STLP_VENDOR_MB_NAMESPACE::wcsrtombs;
 
 # if !defined (_STLP_NO_NATIVE_WIDE_FUNCTIONS) && ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
 
-# if !defined (_STLP_WCHAR_BORLAND_EXCLUDE) && ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
+# if !defined (_STLP_WCHAR_BORLAND_EXCLUDE) && ! defined (_STLP_NO_CSTD_FUNCTION_IMPORTS) && !(defined(__MWERKS__) && defined(N_PLAT_NLM))
 using _STLP_VENDOR_CSTD::fgetwc;
 using _STLP_VENDOR_CSTD::fgetws;
 using _STLP_VENDOR_CSTD::fputwc;
@@ -157,7 +190,7 @@ using _STLP_VENDOR_CSTD::fputws;
 # endif
 
 #  if !( defined (_STLP_WCHAR_SUNPRO_EXCLUDE) || defined (_STLP_WCHAR_BORLAND_EXCLUDE) \
-      || defined(_STLP_WCHAR_HPACC_EXCLUDE) )
+      || defined(_STLP_WCHAR_HPACC_EXCLUDE) || (defined(__MWERKS__) && defined(N_PLAT_NLM)))
 # ifndef __DECCXX
 using _STLP_VENDOR_CSTD::fwide;
 # endif
@@ -166,7 +199,7 @@ using _STLP_VENDOR_CSTD::fwscanf;
 using _STLP_VENDOR_CSTD::getwchar;
 #  endif
 
-# ifndef _STLP_WCHAR_BORLAND_EXCLUDE
+# if !defined(_STLP_WCHAR_BORLAND_EXCLUDE) && !(defined(__MWERKS__) && defined(N_PLAT_NLM))
 #  ifndef _STLP_WCE_NET
 using _STLP_VENDOR_CSTD::getwc;
 #  endif
@@ -179,7 +212,7 @@ using _STLP_VENDOR_CSTD::putwchar;
 # endif
 
 #  if !( defined (_STLP_WCHAR_SUNPRO_EXCLUDE) || defined (_STLP_WCHAR_BORLAND_EXCLUDE)\
-      || defined(_STLP_WCHAR_HPACC_EXCLUDE) ) 
+      || defined(_STLP_WCHAR_HPACC_EXCLUDE) || (defined(__MWERKS__) && defined(N_PLAT_NLM)))
 using _STLP_VENDOR_CSTD::swprintf;
 using _STLP_VENDOR_CSTD::swscanf;
 using _STLP_VENDOR_CSTD::vfwprintf;
@@ -195,7 +228,7 @@ using _STLP_VENDOR_CSTD::wcstok;
 
 #  endif
 
-# if !(defined (__BORLANDC__) && (__BORLANDC__ < 0x540))
+# if !(defined (__BORLANDC__) && (__BORLANDC__ < 0x540)) && !(defined(__MWERKS__) && defined(N_PLAT_NLM))
 #  ifndef _STLP_WCE_NET
 using _STLP_VENDOR_CSTD::wcscoll;
 using _STLP_VENDOR_CSTD::wcsxfrm;
@@ -218,14 +251,14 @@ using _STLP_VENDOR_CSTD::wcsspn;
 
 # endif
 
-#  if !defined (_STLP_WCHAR_BORLAND_EXCLUDE)
+#  if !defined (_STLP_WCHAR_BORLAND_EXCLUDE) && !(defined(__MWERKS__) && defined(N_PLAT_NLM))
 
 using _STLP_VENDOR_CSTD::wcstod;
 using _STLP_VENDOR_CSTD::wcstol;
 
 # endif
 
-#  if !( defined (_STLP_WCHAR_SUNPRO_EXCLUDE) || defined(_STLP_WCHAR_HPACC_EXCLUDE) )
+#  if !( defined (_STLP_WCHAR_SUNPRO_EXCLUDE) || defined(_STLP_WCHAR_HPACC_EXCLUDE) || (defined(__MWERKS__) && defined(N_PLAT_NLM)))
 
 using _STLP_VENDOR_CSTD::wcsstr;
 using _STLP_VENDOR_CSTD::wmemchr;
@@ -248,8 +281,17 @@ using _STLP_VENDOR_CSTD::wmemcpy;
 using _STLP_VENDOR_CSTD::wmemset;
 #  endif
 
+# elif defined(__MWERKS__) && defined(N_PLAT_NLM) /* _STLP_NO_NATIVE_WIDE_FUNCTIONS */
+using _STLP_VENDOR_CSTD::wcslen;
+using _STLP_VENDOR_CSTD::wcscmp;
+using _STLP_VENDOR_CSTD::wcscpy;
+using _STLP_VENDOR_CSTD::wcsstr;
+using _STLP_VENDOR_CSTD::wcschr;
+using _STLP_VENDOR_CSTD::wcsrchr;
+using _STLP_VENDOR_CSTD::wcspbrk;
 # endif /* _STLP_NO_NATIVE_WIDE_FUNCTIONS */
 _STLP_END_NAMESPACE
+
 # endif /* _STLP_IMPORT_VENDOR_CSTD */
 
 # undef _STLP_WCHAR_SUNPRO_EXCLUDE

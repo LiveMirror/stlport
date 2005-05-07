@@ -1,4 +1,4 @@
-# Time-stamp: <04/03/03 15:49:24 ptr>
+# Time-stamp: <05/05/06 17:29:04 ptr>
 # $Id$
 
 SO := nlm
@@ -15,3 +15,4 @@ INSTALL_SO := ${INSTALL} -c -m 0755
 INSTALL_A := ${INSTALL} -c -m 0644
 INSTALL_EXE := ${INSTALL} -c -m 0755
 
+EXE := .nlm

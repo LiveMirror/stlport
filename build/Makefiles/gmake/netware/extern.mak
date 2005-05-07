@@ -2,13 +2,13 @@
 # $Id$
 
 # ===== Fix me! =====
-MWCW_BASE = e:/Metrowerks/CodeWarrior
-MWCW_NOVELL_SDK_BASE = e:/Novell/ndk/nwsdk
-STLPORT_LIB_DIR = e:/STLlab/STLport/lib
-STLPORT_INCLUDE_DIR = e:/STLlab/STLport/stlport
+MWCW_BASE = c:/Program Files/Metrowerks/CodeWarrior
+MWCW_NOVELL_SDK_BASE = c:/Novell/ndk/nwsdk
+STLPORT_LIB_DIR = e:/STLport/lib
+STLPORT_INCLUDE_DIR = e:/STLport/stlport
 # =====         =====
 
-MWCW_NOVELL = $(MWCW_BASE)/Novell Support/Metrowerks Support/Headers
+#MWCW_NOVELL_R = $(MWCW_BASE)/Novell Support/Metrowerks Support/Headers
 MWCW_NOVELL_R = $(MWCW_BASE)/Novell Support/Metrowerks Support
 #MWCW_NOVELL_R_C_I = $(MWCW_BASE)/Novell Support/Metrowerks Support/Headers
 #MWCW_NOVELL_R_CPP_I = $(MWCW_BASE)/Novell Support/Metrowerks Support/Libraries/MSL C++/Include

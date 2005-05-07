@@ -268,6 +268,16 @@ struct _Locale_messages;
 #  define _Locale_SPACE  _ISSPACE
 #  define _Locale_PRINT  _ISPRINT
 #  define _Locale_ALPHA  _ISALPHA
+#elif defined (__MWERKS__) && defined(N_PLAT_NLM)
+#  define _Locale_CNTRL  _CNTRL_
+#  define _Locale_UPPER  _UPPER_
+#  define _Locale_LOWER  _LOWER_
+#  define _Locale_DIGIT  _DIGIT_
+#  define _Locale_XDIGIT _XDIGIT_
+#  define _Locale_PUNCT  _PUNCT_
+#  define _Locale_SPACE  _SPACE_
+#  define _Locale_PRINT  (_PUNCT_|_UPPER_|_LOWER_|_DIGIT_|_BLANK_)
+#  define _Locale_ALPHA  (_UPPER_|_LOWER_)
 #elif defined (__MWERKS__)
 #  define _Locale_CNTRL  __control_char
 #  define _Locale_UPPER  __upper_case

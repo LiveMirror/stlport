@@ -4,6 +4,34 @@
 
 	* build/Makefiles/gmake/lib/gcc.mak: option for libname for Darwin.
 
+	* build/Makefiles/gmake/app/mwccnlm.mak: build for Novell NetWare 5
+	with MetroWerks 7 and 8 compilers.
+
+	* build/Makefiles/gmake/lib/mwccnlm.mak: ditto
+
+	* build/lib/mwccnlm.mak: ditto
+
+	* build/Makefiles/gmake/mwccnlm.mak: ditto
+
+	* build/Makefiles/gmake/netware/extern.mak: ditto
+
+	* build/Makefiles/gmake/netware/lib.mak, sys.mak: ditto
+
+	* src/_stdio_file.h, num_get_float.cpp, num_put_float.cpp: ditto
+
+	* stlport/cstdio, cwchar, cwctype, stdio.h, wchar.h: ditto
+
+	* stlport/config/stl_mwerks.h: ditto
+
+	* stlport/stl/_config.h, _fstream.h, _hashtable.c, _sstream.c: ditto
+	
+	* stlport/stl/_threads.h, c_locale.h, char_traits.h: ditto
+
+	* build/Makefiles/gmake/sysid.mak: treat mwccnlm as cross-compiler, set correct
+	TARGET_OS and OS-related macros.
+
+	* stlport/stl/_valarray.h: remove exhaustive this->.
+
 2005-05-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Change configuration for MSVC .Net 2003 and 2005

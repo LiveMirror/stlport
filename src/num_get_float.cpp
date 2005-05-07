@@ -40,6 +40,34 @@ union _ll {
 };
 #endif
 
+#ifdef N_PLAT_NLM
+#  include <nlm/nwintxx.h>
+
+#ifdef INT64
+typedef unsigned INT64 uint64_t;
+#else
+// #error "Can't find INT64"
+// 64-bit int really not defined in headers
+// (_INTEGRAL_MAX_BITS < 64 in any case?), but compiler indeed know __int64
+//        - ptr, 2005-05-06
+typedef unsigned __int64 uint64_t; 
+#endif
+
+#ifdef INT32
+typedef unsigned INT32 uint32_t;
+#else
+#error "Can't find INT32"
+#endif
+
+union _ll {
+  uint64_t i64;
+  struct {
+    uint32_t lo;
+    uint32_t hi;
+  } i32;
+};
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------
@@ -76,7 +104,7 @@ typedef unsigned __int64 uint64;
 #elif defined(__MRC__) || defined(__SC__)    //*TY 02/25/2000 - added support for MPW compilers
 typedef unsigned long uint32;
 #  include "uint64.h"    //*TY 03/25/2000 - added 64bit math type definition
-#elif defined(__unix) || defined (__MINGW32__)
+#elif defined(__unix) || defined (__MINGW32__) || defined(N_PLAT_NLM)
 typedef uint32_t uint32;
 typedef uint64_t uint64;
 #  define ULL(x) x##ULL

@@ -33,7 +33,7 @@
 #      define _STRUCT_FILE
 #    endif
 
-#    ifdef __MWERKS__
+#    if defined(__MWERKS__) && !defined(N_PLAT_NLM)
 #      undef stdin
 #      undef stdout
 #      undef stderr
@@ -56,7 +56,8 @@
 
 #endif /* RC_INVOKED */
 
-/* Local Variables:
- * mode:C++
- * End:
- */
+/*
+Local Variables:
+mode:C++
+End:
+*/

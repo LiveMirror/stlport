@@ -27,13 +27,21 @@
 
 # ifndef _STLP_WCE_EVC3
 # if defined (_STLP_USE_NEW_C_HEADERS)
+#  ifndef N_PLAT_NLM
 #  include _STLP_NATIVE_CPP_C_HEADER(cwctype)
+#  else
+    // see comments in stlport/cwchar about wint_t on Novell
+#   include _STLP_NATIVE_CPP_C_HEADER(wchar_t.h)
+#  endif
 #  if defined  (__MSL__)
 namespace std {
 	typedef wchar_t wctrans_t;
 	wint_t 		towctrans(wint_t c, wctrans_t value);
 	wctrans_t 	wctrans(const char *name);
 }
+using std::wctrans_t;
+using std::towctrans;
+using std::wctrans;
 #  endif
 # else
 #  include _STLP_NATIVE_C_HEADER(wctype.h)
@@ -44,13 +52,14 @@ _STLP_BEGIN_NAMESPACE
 using _STLP_VENDOR_CSTD::wctype_t;
 using _STLP_VENDOR_CSTD::wint_t;
 # ifndef _STLP_NO_CSTD_FUNCTION_IMPORTS
-#  if ! defined (__BORLANDC__)
+#  if ! defined (__BORLANDC__) && !defined(__MSL__)
 using _STLP_VENDOR_CSTD::wctrans_t;
 using _STLP_VENDOR_CSTD::towctrans;
 using _STLP_VENDOR_CSTD::wctrans;
 using _STLP_VENDOR_CSTD::wctype;
 using _STLP_VENDOR_CSTD::iswctype;
 #  endif
+#  if !defined(N_PLAT_NLM)
 using _STLP_VENDOR_CSTD::iswalnum;
 using _STLP_VENDOR_CSTD::iswalpha;
 using _STLP_VENDOR_CSTD::iswcntrl;
@@ -66,6 +75,7 @@ using _STLP_VENDOR_CSTD::iswxdigit;
 
 using _STLP_VENDOR_CSTD::towlower;
 using _STLP_VENDOR_CSTD::towupper;
+#  endif /* !N_PLAT_NLM */
 #  endif /* _STLP_NO_CSTD_FUNCTION_IMPORTS */
 _STLP_END_NAMESPACE
 #endif /* _STLP_IMPORT_VENDOR_CSTD */
