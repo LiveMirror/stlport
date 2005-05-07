@@ -43,11 +43,13 @@
 #    error errno has been defined before inclusion of errno.h header.
 #  endif
 
-#  ifndef errno /* errno still not defined */
+#  ifdef __cplusplus
+#   ifndef errno /* errno still not defined */
 _STLP_BEGIN_NAMESPACE
 using ::errno;
 _STLP_END_NAMESPACE
-#  endif /* errno */
+#   endif /* errno */
+#  endif /* __cplusplus */
 
 #endif
 

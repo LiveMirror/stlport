@@ -1,3 +1,7 @@
+2005-05-07  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/errno.h: use C++ 'using' construction only for C++. Thanks Gary.
+
 2005-05-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Change configuration for MSVC .Net 2003 and 2005
@@ -8,8 +12,8 @@
 	
 2005-05-03  Francois Dumont  <dums@stlport...>
 
-	* stlport/stl_user_config.h, stl/_site_config.h, config/stl_gcc.h, _prolog.h
-	, _epilog.h : Use strict Ansi C comments (/**/) for headers accessible thought 
+	* stlport/stl_user_config.h, stl/_site_config.h, config/stl_gcc.h, _prolog.h,
+	_epilog.h: Use strict Ansi C comments (/**/) for headers accessible thought 
 	the STLport C headers.
 	
 	* stlport/C headers: Cleaned from C++ style comments.
