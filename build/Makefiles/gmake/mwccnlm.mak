@@ -1,4 +1,4 @@
-# Time-stamp: <05/03/21 10:42:37 ptr>
+# Time-stamp: <05/05/06 17:25:20 ptr>
 # $Id$
 
 
@@ -7,7 +7,7 @@ INCLUDES :=
 
 CXX := mwccnlm
 CC := mwccnlm
-LINK.cc := mwldnlm $(LDFLAGS) $(TARGET_ARCH)
+LINK.cc = mwldnlm $(LDFLAGS) $(TARGET_ARCH)
 
 ifeq ($(OSNAME), cygming)
 RC := windres
@@ -26,7 +26,7 @@ OPT ?=
 
 OUTPUT_OPTION = -o $@
 LINK_OUTPUT_OPTION = ${OUTPUT_OPTION}
-CPPFLAGS = $(DEFS) -gccinc -I. $(INCLUDES) -ir "$(MWCW_NOVELL_SDK)" -ir "$(MWCW_NOVELL_R)" -prefix nlm_prefix.h
+CPPFLAGS = $(DEFS) -gccinc -I. $(INCLUDES) -ir "$(MWCW_NOVELL_SDK)" -ir "$(MWCW_NOVELL_R)" -prefix Headers/nlm_prefix.h
 
 ifeq ($(OSNAME), cygming)
 release-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUILD=r -DBUILD_INFOS="-O2" --output-format coff
@@ -36,8 +36,8 @@ RC_OUTPUT_OPTION = -o $@
 COMPILE.rc = $(RC) $(RCFLAGS)
 endif
 
-CFLAGS = -lang c -msgstyle gcc -ext o -nostdinc $(OPT)
-CXXFLAGS = -lang c++ -msgstyle gcc -ext o -iso_templates on -bool on -Cpp_exceptions on -wchar_t on -nostdinc $(OPT)
+CFLAGS = -lang c -msgstyle gcc -ext o -nostdinc -flag longlong_prepeval $(OPT)
+CXXFLAGS = -lang c++ -msgstyle gcc -ext o -iso_templates on -bool on -Cpp_exceptions on -wchar_t on -nostdinc -flag longlong_prepeval $(OPT)
 
 ifdef EXTRA_CXXFLAGS
 CXXFLAGS += ${EXTRA_CXXFLAGS}
