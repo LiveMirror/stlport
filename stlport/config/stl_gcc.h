@@ -162,6 +162,8 @@ typedef unsigned int wint_t;
 /* Mac OS X needs all "::" scope references to be "std::" */
 #  define _STLP_USE_NEW_C_HEADERS
 
+#  define _STLP_NO_VENDOR_STDLIB_L
+
 #endif /* __APPLE__ */
 
 
