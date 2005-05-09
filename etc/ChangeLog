@@ -1,3 +1,13 @@
+2005-05-09  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_ctype.h, src/ctype.cpp: Reenforce data encapsulation of the 
+	ctype<char> template specialization class. class static arrays _S_upper, _S_lower, 
+	_S_classic_table removed from the definition and hiden in the .cpp file.
+	
+	* src/dll_main.cpp: Change _STLP_UNIX macro check in _STLP_PTHREADS check as per
+	thread allocator is only supported if the Posix pthread API is used, thanks a
+	Albrecht Fritzsche remarked.
+	
 2005-05-07  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_gcc.h: Patch from John Smith for Mac OS X support.

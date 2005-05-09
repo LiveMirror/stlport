@@ -57,7 +57,7 @@
 #  include <locale>
 #endif
 
-#if defined (_STLP_UNIX) && !defined(_STLP_NO_THREADS)
+#if defined (_STLP_PTHREADS) && !defined (_STLP_NO_THREADS)
 #  define _STLP_HAS_PERTHREAD_ALLOCATOR
 #  include <stl/_pthread_alloc.h>
 #endif
