@@ -163,7 +163,7 @@ public:
   
   ~_Node_Alloc_Lock() {
 #    ifdef _STLP_SGI_THREADS
-    if (__threads && __us_rsthread_malloc)
+    if (__us_rsthread_malloc)
 #    endif /* !_STLP_SGI_THREADS */
         _S_lock._M_release_lock(); 
   }
