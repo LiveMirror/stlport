@@ -341,12 +341,15 @@ template <class _Key, class _Compare,
           class _Value, class _KeyOfValue, class _Traits, class _Alloc>
 __iterator__ 
 _Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_Traits,_Alloc> ::_M_insert(_Rb_tree_node_base * __parent,
-                                                                              const _Value& __val,
-                                                                              _Rb_tree_node_base * __on_left,
-                                                                              _Rb_tree_node_base * __on_right) {
-  _Base_ptr __new_node = _M_create_node(__val);
+                                                                      const _Value& __val,
+                                                                      _Rb_tree_node_base * __on_left,
+                                                                      _Rb_tree_node_base * __on_right) {
+  // We do not create the node here as, depending on tests, we might call
+  // _M_key_compare that can throw an exception.
+  _Base_ptr __new_node;
 
   if ( __parent == &this->_M_header._M_data ) {
+    __new_node = _M_create_node(__val);
     _S_left(__parent) = __new_node;   // also makes _M_leftmost() = __new_node
     _M_root() = __new_node;
     _M_rightmost() = __new_node;
@@ -354,11 +357,13 @@ _Rb_tree<_Key,_Compare,_Value,_KeyOfValue,_Traits,_Alloc> ::_M_insert(_Rb_tree_n
   else if ( __on_right == 0 &&     // If __on_right != 0, the remainder fails to false
            ( __on_left != 0 ||     // If __on_left != 0, the remainder succeeds to true
              _M_key_compare( _KeyOfValue()(__val), _S_key(__parent) ) ) ) {
+    __new_node = _M_create_node(__val);
     _S_left(__parent) = __new_node;
     if (__parent == _M_leftmost())
       _M_leftmost() = __new_node;   // maintain _M_leftmost() pointing to min node
   }
   else {
+    __new_node = _M_create_node(__val);
     _S_right(__parent) = __new_node;
     if (__parent == _M_rightmost())
       _M_rightmost() = __new_node;  // maintain _M_rightmost() pointing to max node

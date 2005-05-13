@@ -1,3 +1,31 @@
+2005-05-13  Francois Dumont  <dums@stlport...>
+
+  * src/c_locale_win32/c_locale_win32.c : Improve the locale name recognition system
+  to be more unix compliant. Now you can pass locale name like lang_country[.codepage]
+  with lang being one of the ISO 639 values and country one of the ISO 3166 ones.
+  
+  * test/unit/locale_test.cpp: Add a test case for the ctype facet.
+  
+  * test/unit/locale_test.cpp: Now list all the installed locales under Win32 to test
+  more locale than the simple french one.
+  
+  * stlport/config/stl_msvc.h: Removed _WINDLL macro check when trying to guess what
+  type of library (dynamic/static) the STLport user want to link with. _WINDLL is defined
+  when generating a dll but it do not imply anything on the user wish.
+
+  * src/ctype.cpp: Improve the ctype::scan_is method, you can now scan for a character
+  conforming to several ctype_base::mask and not only to one.
+
+  * src/ctype.cpp: Idem previous for ctype::scan_not which returns the first character
+  that do not conform to any of the passed mask.
+
+  * test/eh: Restore exception handling test suite. Removed some equality tests that is no
+  more valid for hash containers, this kind of test is better in the unit tests. Add makefiles
+  for MSVC compilers.
+
+  * stlport/stl/_tree.c: Fix _M_insert method that was leaking in case of exception thrown
+  by the comparison operator, reported by eh tests.
+
 2005-05-09  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ctype.h, src/ctype.cpp: Reenforce data encapsulation of the 

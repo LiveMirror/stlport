@@ -25,14 +25,16 @@ ifdef STLP_BUILD_BOOST_PATH
 INCLUDES += -I${STLP_BUILD_BOOST_PATH}
 endif
 
-ifndef TARGET_OS
-release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
-dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
-stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
-else
 release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
 dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
 stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
+
+ifndef TARGET_OS
+ifneq ($(OSNAME), cygming)
+release-shared:	LDSEARCH += -Wl,-R${STLPORT_LIB_DIR}
+dbg-shared:	LDSEARCH += -Wl,-R${STLPORT_LIB_DIR}
+stldbg-shared:	LDSEARCH += -Wl,-R${STLPORT_LIB_DIR}
+endif
 endif
 
 ifeq ($(OSNAME),cygming)

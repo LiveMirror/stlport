@@ -305,7 +305,7 @@ struct _Ctype_is_mask {
   const ctype_base::mask* _M_table;
   
   _Ctype_is_mask(ctype_base::mask __m, const ctype_base::mask* __t) : _Mask(__m), _M_table(__t) {}
-  bool operator()(char __c) const { return (_M_table[(unsigned char) __c] & _Mask) != 0; }
+  bool operator()(char __c) const { return (_M_table[(unsigned char) __c] & _Mask) == _Mask; }
 };
 
 struct _Ctype_not_mask {
@@ -316,14 +316,14 @@ struct _Ctype_not_mask {
   const ctype_base::mask* _M_table;
   
   _Ctype_not_mask(ctype_base::mask __m, const ctype_base::mask* __t) : _Mask(__m), _M_table(__t) {}
-  bool operator()(char __c) const { return (_M_table[(unsigned char) __c] & _Mask) == 0; }
+  bool operator()(char __c) const { return (_M_table[(unsigned char) __c] & _Mask) != _Mask; }
 };
  
 ctype<char>::ctype(const ctype_base::mask * __tab, bool __del, size_t __refs) : 
-  locale::facet(__refs) /* , _M_ctype_table(0) */ {
-  _M_ctype_table = __tab ? __tab : classic_table();
-  _M_delete = __tab && __del;
-}
+  locale::facet(__refs),
+  _M_ctype_table(__tab ? __tab : classic_table()),
+  _M_delete(__tab && __del)
+{}
 
 ctype<char>::~ctype() {
   if (_M_delete)

@@ -5,16 +5,18 @@
 
 #  include <cstdio>
 
-#  if defined(__unix) || defined(__unix__)
+#  if defined (__unix) || defined (__unix__)
 #    include <sys/types.h>
 #    include <sys/stat.h>
 #    include <dirent.h>
 #    include <unistd.h>
 #    include <cstring>
 #    include <iostream>
+#  elif defined (WIN32) && !defined (_STLP_WCE)
+#    include <windows.h>
 #  endif
 
-#  include <map>
+#  include <set>
 
 #  include "cppunit/cppunit_proxy.h"
 
@@ -24,15 +26,37 @@ using namespace std;
 
 
 class LColl {
-  public:
-    LColl( const char * );
+public:
+  LColl( const char * );
 
-    bool operator[]( const string& _s )
-     { return _m[_s]; }
+  bool operator[](const string& name) {
+    return supported_locales.find(name) != supported_locales.end();
+  }
 
-  private:
-    map<string,bool> _m;
+private:
+  set<string> supported_locales;
 };
+
+#if defined (WIN32) && !defined (_STLP_WCE)
+set<string> *psupported_locales = 0;
+BOOL CALLBACK EnumLocalesProc(LPTSTR locale_name) {
+  LCID lcid;
+  {
+    istringstream istr(locale_name);
+    istr >> hex >> lcid;
+    if (!istr)
+      return TRUE;
+  }
+
+  char lang[128], ctry[128];
+  GetLocaleInfoA(lcid, LOCALE_SISO639LANGNAME, lang, sizeof(lang));
+  GetLocaleInfoA(lcid, LOCALE_SISO3166CTRYNAME, ctry, sizeof(ctry));
+
+  string localeName = string(lang) + '_' + string(ctry);
+  psupported_locales->insert(localeName);
+  return TRUE;
+}
+#endif
 
 LColl::LColl( const char *loc_dir )
 {
@@ -41,11 +65,11 @@ LColl::LColl( const char *loc_dir )
    * (this is expected /usr/lib/locale for most linuxes and /usr/share/locale for *BSD).
    * The names of catalogs here will give supported locales.
    */
-  string base( loc_dir );
-  DIR *d = opendir( base.c_str() );
+  string base(loc_dir);
+  DIR *d = opendir(base.c_str());
   struct dirent *ent;
-  while ( (ent = readdir( d )) != 0 ) {
-    if ( strcmp( ent->d_name, "." ) == 0 || strcmp( ent->d_name, ".." ) == 0 ) {
+  while ((ent = readdir( d )) != 0) {
+    if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) {
       continue;
     }
     string f = base;
@@ -53,8 +77,8 @@ LColl::LColl( const char *loc_dir )
     f += ent->d_name;
     struct stat s;
     stat( f.c_str(), &s );
-    if ( S_ISDIR( s.st_mode ) ) {
-      _m[string(ent->d_name)] = true;
+    if (S_ISDIR(s.st_mode)) {
+      supported_locales.insert(ent->d_name);
       // cout << ent->d_name << endl;
     }
   }
@@ -66,11 +90,12 @@ LColl::LColl( const char *loc_dir )
 #    endif
 #  endif
 #  if defined (WIN32) && !defined (_STLP_WCE)
-  // real list of installed locales should be here...
-  _m[string("french")] = true;
+  psupported_locales = &supported_locales;
+  EnumSystemLocales(EnumLocalesProc, LCID_INSTALLED);
+  psupported_locales = 0;
 #  endif
   // std::locale must at least support the C locale
-  _m[string("C")] = true;
+  supported_locales.insert("C");
 }
 
 #  if !defined(__GNUC__) || (__GNUC__ > 2)
@@ -100,10 +125,10 @@ struct ref_locale {
 
 static ref_locale tested_locales[] = {
 //{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point,  money_thousands_sep},
-  { "french",      ",",           "\xa0",        "",               "",           " EUR",           " FRF",               "",           ",",                  "\xa0" },
-  { "ru_RU.koi8r", ",",           ".",           "",               "",           " RUR",           " RUR",               "",           ".",                  " " },
-  { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",               "",                   "",           ".",                  "," },
-  { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",                   "",           ".",                  "," },
+  { "fr_FR",       ",",           "\xa0",        "",               "",           "EUR",            "FRF",                "",           ",",                  "\xa0" },
+  { "ru_RU.koi8r", ",",           ".",           "",               "",           "RUR",            "",                   "",           ".",                  " " },
+  { "en_GB",       ".",           ",",           "GBP",            "\xa3",       "",               "",                   "",           ".",                  "," },
+  { "en_US",       ".",           ",",           "USD",            "$",          "",               "",                   "",           ".",                  "," },
   { "C",           ".",           ",",           "",               "",           "",               "",                   "",           " ",                  " " },
 };
 
@@ -120,6 +145,7 @@ class LocaleTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(money_put_get);
   CPPUNIT_TEST(time_put_get);
   CPPUNIT_TEST(collate_facet);
+  CPPUNIT_TEST(ctype_facet);
   CPPUNIT_TEST(locale_init_problem);
   CPPUNIT_TEST_SUITE_END();
 
@@ -130,6 +156,7 @@ public:
   void money_put_get();
   void time_put_get();
   void collate_facet();
+  void ctype_facet();
   void locale_init_problem();
 private:
   void _loc_has_facet( const locale&, const ref_locale& );
@@ -137,6 +164,7 @@ private:
   void _money_put_get( const locale&, const ref_locale& );
   void _time_put_get( const locale&, const ref_locale& );
   void _collate_facet( const locale&, const ref_locale& );
+  void _ctype_facet( const locale&, const ref_locale& );
   void _locale_init_problem( const locale&, const ref_locale& );
 };
 
@@ -202,91 +230,164 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
   ostringstream ostr;
   ostr.imbue(loc);
   ostr << showbase;
-  ostreambuf_iterator<char> res = fmp.put(ostr, true, ostr, ' ', 123456);
 
-  CPPUNIT_ASSERT( !res.failed() );
-  //The result is '1 234,56 EUR'
-  string str_res = ostr.str();
+  //Check a positive value
+  {
+    string str_res;
+    //money_put
+    {
+      ostreambuf_iterator<char> res = fmp.put(ostr, true, ostr, ' ', 123456);
 
-  size_t index = 0;
-  string::size_type p = strlen( rl.money_int_prefix );
-  CPPUNIT_ASSERT( str_res.substr( 0, p ) == rl.money_int_prefix );
-  index = p;
-  CPPUNIT_ASSERT( str_res[index++] == '1' );
-  if (!intl_fmp.grouping().empty()) {
-    CPPUNIT_ASSERT( str_res[index++] == /* intl_fmp.thousands_sep() */ *rl.money_thousands_sep );
+      CPPUNIT_ASSERT( !res.failed() );
+      str_res = ostr.str();
+
+      size_t fieldIndex = 0;
+      size_t index = 0;
+
+      //On a positive value we skip the sign field if exists:
+      if (intl_fmp.pos_format().field[fieldIndex] == money_base::sign) {
+        ++fieldIndex;
+      }
+      string::size_type p = strlen( rl.money_int_prefix );
+      if (p != 0) {
+        CPPUNIT_ASSERT( str_res.substr(index, p) == rl.money_int_prefix );
+        index += p;
+        ++fieldIndex;
+      }
+      if (intl_fmp.pos_format().field[fieldIndex] == money_base::space ||
+          intl_fmp.pos_format().field[fieldIndex] == money_base::none) {
+        CPPUNIT_ASSERT( str_res[index++] == ' ' );
+        ++fieldIndex;
+      }
+      CPPUNIT_ASSERT( str_res[index++] == '1' );
+      if (!intl_fmp.grouping().empty()) {
+        CPPUNIT_ASSERT( str_res[index++] == /* intl_fmp.thousands_sep() */ *rl.money_thousands_sep );
+      }
+      CPPUNIT_ASSERT( str_res[index++] == '2' );
+      CPPUNIT_ASSERT( str_res[index++] == '3' );
+      CPPUNIT_ASSERT( str_res[index++] == '4' );
+      if (intl_fmp.frac_digits() != 0) {
+        CPPUNIT_ASSERT( str_res[index++] == /* intl_fmp.decimal_point() */ *rl.money_decimal_point );
+      }
+      CPPUNIT_ASSERT( str_res[index++] == '5' );
+      CPPUNIT_ASSERT( str_res[index++] == '6' );
+      ++fieldIndex;
+      //space cannot be last:
+      if ((fieldIndex < 3) &&
+          intl_fmp.pos_format().field[fieldIndex] == money_base::space) {
+        CPPUNIT_ASSERT( str_res[index++] == ' ' );
+        ++fieldIndex;
+      }
+      //If none is last we should not add anything to the resulting string:
+      if (fieldIndex == 3) {
+        if (intl_fmp.pos_format().field[fieldIndex] == money_base::none) {
+          CPPUNIT_ASSERT( index == str_res.size() );
+        }
+        else {
+          CPPUNIT_ASSERT( str_res.substr(index, strlen(rl.money_int_suffix)) == rl.money_int_suffix || 
+                          str_res.substr(index, strlen(rl.money_int_suffix_old)) == rl.money_int_suffix_old );
+        }
+      }
+    }
+
+    //money_get
+    {
+      ios_base::iostate err = ios_base::goodbit;
+      string digits;
+
+      istringstream istr(str_res);
+      ostr.str( "" );
+      ostr.clear();
+      fmg.get(istr, istreambuf_iterator<char>(), true, ostr, err, digits);
+      CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
+      CPPUNIT_ASSERT( digits == "123456" );
+    }
   }
-  CPPUNIT_ASSERT( str_res[index++] == '2' );
-  CPPUNIT_ASSERT( str_res[index++] == '3' );
-  CPPUNIT_ASSERT( str_res[index++] == '4' );
-  if (intl_fmp.frac_digits() != 0) {
-    CPPUNIT_ASSERT( str_res[index++] == /* intl_fmp.decimal_point() */ *rl.money_decimal_point );
-  }
-  CPPUNIT_ASSERT( str_res[index++] == '5' );
-  CPPUNIT_ASSERT( str_res[index++] == '6' );
-  // CPPUNIT_ASSERT( str_res[p + 8] == ' ' );
-  string::size_type p1 = strlen( rl.money_int_suffix );
-  CPPUNIT_ASSERT( str_res.substr(index, p1) == rl.money_int_suffix || 
-                  str_res.substr(index, p1) == rl.money_int_suffix_old );
-  // CPPUNIT_ASSERT( intl_fmp.curr_symbol() == rl.money_suffix );
-
-  // CPPUNIT_ASSERT( str_res.substr(p + 9, intl_fmp.curr_symbol().size()) == intl_fmp.curr_symbol() );
-  // CPPUNIT_ASSERT( str_res.size() == 9 + intl_fmp.curr_symbol().size() );
-
-  ios_base::iostate err = ios_base::goodbit;
-  string digits;
-
-  istringstream istr(str_res);
-  ostr.str( "" );
-  ostr.clear();
-  fmg.get(istr, istreambuf_iterator<char>(), true, ostr, err, digits);
-  CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
-  CPPUNIT_ASSERT( digits == "123456" );
 
   ostr.str("");
-  moneypunct<char, false> const& dom_fmp = use_facet<moneypunct<char, false> >(loc);
-  res = fmp.put(ostr, false, ostr, ' ', -123456);
+  //Check a negative value:
+  {
+    moneypunct<char, false> const& dom_fmp = use_facet<moneypunct<char, false> >(loc);
+    string str_res;
+    //Check money_put
+    {
+      ostreambuf_iterator<char> res = fmp.put(ostr, false, ostr, ' ', -123456);
 
-  CPPUNIT_ASSERT( !res.failed() );
-  //The result is '-1 234,56 E' E being the euro symbol
-  str_res = ostr.str();
+      CPPUNIT_ASSERT( !res.failed() );
+      str_res = ostr.str();
 
-  index = 0;
-  CPPUNIT_ASSERT( str_res.substr(index, dom_fmp.negative_sign().size()) == dom_fmp.negative_sign() );
-  index += dom_fmp.negative_sign().size();
-  p = strlen( rl.money_prefix );
-  index += p;
-  CPPUNIT_ASSERT( str_res[index++] == '1' );
-  if (!dom_fmp.grouping().empty()) {
-    CPPUNIT_ASSERT( str_res[index++] == dom_fmp.thousands_sep() );
-  }
-  CPPUNIT_ASSERT( str_res[index++] == '2' );
-  CPPUNIT_ASSERT( str_res[index++] == '3' );
-  CPPUNIT_ASSERT( str_res[index++] == '4' );
-  if (dom_fmp.frac_digits() != 0) {
-    CPPUNIT_ASSERT( str_res[index++] == dom_fmp.decimal_point() );
-  }
-  CPPUNIT_ASSERT( str_res[index++] == '5' );
-  CPPUNIT_ASSERT( str_res[index++] == '6' );
-  p1 = strlen( rl.money_suffix );
-  CPPUNIT_ASSERT( str_res.substr(index, p1) == rl.money_suffix );
-  index += p1;
-  // CPPUNIT_ASSERT( str_res[index++] == ' ' );
-  // CPPUNIT_ASSERT( str_res.substr(index, dom_fmp.curr_symbol().size()) == dom_fmp.curr_symbol() );
-  // CPPUNIT_ASSERT( str_res.size() == index + dom_fmp.curr_symbol().size() );
+      size_t fieldIndex = 0;
+      size_t index = 0;
 
-  err = 0;
-  _STLP_LONG_DOUBLE val;
+      if (intl_fmp.neg_format().field[fieldIndex] == money_base::sign) {
+        CPPUNIT_ASSERT( str_res.substr(index, dom_fmp.negative_sign().size()) == dom_fmp.negative_sign() );
+        index += dom_fmp.negative_sign().size();
+        ++fieldIndex;
+      }
 
-  istr.str(str_res);
-  fmg.get(istr, istreambuf_iterator<char>(), false, ostr, err, val);
-  CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
-  if (dom_fmp.negative_sign().empty()) {
-    //Without negative sign there is no way to guess the resulting amount sign ("C" locale):
-    CPPUNIT_ASSERT( val == 123456 );
-  }
-  else {
-    CPPUNIT_ASSERT( val == -123456 );
+      string::size_type p = strlen( rl.money_prefix );
+      if (p != 0) {
+        CPPUNIT_ASSERT( str_res.substr(index, p) == rl.money_prefix );
+        index += p;
+        ++fieldIndex;
+      }
+      if (intl_fmp.neg_format().field[fieldIndex] == money_base::space ||
+          intl_fmp.neg_format().field[fieldIndex] == money_base::none) {
+        CPPUNIT_ASSERT( str_res[index++] == ' ' );
+        ++fieldIndex;
+      }
+
+      CPPUNIT_ASSERT( str_res[index++] == '1' );
+      if (!dom_fmp.grouping().empty()) {
+        CPPUNIT_ASSERT( str_res[index++] == dom_fmp.thousands_sep() );
+      }
+      CPPUNIT_ASSERT( str_res[index++] == '2' );
+      CPPUNIT_ASSERT( str_res[index++] == '3' );
+      CPPUNIT_ASSERT( str_res[index++] == '4' );
+      if (dom_fmp.frac_digits() != 0) {
+        CPPUNIT_ASSERT( str_res[index++] == dom_fmp.decimal_point() );
+      }
+      CPPUNIT_ASSERT( str_res[index++] == '5' );
+      CPPUNIT_ASSERT( str_res[index++] == '6' );
+      ++fieldIndex;
+
+      //space cannot be last:
+      if ((fieldIndex < 3) &&
+          intl_fmp.neg_format().field[fieldIndex] == money_base::space) {
+        CPPUNIT_ASSERT( str_res[index++] == ' ' );
+        ++fieldIndex;
+      }
+      if (fieldIndex == 3) {
+        //If none is last we should not add anything to the resulting string:
+        if (intl_fmp.neg_format().field[fieldIndex] == money_base::none) {
+          CPPUNIT_ASSERT( index == str_res.size() );
+        }
+        else {
+          CPPUNIT_ASSERT( str_res.substr(index, strlen(rl.money_suffix)) == rl.money_suffix );
+        }
+      }
+    }
+
+    //money_get
+    {
+      ios_base::iostate err = ios_base::goodbit;
+#if defined (STLPORT)
+      _STLP_LONG_DOUBLE val;
+#else
+      long double val;
+#endif
+
+      istringstream istr(str_res);
+      fmg.get(istr, istreambuf_iterator<char>(), false, ostr, err, val);
+      CPPUNIT_ASSERT( (err & (ios_base::failbit | ios_base::badbit)) == 0 );
+      if (dom_fmp.negative_sign().empty()) {
+        //Without negative sign there is no way to guess the resulting amount sign ("C" locale):
+        CPPUNIT_ASSERT( val == 123456 );
+      }
+      else {
+        CPPUNIT_ASSERT( val == -123456 );
+      }
+    }
   }
 }
 
@@ -317,6 +418,152 @@ void LocaleTest::_collate_facet( const locale& loc, const ref_locale&)
   CPPUNIT_ASSERT( col.compare(str1, str1 + sizeof(str1) / sizeof(str1[0]), str2, str2 + sizeof(str2) / sizeof(str2[0])) );
 }
 
+void LocaleTest::_ctype_facet( const locale& loc, const ref_locale&)
+{
+  CPPUNIT_ASSERT( has_facet<ctype<char> >(loc) );
+  ctype<char> const& ct = use_facet<ctype<char> >(loc);
+
+  //is
+  {
+    CPPUNIT_ASSERT( ct.is(ctype_base::digit, '0') );
+    CPPUNIT_ASSERT( ct.is(ctype_base::upper, 'A') );
+    CPPUNIT_ASSERT( ct.is(ctype_base::lower, 'a') );
+    CPPUNIT_ASSERT( ct.is(ctype_base::alpha, 'A') );
+    CPPUNIT_ASSERT( ct.is(ctype_base::space, ' ') );
+    CPPUNIT_ASSERT( ct.is(ctype_base::punct, '.') );
+    CPPUNIT_ASSERT( ct.is(ctype_base::xdigit, 'a') );
+  }
+
+  //is range
+  {
+    char values[] = "0Aa .";
+    ctype_base::mask res[sizeof(values)];
+    ct.is(values, values + sizeof(values), res);
+    // '0'
+    CPPUNIT_ASSERT( (res[0] & ctype_base::print) != 0 );
+    CPPUNIT_ASSERT( (res[0] & ctype_base::digit) != 0 );
+    CPPUNIT_ASSERT( (res[0] & ctype_base::xdigit) != 0 );
+    // 'A'
+    CPPUNIT_ASSERT( (res[1] & ctype_base::print) != 0 );
+    CPPUNIT_ASSERT( (res[1] & ctype_base::alpha) != 0 );
+    CPPUNIT_ASSERT( (res[1] & ctype_base::xdigit) != 0 );
+    CPPUNIT_ASSERT( (res[1] & ctype_base::upper) != 0 );
+    // 'a'
+    CPPUNIT_ASSERT( (res[2] & ctype_base::print) != 0 );
+    CPPUNIT_ASSERT( (res[2] & ctype_base::alpha) != 0 );
+    CPPUNIT_ASSERT( (res[2] & ctype_base::xdigit) != 0 );
+    CPPUNIT_ASSERT( (res[2] & ctype_base::lower) != 0 );
+    CPPUNIT_ASSERT( (res[2] & ctype_base::space) == 0 );
+    // ' '
+    CPPUNIT_ASSERT( (res[3] & ctype_base::print) != 0 );
+    CPPUNIT_ASSERT( (res[3] & ctype_base::space) != 0 );
+    CPPUNIT_ASSERT( (res[3] & ctype_base::digit) == 0 );
+    // '.'
+    CPPUNIT_ASSERT( (res[4] & ctype_base::print) != 0 );
+    CPPUNIT_ASSERT( (res[4] & ctype_base::punct) != 0 );
+    CPPUNIT_ASSERT( (res[4] & ctype_base::digit) == 0 );
+  }
+
+  //scan_is
+  {
+    char range[] = "abAc123 .";
+    const char *rbeg = range;
+    const char *rend = range + sizeof(range);
+
+    const char *res;
+    res = ct.scan_is((ctype_base::mask)(ctype_base::alpha | ctype_base::lower), rbeg, rend);
+    CPPUNIT_ASSERT( res != rend );
+    CPPUNIT_ASSERT( *res == 'a' );
+
+    res = ct.scan_is((ctype_base::mask)(ctype_base::alpha | ctype_base::upper), rbeg, rend);
+    CPPUNIT_ASSERT( res != rend );
+    CPPUNIT_ASSERT( *res == 'A' );
+
+    res = ct.scan_is(ctype_base::punct, rbeg, rend);
+    CPPUNIT_ASSERT( res != rend );
+    CPPUNIT_ASSERT( *res == '.' );
+
+    res = ct.scan_is((ctype_base::mask)(ctype_base::punct | ctype_base::digit), rbeg, rend);
+    CPPUNIT_ASSERT( res == rend );
+  }
+
+  //scan_not
+  {
+    char range[] = "abAc123 .";
+    const char *rbeg = range;
+    const char *rend = range + sizeof(range);
+
+    const char *res;
+    res = ct.scan_not((ctype_base::mask)(ctype_base::alpha | ctype_base::lower), rbeg, rend);
+    CPPUNIT_ASSERT( res != rend );
+    CPPUNIT_ASSERT( *res == 'A' );
+
+    res = ct.scan_not(ctype_base::alpha, rbeg, rend);
+    CPPUNIT_ASSERT( res != rend );
+    CPPUNIT_ASSERT( *res == '1' );
+
+    res = ct.scan_not(ctype_base::punct, rbeg, rend);
+    CPPUNIT_ASSERT( res != rend );
+    CPPUNIT_ASSERT( *res == 'a' );
+  }
+
+  //toupper
+  {
+    CPPUNIT_ASSERT( ct.toupper('a') == 'A' );
+    CPPUNIT_ASSERT( ct.toupper('A') == 'A' );
+    CPPUNIT_ASSERT( ct.toupper('1') == '1' );
+  }
+
+  //toupper range
+  {
+    char range[] = "abAc1";
+    char expected_range[] = "ABAC1";
+    ct.toupper(range, range + sizeof(range));
+    CPPUNIT_ASSERT( equal(range, range + sizeof(range), expected_range) );
+  }
+
+  //tolower
+  {
+    CPPUNIT_ASSERT( ct.tolower('A') == 'a' );
+    CPPUNIT_ASSERT( ct.tolower('a') == 'a' );
+    CPPUNIT_ASSERT( ct.tolower('1') == '1' );
+  }
+
+  //tolower range
+  {
+    char range[] = "ABaC1";
+    char expected_range[] = "abac1";
+    ct.tolower(range, range + sizeof(range));
+    CPPUNIT_ASSERT( equal(range, range + sizeof(range), expected_range) );
+  }
+
+  //widen
+  {
+    CPPUNIT_ASSERT( ct.widen('a') == 'a' );
+  }
+
+  //widen range
+  {
+    char range[] = "ABaC1";
+    char res[sizeof(range)];
+    ct.widen(range, range + sizeof(range), res);
+    CPPUNIT_ASSERT( equal(range, range + sizeof(range), res) );
+  }
+
+  //narrow
+  {
+    CPPUNIT_ASSERT( ct.narrow('a', 'b') == 'a' );
+  }
+
+  //narrow range
+  {
+    char range[] = "ABaC1";
+    char res[sizeof(range)];
+    ct.narrow(range, range + sizeof(range), 'b', res);
+    CPPUNIT_ASSERT( equal(range, range + sizeof(range), res) );
+  }
+}
+
 template <class _Tp>
 void test_supported_locale(LocaleTest inst, _Tp __test) {
 #  if defined(__GNUC__) && (__GNUC__ < 3) // workaround for gcc 2.95.x
@@ -331,8 +578,8 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
   for ( int i = 0; i < n; ++i ) {
     if ( loc_ent[string( tested_locales[i].name )] ) {
       // cout << '\t' << tested_locales[i].name << endl;
-      CPPUNIT_MESSAGE( tested_locales[i].name );
       locale loc( tested_locales[i].name );
+      CPPUNIT_MESSAGE( loc.name().c_str() );
       (inst.*__test)(loc, tested_locales[i] );
     }
   }
@@ -391,6 +638,10 @@ void LocaleTest::time_put_get() {
 
 void LocaleTest::collate_facet() {
   test_supported_locale(*this, &LocaleTest::_collate_facet);
+}
+
+void LocaleTest::ctype_facet() {
+  test_supported_locale(*this, &LocaleTest::_ctype_facet);
 }
 
 void LocaleTest::locale_init_problem()

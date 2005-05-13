@@ -236,7 +236,9 @@ typedef char __stl_char;
 #  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 #endif
 
-#if defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) || defined(_AFXDLL)
+//dums 12/05/2005: removed _WINDLL check, this macro means that the user is building a dll
+// but not what the user wants to be linked to.
+#if defined (__DLL) || defined (_DLL) || defined (_RTLDLL) || defined (_AFXDLL)
 #  if !defined (_STLP_USE_STATIC_LIB)
 #    if !defined (_STLP_USE_DYNAMIC_LIB)
 #      define _STLP_USE_DYNAMIC_LIB

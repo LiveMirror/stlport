@@ -1450,8 +1450,9 @@ static LCID LocaleFromHex(const char* locale) {
   int digit;
   while(*locale) {
     result<<=4;
-    digit = (*locale>='0' && *locale<='9')? *locale-'0':
-      (*locale>='A' && *locale<='F')?(*locale-'A')+10:(*locale-'a')+10;
+    digit = (*locale >= '0' && *locale <= '9') ? *locale - '0':
+            (*locale >= 'A' && *locale <= 'F') ? (*locale - 'A') + 10
+                                               : (*locale - 'a') + 10;
     result+=digit;
     ++locale;
   }
@@ -1459,30 +1460,38 @@ static LCID LocaleFromHex(const char* locale) {
 }
 
 static BOOL CALLBACK EnumLocalesProcA(LPSTR locale) {
-  LCID lcid=LocaleFromHex(locale);
-  int LangFlag=0, CtryFlag=!__FndCtry;
+  LCID lcid = LocaleFromHex(locale);
+  int LangFlag = 0, CtryFlag = !__FndCtry;
   static char Lang[MAX_LANG_LEN], Ctry[MAX_CTRY_LEN];
 
   GetLocaleInfoA(lcid, LOCALE_SENGLANGUAGE, Lang, MAX_LANG_LEN);
-  if(lstrcmpiA(Lang, __FndLang)!=0) {
+  if (lstrcmpiA(Lang, __FndLang) != 0) {
     GetLocaleInfoA(lcid, LOCALE_SABBREVLANGNAME, Lang, MAX_LANG_LEN);
-    if(lstrcmpiA(Lang, __FndLang)==0) LangFlag=1;
+    if (lstrcmpiA(Lang, __FndLang) != 0) {
+      GetLocaleInfoA(lcid, LOCALE_SISO639LANGNAME, Lang, MAX_LANG_LEN);
+      if (lstrcmpiA(Lang, __FndLang) == 0) LangFlag = 1;
+    }
+    else LangFlag = 1;
   }
-  else LangFlag=1;
+  else LangFlag = 1;
 
-  if(__FndCtry) {
+  if (__FndCtry) {
     GetLocaleInfoA(lcid, LOCALE_SENGCOUNTRY, Ctry, MAX_CTRY_LEN);
-    if(lstrcmpiA(Ctry, __FndCtry)!=0) {
+    if (lstrcmpiA(Ctry, __FndCtry) != 0) {
       GetLocaleInfoA(lcid, LOCALE_SABBREVCTRYNAME, Ctry, MAX_CTRY_LEN);
-      if(lstrcmpiA(Ctry, __FndCtry)==0) CtryFlag=1;
+      if (lstrcmpiA(Ctry, __FndCtry) != 0) {
+        GetLocaleInfoA(lcid, LOCALE_SISO3166CTRYNAME, Ctry, MAX_CTRY_LEN);
+        if (lstrcmpiA(Ctry, __FndCtry) == 0) CtryFlag = 1;
+      }
+      else CtryFlag = 1;
     }
     else 
-      CtryFlag=1;
+      CtryFlag = 1;
   }
 
-  if(LangFlag && CtryFlag) {
-    __FindFlag=1;
-    __FndLCID=lcid;
+  if (LangFlag && CtryFlag) {
+    __FindFlag = 1;
+    __FndLCID = lcid;
     return FALSE;
   }
 
@@ -1495,24 +1504,24 @@ int __GetLCID(const char* lang, const char* ctry, LCID* lcid) {
   __FndCtry=ctry;
   EnumSystemLocalesA(EnumLocalesProcA, LCID_INSTALLED);
 
-  if(__FindFlag==0) return -1;
+  if (__FindFlag == 0) return -1;
 
-  *lcid=__FndLCID;
+  *lcid = __FndLCID;
   return 0;
 }
 
 int __GetLCIDFromName(const char* lname, LCID* lcid, char* cp) {
   char lang[MAX_LANG_LEN+1], ctry[MAX_CTRY_LEN+1], page[MAX_CP_LEN+1];
   int result = 0;
-  if(lname==NULL || lname[0]==0) {
-    *lcid=LOCALE_USER_DEFAULT;
+  if (lname == NULL || lname[0] == 0) {
+    *lcid = LOCALE_USER_DEFAULT;
     return 0;
   }
 
   memset(lang, 0, MAX_LANG_LEN+1);
   memset(ctry, 0, MAX_CTRY_LEN+1);
   memset(page, 0, MAX_CP_LEN+1);
-  if(__ParseLocaleString(lname, lang, ctry, page)==-1) return -1;
+  if (__ParseLocaleString(lname, lang, ctry, page) == -1) return -1;
 
   if(lang[0] == 0 && ctry[0] == 0)
     *lcid = LOCALE_USER_DEFAULT; // Only code page given.
@@ -1525,11 +1534,11 @@ int __GetLCIDFromName(const char* lname, LCID* lcid, char* cp) {
                          lcid);
   }
 
-  if(result==0) {
+  if (result == 0) {
     // Handling code page
-    if(lstrcmpiA(page, "ACP")==0 || page[0]==0)
+    if (lstrcmpiA(page, "ACP") == 0 || page[0] == 0)
       my_ltoa(__intGetACP(*lcid), cp);
-    else if(lstrcmpiA(page, "OCP")==0)
+    else if (lstrcmpiA(page, "OCP") == 0)
       my_ltoa(__intGetOCP(*lcid), cp);
     else strncpy(cp, page, 5);
   }
@@ -1574,7 +1583,7 @@ char* __Extract_locale_name(const char* loc, int category, char* buf) {
 char* __TranslateToSystem(const char* lname, char* buf) {
   LCID lcid;
   char cp[MAX_CP_LEN+1];
-  if(__GetLCIDFromName(lname, &lcid, cp)!=0) return NULL;
+  if (__GetLCIDFromName(lname, &lcid, cp) != 0) return NULL;
 
   return __GetLocaleName(lcid, cp, buf);
 }
