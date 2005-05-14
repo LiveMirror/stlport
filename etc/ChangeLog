@@ -1,50 +1,76 @@
+2005-05-14  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/gmake/aCC.mak: HP's aCC compiler and HP-UX os support.
+	This isn't really checked and should be fixed on real system.
+
+	* build/Makefiles/gmake/app/aCC.mak, gmake/lib/aCC.mak: ditto.
+
+	* build/Makefiles/gmake/hp-ux/extern.mak, lib.mak: ditto.
+
+	* build/Makefiles/gmake/hp-ux/rules-install-so.mak, rules-so.mak: ditto.
+	
+	* build/Makefiles/gmake/hp-ux/gmake/hp-ux/sys.mak: ditto.
+
+	* build/lib/aCC.mak: ditto.
+
+	* build/test/unit/aCC.mak: ditto.
+
 2005-05-14  Francois Dumont  <dums@stlport...>
 
-	* stlport/stl/_config.h, _config_compat_post.h, _cwchar.h, _epilog.h, c_locale.h,
-	src/c_locale.h, c_locale_glibc/c_locale_glibc2.h, gcc_localeinfo.h, 
-	c_locale_win32/c_locale_win32.c: Patch from Albrecht Fritzsche to remove C++ comment
-	from files accessible by a pure C compiler.
+	* stlport/stl/_config.h, _config_compat_post.h, _cwchar.h, _epilog.h:
+        Patch from Albrecht Fritzsche to remove C++ comment from files accessible
+        by a pure C compiler.
 
-	* build/Makefiles/gmake/gcc.mak: Add the -ansi option to the C compiler command to know
-	if any regression occur concerning use of C++ comment in C files.
+	* stlport/stl/c_locale.h: idem.
+
+	* src/c_locale.h, c_locale_glibc/c_locale_glibc2.h: idem.
+
+	* src/gcc_localeinfo.h, c_locale_win32/c_locale_win32.c: idem.
+
+	* build/Makefiles/gmake/gcc.mak: Add the -ansi option to the C compiler
+        command to know if any regression occur concerning use of C++ comment
+        in C files.
 
 2005-05-13  Francois Dumont  <dums@stlport...>
 
-	* src/c_locale_win32/c_locale_win32.c : Improve the locale name recognition system
-	to be more unix compliant. Now you can pass locale name like lang_country[.codepage]
-	with lang being one of the ISO 639 values and country one of the ISO 3166 ones.
-
+	* src/c_locale_win32/c_locale_win32.c: Improve the locale name recognition
+	system to be more unix compliant. Now you can pass locale name like
+	lang_country[.codepage] with lang being one of the ISO 639 values and
+	country one of the ISO 3166 ones.
+  
 	* test/unit/locale_test.cpp: Add a test case for the ctype facet.
+  
+	* test/unit/locale_test.cpp: Now list all the installed locales under
+	Win32 to test more locale than the simple french one.
+  
+	* stlport/config/stl_msvc.h: Removed _WINDLL macro check when trying
+	to guess what type of library (dynamic/static) the STLport user want
+	to link with. _WINDLL is defined when generating a dll but it do not
+	imply anything on the user wish.
 
-	* test/unit/locale_test.cpp: Now list all the installed locales under Win32 to test
-	more locale than the simple french one.
+	* src/ctype.cpp: Improve the ctype::scan_is method, you can now scan
+	for a character conforming to several ctype_base::mask and not only to one.
 
-	* stlport/config/stl_msvc.h: Removed _WINDLL macro check when trying to guess what
-	type of library (dynamic/static) the STLport user want to link with. _WINDLL is defined
-	when generating a dll but it do not imply anything on the user wish.
+	* src/ctype.cpp: Idem previous for ctype::scan_not which returns the first
+	character that do not conform to any of the passed mask.
 
-	* src/ctype.cpp: Improve the ctype::scan_is method, you can now scan for a character
-	conforming to several ctype_base::mask and not only to one.
+	* test/eh: Restore exception handling test suite. Removed some equality
+	tests that is no more valid for hash containers, this kind of test
+	is better in the unit tests. Add makefiles for MSVC compilers.
 
-	* src/ctype.cpp: Idem previous for ctype::scan_not which returns the first character
-	that do not conform to any of the passed mask.
-
-	* test/eh: Restore exception handling test suite. Removed some equality tests that is no
-	more valid for hash containers, this kind of test is better in the unit tests. Add makefiles
-	for MSVC compilers.
-
-	* stlport/stl/_tree.c: Fix _M_insert method that was leaking in case of exception thrown
-	by the comparison operator, reported by eh tests.
+	* stlport/stl/_tree.c: Fix _M_insert method that was leaking in case of
+	exception thrown by the comparison operator, reported by eh tests.
 
 2005-05-09  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ctype.h, src/ctype.cpp: Reenforce data encapsulation of the 
-	ctype<char> template specialization class. class static arrays _S_upper, _S_lower, 
-	_S_classic_table removed from the definition and hiden in the .cpp file.
+	ctype<char> template specialization class. class static arrays
+	_S_upper, _S_lower, _S_classic_table removed from the definition and hiden
+	in the .cpp file.
 	
-	* src/dll_main.cpp: Change _STLP_UNIX macro check in _STLP_PTHREADS check as per
-	thread allocator is only supported if the Posix pthread API is used, thanks a
-	Albrecht Fritzsche remarked.
+	* src/dll_main.cpp: Change _STLP_UNIX macro check in _STLP_PTHREADS check
+	as per thread allocator is only supported if the Posix pthread API is used,
+	thanks a Albrecht Fritzsche remarked.
 	
 2005-05-07  Francois Dumont  <dums@stlport...>
 
@@ -52,9 +78,9 @@
 	
 	* test/unit/locale_test.cpp: Idem previous.
 
-	* build/Makefiles/gmake/cygming/lib.mak, sys.mak: Import lib extension change from .lib to
-	.dll.a for Mingw like under Cygwin. ld linker looks for .dll.a before .lib, avoid
-	conflict with Cygwin lib.
+	* build/Makefiles/gmake/cygming/lib.mak, sys.mak: Import lib extension
+	change from .lib to .dll.a for Mingw like under Cygwin. ld linker
+	looks for .dll.a before .lib, avoid conflict with Cygwin lib.
 
 2005-05-07  Petr Ovtchenkov  <ptr@island...>
 
@@ -85,18 +111,18 @@
 	
 	* stlport/stl/_threads.h, c_locale.h, char_traits.h: ditto
 
-	* build/Makefiles/gmake/sysid.mak: treat mwccnlm as cross-compiler, set correct
-	TARGET_OS and OS-related macros.
+	* build/Makefiles/gmake/sysid.mak: treat mwccnlm as cross-compiler,
+	set correct TARGET_OS and OS-related macros.
 
 	* stlport/stl/_valarray.h: remove exhaustive this->.
 
 2005-05-04  Francois Dumont  <dums@stlport...>
 
-	* stlport/config/stl_msvc.h: Change configuration for MSVC .Net 2003 and 2005
-	that seems to have a bug in the namespace management thanks .
+	* stlport/config/stl_msvc.h: Change configuration for MSVC .Net 2003 and
+	2005 that seems to have a bug in the namespace management thanks .
 	
-	* stlport/stdlib.h: Add errno.h inclusion from this file for gcc mingw as this
-	compiler version do define errno macro in stdlib.h as MSVC do.
+	* stlport/stdlib.h: Add errno.h inclusion from this file for gcc mingw
+	as this	compiler version do define errno macro in stdlib.h as MSVC do.
 	
 2005-05-03  Francois Dumont  <dums@stlport...>
 
@@ -108,20 +134,22 @@
 
 2005-05-02  Francois Dumont  <dums@stlport...>
 
-	* build/Makefiles/nmake/vc-common.mak: Restore of LDFLAGS_A_REL introduce the
-	2004-10-30 and lost the 2005-04-16, it avoids warning due to use of the whole
-	program optimization with VC.Net 2003 and 2005.
+	* build/Makefiles/nmake/vc-common.mak: Restore of LDFLAGS_A_REL introduce
+	the 2004-10-30 and lost the 2005-04-16, it avoids warning due to use
+	of the whole program optimization with VC.Net 2003 and 2005.
 	
-	* stlport/stl/_string_io.c: Modification of the basic_string i/o operators in the
-	way it deals with the size_type and streamsize difference; it is equivalent with the
-	former one but do not generate warning with gcc (mingwin).
+	* stlport/stl/_string_io.c: Modification of the basic_string i/o operators
+	in the way it deals with the size_type and streamsize difference; it is
+	equivalent with the former one but do not generate warning with gcc
+	(mingwin).
 	
-	* stlport/stddef.h, stdlib.h, errno.h: Fix issue under MSVC compilers where native
-	stdlib.h and stddef.h are defining errno macro without including errno.h forbiding
-	STLport to do so thanks report. Now errno.h will report this problem with an explicit
-	#error.
+	* stlport/stddef.h, stdlib.h, errno.h: Fix issue under MSVC compilers where
+	native stdlib.h and stddef.h are defining errno macro without including
+	errno.h forbiding STLport to do so thanks report. Now errno.h will report
+	this problem with an explicit #error.
 	
-	* test/unit/test_errno.cpp: Improvement of the test to reveal the previous issue.
+	* test/unit/test_errno.cpp: Improvement of the test to reveal the previous
+	issue.
 
 2005-05-02  Petr Ovtchenkov  <ptr@island...>
 
@@ -131,59 +159,63 @@
 2005-04-29  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_time_facets.c: gcc warnings reveal that we were missing some
-	ctype::widen method call to compare things like month or day names. Also simplified
-	implementation of the __math and __get_formatted_time that do not really need all
-	the template parameters passed to it.
+	ctype::widen method call to compare things like month or day names.
+	Also simplified implementation of the __math and __get_formatted_time that
+	do not really need all the template parameters passed to it.
 	
-	* stlport/stl/_num_put.c: Add a cast to make call to the function min more clear, it will
-	perhaps help EVC++ builds correctly.
+	* stlport/stl/_num_put.c: Add a cast to make call to the function min more
+	clear, it will perhaps help EVC++ builds correctly.
 	
-	* src/strstream.cpp, stlport/stl/_sstream.c: Removed static assertion replaced 
-	by modified implementation that	takes into account the difference between 
-	size_t and streamsize.
+	* src/strstream.cpp, stlport/stl/_sstream.c: Removed static assertion
+	replaced by modified implementation that takes into account the difference
+	between size_t and streamsize.
 	
 2005-04-28  Francois Dumont  <dums@stlport...>
 
-	* test/unit/limits_test.cpp: Improve integral types limit test for type of unknown
-	sign. In this case we check the min value of this integral type, if 0 the type is
-	unsigned. Moreover we check, except for the bool type, the sign of -1 cast to the
-	integral type, bool is a special type that generate warning when built from -1 (MSVC).
+	* test/unit/limits_test.cpp: Improve integral types limit test for type
+	of unknown sign. In this case we check the min value of this integral type,
+	if 0 the type is unsigned. Moreover we check, except for the bool type,
+	the sign of -1 cast to the integral type, bool is a special type that
+	generate warning when built from -1 (MSVC).
 	
-	* src/ctype.cpp: Creation of a small helper structure to check the validity of a wchar_t
-	value used as an index. This helper struct takes into account the compiler representation
-	of the wchar_t type, is it a sign type or not. This helper avoids warning when wchar_t
-	is unsigned.
+	* src/ctype.cpp: Creation of a small helper structure to check the validity
+	of a wchar_t value used as an index. This helper struct takes into account
+	the compiler representation of the wchar_t type, is it a sign type or not.
+	This helper avoids warning when wchar_t is unsigned.
 	
-	* src/num_get.cpp: Removed unused _Initialize_get_digit function and associated 
-	narrow_digits and narrow_xdigits arrays.
+	* src/num_get.cpp: Removed unused _Initialize_get_digit function and
+	associated narrow_digits and narrow_xdigits arrays.
 	
 2005-04-28  Petr Ovtchenkov  <ptr@island...>
 
-	* stlport/stl/_sstream.h, _num_put.c: __in replaced by __imode, __out by __omode
-	or __oi due to MS privatize __in and __out. Thanks Michael Fink.
+	* stlport/stl/_sstream.h, _num_put.c: __in replaced by __imode, __out
+	by __omode or __oi due to MS privatize __in and __out. Thanks Michael Fink.
 
 2005-04-27  Francois Dumont  <dums@stlport...>
 
-	* src/fstream.cpp: Fix Win32-64 file stream implementation. _M_read and _M_write
-	can now correctly handle respectively read and write of really big buffers ( > 2Go)
+	* src/fstream.cpp: Fix Win32-64 file stream implementation. _M_read and
+	_M_write can now correctly handle respectively read and write of really
+	big buffers ( > 2Go)
 	
 	* using/iosfwd.h, stlport/strstream.h, stl/_rope.h, _rope.c, _complex.h: Removed 
 	references to the _STLP_USE_NEW_IOSTREAMS macro, STLport only support "new" 
 	iostreams.
 	
-	* test/unit/max_test.cpp, min_test.cpp: Add tests to check that min and max are not
-	defined as macros.
+	* test/unit/max_test.cpp, min_test.cpp: Add tests to check that min and
+	max are not defined as macros.
 	
-	* test/fstream_test.cpp: Add check in creation of test_file.txt as following tests
-	depends on its content.
+	* test/fstream_test.cpp: Add check in creation of test_file.txt
+	as following tests depends on its content.
 	
-	* src/strstream.cpp, stdio_streambuf.cpp, stlport/stl/_num_put.c, _num_get.c,
-	_fstream.c, _moneraty.c: Fix potential issue because of the difference between 
-	streamsize and size_t of ptrdiff_t. Add static assertion to clearly specify how 
-	streamsize must be to have a correct behavior.
+	* src/strstream.cpp, stdio_streambuf.cpp: Fix potential issue because of
+	the difference between streamsize and size_t of ptrdiff_t.
+	Add static assertion to clearly specify how streamsize must be to have
+	a correct behavior.
 
-	* src/ctype.cpp: Restore check on wchar_t positivity as according 2005-02-22 
-	Petr Ovtchenkov reports wchar_t can be unsigned.
+	* stlport/stl/_num_put.c, _num_get.c, _fstream.c, _moneraty.c: ditto.
+
+	* src/ctype.cpp: Restore check on wchar_t positivity as according
+	2005-02-22 Petr Ovtchenkov reports wchar_t can be unsigned.
 	
 2005-04-26  Francois Dumont  <dums@stlport...>
 
@@ -220,26 +252,27 @@
 	
 2005-04-22  Francois Dumont  <dums@stlport...>
 
-	* stlport/stl/_istream.c: Fix _M_read_buffered function implementation, there
-	used to be a wrong implicit conversion from streamsize to ptrdiff_t, which fail
-	when sizeof(streamsize) > sizeof(ptrdiff_t). see 2005-04-21 Petr report.
+	* stlport/stl/_istream.c: Fix _M_read_buffered function implementation,
+	there used to be a wrong implicit conversion from streamsize to ptrdiff_t,
+	which fail when sizeof(streamsize) > sizeof(ptrdiff_t).
+	See 2005-04-21 Petr report.
 	
-	* test/unit/: Replaced all _STLP_NO_IOSTREAMS occurences with the STLport internal
-	equivalent _STLP_USE_NO_IOSTREAMS. The first one is defined by the client while the
-	second depends on the first and on the compiler abilities, makes the unit tests more
-	portable.
+	* test/unit/: Replaced all _STLP_NO_IOSTREAMS occurences with the STLport
+	internal equivalent _STLP_USE_NO_IOSTREAMS. The first one is defined
+	by the client while the second depends on the first and on the compiler
+	abilities, makes the unit tests more portable.
 	
-	* stlport/stl/_cmath.h: Fix for Intel C++ compiler that also have all C math functions
-	in global namespace.
+	* stlport/stl/_cmath.h: Fix for Intel C++ compiler that also have all
+	C math functions in global namespace.
 
 2005-04-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.h: Extend the hashtable template methods extension
 	to the method computing the bucket from the key thanks Dominik Siatkowski.
 	
-	* stlport/stl/_threads.h: Disable 64 bits portability warning for MSVC compilers.
-	MSVC do not see that the called function comes from a macro that is different
-	under Win32 and Win64.
+	* stlport/stl/_threads.h: Disable 64 bits portability warning for
+	MSVC compilers. MSVC do not see that the called function comes from
+	a macro that is different under Win32 and Win64.
 	
 2005-04-21  Petr Ovtchenkov  <ptr@island...>
 
@@ -316,9 +349,9 @@
 	* test/unit/locale_test.cpp: Add __FreeBSD__ macro check for the wordaround
 	announced as Free BSD specific by the comment next to it.
 	
-	* stlport/stl/_config.h: Add undef of _STLP_USE_DYNAMIC_LIB when in NO_IOSTREAMS
-	mode, this macro was generating buggy code in this case for some commpilers
-	(gcc mingwin).
+	* stlport/stl/_config.h: Add undef of _STLP_USE_DYNAMIC_LIB when in
+	NO_IOSTREAMS mode, this macro was generating buggy code in this case
+	for some commpilers (gcc mingwin).
 	
 2005-04-07  Francois Dumont  <dums@stlport...>
 
