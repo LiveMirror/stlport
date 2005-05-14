@@ -32,7 +32,7 @@
 # define _STLP_C_LOCALE_IMPL_H
 
 # include <stl/c_locale.h>
-// # include <wchar.h>
+/* # include <wchar.h> */
 # include <stl/_cwchar.h>
 
 # ifdef _STLP_REAL_LOCALE_IMPLEMENTED

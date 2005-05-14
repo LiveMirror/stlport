@@ -158,12 +158,12 @@ const char *_Locale_numeric_default( char *buf )
 {
   char *num = getenv( "LC_NUMERIC" );
   printf( "%s:%d %s\n", __FILE__, __LINE__, buf );
-  // return 0;
+  /* return 0; */
   if ( num == 0 || *num == '0' ) {
     num = getenv( "LANG" );
   }
   if ( num == 0 || *num == '0' ) {
-    return strcpy( buf, _C_name ); // return 0;
+    return strcpy( buf, _C_name ); /* return 0; */
   }
   return strcpy( buf, num );
 }
@@ -259,7 +259,7 @@ char *__Extract_locale_name( const char *loc, const char *category, char *buf )
   if( loc[0]=='L' && loc[1]=='C' && loc[2]=='_') {
     expr = strstr( (char*)loc, category );
     if ( expr == NULL )
-      return NULL; // Category not found.
+      return NULL; /* Category not found. */
     ++expr;
     len_name = strcspn( expr, ";" );
     len_name = len_name > _Locale_MAX_SIMPLE_NAME ? _Locale_MAX_SIMPLE_NAME : len_name;
@@ -377,18 +377,18 @@ int _Locale_is_stateless( struct _Locale_ctype * __DUMMY_PAR)
 wint_t _Locale_btowc( struct _Locale_ctype *__loc, int c )
 {
   wint_t _c;
-  // __c_locale __tmp = __uselocale( __loc );
+  /* __c_locale __tmp = __uselocale( __loc ); */
   _c = btowc( c );
-  // __uselocale( __tmp );
+  /* __uselocale( __tmp ); */
   return _c;
 }
 
 int _Locale_wctob( struct _Locale_ctype *__loc, wint_t c )
 {
   int _c;
-  // __c_locale __tmp = __uselocale( __loc );
+  /* __c_locale __tmp = __uselocale( __loc ); */
   _c = wctob( c );
-  // __uselocale( __tmp );
+  /* __uselocale( __tmp ); */
   return _c;
 }
 

@@ -6,7 +6,7 @@
 INCLUDES :=
 
 CXX := c++
-CC := gcc
+CC := gcc -ansi
 
 ifeq ($(OSNAME), cygming)
 RC := windres

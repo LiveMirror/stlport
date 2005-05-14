@@ -1,14 +1,24 @@
+2005-05-14  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config.h, _config_compat_post.h, _cwchar.h, _epilog.h, c_locale.h,
+	src/c_locale.h, c_locale_glibc/c_locale_glibc2.h, gcc_localeinfo.h, 
+	c_locale_win32/c_locale_win32.c: Patch from Albrecht Fritzsche to remove C++ comment
+	from files accessible by a pure C compiler.
+
+	* build/Makefiles/gmake/gcc.mak: Add the -ansi option to the C compiler command to know
+	if any regression occur concerning use of C++ comment in C files.
+
 2005-05-13  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32/c_locale_win32.c : Improve the locale name recognition system
 	to be more unix compliant. Now you can pass locale name like lang_country[.codepage]
 	with lang being one of the ISO 639 values and country one of the ISO 3166 ones.
-  
+
 	* test/unit/locale_test.cpp: Add a test case for the ctype facet.
-  
+
 	* test/unit/locale_test.cpp: Now list all the installed locales under Win32 to test
 	more locale than the simple french one.
-  
+
 	* stlport/config/stl_msvc.h: Removed _WINDLL macro check when trying to guess what
 	type of library (dynamic/static) the STLport user want to link with. _WINDLL is defined
 	when generating a dll but it do not imply anything on the user wish.

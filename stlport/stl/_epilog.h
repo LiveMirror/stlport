@@ -38,7 +38,7 @@
 #  endif /* _STLP_DONT_REDEFINE_STD */
 
 #  if defined (_STLP_USE_NAMESPACES)
-//Here we don't use a macro as stlport is used as file name by boost and folder name under beos:
+/* Here we don't use a macro as stlport is used as file name by boost and folder name under beos: */
 namespace stlport = STLPORT;
 #  endif
 
