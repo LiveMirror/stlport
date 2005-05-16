@@ -20,9 +20,10 @@
 
 #include <stdlib.h>
 
+#include <limits.h>
+#include "c_locale.h"
+
 #if defined (_STLP_REAL_LOCALE_IMPLEMENTED)
-#  include <limits.h>
-#  include "c_locale.h"
 #  if defined (WIN32) || defined (_WIN32)
 #    include "c_locale_win32/c_locale_win32.c"
 #  elif defined (_STLP_USE_GLIBC) && ! defined (__CYGWIN__)
@@ -36,5 +37,6 @@
 #  elif defined __ISCPP__
 #    include "c_locale_is/c_locale_is.cpp"
 #  endif
+#else /* !_STLP_REAL_LOCALE_IMPLEMENTED */
+#  include "c_locale_dummy/c_locale_dummy.c"
 #endif
-
