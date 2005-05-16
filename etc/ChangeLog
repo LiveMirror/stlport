@@ -1,3 +1,25 @@
+2005-05-16  Petr Ovtchenkov  <ptr@island...>
+
+	* src/c_locale_stub.cpp: "stub" implemntation moved into
+	c_locale_dummy/c_locale_dummy.c, this file removed
+
+	* src/c_locale.c: include c_locale_dummy/c_locale_dummy.c, in case of
+	no real locale implementation.
+
+	* src/c_locale_dummy/c_locale_dummy.c: This is a "stub" implementation
+	of the "c_locale.h" interface, intended for operating systems where
+	we have not yet written a real implementation. A C++ library using
+	this stub implementation is still standard-conforming, since
+	the C++ standard does not require that any locales other
+	than "C" be supported.
+
+	* build/lib/Makefile.inc: src/c_locale_stub.cpp removed.
+
+	* src/facets_by_name.cpp: add comments in the _Init_monetary_formats.
+
+	* src/c_locale_glibc/c_locale_glibc2.c: annotate some monetary-related
+	functions.
+
 2005-05-14  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/aCC.mak: HP's aCC compiler and HP-UX os support.
