@@ -564,31 +564,49 @@ char _Locale_frac_digits(struct _Locale_monetary *__loc)
   return __loc != 0 ? *(__nl_langinfo_l(FRAC_DIGITS, (__c_locale)__loc)) : CHAR_MAX;
 }
 
+/* 1 if currency_symbol precedes a positive value, 0 if succeeds */
 int _Locale_p_cs_precedes(struct _Locale_monetary *__loc)
 {
   return __loc != 0 ? *(__nl_langinfo_l(P_CS_PRECEDES, (__c_locale)__loc)) : CHAR_MAX;
 }
 
+/* 1 if a space separates currency_symbol from a positive value. */
 int _Locale_p_sep_by_space(struct _Locale_monetary *__loc)
 {
   return __loc != 0 ? *(__nl_langinfo_l(P_SEP_BY_SPACE, (__c_locale)__loc)) : CHAR_MAX;
 }
 
+/* 
+ * 0 Parentheses surround the quantity and currency_symbol
+ * 1 The sign string precedes the quantity and currency_symbol
+ * 2 The sign string succeeds the quantity and currency_symbol.
+ * 3 The sign string immediately precedes the currency_symbol.
+ * 4 The sign string immediately succeeds the currency_symbol.
+ */
 int _Locale_p_sign_posn(struct _Locale_monetary *__loc)
 {
   return __loc != 0 ? *(__nl_langinfo_l(P_SIGN_POSN, (__c_locale)__loc)) : CHAR_MAX;
 }
 
+/* 1 if currency_symbol precedes a negative value, 0 if succeeds */
 int _Locale_n_cs_precedes(struct _Locale_monetary *__loc)
 {
   return __loc != 0 ? *(__nl_langinfo_l(N_CS_PRECEDES, (__c_locale)__loc)) : CHAR_MAX;
 }
 
+/* 1 if a space separates currency_symbol from a negative value. */
 int _Locale_n_sep_by_space(struct _Locale_monetary *__loc)
 {
   return __loc != 0 ? *(__nl_langinfo_l(N_SEP_BY_SPACE, (__c_locale)__loc)) : CHAR_MAX;
 }
 
+/* 
+ * 0 Parentheses surround the quantity and currency_symbol
+ * 1 The sign string precedes the quantity and currency_symbol
+ * 2 The sign string succeeds the quantity and currency_symbol.
+ * 3 The sign string immediately precedes the currency_symbol.
+ * 4 The sign string immediately succeeds the currency_symbol.
+ */
 int _Locale_n_sign_posn(struct _Locale_monetary *__loc)
 {
   return __loc != 0 ? *(__nl_langinfo_l(N_SIGN_POSN, (__c_locale)__loc)) : CHAR_MAX;
