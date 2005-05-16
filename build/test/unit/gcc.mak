@@ -1,10 +1,10 @@
-# -*- Makefile -*- Time-stamp: <05/03/10 17:51:53 ptr>
+# -*- Makefile -*- Time-stamp: <05/05/14 14:04:12 ptr>
 # $Id$
 
 SRCROOT := ../..
 COMPILER_NAME := gcc
 
-ALL_TAGS := release-shared dbg-shared stldbg-shared
+ALL_TAGS := release-shared stldbg-shared
 STLPORT_DIR := ../../..
 include Makefile.inc
 include ${SRCROOT}/Makefiles/top.mak

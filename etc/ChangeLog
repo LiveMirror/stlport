@@ -15,6 +15,10 @@
 
 	* build/test/unit/aCC.mak: ditto.
 
+	* build/test/unit/gcc.mak: remove dbg-shared tag from default build;
+	if you need unit tests with debug info and without _STLP_DEBUG, make this
+	tag explicitly.
+
 2005-05-14  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config.h, _config_compat_post.h, _cwchar.h, _epilog.h:
