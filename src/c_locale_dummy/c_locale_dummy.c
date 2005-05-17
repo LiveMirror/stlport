@@ -32,17 +32,6 @@ struct _Locale_collate   /*{ } */;
 struct _Locale_monetary  /* { } */;
 struct _Locale_messages  /* { } */;
 
-# define __DUMMY_PAR
-# define __DUMMY_PAR1
-# define __DUMMY_PAR2
-# define __DUMMY_PAR3
-# define __DUMMY_PAR4
-# define __DUMMY_PAR5
-# define __DUMMY_PAR6
-# define __DUMMY_PAR7
-# define __DUMMY_PAR8
-# endif
-    
 void *_Locale_ctype_create(const char * __DUMMY_PAR)
 { return 0; }
 
