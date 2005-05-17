@@ -125,10 +125,10 @@ struct ref_locale {
 
 static ref_locale tested_locales[] = {
 //{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point,  money_thousands_sep},
-  { "fr_FR",       ",",           "\xa0",        "",               "",           "EUR",            "FRF",                "",           ",",                  "\xa0" },
-  { "ru_RU.koi8r", ",",           ".",           "",               "",           "RUR",            "",                   "",           ".",                  " " },
-  { "en_GB",       ".",           ",",           "GBP",            "\xa3",       "",               "",                   "",           ".",                  "," },
-  { "en_US",       ".",           ",",           "USD",            "$",          "",               "",                   "",           ".",                  "," },
+  { "fr_FR",       ",",           "\xa0",        "",               "",           " EUR",            " FRF",                "",           ",",                  "\xa0" },
+  { "ru_RU.koi8r", ",",           ".",           "",               "",           "RUR ",            "",                   "",           ".",                  " " },
+  { "en_GB",       ".",           ",",           "GBP ",            "\xa3",       "",               "",                   "",           ".",                  "," },
+  { "en_US",       ".",           ",",           "USD ",            "$",          "",               "",                   "",           ".",                  "," },
   { "C",           ".",           ",",           "",               "",           "",               "",                   "",           " ",                  " " },
 };
 
@@ -248,17 +248,41 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
       if (intl_fmp.pos_format().field[fieldIndex] == money_base::sign) {
         ++fieldIndex;
       }
+      // iternational currency abbreviation, if it before value
+
+      /*
+       * int_curr_symbol
+       *
+       *   The international currency symbol. The operand is a four-character
+       *   string, with the first three characters containing the alphabetic
+       *   international currency symbol in accordance with those specified
+       *   in the . The fourth character is the character used to separate
+       *   the international currency symbol from the monetary quantity.
+       *
+       * (http://www.opengroup.org/onlinepubs/7990989775/xbd/locale.html)
+       */
       string::size_type p = strlen( rl.money_int_prefix );
       if (p != 0) {
+        CPPUNIT_ASSERT( intl_fmp.pos_format().field[fieldIndex] == money_base::symbol );
         CPPUNIT_ASSERT( str_res.substr(index, p) == rl.money_int_prefix );
         index += p;
         ++fieldIndex;
       }
+      // space after currency
       if (intl_fmp.pos_format().field[fieldIndex] == money_base::space ||
           intl_fmp.pos_format().field[fieldIndex] == money_base::none) {
-        CPPUNIT_ASSERT( str_res[index++] == ' ' );
+        // iternational currency symobol has four chars, one of these chars
+        // is separator, so if format has space on this place, it should
+        // be skipped.
         ++fieldIndex;
       }
+
+      // sign
+      if (intl_fmp.pos_format().field[fieldIndex] == money_base::sign) {
+        ++fieldIndex;
+      }
+
+      // value
       CPPUNIT_ASSERT( str_res[index++] == '1' );
       if (!intl_fmp.grouping().empty()) {
         CPPUNIT_ASSERT( str_res[index++] == /* intl_fmp.thousands_sep() */ *rl.money_thousands_sep );
@@ -272,21 +296,55 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
       CPPUNIT_ASSERT( str_res[index++] == '5' );
       CPPUNIT_ASSERT( str_res[index++] == '6' );
       ++fieldIndex;
-      //space cannot be last:
-      if ((fieldIndex < 3) &&
-          intl_fmp.pos_format().field[fieldIndex] == money_base::space) {
+
+      // sign
+      if (intl_fmp.pos_format().field[fieldIndex] == money_base::sign) {
+        ++fieldIndex;
+      }
+
+      // space
+      if (intl_fmp.pos_format().field[fieldIndex] == money_base::space ) {
         CPPUNIT_ASSERT( str_res[index++] == ' ' );
         ++fieldIndex;
       }
-      //If none is last we should not add anything to the resulting string:
-      if (fieldIndex == 3) {
-        if (intl_fmp.pos_format().field[fieldIndex] == money_base::none) {
-          CPPUNIT_ASSERT( index == str_res.size() );
+
+      // iternational currency abbreviation, if it sacceeds value
+
+      // Oh, RUR typed wrong here, but test pass this:
+      // it print '1 234.56 RUR ' (see space after RUR)
+      // This is due to intl_fmp.curr_symbol() == "RUR ".
+      // Sources I see isn't clear say about the format...
+
+      p = strlen( rl.money_int_suffix );
+      string::size_type p_old = strlen( rl.money_int_suffix_old );
+      if ( p != 0 || p_old != 0 ) {
+        CPPUNIT_ASSERT( intl_fmp.pos_format().field[fieldIndex] == money_base::symbol );
+        if ( p != 0 && p_old != 0 ) {
+          CPPUNIT_ASSERT( (str_res.substr(index, p) == rl.money_int_suffix) || (str_res.substr(index, p_old) ==  rl.money_int_suffix_old) );
+          if ( str_res.substr(index, p) == rl.money_int_suffix ) {
+            index += p;
+          } else {
+            index += p_old;
+          }
+        } else if ( p != 0 ) {
+          CPPUNIT_ASSERT( str_res.substr(index, p) == rl.money_int_suffix );
+          index += p;
+        } else {
+          CPPUNIT_ASSERT( str_res.substr(index, p_old) ==  rl.money_int_suffix_old );
+          index += p_old;
         }
-        else {
-          CPPUNIT_ASSERT( str_res.substr(index, strlen(rl.money_int_suffix)) == rl.money_int_suffix || 
-                          str_res.substr(index, strlen(rl.money_int_suffix_old)) == rl.money_int_suffix_old );
-        }
+        ++fieldIndex;
+      }
+
+      // sign
+      if (intl_fmp.pos_format().field[fieldIndex] == money_base::sign) {
+        ++fieldIndex;
+      }
+
+      //space cannot be last:
+      while ( fieldIndex < 3 ) {
+        CPPUNIT_ASSERT( intl_fmp.pos_format().field[fieldIndex] == money_base::none );
+        ++fieldIndex;
       }
     }
 

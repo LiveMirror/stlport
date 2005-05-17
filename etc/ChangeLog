@@ -1,3 +1,12 @@
+2005-05-17  Petr Ovtchenkov  <ptr@island...>
+
+	* test/unit/locale_test.cpp: some fixes in moneypunct test, related
+	to international currency format; some problems still remains, due to
+	unclear specifications---if international currency 3-chars abbreviation
+	used in suffix form, additional space will be appended
+	['1 234.56 RUR ']. This is due to intl_fmp.curr_symbol() == "RUR ",
+	and the last is conform to OpenGroup spec.
+
 2005-05-16  Petr Ovtchenkov  <ptr@island...>
 
 	* src/c_locale_stub.cpp: "stub" implemntation moved into
