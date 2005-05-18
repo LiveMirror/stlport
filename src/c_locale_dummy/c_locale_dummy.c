@@ -50,12 +50,12 @@ void *_Locale_monetary_create(const char * __DUMMY_PAR)
 void *_Locale_messages_create(const char *__DUMMY_PAR)
 { return 0; }
 
-const char *_Locale_ctype_default(char*)    { return 0; }
-const char *_Locale_numeric_default(char *) { return 0; }
-const char *_Locale_time_default(char*)     { return 0; }
-const char *_Locale_collate_default(char*)  { return 0; }
-const char *_Locale_monetary_default(char*) { return 0; }
-const char *_Locale_messages_default(char*) { return 0; }
+const char *_Locale_ctype_default(char* __DUMMY_PAR)    { return 0; }
+const char *_Locale_numeric_default(char * __DUMMY_PAR) { return 0; }
+const char *_Locale_time_default(char* __DUMMY_PAR)     { return 0; }
+const char *_Locale_collate_default(char* __DUMMY_PAR)  { return 0; }
+const char *_Locale_monetary_default(char* __DUMMY_PAR) { return 0; }
+const char *_Locale_messages_default(char* __DUMMY_PAR) { return 0; }
 
 char* _Locale_ctype_name(const void* __DUMMY_PAR1, char* __DUMMY_PAR)
 { return 0; }
