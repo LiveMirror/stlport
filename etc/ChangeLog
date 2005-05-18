@@ -1,3 +1,8 @@
+2005-05-18  Francois Dumont  <dums@stlport...>
+
+	* src/fstream.cpp: Fix buffer overflow in _Filebuf_base::_M_read method
+	for the Win32 platform implementation thanks Wlodek Szafran report.
+
 2005-05-17  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/locale_test.cpp: some fixes in moneypunct test, related

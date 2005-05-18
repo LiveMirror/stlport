@@ -831,18 +831,19 @@ ptrdiff_t _Filebuf_base::_M_read(char* buf, ptrdiff_t n) {
 
 #elif defined (_STLP_USE_WIN32_IO)
   ptrdiff_t readen = 0;
-  for (; (n != readen); ) {
+  while (readen < n) {
     DWORD NumberOfBytesRead;
     ReadFile(_M_file_id, buf + readen, 
-             __STATIC_CAST(DWORD, (min)(size_t(0xffffffff), (size_t)n)),
+             __STATIC_CAST(DWORD, (min)(size_t(0xffffffff), (size_t)(n - readen))),
              &NumberOfBytesRead, 0);
 
     if (NumberOfBytesRead == 0)
       break;
 
-    if (!(_M_openmode & ios_base::binary)) { 
+    if (!(_M_openmode & ios_base::binary)) {
       // translate CR-LFs to LFs in the buffer
-      char *to = buf + readen, *last = buf + readen + NumberOfBytesRead - 1;
+      char *to = buf + readen;
+      char *last = to + NumberOfBytesRead - 1;
       char *from = to;
       for (; from <= last && *from != _STLP_CTRLZ; ++from) {
         if (*from != _STLP_CR)
@@ -856,15 +857,34 @@ ptrdiff_t _Filebuf_base::_M_read(char* buf, ptrdiff_t n) {
             char peek = ' ';
             DWORD NumberOfBytesPeeked;
             ReadFile(_M_file_id, (LPVOID)&peek, 1, &NumberOfBytesPeeked, 0);
-            if (NumberOfBytesPeeked) {
+            if (NumberOfBytesPeeked != 0) {
               if (peek != _STLP_LF) { //not a <CR><LF> combination
                 *to++ = _STLP_CR;
-                SetFilePointer(_M_file_id, (LONG)-1, 0, SEEK_CUR);
+                if ((to < (buf + n)) && (peek != _STLP_CR)) {
+                  //We have enough room in the buffer and the peeked char is not a <CR>
+                  //that need a particular treatment, we keep this additional char.
+                  *to++ = peek;
+                }
+                else {
+                  //We have to put peek back:
+                  SetFilePointer(_M_file_id, (LONG)-1, 0, SEEK_CUR);
+                }
               }
               else {
-                //We ignore the complete combinaison:
-                SetFilePointer(_M_file_id, (LONG)-2, 0, SEEK_CUR);
+                // A <CR><LF> combination, we keep the <LF>:
+                *to++ = _STLP_LF;
               }
+            }
+            else {
+              /* This case is tedious, we could
+               *  - put peek back in the file but this would then generate an infinite loop
+               *  - report an error as we don't know if in a future call to ReadFile we won't then
+               *    get a <LF>. Doing so would make all files with a <CR> last an invalid file
+               *    for STLport, a hard solution for STLport clients.
+               *  - store the <CR> in the returned buffer, the chosen solution, even if in this
+               *    case we could miss a <CR><LF> combination.
+               */
+              *to++ = _STLP_CR;
             }
           }
         } // found CR
