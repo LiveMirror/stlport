@@ -32,6 +32,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(buf);
   CPPUNIT_TEST(rdbuf);
   CPPUNIT_TEST(streambuf_output);
+  CPPUNIT_TEST(win32_file_format);
   //CPPUNIT_TEST(file_traits);
 #if defined (CHECK_BIG_FILE)
   CPPUNIT_TEST(big_file);
@@ -48,6 +49,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
     void buf();
     void rdbuf();
     void streambuf_output();
+    void win32_file_format();
     //void file_traits();
 #if defined (CHECK_BIG_FILE)
     void big_file();
@@ -301,6 +303,35 @@ void FstreamTest::streambuf_output()
     CPPUNIT_ASSERT( ostr.str() == "0123456789" );
   }
 #  endif
+}
+
+void FstreamTest::win32_file_format()
+{
+  const char* file_name = "win32_file_format.tmp";
+  const size_t nb_lines = 2049;
+  {
+    ofstream out(file_name);
+    CPPUNIT_ASSERT( out.good() );
+    out << 'a';
+    for (size_t i = 0; i < nb_lines - 1; ++i) {
+      out << '\n';
+    }
+    out << '\r';
+    CPPUNIT_ASSERT( out.good() );
+  }
+  {
+    ifstream in(file_name);
+    CPPUNIT_ASSERT( in.good() );
+    string line, last_line;
+    size_t nb_read_lines = 0;
+    while (getline(in, line)) {
+      ++nb_read_lines;
+      last_line = line;
+    }
+    CPPUNIT_ASSERT( in.eof() );
+    CPPUNIT_ASSERT( nb_read_lines == nb_lines );
+    CPPUNIT_ASSERT( !last_line.empty() && (last_line[0] == '\r') );
+  }
 }
 
 /*

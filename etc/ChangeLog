@@ -1,3 +1,16 @@
+2005-05-20  Francois Dumont  <dums@stlport...>
+
+	* build/test/eh: Patch from Michael Fink to add EVC4 support for this test
+	suite.
+
+	* src/fstream.cpp: Use of Wlodek Szafran implementation for the _Filebuf_base::_M_read
+	method which is more performant than the previous one.
+
+	* test/unit/fstream_test.cpp: Add of a test for the special Win32 file format.
+
+	* test/unit: Add of many test to check Standard C/C++ headers independancy
+	and correct C header implementation.
+	
 2005-05-18  Francois Dumont  <dums@stlport...>
 
 	* src/fstream.cpp: Fix buffer overflow in _Filebuf_base::_M_read method

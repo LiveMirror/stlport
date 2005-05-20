@@ -831,11 +831,14 @@ ptrdiff_t _Filebuf_base::_M_read(char* buf, ptrdiff_t n) {
 
 #elif defined (_STLP_USE_WIN32_IO)
   ptrdiff_t readen = 0;
-  while (readen < n) {
+  //Here cast to size_t is safe as n cannot be negative.
+  size_t chunkSize = (min)(size_t(0xffffffff), __STATIC_CAST(size_t, n));
+  // The following while validate that we are still able to extract chunkSize
+  // charaters to the buffer but it avoids extraction of too small chunk of 
+  // datas which would be counter performant.
+  while (__STATIC_CAST(size_t, (n - readen)) >= chunkSize) {
     DWORD NumberOfBytesRead;
-    ReadFile(_M_file_id, buf + readen, 
-             __STATIC_CAST(DWORD, (min)(size_t(0xffffffff), (size_t)(n - readen))),
-             &NumberOfBytesRead, 0);
+    ReadFile(_M_file_id, buf + readen, __STATIC_CAST(DWORD, chunkSize), &NumberOfBytesRead, 0);
 
     if (NumberOfBytesRead == 0)
       break;
@@ -843,8 +846,8 @@ ptrdiff_t _Filebuf_base::_M_read(char* buf, ptrdiff_t n) {
     if (!(_M_openmode & ios_base::binary)) {
       // translate CR-LFs to LFs in the buffer
       char *to = buf + readen;
-      char *last = to + NumberOfBytesRead - 1;
       char *from = to;
+      char *last = from + NumberOfBytesRead - 1;
       for (; from <= last && *from != _STLP_CTRLZ; ++from) {
         if (*from != _STLP_CR)
           *to++ = *from;
@@ -860,15 +863,12 @@ ptrdiff_t _Filebuf_base::_M_read(char* buf, ptrdiff_t n) {
             if (NumberOfBytesPeeked != 0) {
               if (peek != _STLP_LF) { //not a <CR><LF> combination
                 *to++ = _STLP_CR;
-                if ((to < (buf + n)) && (peek != _STLP_CR)) {
-                  //We have enough room in the buffer and the peeked char is not a <CR>
-                  //that need a particular treatment, we keep this additional char.
+                if ((to < buf + n) && (peek != _STLP_CR))
+                  //We have enough place to store peek and it is no a special
+                  //_STLP_CR character, we can store it.
                   *to++ = peek;
-                }
-                else {
-                  //We have to put peek back:
+                else
                   SetFilePointer(_M_file_id, (LONG)-1, 0, SEEK_CUR);
-                }
               }
               else {
                 // A <CR><LF> combination, we keep the <LF>:
