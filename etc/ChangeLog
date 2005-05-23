@@ -1,3 +1,8 @@
+2005-05-23  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_config.h: detect endianness for Intel's 64bit Pentium and
+	Itanium processors. Thanks Albrecht Fritzsche for contribution.
+
 2005-05-20  Francois Dumont  <dums@stlport...>
 
 	* build/test/eh: Patch from Michael Fink to add EVC4 support for this test
