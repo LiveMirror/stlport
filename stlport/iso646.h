@@ -20,7 +20,10 @@
 #  define _STLP_DONT_POP_HEADER_ID
 #endif
 
-#include _STLP_NATIVE_C_HEADER(iso646.h)
+/* evc3 doesn't have iso646.h */
+#ifndef _STLP_WCE_EVC3
+#  include _STLP_NATIVE_C_HEADER(iso646.h)
+#endif
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x204)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)

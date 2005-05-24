@@ -1,3 +1,16 @@
+2005-05-24  Francois Dumont  <dums@stlport...>
+
+	* stlport/headers: Patch from Michael Fink to avoid inclusion of headers
+	not available under evc3.
+
+	* test/unit/*_header_test.cpp: Fix tests for no iostreams mode.
+
+	* src/locale_impl.cpp, locale_impl.cpp: Modify implementation to force 
+	correct initialization order of static instances.
+
+	* stlport/strstream: Add _ioserr.h file to avoid inclusion in no iostreams
+	mode.
+
 2005-05-23  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_config.h: detect endianness for Intel's 64bit Pentium and

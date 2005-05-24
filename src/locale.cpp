@@ -88,8 +88,8 @@ static size_t _Stl_loc_get_index(locale::id& id) {
 }
 
 // Default constructor: create a copy of the global locale.
-locale::locale() : _M_impl( _get_Locale_impl( _Stl_global_locale->_M_impl ) ) {
-}
+locale::locale() : _M_impl(_get_Locale_impl(_Stl_get_global_locale()->_M_impl))
+{}
 
 // Copy constructor
 locale::locale(const locale& L) _STLP_NOTHROW
@@ -103,8 +103,7 @@ void locale::_M_insert(facet* f, locale::id& n) {
 
 locale::locale( _Locale_impl* impl ) :
   _M_impl( _get_Locale_impl( impl ) )
-{
-}
+{}
 
 // Create a locale from a name.
 locale::locale(const char* name)
@@ -311,17 +310,16 @@ bool locale::operator!=(const locale& L) const {
 
 // static data members.
 
-const locale& _STLP_CALL locale::classic()
-{
-  return *_Stl_classic_locale;
+const locale& _STLP_CALL locale::classic() {
+  return *_Stl_get_classic_locale();
 }
 
 locale _STLP_CALL locale::global(const locale& L) {
-  locale old( _Stl_global_locale->_M_impl );
-  if ( _Stl_global_locale->_M_impl != L._M_impl ) {
-    _release_Locale_impl( _Stl_global_locale->_M_impl );
+  locale old( _Stl_get_global_locale()->_M_impl );
+  if ( _Stl_get_global_locale()->_M_impl != L._M_impl ) {
+    _release_Locale_impl( _Stl_get_global_locale()->_M_impl );
     // this assign should be atomic, should be fixed here:
-    _Stl_global_locale->_M_impl = _get_Locale_impl( L._M_impl );
+    _Stl_get_global_locale()->_M_impl = _get_Locale_impl( L._M_impl );
 
     // Set the global C locale, if appropriate.
 #if !defined(_STLP_NO_LOCALE_SUPPORT) && !defined(_STLP_WINCE) && !defined(_STLP_WCE_NET)
