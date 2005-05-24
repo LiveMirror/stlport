@@ -37,7 +37,7 @@ union _ll {
     uint32_t hi;
 #  endif
 #  if !defined(_STLP_BIG_ENDIAN) && !defined(_STLP_LITTLE_ENDIAN)
-#   error Unknown endianness, fix it.
+#    error Unknown endianness.
 #  endif
   } i32;
 };
