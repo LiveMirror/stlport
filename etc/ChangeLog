@@ -1,3 +1,11 @@
+2005-05-25  Francois Dumont  <dums@stlport...>
+
+	* stlport/ciso646: Creation of this missing C++ standard header STLport
+	wrapper.
+	
+	* stlport/stl/_istream.h, _num_get.c, _algo.c, _monetary.c, _time_facets.h,
+	_time_facets.c: Replaced occurences of __in and __out reserved by Microsoft.
+
 2005-05-24  Francois Dumont  <dums@stlport...>
 
 	* stlport/headers: Patch from Michael Fink to avoid inclusion of headers

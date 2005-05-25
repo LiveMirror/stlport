@@ -336,14 +336,14 @@ __get_short_or_long_monthname(_InIt& __first, _InIt& __last, const _CType& __ct,
 #if !defined (_STLP_NO_WCHAR_T)
 template <class _OuIt>
 _OuIt _STLP_CALL
-__put_time(char * __first, char * __last, _OuIt __out,
+__put_time(char * __first, char * __last, _OuIt __out_ite,
            const ios_base& __s, wchar_t) {
     const ctype<wchar_t>& __ct = *__STATIC_CAST(const ctype<wchar_t>*, __s._M_ctype_facet());
     wchar_t __wbuf[64];
     __ct.widen(__first, __last, __wbuf);
     ptrdiff_t __len = __last - __first;
     wchar_t * __eend = __wbuf + __len;
-    return copy((wchar_t*)__wbuf, __eend, __out);
+    return copy((wchar_t*)__wbuf, __eend, __out_ite);
 }
 #endif
 

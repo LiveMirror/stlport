@@ -13,34 +13,29 @@
  *
  */
 
-#ifndef _STLP_CLIMITS
-# define _STLP_CLIMITS
+#ifndef _STLP_CISO646
+#define _STLP_CISO646
 
-# ifndef _STLP_OUTERMOST_HEADER_ID
-#  define _STLP_OUTERMOST_HEADER_ID 0x108
+#ifndef _STLP_OUTERMOST_HEADER_ID
+#  define _STLP_OUTERMOST_HEADER_ID 0x107
 #  include <stl/_prolog.h>
-# endif
+#endif
 
-# if defined (__SUNPRO_CC) && ((__SUNPRO_CC == 0x500) && (__SUNPRO_CC_COMPAT > 4))
-#  include </usr/include/limits.h>
-# elif defined (_STLP_USE_NEW_C_HEADERS)
-#  include _STLP_NATIVE_CPP_C_HEADER(climits)
-# else
-#  ifdef __BORLANDC__
-#   include _STLP_NATIVE_C_HEADER(limits.h)
+#ifndef _STLP_WCE_EVC3
+#  if defined (_STLP_USE_NEW_C_HEADERS)
+#    include _STLP_NATIVE_CPP_C_HEADER(ciso646)
 #  else
-#   include <limits.h>
-#  endif
-# endif
+#    include <iso646.h>
+#  endif /* _STLP_USE_NEW_C_HEADERS */
+#endif
 
-# if (_STLP_OUTERMOST_HEADER_ID ==  0x108 )
+#if (_STLP_OUTERMOST_HEADER_ID == 0x107 )
 #  include <stl/_epilog.h>
 #  undef _STLP_OUTERMOST_HEADER_ID
-# endif
+#endif
 
-#endif /* _STLP_CLIMITS */
+#endif /* _STLP_CISO646 */
 
 // Local Variables:
 // mode:C++
 // End:
-
