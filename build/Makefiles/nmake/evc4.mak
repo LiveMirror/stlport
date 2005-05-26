@@ -7,23 +7,25 @@ DEFS_COMMON = $(DEFS_COMMON) /D _WIN32_WCE=$(CEVERSION) /D UNDER_CE=$(CEVERSION)
 !error No target processor configured! Please rerun configure.bat!
 !endif
 
+!if "$(CC)" == ""
+!error CC not set, run the proper WCE*.bat from this shell to set it!
+!endif
+
+# All the batchfiles to setup the environment yield different
+# compilers which they put into CC.
+CXX = $(CC)
+
 !if "$(TARGET_PROC)" == "arm"
-CXX = clarm.exe
-CC = clarm.exe
 DEFS_COMMON = $(DEFS_COMMON) /D "ARM" /D "_ARM_" /D "ARMV4"
 OPT_COMMON =
 !endif
 
 !if "$(TARGET_PROC)" == "x86"
-CXX = cl.exe
-CC = cl.exe
 DEFS_COMMON = $(DEFS_COMMON) /D "x86" /D "_X86_" /D "_i386_"
 OPT_COMMON = /Gs8192 /GF
 !endif
 
 !if "$(TARGET_PROC)" == "mips"
-CXX = clmips.exe
-CC = clmips.exe
 DEFS_COMMON = $(DEFS_COMMON) /D "_MIPS_" /D "MIPS"
 OPT_COMMON = /GF
 !endif

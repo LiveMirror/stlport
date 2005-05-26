@@ -244,7 +244,8 @@ Package maintainers can use any path by own taste---we can't satisfy
 variety of distributions/packages.
 
 So you can:
- - fix path in stlport sources (for you own needs)
+ - fix path in stlport administration config file stlport/stl/_site_config.h, 
+   see _STLP_NATIVE_INCLUDE_PATH macro and related.
  - make request to package maintainer
  - build and install compiler
 

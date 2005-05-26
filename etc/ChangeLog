@@ -1,3 +1,12 @@
+2005-05-26  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/nmake/evc4.mak: Patch from Ulrich Eckhardt to use CC
+	environment variable defined by WCE*.bat script rather than redefining
+	it.
+	
+	* src/locale.cpp, locale_impl.cpp, locale_catalog.cpp: New pass to move
+	static global variable in function to make initialization order clear.
+	
 2005-05-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/ciso646: Creation of this missing C++ standard header STLport

@@ -46,19 +46,24 @@ size_t locale::id::_S_max = 39;
 static void _Stl_loc_assign_ids();
 
 static _Stl_aligned_buffer<_Locale_impl::Init> __Loc_init_buf;
-_Refcount_Base _Locale_impl::Init::_S_count(0);
 
 _Locale_impl::Init::Init() {
-  if ( _S_count._M_incr() == 1 ) {
+  if (_M_count()._M_incr() == 1) {
     _Locale_impl::_S_initialize();
   }
 }
 
 _Locale_impl::Init::~Init() {
-  if ( _S_count._M_decr() == 0 ) {
+  if (_M_count()._M_decr() == 0) {
     _S_uninitialize();
   }
 }
+
+_Refcount_Base& _Locale_impl::Init::_M_count() const {
+  static _Refcount_Base _S_count(0);
+  return _S_count;
+}
+
 
 _Locale_impl::_Locale_impl(const char* s)
   : _Refcount_Base(0), name(s), facets_vec() {
@@ -482,12 +487,6 @@ static void _Stl_loc_assign_ids() {
   //  locale::id::_S_max                               = 39;
 }
 
-static _Stl_aligned_buffer<_Locale_impl> _Locale_classic_impl_buf;
-static _Stl_aligned_buffer<locale> _Locale_classic_buf;
-static _Stl_aligned_buffer<locale> _Locale_global_buf;
-
-// Order is significant here: this null assignment have to be placed
-// BEFORE building classic _Locale_impl
 // To access those static instance use the getter below, they guaranty
 // a correct initialization.
 static locale *_Stl_classic_locale = 0;
@@ -503,30 +502,29 @@ locale* _Stl_get_global_locale() {
   return _Stl_global_locale;
 }
 
-// The classic locale contains every facet that belongs to a category.
-// build classic _Locale_impl (1):
-static _Locale_impl *_Stl_classic_locale_impl = new (&_Locale_classic_impl_buf) _Locale_impl("C");
-
 #if defined (_STLP_LEAKS_PEDANTIC)
-static struct _Locale_classic_free {
-  ~_Locale_classic_free() {
+static struct _Locale_global_free {
+  ~_Locale_global_free() {
     if (_Stl_global_locale != 0) {
+      //This destructor is called just to signal that STLport do not need it anymore
+      //but the _Locale_Impl instance hidden in it might still be valid even after
+      //this call so we do not reset the pointer to 0 so that it is still accessible.
       _Stl_global_locale->~locale();
-      _Stl_global_locale = 0;
-    }
-
-    if (_Stl_classic_locale != 0) {
-      _Stl_classic_locale->~locale();
-      _Stl_classic_locale = 0;
-    }
-
-    if (_Stl_classic_locale_impl != 0) {
-      _Stl_classic_locale_impl->~_Locale_impl();
-      _Stl_classic_locale_impl = 0;
     }
   }
-} _classic_free;
+} _global_free;
 #endif
+
+struct _Locale_classic_impl_handler {
+  _Locale_classic_impl_handler(_Locale_impl *pimpl) {
+    _M_pimpl = new(pimpl) _Locale_impl("C");
+  }
+  ~_Locale_classic_impl_handler() {
+    _M_pimpl->~_Locale_impl();
+  }
+private:
+  _Locale_impl *_M_pimpl;
+};
 
 /*
  * This object is instanciated here to guarantee creation of the classic locale
@@ -535,6 +533,13 @@ static struct _Locale_classic_free {
 static ios_base::Init _IosInit;
 
 void _Locale_impl::make_classic_locale() {
+  // This funcion will be called once: during build classic _Locale_impl
+
+  // The classic locale contains every facet that belongs to a category.
+  // build classic _Locale_impl
+  static _Stl_aligned_buffer<_Locale_impl> _Locale_classic_impl_buf;
+  static _Locale_classic_impl_handler _Locale_classic_handler(&_Locale_classic_impl_buf);
+
   static _Stl_aligned_buffer<collate<char> > _S_collate_char;
   static _Stl_aligned_buffer<ctype<char> > _S_ctype_char;
 
@@ -633,8 +638,6 @@ void _Locale_impl::make_classic_locale() {
     0
   };
 
-  // This funcion will be called once: during build classic _Locale_impl (see (1) above)
-
   // The classic locale contains every facet that belongs to a category.
   _Locale_impl *classic = &_Locale_classic_impl_buf;
 
@@ -687,13 +690,16 @@ void _Locale_impl::make_classic_locale() {
   new (&_S_messages_wchar)messages<wchar_t>(&_Null_messages);
 #endif
 
-  _Stl_classic_locale = new (&_Locale_classic_buf) locale( classic );
-  _Stl_global_locale = new (&_Locale_global_buf) locale( _copy_Locale_impl( classic ) );
+  static _Stl_aligned_buffer<locale> _Locale_classic_buf;
+  _Stl_classic_locale = new (&_Locale_classic_buf) locale(classic);
+
+  static _Stl_aligned_buffer<locale> _Locale_global_buf;
+  _Stl_global_locale = new (&_Locale_global_buf) locale(_copy_Locale_impl(classic));
 }
 
 #ifdef _STLP_LEAKS_PEDANTIC
 void _Locale_impl::free_classic_locale() {
-  _Locale_impl *classic = &_Locale_classic_impl_buf;
+  _Locale_impl *classic = _Stl_classic_locale->_M_impl;
 #ifndef _STLP_NO_WCHAR_T
   classic->facets_vec[messages<wchar_t>::id._M_index]->~facet();
   classic->facets_vec[money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
@@ -723,6 +729,9 @@ void _Locale_impl::free_classic_locale() {
   classic->facets_vec[codecvt<char, char, mbstate_t>::id._M_index]->~facet();
   classic->facets_vec[collate<char>::id._M_index]->~facet();
   classic->facets_vec[ctype<char>::id._M_index]->~facet();
+
+  _Stl_classic_locale->~locale();
+  _Stl_classic_locale = 0;
 }
 #endif // _STLP_LEAKS_PEDANTIC
 
@@ -763,7 +772,7 @@ _STLP_DECLSPEC _Locale_impl* _STLP_CALL _get_Locale_impl(_Locale_impl *loc) {
 
 void _STLP_CALL _release_Locale_impl(_Locale_impl *& loc) {
   _STLP_ASSERT( loc != 0 );
-  if (loc->_M_decr() == 0 && loc != _Stl_classic_locale_impl) {
+  if ((loc->_M_decr() == 0) && (*loc != *_Stl_classic_locale)) {
     delete loc;
     loc = 0;
   }

@@ -122,8 +122,8 @@
  * with _STLP_SHRED_BYTE (see below).
  * Note : _STLP_DEBUG and _STLP_DEBUG_ALLOC don't set this option automatically.
  */
-#define _STLP_DEBUG_UNINITIALIZED 1
 /*
+#define _STLP_DEBUG_UNINITIALIZED 1
 #define _STLP_DEBUG_ALLOC 1
 */
 
@@ -181,8 +181,8 @@
  * If you are using new PSDK with VC++ 6.0 or lower,
  * please define this to get correct prototypes for InterlockedXXX functions
  */
-#define _STLP_NEW_PLATFORM_SDK 1
 /*
+#define _STLP_NEW_PLATFORM_SDK 1
 */
 
 /*

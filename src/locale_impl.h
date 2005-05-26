@@ -85,7 +85,7 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
         Init();
         ~Init();
       private:
-        static _Refcount_Base _S_count;
+        _Refcount_Base& _M_count() const;
     };
 
     static void _STLP_CALL _S_initialize();
@@ -105,12 +105,14 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
     void insert_monetary_facets(const char* name);
     void insert_messages_facets(const char* name);
 
+    bool operator != (const locale& __loc) const { return __loc._M_impl != this; }
+
   private:
 
     vector<locale::facet*> facets_vec;
 
   private:
-    friend struct _Locale_classic_free;
+    friend struct _Locale_classic_impl_handler;
     friend _Locale_impl * _STLP_CALL _copy_Locale_impl( _Locale_impl * );
     friend _Locale_impl * _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl * );
     friend void _STLP_CALL _release_Locale_impl( _Locale_impl *& loc );
