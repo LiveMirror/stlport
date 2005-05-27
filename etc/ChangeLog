@@ -1,3 +1,10 @@
+2005-05-27  Francois Dumont  <dums@stlport...>
+
+	* src/locale_impl.cpp: Add an initialization segment specification to make
+	global static variable ios_base::Init instance initialization prioritized
+	compare to STLport static global variable. iostreams like cout can be used
+	in global static variable initialization.
+
 2005-05-26  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/nmake/evc4.mak: Patch from Ulrich Eckhardt to use CC

@@ -526,10 +526,19 @@ private:
   _Locale_impl *_M_pimpl;
 };
 
+#if defined (_STLP_MSVC) || defined (__ICL) || defined (__ISCPP__)
 /*
- * This object is instanciated here to guarantee creation of the classic locale
- * before creation of the dependent Standard streams cout, cin, wcout...
+ * The following static variable needs to be initialized before STLport
+ * users static variable in order for hiù to be able to use Standard
+ * streams in its variable initialization.
+ * This variable is here because MSVC do not allow to change the initialization
+ * segment in a given translation unit, iostream.cpp already contains an 
+ * initialization segment specification.
  */
+#  pragma warning (disable : 4073)
+#  pragma init_seg(lib)
+#endif
+
 static ios_base::Init _IosInit;
 
 void _Locale_impl::make_classic_locale() {

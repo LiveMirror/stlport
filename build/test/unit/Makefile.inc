@@ -28,7 +28,6 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/cfloat_header_test.cpp \
 	../../../test/unit/ciso646_header_test.cpp \
 	../../../test/unit/climits_header_test.cpp \
-	../../../test/unit/c_limits_header_test.cpp \
 	../../../test/unit/clocale_header_test.cpp \
 	../../../test/unit/cmath_test.cpp \
 	../../../test/unit/cmath_header_test.cpp \
@@ -154,6 +153,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 
 SRC_C = ../../../test/unit/assert_header_test.c \
 	../../../test/unit/ctype_header_test.c \
+	../../../test/unit/c_limits_header_test.c \
 	../../../test/unit/c_locale_header_test.c \
 	../../../test/unit/errno_header_test.c \
 	../../../test/unit/float_header_test.c \
