@@ -1,3 +1,8 @@
+2005-05-29  Francois Dumont  <dums@stlport...>
+
+	* test/unit/locale_test.cpp: Add opendir returned value when listing
+	installed locale under linux.
+
 2005-05-27  Francois Dumont  <dums@stlport...>
 
 	* src/locale_impl.cpp: Add an initialization segment specification to make
