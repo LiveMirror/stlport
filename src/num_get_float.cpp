@@ -21,6 +21,10 @@
 #include <stl/_num_get.h>
 #include <stl/_istream.h>
 
+#ifdef __APPLE__
+#include <stdint.h>
+#endif
+
 #ifdef __linux__
 #  include <ieee754.h>
 #  include <stdint.h>

@@ -67,6 +67,8 @@ LColl::LColl( const char *loc_dir )
    */
   string base(loc_dir);
   DIR *d = opendir(base.c_str());
+  if (d == 0)
+    return;
   struct dirent *ent;
   while ((ent = readdir( d )) != 0) {
     if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) {

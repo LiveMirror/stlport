@@ -3,6 +3,8 @@
 	* test/unit/locale_test.cpp: Add opendir returned value when listing
 	installed locale under linux.
 
+	* build/Makefiles/gmake: Patch from Zdenek Nemec for Mac OS X support.
+
 2005-05-27  Francois Dumont  <dums@stlport...>
 
 	* src/locale_impl.cpp: Add an initialization segment specification to make

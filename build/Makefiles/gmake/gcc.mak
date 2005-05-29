@@ -17,13 +17,23 @@ CXX := ${TARGET_OS}-${CXX}
 CC := ${TARGET_OS}-${CC}
 endif
 
+ifeq ($(OSNAME), darwin)
+CXX_VERSION := $(shell ${CXX} -dumpversion)
+# TODO: ensure PANTHER's gcc compatibility...
+CXX_VERSION_MAJOR := $(shell ${CXX} -dumpversion | awk 'BEGIN { FS = "."; } { print $1; }')
+CXX_VERSION_MINOR := $(shell ${CXX} -dumpversion | awk 'BEGIN { FS = "."; } { print $2; }')
+CXX_VERSION_PATCH := $(shell ${CXX} -dumpversion | awk 'BEGIN { FS = "."; } { print $3; }')
+else
 CXX_VERSION := $(shell ${CXX} --version | grep ${CXX} | awk '{ print $$3; }')
+
 ifeq ($(CXX_VERSION),)
 CXX_VERSION := $(shell ${CXX} --version)
 endif
+
 CXX_VERSION_MAJOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $$1; }')
 CXX_VERSION_MINOR := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $$2; }')
 CXX_VERSION_PATCH := $(shell echo ${CXX_VERSION} | awk 'BEGIN { FS = "."; } { print $$3; }')
+endif
 
 DEFS ?=
 OPT ?=

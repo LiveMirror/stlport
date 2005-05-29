@@ -54,3 +54,8 @@ stldbg-shared  : LDLIBS = -lstlportstlg -lrt
 dbg-shared     : LDLIBS = -lstlportg -lrt
 endif
 
+ifeq ($(OSNAME),darwin)
+release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-L${STLPORT_LIB_DIR}
+dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-L${STLPORT_LIB_DIR}
+stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-L${STLPORT_LIB_DIR}
+endif

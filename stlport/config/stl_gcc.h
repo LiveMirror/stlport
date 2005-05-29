@@ -109,7 +109,7 @@
 #  define _STLP_USE_DECLSPEC 1
 #endif
 
-#if defined (__CYGWIN__) || defined (__MINGW32__) || !(defined (_STLP_USE_GLIBC) || defined (__sun)) 
+#if defined (__CYGWIN__) || defined (__MINGW32__) || !(defined (_STLP_USE_GLIBC) || defined (__sun) || defined(__APPLE__)) 
 #  ifndef __MINGW32__
 #    define _STLP_NO_NATIVE_MBSTATE_T      1
 #  endif
@@ -338,14 +338,13 @@ __GIVE_UP_WITH_STL(GCC_272);
 #  undef  _STLP_DONT_USE_EXCEPTIONS
 #  define _STLP_DONT_USE_EXCEPTIONS 1
 #endif
-
 #if (__GNUC__ >= 3)
 
 #  if !defined (_STLP_NATIVE_INCLUDE_PATH)
-#    if (((__GNUC__ == 3 ) && (__GNUC_MINOR__ == 0)) || ((__GNUC_MINOR__ < 3) && __APPLE__))
+#    if ( (__GNUC__ == 3 ) && ((__GNUC_MINOR__ == 0) || ((__GNUC_MINOR__ < 3) && __APPLE__)))
 #      define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
 #    else
-#      if ((__GNUC_MINOR__ >= 3) && __APPLE__)
+#      if ( ((__GNUC__ == 4 ) || (__GNUC_MINOR__ >= 3)) && __APPLE__)
 #        define _STLP_NATIVE_INCLUDE_PATH ../c++
 /*
 * Before version 3.4.0 the 0 patch level was not part of the include path:
