@@ -1,3 +1,8 @@
+2005-05-30  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/_windows.h: worry about Windows CE when check Interlocked
+	API for MIPS. Patch by Michael Fink.
+
 2005-05-29  Francois Dumont  <dums@stlport...>
 
 	* test/unit/locale_test.cpp: Add opendir returned value when listing
