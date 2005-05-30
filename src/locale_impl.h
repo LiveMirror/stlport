@@ -67,9 +67,6 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
     size_t size() const { return facets_vec.size(); }
 
     static void make_classic_locale();
-#ifdef _STLP_LEAKS_PEDANTIC
-    static void free_classic_locale();
-#endif // _STLP_LEAKS_PEDANTIC
   
     basic_string<char, char_traits<char>, allocator<char> > name;
 
@@ -112,7 +109,6 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
     vector<locale::facet*> facets_vec;
 
   private:
-    friend struct _Locale_classic_impl_handler;
     friend _Locale_impl * _STLP_CALL _copy_Locale_impl( _Locale_impl * );
     friend _Locale_impl * _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl * );
     friend void _STLP_CALL _release_Locale_impl( _Locale_impl *& loc );

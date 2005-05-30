@@ -100,9 +100,6 @@ void _STLP_CALL _Locale_impl::_S_initialize() {
 // locale destruction and not only after the classic locale destruction as
 // the facets can be shared between different facets.
 void _STLP_CALL _Locale_impl::_S_uninitialize() {
-#ifdef _STLP_LEAKS_PEDANTIC
-  free_classic_locale();
-#endif
 }
 
 // _Locale_impl non-inline member functions.
@@ -502,30 +499,6 @@ locale* _Stl_get_global_locale() {
   return _Stl_global_locale;
 }
 
-#if defined (_STLP_LEAKS_PEDANTIC)
-static struct _Locale_global_free {
-  ~_Locale_global_free() {
-    if (_Stl_global_locale != 0) {
-      //This destructor is called just to signal that STLport do not need it anymore
-      //but the _Locale_Impl instance hidden in it might still be valid even after
-      //this call so we do not reset the pointer to 0 so that it is still accessible.
-      _Stl_global_locale->~locale();
-    }
-  }
-} _global_free;
-#endif
-
-struct _Locale_classic_impl_handler {
-  _Locale_classic_impl_handler(_Locale_impl *pimpl) {
-    _M_pimpl = new(pimpl) _Locale_impl("C");
-  }
-  ~_Locale_classic_impl_handler() {
-    _M_pimpl->~_Locale_impl();
-  }
-private:
-  _Locale_impl *_M_pimpl;
-};
-
 #if defined (_STLP_MSVC) || defined (__ICL) || defined (__ISCPP__)
 /*
  * The following static variable needs to be initialized before STLport
@@ -546,48 +519,46 @@ void _Locale_impl::make_classic_locale() {
 
   // The classic locale contains every facet that belongs to a category.
   // build classic _Locale_impl
-  static _Stl_aligned_buffer<_Locale_impl> _Locale_classic_impl_buf;
-  static _Locale_classic_impl_handler _Locale_classic_handler(&_Locale_classic_impl_buf);
+  static _Locale_impl _Locale_classic_impl("C");
 
-  static _Stl_aligned_buffer<collate<char> > _S_collate_char;
-  static _Stl_aligned_buffer<ctype<char> > _S_ctype_char;
+  static collate<char> _S_collate_char(1);
+  static ctype<char> _S_ctype_char(0, false, 1);
 
 #ifndef _STLP_NO_MBSTATE_T
-  static _Stl_aligned_buffer<codecvt<char, char, mbstate_t> > _S_codecvt_char;
+  static codecvt<char, char, mbstate_t> _S_codecvt_char(1);
 #endif
 
-  static _Stl_aligned_buffer<moneypunct<char, true> > _S_moneypunct_true_char;
-  static _Stl_aligned_buffer<moneypunct<char, false> > _S_moneypunct_false_char;
-  static _Stl_aligned_buffer<numpunct<char> > _S_numpunct_char;
-  static _Stl_aligned_buffer<messages<char> > _S_messages_char;
+  static moneypunct<char, true> _S_moneypunct_true_char(1);
+  static moneypunct<char, false> _S_moneypunct_false_char(1);
+  static numpunct<char> _S_numpunct_char(1);
+  static _Messages _Null_messages;
+  static messages<char> _S_messages_char(&_Null_messages);
 
-  static _Stl_aligned_buffer<money_get<char, istreambuf_iterator<char, char_traits<char> > > > _S_money_get_char;
-  static _Stl_aligned_buffer<money_put<char, ostreambuf_iterator<char, char_traits<char> > > > _S_money_put_char;
-  static _Stl_aligned_buffer<num_get<char, istreambuf_iterator<char, char_traits<char> > > > _S_num_get_char;
-  static _Stl_aligned_buffer<num_put<char, ostreambuf_iterator<char, char_traits<char> > > > _S_num_put_char;
-  static _Stl_aligned_buffer<time_get<char, istreambuf_iterator<char, char_traits<char> > > > _S_time_get_char;
-  static _Stl_aligned_buffer<time_put<char, ostreambuf_iterator<char, char_traits<char> > > > _S_time_put_char;
+  static money_get<char, istreambuf_iterator<char, char_traits<char> > > _S_money_get_char(1);
+  static money_put<char, ostreambuf_iterator<char, char_traits<char> > > _S_money_put_char(1);
+  static num_get<char, istreambuf_iterator<char, char_traits<char> > > _S_num_get_char(1);
+  static num_put<char, ostreambuf_iterator<char, char_traits<char> > > _S_num_put_char(1);
+  static time_get<char, istreambuf_iterator<char, char_traits<char> > > _S_time_get_char(1);
+  static time_put<char, ostreambuf_iterator<char, char_traits<char> > > _S_time_put_char(1);
 
 #ifndef _STLP_NO_WCHAR_T
-  static _Stl_aligned_buffer<collate<wchar_t> > _S_collate_wchar;
-  static _Stl_aligned_buffer<ctype<wchar_t> > _S_ctype_wchar;
+  static collate<wchar_t> _S_collate_wchar(1);
+  static ctype<wchar_t> _S_ctype_wchar(1);
 #  ifndef _STLP_NO_MBSTATE_T
-  static _Stl_aligned_buffer<codecvt<wchar_t, char, mbstate_t> > _S_codecvt_wchar;
+  static codecvt<wchar_t, char, mbstate_t> _S_codecvt_wchar(1);
 #  endif
-  static _Stl_aligned_buffer<moneypunct<wchar_t, true> > _S_moneypunct_true_wchar;
-  static _Stl_aligned_buffer<moneypunct<wchar_t, false> > _S_moneypunct_false_wchar;
-  static _Stl_aligned_buffer<numpunct<wchar_t> > _S_numpunct_wchar;
-  static _Stl_aligned_buffer<messages<wchar_t> > _S_messages_wchar;
+  static moneypunct<wchar_t, true> _S_moneypunct_true_wchar(1);
+  static moneypunct<wchar_t, false> _S_moneypunct_false_wchar(1);
+  static numpunct<wchar_t> _S_numpunct_wchar(1);
+  static messages<wchar_t> _S_messages_wchar(&_Null_messages);
 
-  static _Stl_aligned_buffer<money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > > _S_money_get_wchar;
-  static _Stl_aligned_buffer<money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > > _S_money_put_wchar;
-  static _Stl_aligned_buffer<num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > > _S_num_get_wchar;
-  static _Stl_aligned_buffer<num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > > _S_num_put_wchar;
-  static _Stl_aligned_buffer<time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > > _S_time_get_wchar;
-  static _Stl_aligned_buffer<time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > > _S_time_put_wchar;
+  static money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > _S_money_get_wchar(1);
+  static money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > _S_money_put_wchar(1);
+  static num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > _S_num_get_wchar(1);
+  static num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > _S_num_put_wchar(1);
+  static time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > > _S_time_get_wchar(1);
+  static time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > > _S_time_put_wchar(1);
 #endif
-
-  static _Messages _Null_messages;
 
   locale::facet* classic_facets[] = {
     0,
@@ -648,101 +619,17 @@ void _Locale_impl::make_classic_locale() {
   };
 
   // The classic locale contains every facet that belongs to a category.
-  _Locale_impl *classic = &_Locale_classic_impl_buf;
+  _Locale_impl *classic = &_Locale_classic_impl;
 
-  // classic->facets = _S_classic_facets;
-  // classic->_M_size = locale::id::_S_max;
   classic->facets_vec.reserve(sizeof(classic_facets) / sizeof(locale::facet *));
   classic->facets_vec.assign(&classic_facets[0], classic_facets + sizeof(classic_facets) / sizeof(locale::facet *));
 
-  // ctype category
-  new(&_S_ctype_char) ctype<char>(0, false, 1);
-  // collate category
-  new(&_S_collate_char) collate<char>(1);
-  new(&_S_codecvt_char) codecvt<char, char, mbstate_t>(1);
-  // numeric punctuation category
-  new(&_S_numpunct_char) numpunct<char>(1);
-  // numeric category
-  new (&_S_num_get_char) num_get<char, istreambuf_iterator<char, char_traits<char> > >(1);
-  new (&_S_num_put_char) num_put<char, ostreambuf_iterator<char, char_traits<char> > >(1);
-  // time category
-  new (&_S_time_get_char) time_get<char, istreambuf_iterator<char, char_traits<char> > >(1);
-  new (&_S_time_put_char) time_put<char, ostreambuf_iterator<char, char_traits<char> > >(1);
-  // monetary category
-  new (&_S_moneypunct_true_char) moneypunct<char, true>(1);
-  new (&_S_moneypunct_false_char) moneypunct<char, false>(1);
-  new (&_S_money_get_char) money_get<char, istreambuf_iterator<char, char_traits<char> > >(1);
-  new (&_S_money_put_char) money_put<char, ostreambuf_iterator<char, char_traits<char> > >(1);
-  // messages category
-  new (&_S_messages_char)messages<char>(&_Null_messages);
+  static locale _Locale_classic(classic);
+  _Stl_classic_locale = &_Locale_classic;
 
-#ifndef _STLP_NO_WCHAR_T
-  // ctype category
-  new(&_S_ctype_wchar) ctype<wchar_t>(1);
-  // collate category
-  new(&_S_collate_wchar) collate<wchar_t>(1);
-  new(&_S_codecvt_wchar) codecvt<wchar_t, char, mbstate_t>(1);
-  // numeric punctuation category
-  new(&_S_numpunct_wchar) numpunct<wchar_t>(1);
-  // numeric category
-  new (&_S_num_get_wchar) num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
-  new (&_S_num_put_wchar) num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
-  // time category
-  new (&_S_time_get_wchar) time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
-  new (&_S_time_put_wchar) time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
-  // monetary category
-  new (&_S_moneypunct_true_wchar) moneypunct<wchar_t, true>(1);
-  new (&_S_moneypunct_false_wchar) moneypunct<wchar_t, false>(1);
-  new (&_S_money_get_wchar) money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
-  new (&_S_money_put_wchar) money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1);
-  // messages category
-  new (&_S_messages_wchar)messages<wchar_t>(&_Null_messages);
-#endif
-
-  static _Stl_aligned_buffer<locale> _Locale_classic_buf;
-  _Stl_classic_locale = new (&_Locale_classic_buf) locale(classic);
-
-  static _Stl_aligned_buffer<locale> _Locale_global_buf;
-  _Stl_global_locale = new (&_Locale_global_buf) locale(_copy_Locale_impl(classic));
+  static locale _Locale_global(_copy_Locale_impl(classic));
+  _Stl_global_locale = &_Locale_global;
 }
-
-#ifdef _STLP_LEAKS_PEDANTIC
-void _Locale_impl::free_classic_locale() {
-  _Locale_impl *classic = _Stl_classic_locale->_M_impl;
-#ifndef _STLP_NO_WCHAR_T
-  classic->facets_vec[messages<wchar_t>::id._M_index]->~facet();
-  classic->facets_vec[money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
-  classic->facets_vec[money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
-  classic->facets_vec[moneypunct<wchar_t, false>::id._M_index]->~facet();
-  classic->facets_vec[moneypunct<wchar_t, true>::id._M_index]->~facet();
-  classic->facets_vec[time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
-  classic->facets_vec[time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
-  classic->facets_vec[num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
-  classic->facets_vec[num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
-  classic->facets_vec[numpunct<wchar_t>::id._M_index]->~facet();
-  classic->facets_vec[codecvt<wchar_t, char, mbstate_t>::id._M_index]->~facet();
-  classic->facets_vec[collate<wchar_t>::id._M_index]->~facet();
-  classic->facets_vec[ctype<wchar_t>::id._M_index]->~facet();
-#endif
-
-  classic->facets_vec[messages<char>::id._M_index]->~facet();
-  classic->facets_vec[money_put<char, ostreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
-  classic->facets_vec[money_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
-  classic->facets_vec[moneypunct<char, false>::id._M_index]->~facet();
-  classic->facets_vec[moneypunct<char, true>::id._M_index]->~facet();
-  classic->facets_vec[time_put<char, ostreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
-  classic->facets_vec[time_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
-  classic->facets_vec[num_put<char, ostreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
-  classic->facets_vec[num_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
-  classic->facets_vec[numpunct<char>::id._M_index]->~facet();
-  classic->facets_vec[codecvt<char, char, mbstate_t>::id._M_index]->~facet();
-  classic->facets_vec[collate<char>::id._M_index]->~facet();
-  classic->facets_vec[ctype<char>::id._M_index]->~facet();
-
-  _Stl_classic_locale->~locale();
-  _Stl_classic_locale = 0;
-}
-#endif // _STLP_LEAKS_PEDANTIC
 
 // Declarations of (non-template) facets' static data members
 // size_t locale::id::_S_max = 39; // made before

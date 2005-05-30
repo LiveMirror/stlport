@@ -1,3 +1,11 @@
+2005-05-30  Francois Dumont  <dums@stlport...>
+
+	* src/locale_impl.h, locale_impl.cpp, stlport/stl/_locale.h: An other pass
+	throught the classic locale initialization. Now all needed static variables
+	are in _Locale_impl::make_classic_locale method. Removed useless _Stl_aligned_buffer
+	union use in this locale initialization. Removed now useless _Locale_impl::free_classic_locale
+	method.
+	
 2005-05-30  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_windows.h: worry about Windows CE when check Interlocked
@@ -18,7 +26,6 @@
 	native include file. Now the text is only output when not building the library
 	and when the file is included directly, not via another STLport header file.
 	[Patch by Michael Fink.]
-
 
 2005-05-29  Francois Dumont  <dums@stlport...>
 
