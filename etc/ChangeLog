@@ -3,6 +3,23 @@
 	* stlport/stl/_windows.h: worry about Windows CE when check Interlocked
 	API for MIPS. Patch by Michael Fink.
 
+	* build/lib/configure.bat: remove the -p option by autodetecting platform.
+	Patch by Michael Fink.
+
+	* build/Makefiles/nmake/evc3.mak, evc4.mak: corrects the evc4 makefiles
+	to always use the /GF switch [string pooling]. Patch by Michael Fink.
+
+	* doc/README.evc3, doc/README.evc4: reflect changes above.
+	Patch by Michael Fink.
+
+	* stlport/errno.h, stlport/time.h: when building for evc, including
+	errno.h and time.h often outputs the message in the #pragma statement
+	that including this file won't include the native one, since there is no
+	native include file. Now the text is only output when not building the library
+	and when the file is included directly, not via another STLport header file.
+	[Patch by Michael Fink.]
+
+
 2005-05-29  Francois Dumont  <dums@stlport...>
 
 	* test/unit/locale_test.cpp: Add opendir returned value when listing
