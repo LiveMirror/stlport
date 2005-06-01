@@ -1,3 +1,16 @@
+2005-06-01  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl/c_locale.h: check gcc on MacOS X. Patch by Zdenek Nemec
+
+	* build/Makefiles/nmake/evc3.mak, evc4.mak, targets.mak:
+	support SH3/SH4 platform. Patch by Michael Fink.
+
+	* build/Makefiles/nmake/app/evc3.mak, evc4.mak: ditto.
+
+	* build/Makefiles/nmake/lib/evc3.mak, evc4.mak: ditto.
+
+	* build/lib/configure.bat, src/stlport.rc: ditto.
+
 2005-05-30  Francois Dumont  <dums@stlport...>
 
 	* src/locale_impl.h, locale_impl.cpp, stlport/stl/_locale.h: An other pass
