@@ -188,7 +188,7 @@ struct _Locale_messages;
 #  define _Locale_ALPHA  (_Locale_UPPER | _Locale_LOWER)
 #  define _Locale_PRINT  (_Locale_ALPHA | _Locale_DIGIT | _Locale_PUNCT | 0200 )
 
-# elif defined (__FreeBSD__) || defined (__APPLE__)
+# elif defined (__FreeBSD__) || ( defined (__APPLE__) && defined (__GNUC__) && (__GNUC__ > 3) )
 
 # define _Locale_CNTRL _CTYPE_C
 # define _Locale_UPPER _CTYPE_U
