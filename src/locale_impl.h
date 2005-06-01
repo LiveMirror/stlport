@@ -66,8 +66,6 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
 
     size_t size() const { return facets_vec.size(); }
 
-    static void make_classic_locale();
-  
     basic_string<char, char_traits<char>, allocator<char> > name;
 
     static void _STLP_CALL _M_throw_bad_cast();
@@ -76,8 +74,7 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
     void operator=(const _Locale_impl&);
 
   public:
-    class _STLP_CLASS_DECLSPEC Init
-    {
+    class _STLP_CLASS_DECLSPEC Init {
       public:
         Init();
         ~Init();
@@ -87,6 +84,10 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
 
     static void _STLP_CALL _S_initialize();
     static void _STLP_CALL _S_uninitialize();
+
+    static void make_classic_locale();
+    static void free_classic_locale();
+  
     friend class Init;
 
   public: // _Locale

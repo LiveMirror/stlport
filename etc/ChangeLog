@@ -1,3 +1,8 @@
+2005-06-01  Francois Dumont  <dums@stlport...>
+
+  * src/locale_impl.h, locale_impl.cpp: Change classic locale initialization
+  implementation for limited compiler like MSVC6.
+
 2005-06-01  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/c_locale.h: check gcc on MacOS X. Patch by Zdenek Nemec
