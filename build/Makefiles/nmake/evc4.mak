@@ -30,6 +30,16 @@ DEFS_COMMON = $(DEFS_COMMON) /D "_MIPS_" /D "MIPS"
 OPT_COMMON =
 !endif
 
+!if "$(TARGET_PROC)" == "sh3"
+DEFS_COMMON = $(DEFS_COMMON) /D "SH3" /D "_SH3_" /D "SHx"
+OPT_COMMON = /GF
+!endif
+
+!if "$(TARGET_PROC)" == "sh4"
+DEFS_COMMON = $(DEFS_COMMON) /D "SH4" /D "_SH4_" /D "SHx"
+OPT_COMMON = /GF /Qsh4
+!endif
+
 
 # exception handling support
 CFLAGS_COMMON = /nologo /TC /W4 /GF /GR /GX

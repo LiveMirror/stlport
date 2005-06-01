@@ -15,4 +15,12 @@ LDFLAGS_COMMON = $(LDFLAGS_COMMON) ccrtrtti.lib $(CEx86Corelibc) /nodefaultlib:"
 LDFLAGS_COMMON = $(LDFLAGS_COMMON) /MACHINE:$(MIPS_MACHINE_TYPE)
 !endif
 
+!if "$(TARGET_PROC)" == "sh3"
+LDFLAGS_COMMON = $(LDFLAGS_COMMON) /MACHINE:SH3
+!endif
+
+!if "$(TARGET_PROC)" == "sh4"
+LDFLAGS_COMMON = $(LDFLAGS_COMMON) /MACHINE:SH4
+!endif
+
 !include evc-common.mak

@@ -230,8 +230,8 @@ if "%TARGETCPU%" == "MIPSIV_FP" goto pr_mips
 goto pr_err
 
 :prc_shx
-if "%TARGETCPU%" == "SH3" goto pr_shx
-if "%TARGETCPU%" == "SH4" goto pr_shx
+if "%TARGETCPU%" == "SH3" goto pr_sh3
+if "%TARGETCPU%" == "SH4" goto pr_sh4
 goto pr_err
 
 :pr_err
@@ -264,9 +264,14 @@ if "%TARGETCPU%" == "MIPSII" echo MIPS_MACHINE_TYPE=MIPS >> ..\Makefiles\config.
 if "%TARGETCPU%" == "MIPSIV" echo MIPS_MACHINE_TYPE=MIPSFPU >> ..\Makefiles\config.mak
 goto pr_end
 
-:pr_shx
+:pr_sh3
 echo Target processor: %TARGETCPU%
-echo TARGET_PROC=SHx >> ..\Makefiles\config.mak
+echo TARGET_PROC=sh3 >> ..\Makefiles\config.mak
+goto pr_end
+
+:pr_sh4
+echo Target processor: %TARGETCPU%
+echo TARGET_PROC=sh4 >> ..\Makefiles\config.mak
 goto pr_end
 
 :pr_end

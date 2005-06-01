@@ -4,6 +4,7 @@
 //
 
 #include <windows.h>
+#include <winver.h>
 
 #include <stl/_stlport_version.h>
 
@@ -14,7 +15,7 @@
 #define CONCAT_AUX(A, B) CONCAT_AUX2(A ## B)
 #define CONCAT_AUX2(X) X
 
-#define VERSION_ID _STLPORT_MAJOR, _STLPORT_MINOR, _STLPORT_PATCHLEVEL, 0 
+#define VERSION_ID _STLPORT_MAJOR, _STLPORT_MINOR, _STLPORT_PATCHLEVEL, 0
 #define VERSION_STR STRINGIZE(_STLPORT_MAJOR._STLPORT_MINOR._STLPORT_PATCHLEVEL)
 
 #if !defined (__GNUC__)
