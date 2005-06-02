@@ -21,8 +21,6 @@
 
 _STLP_BEGIN_NAMESPACE
 
-static const string _Nameless("*");
-
 #if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
 #  define locale _STLP_NO_MEM_T_NAME(loc)
 #endif

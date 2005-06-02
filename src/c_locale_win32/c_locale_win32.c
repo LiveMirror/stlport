@@ -451,14 +451,14 @@ extern "C" {
     int BufferSize;
     char FracDigits[3];
 
-    _Locale_monetary_t *lmon=(_Locale_monetary_t*)malloc(sizeof(_Locale_monetary_t));
-    if(!lmon) return lmon;
+    _Locale_monetary_t *lmon = (_Locale_monetary_t*)malloc(sizeof(_Locale_monetary_t));
+    if (!lmon) return lmon;
     memset(lmon, 0, sizeof(_Locale_monetary_t));
 
     __Extract_locale_name(name, LC_MONETARY, cname);
 
-    if(__GetLCIDFromName(cname, &lmon->lcid, lmon->cp)==-1)
-      { free(lmon); return NULL; }
+    if (__GetLCIDFromName(cname, &lmon->lcid, lmon->cp)==-1)
+    { free(lmon); return NULL; }
 
     /* Extract information about monetary system */
     GetLocaleInfoA(lmon->lcid, LOCALE_SDECIMAL, lmon->decimal_point, 4);
@@ -466,9 +466,9 @@ extern "C" {
     GetLocaleInfoA(lmon->lcid, LOCALE_STHOUSAND, lmon->thousands_sep, 4);
     __ConvertFromACP(lmon->thousands_sep, 4, lmon->cp);
 
-    BufferSize=GetLocaleInfoA(lmon->lcid, LOCALE_SGROUPING, NULL, 0);
-    GroupingBuffer=(char*)malloc(BufferSize);
-    if(!GroupingBuffer) { lmon->grouping=NULL; return lmon; }
+    BufferSize = GetLocaleInfoA(lmon->lcid, LOCALE_SGROUPING, NULL, 0);
+    GroupingBuffer = (char*)malloc(BufferSize);
+    if (!GroupingBuffer) { lmon->grouping = NULL; return lmon; }
     GetLocaleInfoA(lmon->lcid, LOCALE_SGROUPING, GroupingBuffer, BufferSize);
     __FixGrouping(GroupingBuffer);
     lmon->grouping=GroupingBuffer;
@@ -489,6 +489,15 @@ extern "C" {
     lmon->int_frac_digits=atoi(FracDigits);
 
     GetLocaleInfoA(lmon->lcid, LOCALE_SINTLSYMBOL, lmon->int_curr_symbol, 5);
+    /* Even if Platform SDK documentation says that the returned symbol should
+     * be a 3 letters symbol followed by a seperation character, experimentation
+     * has shown that no seperation character is ever appended. We are adding it
+     * ourself to conform to the POSIX specification.
+     */
+    if (lmon->int_curr_symbol[3] == 0) {
+      lmon->int_curr_symbol[3] = ' ';
+      lmon->int_curr_symbol[4] = 0;
+    }
 
     return lmon;
   }
@@ -561,7 +570,7 @@ extern "C" {
   }
 
   char* _Locale_monetary_name(const void* loc, char* buf) {
-    _Locale_monetary_t* lmon=(_Locale_monetary_t*)loc;
+    _Locale_monetary_t* lmon = (_Locale_monetary_t*)loc;
     return __GetLocaleName(lmon->lcid, lmon->cp, buf);
   }
 

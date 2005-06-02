@@ -60,6 +60,8 @@ BOOL CALLBACK EnumLocalesProc(LPTSTR locale_name) {
 
 LColl::LColl( const char *loc_dir )
 {
+  // std::locale must at least support the C locale
+  supported_locales.insert("C");
 #  if (defined(__unix) || defined(__unix__)) && !defined(__CYGWIN__)
   /* Iterate through catalog that contain catalogs with locale definitions, installed on system
    * (this is expected /usr/lib/locale for most linuxes and /usr/share/locale for *BSD).
@@ -85,19 +87,15 @@ LColl::LColl( const char *loc_dir )
     }
   }
   closedir( d );
-#  else
-#    ifdef _MSC_VER
+#  elif defined (_MSC_VER)
   //Avoids warning:
   (void*)loc_dir;
-#    endif
 #  endif
 #  if defined (WIN32) && !defined (_STLP_WCE)
   psupported_locales = &supported_locales;
   EnumSystemLocales(EnumLocalesProc, LCID_INSTALLED);
   psupported_locales = 0;
 #  endif
-  // std::locale must at least support the C locale
-  supported_locales.insert("C");
 }
 
 #  if !defined(__GNUC__) || (__GNUC__ > 2)
@@ -125,13 +123,13 @@ struct ref_locale {
 // Pls, don't write #ifdef _STLP_REAL_LOCALE_IMPLEMENTED here!
 // It undefined in any case!!!!!
 
-static ref_locale tested_locales[] = {
+static const ref_locale tested_locales[] = {
 //{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point,  money_thousands_sep},
-  { "fr_FR",       ",",           "\xa0",        "",               "",           " EUR",            " FRF",                "",           ",",                  "\xa0" },
+  { "fr_FR",       ",",           "\xa0",        "",               "",           "EUR ",            "FRF ",               "",           ",",                  "\xa0" },
   { "ru_RU.koi8r", ",",           ".",           "",               "",           "RUR ",            "",                   "",           ".",                  " " },
-  { "en_GB",       ".",           ",",           "GBP ",            "\xa3",       "",               "",                   "",           ".",                  "," },
-  { "en_US",       ".",           ",",           "USD ",            "$",          "",               "",                   "",           ".",                  "," },
-  { "C",           ".",           ",",           "",               "",           "",               "",                   "",           " ",                  " " },
+  { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",                "",                   "",           ".",                  "," },
+  { "en_US",       ".",           ",",           "USD ",           "$",          "",                "",                   "",           ".",                  "," },
+  { "C",           ".",           ",",           "",               "",           "",                "",                   "",           " ",                  " " },
 };
 
 
@@ -180,7 +178,6 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   ostringstream ostr;
   ostr << val;
   CPPUNIT_ASSERT( ostr );
-  //CPPUNIT_TEST( ostr.str() == "1234.56" );
   CPPUNIT_ASSERT( ostr.str() == "1234.56" );
 
   numpunct<char> const& npct = use_facet<numpunct<char> >(loc);
@@ -258,8 +255,8 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
        *   The international currency symbol. The operand is a four-character
        *   string, with the first three characters containing the alphabetic
        *   international currency symbol in accordance with those specified
-       *   in the . The fourth character is the character used to separate
-       *   the international currency symbol from the monetary quantity.
+       *   in the ISO 4217 specification. The fourth character is the character used
+       *   to separate the international currency symbol from the monetary quantity.
        *
        * (http://www.opengroup.org/onlinepubs/7990989775/xbd/locale.html)
        */
@@ -313,26 +310,19 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
       // iternational currency abbreviation, if it sacceeds value
 
       // Oh, RUR typed wrong here, but test pass this:
-      // it print '1 234.56 RUR ' (see space after RUR)
+      // it prints '1 234.56 RUR ' (see space after RUR)
       // This is due to intl_fmp.curr_symbol() == "RUR ".
       // Sources I see isn't clear say about the format...
 
       p = strlen( rl.money_int_suffix );
-      string::size_type p_old = strlen( rl.money_int_suffix_old );
-      if ( p != 0 || p_old != 0 ) {
+      if ( p != 0 ) {
         CPPUNIT_ASSERT( intl_fmp.pos_format().field[fieldIndex] == money_base::symbol );
-        if ( p != 0 && p_old != 0 ) {
-          CPPUNIT_ASSERT( (str_res.substr(index, p) == rl.money_int_suffix) || (str_res.substr(index, p_old) ==  rl.money_int_suffix_old) );
-          if ( str_res.substr(index, p) == rl.money_int_suffix ) {
-            index += p;
-          } else {
-            index += p_old;
-          }
-        } else if ( p != 0 ) {
-          CPPUNIT_ASSERT( str_res.substr(index, p) == rl.money_int_suffix );
+        string::size_type p_old = strlen( rl.money_int_suffix_old );
+        CPPUNIT_ASSERT( (str_res.substr(index, p) == rl.money_int_suffix) || 
+                        ((p_old != 0) && (str_res.substr(index, p_old) ==  rl.money_int_suffix_old)) );
+        if ( str_res.substr(index, p) == rl.money_int_suffix ) {
           index += p;
         } else {
-          CPPUNIT_ASSERT( str_res.substr(index, p_old) ==  rl.money_int_suffix_old );
           index += p_old;
         }
         ++fieldIndex;
@@ -343,7 +333,7 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
         ++fieldIndex;
       }
 
-      //space cannot be last:
+      //as space cannot be last the only left format can be none:
       while ( fieldIndex < 3 ) {
         CPPUNIT_ASSERT( intl_fmp.pos_format().field[fieldIndex] == money_base::none );
         ++fieldIndex;
@@ -709,6 +699,14 @@ void LocaleTest::locale_init_problem()
   test_supported_locale(*this, &LocaleTest::_locale_init_problem);
 }
 
+
+/*
+ * Creation of a locale instance imply initialization of some STLport internal
+ * static objects first. We use a static instance of locale to check that this
+ * initialization is done correctly.
+ */
+static locale global_loc;
+
 void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale&)
 {
 #  if !defined (__APPLE__) && !defined (__FreeBSD__) || \
@@ -721,7 +719,7 @@ void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale&)
   typedef codecvt<char,char,std::mbstate_t> my_facet;
 #  endif
 
-  locale loc_ref;
+  locale loc_ref(global_loc);
   {
     locale gloc( loc_ref, new my_facet() );
     CPPUNIT_ASSERT( has_facet<my_facet>( gloc ) );

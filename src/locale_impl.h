@@ -86,7 +86,6 @@ class _STLP_CLASS_DECLSPEC _Locale_impl :
     static void _STLP_CALL _S_uninitialize();
 
     static void make_classic_locale();
-    static void free_classic_locale();
   
     friend class Init;
 
