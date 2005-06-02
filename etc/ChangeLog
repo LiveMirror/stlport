@@ -1,17 +1,21 @@
-﻿2005-06-02  Francois Dumont  <dums@stlport...>
+2005-06-02  Francois Dumont  <dums@stlport...>
 
-  * src/c_locale_win32/c_locale_win32.c: Add workaround for a Windows PSDK bug
-  concerning currency international symbol, the seperation character is missing.
-  
-  * src/locale_impl.h, locale_impl.cpp: Fix implementation to make classic locale
-  implementation a normal instance that is released when the counter reach 0, the
-  only difference is that no delete is performed on this instance. Idem for classic
-  locale implementation facets.
-  
+	* src/c_locale_win32/c_locale_win32.c: Add workaround for a Windows PSDK bug
+	concerning currency international symbol, the seperation character is missing.
+	
+	* src/locale_impl.h, locale_impl.cpp: Fix implementation to make classic locale
+	implementation a normal instance that is released when the counter reach 0, the
+	only difference is that no delete is performed on this instance. Idem for classic
+	locale implementation facets.
+
+	* stlport/cwctype: And _GLIBCPP_USE_WCHAR_T check when using GLibC as in this
+	case wide char functions are not imported in std and must be imported from the
+	global namespace.
+
 2005-06-01  Francois Dumont  <dums@stlport...>
 
-  * src/locale_impl.h, locale_impl.cpp: Change classic locale initialization
-  implementation for limited compiler like MSVC6.
+	* src/locale_impl.h, locale_impl.cpp: Change classic locale initialization
+	implementation for limited compiler like MSVC6.
 
 2005-06-01  Petr Ovtchenkov  <ptr@island...>
 
