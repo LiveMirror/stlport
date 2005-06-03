@@ -196,9 +196,6 @@ protected:                        // More helper functions.
   // friends:
   friend class _Locale_impl;
   friend class ios_base;
-#if defined (_STLP_LEAKS_PEDANTIC)
-  friend struct _Locale_classic_free;
-#endif
 
 protected:                        // Data members
   _Locale_impl* _M_impl;
