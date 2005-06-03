@@ -486,18 +486,38 @@ Operational environment:        Windows CE 4.2 Pocket PC 2003 Emulator
 -----------------------------------------------------------------------
 Compiler:                       eMbedded Visual C++ .NET SP4
 -----------------------------------------------------------------------
-Date:                           2005-02-16
+Date:                           2005-04-13
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       mfink (Michael Fink)
-Status (release-shared):        All pass (313 tests)
+Status (release-shared):        All pass (317 tests)
 Notes:
-Status (dbg-shared):            All pass (313 tests)
+Status (dbg-shared):            All pass (317 tests)
 Notes:
-Status (stldbg-shared):         All pass (313 tests)
+Status (stldbg-shared):         All pass (317 tests)
 Notes:
-Status (release-static):        All pass (313 tests)
+Status (release-static):        All pass (317 tests)
 Notes:
-Status (dbg-static):            All pass (313 tests)
+Status (dbg-static):            All pass (317 tests)
 Notes:
-Status (stldbg-static):         All pass (313 tests)
+Status (stldbg-static):         All pass (317 tests)
+Notes:
+
+=======================================================================
+Operational environment:        Microsoft Device Emulator V1.0 Windows
+                                Mobile 2003 SE (pre-release 050419)
+=======================================================================
+
+-----------------------------------------------------------------------
+Compiler:                       eMbedded Visual C++ .NET SP4
+-----------------------------------------------------------------------
+Date:                           2005-06-03
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       mfink (Michael Fink)
+Status (release-shared):        All pass (321 tests)
+Notes:
+Status (dbg-shared):            All pass (321 tests)
+Notes:
+Status (release-static):        All pass (321 tests)
+Notes:
+Status (dbg-static):            All pass (321 tests)
 Notes:

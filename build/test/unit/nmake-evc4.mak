@@ -9,3 +9,7 @@ OPT_STLDBG_STATIC = /Zm800
 !endif
 
 !include nmake-evc-common.mak
+
+!if "$(COMPILER_NAME)" == "evc3"
+!error Error: Configured for evc3 but compiling with evc4 makefiles!
+!endif

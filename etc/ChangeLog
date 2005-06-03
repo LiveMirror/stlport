@@ -5,6 +5,11 @@
 	report it using a rutime_error exception when not supported. When
 	compiler do not support exception only the C locale is checked.
 
+	* build/Makefiles/nmake: Patches from Michael Fink to
+	  - check platform before linking to crtrtti.lib
+	  - check right configuration when using a nmake-evc?.mak file
+	  - update STATUS file.
+
 2005-06-02  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32/c_locale_win32.c: Add workaround for a Windows PSDK bug
