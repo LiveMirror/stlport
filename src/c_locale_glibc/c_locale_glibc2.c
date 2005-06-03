@@ -27,8 +27,8 @@ struct locale_data
   } alloc;
 
   /* This provides a slot for category-specific code to cache data computed
-     about this locale.  That code can set a cleanup function to deallocate
-     the data.  */
+   * about this locale.  That code can set a cleanup function to deallocate
+   * the data.  
   struct
   {
     void (*cleanup) (struct locale_data *);
@@ -39,6 +39,7 @@ struct locale_data
       const struct gconv_fcts *ctype;
     };
   } private;
+   */
 
   unsigned int usage_count;     /* Counter for users.  */
 

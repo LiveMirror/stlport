@@ -35,9 +35,9 @@
 #    endif
 #    if defined (__MSL__)
 namespace std {
-	typedef wchar_t wctrans_t;
-	wint_t 		towctrans(wint_t c, wctrans_t value);
-	wctrans_t 	wctrans(const char *name);
+  typedef wchar_t wctrans_t;
+  wint_t towctrans(wint_t c, wctrans_t value);
+  wctrans_t wctrans(const char *name);
 }
 using std::wctrans_t;
 using std::towctrans;

@@ -3,108 +3,11 @@
 #  include <sstream>
 #  include <locale>
 
-#  include <cstdio>
-
-#  if defined (__unix) || defined (__unix__)
-#    include <sys/types.h>
-#    include <sys/stat.h>
-#    include <dirent.h>
-#    include <unistd.h>
-#    include <cstring>
-#    include <iostream>
-#  elif defined (WIN32) && !defined (_STLP_WCE)
-#    include <windows.h>
-#  endif
-
-#  include <set>
-
 #  include "cppunit/cppunit_proxy.h"
 
 #  if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
 using namespace std;
 #  endif
-
-
-class LColl {
-public:
-  LColl( const char * );
-
-  bool operator[](const string& name) {
-    return supported_locales.find(name) != supported_locales.end();
-  }
-
-private:
-  set<string> supported_locales;
-};
-
-#if defined (WIN32) && !defined (_STLP_WCE)
-set<string> *psupported_locales = 0;
-BOOL CALLBACK EnumLocalesProc(LPTSTR locale_name) {
-  LCID lcid;
-  {
-    istringstream istr(locale_name);
-    istr >> hex >> lcid;
-    if (!istr)
-      return TRUE;
-  }
-
-  char lang[128], ctry[128];
-  GetLocaleInfoA(lcid, LOCALE_SISO639LANGNAME, lang, sizeof(lang));
-  GetLocaleInfoA(lcid, LOCALE_SISO3166CTRYNAME, ctry, sizeof(ctry));
-
-  string localeName = string(lang) + '_' + string(ctry);
-  psupported_locales->insert(localeName);
-  return TRUE;
-}
-#endif
-
-LColl::LColl( const char *loc_dir )
-{
-  // std::locale must at least support the C locale
-  supported_locales.insert("C");
-#  if (defined(__unix) || defined(__unix__)) && !defined(__CYGWIN__)
-  /* Iterate through catalog that contain catalogs with locale definitions, installed on system
-   * (this is expected /usr/lib/locale for most linuxes and /usr/share/locale for *BSD).
-   * The names of catalogs here will give supported locales.
-   */
-  string base(loc_dir);
-  DIR *d = opendir(base.c_str());
-  if (d == 0)
-    return;
-  struct dirent *ent;
-  while ((ent = readdir( d )) != 0) {
-    if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) {
-      continue;
-    }
-    string f = base;
-    f += '/';
-    f += ent->d_name;
-    struct stat s;
-    stat( f.c_str(), &s );
-    if (S_ISDIR(s.st_mode)) {
-      supported_locales.insert(ent->d_name);
-      // cout << ent->d_name << endl;
-    }
-  }
-  closedir( d );
-#  elif defined (_MSC_VER)
-  //Avoids warning:
-  (void*)loc_dir;
-#  endif
-#  if defined (WIN32) && !defined (_STLP_WCE)
-  psupported_locales = &supported_locales;
-  EnumSystemLocales(EnumLocalesProc, LCID_INSTALLED);
-  psupported_locales = 0;
-#  endif
-}
-
-#  if !defined(__GNUC__) || (__GNUC__ > 2)
-#    if defined(__FreeBSD__) || defined(__OpenBSD__)
-static LColl loc_ent( "/usr/share/locale" );
-#    else
-static LColl loc_ent( "/usr/lib/locale" );
-#    endif
-#  endif // !__GNUC__ || __GNUC__ > 2
 
 struct ref_locale {
   const char *name;
@@ -119,17 +22,21 @@ struct ref_locale {
   const char *money_thousands_sep;
 };
 
-
 // Pls, don't write #ifdef _STLP_REAL_LOCALE_IMPLEMENTED here!
 // It undefined in any case!!!!!
 
 static const ref_locale tested_locales[] = {
-//{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point,  money_thousands_sep},
-  { "fr_FR",       ",",           "\xa0",        "",               "",           "EUR ",            "FRF ",               "",           ",",                  "\xa0" },
-  { "ru_RU.koi8r", ",",           ".",           "",               "",           "RUR ",            "",                   "",           ".",                  " " },
-  { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",                "",                   "",           ".",                  "," },
-  { "en_US",       ".",           ",",           "USD ",           "$",          "",                "",                   "",           ".",                  "," },
-  { "C",           ".",           ",",           "",               "",           "",                "",                   "",           " ",                  " " },
+//{  name,         decimal_point, thousands_sep, money_int_prefix, money_prefix, money_int_suffix, money_int_suffix_old, money_suffix, money_decimal_point, money_thousands_sep},
+  { "fr_FR",       ",",           "\xa0",        "",               "",           "EUR ",           "FRF ",               "",           ",",                
+#if defined (WIN32)
+                                                                                                                                                            "\xa0" },
+#else
+                                                                                                                                                            " " },
+#endif
+  { "ru_RU.koi8r", ",",           ".",           "",               "",           "RUR ",           "",                   "",           ".",                 " " },
+  { "en_GB",       ".",           ",",           "GBP ",           "\xa3",       "",               "",                   "",           ".",                 "," },
+  { "en_US",       ".",           ",",           "USD ",           "$",          "",               "",                   "",           ".",                 "," },
+  { "C",           ".",           ",",           "",               "",           "",               "",                   "",           " ",                 " " },
 };
 
 
@@ -183,7 +90,6 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   numpunct<char> const& npct = use_facet<numpunct<char> >(loc);
 
   CPPUNIT_ASSERT( npct.decimal_point() == *rl.decimal_point );
-  CPPUNIT_ASSERT( npct.thousands_sep() == *rl.thousands_sep );
 
   ostringstream fostr;
   fostr.imbue(loc);
@@ -196,6 +102,7 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   ref += "234";
   ref += npct.decimal_point();
   ref += "56";
+  //cout << "In " << loc.name() << " 1234.56 is written: " << fostr.str() << endl;
   CPPUNIT_ASSERT( fostr.str() == ref );
 
   val = 12345678.9f;
@@ -239,6 +146,7 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
 
       CPPUNIT_ASSERT( !res.failed() );
       str_res = ostr.str();
+      //cout << str_res << endl;
 
       size_t fieldIndex = 0;
       size_t index = 0;
@@ -616,22 +524,25 @@ void LocaleTest::_ctype_facet( const locale& loc, const ref_locale&)
 
 template <class _Tp>
 void test_supported_locale(LocaleTest inst, _Tp __test) {
-#  if defined(__GNUC__) && (__GNUC__ < 3) // workaround for gcc 2.95.x
-#    if defined(__FreeBSD__) || defined(__OpenBSD__)
-   LColl loc_ent( "/usr/share/locale" );
-#    else
-   LColl loc_ent( "/usr/lib/locale" );
-#    endif
-#  endif // __GNUC__ || __GNUC__ < 3
-
-  int n = sizeof(tested_locales) / sizeof(tested_locales[0]);
-  for ( int i = 0; i < n; ++i ) {
-    if ( loc_ent[string( tested_locales[i].name )] ) {
-      // cout << '\t' << tested_locales[i].name << endl;
-      locale loc( tested_locales[i].name );
-      CPPUNIT_MESSAGE( loc.name().c_str() );
-      (inst.*__test)(loc, tested_locales[i] );
+  size_t n = sizeof(tested_locales) / sizeof(tested_locales[0]);
+  for (size_t i = 0; i < n; ++i) {
+    auto_ptr<locale> loc;
+#if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
+    try {
+      loc.reset(new locale(tested_locales[i].name));
     }
+    catch (runtime_error const&) {
+      //This locale is not supported.
+      continue;
+    }
+#else
+    //Without exception support we only test C locale.
+    if (tested_locales[i].name[0] != 'C' || 
+        tested_locales[i].name[1] != 0)
+      continue;
+#endif
+    CPPUNIT_MESSAGE( loc->name().c_str() );
+    (inst.*__test)(*loc, tested_locales[i]);
   }
 }
 

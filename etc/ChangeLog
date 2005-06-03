@@ -1,3 +1,10 @@
+2005-06-03  Francois Dumont  <dums@stlport...>
+
+	* test/unit/locale_test.cpp: Remove the very platform dependent LColl
+	class that was listing supported locales. STLport already do so and
+	report it using a rutime_error exception when not supported. When
+	compiler do not support exception only the C locale is checked.
+
 2005-06-02  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32/c_locale_win32.c: Add workaround for a Windows PSDK bug
