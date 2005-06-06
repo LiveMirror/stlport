@@ -1,3 +1,19 @@
+2005-06-06  Petr Ovtchenkov  <ptr@island...>
+
+	* build/lib/configure: add config options for Metrowerks compiler for
+	Novell NetWare platform [references to root of MW headers/libs and to Novell's
+	SDK headers/libs].
+
+	* build/Makefiles/gmake/mwccnlm.mak: fixes for Metrowerk/NetWare.
+
+	* build/Makefiles/gmake/app/mwccnlm.mak: idem.
+
+	* build/Makefiles/gmake/netware/extern.mak: idem.
+
+	* build/lib/mwccnlm.mak: idem.
+
+	* build/test/unit/mwccnlm.mak: idem.
+
 2005-06-03  Francois Dumont  <dums@stlport...>
 
 	* test/unit/locale_test.cpp: Remove the very platform dependent LColl

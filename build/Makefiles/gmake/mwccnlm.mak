@@ -1,4 +1,4 @@
-# Time-stamp: <05/05/06 17:25:20 ptr>
+# Time-stamp: <05/06/03 21:30:03 ptr>
 # $Id$
 
 
@@ -26,7 +26,7 @@ OPT ?=
 
 OUTPUT_OPTION = -o $@
 LINK_OUTPUT_OPTION = ${OUTPUT_OPTION}
-CPPFLAGS = $(DEFS) -gccinc -I. $(INCLUDES) -ir "$(MWCW_NOVELL_SDK)" -ir "$(MWCW_NOVELL_R)" -prefix Headers/nlm_prefix.h
+CPPFLAGS = $(DEFS) -gccinc -I. $(INCLUDES) -ir "$(NWSDK_DIR)" -ir "$(MWCW_NOVELL)" -prefix Headers/nlm_prefix.h
 
 ifeq ($(OSNAME), cygming)
 release-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUILD=r -DBUILD_INFOS="-O2" --output-format coff

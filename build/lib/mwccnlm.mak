@@ -1,4 +1,4 @@
-# -*- Makefile -*- Time-stamp: <03/10/12 20:35:49 ptr>
+# -*- Makefile -*- Time-stamp: <05/06/03 21:38:08 ptr>
 # $Id$
 
 SRCROOT := ..
@@ -10,10 +10,6 @@ include ${SRCROOT}/Makefiles/top.mak
 
 
 INCLUDES += -I$(STLPORT_INCLUDE_DIR)
-
-ifeq ($(OSNAME),linux)
-DEFS += -D_STLP_REAL_LOCALE_IMPLEMENTED -D_GNU_SOURCE -D_STLP_LEAKS_PEDANTIC
-endif
 
 # options for build with boost support
 ifdef STLP_BUILD_BOOST_PATH
