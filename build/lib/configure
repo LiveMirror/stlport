@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Time-stamp: <05/03/21 10:39:01 ptr>
+# Time-stamp: <05/06/03 21:19:35 ptr>
 # $Id$
 
 
@@ -32,6 +32,10 @@ Available options:
   --with-stlport=<dir>  use STLport in catalog <dir>
   --with-msvc=<dir>     use MS VC from this catalog
   --with-mssdk=<dir>    use MS SDK from this catalog
+  --with-mwcw=<dir>     Metrowerks CodeWarrior compiler catalog (useful for mw* compilers)
+                        i.e. something like "c:/Program Files/Metrowerks/CodeWarrior"
+  --with-nwsdk=<dir>    use Novell NDK/SDK from this catalog (useful for *-*-netware target)
+                        i.e. something like "c:/Novell/ndk/nwsdk"
   --with-extra-cxxflags=<options>
                         pass extra options to C++ compiler
   --clean               remove custom settings (file ${configmak})
@@ -82,6 +86,12 @@ do
       ;;
     --with-extra-cxxflags=*)
       write_option "$option" EXTRA_CXXFLAGS
+      ;;
+    --with-nwsdk=*)
+      write_option "$option" NWSDK_DIR
+      ;;
+    --with-mwcw=*)
+      write_option "$option" MWCW_BASE
       ;;
   esac
 done
