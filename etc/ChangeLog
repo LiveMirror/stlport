@@ -1,3 +1,7 @@
+2005-06-07  Francois Dumont  <dums@stlport...>
+
+	* build/test/unit/Makefile.inc: Fix syntax error at last line.
+
 2005-06-06  Petr Ovtchenkov  <ptr@island...>
 
 	* build/lib/configure: add config options for Metrowerks compiler for

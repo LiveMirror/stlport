@@ -168,4 +168,4 @@ SRC_C = ../../../test/unit/assert_header_test.c \
 	../../../test/unit/string_header_test.c \
 	../../../test/unit/time_header_test.c \
 	../../../test/unit/wchar_header_test.c \
-	../../../test/unit/wctype_header_test.c \
+	../../../test/unit/wctype_header_test.c

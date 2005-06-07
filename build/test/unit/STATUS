@@ -273,37 +273,17 @@ Notes:                          run-time fail in LocaleTest::money_put_get
                                 ../../../stlport/stl/debug/_string.h(233): STL assertion failure:     __n < this->size()
 
 =======================================================================
-Operational environment:        Windows XP Professionnal 2002 SP1
+Operational environment:        Windows XP Professionnal 2002 SP2
 =======================================================================
 
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 6 SP5
 -----------------------------------------------------------------------
-Date:                           2005-04-27
+Date:                           2005-06-07
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (320 tests)
+Status (release-shared):        All pass (322 tests)
 Notes:
-Status (dbg-shared):            All pass (320 tests)
-Notes:
-Status (stldbg-shared):         All pass (320 tests)
-Notes:
-Status (release-static):        All pass (320 tests)
-Notes:
-Status (dbg-static):            All pass (320 tests)
-Notes:
-Status (stldbg-static):         All pass (320 tests)
-Notes:
-
------------------------------------------------------------------------
-Compiler:                       Visual C++ 2005 Beta1 Version 8.0.40607.16
------------------------------------------------------------------------
-Date:                           2005-04-27
-STLP Version:                   current CVS STLPORT_5_0 branch
-Reporter:                       dums (Francois Dumont)
-Status (release-shared):        runtime fail
-Notes:                          Microsoft do not grant the msvcp80.dll file
-                                in their free package.
 Status (dbg-shared):            All pass (322 tests)
 Notes:
 Status (stldbg-shared):         All pass (322 tests)
@@ -313,6 +293,26 @@ Notes:
 Status (dbg-static):            All pass (322 tests)
 Notes:
 Status (stldbg-static):         All pass (322 tests)
+Notes:
+
+-----------------------------------------------------------------------
+Compiler:                       Visual C++ 2005 Beta2 Version 8.0.50215-4400
+-----------------------------------------------------------------------
+Date:                           2005-06-07
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       dums (Francois Dumont)
+Status (release-shared):        All pass (324 tests)
+Notes:
+Status (dbg-shared):           runtime fail
+Notes:                          Microsoft do not grant the msvcp80d.dll file
+                                in their free package.
+Status (stldbg-shared):         Idem dbg-shared.
+Notes:
+Status (release-static):        All pass (324 tests)
+Notes:
+Status (dbg-static):            All pass (324 tests)
+Notes:
+Status (stldbg-static):         All pass (324 tests)
 Notes:
 
 -----------------------------------------------------------------------
