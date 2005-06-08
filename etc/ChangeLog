@@ -1,3 +1,15 @@
+﻿2005-06-08  Francois Dumont  <dums@stlport...>
+
+	* build/test/unit: Removed references to the now useless CPPUNIT_MINI
+	macro.
+  
+ 	* test/unit/type_traits_test.cpp: Add new test case for trivial destructor
+	detection.
+  
+	* stlport/stl/_fstream.h: Add missing basic_fstream construction from a
+	Win32 file handle, was already done for basic_ifstream and basic_ofstream,
+	thanks Alex Cosealin report.
+
 2005-06-07  Francois Dumont  <dums@stlport...>
 
 	* build/test/unit/Makefile.inc: Fix syntax error at last line.
