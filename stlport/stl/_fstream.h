@@ -685,7 +685,7 @@ public:                         // Constructors, destructor.
 #  if defined (_STLP_USE_WIN32_IO)
   explicit basic_fstream(_STLP_fd __id,
     ios_base::openmode __mod = ios_base::in | ios_base::out) : 
-    basic_ios<_CharT, _Traits>(),  basic_istream<_CharT, _Traits>(0), _M_buf() {
+    basic_ios<_CharT, _Traits>(),  basic_iostream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
     if (!_M_buf.open(__id, __mod))
       this->setstate(ios_base::failbit);
