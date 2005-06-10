@@ -22,6 +22,12 @@
 #    define _STLP_NO_VENDOR_MATH_L
 #    define _STLP_NO_VENDOR_STDLIB_L
 #  endif
+#  if (__GNUC__ >= 3) && (__GNUC_MINOR__ > 3)
+/* Before this version, the include path was conform to the GNU convention which is set later 
+ * in this file:
+ */
+#    define _STLP_NATIVE_INCLUDE_PATH ../../../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__/include/c++
+#  endif
 #endif
 
 #if (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ < 4))
@@ -338,6 +344,7 @@ __GIVE_UP_WITH_STL(GCC_272);
 #  undef  _STLP_DONT_USE_EXCEPTIONS
 #  define _STLP_DONT_USE_EXCEPTIONS 1
 #endif
+
 #if (__GNUC__ >= 3)
 
 #  if !defined (_STLP_NATIVE_INCLUDE_PATH)

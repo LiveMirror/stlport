@@ -1,3 +1,15 @@
+﻿2005-06-10  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.c: Fix max_load_factor management, Standard says
+	that load_factor <= max_load_factor and not <; the function detecting need
+	for rehash used to launch one even if the number of bucket do not change which
+	was counter performant. Fix the _M_insert_noresize method that was breaking
+	element order inserting elements in the middle of 2 equal elements.
+	Thanks Dieter Freismuth report.
+
+	* stlport/config/stl_gcc.h: Fix relative include path for latest gcc version
+	under cygwin.
+
 2005-06-10  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/mwccnlm.mak: fix compiler version collection.

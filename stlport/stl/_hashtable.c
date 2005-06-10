@@ -137,21 +137,15 @@ template <class _Val, class _Key, class _HF,
 __iterator__ 
 hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   ::_M_insert_noresize(size_type __n, const value_type& __obj) {
-  _ElemsIte __cur;
-  if (_M_buckets[__n] != _M_buckets[__n + 1]) {
-    __cur = _M_elems.insert_after(_M_buckets[__n], __obj);
-  }
-  else {
-    size_type __prev = __n;
-    _ElemsIte __pos = _M_before_begin(__prev)._M_ite;
+  //We always insert this element as 1st in the bucket to not break
+  //the elements order as equal elements must be kept next to each other.
+  size_type __prev = __n;
+  _ElemsIte __pos = _M_before_begin(__prev)._M_ite;
 
-    fill(_M_buckets.begin() + __prev, _M_buckets.begin() + __n + 1, 
-         _M_elems.insert_after(__pos, __obj)._M_node);
-    __cur = _M_buckets[__n];
-  }
-
+  fill(_M_buckets.begin() + __prev, _M_buckets.begin() + __n + 1, 
+       _M_elems.insert_after(__pos, __obj)._M_node);
   ++_M_num_elements;
-  return __cur;
+  return iterator(_M_buckets[__n]);
 }
 
 template <class _Val, class _Key, class _HF, 
@@ -163,9 +157,19 @@ hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   _ElemsIte __cur(_M_buckets[__n]);
   _ElemsIte __last(_M_buckets[__n + 1]);
 
-  for (; __cur != __last; ++__cur) {
-    if (_M_equals(_M_get_key(*__cur), _M_get_key(__obj)))
-      return pair<iterator, bool>(iterator(__cur), false);
+  if (__cur != __last) {
+    for (; __cur != __last; ++__cur) {
+      if (_M_equals(_M_get_key(*__cur), _M_get_key(__obj)))
+        return pair<iterator, bool>(iterator(__cur), false);
+    }
+    /* Here we do not rely on the _M_insert_noresize method as we know
+     * that we cannot break element orders, elements are unique, and 
+     * insertion after the first bucket element is faster than what is 
+     * done in _M_insert_noresize.
+     */
+    __cur = _M_elems.insert_after(_M_buckets[__n], __obj);
+    ++_M_num_elements;
+    return pair<iterator, bool>(iterator(__cur), true);
   }
 
   return pair<iterator, bool>(_M_insert_noresize(__n, __obj), true);
@@ -198,8 +202,7 @@ __reference__
 hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   ::_M_insert(const value_type& __obj) {
   resize(_M_num_elements + 1);
-  size_type __n = _M_bkt_num(__obj);
-  return *(_M_insert_noresize(__n, __obj));
+  return *insert_unique_noresize(__obj).first;
 }
 
 /*
@@ -372,8 +375,8 @@ template <class _Val, class _Key, class _HF,
           class _Traits, class _ExK, class _EqK, class _All>
 void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   ::resize(size_type __num_elements_hint) {
-  if (((float)__num_elements_hint / (float)bucket_count() < max_load_factor()) &&
-      (max_load_factor() > load_factor())) {
+  if (((float)__num_elements_hint / (float)bucket_count() <= max_load_factor()) &&
+      (max_load_factor() >= load_factor())) {
     return;
   }
 
