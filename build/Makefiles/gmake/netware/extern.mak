@@ -3,8 +3,9 @@
 
 MWCW_BASE ?= c:/Program Files/Metrowerks/CodeWarrior
 NWSDK_DIR ?= c:/Novell/ndk/nwsdk
-#STLPORT_LIB_DIR = e:/STLport/lib
-#STLPORT_INCLUDE_DIR = e:/STLport/stlport
+
+STLPORT_LIB_DIR ?= $(STLPORT_DIR)/${TARGET_NAME}lib
+STLPORT_INCLUDE_DIR ?= $(STLPORT_DIR)/stlport
 
 MWCW_NOVELL = $(MWCW_BASE)/Novell Support/Metrowerks Support
 MWCW_NOVELL_SDK = $(NWSDK_DIR)
