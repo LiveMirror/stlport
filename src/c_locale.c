@@ -40,3 +40,13 @@
 #else /* !_STLP_REAL_LOCALE_IMPLEMENTED */
 #  include "c_locale_dummy/c_locale_dummy.c"
 #endif
+
+#if defined(N_PLAT_NLM)
+int wcslen( const wchar_t *_wc ) { return unilen( (const unicode *)_wc ); }
+int wcscmp( const wchar_t *_wc1, const wchar_t *_wc2 ) { return unicmp( (const unicode *)_wc1,  (const unicode *)_wc2 ); }
+wchar_t *wcsstr( const wchar_t *_wc1, const wchar_t *_wc2 ) { return (wchar_t *)unistr( (const unicode *)_wc1, (const unicode *)_wc2 ); }
+/* inline wchar_t *wcschr( const wchar_t *_wc1, wchar_t _wc2 ) { return (wchar_t *)::unichr( (unicode *)_wc1,  __REINTERPRET_CAST(unicode, _wc2 ) ); } */
+/* inline wchar_t *wcsrchr( const wchar_t *_wc1, wchar_t _wc2 ) { return ::unirchr( __REINTERPRET_CAST(const unicode *, _wc1 ),  __REINTERPRET_CAST(unicode, _wc2 ) ); } */
+/* inline wchar_t *wcscpy( wchar_t *_wc1, const wchar_t *_wc2 ) { return (wchar_t *)::unicpy( __REINTERPRET_CAST(unicode *, _wc1 ),  __REINTERPRET_CAST(const unicode *, _wc2 ) ); } */
+wchar_t *wcspbrk( const wchar_t *_wc, const wchar_t *_wc2 ) { return (wchar_t *)unipbrk( (const unicode *)_wc, (const unicode *)_wc2 ); }
+#endif
