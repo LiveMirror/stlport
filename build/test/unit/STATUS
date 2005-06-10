@@ -273,6 +273,32 @@ Notes:                          run-time fail in LocaleTest::money_put_get
                                 ../../../stlport/stl/debug/_string.h(233): STL assertion failure:     __n < this->size()
 
 =======================================================================
+Operational environment:        Novell Netware 6 Support Pack Revision 03
+=======================================================================
+
+-----------------------------------------------------------------------
+Compiler:                       Metrowerks CodeWarrior 8 (mwccnlm 3.0.3 build 356)
+-----------------------------------------------------------------------
+Date:                           2005-06-10
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       ptr (Petr Ovtchenkov)
+Status (release-shared):        not implemented
+Notes:
+Status (dbg-shared):            not implemented
+Notes:
+Status (stldbg-shared):         not implemented
+Notes:
+Status (release-static):        Fail 11 of 323 tests
+Notes:                          FstreamTest:: fail;
+                                cmath_test.cpp(77) : CPPUNIT_CHECK(ldiv_res.quot == 1l);
+Status (dbg-static):            -
+Notes:
+Status (stldbg-static):         -
+Notes:
+
+
+
+=======================================================================
 Operational environment:        Windows XP Professionnal 2002 SP2
 =======================================================================
 

@@ -1,9 +1,33 @@
-﻿2005-06-08  Francois Dumont  <dums@stlport...>
+2005-06-10  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/gmake/mwccnlm.mak: fix compiler version collection.
+
+	* build/Makefiles/gmake/netware/extern.mak: fix useful paths.
+
+	* src/c_locale.c: put here wrappers for some wfuncs, due to bogus
+	system libs in Netware.
+
+	* stlport/cwchar: use STLport's wchar.h to take wchar_t/wint_t for
+	Netware.
+
+	* stlport/wchar.h: use correct C declaration of some wfuncs, thanks
+	again to ugly Netware libs.
+
+	* stlport/ciso646, stlport/iso646.h, stlport/wctype.h: headers absent
+	for Novell Netware.
+
+	* stlport/cwctype: Metrowerks define __MSL__, but we don't use MSL libs
+	if we have STLport for Netware.
+
+	* stlport/cstdlib: div function from Novell Netware clib and libc lead to
+	system crash.
+
+2005-06-08  Francois Dumont  <dums@stlport...>
 
 	* build/test/unit: Removed references to the now useless CPPUNIT_MINI
 	macro.
   
- 	* test/unit/type_traits_test.cpp: Add new test case for trivial destructor
+	* test/unit/type_traits_test.cpp: Add new test case for trivial destructor
 	detection.
   
 	* stlport/stl/_fstream.h: Add missing basic_fstream construction from a
