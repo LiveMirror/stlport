@@ -59,13 +59,13 @@ using _STLP_VENDOR_CSTD::strspn;
 #   include _STLP_NATIVE_C_HEADER(stddef.h)
 #   include _STLP_NATIVE_C_HEADER(stdio.h)
 #   include <unicode.h>
-inline int wcslen( const wchar_t *_wc ) { return ::unilen( __REINTERPRET_CAST(const unicode *, _wc ) ); }
-inline int wcscmp( const wchar_t *_wc1, const wchar_t *_wc2 ) { return ::unicmp( __REINTERPRET_CAST(const unicode *, _wc1 ),  __REINTERPRET_CAST(const unicode *, _wc2 ) ); }
-inline wchar_t *wcsstr( const wchar_t *_wc1, const wchar_t *_wc2 ) { return (wchar_t *)::unistr( __REINTERPRET_CAST(const unicode *, _wc1 ),  __REINTERPRET_CAST(const unicode *, _wc2 ) ); }
-/* inline wchar_t *wcschr( const wchar_t *_wc1, wchar_t _wc2 ) { return (wchar_t *)::unichr( (unicode *)_wc1,  __REINTERPRET_CAST(unicode, _wc2 ) ); } */
-/* inline wchar_t *wcsrchr( const wchar_t *_wc1, wchar_t _wc2 ) { return ::unirchr( __REINTERPRET_CAST(const unicode *, _wc1 ),  __REINTERPRET_CAST(unicode, _wc2 ) ); } */
-/* inline wchar_t *wcscpy( wchar_t *_wc1, const wchar_t *_wc2 ) { return (wchar_t *)::unicpy( __REINTERPRET_CAST(unicode *, _wc1 ),  __REINTERPRET_CAST(const unicode *, _wc2 ) ); } */
-inline wchar_t *wcspbrk( const wchar_t *_wc, const wchar_t *_wc2 ) { return (wchar_t *)::unipbrk( __REINTERPRET_CAST(const unicode *, _wc ), __REINTERPRET_CAST(const unicode *, _wc2 ) ); }
+int wcslen( const wchar_t *_wc );
+int wcscmp( const wchar_t *_wc1, const wchar_t *_wc2 );
+inline wchar_t *wcsstr( const wchar_t *_wc1, const wchar_t *_wc2 );
+/* wchar_t *wcschr( const wchar_t *_wc1, wchar_t _wc2 ); */
+/* wchar_t *wcsrchr( const wchar_t *_wc1, wchar_t _wc2 ); */
+/* wchar_t *wcscpy( wchar_t *_wc1, const wchar_t *_wc2 ); */
+wchar_t *wcspbrk( const wchar_t *_wc, const wchar_t *_wc2 );
 #  else
 #    include _STLP_NATIVE_C_HEADER(wchar.h)
 #  endif
