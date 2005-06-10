@@ -32,8 +32,10 @@
 #    else
        // see comments in stlport/cwchar about wint_t on Novell
 #      include _STLP_NATIVE_CPP_C_HEADER(wchar_t.h)
+#      include _STLP_NATIVE_C_HEADER(stddef.h)
+#      include _STLP_NATIVE_C_HEADER(stdio.h)
 #    endif
-#    if defined (__MSL__)
+#    if defined (__MSL__) && !defined(N_PLAT_NLM)
 namespace std {
   typedef wchar_t wctrans_t;
   wint_t towctrans(wint_t c, wctrans_t value);
