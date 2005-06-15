@@ -1,5 +1,14 @@
 ﻿2005-06-10  Francois Dumont  <dums@stlport...>
 
+	* stlport/stl/c_locale.h: Fix Cygwin configuration, seperate alpha mask
+	from lower and upper one to avoid all lower character to also be upper
+	and opposite.
+
+	* src/ctype.cpp: Add static assertion to detect platform where
+	alpha = lower | upper which is wrong for STLport use.
+
+2005-06-10  Francois Dumont  <dums@stlport...>
+
 	* stlport/stl/_hashtable.c: Fix max_load_factor management, Standard says
 	that load_factor <= max_load_factor and not <; the function detecting need
 	for rehash used to launch one even if the number of bucket do not change which
@@ -7,8 +16,8 @@
 	element order inserting elements in the middle of 2 equal elements.
 	Thanks Dieter Freismuth report.
 
-	* stlport/config/stl_gcc.h: Fix relative include path for latest gcc version
-	under cygwin.
+	* stlport/config/stl_gcc.h: Fix relative include path for latest gcc cygwin
+	package.
 
 2005-06-10  Petr Ovtchenkov  <ptr@island...>
 

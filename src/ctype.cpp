@@ -42,10 +42,17 @@ const size_t ctype<char>::table_size;
 
 const ctype_base::mask* 
 ctype<char>::classic_table() _STLP_NOTHROW {
-  // Ctype table for the ASCII character set.
-  // There are 257 entries in this table.  The first is EOF (-1).  
-  // That is, the "table" seen by ctype<char> member functions is
-  // _S_classic_table + 1.
+  /* Ctype table for the ASCII character set.
+   * There are 257 entries in this table.  The first is EOF (-1).  
+   * That is, the "table" seen by ctype<char> member functions is
+   * _S_classic_table + 1.
+   */
+  /* The following static assert check that alpha is not defined as upper | lower.
+   * STLport flag character like 'a' with alpha | lower, if alpha is badly configure
+   * then 'a' will also be seen as upper which is wrong.
+   */
+  typedef char __static_assert[(alpha & (lower | upper)) == 0];
+
   static const ctype_base::mask _S_classic_table[table_size] = 
   {
     cntrl /* null */,
