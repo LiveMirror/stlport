@@ -1,4 +1,15 @@
-﻿2005-06-10  Francois Dumont  <dums@stlport...>
+2005-06-11  Francois Dumont  <dums@stlport...>
+
+	* stlport/cstdlib, stl/_cmath.h: Add _STLP_NO_CSTD_FUNCTION_IMPORTS macro
+	check before import of global C functions in STLport namespace. Required
+	for VC6 compiler to avoid ambiguity issue.
+
+	* src/complex.cpp, complex_epx.cpp, complex_trig.cpp: Scope math function
+	call with the global namespace to avoid VC6 ambiguity issue. It is safe
+	for the other compilers as STLport do define those function in global
+	namespace.
+
+2005-06-10  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/c_locale.h: Fix Cygwin configuration, seperate alpha mask
 	from lower and upper one to avoid all lower character to also be upper

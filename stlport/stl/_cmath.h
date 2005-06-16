@@ -127,6 +127,7 @@
 #  if defined (_STLP_WCE)
 #    pragma function (ceil, floor)
 #  endif
+#  define _STLP_RESTORE_FUNCTION_INTRINSIC
 #endif // _STLP_MSVC && _STLP_MSVC <= 1300 && !_STLP_WCE && _MSC_EXTENSIONS
 
 //MSVC starting with .Net 2003 has already all math functions in global namespace.
@@ -232,16 +233,17 @@ inline double hypot(double x, double y) { return sqrt(x*x + y*y); }
 _STLP_DEF_MATH_INLINE2(hypot,hypot)
 #endif
 
-#if defined (_STLP_WCE) || \
-   (defined(_STLP_MSVC) && (_STLP_MSVC <= 1300) && defined (_MSC_EXTENSIONS) /* && !defined(_STLP_WCE_NET) */)
+#if defined (_STLP_RESTORE_FUNCTION_INTRINSIC)
 //restoration of the default intrinsic status of those functions:
 #  pragma intrinsic (abs, acos, asin, atan, atan2, cos, cosh, exp, fabs, fmod, log, log10, sin, sinh, sqrt, tan, tanh)
 #  if defined (_STLP_WCE)
 #    pragma intrinsic (ceil, floor)
 #  endif
 #  pragma warning(pop)
+#  undef _STLP_RESTORE_FUNCTION_INTRINSIC
 #endif // _STLP_MSVC && _STLP_MSVC <= 1300 && !_STLP_WCE && _MSC_EXTENSIONS
 
+#if defined (_STLP_IMPORT_VENDOR_CSTD) && !defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
 _STLP_BEGIN_NAMESPACE
 using ::abs;
 using ::acos;
@@ -268,6 +270,7 @@ using ::sqrt;
 using ::tan;
 using ::tanh;
 _STLP_END_NAMESPACE
+#endif
 
 #endif /* CMATH_H */
 
