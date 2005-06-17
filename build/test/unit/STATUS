@@ -342,12 +342,12 @@ Status (stldbg-static):         All pass (324 tests)
 Notes:
 
 -----------------------------------------------------------------------
-Compiler:                       g++ 3.3.3 (cygwin special)
+Compiler:                       g++ 3.4.4 (cygwin special)
 -----------------------------------------------------------------------
-Date:                           2005-04-08
+Date:                           2005-06-17
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        1 failure (321 tests)
+Status (release-shared):        6 failures (326 tests)
 Notes:                          ExceptionTest::uncaught_exception fails when all tests
                                 are run but succeed with the -t=ExceptionTest option.
 Status (dbg-shared):            1 failure (321 tests)
@@ -357,19 +357,15 @@ Notes:                          Idem release-shared.
 
 -----------------------------------------------------------------------
 Compiler:                       g++ 3.4.1 (mingw special)
------------------------------------------------------------------------
+---------------------------------------------6-------------------------
 Date:                           2005-04-08
-STLP Version:                   current CVS STLPORT_5_0 branch
+STLP Version:                   current CVS S6LPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status:                         Link time of unit tests fail.
-Status (release-shared):        In NO_IOSTREAMS mode All pass (286 tests)
- 
+Status (release-shared):        12 failures (326 tests)
 Notes:
-Status (dbg-shared):            In NO_IOSTREAMS mode All pass (286 tests)
- 
+Status (dbg-shared):            7 failures (326 tests)
 Notes:
-Status (stldbg-shared):         In NO_IOSTREAMS mode All pass (286 tests)
- 
+Status (stldbg-shared):         7 failures (326 tests)
 Notes:
 
 =======================================================================

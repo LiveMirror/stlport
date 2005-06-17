@@ -451,12 +451,27 @@ public:
     if (__n > max_size()) {
       __THROW_BAD_ALLOC;
     }
-    return __n != 0 ? __REINTERPRET_CAST(value_type*,__sgi_alloc::allocate(__n * sizeof(value_type))) : 0;
+    if (__n != 0) {
+      _Tp* __ret = __REINTERPRET_CAST(value_type*,__sgi_alloc::allocate(__n * sizeof(value_type)));
+#ifdef _STLP_DEBUG_UNINITIALIZED
+      if (__ret != 0) {
+        memset((char*)__ret, _STLP_SHRED_BYTE, __n * sizeof(value_type));
+      }
+#endif
+      return __ret;
+    }
+    else
+      return 0;
   }
   // __p is permitted to be a null pointer, only if n==0.
   void deallocate(pointer __p, size_type __n) {
     _STLP_ASSERT( (__p == 0) == (__n == 0) )
-    if (__p != 0) __sgi_alloc::deallocate((void*)__p, __n * sizeof(value_type));
+    if (__p != 0) {
+#ifdef _STLP_DEBUG_UNINITIALIZED
+      memset((char*)__p, _STLP_SHRED_BYTE, __n * sizeof(value_type));
+#endif
+      __sgi_alloc::deallocate((void*)__p, __n * sizeof(value_type));
+    }
   }
   // backwards compatibility
   void deallocate(pointer __p) const {  if (__p != 0) __sgi_alloc::deallocate((void*)__p, sizeof(value_type)); }

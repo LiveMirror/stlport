@@ -1,3 +1,20 @@
+2005-06-17  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_alloc.h: Add initialization of the memory buffer in
+	allocator::allocate function and reset in allocator::deallocate to
+	the _STLP_SHRED_BYTE motif when _STLP_DEBUG_UNINITIALIZED is defined
+	to help track missing initialization issue.
+
+	* src/dll_main.cpp: Removed now useless _Node_alloc_helper class.
+
+	* stlport/stl/_alloc.c: Add complete cleanup of the __node_alloc static
+	datas in the _S_chunk_dealloc method, this is important if the clean up
+	occur before STLport shared lib is unloaded.
+
+	* stlport/stl/_alloc.c: Add a static instance of __node_alloc_cleaner in the
+	_S_alloc_call method and change init number of allocation to 1 to force
+	release of memory pool only on shared library unload.
+
 2005-06-11  Francois Dumont  <dums@stlport...>
 
 	* stlport/cstdlib, stl/_cmath.h: Add _STLP_NO_CSTD_FUNCTION_IMPORTS macro
