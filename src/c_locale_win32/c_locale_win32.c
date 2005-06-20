@@ -703,6 +703,7 @@ extern "C" {
   /* ctype */
 
   const _Locale_mask_t* _Locale_ctype_table(struct _Locale_ctype* ltype) {
+    typedef char __static_assert[sizeof(_Locale_mask_t) == sizeof(unsigned int)];
     return (const _Locale_mask_t*)ltype->ctable;
   }
 
