@@ -1,3 +1,17 @@
+2005-06-20  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_gcc.h: Fix gcc 3.4.4 detection under cygwin thanks
+	Ulrich Echkardt report.
+
+	* stlport/stl/c_locale.h: Fix _Locale_mask_t definition for Mingwin.
+
+	* src/c_locale_win32/c_locale_win32.c: Add static assertion to check
+	_Locale_mask_t size.
+
+	* src/complex_exp.cpp: Replaced complex log10 function static variables
+	with global constant, avoid multithreaded init problem. Thanks Ulrich
+	Echkardt report.
+
 2005-06-17  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_alloc.h: Add initialization of the memory buffer in

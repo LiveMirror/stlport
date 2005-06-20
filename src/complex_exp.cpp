@@ -51,30 +51,30 @@ _STLP_DECLSPEC complex<long double> _STLP_CALL exp(const complex<long double>& z
 //----------------------------------------------------------------------
 // log10
 
+const float LN10_INVF = 1.f / ::log(10.f);
 _STLP_DECLSPEC complex<float> _STLP_CALL log10(const complex<float>& z) {
   complex<float> r;
-  static float ln10_inv = 1.f / ::log(10.f);
 
-  r._M_im = ::atan2(z._M_im, z._M_re) * ln10_inv;
+  r._M_im = ::atan2(z._M_im, z._M_re) * LN10_INVF;
   r._M_re = ::log10(::hypot(z._M_re, z._M_im));
   return r;
 }
 
+const double LN10_INV = 1. / ::log10(10.);
 _STLP_DECLSPEC complex<double> _STLP_CALL log10(const complex<double>& z) {
   complex<double> r;
-  static double ln10_inv = 1. / ::log10(10.);
 
-  r._M_im = ::atan2(z._M_im, z._M_re) * ln10_inv;
+  r._M_im = ::atan2(z._M_im, z._M_re) * LN10_INV;
   r._M_re = ::log10(::hypot(z._M_re, z._M_im));
   return r;
 }
 
-#ifndef _STLP_NO_LONG_DOUBLE
+#if !defined (_STLP_NO_LONG_DOUBLE)
+const long double LN10_INVL = 1.l / ::log(10.l);
 _STLP_DECLSPEC complex<long double> _STLP_CALL log10(const complex<long double>& z) {
   complex<long double> result;
-  static long double ln10_inv = 1.l / ::log(10.l);
 
-  result._M_im = ::atan2(z._M_im, z._M_re) * ln10_inv;
+  result._M_im = ::atan2(z._M_im, z._M_re) * LN10_INVL;
   result._M_re = ::log10(::hypot(z._M_re, z._M_im));
   return result;
 }

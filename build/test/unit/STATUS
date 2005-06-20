@@ -361,12 +361,13 @@ Compiler:                       g++ 3.4.1 (mingw special)
 Date:                           2005-04-08
 STLP Version:                   current CVS S6LPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        12 failures (326 tests)
-Notes:
-Status (dbg-shared):            7 failures (326 tests)
-Notes:
-Status (stldbg-shared):         7 failures (326 tests)
-Notes:
+Status (release-shared):        6 failures (326 tests)
+Notes:                          ExceptionTest::uncaught_exception fails when all tests
+                                are run but succeed with the -t=ExceptionTest option.
+Status (dbg-shared):            1 failures (326 tests)
+Notes:                          Idem release-shared.
+Status (stldbg-shared):         1 failures (326 tests)
+Notes:                          Idem release-shared.
 
 =======================================================================
 Operational environment:        Windows 2000 SP4
