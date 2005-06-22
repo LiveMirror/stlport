@@ -60,7 +60,7 @@ template <class _InputIter, class _CharT>
 int 
 _M_get_base_or_zero(_InputIter& __in_ite, _InputIter& __end, ios_base& __str, _CharT*) {
   _CharT __atoms[5];
-  const ctype<_CharT>& __c_type = *(const ctype<_CharT>*)__str._M_ctype_facet();
+  const ctype<_CharT>& __c_type = *__STATIC_CAST(const ctype<_CharT>*, __str._M_ctype_facet());
 
   __c_type.widen(__narrow_atoms, __narrow_atoms + 5, __atoms);
 
@@ -258,7 +258,7 @@ _M_do_get_integer(_InputIter& __in_ite, _InputIter& __end, ios_base& __str,
   typedef typename __bool2type<numeric_limits<_Integer>::is_signed>::_Ret _IsSigned;
 #endif
 
-  const numpunct<_CharT>& __numpunct = *(const numpunct<_CharT>*)__str._M_numpunct_facet();
+  const numpunct<_CharT>& __numpunct = *__STATIC_CAST(const numpunct<_CharT>*, __str._M_numpunct_facet());
   const string& __grouping = __str._M_grouping(); // cached copy
 
   const int __base_or_zero = _M_get_base_or_zero(__in_ite, __end, __str, __pc);
@@ -383,8 +383,8 @@ _M_read_float(__iostring& __buf, _InputIter& __in_ite, _InputIter& __end, ios_ba
 
   bool   __grouping_ok = true;
 
-  const ctype<_CharT>& __ct = *(const ctype<_CharT>*)__s._M_ctype_facet();
-  const numpunct<_CharT>& __numpunct = *(const numpunct<_CharT>*)__s._M_numpunct_facet();
+  const ctype<_CharT>& __ct = *__STATIC_CAST(const ctype<_CharT>*, __s._M_ctype_facet());
+  const numpunct<_CharT>& __numpunct = *__STATIC_CAST(const numpunct<_CharT>*, __s._M_numpunct_facet());
   const string& __grouping = __s._M_grouping(); // cached copy
 
   _CharT __dot = __numpunct.decimal_point();
@@ -485,11 +485,10 @@ template <class _CharT, class _InputIter>
 _InputIter
 num_get<_CharT, _InputIter>::do_get(_InputIter __in_ite, _InputIter __end,
                                     ios_base& __s,
-                                    ios_base::iostate& __err, bool& __x) const
-{
+                                    ios_base::iostate& __err, bool& __x) const {
   if (__s.flags() & ios_base::boolalpha) {
     locale __loc = __s.getloc();
-    const _Numpunct& __np = *(const _Numpunct*)__s._M_numpunct_facet();
+    const _Numpunct& __np = *__STATIC_CAST(const _Numpunct*, __s._M_numpunct_facet());
     //    const numpunct<_CharT>& __np = use_facet<numpunct<_CharT> >(__loc) ;
 //    const ctype<_CharT>& __ct =    use_facet<ctype<_CharT> >(__loc) ;
 

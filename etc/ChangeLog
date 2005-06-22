@@ -1,3 +1,21 @@
+2005-06-21  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_ios.h, _ios_base.h, _num_get.c, _num_put.c, _complex.c,
+	_istream.c, _time_facets.c: Fix cast expression for the cached facets,
+	C casts replaced by static_cast and const added when missing. 
+	Thanks Oliver Stoeneberg report.
+
+	* test/unit/unary.h: Replaced old STLport with new style ones. Get sqrt
+	function in global namespace rather than forcing use of the one in std
+	namespace, avoids ambiguity with VC6.
+
+	* test/unit/resolve_name.cpp: Add _STLP_DO_IMPORT_CSTD_FUNCTIONS definition
+	at the top of it to force import of C symbols in std even for limited
+	compilers like VC6.
+
+	* stlport/stl/_valarray.h: Add global namespace scope to C function calls
+	to avoid VC6 ambiguity problem.
+
 2005-06-20  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_gcc.h: Fix gcc 3.4.4 detection under cygwin thanks

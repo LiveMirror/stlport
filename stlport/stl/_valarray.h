@@ -885,7 +885,7 @@ inline valarray<_Tp> abs(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = abs(__x[__i]);
+    __tmp[__i] = ::abs(__x[__i]);
   return __tmp;
 }
 
@@ -894,7 +894,7 @@ inline valarray<_Tp> acos(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = acos(__x[__i]);
+    __tmp[__i] = ::acos(__x[__i]);
   return __tmp;
 }
 
@@ -903,7 +903,7 @@ inline valarray<_Tp> asin(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = asin(__x[__i]);
+    __tmp[__i] = ::asin(__x[__i]);
   return __tmp;
 }
 
@@ -912,7 +912,7 @@ inline valarray<_Tp> atan(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = atan(__x[__i]);
+    __tmp[__i] = ::atan(__x[__i]);
   return __tmp;
 }
 
@@ -922,7 +922,7 @@ inline valarray<_Tp> atan2(const valarray<_Tp>& __x,
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = atan2(__x[__i], __y[__i]);
+    __tmp[__i] = ::atan2(__x[__i], __y[__i]);
   return __tmp;
 }
 
@@ -931,7 +931,7 @@ inline valarray<_Tp> atan2(const valarray<_Tp>& __x, const _Tp& __c) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = atan2(__x[__i], __c);
+    __tmp[__i] = ::atan2(__x[__i], __c);
   return __tmp;
 }
 
@@ -940,7 +940,7 @@ inline valarray<_Tp> atan2(const _Tp& __c, const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = atan2(__c, __x[__i]);
+    __tmp[__i] = ::atan2(__c, __x[__i]);
   return __tmp;
 }
 
@@ -949,7 +949,7 @@ inline valarray<_Tp> cos(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = cos(__x[__i]);
+    __tmp[__i] = ::cos(__x[__i]);
   return __tmp;
 }
 
@@ -958,7 +958,7 @@ inline valarray<_Tp> cosh(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = cosh(__x[__i]);
+    __tmp[__i] = ::cosh(__x[__i]);
   return __tmp;
 }
 
@@ -967,7 +967,7 @@ inline valarray<_Tp> exp(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = exp(__x[__i]);
+    __tmp[__i] = ::exp(__x[__i]);
   return __tmp;
 }
 
@@ -976,7 +976,7 @@ inline valarray<_Tp> log(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = log(__x[__i]);
+    __tmp[__i] = ::log(__x[__i]);
   return __tmp;
 }
 
@@ -985,7 +985,7 @@ inline valarray<_Tp> log10(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = log10(__x[__i]);
+    __tmp[__i] = ::log10(__x[__i]);
   return __tmp;
 }
 
@@ -995,7 +995,7 @@ inline valarray<_Tp> pow(const valarray<_Tp>& __x,
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = pow(__x[__i], __y[__i]);
+    __tmp[__i] = ::pow(__x[__i], __y[__i]);
   return __tmp;
 }
 
@@ -1004,7 +1004,7 @@ inline valarray<_Tp> pow(const valarray<_Tp>& __x, const _Tp& __c) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = pow(__x[__i], __c);
+    __tmp[__i] = ::pow(__x[__i], __c);
   return __tmp;
 }
 
@@ -1013,7 +1013,7 @@ inline valarray<_Tp> pow(const _Tp& __c, const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = pow(__c, __x[__i]);
+    __tmp[__i] = ::pow(__c, __x[__i]);
   return __tmp;
 }
 
@@ -1022,7 +1022,7 @@ inline valarray<_Tp> sin(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = sin(__x[__i]);
+    __tmp[__i] = ::sin(__x[__i]);
   return __tmp;
 }
 
@@ -1031,7 +1031,7 @@ inline valarray<_Tp> sinh(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = sinh(__x[__i]);
+    __tmp[__i] = ::sinh(__x[__i]);
   return __tmp;
 }
 
@@ -1040,7 +1040,7 @@ inline valarray<_Tp> sqrt(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = sqrt(__x[__i]);
+    __tmp[__i] = ::sqrt(__x[__i]);
   return __tmp;
 }
 
@@ -1049,7 +1049,7 @@ inline valarray<_Tp> tan(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = tan(__x[__i]);
+    __tmp[__i] = ::tan(__x[__i]);
   return __tmp;
 }
 
@@ -1058,7 +1058,7 @@ inline valarray<_Tp> tanh(const valarray<_Tp>& __x) {
   typedef typename valarray<_Tp>::_NoInit _NoInit;
   valarray<_Tp> __tmp(__x.size(), _NoInit());
   for (size_t __i = 0; __i < __x.size(); ++__i)
-    __tmp[__i] = tanh(__x[__i]);
+    __tmp[__i] = ::tanh(__x[__i]);
   return __tmp;
 }
 
@@ -1077,7 +1077,6 @@ public:
   size_t size()   const { return _M_length; }
   size_t stride() const { return _M_stride; }
 
-   
 private:
   size_t _M_start;
   size_t _M_length;
