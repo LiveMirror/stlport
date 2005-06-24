@@ -31,15 +31,11 @@ OPT_COMMON =
 !endif
 
 !if "$(TARGET_PROC)" == "sh3"
-CXX = shcl.exe
-CC = shcl.exe
 DEFS_COMMON = $(DEFS_COMMON) /D "SH3" /D "_SH3_" /D "SHx"
 OPT_COMMON =
 !endif
 
 !if "$(TARGET_PROC)" == "sh4"
-CXX = shcl.exe
-CC = shcl.exe
 DEFS_COMMON = $(DEFS_COMMON) /D "SH4" /D "_SH4_" /D "SHx"
 OPT_COMMON = /Qsh4
 !endif
