@@ -79,12 +79,12 @@ Notes:
 -----------------------------------------------------------------------
 Compiler:                       gcc 3.4.2
 -----------------------------------------------------------------------
-Date:                           2005-05-30
+Date:                           2005-06-25
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       ptr (Petr Ovtchenkov)
-Status (release-shared):        All pass (326 tests)
+Status (release-shared):        All pass (327 tests)
 Notes:
-Status (stldbg-shared):         All pass (326 tests)
+Status (stldbg-shared):         All pass (327 tests)
 Notes:
 
 -----------------------------------------------------------------------
