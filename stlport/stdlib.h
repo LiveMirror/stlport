@@ -34,6 +34,11 @@
 #    include "errno.h"
 #  endif
 
+#  if defined (_STLP_WCE)
+/* on evc3/evc4 including stdlib.h also defines setjmp macro */
+#    include "setjmp.h"
+#  endif
+
 #  include _STLP_NATIVE_C_HEADER(stdlib.h)
 
 #  if (_STLP_OUTERMOST_HEADER_ID == 0x265)

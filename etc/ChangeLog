@@ -1,3 +1,12 @@
+2005-06-23  Francois Dumont  <dums@stlport...>
+
+	* src/complex.cpp, complex_trig.cpp, complex_exp.cpp: Removed code
+	duplication between float, double and long double version thanks to
+	some template functions. Thanks an Ulrich Echkardt idear.
+
+	* stlport/cstdlib, stl/stdlib.h: Mickeal Fink patch to avoid setjmp.h 
+	inclusion problem as stdlib.h contains a setjmp macro definition.
+
 2005-06-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ios.h, _ios_base.h, _num_get.c, _num_put.c, _complex.c,
