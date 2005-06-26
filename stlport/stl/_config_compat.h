@@ -75,8 +75,9 @@
 #  define _STLP_USE_RAW_SGI_ALLOCATORS __STL_USE_RAW_SGI_ALLOCATORS
 #endif
 
-//STLport do not support anymore the iostream wrapper mode so this macro should
-//always been define for other libraries that was using it:
+/* STLport do not support anymore the iostream wrapper mode so this macro should
+ * always been define for other libraries that was using it:
+ */
 #if !defined (_STLP_OWN_IOSTREAMS)
 #  define _STLP_OWN_IOSTREAMS
 #endif
