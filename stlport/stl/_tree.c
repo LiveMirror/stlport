@@ -32,30 +32,30 @@
 #define _STLP_TREE_C
 
 #ifndef _STLP_INTERNAL_TREE_H
-# include <stl/_tree.h>
+#  include <stl/_tree.h>
 #endif
 
 // fbp: these defines are for outline methods definitions.
 // needed for definitions to be portable. Should not be used in method bodies.
-# if defined  ( _STLP_NESTED_TYPE_PARAM_BUG )
+#if defined  ( _STLP_NESTED_TYPE_PARAM_BUG )
 #  define __iterator__  _Rb_tree_iterator<_Value, _STLP_HEADER_TYPENAME _Traits::_NonConstTraits>
 #  define __size_type__ size_t
 #  define iterator __iterator__
-# else
+#else
 #  define __iterator__  _STLP_TYPENAME_ON_RETURN_TYPE _Rb_tree<_Key, _Compare, _Value, _KeyOfValue, _Traits, _Alloc>::iterator
 #  define __size_type__  _STLP_TYPENAME_ON_RETURN_TYPE _Rb_tree<_Key, _Compare, _Value, _KeyOfValue, _Traits, _Alloc>::size_type
-# endif
+#endif
 
 #if defined ( _STLP_DEBUG)
-# if defined(_Rb_tree)
-#  undef _Rb_tree
-# endif
+#  if defined(_Rb_tree)
+#    undef _Rb_tree
+#  endif
 #  define _Rb_tree __WORKAROUND_DBG_RENAME(Rb_tree)
 #endif
 
 _STLP_BEGIN_NAMESPACE
 
-# if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
+#if defined (_STLP_EXPOSE_GLOBALS_IMPLEMENTATION)
 
 template <class _Dummy> void _STLP_CALL
 _Rb_global<_Dummy>::_Rotate_left(_Rb_tree_node_base* __x,
@@ -305,7 +305,7 @@ _Rb_global<_Dummy>::_M_increment(_Rb_tree_node_base* _M_node) {
   return _M_node;
 }
 
-#endif /* defined (__BUILDING_STLPORT) || ! defined (_STLP_OWN_IOSTREAMS) */
+#endif /* _STLP_EXPOSE_GLOBALS_IMPLEMENTATION */
 
 
 template <class _Key, class _Compare, 

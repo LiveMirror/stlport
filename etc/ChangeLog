@@ -1,3 +1,8 @@
+2005-06-26  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config_compat.h: Add _STLP_OWN_IOSTREAMS macro for backward
+	compatibility with library checking it.
+
 2005-06-23  Francois Dumont  <dums@stlport...>
 
 	* src/complex.cpp, complex_trig.cpp, complex_exp.cpp: Removed code
@@ -6,6 +11,17 @@
 
 	* stlport/cstdlib, stl/stdlib.h: Mickeal Fink patch to avoid setjmp.h 
 	inclusion problem as stdlib.h contains a setjmp macro definition.
+
+	* test/eh/main.cpp: Redirection of std::cout and std::cerr for WinCE
+	thanks Michael Fink
+
+	* stlport/config/stl_evc.h: Restore long double support for WinCE, there
+	is just no *l math functions. Only define _STLP_NATIVE_INCLUDE_PATH
+	if not already defined, giving the user a chance to override the defaults
+	for yet unknown SDKs. Thanks Michael Fink and Ulrich Eckhardt.
+
+	* build/Makefiles/nmake/evc3.mak, evc4.mak: removed unneeded set of CC
+	for SHx; already done by setup batch. Thanks Michael Fink. 
 
 2005-06-21  Francois Dumont  <dums@stlport...>
 
