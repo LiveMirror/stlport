@@ -280,7 +280,7 @@ private:                        // Helper functions.
   
   bool _M_seek_init(bool __do_unshift);
 
-  void _M_setup_codecvt(const locale&);
+  void _M_setup_codecvt(const locale&, bool __on_imbue = true);
 
 private:                        // Data members used in all modes.
 

@@ -60,7 +60,7 @@ basic_filebuf<_CharT, _Traits>::basic_filebuf()
     _M_codecvt(0),
     _M_width(1), _M_max_width(1)
 {
-  this->_M_setup_codecvt(locale());
+  this->_M_setup_codecvt(locale(), false);
 }
 
 template <class _CharT, class _Traits>
@@ -223,11 +223,12 @@ basic_filebuf<_CharT, _Traits>::overflow(int_type __c) {
     char* __enext         = _M_ext_buf;
     typename _Codecvt::result __status
       = _M_codecvt->out(_M_state, __ibegin, __iend, __inext,
-                                  _M_ext_buf, _M_ext_buf_EOS, __enext);
-    if (__status == _Codecvt::noconv)
+                        _M_ext_buf, _M_ext_buf_EOS, __enext);
+    if (__status == _Codecvt::noconv) {
       return _Noconv_output<_Traits>::_M_doit(this, __ibegin, __iend)
         ? traits_type::not_eof(__c)
         : _M_output_error();
+    }
 
     // For a constant-width encoding we know that the external buffer
     // is large enough, so failure to consume the entire internal buffer
@@ -235,8 +236,8 @@ basic_filebuf<_CharT, _Traits>::overflow(int_type __c) {
     // For a variable-width encoding, however, we require only that we 
     // consume at least one internal character
     else if (__status != _Codecvt::error && 
-             ((__inext == __iend && (__enext - _M_ext_buf == 
-                                     _M_width * (__iend - __ibegin))) ||
+             (((__inext == __iend) && 
+               (__enext - _M_ext_buf == _M_width * (__iend - __ibegin))) ||
               (!_M_constant_width && __inext != __ibegin))) {
         // We successfully converted part or all of the internal buffer.
       ptrdiff_t __n = __enext - _M_ext_buf;
@@ -414,7 +415,7 @@ int basic_filebuf<_CharT, _Traits>::sync() {
 // unless it is called before any I/O is performed on the stream.
 template <class _CharT, class _Traits>
 void basic_filebuf<_CharT, _Traits>::imbue(const locale& __loc) {
-  if (!_M_in_input_mode &&! _M_in_output_mode && !_M_in_error_mode) {
+  if (!_M_in_input_mode && !_M_in_output_mode && !_M_in_error_mode) {
     this->_M_setup_codecvt(__loc);
   }
 }
@@ -594,7 +595,7 @@ bool basic_filebuf<_CharT, _Traits>::_M_unshift() {
         return false;
       else if (!_M_write(_M_ext_buf, __enext - _M_ext_buf))
         return false;
-    } while(__status == _Codecvt::partial);
+    } while (__status == _Codecvt::partial);
   }
 
   return true;
@@ -711,17 +712,33 @@ bool basic_filebuf<_CharT, _Traits>::_M_seek_init(bool __do_unshift) {
 }
 
 
-// Change the filebuf's locale.  This member function has no effect
-// unless it is called before any I/O is performed on the stream.
+/* Change the filebuf's locale.  This member function has no effect
+ * unless it is called before any I/O is performed on the stream.
+ * This function is called on construction and on an imbue call. In the 
+ * case of the construction the codecvt facet might be a custom one if
+ * the basic_filebuf user has instanciate it with a custom char_traits.
+ * The user will have to call imbue before any I/O operation.
+ */
 template <class _CharT, class _Traits>
-void basic_filebuf<_CharT, _Traits>::_M_setup_codecvt(const locale& __loc) {
-  _M_codecvt = &use_facet<_Codecvt>(__loc) ;
-  int __encoding    = _M_codecvt->encoding();
+void basic_filebuf<_CharT, _Traits>::_M_setup_codecvt(const locale& __loc, bool __on_imbue) {
+  if (has_facet<_Codecvt>(__loc)) {
+    _M_codecvt = &use_facet<_Codecvt>(__loc) ;
+    int __encoding    = _M_codecvt->encoding();
 
-  _M_width          = (max)(__encoding, 1);
-  _M_max_width      = _M_codecvt->max_length();
-  _M_constant_width = __encoding > 0;
-  _M_always_noconv  = _M_codecvt->always_noconv();
+    _M_width          = (max)(__encoding, 1);
+    _M_max_width      = _M_codecvt->max_length();
+    _M_constant_width = __encoding > 0;
+    _M_always_noconv  = _M_codecvt->always_noconv();
+  }
+  else {
+    _M_codecvt = 0;
+    _M_width = _M_max_width = 1;
+    _M_constant_width = _M_always_noconv  = false;
+    if (__on_imbue) {
+      //This call will generate an exception reporting the problem.
+      use_facet<_Codecvt>(__loc);
+    }
+  }
 }
 
 _STLP_END_NAMESPACE
