@@ -29,8 +29,8 @@
 #  include <cstring>
 #endif
 
-#if defined(__unix) || defined(N_PLAT_NLM)
-#  include <sys/types.h>          // For off_t
+#if defined (__unix) || defined (N_PLAT_NLM)
+#  include <sys/types.h>         // For off_t
 #endif /* __unix */
 
 #ifdef __BORLANDC__

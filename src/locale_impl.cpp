@@ -56,7 +56,7 @@ _Locale_impl::Init::Init() {
 
 _Locale_impl::Init::~Init() {
   if (_M_count()._M_decr() == 0) {
-    _S_uninitialize();
+    _Locale_impl::_S_uninitialize();
   }
 }
 
@@ -85,8 +85,8 @@ _Locale_impl::_Locale_impl( size_t n, const char* s)
 }
 
 _Locale_impl::~_Locale_impl() {
-  for_each( facets_vec.begin(), facets_vec.end(), _release_facet);
   (&__Loc_init_buf)->~Init();
+  for_each( facets_vec.begin(), facets_vec.end(), _release_facet);
 }
 
 // Initialization of the locale system.  This must be called before
@@ -101,6 +101,7 @@ void _STLP_CALL _Locale_impl::_S_initialize() {
 // locale destruction and not only after the classic locale destruction as
 // the facets can be shared between different facets.
 void _STLP_CALL _Locale_impl::_S_uninitialize() {
+  free_classic_locale();
 }
 
 // _Locale_impl non-inline member functions.
@@ -480,7 +481,6 @@ static void _Stl_loc_assign_ids() {
   time_get<wchar_t, const wchar_t*>::id._M_index                                        = 36;
   time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index  = 37;
   time_put<wchar_t, wchar_t*>::id._M_index                                              = 38;
-  //  messages<wchar_t>::id._M_index                   = 38;
 #endif
   //  locale::id::_S_max                               = 39;
 }
@@ -626,6 +626,47 @@ void _Locale_impl::make_classic_locale() {
   _Stl_global_locale = &_Locale_global;
 }
 
+
+void _Locale_impl::free_classic_locale() {
+  _Locale_impl *classic = _Stl_classic_locale->_M_impl;
+
+  classic->facets_vec[collate<char>::id._M_index]->~facet();
+  classic->facets_vec[ctype<char>::id._M_index]->~facet();
+#  ifndef _STLP_NO_MBSTATE_T
+  classic->facets_vec[codecvt<char, char, mbstate_t>::id._M_index]->~facet();
+#  endif
+  classic->facets_vec[moneypunct<char, true>::id._M_index]->~facet();
+  classic->facets_vec[moneypunct<char, false>::id._M_index]->~facet();
+  classic->facets_vec[numpunct<char>::id._M_index]->~facet();
+  classic->facets_vec[messages<char>::id._M_index]->~facet();
+
+  classic->facets_vec[money_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
+  classic->facets_vec[money_put<char, ostreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
+  classic->facets_vec[num_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
+  classic->facets_vec[num_put<char, ostreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
+  classic->facets_vec[time_get<char, istreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
+  classic->facets_vec[time_put<char, ostreambuf_iterator<char, char_traits<char> > >::id._M_index]->~facet();
+
+#ifndef _STLP_NO_WCHAR_T
+  classic->facets_vec[collate<wchar_t>::id._M_index]->~facet();
+  classic->facets_vec[ctype<wchar_t>::id._M_index]->~facet();
+#  ifndef _STLP_NO_MBSTATE_T
+  classic->facets_vec[codecvt<wchar_t, char, mbstate_t>::id._M_index]->~facet();
+#  endif
+  classic->facets_vec[moneypunct<wchar_t, true>::id._M_index]->~facet();
+  classic->facets_vec[moneypunct<wchar_t, false>::id._M_index]->~facet();
+  classic->facets_vec[numpunct<wchar_t>::id._M_index]->~facet();
+  classic->facets_vec[messages<wchar_t>::id._M_index]->~facet();
+
+  classic->facets_vec[money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
+  classic->facets_vec[money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
+  classic->facets_vec[num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
+  classic->facets_vec[num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
+  classic->facets_vec[time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
+  classic->facets_vec[time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >::id._M_index]->~facet();
+#endif
+}
+
 // Declarations of (non-template) facets' static data members
 // size_t locale::id::_S_max = 39; // made before
 
@@ -699,8 +740,6 @@ void _STLP_CALL _release_facet(locale::facet *&f) {
   if ((f != 0) && (f->_M_decr() == 0)) {
     if (f->_M_delete)
       delete f;
-    else
-      f->~facet();
     f = 0;
   }
 }

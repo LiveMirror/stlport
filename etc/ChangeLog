@@ -1,3 +1,38 @@
+2005-06-28  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hash_func.h: For MSVC .Net compiler we grant the hash<size_t>
+	specialization rather than the hash<unsigned int> one to avoid 64 bits
+	warnings when instanciating a hashed container with the size_t key.
+
+	* stlport/stl/_istream_iterator.h: Modify istream_iterator implementation
+	to avoid the default read from the istream even if the istream_iterator
+	instance is not used.
+
+	* test/unit/istmit_test.cpp: Add many tests for the copy_n/istream_iterator
+	combination. Those tests are no active for the moment as they are failing,
+	will be fixed after 5.0 release.
+
+	* build/test/unit/nmake-vc-common.mak: Tests are no more built with the
+	_STLP_NO_CUSTOM_IO option, see reason below.
+
+	* test/unit/fstream_test.cpp: Add custom_facet test to check that STLport
+	support instanciation of basic_fstream with somthing else that the std::char_traits
+	For the moment the test fail when we try to use the stream for I/O operations
+	should be fixed after 5.0 release.
+
+2005-06-27  Francois Dumont  <dums@stlport...>
+
+	* src/locale_impl.cpp: Fix locale implementation to avoid to call facet
+	destructor when user explicitely required not to do so.
+
+	* stlport/stl/_fstream.c: Fix _M_setup_codecvt method implementation to avoid
+	a bad_cast exception on basic_filebuf construction. At this point the locale
+	used to instanciate it is the classic locale that might not have the necessary
+	codecvt facet. The user is then force to call imbue after basic_filebuf
+	construction otherwise I/O operations will fail. When imbue is invoked, if
+	the locale still do not have the necesary facet, the stream is put in the fail
+	state. Thanks Alexander Pototskiy
+
 2005-06-26  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config_compat.h: Add _STLP_OWN_IOSTREAMS macro for backward
