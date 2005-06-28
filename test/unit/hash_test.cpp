@@ -114,7 +114,7 @@ void HashTest::hmmap1()
   CPPUNIT_ASSERT( cite == ite );
   CPPUNIT_ASSERT( !(cite != ite) );
 
-  typedef std::hash_multimap<size_t, size_t> HMapType;
+  typedef hash_multimap<size_t, size_t> HMapType;
   HMapType hmap;
 
   //We fill the map to implicitely start a rehash.
