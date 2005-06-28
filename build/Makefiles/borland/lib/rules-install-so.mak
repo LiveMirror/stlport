@@ -1,9 +1,10 @@
 # Time-stamp:
 # $Id: rules-install-so.mak
 
-!message build\Makefiles\borland\lib\rules-install-so.mak
+#!message build\Makefiles\borland\lib\rules-install-so.mak
 
-.AUTODEPEND
+.autodepend
+.silent
 
 !ifndef INSTALL_TAGS
 INSTALL_TAGS = install-release-shared install-dbg-shared install-stldbg-shared 

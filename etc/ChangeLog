@@ -1,3 +1,8 @@
+2005-06-28  Petr Ovtchenkov  <ptr@island...>
+
+	* build/lib/configure.bat, build/lib/Makefiles: makefiles for Borland make
+	and Borland BC5.x compilers. Contribution by Eric Sanford.
+
 2005-05-02  Petr Ovtchenkov  <ptr@island...>
 
 	* makesystem (repository): branch STLPORT_5_0_BC5, makefiles from

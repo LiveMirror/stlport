@@ -1,7 +1,7 @@
 # -*- makefile -*- Time-stamp:
-# $Id: macro-bc56.mak
+# $Id: macro-bc55.mak
 
-#!message build\Makefiles\borland\app\macro-bc56.mak
+#!message build\Makefiles\borland\app\macro-bc55.mak
 
 !ifndef LDLIBS
 LDLIBS        = import32.lib cw32mti.lib

@@ -1,7 +1,7 @@
 # -*- makefile -*- Time-stamp: 
 # $Id: bc56.mak,
 
-!message build\Makefiles\borland\app\bc56.mak
+#!message build\Makefiles\borland\app\bc56.mak
 
 .AUTODEPEND
 
@@ -14,7 +14,7 @@ STARTUPWIN    = c0w32.obj
 !endif
 
 !ifndef LDSEARCH
-LDSEARCH = -L$(BCBX_LIB_DIR)
+LDSEARCH = -L$(BC5ROOT_LIB_DIR)
 !endif
 
 OPT_REL           = $(OPT_REL)           -tWC

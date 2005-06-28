@@ -1,7 +1,7 @@
 # -*- makefile -*- Time-stamp:
 # $Id: top.mak
 
-!message build\Makefiles\borland\lib\top.mak
+#!message build\Makefiles\borland\lib\top.mak
 
 .AUTODEPEND
 

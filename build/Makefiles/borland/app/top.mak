@@ -1,7 +1,7 @@
 # -*- makefile -*- Time-stamp:
 # $Id: top.mak
 
-!message build\Makefiles\borland\app\top.mak
+#!message build\Makefiles\borland\app\top.mak
 
 .AUTODEPEND
 
@@ -23,3 +23,6 @@ LINK_cpp_STATIC_STLDBG = $(LINK) $(LDFLAGS) -v
 !include $(RULESBASE)\$(USE_MAKE)\app\rules-install.mak
 !include $(RULESBASE)\$(USE_MAKE)\app\clean.mak
 
+!ifdef LIB_VERSION
+!include $(RULESBASE)\$(USE_MAKE)\lib\macro.mak
+!endif

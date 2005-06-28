@@ -1,7 +1,7 @@
 # -*- makefile -*- Time-stamp:
 # $Id: macro.mak
 
-!message build\Makefiles\borland\app\macro.mak
+#!message build\Makefiles\borland\app\macro.mak
 
 RELEASE_SUFFIX = rr
 DBG_SUFFIX     = dr
