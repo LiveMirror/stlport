@@ -1,29 +1,33 @@
 # -*- Makefile -*- Time-stamp: 
 # $Id: bc56.mak
 
-!message lib\bc56.mak
+#!message build\lib\bc56.mak
 
 .AUTODEPEND
 
 COMPILER_NAME = bc56
 
-!ifndef BCBX
-BCBX          = \CBuilderX
+!ifndef BC5ROOT
+! ifdef MAKEDIR
+BC5ROOT   = $(MAKEDIR)\..
+! else
+BC5ROOT   = \CBuilderX
+! endif
 !endif
 
-STLPORT_DIR   = $(BCBX)\STLport-500-RC2-edited
+STLPORT_DIR   = $(BC5ROOT)\STLport-500-BC5-edited
 SRCROOT       = $(STLPORT_DIR)\build
 SRCROOT_EXT   = $(SRCROOT)\lib
 SRCDIR        = $(STLPORT_DIR)\src
-SRCDIR_A      = $(SRCROOT_EXT)\borland
 
 ALL_TAGS     = release-shared dbg-shared stldbg-shared release-static dbg-static stldbg-static
 
-SO_NOINIT     = 1
-A_NOINIT     = 1
+#NOINIT_SO    = 1
+NOINIT_A      = 1
 
-!include .\borland\Make_O.inc
-!include .\borland\Make_A.inc
+!include .\Makefile.inc
+
+LIBNAME       = stlp$(MAJOR)$(MINOR)
 
 INCLUDES      = 
 

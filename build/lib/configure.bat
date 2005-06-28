@@ -6,6 +6,8 @@ REM * to see available options, call with option --help
 REM *
 REM * Copyright (C) 2004 Michael Fink
 REM *
+REM * Borland support contributed subject to STLport free license.
+REM *
 REM **************************************************************************
 
 REM Attention! Batch file labels only have 8 significant characters!
@@ -95,6 +97,8 @@ echo    msvc8    Microsoft Visual C++ .NET 2005 (beta)
 REM echo    icl      Intel C++ Compiler
 echo    evc3     Microsoft eMbedded Visual C++ 3
 echo    evc4     Microsoft eMbedded Visual C++ .NET
+echo    bc55     Borland C++ 5.5 for Win32
+echo    bc56     Borland C++ 5.6 for Win32
 echo.
 echo "-p <processor>" or "--processor <processor>"
 echo    Sets target processor for given compiler; currently only used for
@@ -146,6 +150,9 @@ if "%2" == "icl"   goto oc_icl
 if "%2" == "evc3" goto oc_evc3
 if "%2" == "evc4" goto oc_evc4
 
+if "%2" == "bc55" goto oc_bc
+if "%2" == "bc56" goto oc_bc
+
 echo Unknown compiler: %2
 goto oc_end
 
@@ -192,6 +199,80 @@ echo COMPILER_NAME=evc4 >> ..\Makefiles\config.mak
 echo CEVERSION=420 >> ..\Makefiles\config.mak
 set STLPORT_COMPILE_COMMAND=nmake -f nmake-evc4.mak
 goto oc_end
+
+REM **************************************************************************
+REM *
+REM * Borland compiler configuration
+REM *
+REM * Contributed subject to STLport free licence.
+REM *
+REM **************************************************************************
+
+:oc_bc
+      
+@echo Setting processor type...
+echo TARGET_OS=x86 >> ..\Makefiles\config.mak
+
+@echo Checking Windows version...
+echo OSREL=\ >> ..\Makefiles\config.mak
+ver | find /i "windows" >> ..\Makefiles\config.mak
+goto oc_sysdir
+
+:oc_set_sysdir
+if exist %WINDIR%\system32\user.exe set SystemDirectory=%WINDIR%\system32
+if "%SystemDirectory%"=="" if exist %WINDIR%\system\user.exe set SystemDirectory=%WINDIR%\system
+if "%SystemDirectory%"=="" goto oc_err_sysdir
+goto oc_sysdir
+
+:oc_err_sysdir
+echo Please set windows 'SystemDirectory' environment variable.  
+echo Then run configure.bat again.
+goto skp_comp
+
+:oc_sysdir
+@echo Checking Windows system directory...
+if "%SystemDirectory%"=="" goto oc_set_sysdir
+echo WINSYSDIR=%SystemDirectory% >> ..\Makefiles\config.mak
+
+if not "%OS%"=="Windows_NT" goto oc_build_date_done
+echo Saving build date...
+for /f "tokens=2" %%D in ('date /t') do (set CFGDATE=%%D)
+for /f "tokens=1" %%T in ('time /t') do (set CFGTIME=%%T)
+for /f "tokens=2" %%T in ('time /t') do (set CFGAMPM=%%T)
+echo BUILD_DATE=%CFGDATE% %CFGTIME% %CFGAMPM% >> ..\Makefiles\config.mak
+REM set CFGDATE=
+REM set CFGTIME=
+REM set CFGAMPM=
+:oc_build_date_done
+
+@echo Checking depend directories...
+@if not exist ..\lib\borland mkdir ..\lib\borland
+@if not exist ..\test\unit\borland mkdir ..\test\unit\borland
+@if not exist ..\test\eh\borland mkdir ..\test\eh\borland
+
+@echo Resetting dependency files...
+echo. > ..\lib\borland\depends.inc
+echo. > ..\test\unit\borland\depends.inc
+echo. > ..\test\eh\borland\depends.inc
+
+echo CFGSET=%STLPORT_SELECTED_CONFIG% >> ..\Makefiles\config.mak
+if "%STLPORT_SELECTED_CONFIG%"=="bc56" goto oc_bc56
+
+:oc_bc55
+echo Setting compiler: Borland C++ 5.5 for Win32
+set STLPORT_COMPILE_COMMAND=make -f bc55.mak
+goto oc_end
+
+:oc_bc56
+echo Setting compiler: Borland C++ 5.6 for Win32
+set STLPORT_COMPILE_COMMAND=make -f bc56.mak
+goto oc_end
+
+REM **************************************************************************
+REM *
+REM * End compiler configuration
+REM *
+REM **************************************************************************
 
 :oc_end
 shift
@@ -321,9 +402,18 @@ echo Done configuring STLport.
 echo.
 
 if "%STLPORT_COMPILE_COMMAND%" == "" goto skp_comp
+if "%STLPORT_SELECTED_CONFIG%" == "bc55" goto bc_comp
+if "%STLPORT_SELECTED_CONFIG%" == "bc56" goto bc_comp
+
 echo Please type "%STLPORT_COMPILE_COMMAND%" to build STLport.
 echo Type "%STLPORT_COMPILE_COMMAND% install" to install STLport to the "lib"
 echo and "bin" folder when done.
+echo.
+goto skp_comp
+
+:bc_comp
+echo Please type: "%STLPORT_COMPILE_COMMAND% depend" to setup directories and dependencies.
+echo Then type:   "%STLPORT_COMPILE_COMMAND% install" to build and install STLport.
 echo.
 
 :skp_comp
