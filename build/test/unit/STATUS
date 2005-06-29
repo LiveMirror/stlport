@@ -344,30 +344,31 @@ Notes:
 -----------------------------------------------------------------------
 Compiler:                       g++ 3.4.4 (cygwin special)
 -----------------------------------------------------------------------
-Date:                           2005-06-17
+Date:                           2005-06-29
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        6 failures (326 tests)
+Status (release-shared):        6 failures (327 tests)
 Notes:                          ExceptionTest::uncaught_exception fails when all tests
                                 are run but succeed with the -t=ExceptionTest option.
-Status (dbg-shared):            1 failure (321 tests)
-Notes:                          Idem release-shared.
-Status (stldbg-shared):         1 failure (321 tests)
-Notes:                          Idem release-shared.
+				Other errors seems to come from bad behavior of the
+				_Stl_string_to_double function when optimized.
+Status (dbg-shared):            1 failure (327 tests)
+Notes:                          Only ExceptionTest::uncaught_exception occur.
+Status (stldbg-shared):         1 failure (327 tests)
+Notes:                          Idem dbg-shared.
 
 -----------------------------------------------------------------------
 Compiler:                       g++ 3.4.1 (mingw special)
 ---------------------------------------------6-------------------------
-Date:                           2005-04-08
+Date:                           2005-04-29
 STLP Version:                   current CVS S6LPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        6 failures (326 tests)
-Notes:                          ExceptionTest::uncaught_exception fails when all tests
-                                are run but succeed with the -t=ExceptionTest option.
-Status (dbg-shared):            1 failures (326 tests)
-Notes:                          Idem release-shared.
-Status (stldbg-shared):         1 failures (326 tests)
-Notes:                          Idem release-shared.
+Status (release-shared):        6 failures (327 tests)
+Notes:                          Idem cygwin report above.
+Status (dbg-shared):            1 failures (327 tests)
+Notes:                          Idem cygwin report above.
+Status (stldbg-shared):         1 failures (327 tests)
+Notes:                          Idem cygwin report above.
 
 =======================================================================
 Operational environment:        Windows 2000 SP4
