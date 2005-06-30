@@ -1924,8 +1924,14 @@ public:
     return rope<_CharT,_Alloc>(_S_substring(_M_tree_ptr._M_data, __pos, __pos + 1));
   }
 
-  // static const size_type npos;
+#if defined (_STLP_STATIC_CONST_INIT_BUG)
   enum { npos = -1 };
+#elif __GNUC__ == 2 && __GNUC_MINOR__ == 96
+  // inline initializer conflicts with 'extern template' 
+  static const size_t npos;
+#else
+  static const size_t npos = ~(size_t)0;
+#endif
   
   size_type find(const _Self& __s, size_type __pos = 0) const {
     if (__pos >= size())
@@ -2020,6 +2026,12 @@ public:
 
 # endif
 }; //class rope
+
+#if !defined (_STLP_STATIC_CONST_INIT_BUG) && \
+              __GNUC__ == 2 && __GNUC_MINOR__ == 96
+template <class _CharT, class _Alloc>
+const size_t rope<_CharT, _Alloc>::npos = ~(size_t) 0;
+#endif
 
 template <class _CharT, class _Alloc>
 inline _CharT 

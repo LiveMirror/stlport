@@ -1,3 +1,14 @@
+2005-06-30  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_rope.h, _rope.c: Duplicate basic_string::npos definition code
+	in rope implementation to use a "Standard" static const npos definition when
+	possible depending on the compiler features. Thanks caldwed report.
+
+2005-06-30  Michael Fink  <vividos@users.sourceforge...>
+
+	* stlport/cstdlib, stdlib.h: Fixed issue with including stdlib.h after
+	setjmp.h; fix from 2005-06-23 wasn't solving the problem.
+
 2005-06-28  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hash_func.h: For MSVC .Net compiler we grant the hash<size_t>
@@ -44,7 +55,7 @@
 	duplication between float, double and long double version thanks to
 	some template functions. Thanks an Ulrich Echkardt idear.
 
-	* stlport/cstdlib, stl/stdlib.h: Mickeal Fink patch to avoid setjmp.h 
+	* stlport/cstdlib, stl/stdlib.h: Michael Fink patch to avoid setjmp.h
 	inclusion problem as stdlib.h contains a setjmp macro definition.
 
 	* test/eh/main.cpp: Redirection of std::cout and std::cerr for WinCE

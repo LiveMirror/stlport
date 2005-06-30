@@ -1326,6 +1326,11 @@ __DECLARE_INSTANCE(wchar_t, wrope::_S_empty_c_str[1], ={0});
 # endif /* _STLP_STATIC_TEMPLATE_DATA */
 // # endif
 
+#if defined ( __SUNPRO_CC) && ! defined(_STLP_STATIC_CONST_INIT_BUG)
+template <class _CharT, class _Alloc>
+const size_t rope<_CharT, _Alloc>::npos;
+#endif
+
 template<class _CharT, class _Alloc>
 const _CharT* rope<_CharT,_Alloc>::c_str() const {
   if (0 == _M_tree_ptr._M_data) {

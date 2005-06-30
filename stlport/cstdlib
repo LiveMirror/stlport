@@ -21,15 +21,15 @@
 #  include <stl/_prolog.h>
 #endif
 
-/* on evc3/evc4 including stdlib.h also defines setjmp macro */
-#  if defined(_STLP_WCE)
-#    include "setjmp.h"
-#  endif
-
 #if defined (_STLP_USE_NEW_C_HEADERS)
 #  include _STLP_NATIVE_CPP_C_HEADER(cstdlib)
 #else
 #  include _STLP_NATIVE_C_HEADER(stdlib.h)
+#endif
+
+/* on evc3/evc4 including stdlib.h also defines setjmp macro */
+#if defined(_STLP_WCE)
+#  define _STLP_NATIVE_SETJMP_H_INCLUDED
 #endif
 
 #if defined (__MSL__) && (__MSL__ <= 0x5003)
