@@ -51,7 +51,10 @@ ctype<char>::classic_table() _STLP_NOTHROW {
    * STLport flag character like 'a' with alpha | lower, if alpha is badly configure
    * then 'a' will also be seen as upper which is wrong.
    */
+#ifndef __MWERKS__
+  /* CodeWarrior 8 don't understabd this */
   typedef char __static_assert[(alpha & (lower | upper)) == 0];
+#endif
 
   static const ctype_base::mask _S_classic_table[table_size] = 
   {

@@ -61,10 +61,12 @@ using _STLP_VENDOR_CSTD::strspn;
 #   include <unicode.h>
 int wcslen( const wchar_t *_wc );
 int wcscmp( const wchar_t *_wc1, const wchar_t *_wc2 );
-inline wchar_t *wcsstr( const wchar_t *_wc1, const wchar_t *_wc2 );
-/* wchar_t *wcschr( const wchar_t *_wc1, wchar_t _wc2 ); */
-/* wchar_t *wcsrchr( const wchar_t *_wc1, wchar_t _wc2 ); */
-/* wchar_t *wcscpy( wchar_t *_wc1, const wchar_t *_wc2 ); */
+int wcsncmp( const wchar_t *_wc1, const wchar_t *_wc2, size_t n );
+wchar_t *wcsstr( const wchar_t *_wc1, const wchar_t *_wc2 );
+wchar_t *wcschr( const wchar_t *_wc1, wchar_t _wc2 );
+wchar_t *wcsrchr( const wchar_t *_wc1, wchar_t _wc2 );
+wchar_t *wcscpy( wchar_t *_wc1, const wchar_t *_wc2 );
+wchar_t *wcsncpy( wchar_t *_wc1, const wchar_t *_wc2, size_t n );
 wchar_t *wcspbrk( const wchar_t *_wc, const wchar_t *_wc2 );
 #  else
 #    include _STLP_NATIVE_C_HEADER(wchar.h)

@@ -1,3 +1,8 @@
+2005-06-30  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/wchar.h, src/c_locale.c, stlport/stl/_threads.h: fix Netware
+	wcs... functions.
+
 2005-06-30  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_rope.h, _rope.c: Duplicate basic_string::npos definition code

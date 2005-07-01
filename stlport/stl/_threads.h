@@ -417,7 +417,7 @@ class _STLP_CLASS_DECLSPEC _Refcount_Base
 inline __stl_atomic_t _Atomic_swap(volatile __stl_atomic_t * __p, __stl_atomic_t __q) {
   return (__stl_atomic_t) _STLP_ATOMIC_EXCHANGE(__p,__q);
 }
-#  elif defined(_STLP_PTHREADS) || defined (_STLP_UITHREADS) || defined (_STLP_OS2THREADS) || defined(_STLP_USE_PTHREAD_SPINLOCK)
+#  elif defined(_STLP_PTHREADS) || defined (_STLP_UITHREADS) || defined (_STLP_OS2THREADS) || defined(_STLP_USE_PTHREAD_SPINLOCK) || defined(_STLP_NWTHREADS)
 // We use a template here only to get a unique initialized instance.
 template<int __dummy>
 struct _Swap_lock_struct {
