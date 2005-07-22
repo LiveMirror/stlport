@@ -1,3 +1,19 @@
+2005-07-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_algo.c: Fix search_n implementation for random access
+	iterator thanks Jim Xochellis
+
+	* test/unit/algo_test.cpp: Add test case for the previous bug thanks
+	Michael Fink.
+
+	* src/num_get_float.cpp: Fix gcc Mingwin and Cygwin special version with
+	building with -O2 option.
+
+	* build/Makefiles/gmake/gcc.mak: Add -D_REENTRANT definition for cygwin and
+	-mthreads for mingwin platform to make STLport thread safe like under the
+	other supported platforms.
+
+
 2005-06-30  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/wchar.h, src/c_locale.c, stlport/stl/_threads.h: fix Netware

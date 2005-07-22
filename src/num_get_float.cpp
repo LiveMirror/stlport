@@ -145,9 +145,13 @@ void _Stl_mult64(const uint64 u, const uint64 v,
 # define bit11 ULL(0x7ff)
 # define exponent_mask (bit11 << 52)
 
-inline void _Stl_set_exponent(uint64& val, uint64 exp) {
-  val = (val & ~exponent_mask) | ((exp & bit11) << 52);
-}
+#if !defined (__GNUC__) || (__GNUC__ != 3) || (__GNUC_MINOR__ != 4) || \
+    (!defined (__CYGWIN__) && !defined (__MINGW32__))
+//Generate bad code when compiled with -O2 option.
+inline
+#endif
+void _Stl_set_exponent(uint64 &val, uint64 exp)
+{ val = (val & ~exponent_mask) | ((exp & bit11) << 52); }
 
 /* Power of ten fractions for tenscale*/
 /* The constants are factored so that at most two constants

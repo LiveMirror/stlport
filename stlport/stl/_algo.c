@@ -143,13 +143,13 @@ _RandomAccessIter __search_n(_RandomAccessIter __first, _RandomAccessIter __last
                              _Integer __count, const _Tp& __val, _BinaryPred __pred,
                              _Distance*, const random_access_iterator_tag &) {
   _Distance __tailSize = __last - __first;
-  _Distance __pattSize = __count;
+  const _Distance __pattSize = __count;
 
   if (__tailSize >= __pattSize) {
     _RandomAccessIter __backTrack;
 
     _Distance __remainder, __prevRemainder;
-    _Distance __skipOffset = __pattSize - 1;
+    const _Distance __skipOffset = __pattSize - 1;
 
     _RandomAccessIter __lookAhead = __first + __skipOffset;
 
@@ -192,7 +192,7 @@ _RandomAccessIter __search_n(_RandomAccessIter __first, _RandomAccessIter __last
           } while (__pred(*--__backTrack, __val));
 
           //adjust remainder for next comparison
-          __remainder += __skipOffset - __prevRemainder;
+          __remainder += __pattSize - __prevRemainder;
         }
         else
           break;
