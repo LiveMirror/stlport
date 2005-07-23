@@ -540,6 +540,7 @@ void test_supported_locale(LocaleTest inst, _Tp __test) {
     if (tested_locales[i].name[0] != 'C' || 
         tested_locales[i].name[1] != 0)
       continue;
+    loc.reset(new locale(tested_locales[i].name));
 #endif
     CPPUNIT_MESSAGE( loc->name().c_str() );
     (inst.*__test)(*loc, tested_locales[i]);

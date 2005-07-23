@@ -1,3 +1,11 @@
+﻿2005-07-23  Michael Fink  <vividos@users.sourceforge...>
+
+	* test/unit/locale_test.cpp: Added creating locale pointer in
+	test_supported_locale() when no exception handling is available.
+
+	* src/stlport.rc: Added version info defines when not available through
+	windows.h. Happens on evc3 MIPS and evc3 SH3.
+
 2005-07-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_sum.h: Fix missing return statement in a compare
