@@ -1,3 +1,8 @@
+2005-07-23  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_sum.h: Fix missing return statement in a compare
+	method.
+
 2005-07-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_algo.c: Fix search_n implementation for random access
