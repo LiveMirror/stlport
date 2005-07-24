@@ -33,6 +33,7 @@
 #endif
 
 #define _STLP_MINIMUM_IMPORT_STD
+#define _STLP_NO_VENDOR_STDLIB_L 1
 
 #if defined (_STLP_MSVC)
 
@@ -46,7 +47,6 @@
 
 #  define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
 #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG 1
-#  define _STLP_NO_VENDOR_STDLIB_L 1
 
 // # ifndef __BUILDING_STLPORT
 // #  define _STLP_USE_TEMPLATE_EXPORT 1
@@ -60,8 +60,6 @@
 #  endif  //  (_STLP_MSVC >= 1310)
 
 #  if (_STLP_MSVC >= 1300)
-//Starting with MSVC 7.0 we assume that the new SDK is granted:
-#    define _STLP_NEW_PLATFORM_SDK 1
 #    undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 #    if !defined (_STLP_DONT_USE_EXCEPTIONS)
 #      define _STLP_NOTHROW throw()
@@ -139,7 +137,14 @@
 #  define _STLP_NO_IEC559_SUPPORT 1
 #endif
 
-#if (_MSC_VER < 1300) || defined(UNDER_CE) // including MSVC 6.0
+#if (_MSC_VER >= 1300)
+/* Starting with MSVC 7.0 and compilers simulating it,
+ * we assume that the new SDK is granted:
+ */
+#  define _STLP_NEW_PLATFORM_SDK 1
+#endif
+
+#if (_MSC_VER < 1300) || defined (UNDER_CE) // including MSVC 6.0
 //  these work, as long they are inline
 #  define _STLP_INLINE_MEMBER_TEMPLATES 1
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1

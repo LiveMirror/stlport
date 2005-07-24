@@ -430,6 +430,25 @@ Notes:
 Status (stldbg-static):         All pass (325 tests)
 Notes:
 
+-----------------------------------------------------------------------
+Compiler:                       Intel C++ compiler 9.0
+-----------------------------------------------------------------------
+Date:                           2005-07-24
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       dums (Francois Dumont)
+Status (release-shared):        3 failures (326 tests)
+Notes:
+Status (dbg-shared):            All pass (326 tests)
+Notes:
+Status (stldbg-shared):         All pass (326 tests)
+Notes:
+Status (release-static):        1 failure (325 tests)
+Notes:
+Status (dbg-static):            All pass (326 tests)
+Notes:
+Status (stldbg-static):         All pass (326 tests)
+Notes:
+
 =======================================================================
 Operational environment:        Windows CE 3.0 Pocket PC 2002 (iPAQ h3950)
 =======================================================================

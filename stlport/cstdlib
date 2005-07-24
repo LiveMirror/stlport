@@ -101,7 +101,7 @@ _STLP_END_NAMESPACE
 #endif
 
 //MSVC starting with .Net 2003 already define all math functions in global namespace:
-#if !defined (_STLP_MSVC) || (_STLP_MSVC < 1310)
+#if !defined (_MSC_VER) || (_MSC_VER < 1310)
 inline long abs(long __x) { return ::labs(__x); }
 #endif
 

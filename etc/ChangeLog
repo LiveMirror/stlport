@@ -6,6 +6,20 @@
 	* test/unit/string_test.cpp: Add creation of a reference to string::npos
 	to force compiler to generate memory for it. Used to reveal a link error.
 
+	* test/unit/cppunit/cppunit_mini.h: Removed redondant semi column in 
+	CPPUNIT_TEST_SUITE_REGISTRATION macro definition.
+
+	* stlport/config/stl_msvc.h, stl_intel.h: Concidering that compilers
+	emulating MSVC compilers use the same native Standard Library headers
+	macros _STLP_NEW_PLATFORM_SDK and _STLP_NO_VENDOR_STDLIB_L has been moved
+	outside the _STLP_MSVC scope. _STLP_GLOBAL_NEW_HANDLER is now defined
+	only for Intel compiler versions before 9.0.
+
+	* stlport/cstdlib, stl/_cmath.h: Because of the previous remark about
+	emulators of MSVC using MSVC headers, macro checks for global definition
+	of C math functions has been changed from _STLP_MSVC to _MSC_VER. 
+	
+
 2005-07-23  Michael Fink  <vividos@users.sourceforge...>
 
 	* test/unit/locale_test.cpp: Added creating locale pointer in

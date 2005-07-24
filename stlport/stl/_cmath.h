@@ -132,8 +132,8 @@
 
 //MSVC starting with .Net 2003 has already all math functions in global namespace.
 //As Intel C++ compiler icl include MSVC headers it also have all math functions in ::
-#if (!defined (_STLP_MSVC) || (_STLP_MSVC < 1310)) && \
-    (!defined (__ICL) || (_MSC_VER < 1310))
+// so we use _MSC_VER rather than _STLP_MSVC
+#if !defined (_MSC_VER) || (_MSC_VER < 1310)
 inline double abs(double __x) { return ::fabs(__x); }
 #  ifndef __MVS__
 _STLP_DEF_MATH_INLINE(abs,fabs)
