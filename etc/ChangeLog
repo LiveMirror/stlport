@@ -1,4 +1,12 @@
-﻿2005-07-23  Michael Fink  <vividos@users.sourceforge...>
+﻿2005-07-24  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string.c, _rope.c: Add instanciation of npos for all
+	compilers thanks Simon.
+
+	* test/unit/string_test.cpp: Add creation of a reference to string::npos
+	to force compiler to generate memory for it. Used to reveal a link error.
+
+2005-07-23  Michael Fink  <vividos@users.sourceforge...>
 
 	* test/unit/locale_test.cpp: Added creating locale pointer in
 	test_supported_locale() when no exception handling is available.
