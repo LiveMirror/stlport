@@ -1,4 +1,10 @@
-﻿2005-07-24  Francois Dumont  <dums@stlport...>
+﻿2005-07-25  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_evc.h: Move _DEBUG definition fix up before
+	stl_msvc.h inclusion to have correct library link automatically.
+	Thanks Michael Fink.
+
+2005-07-24  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string.c, _rope.c: Add instanciation of npos for all
 	compilers thanks Simon.

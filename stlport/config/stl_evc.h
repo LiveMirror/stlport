@@ -34,6 +34,11 @@
 // This is defined for all platforms using Windows CE
 # define _STLP_WCE
 
+// Ensure _DEBUG is defined.
+# if defined(DEBUG) && !defined(_DEBUG)
+#  define _DEBUG
+# endif
+
 // inherit all msvc6 options
 # include <config/stl_msvc.h>
 
@@ -108,11 +113,6 @@
 #  if !defined(__BUILDING_STLPORT) && defined(_STLP_USE_MFC)
 #   define __PLACEMENT_NEW_INLINE
 #  endif
-
-// Ensure _DEBUG is defined.
-# if defined(DEBUG) && !defined(_DEBUG)
-#  define _DEBUG
-# endif
 
 // threads
 # undef _REENTRANT
