@@ -1,4 +1,8 @@
-﻿2005-07-25  Francois Dumont  <dums@stlport...>
+2005-07-26  Petr Ovtchenkov  <ptr@island...>
+
+	* doc/FAQ: description of pseudo-leaks, thanks Michael Fink.
+
+2005-07-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_evc.h: Move _DEBUG definition fix up before
 	stl_msvc.h inclusion to have correct library link automatically.
@@ -24,7 +28,6 @@
 	* stlport/cstdlib, stl/_cmath.h: Because of the previous remark about
 	emulators of MSVC using MSVC headers, macro checks for global definition
 	of C math functions has been changed from _STLP_MSVC to _MSC_VER. 
-	
 
 2005-07-23  Michael Fink  <vividos@users.sourceforge...>
 
@@ -53,7 +56,6 @@
 	* build/Makefiles/gmake/gcc.mak: Add -D_REENTRANT definition for cygwin and
 	-mthreads for mingwin platform to make STLport thread safe like under the
 	other supported platforms.
-
 
 2005-06-30  Petr Ovtchenkov  <ptr@island...>
 
