@@ -360,7 +360,7 @@ In the default compile of STLport, the node allocator is used to allocate
 internal memory. The node allocator works by pre-allocating a large chunk of
 memory and handing out small memory blocks out. The memory chunk is not freed
 during running an application that uses STLport (i.e. it don't returned to system,
-but reused inside application).
+but reused inside application). See also http://www.sgi.com/tech/stl/alloc.html
 
 There are tools like BoundsChecker, Purify or Valgrind that check for memory
 leaks, for memory that isn't freed when no longer used. These tools may report
