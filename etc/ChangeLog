@@ -2,6 +2,8 @@
 
 	* doc/FAQ: description of pseudo-leaks, thanks Michael Fink.
 
+	* STLport (repository): STLport 5.0 RC4
+
 2005-07-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_evc.h: Move _DEBUG definition fix up before
