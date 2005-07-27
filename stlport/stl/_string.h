@@ -27,7 +27,7 @@
 #  include <stl/_string_fwd.h>
 #endif
 
-#ifndef _STLP_INTERNAL_FUNCTION_BASE_H
+#ifndef _STLP_INTERNAL_FUNCTION_H
 #  include <stl/_function.h>
 #endif
 

@@ -1,3 +1,19 @@
+2005-07-27  Francois Dumont  <dums@stlport...>
+
+	* stlport/iomanip, stl/_algo.h: Removed some persistent occurences
+	of __in and __out keywords reserved by Microsoft.
+
+	* stlport/stl/_pthread_alloc.c: Fix annoying warning reported by gcc.
+
+	* stlport/config/stl_msvc.h: Fix _STLP_VENDOR_UNEXPECTED_STD macro
+	definition to empty rather than '1'. Could have produce a compilation
+	error with compilers like Intel C++ used with the VC6 native Standard
+	library.
+
+	* stlport/queue, stl/_ctraits_fns.h, _hashtable.h, _numeric.h, _string.h
+	_tree.h: Fix macro guards used to avoid inclusion of _function.h or 
+	_function_base.h or functional thanks Dinesh Monga report.
+
 2005-07-26  Petr Ovtchenkov  <ptr@island...>
 
 	* doc/FAQ: description of pseudo-leaks, thanks Michael Fink.

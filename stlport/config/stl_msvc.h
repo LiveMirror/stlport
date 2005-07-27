@@ -20,10 +20,6 @@
 #  define _STLP_DONT_USE_EXCEPTIONS 1
 #endif
 
-#ifndef _STLP_MSVC
-#  define _STLP_VENDOR_UNEXPECTED_STD
-#endif
-
 #if defined (_MT) && !defined (_STLP_NO_THREADS) && !defined (_REENTRANT)
 #  define _REENTRANT 1
 #endif
@@ -151,7 +147,7 @@
 #  define _STLP_GLOBAL_NEW_HANDLER 1
 #  define _STLP_DONT_SUPPORT_REBIND_MEMBER_TEMPLATE 1
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
-#  define _STLP_VENDOR_UNEXPECTED_STD 1
+#  define _STLP_VENDOR_UNEXPECTED_STD
 #endif
 
 #if (_STLP_MSVC > 1100)
