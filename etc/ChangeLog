@@ -1,3 +1,11 @@
+2005-07-31  Petr Ovtchenkov  <ptr@island...>
+
+	* test/unit/math_aux.h, cmath_test.cpp: are_equals moved into
+	math_aux.h to reuse in other tests.
+
+	* test/unit/sstream_test.cpp: check input to float, inspired by
+	Jeff Williams.
+
 2005-07-27  Francois Dumont  <dums@stlport...>
 
 	* stlport/iomanip, stl/_algo.h: Removed some persistent occurences
