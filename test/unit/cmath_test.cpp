@@ -6,6 +6,7 @@
 //defined in cstdlib
 #include <cstdlib>
 
+#include "math_aux.h"
 #include "cppunit/cppunit_proxy.h"
 
 //This test purpose is to check the right import of math.h C symbols
@@ -27,21 +28,6 @@ class CMathTest : public CPPUNIT_NS::TestCase
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CMathTest);
 
-
-/*
- * This function is not only used to compare floating point values with a tolerance,
- * it also leads to ambiguity problems if the called functions do not have the
- * right prototype.
- */
-template <class _Tp>
-bool are_equals(_Tp val, _Tp ref) {
-  if (val < ref) {
-    return (ref - val) <= std::numeric_limits<_Tp>::epsilon();
-  }
-  else {
-    return (val - ref) <= std::numeric_limits<_Tp>::epsilon();
-  }
-}
 //
 // tests implementation
 //
