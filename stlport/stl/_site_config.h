@@ -35,8 +35,8 @@
  * Changing default will require you to change makefiles in "build" accordingly
  * and to rebuild STLPort library!
  * On UNIX, this has no effect.
- * Check build/lib/README file for help in building the require
- * STLport library version.
+ * See STLport configuration file (build/lib/configure.bat) for help in building
+ * the require library versions.
  */
 /*
 #define _STLP_USE_DYNAMIC_LIB
@@ -48,8 +48,8 @@
  * Changing default will require you to change makefile in "src" accordingly
  * and to rebuild STLPort library!
  * On UNIX, this has no effect. 
- * Check build/lib/README file for help in building the require
- * STLport library version.
+ * See STLport configuration file (build/lib/configure.bat) for help in building
+ * the require library versions.
  */
 /*
 #define _STLP_USE_STATIC_LIB
