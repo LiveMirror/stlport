@@ -32,10 +32,10 @@
 /*
  * Turn _STLP_USE_DYNAMIC_LIB to enforce use of .dll version of STLport library.
  * NOTE: please do that only if you know what you are doing!
- * Changing default will require you to change makefile in "src" accordingly
+ * Changing default will require you to change makefiles in "build" accordingly
  * and to rebuild STLPort library!
  * On UNIX, this has no effect.
- * Check src/explore/README.options file for help in building the require
+ * Check build/lib/README file for help in building the require
  * STLport library version.
  */
 /*
@@ -48,7 +48,7 @@
  * Changing default will require you to change makefile in "src" accordingly
  * and to rebuild STLPort library!
  * On UNIX, this has no effect. 
- * Check src/explore/README.options file for help in building the require
+ * Check build/lib/README file for help in building the require
  * STLport library version.
  */
 /*
@@ -61,7 +61,7 @@
  * compiler vendor's headers included. Default is "../include"
  * for _STLP_NATIVE_INCLUDE_PATH, default for other macros is
  * _STLP_NATIVE_INCLUDE_PATH.
- * Hint : never install STLport in the directory that ends with "include"
+ * Hint: never install STLport in the directory that ends with "include"
  */
 /*
 #undef _STLP_NATIVE_INCLUDE_PATH
@@ -89,10 +89,7 @@
  * The reason you have to use separate namespace in wrapper mode is that new-style IO
  * compiled library may have its own idea about STL stuff (string, vector, etc.),
  * so redefining them in the same namespace would break ODR and may cause
- * undefined behaviour. Rule of thumb is - if new-style iostreams are
- * available, there WILL be a conflict. Otherwise you should be OK.
- * In STLport iostreams mode, there is no need for this flag other than to facilitate
- * link with third-part libraries compiled with different standard library implementation.
+ * undefined behaviour.
  */
 /*
 #define _STLP_USE_OWN_NAMESPACE 1
@@ -264,7 +261,8 @@
 #define _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 #define _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
 
-/* Local Variables:
- * mode:C++
- * End:
- */
+/*
+  Local Variables:
+  mode:C++
+  End:
+*/

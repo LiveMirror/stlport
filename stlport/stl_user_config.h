@@ -33,8 +33,8 @@
  * Use this switch for embedded systems where no iostreams are available
  * at all. STLport own iostreams will also get disabled automatically then.
  * You can either use STLport iostreams, or no iostreams.
- * If you want iostreams, you have to compile library in ../src and supply resulting
- * library at link time.
+ * If you want iostreams, you have to compile library in ../build/lib
+ * and supply resulting library at link time.
  */
 /*
 #define _STLP_NO_IOSTREAMS 1
@@ -45,7 +45,8 @@
  * That gets you checked iterators/ranges in the manner
  * of "Safe STL". Very useful for debugging. Thread-safe.
  * Please do not forget to link proper STLport library flavor
- * (e.g libstlport_gcc_stldebug.a) when you set this flag in STLport iostreams mode.
+ * (e.g libstlportstlg.so or libstlportstlg.a) when you set this flag
+ * in STLport iostreams mode.
  */
 /*
 #define   _STLP_DEBUG 1
@@ -297,7 +298,8 @@
 
 /*==========================================================*/
 
-/* Local Variables:
- * mode: C++
- * End:
- */
+/*
+  Local Variables:
+  mode: C++
+  End:
+*/

@@ -1,3 +1,8 @@
+2005-08-02  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/stl_user_config.h, stlport/stl/_site_config.h:
+	fix some obsolete comments.
+
 2005-07-31  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/math_aux.h, cmath_test.cpp: are_equals moved into
