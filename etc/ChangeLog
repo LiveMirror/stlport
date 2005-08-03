@@ -1,3 +1,8 @@
+2005-08-03  Francois Dumont  <dums@stlport...>
+
+	* INSTALL document updated to signal no longer support of the
+	'wrapper' mode.
+
 2005-08-02  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl_user_config.h, stlport/stl/_site_config.h:

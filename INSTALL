@@ -3,13 +3,15 @@
 *                                                                    *
 **********************************************************************
 
-STLport-5.0 is a full ANSI C++ Standard library.
+STLport is a full ANSI C++ Standard library.
 
 This distribution contains STLport sources only, no binaries.
 To use STLport iostreams, locale and complex numbers, you have to build STLport
 library from sources in "build/lib" directory and link your programs with it.
 
-This is major change since pre-4.0 releases, please read the instructions carefully.
+Starting with 5.0 the 'wrapper' mode is not supported anymore. You cannot use native
+compiler iostreams implementation with STLport STL (see doc/FAQ for explanations).
+Now you have to choose between STLport iostreams or no iostreams.
 
 ==== Unpacking and installing STLport ==========
 
