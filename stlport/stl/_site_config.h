@@ -11,7 +11,7 @@
 #define _STLP_NO_THREADS
 */
 
-/* _PTHREADS: if defined, use Posix threads for multithreading support. */
+/* _PTHREADS: if defined, use POSIX threads for multithreading support. */
 /*
 #define _PTHREADS
 */
@@ -34,7 +34,7 @@
  * NOTE: please do that only if you know what you are doing!
  * Changing default will require you to change makefiles in "build" accordingly
  * and to rebuild STLPort library!
- * On UNIX, this has no effect.
+ * On UNIX, this has no effect, see build/lib/README for make tags.
  * See STLport configuration file (build/lib/configure.bat) for help in building
  * the require library versions.
  */
@@ -45,9 +45,9 @@
 /*
  * Turn _STLP_USE_STATIC_LIB to enforce use of static version of STLport library.
  * NOTE: please do that only if you know what you are doing!
- * Changing default will require you to change makefile in "src" accordingly
+ * Changing default will require you to change makefile in "build" accordingly
  * and to rebuild STLPort library!
- * On UNIX, this has no effect. 
+ * On UNIX, this has no effect, see build/lib/README for make tags. 
  * See STLport configuration file (build/lib/configure.bat) for help in building
  * the require library versions.
  */
@@ -84,15 +84,10 @@
 */
 
 /* 
- * _STLP_USE_OWN_NAMESPACE/_STLP_NO_OWN_NAMESPACE
- * If defined, STLport uses own namespace, else std::
- * The reason you have to use separate namespace in wrapper mode is that new-style IO
- * compiled library may have its own idea about STL stuff (string, vector, etc.),
- * so redefining them in the same namespace would break ODR and may cause
- * undefined behaviour.
+ * If namespases available, STLport use own namespace (and masquerade
+ * it as std). Disable own namespace may cause undefined behaviour.
  */
 /*
-#define _STLP_USE_OWN_NAMESPACE 1
 #define _STLP_NO_OWN_NAMESPACE  1
 */
 
