@@ -1,3 +1,13 @@
+2005-08-04  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/csetjmp: sometimes, if native setjmp.h was included first,
+	the setjmp functions situated in global namespace, not in vendor's
+	std. This may confuse following csetjmp.
+
+	* test/unit/setjmp_header_test2.cpp: test for this.
+
+	* build/test/unit/Makefile.inc: ditto.
+
 2005-08-03  Francois Dumont  <dums@stlport...>
 
 	* INSTALL document updated to signal no longer support of the

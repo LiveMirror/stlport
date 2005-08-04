@@ -1,4 +1,4 @@
-# -*- makefile -*- Time-stamp: <05/03/30 10:27:53 ptr>
+# -*- makefile -*- Time-stamp: <05/08/04 09:05:24 ptr>
 # $Id$
 
 # this is the version number of needed STLport library for linking
@@ -36,6 +36,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/copy_test.cpp \
 	../../../test/unit/count_test.cpp \
 	../../../test/unit/csetjmp_header_test.cpp \
+	../../../test/unit/setjmp_header_test2.cpp \
 	../../../test/unit/csignal_header_test.cpp \
 	../../../test/unit/cstdarg_header_test.cpp \
 	../../../test/unit/cstddef_header_test.cpp \
