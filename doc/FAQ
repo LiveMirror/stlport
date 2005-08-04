@@ -308,18 +308,28 @@ A5.0
   0. Ensure that this is a really bug (standard violation, incorrect
      behaviour with correct usage);
   1. Ensure that bug is in STLport, not in your code;
-  2. Write short test that demonstrate this bug;
-  3. Make sure that this test case really new, i.e. not covered by unit tests
+  2. Ensure that you correctly build STLport---build and run unit tests
+     (build/test/unit) first with default settings, than with you settings
+     (if you change ones);
+  3. Write short test that demonstrate this bug;
+  4. Make sure that this test case really new, i.e. not covered by unit tests
      (test/unit/*);
-  4. Compare you results with reported runs of unit tests (build/test/unit/STATUS);
-  5. Write bug description and test here
+  5. Compare you results with reported runs of unit tests (build/test/unit/STATUS);
+  6. Write bug description and test here
      http://www.stlport.com/cgi-bin/forum/dcboard.cgi?az=list&forum=DCForumID6&conf=DCConfID1
      (for stable, fixed release) or here
      http://www.stlport.com/cgi-bin/forum/dcboard.cgi?az=list&forum=DCForumID5&conf=DCConfID1
      (for betas).
 
-     DON'T FORGET TO DESCRIBE YOU OPERATIONAL ENVIRONMENT, COMPILER
-     VERSION AND STLPORT VERSION.
+     DON'T FORGET TO DESCRIBE:
+
+       - YOU OPERATIONAL ENVIRONMENT,
+       - COMPILER VERSION,
+       - STLPORT VERSION,
+       - RESULT OF UNIT TESTS.
+
+     Keep in mind, that bug MUST be reproduced by other people, so give
+     enough information (but compactly, give only essential information).
 
 ========================================================================
 
