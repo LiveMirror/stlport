@@ -341,7 +341,7 @@ void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   }
   else {
     ++__prev_b;
-    _ElemsIte __last(_M_buckets[++__f_bucket]);
+    _ElemsIte __last(_M_buckets[__f_bucket + 1]);
     __prev = __cur++;
     for (; (__cur != __last) && (__cur != __first._M_ite); ++__prev, ++__cur);
   }
