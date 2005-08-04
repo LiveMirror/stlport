@@ -3,6 +3,7 @@
 #include <hash_map>
 #include <hash_set>
 #include <rope>
+#include <string>
 
 #include "cppunit/cppunit_proxy.h"
 
@@ -26,6 +27,7 @@ class HashTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(hmmap1);
   CPPUNIT_TEST(hmset1);
   CPPUNIT_TEST(hset2);
+  CPPUNIT_TEST(insert_erase);
   //CPPUNIT_TEST(equality);
   CPPUNIT_TEST_SUITE_END();
 
@@ -36,6 +38,7 @@ protected:
   void hmmap1();
   void hmset1();
   void hset2();
+  void insert_erase();
   //void equality();
 };
 
@@ -157,6 +160,34 @@ void HashTest::hset2()
 
   p = s.insert(42);
   CPPUNIT_ASSERT( !p.second );
+}
+
+
+void HashTest::insert_erase()
+{
+  typedef hash_map<string, size_t, hash<string>, equal_to<string> > hmap;
+  typedef pair<string, size_t> val_type;
+  {
+    hmap values;
+    CPPUNIT_ASSERT( values.insert(val_type("foo", 0)).second );
+    CPPUNIT_ASSERT( values.insert(val_type("bar", 0)).second );
+    CPPUNIT_ASSERT( values.insert(val_type("abc", 0)).second );
+
+    CPPUNIT_ASSERT( values.erase("foo") == 1 );
+    CPPUNIT_ASSERT( values.erase("bar") == 1 );
+    CPPUNIT_ASSERT( values.erase("abc") == 1 );
+  }
+
+  {
+    hmap values;
+    CPPUNIT_ASSERT( values.insert(val_type("foo", 0)).second );
+    CPPUNIT_ASSERT( values.insert(val_type("bar", 0)).second );
+    CPPUNIT_ASSERT( values.insert(val_type("abc", 0)).second );
+
+    CPPUNIT_ASSERT( values.erase("abc") == 1 );
+    CPPUNIT_ASSERT( values.erase("bar") == 1 );
+    CPPUNIT_ASSERT( values.erase("foo") == 1 );
+  }
 }
 
 /*

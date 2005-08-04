@@ -334,23 +334,24 @@ void hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
   size_type __l_bucket = __last != end() ? _M_bkt_num(*__last) : (_M_buckets.size() - 1);
 
   _ElemsIte __cur(_M_buckets[__f_bucket]);
+  size_type __prev_b = __f_bucket;
   _ElemsIte __prev;
   if (__cur == __first._M_ite) {
-    size_type __prev_b = __f_bucket;
     __prev = _M_before_begin(__prev_b)._M_ite;
   }
   else {
+    ++__prev_b;
     _ElemsIte __last(_M_buckets[++__f_bucket]);
     __prev = __cur++;
     for (; (__cur != __last) && (__cur != __first._M_ite); ++__prev, ++__cur);
   }
   //We do not use the slist::erase_after method taking a range to count the
-  //erased elements:
+  //number of erased elements:
   while (__cur != __last._M_ite) {
     __cur = _M_elems.erase_after(__prev);
     --_M_num_elements;
   }
-  fill(_M_buckets.begin() + __f_bucket, _M_buckets.begin() + __l_bucket + 1, __cur._M_node);
+  fill(_M_buckets.begin() + __prev_b, _M_buckets.begin() + __l_bucket + 1, __cur._M_node);
 }
 
 

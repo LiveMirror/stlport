@@ -1,3 +1,10 @@
+2005-08-04  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.c: Fix erase(range) implementation thanks
+	arabesc.
+
+	* test/unit/hash_test.cpp: Add new test for previous fix.
+
 2005-08-04  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/csetjmp: sometimes, if native setjmp.h was included first,
