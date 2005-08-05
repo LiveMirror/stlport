@@ -23,6 +23,7 @@ are looked for in /usr/include/3.3.1. Is it a STLport bug?
 Q3.1 Do I need to build library to use STLport?
 Q3.2 During library compilation with MS VC++ 6.0 I see following error report:...
 Q3.3 Does anybody success in building STLport on OS Y with compiler K n.n?
+Q3.4 Does STLport support cross-compilation?
 
 Q4 Installation
 
@@ -280,6 +281,24 @@ presence during preprocessor stage.
 Q3.3 Does anybody success in building STLport on OS S with compiler K n.n?
 
 A3.3 See report about results of regression tests here: build/test/unit/STATUS.
+
+========================================================================
+
+Q3.4 Does STLport support cross-compilation?
+
+A3.4 In case of gcc, use something like following sequence:
+
+  (cd build/lib; ./configure --target=${CROSSTARGET}; \
+     export PATH=${BASECROSS}/bin:${PATH}; make -f gcc.mak install-release-shared)
+
+where CROSSTARGET is gcc's cross prefix (something like 'i586-pc-linux-gnu',
+if C++ cross compiler named as 'i586-pc-linux-gnu-c++'), BASECROSS is base of
+cross-compiler's location (i.e. ${BASECROSS}/bin in case above is a location
+of 'i586-pc-linux-gnu-c++').
+
+In case of non-gcc crosses, we need hands-made target system identification.
+The sample of such compiler (supported by STLport) is MetroWerks Codewarrior
+for Novell Netware (mwccnlm).
 
 ========================================================================
 
