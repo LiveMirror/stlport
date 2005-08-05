@@ -22,7 +22,11 @@
 #endif
 
 #if defined (_STLP_USE_NEW_C_HEADERS)
+# ifdef __BORLANDC__
+#  include _STLP_NATIVE_CPP_C_HEADER(cstdlib.h)
+# else
 #  include _STLP_NATIVE_CPP_C_HEADER(cstdlib)
+# endif
 #else
 #  include _STLP_NATIVE_C_HEADER(stdlib.h)
 #endif
@@ -97,11 +101,19 @@ _STLP_END_NAMESPACE
 
 //MSVC starting with .Net 2003 already define all math functions in global namespace:
 #if !defined (_STLP_MSVC) || (_STLP_MSVC < 1310)
+# ifdef __BORLANDC__
+//inline long abs(long __x) { return std::labs(__x); }
+# else
 inline long abs(long __x)             { return ::labs(__x); }
+#endif
 #endif
 
 #if !defined (_STLP_MSVC) || (_STLP_MSVC < 1400)
+# ifdef __BORLANDC__
+inline std::ldiv_t div(long __x, long __y) { return std::ldiv(__x, __y); }
+# else
 inline ldiv_t div(long __x, long __y) { return ::ldiv(__x, __y); }
+#endif
 #endif
 
 #if defined(_STLP_RESTORE_FUNCTION_INTRINSIC)

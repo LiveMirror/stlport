@@ -16,6 +16,7 @@
 // Workaround for a "misbehaviour" when compiling resource scripts using
 // eMbedded Visual C++. The standard .rc file includes windows header files,
 // which in turn include stdarg.h, which results in warnings and errors
+
 #if !defined(RC_INVOKED)
 
 # ifndef _STLP_OUTERMOST_HEADER_ID
@@ -26,20 +27,26 @@
 # endif
 
 # if ! defined (_STLP_WINCE)
+
 # include _STLP_NATIVE_C_HEADER(stdio.h)
 
 #if defined (__SUNPRO_CC) && !defined (_STRUCT_FILE)
 # define _STRUCT_FILE
 #endif
 
-# ifdef __MWERKS__
+# if defined (__MWERKS__) || defined (__BORLANDC__)
 #  undef stdin
 #  undef stdout
 #  undef stderr
-
+#  if defined (__MWERKS__)
 #  define stdin   (&_STLP_VENDOR_CSTD::__files[0])
 #  define stdout  (&_STLP_VENDOR_CSTD::__files[1])
 #  define stderr  (&_STLP_VENDOR_CSTD::__files[2])
+#  elif defined (__BORLANDC__)
+#   define stdin  (&_STLP_VENDOR_CSTD::_streams[0])
+#   define stdout	(&_STLP_VENDOR_CSTD::_streams[1])
+#   define stderr	(&_STLP_VENDOR_CSTD::_streams[2])
+#  endif
 # endif
 
 # endif /* WINCE */

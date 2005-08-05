@@ -76,6 +76,14 @@ extern "C" {
 #  include <sys/stat.h>
 #elif defined (_STLP_USE_STDIO_IO)
 #  include <cstdio>
+#  ifdef __BORLANDC__
+#    define __FCNTL_H_USING_LIST
+#    include <fcntl.h>
+#    define _S_IFMT   S_IFMT
+#    define _S_IFDIR  S_IFDIR
+#    define _S_IWRITE S_IWRITE
+#    define _S_IEXEC  S_IEXEC
+#  endif
 #  if !(defined(__MRC__) || defined(__SC__) || defined(__ISCPP__) )
 extern "C" {
 #    include <sys/stat.h>
@@ -116,7 +124,9 @@ const _STLP_fd INVALID_STLP_FD = -1;
 
 // map permission masks
 #if defined (_STLP_USE_UNIX_EMULATION_IO) || defined (_STLP_USE_STDIO_IO)
-#  ifndef S_IRUSR
+#  if !(defined S_IRUSR) || !(defined S_IRGRP) || !(defined S_IROTH)
+#    undef S_IRUSR
+#    undef S_IWUSR
 #    define S_IRUSR _S_IREAD
 #    define S_IWUSR _S_IWRITE
 #    define S_IRGRP _S_IREAD
@@ -161,8 +171,12 @@ const _STLP_fd INVALID_STLP_FD = -1;
 #include "fstream_impl.h"
 
 #ifdef _STLP_LONG_LONG
+#  ifdef __BORLANDC__ // avoid definition warning
+#   define ULL(x) x##Ui64
+#  else
 #  define ULL(x) ((unsigned _STLP_LONG_LONG)x)
-// #  elif defined (_MSC_VER) || defined (__BORLANDC__)
+#  endif
+// #  elif defined (_MSC_VER)
 // #    define ULL(x) ((__int64)x)
 #elif defined(__MRC__) || defined(__SC__)    //*TY 02/25/2000 - added support for MPW compilers
 #  include <Math64.h>
@@ -269,7 +283,7 @@ streamoff __file_size(_STLP_fd fd) {
 // Visual C++ and Intel use this, but not Metrowerks
 // Also MinGW, msvcrt.dll (but not crtdll.dll) dependent version
 #if (!defined(__MSL__) && !defined(_STLP_WCE) && defined( _MSC_VER ) && defined(_WIN32)) || \
-    (defined(__MINGW32__) && defined(__MSVCRT__))
+    (defined(__MINGW32__) && defined(__MSVCRT__) || (defined(__BORLANDC__) && defined(_STLP_USE_WIN32_IO)))
 
 // fcntl(fileno, F_GETFL) for Microsoft library
 // 'semi-documented' defines:
@@ -664,7 +678,7 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode) {
 #if defined (_STLP_USE_WIN32_IO)
 bool _Filebuf_base::_M_open(_STLP_fd __id, ios_base::openmode init_mode) {
 #  if (defined (_MSC_VER) && !defined (_STLP_WCE)) || \
-      (defined (__MINGW32__) && defined (__MSVCRT__)) || defined (__DMC__)
+      (defined (__MINGW32__) && defined(__MSVCRT__)) || defined(__DMC__) || defined(__BORLANDC__)
 
   if (_M_is_open || __id == INVALID_STLP_FD)
     return false;
@@ -740,7 +754,7 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
     return false;
   }
 #elif (defined(_STLP_USE_WIN32_IO) && defined (_MSC_VER) && !defined(_STLP_WCE) ) || \
-      (defined(__MINGW32__) && defined(__MSVCRT__)) || defined(__DMC__)
+      (defined(__MINGW32__) && defined(__MSVCRT__)) || defined(__DMC__) || defined(__BORLANDC__)
 
   HANDLE oshandle = (HANDLE)_get_osfhandle(file_no);
   
@@ -1081,8 +1095,16 @@ void* _Filebuf_base::_M_mmap(streamoff offset, streamoff len) {
      (int)cur_filesize, ULL(offset) & 0xffffffff, len);
 */
 #  endif
-    base = MapViewOfFile(_M_view_id, FILE_MAP_READ, __STATIC_CAST(DWORD, ULL(offset) >> 32),
-                         __STATIC_CAST(DWORD, ULL(offset) & 0xffffffff), __STATIC_CAST(SIZE_T, len));
+    base = MapViewOfFile(_M_view_id, FILE_MAP_READ,
+# ifdef __BORLANDC__
+                        __STATIC_CAST(DWORD, ((unsigned __int64)offset) >> 32),
+                        __STATIC_CAST(DWORD, ((unsigned __int64)offset) & 0xffffffff),
+# else
+                        __STATIC_CAST(DWORD, ULL(offset) >> 32),
+                        __STATIC_CAST(DWORD, ULL(offset) & 0xffffffff),
+# endif
+                        __STATIC_CAST(SIZE_T, len));
+
     // check if mapping succeded and is usable
     if (base == 0  || _M_seek(offset + len, ios_base::beg) < 0) {
       this->_M_unmap(base, len);

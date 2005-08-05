@@ -15,7 +15,7 @@ BC5ROOT   = \BCC55
 ! endif
 !endif
 
-STLPORT_DIR   = $(BC5ROOT)\STLport-500-BC5-edited
+STLPORT_DIR   = $(BC5ROOT)\STLport-500-BC5-P1-edited
 SRCROOT       = $(STLPORT_DIR)\build
 SRCROOT_EXT   = $(SRCROOT)\test\unit
 SRCDIR        = $(STLPORT_DIR)\test\unit

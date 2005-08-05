@@ -23,7 +23,7 @@
 
 #  ifndef _STLP_NO_TYPEINFO
 
-#    if defined (_STLP_NO_NEW_NEW_HEADER)
+#    if defined (_STLP_NO_NEW_NEW_HEADER) || defined (__BORLANDC__)
 #      include <typeinfo.h>
 #    else
 #      ifdef _STLP_BROKEN_BAD_CAST_CLASS

@@ -38,6 +38,10 @@
 #  include <stl/_codecvt.h>
 #endif
 
+#if defined(__BORLANDC__) && defined (_STLP_USE_STDIO_IO)
+#  include <stdio.h>
+#endif
+
 #if !defined (_STLP_USE_UNIX_IO) && !defined(_STLP_USE_WIN32_IO) && \
     !defined (_STLP_USE_UNIX_EMULATION_IO) && !defined (_STLP_USE_STDIO_IO)
 

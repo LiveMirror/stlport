@@ -27,13 +27,17 @@
 
 # if !defined(_STLP_WINCE) && !defined(_STLP_WCE_EVC3)
 
-# if defined (__BORLANDC__) &&  (__BORLANDC__ >= 0x530 )
+# if defined (__BORLANDC__) && (__BORLANDC__ >= 0x530 ) && ! defined (_STLP_OWN_IOSTREAMS)
 /*  Borland defines this stuff here */
 #   include <iosfwd>
 # endif
 
 # if !defined(_STLP_NO_CWCHAR) && defined(_STLP_USE_NEW_C_HEADERS)
+#  ifdef __BORLANDC__
+#   include _STLP_NATIVE_CPP_C_HEADER(cwchar.h)
+#  else
 #  include _STLP_NATIVE_CPP_C_HEADER(cwchar)
+#  endif
 #  if defined(__OpenBSD__)
 typedef _BSD_WINT_T_ wint_t;
 #  endif /* __OpenBSD__ */

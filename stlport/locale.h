@@ -24,7 +24,12 @@
 #  endif
 # endif
 
+# ifdef __BORLANDC__
+#  include <clocale>
+# else
 # include _STLP_NATIVE_C_HEADER(locale.h)
+# endif
+
 
 # if (_STLP_OUTERMOST_HEADER_ID == 0x242)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)

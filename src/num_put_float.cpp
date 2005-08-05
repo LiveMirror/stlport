@@ -63,7 +63,7 @@ typedef long double max_double_type;
 #    include <float.h>
 #  endif
 
-# endif
+# endif /* _STLP_UNIX */
 
 # include <cstdio>
 # include <cstdlib>
@@ -93,7 +93,6 @@ typedef long double max_double_type;
 # include <cfloat>
 #endif
 
-
 # include "num_put.h"
 # include <algorithm>
 
@@ -102,6 +101,7 @@ typedef long double max_double_type;
 #endif
 
 #if defined(__hpux) && (!defined(_INCLUDE_HPUX_SOURCE) || defined(__GNUC__))
+
      extern "C" double erf(double);
      extern "C" double erfc(double);
      extern "C" double gamma(double);                             /* obsolescent */
@@ -180,6 +180,7 @@ extern "C" {
 extern "C" char *fcvt(double, int, int *, int *);
 extern "C" char *ecvt(double, int, int *, int *);
 #endif
+
 #ifndef _INCLUDE_HPUX_SOURCE
 #  ifndef _LONG_DOUBLE
 #    define _LONG_DOUBLE
@@ -187,6 +188,7 @@ extern "C" char *ecvt(double, int, int *, int *);
        uint32_t word1, word2, word3, word4;
      } long_double;
 #  endif /* _LONG_DOUBLE */
+
 extern "C" char *_ldecvt(long_double, int, int *, int *);
 extern "C" char *_ldfcvt(long_double, int, int *, int *);
 
@@ -210,13 +212,14 @@ _STLP_BEGIN_NAMESPACE
 static _STLP_STATIC_MUTEX __put_float_mutex _STLP_MUTEX_INITIALIZER;
 #  define LOCK_CVT _STLP_auto_lock lock(__put_float_mutex);
 #  define RETURN_CVT(ecvt, x, n, pt, sign, buf) strcpy(buf, ecvt(x, n, pt, sign)); return buf;
-# endif // !_REENTRANT
-#endif // _AIX || __FreeBSD__ || __NetBSD__ || __OpenBSD__
+#  endif /* !_REENTRANT */
+# endif /* _AIX || __FreeBSD__ || __NetBSD__ || __OpenBSD__ */
 
 // Tests for infinity and NaN differ on different OSs.  We encapsulate
 // these differences here.
 
 #ifndef USE_SPRINTF_INSTEAD
+
 # if defined (__hpux) || defined (__DJGPP) || (defined(_STLP_USE_GLIBC) && ! defined (__MSL__) ) \
   || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 #  if defined (isfinite) 
@@ -284,7 +287,7 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
 # else // nothing from above
 #  define USE_SPRINTF_INSTEAD
 # endif
-#endif // !USE_SPRINTF_INSTEAD
+# endif /* !USE_SPRINTF_INSTEAD */
 
 #ifndef USE_SPRINTF_INSTEAD
 // Reentrant versions of floating-point conversion functions.  The argument
@@ -402,11 +405,9 @@ inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
 
 inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
 { return _fp_fcvt(x, n, pt, sign, buf); }
-
 #    ifndef _STLP_NO_LONG_DOUBLE
 inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
 { return _fp_ecvt( x, n, pt, sign, buf); }
-
 inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
 { return _fp_fcvt(x, n, pt, sign, buf); }
 #    endif
@@ -422,7 +423,6 @@ inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* )
 { return fcvt(x, n, pt, sign); }
 #    endif
 #  endif
-
 
 //----------------------------------------------------------------------
 // num_put
@@ -694,7 +694,6 @@ static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifie
 
 #endif  /* USE_SPRINTF_INSTEAD */
 
-
 size_t  _STLP_CALL
 __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
               double x) {
@@ -798,7 +797,7 @@ void _STLP_CALL __get_floor_digits(__iostring &out, _STLP_LONG_DOUBLE __x) {
     out += '-';
   }
   out.append(bp, bp + decpt);
-#endif // USE_PRINTF_INSTEAD
+# endif /* USE_PRINTF_INSTEAD */
 }
 
 

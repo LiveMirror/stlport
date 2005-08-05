@@ -28,6 +28,10 @@
 #  include <typeinfo>
 # define _STLP_OLDSTD_typeinfo
 #else
+# if defined (__BORLANDC__)
+#  include <exception>
+namespace std { using _STL::exception; }
+# endif
 #  include _STLP_NATIVE_CPP_RUNTIME_HEADER(typeinfo.h)
 #endif
 
@@ -37,12 +41,17 @@
 
 _STLP_BEGIN_NAMESPACE
 
+# ifdef __BORLANDC__
+using std :: type_info;
+using std :: bad_typeid;
+using std :: bad_cast;
+# else
 using /*_STLP_VENDOR_EXCEPT_STD */ :: type_info;
 # if !(defined(__MRC__) || (defined(__SC__) && !defined(__DMC__)))
 using /* _STLP_VENDOR_EXCEPT_STD */ :: bad_typeid;
 # endif
-
 using /* _STLP_VENDOR_EXCEPT_STD */ :: bad_cast;
+# endif
 
 _STLP_END_NAMESPACE
 

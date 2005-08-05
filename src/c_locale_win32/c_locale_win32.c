@@ -746,7 +746,9 @@ extern "C" {
     GetStringTypeW(CT_CTYPE1, buf, -1, out);
 
     return (_Locale_mask_t)out[0] & which_bits;
+# ifndef __BORLANDC__
     (void*)ltype;
+# endif
   }
 
   wint_t _Locale_wchar_tolower(struct _Locale_ctype* ltype, wint_t c) {

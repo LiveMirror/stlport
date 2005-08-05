@@ -24,7 +24,11 @@
 #ifndef _STLP_NO_TIME_SUPPORT
 
 # if defined (_STLP_USE_NEW_C_HEADERS)
+#  ifdef __BORLANDC__
+#   include _STLP_NATIVE_CPP_C_HEADER(ctime.h)
+#  else
 #  include _STLP_NATIVE_CPP_C_HEADER(ctime)
+#  endif
 # else
 #  include _STLP_NATIVE_C_HEADER(time.h)
 # endif

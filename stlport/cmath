@@ -27,7 +27,11 @@
 #  if defined (_STLP_HAS_NO_NAMESPACES) && ! defined (exception)
 #    define exception __math_exception
 #  endif
+#  ifdef __BORLANDC__
+#   include _STLP_NATIVE_CPP_C_HEADER(cmath.h)
+#  else
 #  include _STLP_NATIVE_CPP_C_HEADER(cmath)
+#  endif
 #  if defined (_STLP_HAS_NO_NAMESPACES)
 #    undef exception
 #  endif
@@ -93,7 +97,7 @@ inline long double logl(long double v) { return __logl(v); }
 inline long double log10l(long double v) { return __log10l(v); }
 
 }
-#endif // __sun && __GNUC__
+# endif /* __sun && __GNUC__ */
 
 //_STLP_BEGIN_NAMESPACE
 //using ::abs;
@@ -113,3 +117,4 @@ inline long double log10l(long double v) { return __log10l(v); }
 // Local Variables:
 // mode:C++
 // End:
+

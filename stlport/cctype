@@ -22,7 +22,12 @@
 #endif
 
 #if defined (_STLP_USE_NEW_C_HEADERS)
+
+#  ifdef __BORLANDC__
+#   include _STLP_NATIVE_CPP_C_HEADER(cctype.h)
+#  else
 #  include _STLP_NATIVE_CPP_C_HEADER(cctype)
+#  endif
 #else
 #  include <ctype.h>
 #endif /* _STLP_USE_NEW_C_HEADERS */

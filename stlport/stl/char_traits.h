@@ -35,8 +35,15 @@
 
 #ifdef __BORLANDC__
 #  include <mem.h>
+# ifndef _STLP_OWN_IOSTREAMS
 #  include <string.h>
-#  include <_stddef.h>
+# endif
+# include _STLP_NATIVE_C_HEADER(_stddef.h)
+# ifdef _STLP_NO_WCHAR_T
+   typedef char mbstate_t;
+# else
+#  define _STLP_WCHAR_BORLAND_EXCLUDE 1
+# endif
 // class mbstate_t;
 #endif
 
@@ -59,7 +66,7 @@ typedef off64_t streamoff;
 #elif defined(_STLP_WCE)
 typedef long streamoff;
 #elif defined (_STLP_WIN32)
-#  if defined (_STLP_LONG_LONG) && !defined (__CYGWIN__)
+#  if defined (_STLP_LONG_LONG) && !defined (__CYGWIN__) && !defined(__BORLANDC__)
 //The Win32 file io API support 64 bits access so streamoff and streamsize 
 //has to reflect that. Do not change the stringbuf behavior.
 typedef _STLP_LONG_LONG streamoff;

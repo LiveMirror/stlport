@@ -23,11 +23,27 @@
 
 #ifndef _STLP_NO_LOCALE_SUPPORT
 
+#  ifdef __BORLANDC__
+#   ifndef _STLP_VENDOR_LOCALE_SEEN
+#    undef __LOCALE_H
+#    define __USELOCALES__
+//   use setlocale and *not* _wsetlocale
+#    ifdef _UNICODE
+#     undef _UNICODE
+#     include _STLP_NATIVE_C_HEADER(_loc.h)
+#     define _UNICODE
+#    else
+#     include _STLP_NATIVE_C_HEADER(_loc.h)
+#    endif
+#    define _STLP_VENDOR_LOCALE_SEEN
+#   endif
+#  else
 # if defined (_STLP_USE_NEW_C_HEADERS)
 #  include _STLP_NATIVE_CPP_C_HEADER(clocale)
 # else
 #  include _STLP_NATIVE_C_HEADER(locale.h)
 # endif
+#  endif
 
 # ifdef _STLP_IMPORT_VENDOR_CSTD
 _STLP_BEGIN_NAMESPACE

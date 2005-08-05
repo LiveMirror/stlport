@@ -25,7 +25,15 @@
 #  define _STLP_DONT_POP_HEADER_ID
 # endif
 
+# ifdef __BORLANDC__
+#  undef _USE_OLD_RW_STL
+# endif
+
 # include _STLP_NATIVE_C_HEADER(stdlib.h)
+
+# ifdef __BORLANDC__
+#  define _USE_OLD_RW_STL 1
+# endif
 
 # if (_STLP_OUTERMOST_HEADER_ID == 0x265)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)

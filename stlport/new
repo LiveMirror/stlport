@@ -55,7 +55,12 @@ using _STLP_VENDOR_CSTD::malloc;
 #   undef _STLP_NULLIFIED_BROKEN_BAD_NOTHROW
 #  endif
 # else
+#  ifdef __BORLANDC__
+#   define _USE_OLD_RW_STL 1
+#   include _STLP_NATIVE_C_HEADER(new.h)
+#  else
 #  include  <new.h>
+# endif
 # endif
 
 #ifndef _STLP_NEW_H_HEADER

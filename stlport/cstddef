@@ -32,7 +32,11 @@
 # endif
 
 # if defined (_STLP_USE_NEW_C_HEADERS)
+#  ifdef __BORLANDC__
+#   include _STLP_NATIVE_CPP_C_HEADER(cstddef.h)
+#  else
 #  include _STLP_NATIVE_CPP_C_HEADER(cstddef)
+#  endif
 # else
 #  include _STLP_NATIVE_C_HEADER(stddef.h)
 # endif

@@ -24,14 +24,12 @@
 #  define _STLP_DONT_POP_HEADER_ID
 # endif
 
-# if (__BORLANDC__ > 0x530) && !defined(__linux__)
+# if ! defined (__BORLANDC__) && ! defined(__linux__)
 #  include <rw/stddefs.h>
 # endif
 
 #   undef __USING_CNAME__
-
 #   include _STLP_NATIVE_C_HEADER(mem.h)
-
 # define _STLP_mem_h 1
 
 # if (_STLP_OUTERMOST_HEADER_ID == 0x245)

@@ -15,10 +15,25 @@
 #  include <config/_msvc_warnings_off.h>
 
 #elif defined (__BORLANDC__)
-
-#  if (__BORLANDC__ >= 0x510)
-#    pragma option push -Vx- -Ve- -a8 -b -pc -w-inl -w-aus -w-sig -w-8062 -w-8041 -w-8008 -w-8012 -w-8027 -w-8057 -w-8091 -w-8092 -w-8066  /* P_O_1 */
+#  pragma option -w-pck
+#  if (__BORLANDC__ < 0x530)
+#   pragma pack(push)
+#  else
+#   pragma option push 
 #  endif
+#  pragma option -Vx- -Ve- -a8 -b -pc
+#  pragma option -w-aus     // -w-8004 'identifier' is assigned a value that is never used
+#  pragma option -w-ccc	    // -w-8008 Condition is always true OR Condition is always false
+//#  pragma option -w-csu   // -w-8012 Comparing signed and unsigned values
+//#  pragma option -w-dup   // -w-8017 Redefinition of 'macro' is not identical
+#  pragma option -w-inl     // -w-8027 Functions containing reserved words are not expanded inline
+#  pragma option -w-ngu     // -w-8041 Negating unsigned value
+#  pragma option -w-par     // -w-8057 Parameter 'parameter' is never used
+#  pragma option -w-pow     // -w-8062 Previous options and warnings not restored
+#  pragma option -w-rch	    // -w-8066 Unreachable code
+#  pragma option -w-sig     // -w-8071 Conversion may lose significant digits 
+#  pragma option -w-spa     // -w-8072 Suspicious pointer arithmetic
+//#  pragma option -w-use   // -w-8080 'identifier' declared but never used
 
 #elif defined(__sgi) && !defined(__GNUC__) && (_MIPS_SIM != _MIPS_SIM_ABI32)
 

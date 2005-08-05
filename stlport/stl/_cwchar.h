@@ -28,7 +28,13 @@
     defined (__MRC__) || defined (__SC__) || defined (__BORLANDC__) || \
     defined(__OpenBSD__) || defined(__FreeBSD__) || \
    (defined (__GNUC__) && (defined (__APPLE__) || defined( __Lynx__ )))
+
+#  ifdef __BORLANDC__
+#   include _STLP_NATIVE_C_HEADER(_stddef.h)
+#  else
 #  include _STLP_NATIVE_C_HEADER(stddef.h)
+#  endif
+
 #  if defined (__Lynx__)
 #    ifndef _WINT_T
 typedef long int wint_t;

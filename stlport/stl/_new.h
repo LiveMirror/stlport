@@ -53,7 +53,7 @@ _STLP_BEGIN_NAMESPACE
 using _STLP_VENDOR_EXCEPT_STD::bad_alloc;
 #    endif
 
-#    if !defined(_STLP_NO_BAD_ALLOC)
+#    if !defined(_STLP_NO_BAD_ALLOC) && !defined(__BORLANDC__)
 
 using _STLP_VENDOR_EXCEPT_STD::nothrow_t;
 using _STLP_VENDOR_EXCEPT_STD::nothrow;

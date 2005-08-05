@@ -120,7 +120,18 @@ inline void _Param_Construct(_T1* __p, const _T2& __val) {
 # ifdef _STLP_DEBUG_UNINITIALIZED
   memset((char*)__p, _STLP_SHRED_BYTE, sizeof(_T1));
 # endif
+#  ifdef __BORLANDC__
+  int ___p = (int) __p;
+  _STLP_TRY {
   _STLP_PLACEMENT_NEW (__p) _T1(__val);
+}
+  _STLP_CATCH_ALL {
+    __p = (_T1*) ___p;
+    _STLP_PLACEMENT_NEW (__p) _T1(__val);
+  }
+#  else
+  _STLP_PLACEMENT_NEW (__p) _T1(__val);
+#  endif
 }
 
 template <class _T1, class _T2>

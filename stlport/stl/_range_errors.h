@@ -40,7 +40,6 @@ void _STLP_DECLSPEC _STLP_CALL __stl_throw_overflow_error(const char* __msg);
 _STLP_END_NAMESPACE
 
 #if !defined (_STLP_EXTERN_RANGE_ERRORS)
-
 #  if defined(_STLP_THROW_RANGE_ERRORS)
 #    ifndef _STLP_STDEXCEPT
 #      include <stdexcept>

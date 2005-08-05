@@ -22,6 +22,17 @@
 
 # include _STLP_NATIVE_C_HEADER(float.h)
 
+# ifdef __BORLANDC__
+#  undef LDBL_MIN
+#  undef DBL_MAX
+#  undef FLT_MAX
+#  undef LDBL_MAX
+#  define LDBL_MIN  ::_tiny_ldble
+#  define DBL_MAX   ::_max_dble
+#  define FLT_MAX   ::_max_flt
+#  define LDBL_MAX  ::_max_ldble
+# endif
+
 # if (_STLP_OUTERMOST_HEADER_ID == 0x203)
 #  if ! defined (_STLP_DONT_POP_HEADER_ID)
 #   include <stl/_epilog.h>

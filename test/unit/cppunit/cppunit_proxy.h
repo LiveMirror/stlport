@@ -34,5 +34,9 @@
 
 # include "cppunit_mini.h"
 
+# ifdef __BORLANDC__
+using namespace CPPUNIT_NS;
+# endif
+
 #endif
 
