@@ -30,11 +30,18 @@
 #ifndef _STLP_INTERNAL_ALGO_H
 #  include <stl/_algo.h>
 #endif
+
 #ifndef _STLP_INTERNAL_NUMERIC_H
 #  include <stl/_numeric.h>
 #endif
+
 #ifndef _STLP_LIMITS_H
 #  include <limits>
+#endif
+
+/* As we only need the _STLP_ASSERT macro from _debug.h we test it to include _debug.h */
+#ifndef _STLP_ASSERT
+#  include <stl/debug/_debug.h>
 #endif
 
 _STLP_BEGIN_NAMESPACE

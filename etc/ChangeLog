@@ -1,3 +1,11 @@
+2005-08-05  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_valarray.h: Add missing _debug.h header inclusion for
+	_STLP_ASSERT macro definition.
+
+	* stlport/stl/debug/_hashtable.h: Fix typo in hashtable move constructor.
+	Thanks arabesc report.
+
 2005-08-05  Petr Ovtchenkov  <ptr@island...>
 
 	* doc/FAQ: some words about cross-compilation.
