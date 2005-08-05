@@ -1,3 +1,8 @@
+2005-08-06  Petr Ovtchenkov  <ptr@island...>
+
+	* src/c_locale_glibc/c_locale_glibc2.c: add explicit type conversion
+	to avoid warnings on 64-bits platforms; thanks Thomas Kho for report.
+
 2005-08-05  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_valarray.h: Add missing _debug.h header inclusion for
