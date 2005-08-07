@@ -103,11 +103,6 @@ const _STLP_fd INVALID_STLP_FD = INVALID_HANDLE_VALUE;
 #  if !defined (INVALID_SET_FILE_POINTER)
 #    define INVALID_SET_FILE_POINTER 0xffffffff
 #  endif
-/*
- * AFAWK for the moment the Win32 API is a 32 bits one. The following check will
- * generate a compilation error if the file handler is not a 32 bits handler.
- */
-const char __32_bits_handle_check[sizeof(_STLP_fd) == 4] = {0};
 #elif defined (_STLP_USE_UNIX_EMULATION_IO) || defined (_STLP_USE_STDIO_IO) || defined (_STLP_USE_UNIX_IO)
 const _STLP_fd INVALID_STLP_FD = -1;
 #else

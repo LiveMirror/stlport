@@ -1,9 +1,16 @@
 // STLport configuration file
 // It is internal STLport header - DO NOT include it directly
-// Microsoft Visual C++ 4.0, 4.1, 4.2, 5.0, 6.0, 7.0, 7.1, ICL
+// Microsoft Visual C++ 6.0, 7.0, 7.1, 8.0 Beta, ICL
 
-#if defined (_M_IA64)
+#if defined (_WIN64)
+/* This is 64 bits platform SDK specific settings. There is no clear way to 
+ * recognize the SDK coming with a compiler from the one freely available.
+ * For the moment we hope that there is only one SDK for 64 bits windows so
+ * we simply detect it using the _WIN64 macro.
+ */
 #  define _STLP_NATIVE_INCLUDE_PATH ../crt
+#  define _STLP_VENDOR_GLOBAL_CSTD
+#  define _STLP_VENDOR_TERMINATE_STD
 #  define _STLP_GLOBAL_NEW_HANDLER
 #endif
 
@@ -315,7 +322,7 @@ typedef char __stl_char;
 #  if defined (_STLP_VERBOSE_AUTO_LINK)
 #    pragma message ("STLport: Auto linking to "_STLP_STLPORT_LIB)
 #  endif
-#  pragma comment (lib , _STLP_STLPORT_LIB)
+#  pragma comment (lib, _STLP_STLPORT_LIB)
 
 #  undef _STLP_STLPORT_LIB
 #  undef _STLP_LIB_OPTIM_MODE
@@ -324,6 +331,16 @@ typedef char __stl_char;
 #  undef _STLP_STRINGIZE
 
 #endif /* _STLP_DONT_USE_AUTO_LINK */
+
+#if defined (_WIN64)
+/* The Windows 64 bits SDK required for the moment link to bufferoverflowU.lib for
+ * additional buffer overrun checks. Rather than require the STLport build system and
+ * users to explicitely link with it we use the MSVC auto link feature.
+ */
+#  if !defined (_STLP_DONT_USE_AUTO_LINK) || defined (__BUILDING_STLPORT)
+#    pragma comment (lib, "bufferoverflowU.lib")
+#  endif
+#endif
 
 // Local Variables:
 // mode:C++

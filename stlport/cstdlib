@@ -105,7 +105,7 @@ _STLP_END_NAMESPACE
 inline long abs(long __x) { return ::labs(__x); }
 #endif
 
-#if !defined (_STLP_MSVC) || (_STLP_MSVC < 1400)
+#if !defined (_STLP_MSVC) || (_STLP_MSVC < 1400) || defined (_WIN64)
 inline ldiv_t div(long __x, long __y) { return ::ldiv(__x, __y); }
 #endif
 

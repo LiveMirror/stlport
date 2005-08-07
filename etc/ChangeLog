@@ -1,3 +1,34 @@
+2005-08-07  Francois Dumont  <dums@stlport...>
+
+	* test/unit/inner_product.cpp: Fix 64 bits portability warning.
+
+	* test/unit/cmath_test.cpp: Removed modf tests for Windows 64 platform
+	as the SDK is missing the underlying modff implementation.
+
+	* stlport/cstdlib: Add a div function definition which is missing in the
+	Windows 64 SDK.
+
+	* stlport/cstdio: Add vsnprintf definition which is missing in Windows
+	64 SDK.
+
+	* stlport/exception: Add flexibility for definition of vendor terminate
+	and uncaught_exception function namespace. Can now be defined independantly
+	of the unexpected_exception namespace.
+
+	* src/dll_main.cpp: Removed explicit turn off of optimization for Microsoft
+	compilers after .Net 2003. There were no comment to explain why optimizations
+	were turned off so I guess it was a compiler bug. .Net 2003 being a major
+	new version I hope this bug has vanish with this version.
+
+	* src/fstream.cpp: Removed static assertion for windows file handle to be 32
+	bits. Under Windows 64, even if the API is still 32 bits handles are still
+	defined as void*. We will see when code will run under a real Windows 64 platform
+	if it is a problem.
+	
+	* stlport/config/stl_msvc.h: Add configuration for Windows 64 Platform SDK.
+	Expecially add automatic link to bufferoverflowU.lib to avoid modification
+	of STLport build system and STLport users projects.
+
 2005-08-06  Petr Ovtchenkov  <ptr@island...>
 
 	* src/c_locale_glibc/c_locale_glibc2.c: add explicit type conversion

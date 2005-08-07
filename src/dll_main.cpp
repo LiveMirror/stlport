@@ -82,8 +82,8 @@
 #  endif
 #endif
 
-#ifdef _STLP_MSVC
-#  pragma optimize("g",off)
+#if defined (_STLP_MSVC) && (_STLP_MSVC < 1310)
+#  pragma optimize("g", off)
 #endif 
 
 _STLP_BEGIN_NAMESPACE
