@@ -263,8 +263,8 @@ streamoff __file_size(_STLP_fd fd) {
 
 // Visual C++ and Intel use this, but not Metrowerks
 // Also MinGW, msvcrt.dll (but not crtdll.dll) dependent version
-#if (!defined(__MSL__) && !defined(_STLP_WCE) && defined( _MSC_VER ) && defined(_WIN32)) || \
-    (defined(__MINGW32__) && defined(__MSVCRT__))
+#if (!defined (__MSL__) && !defined (_STLP_WCE) && defined (_MSC_VER) && defined (_WIN32)) || \
+    (defined (__MINGW32__) && defined (__MSVCRT__))
 
 // fcntl(fileno, F_GETFL) for Microsoft library
 // 'semi-documented' defines:
@@ -667,7 +667,9 @@ bool _Filebuf_base::_M_open(_STLP_fd __id, ios_base::openmode init_mode) {
   if (init_mode != ios_base::__default_mode)
     _M_openmode = init_mode;
   else
-    _M_openmode = _SgI::_get_osfflags((int)__id, __id);
+    //For the moment we don't know how to get file information about the __id HANDLE.
+    return false;
+    //_M_openmode = _SgI::_get_osfflags((int)__id, __id);
   
   _M_is_open = true;
   _M_file_id = __id;
@@ -701,7 +703,7 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
     return false;
 
   _M_openmode = _SgI::flag_to_openmode(mode);
-  
+  _M_file_id = file_no;  
 #elif defined(__MRC__) || defined(__SC__)    //*TY 02/26/2000 - added support for MPW compilers
   (void)init_mode;    // dwa 4/27/00 - suppress unused parameter warning
   switch( _iob[file_no]._flag & (_IOREAD|_IOWRT|_IORW) )
@@ -715,7 +717,7 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
   default:
     return false;
   }
-  
+  _M_file_id = file_no;  
 #elif defined (_STLP_USE_UNIX_EMULATION_IO) || defined (_STLP_USE_STDIO_IO) 
   (void)init_mode;    // dwa 4/27/00 - suppress unused parameter warning
   int mode ;
@@ -734,14 +736,13 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
   default:
     return false;
   }
-#elif (defined(_STLP_USE_WIN32_IO) && defined (_MSC_VER) && !defined(_STLP_WCE) ) || \
-      (defined(__MINGW32__) && defined(__MSVCRT__)) || defined(__DMC__)
+  _M_file_id = file_no;
+#elif (defined (_STLP_USE_WIN32_IO) && defined (_MSC_VER) && !defined (_STLP_WCE) ) || \
+      (defined (__MINGW32__) && defined (__MSVCRT__)) || defined (__DMC__)
 
   HANDLE oshandle = (HANDLE)_get_osfhandle(file_no);
   
-  if (oshandle != INVALID_STLP_FD)
-    file_no = (int)oshandle;
-  else
+  if (oshandle == INVALID_STLP_FD)
     return false;
   
   if (init_mode != ios_base::__default_mode)
@@ -749,6 +750,7 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
   else
     _M_openmode = _SgI::_get_osfflags(file_no, oshandle);
   
+  _M_file_id = oshandle;
 #else
   (void)init_mode;    // dwa 4/27/00 - suppress unused parameter warning
 
@@ -758,7 +760,6 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
 #endif
   
   _M_is_open = true;
-  _M_file_id = (_STLP_fd)file_no;
   _M_should_close = false;
   _M_regular_file = _SgI::__is_regular_file(_M_file_id);
 

@@ -1,3 +1,9 @@
+2005-08-08  Francois Dumont  <dums@stlport...>
+
+	* src/fstream.cpp: Fix annoying 64 warning and basic_filebuf::open method
+	from a low level file descriptor or from an HANDLE (not yet complete).
+	Thanks Yves Maliet report.
+
 2005-08-07  Francois Dumont  <dums@stlport...>
 
 	* test/unit/inner_product.cpp: Fix 64 bits portability warning.
