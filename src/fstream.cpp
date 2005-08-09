@@ -276,9 +276,6 @@ streamoff __file_size(_STLP_fd fd) {
 #  define FTEXT           0x80    // O_TEXT flag
 // end of 'semi-documented' defines
 
-// fbp : empirical
-#  define F_WRITABLE      0x04
-
 // 'semi-documented' internal structure
 extern "C" {
   struct ioinfo {
@@ -301,38 +298,36 @@ extern "C" {
 
 ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
   char dosflags = 0;
+  if (fd >= 0)
+    dosflags = _pioinfo(fd)->osfile;
+  //else
+    //the file will be concidered as open in binary mode with no append attribute
+  // end of 'semi-documented' stuff 
 
-  dosflags = _pioinfo(fd)->osfile;
-    // end of 'semi-documented' stuff 
   int mode = 0;
-  
   if (dosflags & FAPPEND)
     mode |= O_APPEND;
+
   if (dosflags & FTEXT)
     mode |= O_TEXT;
   else
     mode |= O_BINARY;
 
-  // we have to guess
-#  ifdef __macintosh
-   DWORD dummy, dummy2;
-   if (WriteFile(oshandle, &dummy2, 0, &dummy, 0))
-     mode |= O_RDWR;
-   else
-     mode |= O_RDONLY;
-#  else
-   // on Windows, this seems to work...
-  (void)oshandle; //unused variable
-   if (dosflags & F_WRITABLE)
-      mode |= O_RDWR;
-   else
-      mode |= O_RDONLY;
-#  endif
+  // For Read/Write access we have to guess
+  DWORD dummy, dummy2;
+  BOOL writeOk = WriteFile(oshandle, &dummy2, 0, &dummy, 0);
+  BOOL readOk = ReadFile(oshandle, &dummy2, 0, &dummy, 0);
+  if (writeOk && readOk)
+    mode |= O_RDWR;
+  else if (readOk)
+    mode |= O_RDONLY;
+  else
+    mode |= O_WRONLY;
   
   return flag_to_openmode(mode);
 }
 
-#elif defined(__DMC__)
+#elif defined (__DMC__)
 
 #  define FHND_APPEND 0x04
 #  define FHND_DEVICE 0x08
@@ -349,18 +344,16 @@ ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
   if (__fhnd_info[fd] & FHND_TEXT == 0)
     mode |= O_BINARY;
 
-  for (FILE *fp = &_iob[0]; fp < &_iob[_NFILE]; fp++)
-  {
-    if ((fileno(fp) == fd) && (fp->_flag & (_IOREAD | _IOWRT | _IORW)))
-    {
+  for (FILE *fp = &_iob[0]; fp < &_iob[_NFILE]; fp++) {
+    if ((fileno(fp) == fd) && (fp->_flag & (_IOREAD | _IOWRT | _IORW))) {
       const int osflags = fp->_flag;
 
       if ((osflags & _IOREAD) && !(osflags & _IOWRT) && !(osflags & _IORW))
-  mode |= O_RDONLY;
+        mode |= O_RDONLY;
       else if ((osflags & _IOWRT) && !(osflags & _IOREAD) && !(osflags & _IORW))
-  mode |= O_WRONLY;
+        mode |= O_WRONLY;
       else
-  mode |= O_RDWR;
+        mode |= O_RDWR;
 
       break;
     }
@@ -565,46 +558,41 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
   }
   
 #elif defined (_STLP_USE_WIN32_IO)
+  DWORD dwDesiredAccess, dwCreationDisposition;
+  bool doTruncate = false;
 
-  DWORD dwDesiredAccess, dwShareMode, dwCreationDisposition;
-  bool  doTruncate = false;
-
-  switch(openmode & (~ios_base::ate & ~ios_base::binary)) {
+  switch (openmode & (~ios_base::ate & ~ios_base::binary)) {
   case ios_base::out:
   case ios_base::out | ios_base::trunc:
     dwDesiredAccess = GENERIC_WRITE;
-    dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
     dwCreationDisposition = OPEN_ALWAYS;
     // boris : even though it is very non-intuitive, standard
     // requires them both to behave same.
     doTruncate = true;
     break;
-
   case ios_base::out | ios_base::app:
     dwDesiredAccess = GENERIC_WRITE;
-    dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
     dwCreationDisposition = OPEN_ALWAYS;
     break;
   case ios_base::in:
     dwDesiredAccess = GENERIC_READ;
-    dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
     dwCreationDisposition = OPEN_EXISTING;
     permission = 0;             // Irrelevant unless we're writing.
     break;
   case ios_base::in | ios_base::out:
     dwDesiredAccess = GENERIC_READ | GENERIC_WRITE;
-    dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
     dwCreationDisposition = OPEN_EXISTING;
     break;
   case ios_base::in | ios_base::out | ios_base::trunc:
     dwDesiredAccess = GENERIC_READ | GENERIC_WRITE;
-    dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
     dwCreationDisposition = OPEN_ALWAYS;
     doTruncate = true;
     break;
   default:                      // The above are the only combinations of
     return false;               // flags allowed by the C++ standard.
   }
+
+  DWORD dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
 
 #  if defined(_STLP_USE_WIDE_INTERFACE)
     file_no = CreateFile (__ASCIIToWide(name).c_str(),
@@ -667,9 +655,7 @@ bool _Filebuf_base::_M_open(_STLP_fd __id, ios_base::openmode init_mode) {
   if (init_mode != ios_base::__default_mode)
     _M_openmode = init_mode;
   else
-    //For the moment we don't know how to get file information about the __id HANDLE.
-    return false;
-    //_M_openmode = _SgI::_get_osfflags((int)__id, __id);
+    _M_openmode = _SgI::_get_osfflags(-1, __id);
   
   _M_is_open = true;
   _M_file_id = __id;
