@@ -98,14 +98,28 @@ like the following message:
 
 C:\Program Files\Microsoft SDK\Include\.\winbase.h(1392) : error C2733: second C
 linkage of overloaded function 'InterlockedIncrement' not allowed
-C:\Program Files\Microsoft SDK\Include\.\winbase.h(1390) : see declarati
-on of 'InterlockedIncrement'
+C:\Program Files\Microsoft SDK\Include\.\winbase.h(1390) : see declaration of
+'InterlockedIncrement'
 
 	It means that you are using the new Microsoft platform SDK. There is no
 way to known it from STLport so you have to signal it in the 
 stlport/stl_user_config.h file (uncomment appropriate #define in this file).
 
-2. C symbols in std namespace
+2. Native C/C++ library location
+
+	If you experiment trouble with location of ctime and other Standard headers
+while building or using STLport you might be using the compiler coming with a
+platform SDK. If so please uncomment _STLP_USING_PLATFORM_SDK_COMPILER in
+stlport/stl_user_config.h.
+
+3. _RTC_InitBase, _RTC_CheckStackVars, _RTC_Shutdown
+
+	At the time of writing this the 64 platform SDK compiler is missing symbols
+when using /RTC1 option which STLport use when building 'safe STL' version. If you
+are experimenting such an issue go to build/Makefiles/nmake/vc8.mak and remove
+the /RTC1 references.
+
+4. C symbols in std namespace
 
 	The MSVC++ 6 has a bug when dealing with C symbols imported within the std 
 namespace. If you write the following code:
@@ -124,4 +138,3 @@ int main(int, char**) {
 has been disable by default. To force it you have to define the 
 _STLP_DO_IMPORT_CSTD_FUNCTIONS macro. Doing so you will have to explicitely 
 scope all your C functions calls.
-

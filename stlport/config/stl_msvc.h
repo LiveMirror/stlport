@@ -2,7 +2,7 @@
 // It is internal STLport header - DO NOT include it directly
 // Microsoft Visual C++ 6.0, 7.0, 7.1, 8.0 Beta, ICL
 
-#if defined (_WIN64)
+#if defined (_STLP_USING_PLATFORM_SDK_COMPILER)
 /* This is 64 bits platform SDK specific settings. There is no clear way to 
  * recognize the SDK coming with a compiler from the one freely available.
  * For the moment we hope that there is only one SDK for 64 bits windows so
@@ -332,7 +332,7 @@ typedef char __stl_char;
 
 #endif /* _STLP_DONT_USE_AUTO_LINK */
 
-#if defined (_WIN64)
+#if defined (_STLP_USING_PLATFORM_SDK_COMPILER)
 /* The Windows 64 bits SDK required for the moment link to bufferoverflowU.lib for
  * additional buffer overrun checks. Rather than require the STLport build system and
  * users to explicitely link with it we use the MSVC auto link feature.

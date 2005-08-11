@@ -133,7 +133,7 @@
  * will be filled if _STLP_DEBUG_ALLOC or _STLP_DEBUG_UNINITIALIZED is defined. 
  * Choose a value which is likely to cause a noticeable problem if dereferenced 
  * or otherwise abused. A good value may already be defined for your platform; see
- * stl_config.h
+ * stl/_config.h
  */
 /*
 #define _STLP_SHRED_BYTE 0xA3
@@ -184,6 +184,16 @@
  */
 /*
 #define _STLP_NEW_PLATFORM_SDK 1
+*/
+
+/*
+ * For the same reason as the one above we are not able to detect easily use
+ * of the compiler coming with the Platform SDK instead of the one coming with
+ * a Microsoft Visual Studio release. This change native C/C++ library location
+ * and implementation, please define this to get correct STLport configuration.
+ */
+/*
+#define _STLP_USING_PLATFORM_SDK_COMPILER 1
 */
 
 /*
