@@ -52,7 +52,8 @@
 
 #endif /* RC_INVOKED */
 
-/* Local Variables:
- * mode:C++
- * End:
- */
+/*
+  Local Variables:
+  mode:C++
+  End:
+*/
