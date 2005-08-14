@@ -2,6 +2,7 @@
 #if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
 #  include <sstream>
 #  include <locale>
+#include <iostream>
 
 #  include "cppunit/cppunit_proxy.h"
 
@@ -351,18 +352,83 @@ void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
 
 void LocaleTest::_time_put_get( const locale& loc, const ref_locale&)
 {
-  time_put<char> const&tmp = use_facet<time_put<char> >(loc);
-  //time_get<char> const&tmg = use_facet<time_get<char> >(loc);
+  const time_put<char>& tmp = use_facet<time_put<char> >(loc);
 
   struct tm xmas = { 0, 0, 12, 25, 11, 93 };
   ostringstream ostr;
   ostr.imbue(loc);
-  string format = "%a %d %b %y";
+  string format = "%B %d %Y";
 
   time_put<char>::iter_type ret = tmp.put(ostr, ostr, ' ', &xmas, format.data(), format.data() + format.size());
   CPPUNIT_ASSERT( !ret.failed() );
 
-  string str_ret = ostr.str();
+  /*
+   * In other words, user conformation is required for reliable parsing
+   * of user-entered dates and times, but machine-generated formats can be
+   * parsed reliably. This allows parsers to be aggressive about interpreting
+   * user variations on standard format.
+   *
+   *                                             ISO/IEC 14882, 22.2.5.1
+   */
+  const time_get<char>& tmg = use_facet<time_get<char> >(loc);
+  basic_ios<char> io(0);
+  io.imbue(loc);
+
+  istringstream istr( ostr.str() );
+  istreambuf_iterator<char> i( istr );
+  istreambuf_iterator<char> e;
+  ios_base::iostate err = ios_base::goodbit;
+  struct tm other = { 15, 20, 9, 14, 7, 105 };
+
+  i = tmg.get_monthname( i, e, io, err, &other );
+  CPPUNIT_ASSERT( err == ios_base::goodbit );
+  CPPUNIT_ASSERT( other.tm_mon == xmas.tm_mon );
+
+  ++i; ++i; ++i; ++i; // skip day of month and spaces around it
+  i = tmg.get_year( i, e, io, err, &other );
+
+  CPPUNIT_ASSERT( err == ios_base::eofbit );
+  CPPUNIT_ASSERT( other.tm_year == xmas.tm_year );
+
+  ostringstream ostrX;
+  ostrX.imbue(loc);
+  format = "%x %X";
+  
+  ret = tmp.put(ostrX, ostrX, ' ', &xmas, format.data(), format.data() + format.size());
+  CPPUNIT_ASSERT( !ret.failed() );
+
+  cerr << ostrX.str() << endl;
+
+  istringstream istrX( ostrX.str() );
+  istreambuf_iterator<char> j( istrX );
+
+  err = ios_base::goodbit;
+
+  struct tm yet_more = { 15, 20, 9, 14, 7, 105 };
+
+  j = tmg.get_date( j, e, io, err, &yet_more );
+
+  CPPUNIT_ASSERT( err == ios_base::goodbit );
+
+  CPPUNIT_ASSERT( yet_more.tm_sec != xmas.tm_sec );
+  CPPUNIT_ASSERT( yet_more.tm_min != xmas.tm_min );
+  CPPUNIT_ASSERT( yet_more.tm_hour != xmas.tm_hour );
+  CPPUNIT_ASSERT( yet_more.tm_mday == xmas.tm_mday );
+  CPPUNIT_ASSERT( yet_more.tm_mon == xmas.tm_mon );
+  CPPUNIT_ASSERT( yet_more.tm_year == xmas.tm_year );
+
+  ++j; // skip space
+
+  j = tmg.get_time( j, e, io, err, &yet_more );
+
+  CPPUNIT_ASSERT( err == ios_base::eofbit || err == ios_base::goodbit );
+
+  CPPUNIT_ASSERT( yet_more.tm_sec == xmas.tm_sec );
+  CPPUNIT_ASSERT( yet_more.tm_min == xmas.tm_min );
+  CPPUNIT_ASSERT( yet_more.tm_hour == xmas.tm_hour );
+  CPPUNIT_ASSERT( yet_more.tm_mday == xmas.tm_mday );
+  CPPUNIT_ASSERT( yet_more.tm_mon == xmas.tm_mon );
+  CPPUNIT_ASSERT( yet_more.tm_year == xmas.tm_year );
 }
 
 void LocaleTest::_collate_facet( const locale& loc, const ref_locale&)
