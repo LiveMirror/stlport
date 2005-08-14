@@ -272,8 +272,11 @@ __get_formatted_time _STLP_WEAK (_InIt1 __first,  _InIt1 __last,
                                        __table._M_am_pm + 0, __table._M_am_pm + 2, __ct);
           if (__pr == __table._M_am_pm + 2)
             return __format;
-          if (__pr == __table._M_am_pm + 1)
+          // 12:00 PM <=> 12:00, 12:00 AM <=> 00:00
+          if (__pr == __table._M_am_pm + 1 && __t->tm_hour != 12 )
             __t->tm_hour += 12;
+          if (__pr == __table._M_am_pm && __t->tm_hour == 12 )
+            __t->tm_hour = 0;
           break;
         }
 
