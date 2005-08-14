@@ -1,3 +1,13 @@
+2005-08-14  Petr Ovtchenkov  <ptr@island...>
+
+	* test/unit/locale_test.cpp: tests for time_get facet.
+
+	* stlport/stl/_time_facets.c: fix processing of %p format
+	[12:00 PM ~ 12:00, 12:00 AM ~ 00:00].
+
+	* src/time_facets.cpp: substitute expanded equivalent format strings
+	instead of %T, %R, %r.
+
 2005-08-11  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl_user_config.h: Add _STLP_USING_PLATFORM_SDK_COMPILER so that
