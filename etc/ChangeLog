@@ -1,3 +1,19 @@
+2005-08-12  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_msvc.h: Fix platform SDK compiler config, even latest
+	version that announce to be similar to .Net 2005 beta do not throw bad_alloc
+	from the new operator.
+
+	* build/Makefiles/nmake/vc8.mak: removed /RTC1 compiler option, the platform
+	SDK compiler do not support it. STLport users will just have to activate it
+	by themself if they want to.
+
+	* stlport/cstdio, cstdlib: Replaced some _WIN64 checks by a
+	_STLP_USING_PLATFORM_SDK_COMPILER check.
+
+	* test/unit/cmath_test.cpp: Complete test filtering for Microsoft platform SDK
+	compiler.
+
 2005-08-14  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/locale_test.cpp: tests for time_get facet.
@@ -7,6 +23,8 @@
 
 	* src/time_facets.cpp: substitute expanded equivalent format strings
 	instead of %T, %R, %r.
+
+	* stlport/pthread.h: Fix C++ comment in a potentially C header. Thanks Ali
 
 2005-08-11  Francois Dumont  <dums@stlport...>
 

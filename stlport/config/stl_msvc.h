@@ -12,6 +12,10 @@
 #  define _STLP_VENDOR_GLOBAL_CSTD
 #  define _STLP_VENDOR_TERMINATE_STD
 #  define _STLP_GLOBAL_NEW_HANDLER
+#  if (_MSC_VER <= 1400)
+//We hope this bug will be fixed in future versions.
+#    define _STLP_NEW_DONT_THROW_BAD_ALLOC 1
+#  endif
 #endif
 
 #define _STLP_CALL __cdecl
@@ -339,6 +343,9 @@ typedef char __stl_char;
  */
 #  if !defined (_STLP_DONT_USE_AUTO_LINK) || defined (__BUILDING_STLPORT)
 #    pragma comment (lib, "bufferoverflowU.lib")
+#    if defined (_STLP_VERBOSE_AUTO_LINK)
+#      pragma message ("STLport: Auto linking to bufferoverflowU.lib")
+#    endif
 #  endif
 #endif
 

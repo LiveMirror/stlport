@@ -89,8 +89,8 @@ void CMathTest::test()
   CPPUNIT_CHECK( are_equals(std::log10(100.0), 2.0) );
 #if !defined (STLPORT) || !defined (_STLP_USING_PLATFORM_SDK_COMPILER) || !defined (_WIN64)
   CPPUNIT_CHECK( are_equals(std::modf(100.5, &double_val), 0.5) );
-#endif
   CPPUNIT_CHECK( are_equals(double_val, 100.0) );
+#endif
   double_val = std::frexp(8.0, &int_val);
   CPPUNIT_CHECK( are_equals(double_val * std::pow(2.0, int_val), 8.0) );
   CPPUNIT_CHECK( are_equals(std::ldexp(1.0, 2), 4.0) );
@@ -114,8 +114,8 @@ void CMathTest::test()
   CPPUNIT_CHECK( are_equals(std::log10(100.0f), 2.0f) );
 #if !defined (STLPORT) || !defined (_STLP_USING_PLATFORM_SDK_COMPILER) || !defined (_WIN64)
   CPPUNIT_CHECK( are_equals(std::modf(100.5f, &float_val), 0.5f) );
-#endif
   CPPUNIT_CHECK( are_equals(float_val, 100.0f) );
+#endif
   float_val = std::frexp(8.0f, &int_val);
   CPPUNIT_CHECK( are_equals(float_val * std::pow(2.0f, int_val), 8.0f) );
   CPPUNIT_CHECK( are_equals(std::ldexp(1.0f, 2), 4.0f) );
@@ -140,8 +140,8 @@ void CMathTest::test()
   CPPUNIT_CHECK( are_equals(std::log10(100.0l), 2.0l) );
 #  if !defined (STLPORT) || !defined (_STLP_USING_PLATFORM_SDK_COMPILER) || !defined (_WIN64)
   CPPUNIT_CHECK( are_equals(std::modf(100.5l, &long_double_val), 0.5l) );
-#  endif
   CPPUNIT_CHECK( are_equals(long_double_val, 100.0l) );
+#  endif
   long_double_val = std::frexp(8.0l, &int_val);
   CPPUNIT_CHECK( are_equals(long_double_val * std::pow(2.0l, int_val), 8.0l) );
   CPPUNIT_CHECK( are_equals(std::ldexp(1.0l, 2), 4.0l) );

@@ -112,13 +112,6 @@ while building or using STLport you might be using the compiler coming with a
 platform SDK. If so please uncomment _STLP_USING_PLATFORM_SDK_COMPILER in
 stlport/stl_user_config.h.
 
-3. _RTC_InitBase, _RTC_CheckStackVars, _RTC_Shutdown
-
-	At the time of writing this the 64 platform SDK compiler is missing symbols
-when using /RTC1 option which STLport use when building 'safe STL' version. If you
-are experimenting such an issue go to build/Makefiles/nmake/vc8.mak and remove
-the /RTC1 references.
-
 4. C symbols in std namespace
 
 	The MSVC++ 6 has a bug when dealing with C symbols imported within the std 
