@@ -1,3 +1,12 @@
+2005-08-16  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_complex.h: Fix some floating point literals thanks
+	 Ulrickt Echkard report.
+
+	* stlport/stl/_time_facets.c: Complete integration of the '#' MS extension
+	in the date/time format string, reported thanks to the recent locale time_get
+	new test case.
+	
 2005-08-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Fix platform SDK compiler config, even latest

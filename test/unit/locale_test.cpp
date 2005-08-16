@@ -397,7 +397,7 @@ void LocaleTest::_time_put_get( const locale& loc, const ref_locale&)
   ret = tmp.put(ostrX, ostrX, ' ', &xmas, format.data(), format.data() + format.size());
   CPPUNIT_ASSERT( !ret.failed() );
 
-  cerr << ostrX.str() << endl;
+  //cerr << ostrX.str() << endl;
 
   istringstream istrX( ostrX.str() );
   istreambuf_iterator<char> j( istrX );

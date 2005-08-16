@@ -186,6 +186,11 @@ __get_formatted_time _STLP_WEAK (_InIt1 __first,  _InIt1 __last,
     if (*__format == '%') {
       ++__format;
       char __c = *__format;
+      if (__c == '#') { //MS extension
+        ++__format;
+        __c = *__format;
+      }
+
       switch (__c) {
         case 'a': {
           const string* __pr = __match(__first, __last,
