@@ -1,72 +1,118 @@
-# Time-stamp: <03/07/15 12:20:52 ptr>
-# $Id$
+# Time-stamp: 
+# $Id: depend.mak 
 
-!ifndef CFGSET
-depend: 
-	@echo STLport configuration error!
-	@echo Please go to build\lib and run configure.bat
-!else
-depend: bld_sys_msg dirs DEP_INIT $(ALLBASE) DEP_END
+#!message build\Makefiles\borland\depend.mak
+
+!include $(RULESBASE)\$(USE_MAKE)\depend.inc
+
+depend: build_system_message dirs objs_inc_delete depend_tmp_init $(ALLBASE) depend_tmp_end depend_inc_create depend_tmp_delete 
+	@echo. > $(RULESBASE)\$(USE_MAKE)\sysid.inc
+	@if exist $(RULESBASE)\config.mak echo CFGSET = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
+	@if exist %WINDIR%\system32\user.exe echo WINSYSDIR = %WINDIR%\system32 >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
+	@if exist %WINDIR%\system\user.exe echo WINSYSDIR = %WINDIR%\system >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
+	@echo. > $(RULESBASE)\$(USE_MAKE)\depend.inc
+	@if exist $(STLPORT_DIR)\build\lib\$(USE_MAKE)\depends.inc       echo DEPEND_LIB  = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\depend.inc
+	@if exist $(STLPORT_DIR)\build\test\unit\$(USE_MAKE)\depends.inc echo DEPEND_UNIT = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\depend.inc
+	@if exist $(STLPORT_DIR)\build\test\eh\$(USE_MAKE)\depends.inc   echo DEPEND_EH   = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\depend.inc
 	@echo depend done.
 
+depend_tmp_delete :
+	@if exist .\$(USE_MAKE)\dep_srr.tmp del .\$(USE_MAKE)\dep_srr.tmp
+	@if exist .\$(USE_MAKE)\dep_sdr.tmp del .\$(USE_MAKE)\dep_sdr.tmp
+	@if exist .\$(USE_MAKE)\dep_sdd.tmp del .\$(USE_MAKE)\dep_sdd.tmp
+	@if exist .\$(USE_MAKE)\dep_arr.tmp del .\$(USE_MAKE)\dep_arr.tmp
+	@if exist .\$(USE_MAKE)\dep_adr.tmp del .\$(USE_MAKE)\dep_adr.tmp
+	@if exist .\$(USE_MAKE)\dep_add.tmp del .\$(USE_MAKE)\dep_add.tmp
+
+	@if exist .\$(USE_MAKE)\objs_arr.tmp del .\$(USE_MAKE)\objs_arr.tmp
+	@if exist .\$(USE_MAKE)\objs_adr.tmp del .\$(USE_MAKE)\objs_adr.tmp
+	@if exist .\$(USE_MAKE)\objs_add.tmp del .\$(USE_MAKE)\objs_add.tmp
+
+depend_tmp_init:
+	@echo OBJ          = \ > .\$(USE_MAKE)\dep_srr.tmp
+	@echo OBJ_DBG      = \ > .\$(USE_MAKE)\dep_sdr.tmp
+	@echo OBJ_STLDBG   = \ > .\$(USE_MAKE)\dep_sdd.tmp
+	@echo OBJ_A        = \ > .\$(USE_MAKE)\dep_arr.tmp
+	@echo OBJ_A_DBG    = \ > .\$(USE_MAKE)\dep_adr.tmp
+	@echo OBJ_A_STLDBG = \ > .\$(USE_MAKE)\dep_add.tmp
+	@echo TLIB_A        = \ > .\$(USE_MAKE)\objs_arr.tmp
+	@echo TLIB_A_DBG    = \ > .\$(USE_MAKE)\objs_adr.tmp
+	@echo TLIB_A_STLDBG = \ > .\$(USE_MAKE)\objs_add.tmp
+
+
+depend_tmp_end :
+	@echo. >> .\$(USE_MAKE)\dep_srr.tmp
+	@echo. >> .\$(USE_MAKE)\dep_sdr.tmp
+	@echo. >> .\$(USE_MAKE)\dep_sdd.tmp
+	@echo. >> .\$(USE_MAKE)\dep_arr.tmp
+	@echo. >> .\$(USE_MAKE)\dep_adr.tmp
+	@echo. >> .\$(USE_MAKE)\dep_add.tmp
+	@echo. >> .\$(USE_MAKE)\objs_arr.tmp
+	@echo. >> .\$(USE_MAKE)\objs_adr.tmp
+	@echo. >> .\$(USE_MAKE)\objs_add.tmp
+
+depend_inc_create :
+	@copy .\$(USE_MAKE)\dep_srr.tmp + \
+          .\$(USE_MAKE)\dep_sdr.tmp + \
+          .\$(USE_MAKE)\dep_sdd.tmp + \
+          .\$(USE_MAKE)\dep_arr.tmp + \
+          .\$(USE_MAKE)\dep_adr.tmp + \
+          .\$(USE_MAKE)\dep_add.tmp + \
+          .\$(USE_MAKE)\objs_arr.tmp + \
+          .\$(USE_MAKE)\objs_adr.tmp + \
+          .\$(USE_MAKE)\objs_add.tmp   \
+          .\$(USE_MAKE)\depends.inc > NUL
+	
+objs_inc_delete :
+	@if exist .\$(USE_MAKE)\objs_srr.inc del .\$(USE_MAKE)\objs_srr.inc
+	@if exist .\$(USE_MAKE)\objs_sdr.inc del .\$(USE_MAKE)\objs_sdr.inc
+	@if exist .\$(USE_MAKE)\objs_sdd.inc del .\$(USE_MAKE)\objs_sdd.inc
+	@if exist .\$(USE_MAKE)\objs_arr.inc del .\$(USE_MAKE)\objs_arr.inc
+	@if exist .\$(USE_MAKE)\objs_adr.inc del .\$(USE_MAKE)\objs_adr.inc
+	@if exist .\$(USE_MAKE)\objs_add.inc del .\$(USE_MAKE)\objs_add.inc
+
 .precious: depend
-
-DEP_INIT:
-	@cd $(SRCROOT_EXT)\$(USE_MAKE)
-	@if exist dep_srr.tmp del dep_srr.tmp
-	@if exist dep_sdr.tmp del dep_sdr.tmp
-	@if exist dep_sdd.tmp del dep_sdd.tmp
-	@if exist dep_arr.tmp del dep_arr.tmp
-	@if exist dep_adr.tmp del dep_adr.tmp
-	@if exist dep_add.tmp del dep_add.tmp
-	@if exist objs_srr.inc del objs_srr.inc
-	@if exist objs_sdr.inc del objs_sdr.inc
-	@if exist objs_sdd.inc del objs_sdd.inc
-	@if exist objs_arr.inc del objs_arr.inc
-	@if exist objs_adr.inc del objs_adr.inc
-	@if exist objs_add.inc del objs_add.inc
-	@echo OBJ          = \ > dep_srr.tmp
-	@echo OBJ_DBG      = \ > dep_sdr.tmp
-	@echo OBJ_STLDBG   = \ > dep_sdd.tmp
-	@echo OBJ_A        = \ > dep_arr.tmp
-	@echo OBJ_A_DBG    = \ > dep_adr.tmp
-	@echo OBJ_A_STLDBG = \ > dep_add.tmp
-	@cd $(SRCROOT_EXT)
-
-DEP_END:
-	@cd $(SRCROOT_EXT)\$(USE_MAKE)
-	@echo. >> dep_srr.tmp
-	@echo. >> dep_sdr.tmp
-	@echo. >> dep_sdd.tmp
-	@echo. >> dep_arr.tmp
-	@echo. >> dep_adr.tmp
-	@echo. >> dep_add.tmp
-	@copy dep_srr.tmp + dep_sdr.tmp + dep_sdd.tmp + dep_arr.tmp + dep_adr.tmp + dep_add.tmp depends.inc > NUL
-	@if exist dep_srr.tmp del dep_srr.tmp
-	@if exist dep_sdr.tmp del dep_sdr.tmp
-	@if exist dep_sdd.tmp del dep_sdd.tmp
-	@if exist dep_arr.tmp del dep_arr.tmp
-	@if exist dep_adr.tmp del dep_adr.tmp
-	@if exist dep_add.tmp del dep_add.tmp
-	@cd $(SRCROOT_EXT)
+.precious: depend_tmp_delete
+.precious: depend_tmp_init
+.precious: depend_tmp_end
+.precious: depend_inc_create
+.precious: objs_inc_delete
 
 $(ALLBASE):
-	@cd $(SRCROOT_EXT)\$(USE_MAKE)
 	@echo $&.obj
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR)\$&.obj \ >> dep_srr.tmp
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_DBG)\$&.obj \ >> dep_sdr.tmp
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_STLDBG)\$&.obj \ >> dep_sdd.tmp
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR)\$&.obj + >> objs_srr.inc
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_DBG)\$&.obj + >> objs_sdr.inc
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_STLDBG)\$&.obj + >> objs_sdd.inc
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_A)\$&.obj \ >> dep_arr.tmp
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_A_DBG)\$&.obj \ >> dep_adr.tmp
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_A_STLDBG)\$&.obj \ >> dep_add.tmp
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_A)\$&.obj + >> objs_arr.inc
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_A_DBG)\$&.obj + >> objs_adr.inc
-	@echo $(SRCROOT_EXT)\$(OUTPUT_DIR_A_STLDBG)\$&.obj + >> objs_add.inc
-	@cd $(SRCROOT_EXT)
 
-!include $(DEPENDS_COLLECTION)
+	@echo .\$(OUTPUT_DIR)\$&.obj \ >> .\$(USE_MAKE)\dep_srr.tmp
+	@echo .\$(OUTPUT_DIR_DBG)\$&.obj \ >> .\$(USE_MAKE)\dep_sdr.tmp
+	@echo .\$(OUTPUT_DIR_STLDBG)\$&.obj \ >> .\$(USE_MAKE)\dep_sdd.tmp
 
+	@echo .\$(OUTPUT_DIR)\$&.obj + >> .\$(USE_MAKE)\objs_srr.inc
+	@echo .\$(OUTPUT_DIR_DBG)\$&.obj + >> .\$(USE_MAKE)\objs_sdr.inc
+	@echo .\$(OUTPUT_DIR_STLDBG)\$&.obj + >> .\$(USE_MAKE)\objs_sdd.inc
+
+	@echo .\$(OUTPUT_DIR_A)\$&.obj \ >> .\$(USE_MAKE)\dep_arr.tmp
+	@echo .\$(OUTPUT_DIR_A_DBG)\$&.obj \ >> .\$(USE_MAKE)\dep_adr.tmp
+	@echo .\$(OUTPUT_DIR_A_STLDBG)\$&.obj \ >> .\$(USE_MAKE)\dep_add.tmp
+
+	@echo .\$(OUTPUT_DIR_A)\$&.obj + >> .\$(USE_MAKE)\objs_arr.inc
+	@echo .\$(OUTPUT_DIR_A_DBG)\$&.obj + >> .\$(USE_MAKE)\objs_adr.inc
+	@echo .\$(OUTPUT_DIR_A_STLDBG)\$&.obj + >> .\$(USE_MAKE)\objs_add.inc
+
+	@echo static\$&.obj \ >> .\$(USE_MAKE)\objs_arr.tmp
+	@echo static_dbg\$&.obj \ >> .\$(USE_MAKE)\objs_adr.tmp
+	@echo static_stldbg\$&.obj \ >> .\$(USE_MAKE)\objs_add.tmp
+
+!if $(LIBNAME) == stlp$(MAJOR)$(MINOR)
+! ifdef DEPEND_LIB
+!  include $(DEPENDS_COLLECTION)
 !endif
+!elif $(PRGNAME) == stl_unit_test
+! ifdef DEPEND_UNIT
+!  include $(DEPENDS_COLLECTION)
+! endif
+!elif $(PRGNAME) == eh_test
+! ifdef DEPEND_EH
+!  include $(DEPENDS_COLLECTION)
+! endif
+!endif
+
+.NOSILENT

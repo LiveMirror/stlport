@@ -10,7 +10,11 @@ ALLBASE = $(ALLORIG:../../src/=)
 !endif
 
 !if $(PRGNAME) == stl_unit_test
+! ifdef EXCLUDE_TESTS
+ALLBAS0 = $(ALLORIG_FILTERED)
+! else
 ALLBAS0 = $(ALLORIG:../../../test/unit/=)
+! endif
 ALLBASE = $(ALLBAS0:/=\)
 !endif
 
@@ -22,19 +26,13 @@ ALLBASE = $(ALLBAS0:/=\)
 .precious: $(ALLORIG)
 .precious: $(ALLBASE)
 
-ALLOBJ3 = $(SRC_CPP:.cpp=.obj) $(SRC_CC:.cc=.obj) $(SRC_C:.c=.obj)
-ALLOBJ2 = $(ALLOBJ3:../../src/=)
-ALLOBJ1 = $(ALLOBJ2:../../../test/unit/=)
-ALLOBJ0 = $(ALLOBJ1:cppunit/=)
-ALLOBJS = $(ALLOBJ0:../../../test/eh/=)
-ALLOBJS_A = $(ALLOBJS:.obj=.obj +-) 
+ALLOBJS2 = $(SRC_CPP:.cpp=.obj) $(SRC_CC:.cc=.obj) $(SRC_C:.c=.obj)
+ALLOBJS1 = $(ALLOBJS2: ../../src/=)
+ALLOBJS0 = $(ALLOBJS1:../../src/=)
+ALLOBJS  = $(ALLOBJS0:.obj =.obj)
 
-#ALLRESS = $(SRC_RC)
-ALLRESS  =
-
-!ifdef $(SRC_RC) 
-.precious: $(ALLRESS)
-!endif
+ALLRES0 = $(SRC_RC:/=\) 
+ALLRESS = #$(ALLRES0:.rc=.res) 
 
 OBJ          = $(OBJ)
 OBJ_DBG      = $(OBJ_DBG)

@@ -37,6 +37,12 @@ clean:
 	@if exist $(OUTPUT_DIR_A_STLDBG)\*.tds del $(OUTPUT_DIR_A_STLDBG)\*.tds
 	@if exist $(OUTPUT_DIR_A_STLDBG)\*.bak del $(OUTPUT_DIR_A_STLDBG)\*.bak
 
-	@if exist $(SRCROOT_EXT)\$(USE_MAKE)\. echo. > $(SRCROOT_EXT)\$(USE_MAKE)\depends.inc
+!if "$(OS)" == "Windows_NT"
+	@if exist .\$(USE_MAKE)\. echo. > .\$(USE_MAKE)\depends.inc
+!else
+	@if exist $(USE_MAKE).tmp echo. > depends.inc
+	@if exist $(USE_MAKE).tmp copy depends.inc .\$(USE_MAKE)\depends.inc > NUL
+	@if exist depends.inc del depends.inc
+!endif
 
 	@echo clean done.

@@ -3,6 +3,8 @@
 
 #!message build\Makefiles\borland\sysid.mak
 
+!include $(RULESBASE)\$(USE_MAKE)\sysid.inc
+
 OSNAME = windows
 M_ARCH = i386
 P_ARCH = i386
@@ -35,7 +37,7 @@ BUILD_DATE =
 
 BUILD_SYSTEM = $(OSREL) $(M_ARCH) $(USER)
 
-bld_sys_msg:
+build_system_message:
 	@echo BUILD_SYSTEM = $(BUILD_SYSTEM)
 
 info: 

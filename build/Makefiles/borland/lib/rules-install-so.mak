@@ -3,8 +3,8 @@
 
 #!message build\Makefiles\borland\lib\rules-install-so.mak
 
-.autodepend
-.silent
+.AUTODEPEND
+#.SILENT
 
 !ifndef INSTALL_TAGS
 INSTALL_TAGS = install-release-shared install-dbg-shared install-stldbg-shared 
@@ -13,11 +13,16 @@ INSTALL_TAGS = install-release-shared install-dbg-shared install-stldbg-shared
 install-release-shared: release-shared
 	$(INSTALL_SO) $(SO_NAME_OUT) $(INSTALL_DLL_DIR) > NUL
 	$(INSTALL_SO) $(LIB_NAME_OUT) $(INSTALL_LIB_DIR) > NUL
+	@echo.
 
 install-dbg-shared: dbg-shared
 	$(INSTALL_SO) $(SO_NAME_OUT_DBG) $(INSTALL_DLL_DIR) > NUL
 	$(INSTALL_SO) $(LIB_NAME_OUT_DBG) $(INSTALL_LIB_DIR) > NUL
+	@echo.
 
 install-stldbg-shared: stldbg-shared
 	$(INSTALL_SO) $(SO_NAME_OUT_STLDBG) $(INSTALL_DLL_DIR) > NUL
 	$(INSTALL_SO) $(LIB_NAME_OUT_STLDBG) $(INSTALL_LIB_DIR) > NUL
+	@echo.
+
+.NOSILENT

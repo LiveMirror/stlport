@@ -14,7 +14,7 @@ STARTUPWIN    = c0w32.obj
 !endif
 
 !ifndef LDSEARCH
-LDSEARCH = -L$(BC5ROOT_LIB_DIR)
+LDSEARCH = -L$(BC5ROOT_LIB_DIR);$(STLPORT_DIR)\lib
 !endif
 
 OPT_REL           = $(OPT_REL)           -tWD

@@ -18,7 +18,7 @@ BC5ROOT_INCLUDE_DIR = $(BC5ROOT)\include
 !endif
 
 !ifndef STLPORT_DIR
-STLPORT_DIR = $(BC5ROOT)\STLport-500
+! error STLPORT_DIR is not defined.
 !endif
 
 # This file reflect versions of third-party libraries that

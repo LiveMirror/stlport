@@ -17,20 +17,20 @@ STLPORT_INCLUDE_DIR = $(STLPORT_DIR)\stlport
 BC5ROOT_INCLUDE_DIR = $(STLPORT_DIR)\..\include
 !endif
 
-INCLUDES = -I$(STLPORT_INCLUDE_DIR);$(STLPORT_DIR);$(BC5ROOT_INCLUDE_DIR);$(INCLUDES)
+INCLUDES = -I$(STLPORT_INCLUDE_DIR);$(STLPORT_DIR);$(INCLUDES);$(BC5ROOT_INCLUDE_DIR);
 
-CXX  = bcc32 -P
-CC   = bcc32 -P
+CXX  = bcc32
+CC   = bcc32
 LINK = ilink32
 RC   = brc32
 
 !ifdef DEFS
-DEFS_REL           = $(DEFS) $(DEFS_REL)
-DEFS_DBG           = $(DEFS) $(DEFS_DBG)
-DEFS_STLDBG        = $(DEFS) $(DEFS_STLDBG)
-DEFS_STATIC        = $(DEFS) $(DEFS_STATIC)
-DEFS_STATIC_DBG    = $(DEFS) $(DEFS_STATIC_DBG)
-DEFS_STATIC_STLDBG = $(DEFS) $(DEFS_STATIC_STLDBG)
+DEFS_REL           = -D$(DEFS) 
+DEFS_DBG           = -D$(DEFS) 
+DEFS_STLDBG        = -D$(DEFS) 
+DEFS_STATIC        = -D$(DEFS) 
+DEFS_STATIC_DBG    = -D$(DEFS) 
+DEFS_STATIC_STLDBG = -D$(DEFS) 
 !endif
 
 !ifdef OPT
@@ -80,7 +80,7 @@ CPPFLAGS_STATIC        = $(DEFS_STATIC)        $(INCLUDES)
 CPPFLAGS_STATIC_DBG    = $(DEFS_STATIC_DBG)    $(INCLUDES)
 CPPFLAGS_STATIC_STLDBG = $(DEFS_STATIC_STLDBG) $(INCLUDES)
 
-CFLAGS_COMMON          = -c -g0 -He- -Hs- -j3  -K -R -r- -q -vi- -ff -xf- -RT -tWM \
+CFLAGS_COMMON          = -c -g0 -He- -Hs- -j3 -R -r- -q -vi- -ff -xf- -RT -tWM \
                          -w-sig -w-inl -w-use -w-pch -w-msg -w-aus -w-par \ 
                          -w-rch -w-ccc -w-csu -w-ngu -w-nst -w-eff
 
@@ -91,7 +91,7 @@ CFLAGS_STATIC        = $(CFLAGS_COMMON) $(OPT_STATIC)
 CFLAGS_STATIC_DBG    = $(CFLAGS_COMMON) $(OPT_STATIC_DBG)
 CFLAGS_STATIC_STLDBG = $(CFLAGS_COMMON) $(OPT_STATIC_STLDBG)
 
-CXXFLAGS_COMMON        = -c -g0 -He- -Hs- -j3  -K -R -r- -q -vi- -ff -xf- -RT -tWM \
+CXXFLAGS_COMMON        = -c -g0 -He- -Hs- -j3 -R -r- -q -vi- -ff -xf- -RT -tWM \
                          -w-sig -w-inl -w-use -w-pch -w-msg -w-aus -w-par \ 
                          -w-rch -w-ccc -w-csu -w-ngu -w-nst -w-eff
 

@@ -3,8 +3,8 @@
 
 #!message build\Makefiles\borland\lib\rules-install-a.mak
 
-.autodepend
-.silent
+.AUTODEPEND
+#.SILENT
 
 !ifndef INSTALL_TAGS
 INSTALL_TAGS = install-release-static install-dbg-static install-stldbg-static
@@ -12,9 +12,14 @@ INSTALL_TAGS = install-release-static install-dbg-static install-stldbg-static
 
 install-release-static: release-static
 	$(INSTALL_A) $(A_NAME_OUT) $(INSTALL_LIB_DIR) > NUL
+	@echo.
 
 install-dbg-static: dbg-static
 	$(INSTALL_A) $(A_NAME_OUT_DBG) $(INSTALL_LIB_DIR) > NUL
+	@echo.
 
 install-stldbg-static: stldbg-static
 	$(INSTALL_A) $(A_NAME_OUT_STLDBG) $(INSTALL_LIB_DIR) > NUL
+	@echo.
+
+.NOSILENT

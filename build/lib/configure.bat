@@ -246,14 +246,26 @@ REM set CFGAMPM=
 :oc_build_date_done
 
 @echo Checking depend directories...
+if not "%OS%"=="Windows_NT" goto oc_depend_dir_win9x
 @if not exist ..\lib\borland mkdir ..\lib\borland
 @if not exist ..\test\unit\borland mkdir ..\test\unit\borland
 @if not exist ..\test\eh\borland mkdir ..\test\eh\borland
+if "%OS%"=="Windows_NT" goto oc_depend_dir_done
+:oc_depend_dir_win9x
+@if not exist ..\lib\borland.tmp mkdir ..\lib\borland
+@if not exist ..\test\unit\borland.tmp mkdir ..\test\unit\borland
+@if not exist ..\test\eh\borland.tmp mkdir ..\test\eh\borland
+@if not exist ..\lib\borland.tmp echo. > ..\lib\borland.tmp
+@if not exist ..\test\unit\borland.tmp echo. > ..\test\unit\borland.tmp
+@if not exist ..\test\eh\borland.tmp echo. > ..\test\eh\borland.tmp
+:oc_depend_dir_done
 
 @echo Resetting dependency files...
 echo. > ..\lib\borland\depends.inc
 echo. > ..\test\unit\borland\depends.inc
 echo. > ..\test\eh\borland\depends.inc
+echo. > ..\Makefiles\borland\sysid.inc
+echo. > ..\Makefiles\borland\depend.inc
 
 echo CFGSET=%STLPORT_SELECTED_CONFIG% >> ..\Makefiles\config.mak
 if "%STLPORT_SELECTED_CONFIG%"=="bc56" goto oc_bc56
