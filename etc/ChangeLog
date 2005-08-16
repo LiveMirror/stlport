@@ -1,3 +1,55 @@
+2005-08-16  Eric Sanford  <...@comp...>
+
+	* build/lib/configure.bat: makes for Borland BC 5.5/5,6 make and configuration;	
+
+	* build/Makefiles/borland/: makefiles for Borland make; add relative references;
+	save libs and dlls to STLport lib folder; fix some mkdir / rmdir warnings;
+	
+
+	* build/lib/bc55.mak, bc56.mak: ditto
+
+	* build/test/eh/bc55.mak, bc56.mak: temporarily exclude some tests.
+
+	* build/test/unit/bc55.mak, bc56.mak: temporarily exclude some tests.
+
+	* src/dll_main.cpp: fix macro for BC 5.5/5.6 compilers; adds basic compiler
+	support for bc55 [multithread only, NT4, 2K, XP] and removes legacy headers
+	in stlport/BC50.
+
+	* src/locale_catalog.cpp: diito
+
+	* stlport/exception, exception.h: ditto; use Borland exception [?]
+
+	* stlport/fstream.h: ditto
+
+	* stlport/iomanip.h: ditto
+
+	* stlport/ios.h: ditto
+
+	* stlport/iostream.h: ditto
+
+	* stlport/new.h: ditto
+
+	* stlport/ostream.h ditto
+
+	* stlport/stdexcept: ditto
+
+	* stlport/stl/_cwchar.h: ditto
+
+	* stlport/stl/_iterator_base.h: ditto
+
+	* stlport/stl/type_traits.h: ditto
+
+	* stlport/streambuf.h: ditto
+
+	* stlport/strstream.h: ditto
+
+	* stlport/wchar.h: ditto
+
+	* stlport/config/stl_bc.h: configuration for Borland BC 5.5/5.6 compilers;
+	 Legacy compilers [bc54 and below] are removed and #error added.
+	
+
 2005-06-28  Petr Ovtchenkov  <ptr@island...>
 
 	* build/lib/configure.bat, build/lib/Makefiles: makefiles for Borland make

@@ -8,16 +8,11 @@
 COMPILER_NAME = bc55
 
 !ifndef BC5ROOT
-! ifdef MAKEDIR
 BC5ROOT   = $(MAKEDIR)\..
-! else
-BC5ROOT   = \BCC55
-! endif
 !endif
 
-STLPORT_DIR   = $(BC5ROOT)\STLport-500-BC5-P1-edited
+STLPORT_DIR   = ..\..\..
 SRCROOT       = $(STLPORT_DIR)\build
-SRCROOT_EXT   = $(SRCROOT)\test\eh
 SRCDIR        = $(STLPORT_DIR)\test\eh
 
 ALL_TAGS      = release-shared dbg-shared stldbg-shared release-static dbg-static stldbg-static
@@ -26,10 +21,8 @@ ALL_TAGS      = release-shared dbg-shared stldbg-shared release-static dbg-stati
 
 LIB_VERSION   = stlp$(LIBMAJOR)$(LIBMINOR)
 
-INCLUDES      = -I$(SRCDIR);
+INCLUDES      = $(SRCDIR)
 
 DEFS          = 
-
-#NOINIT_A = 1
 
 !include $(SRCROOT)\Makefiles\borland\top.mak

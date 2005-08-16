@@ -21,11 +21,7 @@
 # include <stl/_prolog.h>
 #endif
 
-#ifdef __BORLANDC__
-# include <iostream.>
-#else
 # include <iostream>
-#endif
 
 // Those should be included all separately, as they do contain using declarations
 #include <streambuf.h>

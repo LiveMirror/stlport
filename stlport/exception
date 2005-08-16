@@ -39,7 +39,7 @@
 #  define _STLP_EXCEPTION
 #endif
 
-#if !defined(_STLP_NO_EXCEPTION_HEADER)
+#if ! defined (_STLP_NO_EXCEPTION_HEADER) && ! defined(_STLP_USE_OWN_EXCEPTION_CLASS)
 
 #  if defined ( _UNCAUGHT_EXCEPTION )
 #    undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
@@ -57,7 +57,11 @@
 #    undef bad_exception
 #  else
 #    if defined (_STLP_NO_NEW_NEW_HEADER)
+#     if defined (__BORLANDC__)
+#      include _STLP_NATIVE_CPP_RUNTIME_HEADER(exceptio.h)
+#     else
 #      include _STLP_NATIVE_CPP_RUNTIME_HEADER(exception.h)
+#     endif
 #    else
 #      include _STLP_NATIVE_CPP_RUNTIME_HEADER(exception)
 #    endif
@@ -127,7 +131,8 @@ bool uncaught_exception(); // not implemented under mpw as of Jan/1999
 
 #endif /* _STLP_NO_EXCEPTION_HEADER */	
 
-#if defined (_STLP_NO_EXCEPTION_HEADER) || defined(_STLP_BROKEN_EXCEPTION_CLASS)
+#if defined (_STLP_NO_EXCEPTION_HEADER) || defined(_STLP_BROKEN_EXCEPTION_CLASS) || \
+    defined(_STLP_USE_OWN_EXCEPTION_CLASS)
 #  ifndef _STLP_EXCEPTION_H
 #  define _STLP_EXCEPTION_H
 
@@ -137,7 +142,7 @@ _STLP_BEGIN_NAMESPACE
 class _STLP_CLASS_DECLSPEC exception 
 {
 public:
-#  if !defined( _STLP_USE_NO_IOSTREAMS) && !defined (__BORLANDC__)
+#  if !defined(_STLP_USE_NO_IOSTREAMS) && !defined(_STLP_NO_EXTERN_EXCEPTIONS)
   exception() _STLP_NOTHROW;
   virtual ~exception() _STLP_NOTHROW;
   virtual const char* what() const _STLP_NOTHROW;
@@ -152,7 +157,7 @@ public:
 class _STLP_CLASS_DECLSPEC bad_exception : public exception 
 {
 public:
-#  if !defined( _STLP_USE_NO_IOSTREAMS) && !defined (__BORLANDC__)
+#  if !defined(_STLP_USE_NO_IOSTREAMS) && !defined(_STLP_NO_EXTERN_EXCEPTIONS)
   bad_exception() _STLP_NOTHROW;
   ~bad_exception() _STLP_NOTHROW;
   const char* what() const _STLP_NOTHROW;

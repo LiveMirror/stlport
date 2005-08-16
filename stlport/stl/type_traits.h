@@ -337,7 +337,11 @@ struct _BothPtrType {
 
 // we make general case dependant on the fact the type is actually a pointer.
 template <class _Tp>
+#  if defined (__BORLANDC__) && (__BORLANDC__ < 0x560) 
+struct __type_traits : __type_traits_aux<_IsPtr<class _Tp>::_Ret > {};
+#   else
 struct __type_traits : __type_traits_aux<_IsPtr<_Tp>::_Ret> {};
+#   endif
 
 #  else /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
 

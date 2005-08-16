@@ -1,69 +1,168 @@
 // STLport configuration file
 // It is internal STLport header - DO NOT include it directly
 
+#if ( __BORLANDC__ < 0x550 )
+#  error - Borland compilers below version 5.5 not supported.
+#endif
+
 /* ==========================================================================*/
-/* General */
+// general, all builds
+
 #ifdef __BUILDING_STLPORT
 # pragma message "_STLPORT_VERSION" = _STLPORT_VERSION  "__BORLANDC__" = __BORLANDC__
 #endif
 
-# ifdef __BUILDING_STLPORT
-#  define _STLP_CALL __cdecl __export
-# else
-#  if __BORLANDC__ < 0x540
-#  define  _STLP_CALL __cdecl __import
-#else
-#  define  _STLP_CALL __cdecl
-#endif
-# endif
-
-#define _STLP_USE_OWN_MBSTATE_T
-# define _STLP_VENDOR_UNEXPECTED_STD 1
-# define _STLP_STATIC_CONST_INIT_BUG 1
-# define _STLP_HAS_SPECIFIC_PROLOG_EPILOG 1
-
-# ifdef __BUILDING_STLPORT
-#  define _BC5_EXCLUDE_STLP_LIBS 1
-# endif
-
-// used for locale subsystem
-# ifndef _BC5_STARTUP_LEVEL
-#  define _BC5_STARTUP_LEVEL 1
-static volatile int startup_level = 0;
-   void startup_level_32() {
-#  pragma startup startup_level_32 32
-    startup_level = 32;
-   }
-   void startup_level_33() {
-#  pragma startup startup_level_33 33
-    startup_level = 33;
-   }
-# endif
-
-# define _STLP_NO_VENDOR_STDLIB_L 1
-
-// math, complex, limits
-# define __MINMAX_DEFINED 1
-# define _STLP_NO_LONG_DOUBLE 1 // crash on startup in complex_trig.cpp
-# define _STLP_NO_IEC559_SUPPORT 1 // debugging limits_test, hash_test, qnan problem
-# define _STLP_NO_VENDOR_MATH_F 1 // compile error in _cmath.h
-
 // threads
 # define NOWINBASEINTERLOCK  // winbase.h error
-# if ! defined(__MT__) && ! defined(__BUILDING_STLPORT)
-#  error - STLport single thread not supported!
+
+# if defined (__MT__) && ! defined (_MT)
+#  define _MT
+# elif defined (_MT) && ! defined (__MT__)
+#  define __MT__
+# elif ! defined (_MT) && ! defined (__MT__)
+#  error Singlethead not supported. Please use multithread (-tWM)
+#endif
+
+# if defined ( __MT__ ) && !defined (_NOTHREADS) && !defined (_REENTRANT)
+#  define _REENTRANT 1
 # endif
+
+// streams
+# define _STLP_OWN_IOSTREAMS 1
 
 // headers
 # define _STLP_NO_NEW_NEW_HEADER 1
+# define _STLP_HAS_SPECIFIC_PROLOG_EPILOG 1
+
+// exception
+#  define _STLP_USE_OWN_EXCEPTION_CLASS 1 // don't import native exception
+#  ifndef _CPPUNWIND
+#   define _STLP_HAS_NO_EXCEPTIONS
+# endif
+
+// debug
+#  if defined ( __DEBUG ) && ( __DEBUG > 1 )
+#   define _STLP_DEBUG
+# endif
+
+/* ========================================================================== */
+// Borland 5.6 and above
+
+#if __BORLANDC__ >= 0x560
+# define _STLP_USE_NEW_C_HEADERS
+# define __MATH_H_USING_LIST // native math.h using list
+# define _STLP_NO_LONG_DOUBLE 1 // crash on startup in complex_trig.cpp
+#endif
+
+/* ========================================================================== */
+// Borland 5.5 and above
+
+#if __BORLANDC__ >= 0x550
+
+// bugs
+# define _STLP_STATIC_CONST_INIT_BUG 1
+# define _STLP_NON_TYPE_TMPL_PARAM_BUG 1
+
+// math, complex, limits
+# define __MINMAX_DEFINED 1
+# define _STLP_NO_IEC559_SUPPORT 1 // limits_test, hash_test, qnan problem
+# define _STLP_NO_VENDOR_MATH_F 1 // compile error in _cmath.h
+# define _STLP_NO_VENDOR_STDLIB_L 1
+# define _STLP_LONG_LONG __int64
+
+// streams
+#  define _STLP_USE_STDIO_IO 1 // __pioinfo error in 'fstream.cpp'
+#  define _STLP_USE_NEW_IOSTREAMS 1 // for eh_test
+#  ifdef _STLP_OWN_IOSTREAMS // oldstl header gurards
+#   define __STD_FSTREAM__
+#   define __STD_IOS__
+#   define __STD_IOSFWD__
+#   define __STD_ISTREAM__
+#   define __STD_OSTREAM__
+#   define __STD_STREAMBUF__
+#   define __STD_STRSTREAM__
+# endif
+#  define _RW_STD_IOSTREAM // exclude native iostream
+#  ifndef _STLP_OWN_IOSTREAMS
+#   define _STLP_NO_OWN_IOSTREAMS
+#  endif
+#  define _STLP_ISTREAM_TRAILING_SPACE_BUG // workaround for fstream_test, sstream_test
+
+// memory
+#  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1 // stl/_new.h (don't import native bad_alloc)
+#  define _USE_OLD_RW_STL 1 // native new.h (operator new, operator delete)
+#  undef __TURBOC__  // native oldstl/new.h (avoid duplicate exception class)
+#  define _RWSTD_BAD_ALLOC_DEFINED 1 // native oldstl/new.h (avoid duplicate exception class)
+#  define _STLP_USE_OWN_BAD_ALLOC 1
+
+// exception
+#  ifndef _STLP_USE_OWN_EXCEPTION_CLASS
+#   define _STLP_VENDOR_UNEXPECTED_STD 1 // stlport/exception (global namespace)
+#  endif
+#  ifndef __BUILDING_STLPORT
+#   define _STLP_NO_EXTERN_EXCEPTIONS 1
+#  endif
+#  define __STD_EXCEPTION 1 // native oldstl/exceptio.h (header guard)
+#  define __EXCEPT_H 1 // native except.h (header guard)
+#  if defined _STLP_BROKEN_EXCEPTION_CLASS && defined (_STLP_VENDOR_GLOBAL_EXCEPT_STD)
+#   error inconsistent exception class specifications!
+#  endif
+
+// strings
+#  define __STRING_STL // exclude native string.stl
+#  define __STD_STRING // exclude native string.stl
+
+// locale
+#  define __LOCALE_H  // exclude native _loc.h, except in stlport/clocale
+#  define __USELOCALES__  // native _loc.h (use native setlocale)
+#  define __LOCALE_H_USING_LIST // native _loc.h (disable native 'using std::setlocale')
+
+// wchar_t, mbstate
+#  define _STLP_USE_OWN_MBSTATE_T
+#  ifndef _STLP_NO_WCHAR_T
+#   define _STLP_HAS_WCHAR_T 1
+#   define _UNICODE 1
+#   define _MBCS 1
+#  else
+typedef char mbstate_t;
+#  endif
+
+// templates
+#  define _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS 1
+#  define _STLP_USE_PTR_SPECIALIZATIONS 1
+#  define _STLP_STATIC_TEMPLATE_DATA 1
+
+// namespaces
+#  define _STLP_USING_NAMESPACE_BUG
+
+// compiler
+#  define _STLP_NO_FORCE_INSTANTIATE 1
+
+// codeguard
+#  ifdef __CODEGUARD__
+#   if ! defined( _STLP_USE_NEWALLOC ) && ! defined ( _STLP_USE_MALLOC )
+#    define   _STLP_USE_NEWALLOC 1
+#   endif
+#   define _STLP_LEAKS_PEDANTIC // optional, for codeguard memory leaks
+#  endif
+
+// legacy
+#  define __STD_RWCOMPILER_H__ // exclude native stdcomp.h
+#  define STARTWRAP // error in native stddefs.h
+#  define ENDWRAP // error in native stddefs.h
+#  define _RWSTD_THROW_SPEC_NULL throw() // error in native new.h
+
+// linker
+#  define _STLP_USE_ALT_LIBNAMES 1
+
+# endif
 
 /* ==========================================================================*/
 // Borland options
-// These options have been tested.  
-// Other options may work, but may not have been been tested.
+// These have been tested. Others may work.
 
 #if __BORLANDC__ >= 0x550
-// 80486 protected mode compatible (on)
+// 80486 protected mode compatible (on) ***
 #pragma checkoption -4
 // use Borland keywords and extensions (on)
 #pragma checkoption -AT
@@ -77,9 +176,9 @@ static volatile int startup_level = 0;
 #pragma checkoption -ff
 // generate and use precompiled headers (off)
 #pragma checkoption -H-
-// enable precompiled headers with external file types (off)
+// enable precompiled headers with external file types (off) ***
 #pragma checkoption -He-
-// enable smart cached precompiled headers (off)
+// enable smart cached precompiled headers (off) ***
 #pragma checkoption -Hs-
 // generate definitions for all template instances and merge duplicates (on)
 #pragma checkoption -Jgd
@@ -87,13 +186,15 @@ static volatile int startup_level = 0;
 //#pragma checkoption -K
 #ifndef __cplusplus
 // perform C++ compile regardless of source extension (on)
+# if __BORLANDC__ >= 0x560
 # pragma checkoption -P
+#endif
 #endif
 // use C calling convention (on)
 #pragma checkoption -pc
 // enable runtime type information (on)
 #pragma checkoption -RT
-// enable register variables (off)
+// enable register variables (off) ***
 #pragma checkoption -r-
 // generate underscores on symbol names (on)
 #pragma checkoption -u
@@ -115,7 +216,7 @@ static volatile int startup_level = 0;
 #pragma checkoption -x
 // enable destructor cleanup (on)
 #pragma checkoption -xd
-// enable exception location information (on)
+// enable exception location information (on) ***
 #pragma checkoption -xp
 // enable fast exception prologs (off)
 #pragma checkoption -xf-
@@ -140,22 +241,14 @@ static volatile int startup_level = 0;
 # pragma checkoption -tWM-
 #endif
 
-# if defined (__MT__) && ! defined (_MT)
-#  define _MT
-# elif defined (_MT) && ! defined (__MT__)
-#  define __MT__
-# elif ! defined (_MT) && ! defined (__MT__)
-#  error - singlethead not supported, please enable multithread (-tWM)
-# endif
-
 #if defined (_DEBUG) || defined (__DEBUG) || defined (_STLP_DEBUG)
 // disable all optimizations (on)
-# if __BORLANDC__ > 0x550
+# if __BORLANDC__ >= 0x560
 #  pragma checkoption -Od
 # endif
 // stack frames (on)
 # pragma checkoption -k
-// include browser information in generated object files (on)
+// include browser information in generated object files (on) ***
 # pragma checkoption -R
 // source debugging (on)
 # pragma checkoption -v
@@ -173,128 +266,63 @@ static volatile int startup_level = 0;
 
 #endif // check options
 
-// ============================================================================
-#if __BORLANDC__ >= 0x550
 
+/* ========================================================================== */
+// Borland 5.5 only
 
-# define _STLP_USE_OWN_BAD_ALLOC 1
-# define _RWSTD_BAD_ALLOC_DEFINED 1
-
-#  ifndef _STLP_OWN_IOSTREAMS
-#   define _STLP_NO_OWN_IOSTREAMS
+# if __BORLANDC__ >= 0x550 && __BORLANDC__ < 0x560
+#  define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1
+#  define _STLP_QUALIFIED_SPECIALIZATION_BUG 1
+#  define _STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS 1
+#  ifdef __cplusplus // workaround for string_test, stdlib.h
+namespace std { void broken(){}; }
 #  endif
-
-#  define _STLP_BROKEN_EXCEPTION_CLASS 1
-//#  define _STLP_NO_EXCEPTION_HEADER 1
-#  define _STLP_USE_STDIO_IO 1
-#  define _STLP_LONG_LONG  __int64 
-#  define _STLP_NON_TYPE_TMPL_PARAM_BUG 1
-#  define _STLP_USE_DECLSPEC 1
-
-#  ifdef __CODEGUARD__
-#   if ! defined( _STLP_USE_NEWALLOC ) && ! defined ( _STLP_USE_MALLOC )
-#    define   _STLP_USE_NEWALLOC 1
-#   endif
-#   define _STLP_LEAKS_PEDANTIC // optional, for codeguard memory leaks
-#  endif
-
-#  define __STD_RWCOMPILER_H__ // exclude native stdcomp.h
-#  define STARTWRAP // error in native stddefs.h
-#  define ENDWRAP // error in native stddefs.h
-#  define _RWSTD_THROW_SPEC_NULL throw() // error in native new.h
-
-// streams
-#  define _STLP_OWN_IOSTREAMS
-#  define _STLP_USE_STDIO_IO 1 // __pioinfo error in 'fstream.cpp'
-#  define _STLP_USE_NEW_IOSTREAMS 1 // for eh_test
-#  ifdef _STLP_OWN_IOSTREAMS // oldstl header gurards
-#   define __STD_FSTREAM__
-#   define __STD_IOS__
-#   define __STD_IOSFWD__
-#   define __STD_ISTREAM__
-#   define __STD_OSTREAM__
-#   define __STD_STREAMBUF__
-#   define __STD_STRSTREAM__
-#  endif
-#  define _RW_STD_IOSTREAM // exclude native iostream defs
-
-// memory
-#  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1 // stl/_new.h (don't import native bad_alloc)
-#  define _USE_OLD_RW_STL 1 // native new.h (operator new, operator delete)
-#  undef __TURBOC__  // native oldstl/new.h (avoid duplicate exception class)
-#  define _RWSTD_BAD_ALLOC_DEFINED 1 // native oldstl/new.h (avoid duplicate exception class)
-
-// exception
-#  define __STD_EXCEPTION 1 // native oldstl/exceptio.h (header guard)
-#  define __EXCEPT_H 1 // native except.h (header guard)
-#  define _STLP_BROKEN_EXCEPTION_CLASS 1 // use STLport exception class
-#  if defined _STLP_BROKEN_EXCEPTION_CLASS && defined (_STLP_VENDOR_GLOBAL_EXCEPT_STD)
-#   error inconsistent exception class specifications!
+#  define _STLP_NO_LONG_DOUBLE 1
 #endif
 
-// strings
-#  define __STRING_STL // exclude native string.stl
-#  define __STD_STRING // exclude native string.stl
+/* ========================================================================== */
+// export, import, all builds
 
-// locale
-#  define __LOCALE_H  // exclude native _loc.h, except in stlport/clocale
-#  define __USELOCALES__  // native _loc.h (use native setlocale)
-#  define __LOCALE_H_USING_LIST // native _loc.h (disable native 'using std::setlocale')
-
-// wchar_t
-#  ifndef _STLP_NO_WCHAR_T
-#   define _STLP_HAS_WCHAR_T 1
-#   define _UNICODE 1
-#   define _MBCS 1
+# ifdef __BUILDING_STLPORT
+#  define _STLP_CALL __cdecl __export
 #  else
-typedef char mbstate_t;
+#  define _STLP_CALL __cdecl
 #endif
 
-// templates
-#  define _STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS 1
-#  define _STLP_USE_PTR_SPECIALIZATIONS 1
-#  define _STLP_STATIC_TEMPLATE_DATA 1
-#  ifdef __BUILDING_STLPORT
 #   define _STLP_USE_DECLSPEC 1
-#endif
 
-// namespaces
-#  define _STLP_USING_NAMESPACE_BUG
+# define _STLP_EXPORT_DECLSPEC __declspec(dllexport)
+# define _STLP_IMPORT_DECLSPEC __declspec(dllimport)
 
-// compiler
-#  define _STLP_NO_FORCE_INSTANTIATE 1
+# define _STLP_CLASS_EXPORT_DECLSPEC __declspec(dllexport)
+# define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
 
-// linker
-#  define _STLP_USE_ALT_LIBNAMES 1
-
+// Note: If _STLP_USE_TEMPLATE_EXPORT is defined when building STLport, it should
+// also be defined when building STLport applications.  Otherwise offsets to class
+// members (_M_streambuf) may change, which could cause crash.
+#  ifdef _STLP_USE_TEMPLATE_EXPORT
+#   pragma message "Warning: _STLP_USE_TEMPLATE_EXPORT will increase size of obj and lib files."
+#   define _STLP_IMPORT_TEMPLATE_KEYWORD __declspec(dllimport)
+#   define _STLP_EXPORT_TEMPLATE_KEYWORD __declspec(dllexport)
 # endif
 
 // ============================================================================
+// native include directories (optional)
 
-#if ( __BORLANDC__ < 0x540 )
+//#    define _STLP_NATIVE_INCLUDE_PATH ../include
+//#    define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include
+//#    define _STLP_NATIVE_C_INCLUDE_PATH ../include
+//#    define _STLP_NATIVE_CPP_RUNTIME_PATH ../include
 
-#  error - Support for Borland compilers below version 5.4 to be implemented.
+/* ========================================================================== */
+// libraries
 
-#endif
+# if (__BORLANDC__ >= 0x550)
 
-// auto enable thread safety and exceptions:
-#ifndef _CPPUNWIND
-#  define _STLP_HAS_NO_EXCEPTIONS
-#endif
+#  if !defined (_STLP_NO_OWN_IOSTREAMS)
 
-#if defined ( __MT__ ) && !defined (_NOTHREADS) && !defined (_REENTRANT)
-#  define _REENTRANT 1
-#endif
-
-#if defined ( __DEBUG ) && ( __DEBUG > 1 )
-#  define _STLP_DEBUG
-#endif
-
-// Note: If _STLP_USE_TEMPLATE_EXPORT is defined when building STLport, it should 
-// also be defined when building STLport applications.  Offsets to class members 
-// (e.g., _M_streambuf) may change when _STLP_USE_TEMPLATE_EXPORT is defined.
-#  ifdef _STLP_USE_TEMPLATE_EXPORT
-#   pragma message "Warning: _STLP_USE_TEMPLATE_EXPORT will increase size of obj and lib files."
+#  ifdef __BUILDING_STLPORT
+#   define _STLP_EXCLUDE_BC5_LIBS 1
 #  endif
 
 #  ifndef _STLP_USE_ALT_LIBNAMES
@@ -306,10 +334,8 @@ typedef char mbstate_t;
 #    define _STLP_LIB_BASENAME stlp50_bc56
 #   elif __BORLANDC__ >= 0x550 && __BORLANDC__ < 0x560 
 #    define _STLP_LIB_BASENAME stlp50_bc55
-#   elif __BORLANDC__ >= 0x540 && __BORLANDC__ < 0x550
-#    define _STLP_LIB_BASENAME stlp50_bc54
 #   else
-#    error - Support for Borland compilers below version 5.4 to be implemented.
+#    error - Borland compilers below version 5.5 not supported.
 #   endif
 #  endif
 
@@ -357,69 +383,31 @@ typedef char mbstate_t;
 #   endif
 #  endif /* _STLP_USE_ALT_LIBNAMES */
 
-
 # define _LIB_ALT_KEY(key) key
 # define _LIB_COMBINE_KEYS(base,shared,debug) base ## shared ## debug
 # define _STLP_ALT_LIBNAME _LIB_COMBINE_KEYS(_LIB_ALT_KEY(_STLP_LIB_BASENAME),_LIB_ALT_KEY(_LIB_SHARED_KEY),_LIB_ALT_KEY(_LIB_DEBUG_KEY)) ## .lib
 # define _STLP_ALT_EXENAME _LIB_COMBINE_KEYS(_LIB_ALT_KEY(_STLP_LIB_BASENAME),_LIB_ALT_KEY(_LIB_SHARED_KEY),_LIB_ALT_KEY(_LIB_DEBUG_KEY))
 
-//# ifdef _STLP_USE_ALT_LIBNAMES
 #  ifndef __BUILDING_STLPORT_EXECUTABLE
 #   pragma message STLport lib: _STLP_ALT_LIBNAME
 #else
-#   ifndef _BC5_EXCLUDE_STLP_LIBS
-#    define _BC5_EXCLUDE_STLP_LIBS 1
+#   ifndef _STLP_EXCLUDE_BC5_LIBS
+#    define _STLP_EXCLUDE_BC5_LIBS 1
 #   endif
 #   pragma message STLport [ _STLP_ALT_EXENAME ] .exe
 #  endif
-//# endif
-
-// ============================================================================
-# if (__BORLANDC__ < 0x540)
-
-#  error - Support for Borland compilers below version 5.4 to be implemented.
-
-// ============================================================================
-# else /* (__BORLANDC__ >= 0x540) */
-
-#  define _STLP_EXPORT_DECLSPEC __declspec(dllexport)
-#  define _STLP_IMPORT_DECLSPEC __declspec(dllimport)
-
-#  define _STLP_CLASS_EXPORT_DECLSPEC __declspec(dllexport)
-#  define _STLP_CLASS_IMPORT_DECLSPEC __declspec(dllimport)
-
-#  if !defined (_STLP_NO_OWN_IOSTREAMS)
-
-#   if ( defined (__DLL) || defined (_DLL) || defined (_WINDLL) || defined (_RTLDLL) \
-      || defined(_AFXDLL) || defined (_STLP_USE_DYNAMIC_LIB) )
-#    undef  _STLP_USE_DECLSPEC
-#    define _STLP_USE_DECLSPEC 1
-#  endif
-
-#  ifndef _STLP_IMPORT_TEMPLATE_KEYWORD
-#    define _STLP_IMPORT_TEMPLATE_KEYWORD __declspec(dllimport)
-#  endif
-
-#  define _STLP_EXPORT_TEMPLATE_KEYWORD __declspec(dllexport)
-
-#  if (__BORLANDC__ >= 0x560) && !defined (_STLP_OWN_IOSTREAMS)
-#      define _STLP_NATIVE_INCLUDE_PATH ../include/oldstl
-#    define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../include/oldstl
-#    define _STLP_NATIVE_C_INCLUDE_PATH ../include/oldstl
-#    define _STLP_NATIVE_CPP_RUNTIME_PATH ../include/oldstl
-#  endif
 
 #   ifdef _STLP_USE_ALT_LIBNAMES
-#    if (__BORLANDC__ >= 0x560)
+#    if (__BORLANDC__ >= 0x560) && (__BORLANDC__ < 0x570)
 #     ifndef __BUILDING_STLPORT
 #      ifdef _STLP_DEBUG
 #       ifdef _MT
 #        ifdef _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc56_sdd.lib")
 #         endif
 #        else // NOT _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc56_add.lib")
 #         endif
 #        endif
@@ -427,11 +415,11 @@ typedef char mbstate_t;
 #      elif (__DEBUG == 1)
 #       ifdef _MT
 #        ifdef _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc56_sdr.lib")
 #endif
 #        else // NOT _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc56_adr.lib")
 #         endif
 #        endif
@@ -439,42 +427,39 @@ typedef char mbstate_t;
 #      else // NOT __DEBUG
 #       ifdef _MT
 #        ifdef _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc56_srr.lib")
 #         endif
 #        else
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc56_arr.lib")
 #         endif
 #        endif
 #       endif // _MT
 #      endif // _STLP_DEBUG
 #     endif // __BUILDING_STLPORT
-#    elif __BORLANDC__ >= 0x550 && __BORLANDC__ < 0x560
+#    elif (__BORLANDC__ >= 0x550) && (__BORLANDC__ < 0x560)
 #     ifndef __BUILDING_STLPORT
 #      ifdef _STLP_DEBUG
 #       ifdef _MT
 #        ifdef _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc55_sdd.lib")
 #         endif
 #        else // NOT _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc55_add.lib")
-#         endif
-#         ifdef __DLL__
-#         else
 #         endif
 #        endif
 #       endif
 #      elif (__DEBUG == 1)
 #       ifdef _MT
 #        ifdef _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc55_sdr.lib")
 #         endif
 #        else // NOT _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc55_adr.lib")
 #         endif
 #        endif
@@ -482,15 +467,12 @@ typedef char mbstate_t;
 #      else // NOT __DEBUG
 #       ifdef _MT
 #        ifdef _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc55_srr.lib")
 #         endif
 #        else // NOT _RTLDLL
-#         ifndef _BC5_EXCLUDE_STLP_LIBS
+#         ifndef _STLP_EXCLUDE_BC5_LIBS
 #          pragma comment(lib,"stlp50_bc55_arr.lib")
-#         endif
-#         ifdef __DLL__
-#         else
 #         endif
 #        endif
 #       endif // _MT
@@ -529,5 +511,5 @@ typedef char mbstate_t;
 #    endif // __BUILDING_STLPORT
 #   endif /* _STLP_USE_ALT_LIBNAMES */
 #  endif /* _STLP_NO_OWN_IOSTREAMS */
-# endif /* (__BORLANDC__ >= 0x540) */
+# endif /* __BORLANDC__ >= 0x550 */
 

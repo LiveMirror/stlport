@@ -23,11 +23,7 @@
 
 #include <stl/_ioserr.h>
 
-#ifdef __BORLANDC__
-# include <ostream.>
-#else
 # include <ostream>
-#endif
 
 #ifdef _STLP_USE_NAMESPACES
 # include <using/ostream>

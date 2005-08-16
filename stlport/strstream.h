@@ -21,15 +21,9 @@
 #  include <stl/_prolog.h>
 #endif
 
-// fbp - if we are going to use that consistently, let's do it
-#ifdef __BORLANDC__
-#  include <strstream.>
-#else
 #  include <strstream>
-#endif
 
 #include <iostream.h>
-
 
 #ifndef _STLP_HAS_NO_NAMESPACES
 

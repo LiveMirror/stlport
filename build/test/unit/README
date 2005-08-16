@@ -21,7 +21,7 @@ make -f gcc.mak
 ======================
 Running the test suite
 ======================
-commad-line syntax as follows:
+command-line syntax as follows:
   stl_unit_test [OPTIONS]
   where OPTIONS are
    -t=CLASS[::TEST]    run the test class CLASS or member test CLASS::TEST

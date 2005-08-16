@@ -29,11 +29,7 @@
     defined(__OpenBSD__) || defined(__FreeBSD__) || \
    (defined (__GNUC__) && (defined (__APPLE__) || defined( __Lynx__ )))
 
-#  ifdef __BORLANDC__
-#   include _STLP_NATIVE_C_HEADER(_stddef.h)
-#  else
 #  include _STLP_NATIVE_C_HEADER(stddef.h)
-#  endif
 
 #  if defined (__Lynx__)
 #    ifndef _WINT_T
@@ -94,7 +90,11 @@ inline bool operator==(const __stl_mbstate_t& __x, const __stl_mbstate_t& __y) {
 inline bool operator!=(const __stl_mbstate_t& __x, const __stl_mbstate_t& __y) {
   return ( __x._M_state[0] == __y._M_state[0] );
 }
+#  else
+#   if defined(__BORLANDC__) && (__BORLANDC__ < 0x560)
+typedef char __stl_mbstate_t;
 #  endif
+#  endif /* __cplusplus */
 
 
 _STLP_BEGIN_NAMESPACE

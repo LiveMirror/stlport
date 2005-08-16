@@ -25,11 +25,7 @@
 
 #include <stl/_ioserr.h>
 
-#ifdef __BORLANDC__
-#  include <streambuf.>
-#else
 #  include <streambuf>
-#endif
 
 # include <ios.h>
 

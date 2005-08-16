@@ -108,7 +108,8 @@ void _STLP_DECLSPEC _STLP_CALL __stl_throw_overflow_error(const char* __msg) {
   _STLP_THROW_MSG(overflow_error, __msg); 
 }
 
-#if (defined (_STLP_NO_EXCEPTION_HEADER) || defined (_STLP_BROKEN_EXCEPTION_CLASS)) && ! defined(__BORLANDC__)
+#if (defined (_STLP_NO_EXCEPTION_HEADER) || defined (_STLP_BROKEN_EXCEPTION_CLASS) || \
+     defined(_STLP_USE_OWN_EXCEPTION_CLASS))
 exception::exception() _STLP_NOTHROW {}
 exception::~exception() _STLP_NOTHROW {}
 bad_exception::bad_exception() _STLP_NOTHROW {}
