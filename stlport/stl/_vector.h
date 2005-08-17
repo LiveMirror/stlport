@@ -549,11 +549,19 @@ protected:
       _STLP_STD::_Destroy(__dst);
       _STLP_STD::_Move_Construct(__dst, *__src);
     }
-    for (; __src != __end; ++__dst, ++__src) {
-      _STLP_STD::_Destroy_Moved(__dst);
-      _STLP_STD::_Move_Construct(__dst, *__src);
+    if (__dst != __last) {
+      //There is more elements to erase than element to move:
+      _STLP_STD::_Destroy_Range(__dst, __last);
+      _STLP_STD::_Destroy_Moved_Range(__last, __end);
     }
-    _STLP_STD::_Destroy_Moved_Range(__dst, __end);
+    else {
+      //There is more element to move than element to erase:
+      for (; __src != __end; ++__dst, ++__src) {
+        _STLP_STD::_Destroy_Moved(__dst);
+        _STLP_STD::_Move_Construct(__dst, *__src);
+      }
+      _STLP_STD::_Destroy_Moved_Range(__dst, __end);
+    }
     this->_M_finish = __dst;
     return __first;
   }

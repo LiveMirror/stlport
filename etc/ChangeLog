@@ -1,4 +1,9 @@
-2005-08-16  Francois Dumont  <dums@stlport...>
+2005-08-18  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_vector.h: Fix _M_erase range for movable types
+	implementation thanks Sergej Zagursky.
+
+2005-08-17  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_complex.h: Fix some floating point literals thanks
 	 Ulrickt Echkard report.
