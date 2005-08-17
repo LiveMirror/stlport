@@ -302,14 +302,10 @@ basic_filebuf<_CharT, _Traits>::seekoff(off_type __off,
         streamoff __adjust = _M_mmap_len - (this->gptr() - (_CharT*) _M_mmap_base);
 
         // if __off == 0, we do not need to exit input mode and to shift file pointer
-        if (__off == 0) {
-          return pos_type(_M_base._M_seek(0, ios_base::cur) - __adjust);
-        }
-        else
-          return _M_seek_return(_M_base._M_seek(__off - __adjust, ios_base::cur), _State_type());
-      }
-      else if (_M_constant_width) { // Get or set the position.  
-
+        return __off == 0 ?
+          pos_type(_M_base._M_seek(0, ios_base::cur) - __adjust) :
+          _M_seek_return(_M_base._M_seek(__off - __adjust, ios_base::cur), _State_type());
+      } else if (_M_constant_width) { // Get or set the position.  
         streamoff __iadj = _M_width * (this->gptr() - this->eback());
         
         // Compensate for offset relative to gptr versus offset relative
@@ -318,19 +314,13 @@ basic_filebuf<_CharT, _Traits>::seekoff(off_type __off,
         // but not set the current position.
         
         if (__iadj <= _M_ext_buf_end - _M_ext_buf) {
-          
           streamoff __eadj =  _M_base._M_get_offset(_M_ext_buf + __iadj, _M_ext_buf_end);
 
-          if (__off == 0) {
-            return pos_type(_M_base._M_seek(0, ios_base::cur) - __eadj);
-          }  else {
-            return _M_seek_return(_M_base._M_seek(__off - __eadj, ios_base::cur), _State_type());
-          }
+          return __off == 0 ?
+            pos_type(_M_base._M_seek(0, ios_base::cur) - __eadj) :
+            _M_seek_return(_M_base._M_seek(__off - __eadj, ios_base::cur), _State_type());
         }
-        else
-          return pos_type(-1);
-      }
-      else {                    // Get the position.  Encoding is var width.
+      } else {                    // Get the position.  Encoding is var width.
         // Get position in internal buffer.
         ptrdiff_t __ipos = this->gptr() - this->eback();
         
@@ -363,18 +353,14 @@ basic_filebuf<_CharT, _Traits>::seekoff(off_type __off,
             _M_base._M_get_offset(_M_ext_buf, _M_ext_buf_end);
           if (__cur != -1 && __cur + __adj >= 0)
             return _M_seek_return(__cur + __adj, __state);
-          else
-            return pos_type(-1);
         }
-        else                    // We failed the sanity check.
-          return pos_type(-1);
+        // We failed the sanity check here.
       }
     }
-    else                        // Unrecognized value for __whence.
-      return pos_type(-1);
+    // Unrecognized value for __whence here.
   }
-  else
-    return pos_type(-1);
+  
+  return pos_type(-1);
 }
 
 
@@ -391,11 +377,9 @@ basic_filebuf<_CharT, _Traits>::seekpos(pos_type __pos,
       _M_state = __pos.state();
       return _M_seek_return(__off, __pos.state());
     }
-    else
-      return pos_type(-1);
   }
-  else
-    return pos_type(-1);
+
+  return pos_type(-1);
 }
 
 
@@ -403,11 +387,8 @@ template <class _CharT, class _Traits>
 int basic_filebuf<_CharT, _Traits>::sync() {
   if (_M_in_output_mode)
     return traits_type::eq_int_type(this->overflow(traits_type::eof()),
-                                    traits_type::eof())
-      ? -1
-      : 0;
-  else
-    return 0;
+                                    traits_type::eof()) ? -1 : 0;
+  return 0;
 }
 
 
@@ -444,8 +425,8 @@ bool basic_filebuf<_CharT, _Traits>::_M_switch_to_input_mode() {
     _M_in_input_mode = true;
     return true;
   }
-  else
-    return false;
+
+  return false;
 }
 
 
@@ -468,11 +449,10 @@ bool basic_filebuf<_CharT, _Traits>::_M_switch_to_output_mode() {
 
     this->setp(_M_int_buf, _M_int_buf_EOS - 1);
     _M_in_output_mode = true;
-
     return true;
   }
-  else
-    return false;
+
+  return false;
 }
 
 
