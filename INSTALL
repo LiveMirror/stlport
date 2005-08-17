@@ -114,7 +114,7 @@ build process description, for a more detailed one check the doc folder:
 
     Example:
     
-    - under Linux:
+    - under Linux and other Unixes:
 
     cd build/test/unit
     make -f <compiler name>.mak install
@@ -133,9 +133,9 @@ build process description, for a more detailed one check the doc folder:
 8) Supply the "lib" subdirectory to the library search path and add desired 
    library to the list of libraries to link with.
    Examples (imagine you have mytest.cpp in the same directory as this file is):
-	With gcc     : gcc -I./stlport mytest.cpp -L./lib/ -lstlport_gcc
-	With DEC CC  : cxx -I./stlport mytest.cpp -L./lib/ -lstlport_deccxx
-	With SUN CC  : CC -I./stlport mytest.cpp -L./lib/ -lstlport_sunpro
+	With gcc     : gcc -pthread -I./stlport mytest.cpp -L./lib/ -lstlport
+	With DEC CC  : cxx -I./stlport mytest.cpp -L./lib/ -lstlport
+	With SUN CC  : CC -mt -I./stlport mytest.cpp -L./lib/ -lstlport
 	.....
    [ Visual C++ specific ] For VC++, you do not have to specify "stlport_XXX.lib" explicitly,
    as it is being choosen and forced to link automatically by "#pragma"'s in compiler config
@@ -150,4 +150,15 @@ build process description, for a more detailed one check the doc folder:
    is to copy all .dll's next to the executable. Or, you might choose to add bin directory
    containing STLport dlls to the PATH environment string.
 
-10) Have fun !
+10) STLport build only multithreaded libraries, so you application should be compiled
+   as multithreaded too. Use -pthread (or -pthreads on Solaris) option for gcc, -mt for SunPro,
+   /MT for VC, and so on. Sometimes you should define _REENTRANT or something else, depends
+   upon platform/compiler. See compiler's and linker's options on command line when you build
+   unit tests (build/test/unit) for reference. The last is useful for ANY platform (special
+   attention for Windows users).
+
+11) Don't hesitate to read READMEs (doc/README*, build/lib/README*, build/test/unit/README*)
+   and doc/FAQ.
+
+12) Have fun!
+
