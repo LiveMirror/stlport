@@ -11,8 +11,10 @@
 
 	* INSTALL: add some words about multithread options and libraries.
 
-	* stlport/stl/_fstream.c: some code clean to reduse bogus compiler
+	* stlport/stl/_fstream.c: some code clean to reduce bogus compiler
 	warnings with -Wall.
+
+	* stlport/config/stl_gcc.h: seems HP-UX has no llabs and lldiv.
 
 2005-08-17  Francois Dumont  <dums@stlport...>
 
@@ -22,8 +24,6 @@
 	* build/Makefiles/nmake/vc8.mak: removed /RTC1 compiler option, the platform
 	SDK compiler do not support it. STLport users will just have to activate it
 	by themself if they want to.
-
-2005-08-17  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_complex.h: Fix some floating point literals thanks
 	 Ulrich Eckhardt report.

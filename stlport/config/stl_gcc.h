@@ -219,6 +219,10 @@ typedef unsigned int wint_t;
 #  endif
 #endif
 
+#ifdef __hpux
+#  define _STLP_NO_VENDOR_STDLIB_L /* no llabs */
+#endif
+
 #if (__GNUC__ >= 3)
 #  ifndef _STLP_HAS_NO_NEW_C_HEADERS
 /*
