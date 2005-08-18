@@ -1,3 +1,12 @@
+2005-08-18  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_deque.c: Fix _M_erase range for movable types method
+	implementation, same bug as below in vector.
+
+	* test/unit/mvctor.cpp: Improve test case on vector to reveal bug
+	below and add same tests for deque which is the other container that
+	use the move contructor feature.
+
 2005-08-18  Petr Ovtchenkov  <ptr@island...>
 
 	* INSTALL: add some words about multithread options and libraries.
@@ -5,7 +14,7 @@
 	* stlport/stl/_fstream.c: some code clean to reduse bogus compiler
 	warnings with -Wall.
 
-2005-08-18  Francois Dumont  <dums@stlport...>
+2005-08-17  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_vector.h: Fix _M_erase range for movable types
 	implementation thanks Sergej Zagursky.

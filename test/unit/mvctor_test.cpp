@@ -22,14 +22,18 @@ class MoveConstructorTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(move_construct_test);
   CPPUNIT_TEST(deque_test);
   CPPUNIT_TEST(vector_test);
+#if defined (STLPORT)
   CPPUNIT_TEST(move_traits);
+#endif
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void move_construct_test();
   void deque_test();
   void vector_test();
+#if defined (STLPORT)
   void move_traits();
+#endif
 
   /*
   template <class _Container>
@@ -580,30 +584,26 @@ void MoveConstructorTest::vector_test()
 
 #ifdef STLPORT
 struct MovableStruct {
-  MovableStruct() {
-    ++nb_dft_construct_call;
-  }
-  MovableStruct(MovableStruct const&) {
-    ++nb_cpy_construct_call;
-  }
-  MovableStruct(__move_source<MovableStruct>) {
-    ++nb_mv_construct_call;
-  }
+  MovableStruct() { ++nb_dft_construct_call; }
+  MovableStruct(MovableStruct const&) { ++nb_cpy_construct_call; }
+  MovableStruct(__move_source<MovableStruct>) { ++nb_mv_construct_call; }
+  ~MovableStruct() { ++nb_destruct_call; }
 
-  ~MovableStruct() {
-    ++nb_destruct_call;
+  static void reset() {
+    nb_dft_construct_call = nb_cpy_construct_call = nb_mv_construct_call = 0;
+    nb_destruct_call = 0;
   }
-
-  static unsigned int nb_dft_construct_call;
-  static unsigned int nb_cpy_construct_call;
-  static unsigned int nb_mv_construct_call;
-  static unsigned int nb_destruct_call;
+  
+  static size_t nb_dft_construct_call;
+  static size_t nb_cpy_construct_call;
+  static size_t nb_mv_construct_call;
+  static size_t nb_destruct_call;
 };
 
-unsigned int MovableStruct::nb_dft_construct_call = 0;
-unsigned int MovableStruct::nb_cpy_construct_call = 0;
-unsigned int MovableStruct::nb_mv_construct_call = 0;
-unsigned int MovableStruct::nb_destruct_call = 0;
+size_t MovableStruct::nb_dft_construct_call = 0;
+size_t MovableStruct::nb_cpy_construct_call = 0;
+size_t MovableStruct::nb_mv_construct_call = 0;
+size_t MovableStruct::nb_destruct_call = 0;
 
 namespace std {
   _STLP_TEMPLATE_NULL
@@ -614,30 +614,26 @@ namespace std {
 }
 
 struct CompleteMovableStruct {
-  CompleteMovableStruct() {
-    ++nb_dft_construct_call;
-  }
-  CompleteMovableStruct(CompleteMovableStruct const&) {
-    ++nb_cpy_construct_call;
-  }
-  CompleteMovableStruct(__move_source<CompleteMovableStruct>) {
-    ++nb_mv_construct_call;
-  }
+  CompleteMovableStruct() { ++nb_dft_construct_call; }
+  CompleteMovableStruct(CompleteMovableStruct const&) { ++nb_cpy_construct_call; }
+  CompleteMovableStruct(__move_source<CompleteMovableStruct>) { ++nb_mv_construct_call; }
+  ~CompleteMovableStruct() { ++nb_destruct_call; }
 
-  ~CompleteMovableStruct() {
-    ++nb_destruct_call;
+  static void reset() {
+    nb_dft_construct_call = nb_cpy_construct_call = nb_mv_construct_call = 0;
+    nb_destruct_call = 0;
   }
-
-  static unsigned int nb_dft_construct_call;
-  static unsigned int nb_cpy_construct_call;
-  static unsigned int nb_mv_construct_call;
-  static unsigned int nb_destruct_call;
+  
+  static size_t nb_dft_construct_call;
+  static size_t nb_cpy_construct_call;
+  static size_t nb_mv_construct_call;
+  static size_t nb_destruct_call;
 };
 
-unsigned int CompleteMovableStruct::nb_dft_construct_call = 0;
-unsigned int CompleteMovableStruct::nb_cpy_construct_call = 0;
-unsigned int CompleteMovableStruct::nb_mv_construct_call = 0;
-unsigned int CompleteMovableStruct::nb_destruct_call = 0;
+size_t CompleteMovableStruct::nb_dft_construct_call = 0;
+size_t CompleteMovableStruct::nb_cpy_construct_call = 0;
+size_t CompleteMovableStruct::nb_mv_construct_call = 0;
+size_t CompleteMovableStruct::nb_destruct_call = 0;
 
 namespace std {
   _STLP_TEMPLATE_NULL
@@ -646,12 +642,9 @@ namespace std {
     typedef __true_type complete;
   };
 }
-#endif //STLPORT
 
 void MoveConstructorTest::move_traits()
 {
-  //Only relevant for an STLport test:
-#ifdef STLPORT
   {
     {
       vector<MovableStruct> vect;
@@ -676,34 +669,47 @@ void MoveConstructorTest::move_traits()
       CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 11 );
       */
 
+      MovableStruct::reset();
       vector<MovableStruct> v2 = vect;
-      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
-      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 8 );
-      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 3 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 7 );
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 0 );
 
+      MovableStruct::reset();
       vect.insert(vect.begin() + 2, v2.begin(), v2.end() );
 
       // vect contains 8 elements
-      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
-      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 12 );
-      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 7 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 11 );
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 4 );
 
+      MovableStruct::reset();
       vect.erase(vect.begin(), vect.begin() + 2 );
 
       // vect contains 6 elements
-      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 13 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 19 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 6 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 8 );
+      
+      MovableStruct::reset();
+      vect.erase(vect.end() - 2, vect.end());
+      
+      // vect contains 4 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 2 );
 
+      MovableStruct::reset();
       vect.erase(vect.begin());
 
-      // vect contains 5 elements
-      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 18 );
-      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 25 );
+      // vect contains 3 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 3 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 4 );
+      
+      MovableStruct::reset();
     }
-    // CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 30 );
-    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 34 );
+    //vect with 3 elements and v2 with 4 elements are now out of scope
+    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 3 + 4 );
   }
 
   {
@@ -731,30 +737,187 @@ void MoveConstructorTest::move_traits()
       CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
       */
 
+      CompleteMovableStruct::reset();
       vector<CompleteMovableStruct> v2 = vect;
 
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 0 );
+      
+      CompleteMovableStruct::reset();
       vect.insert(vect.begin() + 2, v2.begin(), v2.end());
 
       // vect contains 8 elements
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 12 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 7 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 0 );
 
+      CompleteMovableStruct::reset();
       vect.erase(vect.begin(), vect.begin() + 2);
 
       // vect contains 6 elements
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 13 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 6 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 6 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 2 );
 
+      CompleteMovableStruct::reset();
+      vect.erase(vect.end() - 2, vect.end());
+
+      // vect contains 4 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 2 );
+
+      CompleteMovableStruct::reset();
       vect.erase(vect.begin());
 
-      // vect contains 5 elements
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 18 );
-      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 7 );
+      // vect contains 3 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 3 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 1 );
+      
+      CompleteMovableStruct::reset();
     }
-    //CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 12 );
-    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 16 );
+    //vect with 3 elements and v2 with 4 elements are now out of scope
+    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 3 + 4 );
   }
-#endif //STLPORT
+
+  {
+    MovableStruct::reset();
+    {
+      deque<MovableStruct> deq;
+      deq.push_back(MovableStruct());
+      deq.push_back(MovableStruct());
+      deq.push_back(MovableStruct());
+      deq.push_back(MovableStruct());
+
+      // deq contains 4 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 4 );
+
+      // Following test violate requirements to sequiences (23.1.1 Table 67)
+      /*
+      deq.insert(deq.begin() + 2, deq.begin(), deq.end());
+      // deq contains 8 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 8 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 7 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 11 );
+      */
+
+      MovableStruct::reset();
+      deque<MovableStruct> d2 = deq;
+      
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 0 );
+
+      MovableStruct::reset();
+      deq.insert(deq.begin() + 2, d2.begin(), d2.end() );
+
+      // deq contains 8 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 2 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 2 );
+
+      MovableStruct::reset();
+      deq.erase(deq.begin() + 1, deq.begin() + 3 );
+
+      // deq contains 6 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 1 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 3 );
+      
+      MovableStruct::reset();
+      deq.erase(deq.end() - 3, deq.end() - 1);
+      
+      // deq contains 4 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 1 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 3 );
+
+      MovableStruct::reset();
+      deq.erase(deq.begin());
+
+      // deq contains 3 elements
+      CPPUNIT_ASSERT( MovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 1 );
+    
+      MovableStruct::reset();
+    }
+    //deq with 3 elements and d2 with 4 elements are now out of scope
+    CPPUNIT_ASSERT( MovableStruct::nb_destruct_call == 3 + 4 );
+  }
+
+  {
+    CompleteMovableStruct::reset();
+    {
+      deque<CompleteMovableStruct> deq;
+      deq.push_back(CompleteMovableStruct());
+      deq.push_back(CompleteMovableStruct());
+      deq.push_back(CompleteMovableStruct());
+      deq.push_back(CompleteMovableStruct());
+
+      // deq contains 4 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
+
+      // Following test violate requirements to sequiences (23.1.1 Table 67)
+      /*
+      deq.insert(deq.begin() + 2, deq.begin(), deq.end());
+
+      // deq contains 8 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 8 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 7 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 4 );
+      */
+
+      CompleteMovableStruct::reset();
+      deque<CompleteMovableStruct> d2 = deq;
+      
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 0 );
+
+      CompleteMovableStruct::reset();
+      deq.insert(deq.begin() + 2, d2.begin(), d2.end());
+
+      // deq contains 8 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_dft_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_cpy_construct_call == 4 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 2 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 0 );
+
+      CompleteMovableStruct::reset();
+      deq.erase(deq.begin() + 1, deq.begin() + 3);
+
+      // deq contains 6 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 1 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 2 );
+
+      CompleteMovableStruct::reset();
+      deq.erase(deq.end() - 3, deq.end() - 1);
+
+      // deq contains 4 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 1 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 2 );
+
+      CompleteMovableStruct::reset();
+      deq.erase(deq.begin());
+
+      // deq contains 3 elements
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_mv_construct_call == 0 );
+      CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 1 );
+    
+      CompleteMovableStruct::reset();
+    }
+    //deq with 3 elements and v2 with 4 elements are now out of scope
+    CPPUNIT_ASSERT( CompleteMovableStruct::nb_destruct_call == 3 + 4 );
+  }
 }
+#endif //STLPORT
