@@ -358,6 +358,48 @@ Status (stldbg-static):         All pass (327 tests)
 Notes:
 
 -----------------------------------------------------------------------
+Compiler:                       Windows Server 2003 SP1 Platform SDK (cross
+compiling for AMD64)
+-----------------------------------------------------------------------
+Date:                           2005-08-16
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       Henrik Goldman (hg@x-formation.com,
+www.x-formation.com)
+Status (release-shared):        All pass (327 tests)
+Notes:
+Status (dbg-shared):            All pass (327 tests)
+Notes:
+Status (stldbg-shared):         All pass (327 tests)
+Notes:
+Status (release-static):        All pass (327 tests)
+Notes:
+Status (dbg-static):            All pass (327 tests)
+Notes:
+Status (stldbg-static):         All pass (327 tests)
+Notes:
+
+-----------------------------------------------------------------------
+Compiler:                       Visual C++ 2005 (Beta2) (8.0) (cross
+compiling for AMD64)
+-----------------------------------------------------------------------
+Date:                           2005-08-16
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       Henrik Goldman (hg@x-formation.com,
+www.x-formation.com)
+Status (release-shared):        All pass (327 tests)
+Notes:
+Status (dbg-shared):            All pass (327 tests)
+Notes:
+Status (stldbg-shared):         All pass (327 tests)
+Notes:
+Status (release-static):        All pass (327 tests)
+Notes:
+Status (dbg-static):            All pass (327 tests)
+Notes:
+Status (stldbg-static):         All pass (327 tests)
+Notes:
+
+-----------------------------------------------------------------------
 Compiler:                       g++ 3.4.4 (cygwin special)
 -----------------------------------------------------------------------
 Date:                           2005-07-22
