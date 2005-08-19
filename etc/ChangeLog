@@ -1,3 +1,8 @@
+2005-08-19  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/gmake/gcc.mak: fix extraction of gcc version.
+	Thanks Thomas Kho.
+
 2005-08-18  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_deque.c: Fix _M_erase range for movable types method
@@ -1689,7 +1694,7 @@
 	* stlport/stl/_uninitialized.h: Fix of non Standard algo signature:
 			- uninitialized_fill_n
 			
-	*stlport/stl/_iterator_base.h: Fix of non Standard algo signature:
+	* stlport/stl/_iterator_base.h: Fix of non Standard algo signature:
 			- distance
 			
 	* stlport/stl/_algobase.h: Fix of non Standard algo signature:
@@ -1702,7 +1707,7 @@
 	* stlport/stl/_string.h, debug/_string.h: Fix of the non Standard basic_string
 	default constructor.
 			
-	*stlport/stl/_algobase.h, _function.h, _iterator_base.h, _move_construct_fwk.h, 
+	* stlport/stl/_algobase.h, _function.h, _iterator_base.h, _move_construct_fwk.h, 
 	_ptr_specialize.h, char_traits.h, debug/_debug.h: Fix of the macro name check 
 	before including type_traits.h.
 	

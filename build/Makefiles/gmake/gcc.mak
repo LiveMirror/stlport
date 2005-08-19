@@ -1,4 +1,4 @@
-# Time-stamp: <05/03/21 10:42:37 ptr>
+# Time-stamp: <05/08/19 09:51:52 ptr>
 # $Id$
 
 
@@ -24,9 +24,10 @@ CXX_VERSION_MAJOR := $(shell ${CXX} -dumpversion | awk 'BEGIN { FS = "."; } { pr
 CXX_VERSION_MINOR := $(shell ${CXX} -dumpversion | awk 'BEGIN { FS = "."; } { print $2; }')
 CXX_VERSION_PATCH := $(shell ${CXX} -dumpversion | awk 'BEGIN { FS = "."; } { print $3; }')
 else
-CXX_VERSION := $(shell ${CXX} --version | grep ${CXX} | awk '{ print $$3; }')
+CXX_VERSION := $(shell ${CXX} --version | grep GCC | awk '{ print $$3; }')
 
 ifeq ($(CXX_VERSION),)
+# 2.95 report only version
 CXX_VERSION := $(shell ${CXX} --version)
 endif
 
