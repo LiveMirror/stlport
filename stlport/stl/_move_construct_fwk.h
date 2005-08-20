@@ -115,7 +115,7 @@ struct __move_traits_aux2 {
 
 /*
  * Most of the time a class implement a move constructor but its use depends
- * on a third party, this is what the following struct is for.
+ * on a third party, this is what the following struct are for.
  */
 template <class _Tp>
 struct __move_traits_help {

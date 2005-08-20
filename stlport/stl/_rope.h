@@ -1031,7 +1031,11 @@ bool _S_apply_to_pieces(_CharConsumer __c,
                         // begin and end are assumed to be in range.
                         
 template <class _CharT, class _Alloc>
-class rope {
+class rope
+#if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND)
+           : public __stlport_class<rope<_CharT, _Alloc> >
+#endif
+{
   typedef rope<_CharT,_Alloc> _Self;
 public:
   typedef _CharT value_type;
@@ -1414,6 +1418,11 @@ public:
   rope(const _Self& __x)
     : _M_tree_ptr(__x._M_tree_ptr, __x._M_tree_ptr._M_data) {
     _S_ref(_M_tree_ptr._M_data);
+  }
+  
+  rope(__move_source<_Self> __src)
+    : _M_tree_ptr(__src.get()._M_tree_ptr, __src.get()._M_tree_ptr._M_data) {
+    __src.get()._M_tree_ptr._M_data = 0;
   }
 
   ~rope() {
@@ -2356,6 +2365,30 @@ inline _Rope_char_ref_proxy<_CharT, _Alloc>::operator _CharT () const {
     return _My_rope::_S_fetch(_M_root->_M_tree_ptr._M_data, _M_pos);
   }
 }
+
+#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
+template <class _CharT, class _Alloc>
+struct __move_traits<rope<_CharT, _Alloc> > {
+  typedef __true_type implemented;
+  //Completness depends on the allocator:
+  typedef typename __move_traits<_Alloc>::complete complete;
+};
+#else
+_STLP_TEMPLATE_NULL
+struct __move_traits<crope> {
+  typedef __true_type implemented;
+  typedef __true_type complete;
+};
+
+#  if defined (_STLP_HAS_WCHAR_T)
+_STLP_TEMPLATE_NULL
+struct __move_traits<wrope> {
+  typedef __true_type implemented;
+  typedef __true_type complete;
+};
+#  endif
+#endif
+
 
 _STLP_END_NAMESPACE
 

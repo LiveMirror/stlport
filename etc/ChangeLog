@@ -16,6 +16,15 @@
 	* test/unit/mvctor_test.cpp: Add many tests to check move contructor
 	implementations.
 
+	* stlport/stl/_function_base.h: Add type_traits specialization for the
+	less functor to help the move framework when dealing with associative
+	containers.
+
+	* test/unit/mvctor_test.cpp: Add a new test case checking correct move
+	semantic support for all STL containers.
+
+	* stlport/stl/_rope.h: Add move semantic support to the rope class.
+
 2005-08-19  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/gcc.mak: fix extraction of gcc version.
