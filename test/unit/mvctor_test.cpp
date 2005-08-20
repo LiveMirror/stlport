@@ -5,6 +5,8 @@
 #include <slist>
 #include <list>
 #include <deque>
+#include <set>
+#include <unordered_set>
 //#include <iostream>
 
 #include "cppunit/cppunit_proxy.h"
@@ -578,6 +580,159 @@ void MoveConstructorTest::vector_test()
       for (size_t i = 0; dit != ditEnd; ++dit, ++i) {
         CPPUNIT_ASSERT( bufs[i] == &dit->front() );
       }
+    }
+  }
+
+  //The following tests are checking move contructor implementations:
+  {
+    //vector move contructor:
+    vector<vector<string> > vect(10, vector<string>(10, "foo"));
+    vector<string> strs;
+    size_t index = 0;
+    while (true) {
+      vector<vector<string> >::iterator it(vect.begin());
+      advance(it, index % vect.size());
+      strs.push_back(it->front());
+      it->erase(it->begin());
+      if (it->empty()) {
+        vect.erase(it);
+        if (vect.empty())
+          break;
+      }
+      index += 3;
+    }
+    CPPUNIT_ASSERT( strs.size() == 10 * 10 );
+    vector<string>::iterator it(strs.begin()), itEnd(strs.end());
+    for (; it != itEnd; ++it) {
+      CPPUNIT_ASSERT( *it == "foo" );
+    }
+  }
+
+  {
+    //deque move contructor:
+    vector<deque<string> > vect(10, deque<string>(10, "foo"));
+    vector<string> strs;
+    size_t index = 0;
+    while (true) {
+      vector<deque<string> >::iterator it(vect.begin());
+      advance(it, index % vect.size());
+      strs.push_back(it->front());
+      it->pop_front();
+      if (it->empty()) {
+        vect.erase(it);
+        if (vect.empty())
+          break;
+      }
+      index += 3;
+    }
+    CPPUNIT_ASSERT( strs.size() == 10 * 10 );
+    vector<string>::iterator it(strs.begin()), itEnd(strs.end());
+    for (; it != itEnd; ++it) {
+      CPPUNIT_ASSERT( *it == "foo" );
+    }
+  }
+
+  {
+    //list move contructor:
+    vector<list<string> > vect(10, list<string>(10, "foo"));
+    vector<string> strs;
+    size_t index = 0;
+    while (true) {
+      vector<list<string> >::iterator it(vect.begin());
+      advance(it, index % vect.size());
+      strs.push_back(it->front());
+      it->pop_front();
+      if (it->empty()) {
+        vect.erase(it);
+        if (vect.empty())
+          break;
+      }
+      index += 3;
+    }
+    CPPUNIT_ASSERT( strs.size() == 10 * 10 );
+    vector<string>::iterator it(strs.begin()), itEnd(strs.end());
+    for (; it != itEnd; ++it) {
+      CPPUNIT_ASSERT( *it == "foo" );
+    }
+  }
+
+  {
+    //slist move contructor:
+    vector<slist<string> > vect(10, slist<string>(10, "foo"));
+    vector<string> strs;
+    size_t index = 0;
+    while (true) {
+      vector<slist<string> >::iterator it(vect.begin());
+      advance(it, index % vect.size());
+      strs.push_back(it->front());
+      it->pop_front();
+      if (it->empty()) {
+        vect.erase(it);
+        if (vect.empty())
+          break;
+      }
+      index += 3;
+    }
+    CPPUNIT_ASSERT( strs.size() == 10 * 10 );
+    vector<string>::iterator it(strs.begin()), itEnd(strs.end());
+    for (; it != itEnd; ++it) {
+      CPPUNIT_ASSERT( *it == "foo" );
+    }
+  }
+
+  {
+    //binary tree move contructor:
+    multiset<string> ref;
+    for (size_t i = 0; i < 10; ++i) {
+      ref.insert("foo");
+    }
+    vector<multiset<string> > vect(10, ref);
+    vector<string> strs;
+    size_t index = 0;
+    while (true) {
+      vector<multiset<string> >::iterator it(vect.begin());
+      advance(it, index % vect.size());
+      strs.push_back(*it->begin());
+      it->erase(it->begin());
+      if (it->empty()) {
+        vect.erase(it);
+        if (vect.empty())
+          break;
+      }
+      index += 3;
+    }
+    CPPUNIT_ASSERT( strs.size() == 10 * 10 );
+    vector<string>::iterator it(strs.begin()), itEnd(strs.end());
+    for (; it != itEnd; ++it) {
+      CPPUNIT_ASSERT( *it == "foo" );
+    }
+  }
+
+  {
+    //hash container move contructor:
+    unordered_multiset<string> ref;
+    for (size_t i = 0; i < 10; ++i) {
+      ref.insert("foo");
+    }
+    vector<unordered_multiset<string> > vect(10, ref);
+    vector<string> strs;
+    size_t index = 0;
+    while (true) {
+      vector<unordered_multiset<string> >::iterator it(vect.begin());
+      advance(it, index % vect.size());
+      strs.push_back(*it->begin());
+      it->erase(it->begin());
+      if (it->empty()) {
+        vect.erase(it);
+        if (vect.empty())
+          break;
+      }
+      index += 3;
+    }
+    CPPUNIT_ASSERT( strs.size() == 10 * 10 );
+    vector<string>::iterator it(strs.begin()), itEnd(strs.end());
+    for (; it != itEnd; ++it) {
+      CPPUNIT_ASSERT( *it == "foo" );
     }
   }
 }

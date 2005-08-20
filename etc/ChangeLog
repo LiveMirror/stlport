@@ -1,3 +1,21 @@
+2005-08-20  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_list.h, _slist.h: Fix move constructor implementation
+	thanks John Smith report.
+
+	* stlport/stl/_alloc.h: Fix type_traits specialization for allocator
+	type. Now specialization is only apply for the default STLport allocator
+	implementation and not for potential user specialization.
+
+	* stlport/stl/_deque.h, _hashtable.h, _string.h, _tree.h, _vector.h:
+	Simplification of the move framework application especially in the
+	definition of the containers __move_traits specialization. Many 
+	_AsMoveSource call replaced by explicit call to the move constructor
+	when we are sure that there is one.
+
+	* test/unit/mvctor_test.cpp: Add many tests to check move contructor
+	implementations.
+
 2005-08-19  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/gcc.mak: fix extraction of gcc version.

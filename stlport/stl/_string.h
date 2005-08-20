@@ -1339,7 +1339,21 @@ struct __move_traits<basic_string<_CharT, _Traits, _Alloc> > {
   //Completness depends on the allocator:
   typedef typename __move_traits<_Alloc>::complete complete;
 };
-#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
+#else
+_STLP_TEMPLATE_NULL
+struct __move_traits<string> {
+  typedef __true_type implemented;
+  typedef __true_type complete;
+};
+
+#  if defined (_STLP_HAS_WCHAR_T)
+_STLP_TEMPLATE_NULL
+struct __move_traits<wstring> {
+  typedef __true_type implemented;
+  typedef __true_type complete;
+};
+#  endif
+#endif
 
 template <class _CharT, class _Traits, class _Alloc> 
 void _STLP_CALL _S_string_copy(const basic_string<_CharT,_Traits,_Alloc>& __s,

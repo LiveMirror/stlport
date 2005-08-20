@@ -360,6 +360,7 @@ Notes:
 -----------------------------------------------------------------------
 Compiler:                       Windows Server 2003 SP1 Platform SDK
                                 (cross compiling for AMD64)
+				Tests run under Windows XP Pro 64
 -----------------------------------------------------------------------
 Date:                           2005-08-16
 STLP Version:                   current CVS STLPORT_5_0 branch
@@ -380,6 +381,7 @@ Notes:
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 2005 (Beta2) (8.0)
                                 (cross compiling for AMD64)
+				Tests run under Windows XP Pro 64
 -----------------------------------------------------------------------
 Date:                           2005-08-16
 STLP Version:                   current CVS STLPORT_5_0 branch

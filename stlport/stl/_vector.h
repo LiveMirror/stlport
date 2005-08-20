@@ -77,7 +77,7 @@ public:
 
   _Vector_base(__move_source<_Self> src)
     : _M_start(src.get()._M_start), _M_finish(src.get()._M_finish),
-      _M_end_of_storage(_AsMoveSource<_AllocProxy>(src.get()._M_end_of_storage)) {
+      _M_end_of_storage(__move_source<_AllocProxy>(src.get()._M_end_of_storage)) {
     //Set the source as empty:
     src.get()._M_start = 0;
     src.get()._M_finish = 0;
