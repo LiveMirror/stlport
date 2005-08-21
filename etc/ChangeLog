@@ -1,7 +1,7 @@
 2005-08-20  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_list.h, _slist.h: Fix move constructor implementation
-	thanks John Smith report.
+	thanks Henrik Goldman (www.x-formation.com) report.
 
 	* stlport/stl/_alloc.h: Fix type_traits specialization for allocator
 	type. Now specialization is only apply for the default STLport allocator
