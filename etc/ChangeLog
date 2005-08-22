@@ -1,3 +1,15 @@
+2005-08-21  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string.h, _rope.h: Removed __move_traits specialization
+	for string wstring crope and wrope. There is no reason to believe that
+	its move construtor will be complete as an STLport user has the right
+	to specialized the std::allocator<char> or wchar_t.
+
+	* stlport/stl/_function_base.h, _alloc.h: Generalized use of the
+	__stlport_class struct rather than introducing a new helper type
+	(__stlport_less or __stlport_alloc) when we need to recognize STLport
+	implementation from a user one.
+
 2005-08-20  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_list.h, _slist.h: Fix move constructor implementation

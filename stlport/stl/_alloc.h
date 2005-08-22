@@ -414,15 +414,6 @@ typedef __node_alloc<true, 0>  __multithreaded_alloc;
 #  endif /* _STLP_USE_NEWALLOC */
 #endif /* _STLP_USE_PERTHREAD_ALLOC */
 
-#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
-//A small helper struct to recognize STLport allocator implementation
-//from any user specialization one.
-template <class _Tp>
-struct __stlport_alloc {
-  typedef _Tp _Type;
-};
-#endif
-
 // This implements allocators as specified in the C++ standard.  
 //
 // Note that standard-conforming allocators use many language features
@@ -434,7 +425,10 @@ struct __stlport_alloc {
 template <class _Tp>
 class allocator 
 #if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
-  : public __stlport_alloc<allocator<_Tp> > 
+/* A small helper struct to recognize STLport allocator implementation
+ * from any user specialization one.
+ */
+  : public __stlport_class<allocator<_Tp> > 
 #endif
 {
 public:
@@ -626,7 +620,7 @@ _STLP_EXPORT_TEMPLATE_CLASS _STLP_alloc_proxy<void**, void*, allocator<void*> >;
 #if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 template <class _Tp>
 struct __type_traits<allocator<_Tp> > {
-  typedef typename _IsConvertibleType<allocator<_Tp>, __stlport_alloc<allocator<_Tp> > >::_Type _STLportAlloc;
+  typedef typename _IsSTLportClass<allocator<_Tp> >::_Ret _STLportAlloc;
   //The default allocator implementation which is recognize thanks to the
   //__stlport_class inheritance is the stateless object so:
   typedef _STLportAlloc has_trivial_default_constructor;
@@ -635,11 +629,6 @@ struct __type_traits<allocator<_Tp> > {
   typedef _STLportAlloc has_trivial_destructor;
   typedef _STLportAlloc is_POD_type;
 };
-
-template <class _Value, class _Tp, class _Alloc>
-struct __move_traits<_STLP_alloc_proxy<_Value, _Tp, _Alloc> > :
-  __move_traits_help2<_Value, _Alloc>
-{};
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 _STLP_END_NAMESPACE

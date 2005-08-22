@@ -2373,20 +2373,6 @@ struct __move_traits<rope<_CharT, _Alloc> > {
   //Completness depends on the allocator:
   typedef typename __move_traits<_Alloc>::complete complete;
 };
-#else
-_STLP_TEMPLATE_NULL
-struct __move_traits<crope> {
-  typedef __true_type implemented;
-  typedef __true_type complete;
-};
-
-#  if defined (_STLP_HAS_WCHAR_T)
-_STLP_TEMPLATE_NULL
-struct __move_traits<wrope> {
-  typedef __true_type implemented;
-  typedef __true_type complete;
-};
-#  endif
 #endif
 
 

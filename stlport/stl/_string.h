@@ -1339,20 +1339,12 @@ struct __move_traits<basic_string<_CharT, _Traits, _Alloc> > {
   //Completness depends on the allocator:
   typedef typename __move_traits<_Alloc>::complete complete;
 };
-#else
-_STLP_TEMPLATE_NULL
-struct __move_traits<string> {
-  typedef __true_type implemented;
-  typedef __true_type complete;
-};
-
-#  if defined (_STLP_HAS_WCHAR_T)
-_STLP_TEMPLATE_NULL
-struct __move_traits<wstring> {
-  typedef __true_type implemented;
-  typedef __true_type complete;
-};
-#  endif
+/*#else
+ * There is no need to specialize for string and wstring in this case
+ * as the default __move_traits will already tell that string is movable
+ * but not complete. We cannot define is as complete as nothing guaranty
+ * that the STLport user hasn't specialized allocator<char> or wchar_t.
+ */
 #endif
 
 template <class _CharT, class _Traits, class _Alloc> 

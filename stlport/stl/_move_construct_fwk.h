@@ -56,7 +56,7 @@ struct __move_traits {
    * if the following info is true.
    */
 #if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined(_STLP_CLASS_PARTIAL_SPECIALIZATION)
-  typedef typename _IsStlportClass<_Tp>::_Ret implemented;
+  typedef typename _IsSTLportClass<_Tp>::_Ret implemented;
 #else
   typedef __false_type implemented;
 #endif /* _STLP_USE_PARTIAL_SPEC_WORKAROUND */
