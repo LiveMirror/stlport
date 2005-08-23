@@ -201,6 +201,11 @@ template <class _Val, class _Key, class _HF,
           class _Traits, class _ExK, class _EqK, class _All>
 class hashtable {
   typedef hashtable<_Val, _Key, _HF, _Traits, _ExK, _EqK, _All> _Self;
+  typedef typename _Traits::_NonConstTraits _NonConstTraits;
+  typedef typename _Traits::_ConstTraits _ConstTraits;
+  typedef typename _Traits::_NonConstLocalTraits _NonConstLocalTraits;
+  typedef typename _Traits::_ConstLocalTraits _ConstLocalTraits;
+
 public:
   typedef _Key key_type;
   typedef _Val value_type;
@@ -209,9 +214,9 @@ public:
 
   typedef size_t            size_type;
   typedef ptrdiff_t         difference_type;
-  typedef value_type*       pointer;
+  typedef typename _NonConstTraits::pointer pointer;
   typedef const value_type* const_pointer;
-  typedef value_type&       reference;
+  typedef typename _NonConstTraits::reference reference;
   typedef const value_type& const_reference;
   typedef forward_iterator_tag _Iterator_category;
 
@@ -242,11 +247,6 @@ private:
   _BucketVector         _M_buckets;
   size_type             _M_num_elements;
   float                 _M_max_load_factor;
-
-  typedef typename _Traits::_NonConstTraits _NonConstTraits;
-  typedef typename _Traits::_ConstTraits _ConstTraits;
-  typedef typename _Traits::_NonConstLocalTraits _NonConstLocalTraits;
-  typedef typename _Traits::_ConstLocalTraits _ConstLocalTraits;
 
 public:
   typedef _STLP_PRIV::_Ht_iterator<_ElemsIte, _NonConstTraits> iterator;

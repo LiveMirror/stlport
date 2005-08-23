@@ -4,6 +4,16 @@
 	macro to make remove of its support more explicit thanks to a #error
 	directive.
 
+	* stlport/stl/_tree.h, _hashtable.h: Now reference and pointer types
+	are taken from the _Traits template parameter used to instanciate
+	the class. Doing so now set::reference and hash_set::reference are
+	const_reference which is coherent with respective iterators that are
+	immutable. Moreover it fixes a VC6 bug in reverse_iterator implementation
+	that was trying to transform a const reference to a simple reference
+	thanks Russell Miller report.
+
+	* test/unit/set_test.cpp: New test case for set reverse_iterator.
+
 2005-08-23  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/config/stl_gcc.h: seems HP-UX has no *f variants of math
