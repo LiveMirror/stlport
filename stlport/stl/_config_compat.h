@@ -81,3 +81,8 @@
 #if !defined (_STLP_OWN_IOSTREAMS)
 #  define _STLP_OWN_IOSTREAMS
 #endif
+
+#if defined (_STLP_NO_OWN_IOSTREAMS)
+#  error STLport do not support anymore the wrapper mode. If you want to use STLport \
+use its iostreams implementation or no iostreams at all.
+#endif

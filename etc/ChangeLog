@@ -1,3 +1,9 @@
+2005-08-23  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config_compat.h: Add check of _STLP_NO_OWN_IOSTREAMS
+	macro to make remove of its support more explicit thanks to a #error
+	directive.
+
 2005-08-23  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/config/stl_gcc.h: seems HP-UX has no *f variants of math
