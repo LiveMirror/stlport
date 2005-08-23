@@ -1,3 +1,8 @@
+2005-08-23  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/config/stl_gcc.h: seems HP-UX has no *f variants of math
+	functions [ceilf, fabsf, etc.]
+
 2005-08-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string.h, _rope.h: Removed __move_traits specialization
