@@ -95,7 +95,7 @@ is the first directory listed there. Add STLport's 'lib\evc3-arm' or
 'lib\evc3-x86' (depending on what target you use) folder for the library files
 (order of paths doesn't matter here).
 
-There are some preprocessor defines that controls usage of the STLport in evc3
+There are some preprocessor defines that control usage of the STLport in evc3
 projects:
 
 Define the symbol _STLP_USE_STATIC_LIB when you want to statically link against
@@ -122,9 +122,10 @@ Examples:
 Note that usage of the _STLP_DEBUG mode is currently not recommended for
 eMbedded Visual C++ builds using the ARM compiler, due to a compiler bug.
 
-When using STLport together with MFC, you have to define _STLP_USE_MFC to
-properly include and use STLport, either in your project settings, or in
-stl_user_config.h
+When using STLport together with MFC, be sure to include the MFC headers first,
+then include STLport headers, e.g. in your Stdafx.h. This way STLport correctly
+recognizes MFC usage. You also can define the macro _STLP_USE_MFC, either in
+your project settings or in stl_user_config.h.
 
 Now you should be ready to use STLport.
 
