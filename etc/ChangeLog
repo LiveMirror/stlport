@@ -4,6 +4,12 @@
 	required for correct order of static objects dtors calls. This is
 	used in deinitialization of locale-related objects. Thanks Matti Rintala.
 
+	* stlport/stl/_config.h: use different namespaces for mulithreaded
+	and non-multithreaded builds to avoid usage of non-multithreaded
+	application with multithreaded libstlport and vice versa;
+	[combination non-mt & mt lead to crash due to different instances
+	and sizes of allocators for non-mt and mt cases].
+
 2005-08-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config_compat.h: Add check of _STLP_NO_OWN_IOSTREAMS

@@ -642,9 +642,17 @@ namespace __std_alias = std;
 #  if defined (_STLP_USE_OWN_NAMESPACE)
 #    if !defined (_STLP_DEBUG)
 #      if !defined (_STLP_USING_CROSS_NATIVE_RUNTIME_LIB)
-#        define _STLP_STD_NAME  stlp_std
+#        ifndef _STLP_THREADS
+#          define _STLP_STD_NAME  stlpmtx_std
+#        else
+#          define _STLP_STD_NAME  stlp_std
+#        endif
 #      else
-#        define _STLP_STD_NAME  stlpx_std
+#        ifndef _STLP_THREADS
+#          define _STLP_STD_NAME  stlpxmtx_std
+#        else
+#          define _STLP_STD_NAME  stlpx_std
+#        endif
 #      endif
 #    else
 /*
@@ -653,9 +661,17 @@ namespace __std_alias = std;
  * than runtime.
  */
 #      if !defined (_STLP_USING_CROSS_NATIVE_RUNTIME_LIB)
-#        define _STLP_STD_NAME  stlpd_std
+#        ifndef _STLP_THREADS
+#          define _STLP_STD_NAME  stlpdmtx_std
+#        else
+#          define _STLP_STD_NAME  stlpd_std
+#        endif
 #      else
-#        define _STLP_STD_NAME  stlpdx_std
+#        ifndef _STLP_THREADS
+#          define _STLP_STD_NAME  stlpdxmtx_std
+#        else
+#          define _STLP_STD_NAME  stlpdx_std
+#        endif
 #      endif
 #    endif
 namespace _STLP_STD_NAME { }
