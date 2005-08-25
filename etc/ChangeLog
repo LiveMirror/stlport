@@ -1,3 +1,10 @@
+2005-08-25  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config.h, _epilog.h: Move of stlport namespace alias
+	definition from _epilog.h to _config.h to avoid redefinition as _epilog.h
+	is reentrant. This is a workaround for a HPUX aCC compiler bug reported
+	by Baker.
+
 2005-08-25  Petr Ovtchenkov  <ptr@island...>
 
 	* build/Makefiles/gmake/gcc.mak: usage of -fuse-cxa-atexit strongly

@@ -707,12 +707,6 @@ namespace _STLP_PRIV_NAME {
 #    define _STLP_MOVE_TO_STD_NAMESPACE }
 #  endif
 
-/* Backward compatibility:
- */
-namespace _STL = _STLP_STD_NAME;
-#undef __STLPORT_NAMESPACE
-#define __STLPORT_NAMESPACE _STLP_STD_NAME
-
 /* decide whether or not we use separate namespace for rel ops */
 #  if defined(_STLP_NO_RELOPS_NAMESPACE)
 #    define _STLP_BEGIN_RELOPS_NAMESPACE _STLP_BEGIN_NAMESPACE namespace rel_ops {}
@@ -725,6 +719,18 @@ namespace _STL = _STLP_STD_NAME;
 #  endif /* Use std::rel_ops namespace */
 
 #  define _STLP_STD ::_STLP_STD_NAME
+
+/* Official STLport namespace when std is not redefined.
+ * Here we don't use a macro as stlport is used as file name by boost
+ * and folder name under beos:
+ */
+namespace stlport = _STLP_STD_NAME;
+
+/* Backward compatibility:
+ */
+namespace _STL = _STLP_STD_NAME;
+#undef __STLPORT_NAMESPACE
+#define __STLPORT_NAMESPACE _STLP_STD_NAME
 
 #else /* _STLP_USE_NAMESPACES */
 /* STLport is being put into global namespace */
