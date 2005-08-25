@@ -123,6 +123,9 @@ ifeq ($(CXX_VERSION_MAJOR),2)
 CXXFLAGS += -ftemplate-depth-32
 endif
 
+# Required for correct order of static objects dtors calls:
+CXXFLAGS += -fuse-cxa-atexit
+
 ifdef EXTRA_CXXFLAGS
 CXXFLAGS += ${EXTRA_CXXFLAGS}
 endif

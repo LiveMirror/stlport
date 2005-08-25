@@ -1,3 +1,9 @@
+2005-08-25  Petr Ovtchenkov  <ptr@island...>
+
+	* build/Makefiles/gmake/gcc.mak: usage of -fuse-cxa-atexit strongly
+	required for correct order of static objects dtors calls. This is
+	used in deinitialization of locale-related objects. Thanks Matti Rintala.
+
 2005-08-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config_compat.h: Add check of _STLP_NO_OWN_IOSTREAMS
