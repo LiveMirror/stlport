@@ -1,3 +1,8 @@
+2005-08-26  Petr Ovtchenkov  <ptr@island...>
+
+	* stlport/config/stl_solaris.h: C++ comments replaced by C ones,
+	this file may be included by C sources. Thanks Matti Rintala.
+
 2005-08-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config.h, _epilog.h: Move of stlport namespace alias
