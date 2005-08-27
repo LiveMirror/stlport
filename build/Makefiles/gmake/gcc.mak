@@ -124,7 +124,9 @@ CXXFLAGS += -ftemplate-depth-32
 endif
 
 # Required for correct order of static objects dtors calls:
+ifneq ($(OSNAME),cygming)
 CXXFLAGS += -fuse-cxa-atexit
+endif
 
 ifdef EXTRA_CXXFLAGS
 CXXFLAGS += ${EXTRA_CXXFLAGS}

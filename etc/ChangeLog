@@ -14,6 +14,10 @@
 	* build/test/unit/nmake-evc4.mak: Fix macro typo OPT_STLDBG_STATIC -> 
 	OPT_STATIC_STLDBG
 
+	* build/Makefiles/gmake/gcc.mak: Filter out the newly added -fuse-cxa-atexit
+	compilation option for Cygwin and Mingw, the granted libc is not compatible
+	with it.
+
 2005-08-26  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/config/stl_solaris.h: C++ comments replaced by C ones,
