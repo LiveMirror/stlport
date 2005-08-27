@@ -363,6 +363,7 @@ public:
       _M_map_size(__move_source<_Alloc_proxy>(src.get()._M_map_size)) {
     src.get()._M_map._M_data = 0;
     src.get()._M_map_size._M_data = 0;
+    src.get()._M_finish = src.get()._M_start;
   }
   
   ~_Deque_base();    

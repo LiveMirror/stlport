@@ -1,3 +1,19 @@
+2005-08-27  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_hashtable.h: Fix move feature integration for the hash_multimap
+	container.
+
+	* stlport/stl/_deque.h: Fix _Deque_base move constructor implementation.
+
+	* test/unit/mvctor_test.cpp: Change move constructor tests to use dynamically
+	allocated string rather than static ones.
+
+	* build/test/unit/nmake-vc6.mak: Increase compiler maximum heap size to allow
+	compilation with stldbg rules.
+
+	* build/test/unit/nmake-evc4.mak: Fix macro typo OPT_STLDBG_STATIC -> 
+	OPT_STATIC_STLDBG
+
 2005-08-26  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/config/stl_solaris.h: C++ comments replaced by C ones,

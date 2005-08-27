@@ -597,9 +597,10 @@ void MoveConstructorTest::vector_test()
   }
 
   //The following tests are checking move contructor implementations:
+  const string long_str("long enough string to force dynamic allocation");
   {
     //vector move contructor:
-    vector<vector<string> > vect(10, vector<string>(10, "foo"));
+    vector<vector<string> > vect(10, vector<string>(10, long_str));
     vector<string> strs;
     size_t index = 0;
     while (true) {
@@ -617,13 +618,13 @@ void MoveConstructorTest::vector_test()
     CPPUNIT_ASSERT( strs.size() == 10 * 10 );
     vector<string>::iterator it(strs.begin()), itEnd(strs.end());
     for (; it != itEnd; ++it) {
-      CPPUNIT_ASSERT( *it == "foo" );
+      CPPUNIT_ASSERT( *it == long_str );
     }
   }
 
   {
     //deque move contructor:
-    vector<deque<string> > vect(10, deque<string>(10, "foo"));
+    vector<deque<string> > vect(10, deque<string>(10, long_str));
     vector<string> strs;
     size_t index = 0;
     while (true) {
@@ -641,13 +642,13 @@ void MoveConstructorTest::vector_test()
     CPPUNIT_ASSERT( strs.size() == 10 * 10 );
     vector<string>::iterator it(strs.begin()), itEnd(strs.end());
     for (; it != itEnd; ++it) {
-      CPPUNIT_ASSERT( *it == "foo" );
+      CPPUNIT_ASSERT( *it == long_str );
     }
   }
 
   {
     //list move contructor:
-    vector<list<string> > vect(10, list<string>(10, "foo"));
+    vector<list<string> > vect(10, list<string>(10, long_str));
     vector<string> strs;
     size_t index = 0;
     while (true) {
@@ -665,13 +666,13 @@ void MoveConstructorTest::vector_test()
     CPPUNIT_ASSERT( strs.size() == 10 * 10 );
     vector<string>::iterator it(strs.begin()), itEnd(strs.end());
     for (; it != itEnd; ++it) {
-      CPPUNIT_ASSERT( *it == "foo" );
+      CPPUNIT_ASSERT( *it == long_str );
     }
   }
 
   {
     //slist move contructor:
-    vector<slist<string> > vect(10, slist<string>(10, "foo"));
+    vector<slist<string> > vect(10, slist<string>(10, long_str));
     vector<string> strs;
     size_t index = 0;
     while (true) {
@@ -689,7 +690,7 @@ void MoveConstructorTest::vector_test()
     CPPUNIT_ASSERT( strs.size() == 10 * 10 );
     vector<string>::iterator it(strs.begin()), itEnd(strs.end());
     for (; it != itEnd; ++it) {
-      CPPUNIT_ASSERT( *it == "foo" );
+      CPPUNIT_ASSERT( *it == long_str );
     }
   }
 
@@ -697,7 +698,7 @@ void MoveConstructorTest::vector_test()
     //binary tree move contructor:
     multiset<string> ref;
     for (size_t i = 0; i < 10; ++i) {
-      ref.insert("foo");
+      ref.insert(long_str);
     }
     vector<multiset<string> > vect(10, ref);
     vector<string> strs;
@@ -717,7 +718,7 @@ void MoveConstructorTest::vector_test()
     CPPUNIT_ASSERT( strs.size() == 10 * 10 );
     vector<string>::iterator it(strs.begin()), itEnd(strs.end());
     for (; it != itEnd; ++it) {
-      CPPUNIT_ASSERT( *it == "foo" );
+      CPPUNIT_ASSERT( *it == long_str );
     }
   }
 
@@ -725,7 +726,7 @@ void MoveConstructorTest::vector_test()
     //hash container move contructor:
     unordered_multiset<string> ref;
     for (size_t i = 0; i < 10; ++i) {
-      ref.insert("foo");
+      ref.insert(long_str);
     }
     vector<unordered_multiset<string> > vect(10, ref);
     vector<string> strs;
@@ -745,7 +746,7 @@ void MoveConstructorTest::vector_test()
     CPPUNIT_ASSERT( strs.size() == 10 * 10 );
     vector<string>::iterator it(strs.begin()), itEnd(strs.end());
     for (; it != itEnd; ++it) {
-      CPPUNIT_ASSERT( *it == "foo" );
+      CPPUNIT_ASSERT( *it == long_str );
     }
   }
 }
