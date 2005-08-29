@@ -1,3 +1,7 @@
+2005-08-29  Petr Ovtchenkov  <complement@sourceforge.net>
+
+	* CVS repository: CVS established on SourceForge
+
 2005-08-27  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.h: Fix move feature integration for the hash_multimap
