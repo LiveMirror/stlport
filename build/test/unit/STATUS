@@ -321,7 +321,7 @@ Operational environment:        Windows XP Professionnal 2002 SP2
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 6 SP5
 -----------------------------------------------------------------------
-Date:                           2005-06-28
+Date:                           2005-08-31
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
 Status (release-shared):        All pass (326 tests)
@@ -340,7 +340,7 @@ Notes:
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 2005 Beta2 Version 8.0.50215-4400
 -----------------------------------------------------------------------
-Date:                           2005-08-08
+Date:                           2005-08-31
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
 Status (release-shared):        All pass (329 tests)
@@ -402,7 +402,7 @@ Notes:
 -----------------------------------------------------------------------
 Compiler:                       g++ 3.4.4 (cygwin special)
 -----------------------------------------------------------------------
-Date:                           2005-07-22
+Date:                           2005-08-31
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
 Status (release-shared):        1 failure (331 tests)
@@ -416,7 +416,7 @@ Notes:                          Idem release-shared.
 -----------------------------------------------------------------------
 Compiler:                       g++ 3.4.1 (mingw special)
 -----------------------------------------------------------------------
-Date:                           2005-07-22
+Date:                           2005-08-31
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
 Status (release-shared):        1 failure (331 tests)
