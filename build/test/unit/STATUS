@@ -324,17 +324,17 @@ Compiler:                       Visual C++ 6 SP5
 Date:                           2005-06-28
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (323 tests)
+Status (release-shared):        All pass (326 tests)
 Notes:
-Status (dbg-shared):            All pass (323 tests)
+Status (dbg-shared):            All pass (326 tests)
 Notes:
-Status (stldbg-shared):         All pass (323 tests)
+Status (stldbg-shared):         All pass (326 tests)
 Notes:
-Status (release-static):        All pass (323 tests)
+Status (release-static):        All pass (326 tests)
 Notes:
-Status (dbg-static):            All pass (323 tests)
+Status (dbg-static):            All pass (326 tests)
 Notes:
-Status (stldbg-static):         All pass (323 tests)
+Status (stldbg-static):         All pass (326 tests)
 Notes:
 
 -----------------------------------------------------------------------
@@ -343,18 +343,18 @@ Compiler:                       Visual C++ 2005 Beta2 Version 8.0.50215-4400
 Date:                           2005-08-08
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (327 tests)
+Status (release-shared):        All pass (329 tests)
 Notes:
 Status (dbg-shared):            Runtime fail
 Notes:                          Microsoft do not grant the msvcp80d.dll file
                                 in their free package.
 Status (stldbg-shared):         Idem dbg-shared.
 Notes:
-Status (release-static):        All pass (327 tests)
+Status (release-static):        All pass (329 tests)
 Notes:
-Status (dbg-static):            All pass (327 tests)
+Status (dbg-static):            All pass (329 tests)
 Notes:
-Status (stldbg-static):         All pass (327 tests)
+Status (stldbg-static):         All pass (329 tests)
 Notes:
 
 -----------------------------------------------------------------------
@@ -405,12 +405,12 @@ Compiler:                       g++ 3.4.4 (cygwin special)
 Date:                           2005-07-22
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        1 failure (328 tests)
+Status (release-shared):        1 failure (331 tests)
 Notes:                          ExceptionTest::uncaught_exception fails when all tests
                                 are run but succeed with the -t=ExceptionTest option.
-Status (dbg-shared):            1 failure (328 tests)
+Status (dbg-shared):            1 failure (331 tests)
 Notes:                          Idem release-shared.
-Status (stldbg-shared):         1 failure (328 tests)
+Status (stldbg-shared):         1 failure (331 tests)
 Notes:                          Idem release-shared.
 
 -----------------------------------------------------------------------
@@ -419,11 +419,11 @@ Compiler:                       g++ 3.4.1 (mingw special)
 Date:                           2005-07-22
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        1 failure (328 tests)
+Status (release-shared):        1 failure (331 tests)
 Notes:                          Idem cygwin report above.
-Status (dbg-shared):            1 failure (328 tests)
+Status (dbg-shared):            1 failure (331 tests)
 Notes:                          Idem cygwin report above.
-Status (stldbg-shared):         1 failure (328 tests)
+Status (stldbg-shared):         1 failure (331 tests)
 Notes:                          Idem cygwin report above.
 
 =======================================================================
