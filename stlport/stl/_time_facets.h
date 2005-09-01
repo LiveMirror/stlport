@@ -294,7 +294,7 @@ _STLP_EXPORT_TEMPLATE_CLASS time_put<wchar_t, ostreambuf_iterator<wchar_t, char_
 #  endif /* INSTANTIATE_WIDE_STREAMS */
 
 # endif
-
+/*
 # if defined (__BORLANDC__) && defined (_RTLDLL)
 inline void _Stl_loc_init_time_facets() {
   
@@ -314,7 +314,7 @@ inline void _Stl_loc_init_time_facets() {
   
 }
 # endif
-
+*/
 _STLP_END_NAMESPACE
 
 #if defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION)

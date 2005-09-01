@@ -1,3 +1,25 @@
+2005-08-25  Eric Sanford  <...@comp...>
+
+	* build/Makefiles/borland/: fix minor setup warnings
+	
+	* build/lib/configure.bat: same
+
+	* src/complex_io.cpp: workaround tlib warning re clash with prior module
+
+	* src/stlport_prefix.h: same
+
+	* src/dll_main.cpp: remove remaining legacy headers in stlport/BC50.
+
+	* stlport/stl/_ios.h: comment legacy _RTLDLL workarounds
+
+	* stlport/stl/_monetary.h: same
+
+	* stlport/stl/_num_get.h: same
+
+	* stlport/stl/_num_put.h: same
+
+	* stlport/stl/_time_facets.h: same
+
 2005-08-16  Eric Sanford  <...@comp...>
 
 	* build/lib/configure.bat: makes for Borland BC 5.5/5,6 make and configuration;	
@@ -5,7 +27,6 @@
 	* build/Makefiles/borland/: makefiles for Borland make; add relative references;
 	save libs and dlls to STLport lib folder; fix some mkdir / rmdir warnings;
 	
-
 	* build/lib/bc55.mak, bc56.mak: ditto
 
 	* build/test/eh/bc55.mak, bc56.mak: temporarily exclude some tests.
@@ -18,7 +39,7 @@
 
 	* src/locale_catalog.cpp: diito
 
-	* stlport/exception, exception.h: ditto; use Borland exception [?]
+	* stlport/exception, exception.h: ditto; use STLport exception
 
 	* stlport/fstream.h: ditto
 

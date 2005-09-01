@@ -173,7 +173,7 @@ _STLP_END_NAMESPACE
 // The following is needed to ensure that the inlined _Stl_loc_init functions
 // that ios_base::_Loc_init::_Loc_init() calls are found eventually.
 // Otherwise, undefined externs may be caused.
-
+/*
 #if defined(__BORLANDC__) && defined(_RTLDLL)
 # ifndef _STLP_INTERNAL_NUM_PUT_H
 #  include <stl/_num_put.h>
@@ -188,7 +188,7 @@ _STLP_END_NAMESPACE
 #  include <stl/_time_facets.h>
 # endif
 #endif
-
+*/
 #endif /* _STLP_IOS */
 
 // Local Variables:

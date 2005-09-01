@@ -176,7 +176,7 @@ extern void _STLP_CALL __insert_grouping(__iowstring&, size_t, const string&, wc
 # endif
 
 #endif /* _STLP_EXPOSE_STREAM_IMPLEMENTATION */
-
+/*
 # if defined (__BORLANDC__) && defined (_RTLDLL)
 inline void _Stl_loc_init_num_put() {
   
@@ -190,7 +190,7 @@ inline void _Stl_loc_init_num_put() {
   
 }
  
-# endif /* __BORLANDC__ && _RTLDLL */
+# endif*/ /* __BORLANDC__ && _RTLDLL */
 
 _STLP_END_NAMESPACE
 

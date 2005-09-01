@@ -216,6 +216,8 @@ echo TARGET_OS=x86 >> ..\Makefiles\config.mak
 @echo Checking Windows version...
 echo OSREL=\ >> ..\Makefiles\config.mak
 ver | find /i "windows" >> ..\Makefiles\config.mak
+
+@echo Checking Windows system directory...
 goto oc_sysdir
 
 :oc_set_sysdir
@@ -230,7 +232,6 @@ echo Then run configure.bat again.
 goto skp_comp
 
 :oc_sysdir
-@echo Checking Windows system directory...
 if "%SystemDirectory%"=="" goto oc_set_sysdir
 echo WINSYSDIR=%SystemDirectory% >> ..\Makefiles\config.mak
 
@@ -264,10 +265,10 @@ if "%OS%"=="Windows_NT" goto oc_depend_dir_done
 echo. > ..\lib\borland\depends.inc
 echo. > ..\test\unit\borland\depends.inc
 echo. > ..\test\eh\borland\depends.inc
-echo. > ..\Makefiles\borland\sysid.inc
-echo. > ..\Makefiles\borland\depend.inc
+echo SETUP_MSG = This file is required for setup. > ..\Makefiles\borland\sysid.inc
+echo SETUP_MSG = This file is required for setup. > ..\Makefiles\borland\depend.inc
 
-echo CFGSET=%STLPORT_SELECTED_CONFIG% >> ..\Makefiles\config.mak
+echo CFGSET=%STLPORT_SELECTED_CONFIG% >> ..\Makefiles\borland\sysid.inc
 if "%STLPORT_SELECTED_CONFIG%"=="bc56" goto oc_bc56
 
 :oc_bc55

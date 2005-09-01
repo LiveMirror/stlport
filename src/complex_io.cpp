@@ -17,6 +17,10 @@
  */ 
 
 # include "stlport_prefix.h"
+#  ifdef __BORLANDC__ // workaround tlib warning: clash with prior module
+#   undef _STLP_OPERATOR_SPEC
+#   define _STLP_OPERATOR_SPEC template<char> _STLP_DECLSPEC
+#  endif
 #include <complex>
 #include <istream>
 
