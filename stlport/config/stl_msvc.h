@@ -93,6 +93,10 @@
 #    define _STLP_HAS_NATIVE_FLOAT_ABS 1
 #  endif
 
+#  if (_STLP_MSVC == 1300)
+#    define _STLP_NO_MOVE_SEMANTIC
+#  endif
+
 #  if (_STLP_MSVC < 1300)
 /*
  * dums: VC6 do not handle correctly member templates of class that are explicitely

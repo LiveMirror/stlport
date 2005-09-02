@@ -453,39 +453,39 @@ Notes:
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ .Net 2002 (7.0)
 -----------------------------------------------------------------------
-Date:                           2005-06-13
+Date:                           2005-09-02
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (323 tests)
+Status (release-shared):        All pass (324 tests)
 Notes:
-Status (dbg-shared):            All pass (323 tests)
+Status (dbg-shared):            All pass (324 tests)
 Notes:
-Status (stldbg-shared):         All pass (323 tests)
+Status (stldbg-shared):         All pass (324 tests)
 Notes:
-Status (release-static):        All pass (323 tests)
+Status (release-static):        All pass (324 tests)
 Notes:
-Status (dbg-static):            All pass (323 tests)
+Status (dbg-static):            All pass (324 tests)
 Notes:
-Status (stldbg-static):         All pass (323 tests)
+Status (stldbg-static):         All pass (324 tests)
 Notes:
 
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ .Net 2003 (7.1)
 -----------------------------------------------------------------------
-Date:                           2005-06-10
+Date:                           2005-09-02
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (325 tests)
+Status (release-shared):        All pass (329 tests)
 Notes:
-Status (dbg-shared):            All pass (325 tests)
+Status (dbg-shared):            All pass (329 tests)
 Notes:
-Status (stldbg-shared):         All pass (325 tests)
+Status (stldbg-shared):         All pass (329 tests)
 Notes:
-Status (release-static):        All pass (325 tests)
+Status (release-static):        All pass (329 tests)
 Notes:
-Status (dbg-static):            All pass (325 tests)
+Status (dbg-static):            All pass (329 tests)
 Notes:
-Status (stldbg-static):         All pass (325 tests)
+Status (stldbg-static):         All pass (329 tests)
 Notes:
 
 -----------------------------------------------------------------------

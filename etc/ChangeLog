@@ -1,3 +1,12 @@
+2005-09-02  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/stl_msvc.h, stl/_move_construct_fwk.h: Add the 
+	_STLP_NO_MOVE_SEMANTIC configuration macro to remove move semantic
+	 support for MSVC .Net 2002 that seems to be unable to support it.
+	 Maybe we should rather remove this compiler version support...
+
+	* test/unit/mvctor_test.cpp: Add _STLP_NO_MOVE_SEMANTIC check.
+
 2005-08-31  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/nmake: Enhance nmake build system to correctly take

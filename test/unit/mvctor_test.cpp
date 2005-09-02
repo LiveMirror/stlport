@@ -28,24 +28,30 @@ using namespace std;
 class MoveConstructorTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(MoveConstructorTest);
+#if defined (STLPORT) && !defined (_STLP_NO_MOVE_SEMANTIC)
   CPPUNIT_TEST(move_construct_test);
   CPPUNIT_TEST(deque_test);
+#endif
   CPPUNIT_TEST(vector_test);
 #if defined (STLPORT)
   CPPUNIT_TEST(move_traits);
-#  if !defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS)
+#  if !defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS) && \
+      !defined (_STLP_NO_MOVE_SEMANTIC)
   CPPUNIT_TEST(movable_declaration)
 #  endif
 #endif
   CPPUNIT_TEST_SUITE_END();
 
 protected:
+#if defined (STLPORT) && !defined (_STLP_NO_MOVE_SEMANTIC)
   void move_construct_test();
   void deque_test();
+#endif
   void vector_test();
 #if defined (STLPORT)
   void move_traits();
-#  if !defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS)
+#  if !defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS) && \
+      !defined (_STLP_NO_MOVE_SEMANTIC)
   void movable_declaration();
 #  endif
 #endif
@@ -72,6 +78,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(MoveConstructorTest);
 //
 // tests implementation
 //
+#if defined (STLPORT) && !defined (_STLP_NO_MOVE_SEMANTIC)
 void MoveConstructorTest::move_construct_test()
 {
   //cout << "vector<vector<int>>";
@@ -140,7 +147,7 @@ void MoveConstructorTest::move_construct_test()
      * details to check that the move has been correctly handled. For other
      * STL implementation it is only a compile check.
      */
-#ifdef STLPORT
+#if defined (STLPORT)
 #  if defined (_STLP_DEBUG)
     unsigned int *punit = v_v_bits.front().begin()._M_iterator._M_p;
 #  else
@@ -153,7 +160,7 @@ void MoveConstructorTest::move_construct_test()
       v_v_bits.push_back(bit_vec);
     }
 
-#ifdef STLPORT
+#if defined (STLPORT)
     //v_v_bits has been resized
 #  if defined (_STLP_DEBUG)
     CPPUNIT_ASSERT( punit == v_v_bits.front().begin()._M_iterator._M_p );
@@ -396,9 +403,11 @@ void MoveConstructorTest::deque_test()
     }
   }
 }
+#endif
 
 void MoveConstructorTest::vector_test()
 {
+#if defined (STLPORT) && !defined (_STLP_NO_MOVE_SEMANTIC)
   //Check the insert range method.
   //To the front:
   {
@@ -595,6 +604,7 @@ void MoveConstructorTest::vector_test()
       }
     }
   }
+#endif
 
   //The following tests are checking move contructor implementations:
   const string long_str("long enough string to force dynamic allocation");
@@ -751,7 +761,7 @@ void MoveConstructorTest::vector_test()
   }
 }
 
-#ifdef STLPORT
+#if defined (STLPORT)
 struct MovableStruct {
   MovableStruct() { ++nb_dft_construct_call; }
   MovableStruct(MovableStruct const&) { ++nb_cpy_construct_call; }
@@ -1159,7 +1169,8 @@ namespace std
   };
 }
 
-#  if !defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS)
+#  if !defined (_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS) && \
+      !defined (_STLP_NO_MOVE_SEMANTIC)
 void MoveConstructorTest::movable_declaration()
 {
   //This test purpose is to check correct detection of the STL movable
@@ -1343,6 +1354,6 @@ void MoveConstructorTest::movable_declaration()
   }
 }
 
-#  endif // !_STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
+#  endif
 
 #endif // STLPORT
