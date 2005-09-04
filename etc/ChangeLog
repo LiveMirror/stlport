@@ -1,3 +1,15 @@
+2005-09-04  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/Makefiles/gmake/targetdirs.mak: in sh's built-in 'test' no -e
+	option on Solaris, use external 'test' instead.
+
+	* build/test/unit/gcc.mak: Fix LDSEARCH recursive problem; fix
+	options for ld search path for some platforms.
+
+	* stlport/cstdlib, stlport/stl/_cmath.h: fix usage of native
+	?f and ?l math functions on Solaris; hypot for long double should't
+	loose precision, if no native C function present.
+
 2005-09-02  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h, stl/_move_construct_fwk.h: Add the 
