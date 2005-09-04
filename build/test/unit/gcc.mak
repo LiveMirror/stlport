@@ -1,5 +1,4 @@
-# -*- Makefile -*- Time-stamp: <05/05/14 14:04:12 ptr>
-# $Id$
+# -*- Makefile -*- Time-stamp: <05/09/04 22:01:11 ptr>
 
 SRCROOT := ../..
 COMPILER_NAME := gcc
@@ -30,10 +29,30 @@ dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
 stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
 
 ifndef TARGET_OS
-ifneq ($(OSNAME), cygming)
-release-shared:	LDSEARCH += -Wl,-R${STLPORT_LIB_DIR}
-dbg-shared:	LDSEARCH += -Wl,-R${STLPORT_LIB_DIR}
-stldbg-shared:	LDSEARCH += -Wl,-R${STLPORT_LIB_DIR}
+ifeq ($(OSNAME), sunos)
+release-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+dbg-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+stldbg-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+endif
+ifeq ($(OSNAME), freebsd)
+release-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+dbg-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+stldbg-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+endif
+ifeq ($(OSNAME), openbsd)
+release-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+dbg-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+stldbg-shared:	LDFLAGS += -Wl,-R${STLPORT_LIB_DIR}
+endif
+ifeq ($(OSNAME), linux)
+release-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
+dbg-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
+stldbg-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
+endif
+ifeq ($(OSNAME),darwin)
+release-shared:	LDFLAGS += -Wl,-L${STLPORT_LIB_DIR}
+dbg-shared:	LDFLAGS += -Wl,-L${STLPORT_LIB_DIR}
+stldbg-shared:	LDFLAGS += -Wl,-L${STLPORT_LIB_DIR}
 endif
 endif
 
@@ -54,8 +73,3 @@ stldbg-shared  : LDLIBS = -lstlportstlg -lrt
 dbg-shared     : LDLIBS = -lstlportg -lrt
 endif
 
-ifeq ($(OSNAME),darwin)
-release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-L${STLPORT_LIB_DIR}
-dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-L${STLPORT_LIB_DIR}
-stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-L${STLPORT_LIB_DIR}
-endif
