@@ -55,7 +55,7 @@ INSTALL_DIRS := $(sort $(INSTALL_LIB_DIRS) $(INSTALL_BIN_DIRS))
 PHONY += $(OUTPUT_DIRS) $(INSTALL_DIRS)
 
 $(OUTPUT_DIRS):
-	@if [ -e $@ -a -f $@ ] ; then \
+	@if /usr/bin/test -e $@ -a -f $@ ; then \
 	  echo "ERROR: Regular file $@ present, directory instead expected" ; \
 	  exit 1; \
 	elif [ ! -d $@ ] ; then \
@@ -63,7 +63,7 @@ $(OUTPUT_DIRS):
 	fi
 
 $(INSTALL_DIRS):
-	@if [ -e $@ -a -f $@ ] ; then \
+	@if /usr/bin/test -e $@ -a -f $@ ; then \
 	  echo "ERROR: Regular file $@ present, directory instead expected" ; \
 	  exit 1; \
 	elif [ ! -d $@ ] ; then \
