@@ -1,3 +1,7 @@
+2005-09-05  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* repository: RC5, tag STLPORT_5_0_RC5
+
 2005-09-04  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* build/Makefiles/gmake/targetdirs.mak: in sh's built-in 'test' no -e
