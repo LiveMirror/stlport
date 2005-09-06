@@ -116,8 +116,8 @@
 #endif
 
 #if defined (__CYGWIN__) || defined (__MINGW32__) || !(defined (_STLP_USE_GLIBC) || defined (__sun) || defined(__APPLE__)) 
-#  ifndef __MINGW32__
-#    define _STLP_NO_NATIVE_MBSTATE_T      1
+#  if !defined (__MINGW32__) && !defined (__CYGWIN__)
+#    define _STLP_NO_NATIVE_MBSTATE_T    1
 #  endif
 #  define _STLP_NO_NATIVE_WIDE_FUNCTIONS 1
 #  define _STLP_NO_NATIVE_WIDE_STREAMS   1
