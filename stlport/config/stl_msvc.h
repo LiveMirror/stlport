@@ -309,23 +309,23 @@ typedef char __stl_char;
 #  define _STLP_STRINGIZE(X) _STLP_STRINGIZE_AUX(X)
 #  define _STLP_STRINGIZE_AUX(X) #X
 
-#  if defined (_STLP_USE_DYNAMIC_LIB)
-#    define _STLP_LIB_TYPE ""
-#  else
-#    define _STLP_LIB_TYPE "static_"
-#  endif
-
 #  if defined (_STLP_DEBUG)
 #    define _STLP_LIB_OPTIM_MODE "stld"
 #  elif defined (_DEBUG)
 #    define _STLP_LIB_OPTIM_MODE "d"
 #  else
-#    define _STLP_LIB_OPTIM_MODE "r"
+#    define _STLP_LIB_OPTIM_MODE ""
 #  endif
 
-#  define _STLP_VERSION_STR _STLP_STRINGIZE(_STLPORT_MAJOR)_STLP_STRINGIZE(_STLPORT_MINOR)
+#  if defined (_STLP_USE_DYNAMIC_LIB)
+#    define _STLP_LIB_TYPE ""
+#  else
+#    define _STLP_LIB_TYPE "_static"
+#  endif
 
-#  define _STLP_STLPORT_LIB "stlport_"_STLP_LIB_TYPE""_STLP_LIB_OPTIM_MODE""_STLP_VERSION_STR".lib"
+#  define _STLP_VERSION_STR _STLP_STRINGIZE(_STLPORT_MAJOR)"."_STLP_STRINGIZE(_STLPORT_MINOR)
+
+#  define _STLP_STLPORT_LIB "stlport"_STLP_LIB_OPTIM_MODE""_STLP_LIB_TYPE"."_STLP_VERSION_STR".lib"
 
 #  if defined (_STLP_VERBOSE_AUTO_LINK)
 #    pragma message ("STLport: Auto linking to "_STLP_STLPORT_LIB)

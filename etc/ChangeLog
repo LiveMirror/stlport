@@ -1,3 +1,19 @@
+2005-09-07  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/gmake: Adopt a more traditionnal unixes naming
+	convention for cygwin and mingw.
+
+	* build/Makefiles/nmake: Attempt to make STLport library names more
+	coherent between unixes and windows systems. Now windows use the 5.0
+	extension like under unixes even if under unixes the file extension
+	is before the 5.0 and under windows it will be after. The other
+	difference is that the debug suffix is 'g' when using gcc and 'd' for
+	the other compilers. This modification comes from a work to improve
+	STLport integration within boost build system, bjam.
+
+	* stlport/config/stl_msvc.h: Modify MSVC auto link feature to reflect
+	above modifications.
+ 
 2005-09-06  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_gcc.h: Fix cygwin config that do have native
