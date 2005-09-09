@@ -1,3 +1,23 @@
+2005-09-09  Francois Dumont  <dums@stlport...>
+
+	* src/c_locale_win32.c: Fix _Locale_wchar_[tolower,toupper] implementation
+	which was wrong when wint_t was not the same typedef as wchar_t.
+
+	* build/lib/configure: Removed obsolete configure options --with-msvc and
+	--with-mssdk. And --no-cygwin option to make build of STLport using -mno-cygwin
+	option easier.
+
+	* stlport/script_config.h: New header used to put additionnal macros defined
+	by the configure script.
+
+	* stlport/stl/_config.h: Add script_config.h include.
+
+	* stlport/config/stl_gcc.h: Use of the new _STLP_NO_CYGWIN macro to set
+	the right _STLP_NATIVE_INCLUDE_PATH macro value.
+
+	* build/Makefiles/gmake/gcc.mak: Change CC and CXX assignment from := to
+	?= to take into account an already existing definition.
+
 2005-09-07  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/gmake: Adopt a more traditionnal unixes naming

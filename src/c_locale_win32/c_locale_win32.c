@@ -760,16 +760,18 @@ extern "C" {
   }
 
   wint_t _Locale_wchar_tolower(struct _Locale_ctype* ltype, wint_t c) {
-    wint_t res;
+    wchar_t in_c = c;
+    wchar_t res;
 
-    LCMapStringW(ltype->lcid, LCMAP_LOWERCASE, &c, 1, &res, 1);
+    LCMapStringW(ltype->lcid, LCMAP_LOWERCASE, &in_c, 1, &res, 1);
     return res;
   }
 
   wint_t _Locale_wchar_toupper(struct _Locale_ctype* ltype, wint_t c) {
-    wint_t res;
+    wchar_t in_c = c;
+    wchar_t res;
 
-    LCMapStringW(ltype->lcid, LCMAP_UPPERCASE, &c, 1, &res, 1);
+    LCMapStringW(ltype->lcid, LCMAP_UPPERCASE, &in_c, 1, &res, 1);
     return res;
   }
 #endif

@@ -17,16 +17,26 @@
 #  endif
 #endif
 
-#if defined (__CYGWIN__)
-#  if (__GNUC__ >= 3) && (__GNUC_MINOR__ >= 3) && !defined (_GLIBCPP_USE_C99)
-#    define _STLP_NO_VENDOR_MATH_L
-#    define _STLP_NO_VENDOR_STDLIB_L
-#  endif
-#  if (__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ > 3))
-/* Before version 3.4.4, the cygwin package include path was conform to the 
- * GNU convention which is set later in this file:
+#if defined (__CYGWIN__) && \
+    (__GNUC__ >= 3) && (__GNUC_MINOR__ >= 3) && !defined (_GLIBCPP_USE_C99)
+#  define _STLP_NO_VENDOR_MATH_L
+#  define _STLP_NO_VENDOR_STDLIB_L
+#endif
+
+/* We guess if we are using the cygwin distrib that has a special include schema.
+ * There is no way to distinguish a cygwin distrib used in no-cygwin mode from a
+ * mingw install. We are forced to use a configuration option
  */
+#if !defined (_STLP_NATIVE_INCLUDE_PATH) && \
+    (defined (__CYGWIN__) || defined (__MINGW32__) && defined (_STLP_NO_CYGWIN))
+#  if (__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ > 3))
 #    define _STLP_NATIVE_INCLUDE_PATH ../../../__GNUC__.__GNUC_MINOR__.__GNUC_PATCHLEVEL__/include/c++
+#  elif defined (_STLP_NO_CYGWIN)
+#    define _STLP_NATIVE_INCLUDE_PATH ../mingw
+/*#  else
+ * Before version gcc 3.4, the cygwin package include path was conform to the 
+ * GNU convention which is set later in this file.
+ */
 #  endif
 #endif
 
