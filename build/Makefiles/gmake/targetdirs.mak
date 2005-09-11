@@ -1,4 +1,4 @@
-# Time-stamp: <05/03/02 18:44:41 ptr>
+# Time-stamp: <05/09/09 22:00:37 ptr>
 # $Id$
 
 ifdef TARGET_OS
@@ -55,7 +55,7 @@ INSTALL_DIRS := $(sort $(INSTALL_LIB_DIRS) $(INSTALL_BIN_DIRS))
 PHONY += $(OUTPUT_DIRS) $(INSTALL_DIRS)
 
 $(OUTPUT_DIRS):
-	@if /usr/bin/test -e $@ -a -f $@ ; then \
+	@if ${EXT_TEST} -e $@ -a -f $@ ; then \
 	  echo "ERROR: Regular file $@ present, directory instead expected" ; \
 	  exit 1; \
 	elif [ ! -d $@ ] ; then \
@@ -63,7 +63,7 @@ $(OUTPUT_DIRS):
 	fi
 
 $(INSTALL_DIRS):
-	@if /usr/bin/test -e $@ -a -f $@ ; then \
+	@if ${EXT_TEST} -e $@ -a -f $@ ; then \
 	  echo "ERROR: Regular file $@ present, directory instead expected" ; \
 	  exit 1; \
 	elif [ ! -d $@ ] ; then \
