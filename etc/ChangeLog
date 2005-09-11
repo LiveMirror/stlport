@@ -1,3 +1,16 @@
+2005-09-11  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/Makefiles/gmake/sysid.mak: provide identification hosted platform.
+
+	* build/Makefiles/gmake/targetdirs.mak: CygWin/MinGW has no /usr/bin/test,
+	but built-in test support -e; see record 2005-09-04.
+
+	* build/Makefiles/top.mak: separate hosted platform and target platform
+	file extentions, tools, utilites.
+
+	* build/Makefiles/gmake/?/sys.mak, build/Makefiles/gmake/?/targetsys.mak:
+	ditto.
+	
 2005-09-09  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32.c: Fix _Locale_wchar_[tolower,toupper] implementation
