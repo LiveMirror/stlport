@@ -56,6 +56,15 @@
 */
 #endif
 
+/*
+ * Signal STLport that we are using the cygwin distrib with the -mno-cygwin option.
+ * This is similar to a mingw environment except that relative path to native headers
+ * is different, this is why we need this macro.
+ */
+/*
+#define _STLP_NO_CYGWIN
+ */
+
 /* 
  * Edit relative path below (or put full path) to get native 
  * compiler vendor's headers included. Default is "../include"
