@@ -69,10 +69,6 @@
  */
 #include <stl_user_config.h>
 
-/* Placeholder for the STLport configure script.
- */
-#include <script_config.h>
-
 #if defined (__BUILDING_STLPORT)
 /* For the STLport implementation we can use everything:
  */
