@@ -1,3 +1,13 @@
+2005-09-12  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_thread.h: Fix _Atomic_swap_ptr implementation in single
+	threaded mode and when there is no pointer atomic swap operation.
+
+	* stlport/stl/_site_config.h: Add _STLP_NO_CYGWIN macro to signal use
+	of the -mno-cygwin cygwin option.
+
+	* build/lib/configure: Remove automatic generation of stlport/script_config.h.
+
 2005-09-11  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* build/Makefiles/gmake/sysid.mak: provide identification hosted platform.
