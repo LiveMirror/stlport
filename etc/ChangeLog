@@ -1,4 +1,4 @@
-2005-09-13  Petr Ovtchenkov  <ptr@island.plnet.ru>
+2005-09-13  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_thread.h: fix return type specification
 	[volatile void * -> void *].
