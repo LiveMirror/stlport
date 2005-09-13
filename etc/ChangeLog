@@ -1,3 +1,8 @@
+2005-09-13  Petr Ovtchenkov  <ptr@island.plnet.ru>
+
+	* stlport/stl/_thread.h: fix return type specification
+	[volatile void * -> void *].
+
 2005-09-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_thread.h: Fix _Atomic_swap_ptr implementation in single
