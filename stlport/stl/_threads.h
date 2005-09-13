@@ -463,7 +463,7 @@ inline void* _Atomic_swap_ptr(void* volatile* __p, void* __q)
 inline void* _Atomic_swap_ptr(void* volatile* __p, void* __q) {
   /* We use the same struct as in _Atomic_swap function */
   _Swap_lock_struct<0>::_S_swap_lock._M_acquire_lock();
-  volatile void *__result = *__p;
+  void *__result = *__p;
   *__p = __q;
   _Swap_lock_struct<0>::_S_swap_lock._M_release_lock();
   return __result;
