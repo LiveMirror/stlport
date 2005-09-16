@@ -3,17 +3,14 @@
 
 #!message build\Makefiles\borland\depend.mak
 
-!include $(RULESBASE)\$(USE_MAKE)\depend.inc
-
 depend: build_system_message dirs objs_inc_delete depend_tmp_init $(ALLBASE) depend_tmp_end depend_inc_create depend_tmp_delete 
 	@echo SETUP_MSG = This file is required for setup. > $(RULESBASE)\$(USE_MAKE)\sysid.inc
 	@if exist $(RULESBASE)\config.mak echo CFGSET = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
 	@if exist %WINDIR%\system32\user.exe echo WINSYSDIR = %WINDIR%\system32 >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
 	@if exist %WINDIR%\system\user.exe echo WINSYSDIR = %WINDIR%\system >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
-	@echo SETUP_MSG = This file is required for setup. > $(RULESBASE)\$(USE_MAKE)\depend.inc
-	@if exist $(STLPORT_DIR)\build\lib\$(USE_MAKE)\depends.inc       echo DEPEND_LIB  = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\depend.inc
-	@if exist $(STLPORT_DIR)\build\test\unit\$(USE_MAKE)\depends.inc echo DEPEND_UNIT = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\depend.inc
-	@if exist $(STLPORT_DIR)\build\test\eh\$(USE_MAKE)\depends.inc   echo DEPEND_EH   = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\depend.inc
+	@if exist $(STLPORT_DIR)\build\lib\$(USE_MAKE)\depends.inc       echo DEPEND_LIB  = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
+	@if exist $(STLPORT_DIR)\build\test\unit\$(USE_MAKE)\depends.inc echo DEPEND_UNIT = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
+	@if exist $(STLPORT_DIR)\build\test\eh\$(USE_MAKE)\depends.inc   echo DEPEND_EH   = $(COMPILER_NAME) >> $(RULESBASE)\$(USE_MAKE)\sysid.inc
 	@echo depend done.
 
 depend_tmp_delete :
@@ -38,7 +35,6 @@ depend_tmp_init:
 	@echo TLIB_A        = \ > .\$(USE_MAKE)\objs_arr.tmp
 	@echo TLIB_A_DBG    = \ > .\$(USE_MAKE)\objs_adr.tmp
 	@echo TLIB_A_STLDBG = \ > .\$(USE_MAKE)\objs_add.tmp
-
 
 depend_tmp_end :
 	@echo. >> .\$(USE_MAKE)\dep_srr.tmp

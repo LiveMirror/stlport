@@ -266,7 +266,6 @@ echo. > ..\lib\borland\depends.inc
 echo. > ..\test\unit\borland\depends.inc
 echo. > ..\test\eh\borland\depends.inc
 echo SETUP_MSG = This file is required for setup. > ..\Makefiles\borland\sysid.inc
-echo SETUP_MSG = This file is required for setup. > ..\Makefiles\borland\depend.inc
 
 echo CFGSET=%STLPORT_SELECTED_CONFIG% >> ..\Makefiles\borland\sysid.inc
 if "%STLPORT_SELECTED_CONFIG%"=="bc56" goto oc_bc56

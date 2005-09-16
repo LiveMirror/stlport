@@ -82,7 +82,6 @@ distclean:      clobber
 !endif
 
 	@if exist ..\Makefiles\config.mak  del ..\Makefiles\config.mak
-	@echo SETUP_MSG = This file is required for setup. > ..\Makefiles\$(USE_MAKE)\depend.inc
 	@echo SETUP_MSG = This file is required for setup. > ..\Makefiles\$(USE_MAKE)\sysid.inc
 	
 	@echo distclean done.
