@@ -29,7 +29,17 @@
 #  endif
 # endif
 
+# ifdef __BORLANDC__ // workaround for cmath_test
+#  undef __USING_CNAME__
+#  undef __MATH_H_USING_LIST
+# endif
+
 # include _STLP_NATIVE_C_HEADER(math.h)
+
+#ifdef __BORLANDC__ // workaround for cmath_test
+using _STLP_VENDOR_CSTD::fabs;
+using _STLP_VENDOR_CSTD::ldiv;
+#endif
 
 # if defined (__EXCEPTION_WAS_REDEFINED)
 #  undef exception

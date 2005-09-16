@@ -52,6 +52,7 @@
 # define _STLP_USE_NEW_C_HEADERS
 # define __MATH_H_USING_LIST // native math.h using list
 # define _STLP_NO_LONG_DOUBLE 1 // crash on startup in complex_trig.cpp
+# define fabsf fabs // workaround for cmath_test
 #endif
 
 /* ========================================================================== */

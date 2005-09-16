@@ -41,10 +41,20 @@ namespace std {
 }
 #endif
 
+#ifdef __BORLANDC__ // workaround for cmath_test
+using _STLP_VENDOR_CSTD::labs;
+using _STLP_VENDOR_CSTD::ldiv;
+using _STLP_VENDOR_CSTD::ldiv_t;
+#endif
+
 #ifdef _STLP_IMPORT_VENDOR_CSTD 
 _STLP_BEGIN_NAMESPACE
-using _STLP_VENDOR_CSTD::div_t;
 using _STLP_VENDOR_CSTD::ldiv_t;
+# ifdef __BORLANDC__ // workaround for cmath_test
+typedef ldiv_t div_t;
+# else
+using _STLP_VENDOR_CSTD::div_t;
+# endif
 using _STLP_VENDOR_CSTD::size_t;
 
 #  ifndef _STLP_NO_CSTD_FUNCTION_IMPORTS
@@ -101,19 +111,11 @@ _STLP_END_NAMESPACE
 
 //MSVC starting with .Net 2003 already define all math functions in global namespace:
 #if !defined (_STLP_MSVC) || (_STLP_MSVC < 1310)
-# ifdef __BORLANDC__
-//inline long abs(long __x) { return std::labs(__x); }
-# else
 inline long abs(long __x)             { return ::labs(__x); }
-#endif
 #endif
 
 #if !defined (_STLP_MSVC) || (_STLP_MSVC < 1400)
-# ifdef __BORLANDC__
-inline std::ldiv_t div(long __x, long __y) { return std::ldiv(__x, __y); }
-# else
 inline ldiv_t div(long __x, long __y) { return ::ldiv(__x, __y); }
-#endif
 #endif
 
 #if defined(_STLP_RESTORE_FUNCTION_INTRINSIC)

@@ -132,8 +132,7 @@
 //MSVC starting with .Net 2003 has already all math functions in global namespace.
 //As Intel C++ compiler icl include MSVC headers it also have all math functions in ::
 #if (!defined (_STLP_MSVC) || (_STLP_MSVC < 1310)) && \
-    (!defined (__ICL) || (_MSC_VER < 1310)) && \
-    (!defined (__BORLANDC__))
+    (!defined (__ICL) || (_MSC_VER < 1310)) 
 inline double abs(double __x) { return ::fabs(__x); }
 #  ifndef __MVS__
 _STLP_DEF_MATH_INLINE(abs,fabs)
@@ -245,31 +244,6 @@ _STLP_DEF_MATH_INLINE2(hypot,hypot)
 
 _STLP_BEGIN_NAMESPACE
 using ::abs;
-# ifdef __BORLANDC__
-using std::acos;
-using std::asin;
-using std::atan;
-using std::atan2;
-using std::ceil;
-using std::cos;
-using std::cosh;
-using std::exp;
-using std::fabs;
-using std::floor;
-using std::fmod;
-using std::frexp;
-using std::hypot;
-using std::ldexp;
-using std::log;
-using std::log10;
-using std::modf;
-using std::pow;
-using std::sin;
-using std::sinh;
-using std::sqrt;
-using std::tan;
-using std::tanh;
-# else
 using ::acos;
 using ::asin;
 using ::atan;
@@ -293,7 +267,6 @@ using ::sinh;
 using ::sqrt;
 using ::tan;
 using ::tanh;
-# endif
 _STLP_END_NAMESPACE
 
 #endif /* CMATH_H */
