@@ -1,3 +1,19 @@
+2005-09-05  Eric Sanford  <...@comp...>
+
+	* stlport/math.h: workarounds for cmath_test for bc55, bc56
+
+	* stlport/stl/_cmath.h: same
+
+	* stlport/cstdlib: same
+
+	* stlport/config/stl_bc.h: same
+
+	* build/test/unit/bc5x.mak: restore cmath_test for all builds
+
+	* build/Makefiles/borland/: fix minor setup warnings (depend.inc)
+
+	* build/lib/configure.bat: same
+	
 2005-08-25  Eric Sanford  <...@comp...>
 
 	* build/Makefiles/borland/: fix minor setup warnings
