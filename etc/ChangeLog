@@ -1,3 +1,8 @@
+2005-09-16  Francois Dumont  <dums@stlport...>
+
+	* stlport/cwchar: Add MinGW 3.8 runtime wide-char to multi-byte functions
+	import within STLport namespace thanks Rene Riviera.
+
 2005-09-14  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_gcc.h: Mingw support string wide functions thanks
