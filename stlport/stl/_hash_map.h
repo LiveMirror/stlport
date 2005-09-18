@@ -199,6 +199,13 @@ public:
 	    (*__it).second );
   }
 
+  const _Tp& operator[](const key_type& __key) const {
+    const_iterator __it = _M_ht.find(__key);
+    return (__it == _M_ht.end() ? 
+	    _M_ht._M_insert(value_type(__key, _STLP_DEFAULT_CONSTRUCTED(_Tp))).second : 
+	    (*__it).second );
+  }
+
   size_type count(const key_type& __key) const { return _M_ht.count(__key); }
   
   pair<iterator, iterator> equal_range(const key_type& __key)
