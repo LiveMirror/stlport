@@ -111,6 +111,22 @@ _STLP_TEMPLATE_NULL struct hash<unsigned _STLP_LONG_LONG> {
 };
 #endif
 
+_STLP_TEMPLATE_NULL
+struct hash<void *>
+{
+    union __vp {
+        size_t s;
+        void  *p;
+    };
+
+    size_t operator()(void *__x) const
+      {
+        __vp vp;
+        vp.p = __x;
+        return vp.s;
+      }
+};
+
 _STLP_END_NAMESPACE
 
 #endif /* _STLP_HASH_FUN_H */
