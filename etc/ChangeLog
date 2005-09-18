@@ -1,4 +1,4 @@
-2005-09-18  Petr Ovtchenkov  <complement@users.sourceforge.ne>
+2005-09-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_hash_fun.h: add hash function for void *.
 
