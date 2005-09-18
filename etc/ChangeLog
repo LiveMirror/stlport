@@ -1,3 +1,14 @@
+2005-09-18  Petr Ovtchenkov  <complement@users.sourceforge.ne>
+
+	* stlport/stl/_hash_fun.h: add hash function for void *.
+
+	* stlport/stl/_hash_map.h: add operator [] that return const reference.
+
+	* src/facets_byname.cpp, src/message_facets.h: introduce map between
+	nl_catd type [that is void * on Linux] and message_base::catalog
+	[that is int by Standard]; this should remove problems on platforms
+	where sizeof(int) < sizeof(void *).
+
 2005-09-16  Francois Dumont  <dums@stlport...>
 
 	* stlport/cwchar: Add MinGW 3.8 runtime wide-char to multi-byte functions
