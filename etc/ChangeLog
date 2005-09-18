@@ -5,7 +5,7 @@
 	* stlport/stl/_hash_map.h: add operator [] that return const reference.
 
 	* src/facets_byname.cpp, src/message_facets.h: introduce map between
-	nl_catd type [that is void * on Linux] and message_base::catalog
+	nl_catd type [that is void * on Linux] and messages_base::catalog
 	[that is int by Standard]; this should remove problems on platforms
 	where sizeof(int) < sizeof(void *).
 
