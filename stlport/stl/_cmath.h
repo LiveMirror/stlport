@@ -334,6 +334,12 @@ using ::sinh;
 using ::sqrt;
 using ::tan;
 using ::tanh;
+
+#if defined(__GNUC__) && (__GNUC__ < 3)
+inline double abs(double __x) { return ::fabs(__x); }
+_STLP_DEF_MATH_INLINE(abs,fabs)
+#endif
+
 _STLP_END_NAMESPACE
 #endif
 
