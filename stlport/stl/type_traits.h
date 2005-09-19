@@ -384,7 +384,7 @@ template <class _Tp>  struct _IsPtrType {
 template <class _Tp1, class _Tp2>  struct _BothPtrType { 
   enum { is_ptr1 = _IsPtr<_Tp1>::_Ret };
   enum { is_ptr2 = _IsPtr<_Tp2>::_Ret };
-  typedef typename __bool2type<is_ptr1 && is_ptr2>::_Ret _Type;
+  typedef typename __bool2type<(is_ptr1 && is_ptr2)>::_Ret _Type;
   static _Type _Ret() { return _Type();} 
 };
 
@@ -514,7 +514,7 @@ struct _OKToSwap {
   enum { is_ref1 = __type2bool<_IsRef1>::_Ret };
   enum { is_ref2 = __type2bool<_IsRef2>::_Ret };
 
-  typedef typename __bool2type<same && is_ref1 && is_ref2>::_Ret _Type;
+  typedef typename __bool2type<(same && is_ref1 && is_ref2)>::_Ret _Type;
   static _Type _Answer() { return _Type(); }
 };
 
