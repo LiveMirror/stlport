@@ -9,6 +9,7 @@ TARGET_OS := netware
 endif
 
 ifndef TARGET_OS
+
 OSNAME := $(shell uname -s | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr ',/' ',-')
 
 # RedHat use nonstandard options for uname at least in cygwin,
@@ -32,6 +33,7 @@ P_ARCH := $(shell uname -p | tr '[A-Z]' '[a-z]' | tr ', /\\()"' ',//////' | tr '
 endif
 
 else
+
 # TARGET_OS defined, cross compilation assumed
 ifndef (mwccnlm,$(COMPILER_NAME))
 OSNAME := $(shell echo ${TARGET_OS} | sed 's/^[a-z0-9]\+-[a-z0-9]\+-\([a-z]\+\).*/\1/' )
@@ -44,6 +46,7 @@ OSREL  := 5
 M_ARCH := i386
 P_ARCH := unknown
 endif
+
 # TARGET_OS
 endif
 

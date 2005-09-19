@@ -57,6 +57,9 @@ REM C runtime library
 if "%1" == "--rtl-static" goto opt_rtl
 if "%1" == "--rtl-dynamic" goto opt_rtl
 
+REM MinGW without Msys config
+if "%1" == "--mingw" goto opt_mingw
+
 REM clean rule
 if "%1" == "--clean" goto opt_clean
 
@@ -112,6 +115,11 @@ echo    "--rtl-dynamic -> _STLP_USE_DYNAMIC_LIB"
 echo    "--rtl-static  -> _STLP_USE_STATIC_LIB"
 echo    This is a Microsoft-only option.
 echo.
+echo "--mingw"
+echo    If you want to build STLport libraries using the MinGW package in a cmd or
+echo    command console that is to say without help of a Msys or Cygwin environment
+echo    you have to activate this option.
+echo.    
 echo "--clean"
 echo    Removes the build configuration file.
 goto skp_comp
@@ -314,6 +322,16 @@ if "%1" == "--rtl-dynamic" echo Selecting dynamic C runtime library for STLport
 if "%1" == "--rtl-dynamic" echo STLP_BUILD_FORCE_DYNAMIC_RUNTIME=1 >> ..\Makefiles\config.mak
 
 :or_end
+goto cont_lp
+
+REM **************************************************************************
+REM *
+REM * MinGW build
+REM *
+REM **************************************************************************
+:opt_mingw
+echo Setting up for Mingw build.
+echo include $(SRCROOT)\Makefiles\gmake\windows\sysid.mak >> ..\Makefiles\config.mak
 goto cont_lp
 
 REM **************************************************************************

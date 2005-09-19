@@ -88,8 +88,7 @@ do
       write_option "$option" MWCW_BASE
       ;;
     --no-cygwin)
-      write_option "gcc -mno-cygwin" CC
-      write_option "c++ -mno-cygwin" CXX
+      write_option "-mno-cygwin" OPT
       write_option -D_STLP_NO_CYGWIN DEFS
       echo "--no-cygwin: Don't forget to uncomment _STLP_NO_CYGWIN macro"
       echo "in stlport/stl/_site_config.h to use such a configuration."

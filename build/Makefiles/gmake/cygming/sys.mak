@@ -1,6 +1,7 @@
 # Time-stamp: <05/09/09 21:12:38 ptr>
 # $Id$
 
+RC := windres
 INSTALL := install
 
 INSTALL_SO := ${INSTALL} -m 0755
