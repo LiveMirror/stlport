@@ -1,12 +1,12 @@
-# Time-stamp: <05/08/19 09:51:52 ptr>
+# Time-stamp: <05/09/20 00:38:58 ptr>
 # $Id$
 
 
 #INCLUDES = -I$(SRCROOT)/include
 INCLUDES :=
 
-CXX = c++
-CC = gcc -ansi
+CXX := c++
+CC := gcc -ansi
 
 ifdef TARGET_OS
 CXX := ${TARGET_OS}-${CXX}
@@ -139,7 +139,9 @@ endif
 # Required for correct order of static objects dtors calls:
 ifneq ($(OSNAME),cygming)
 ifneq ($(OSNAME),windows)
+ifneq ($(CXX_VERSION_MAJOR),2)
 CXXFLAGS += -fuse-cxa-atexit
+endif
 endif
 endif
 
