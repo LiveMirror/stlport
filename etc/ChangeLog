@@ -1,3 +1,21 @@
+2005-09-19  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/nmake/clean.mak, lib/clean.mak, app/clean.mak: Add check
+	for file or folder existance before calling del or rd to avoid error
+	messages that give a bad feed back to STLport users.
+
+	* build/Makefiles/gmake: Add support to use the GNU make tool in a Windows
+	cmd console. For the moment it is used to build STLport using a simple
+	MinGW distrib.
+
+	* stlport/stl/type_traits.h: Simplified code removing the _IsConvertibleIfNot
+	that has never proved of being useful, it only introduce problem with some
+	limited compilers.
+
+	* stlport/stl/_string_woraround.h, _string.h, debug/_string.h: Fix string
+	range constructor bug in the VC6 specific workaround implementation that was
+	resulting in a memory leak. Thanks Felix Wyss report.
+
 2005-09-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_hash_fun.h: add hash function for void *.
