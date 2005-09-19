@@ -554,40 +554,9 @@ struct __stlport_class {
   typedef _Tp _Type;
 };
 
-#if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
-template <class _CondT>
-struct _IsConvertibleIfNotAux /*<__true_type>*/ {
-  template <class _Derived, class _Base>
-  struct _In {
-    typedef __false_type _Ret;
-  };
-};
-
-_STLP_TEMPLATE_NULL
-struct _IsConvertibleIfNotAux<__false_type> {
-  template <class _Derived, class _Base>
-  struct _In {
-    typedef typename _IsConvertibleType<_Derived, _Base>::_Type _Ret;
-  };
-};
-
-template <class _CondT, class _Derived, class _Base>
-struct _IsConvertibleIfNot {
-  typedef typename _IsConvertibleIfNotAux<_CondT>::_STLP_TEMPLATE _In<_Derived, _Base>::_Ret _Ret;
-};
-#endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
-
 template <class _Tp>
 struct _IsSTLportClass {
-#if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
-  typedef typename _Is_integer<_Tp>::_Integral _Tr1;
-  typedef typename _Is_rational<_Tp>::_Rational _Tr2;
-  typedef typename _Lor2<_Tr1, _Tr2>::_Ret _Tr3;
-
-  typedef typename _IsConvertibleIfNot<_Tr3, _Tp, __stlport_class<_Tp> >::_Ret _Ret;
-#else
-  typedef typename _IsConvertible<_Tp, __stlport_class<_Tp> >::_Type _Ret;
-#endif /* _STLP_MEMBER_TEMPLATE_CLASSES */
+  typedef typename _IsConvertibleType<_Tp, __stlport_class<_Tp> >::_Type _Ret;
 };
 
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined (_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
