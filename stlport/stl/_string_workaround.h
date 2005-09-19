@@ -79,14 +79,14 @@ public:                         // Constructor, destructor, assignment.
   template <class _InputIterator> 
   basic_string(_InputIterator __f, _InputIterator __l,
                const allocator_type & __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_NO_MEM_T_STRING_BASE(__a) {
+    : _STLP_NO_MEM_T_STRING_BASE(_Base::_CalledFromWorkaround_t(), __a) {
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_dispatch(__f, __l, _Integral());
   }
 #  if defined (_STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS)
   template <class _InputIterator> 
   basic_string(_InputIterator __f, _InputIterator __l)
-    : _STLP_NO_MEM_T_STRING_BASE(allocator_type()) {
+    : _STLP_NO_MEM_T_STRING_BASE(_Base::_CalledFromWorkaround_t(), allocator_type()) {
     typedef typename _Is_integer<_InputIterator>::_Integral _Integral;
     _M_initialize_dispatch(__f, __l, _Integral());
   }

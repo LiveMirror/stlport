@@ -238,6 +238,14 @@ public:                         // Constructor, destructor, assignment.
     _M_initialize_dispatch(__f, __l, _Integral());
   }
 #    endif
+#  else
+  /* We need an additionnal constructor to build an empty string without
+   * any allocation or termination char*/
+protected:
+  struct _CalledFromWorkaround_t {};
+  basic_string(_CalledFromWorkaround_t, const allocator_type &__a)
+    : _String_base<_CharT,_Alloc>(__a) {}
+public:
 #  endif /* _STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND */
 #endif /* !__MRC__ || (__SC__ && !__DMC__) */
 
