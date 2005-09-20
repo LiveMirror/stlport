@@ -264,17 +264,17 @@ typedef unsigned int wint_t;
 #  ifndef __HONOR_STD
 #    define _STLP_VENDOR_GLOBAL_EXCEPT_STD 1
 #  endif
+/* egcs fails to initialize builtin types in expr. like this : new(p) char();  */
+#  define _STLP_DEF_CONST_PLCT_NEW_BUG 1
 #endif
 
 /*
 #define _STLP_VENDOR_GLOBAL_CSTD 1
 */
 
-#if (__GNUC_MINOR__ < 95)  && (__GNUC__ < 3)
+#if (__GNUC__ == 2) && (__GNUC_MINOR__ < 95)
 #  define _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
 #  define _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
-/* egcs fails to initialize builtin types in expr. like this : new(p) char();  */
-#  define _STLP_DEF_CONST_PLCT_NEW_BUG 1
 #  define _STLP_DEF_CONST_DEF_PARAM_BUG 1
 #else
 #  undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
