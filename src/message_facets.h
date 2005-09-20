@@ -16,7 +16,7 @@
  *
  */ 
 #ifndef MESSAGE_FACETS_H
-# define MESSAGE_FACETS_H
+#define MESSAGE_FACETS_H
 
 #include <string>
 #include <stl/_messages_facets.h>
@@ -40,8 +40,7 @@ void __release_messages(_Locale_messages* cat);
 // a string to and from wchar_t, and the user is permitted to provide such
 // a facet when calling open().
 
-struct _Catalog_locale_map
-{
+struct _Catalog_locale_map {
   _Catalog_locale_map() : M(0) {}
   ~_Catalog_locale_map() { if (M) delete M; }
 
@@ -67,51 +66,54 @@ private:                        // Invalidate copy constructor and assignment
  *
  */
 
-class _Catalog_nl_catd_map
-{
-  public:
-    _Catalog_nl_catd_map()
-      {}
-    ~_Catalog_nl_catd_map()
-      {}
+#if defined (_STLP_REAL_LOCALE_IMPLEMENTED) && (defined (_STLP_USE_GLIBC) && !defined (__CYGWIN__))
+#  define _STLP_USE_NL_CATD_MAPPING
+#endif
 
-    typedef hash_map<messages_base::catalog, nl_catd, hash<messages_base::catalog>, equal_to<messages_base::catalog> > map_type;
-    typedef hash_map<nl_catd, messages_base::catalog, hash<nl_catd>, equal_to<nl_catd> > rmap_type;
-    // typedef map<messages_base::catalog,nl_catd> map_type;
-    // typedef map<nl_catd,messages_base::catalog> rmap_type;
+class _Catalog_nl_catd_map {
+public:
+  _Catalog_nl_catd_map()
+  {}
+  ~_Catalog_nl_catd_map()
+  {}
 
-     messages_base::catalog insert( nl_catd cat )
-#  if !defined(_STLP_REAL_LOCALE_IMPLEMENTED) || (!defined (_STLP_USE_GLIBC) || defined (__CYGWIN__))
-      { return (messages_base::catalog)cat; }
-#  else
-      ;
-#  endif
+  typedef hash_map<messages_base::catalog, nl_catd_type, hash<messages_base::catalog>, equal_to<messages_base::catalog> > map_type;
+  typedef hash_map<nl_catd_type, messages_base::catalog, hash<nl_catd_type>, equal_to<nl_catd_type> > rmap_type;
+  // typedef map<messages_base::catalog,nl_catd_type> map_type;
+  // typedef map<nl_catd_type,messages_base::catalog> rmap_type;
 
-    void erase( messages_base::catalog cat )
-#  if !defined(_STLP_REAL_LOCALE_IMPLEMENTED) || (!defined (_STLP_USE_GLIBC) || defined (__CYGWIN__))
-      { }
-#  else
-      ;
-#  endif
+  messages_base::catalog insert(nl_catd_type cat)
+#if !defined (_STLP_USE_NL_CATD_MAPPING)
+  { return (messages_base::catalog)cat; }
+#else
+  ;
+#endif
 
-    nl_catd operator [] ( messages_base::catalog cat ) const
-#  if !defined(_STLP_REAL_LOCALE_IMPLEMENTED) || (!defined (_STLP_USE_GLIBC) || defined (__CYGWIN__))
-      { return cat; }
-#  else
-      { return cat < 0 ? 0 : M[cat]; }
-#  endif
+  void erase(messages_base::catalog cat)
+#if !defined (_STLP_USE_NL_CATD_MAPPING)
+  {}
+#else
+  ;
+#endif
 
-  private:
-    _Catalog_nl_catd_map( const _Catalog_nl_catd_map& )
-      {}
-    _Catalog_nl_catd_map& operator =( const _Catalog_nl_catd_map& )
-      { return *this; }
+  nl_catd_type operator [] ( messages_base::catalog cat ) const
+#if !defined (_STLP_USE_NL_CATD_MAPPING)
+  { return cat; }
+#else
+  { return cat < 0 ? 0 : M[cat]; }
+#endif
 
-#  if defined(_STLP_REAL_LOCALE_IMPLEMENTED) && (defined (_STLP_USE_GLIBC) && !defined (__CYGWIN__))
-    mutable map_type M;
-    rmap_type Mr;
-    static int _count;
-#  endif
+private:
+  _Catalog_nl_catd_map(const _Catalog_nl_catd_map&)
+  {}
+  _Catalog_nl_catd_map& operator =(const _Catalog_nl_catd_map&)
+  { return *this; }
+
+#if defined (_STLP_USE_NL_CATD_MAPPING)
+  mutable map_type M;
+  rmap_type Mr;
+  static int _count;
+#endif
 };
 
 class _Messages {

@@ -970,28 +970,27 @@ locale _Catalog_locale_map::lookup(nl_catd_type key) const {
 }
 
 
-#if defined(_STLP_REAL_LOCALE_IMPLEMENTED) && (defined (_STLP_USE_GLIBC) && !defined (__CYGWIN__))
+#if defined (_STLP_USE_NL_CATD_MAPPING)
 int _Catalog_nl_catd_map::_count = 0;
 _STLP_STATIC_MUTEX _Catalog_nl_catd_map_lock _STLP_MUTEX_INITIALIZER;
 
-messages_base::catalog _Catalog_nl_catd_map::insert( nl_catd cat )
-{
-  messages_base::catalog res = Mr[cat];
-  if ( res == 0 ) {
+messages_base::catalog _Catalog_nl_catd_map::insert(nl_catd_type cat) {
+  rmap_type::iterator mit(Mr.insert(rmap_type::value_type(cat, 0)).first);
+  if ((*mit).second == 0) {
     _STLP_auto_lock lock(_Catalog_nl_catd_map_lock);
-    Mr[cat] = ++_count;
+    (*mit).second = ++_count;
     M[_count] = cat;
-    res = _count;
   }
-  return res;
+  return (*mit).second;
 }
 
-void _Catalog_nl_catd_map::erase( messages_base::catalog cat )
-{
-  Mr.erase( M[cat] );
-  M.erase( cat );
+void _Catalog_nl_catd_map::erase(messages_base::catalog cat) {
+  map_type::iterator mit(M.find(cat));
+  if (mit != M.end()) {
+    Mr.erase((*mit).second);
+    M.erase(mit);
+  }
 }
-
 #endif
 
 //----------------------------------------------------------------------
