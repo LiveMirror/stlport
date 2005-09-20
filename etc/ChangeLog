@@ -5,10 +5,10 @@
 	constructor, thanks Felix Wyss report. Also add missing allocator parameter
 	for non stateless allocators.
 
-	* build/Makefiles/gmake: Restore ressource build for Cygwin and MinGW, add
+	* build/Makefiles/gmake: Restore resource build for Cygwin and MinGW, add
 	it for Windows.
 
-	* build/lib/configure.bat: Add --extra-cxxflag to inject additionnal compilation
+	* build/lib/configure.bat: Add --extra-cxxflag to inject additional compilation
 	option in the nmake build system.
 
 2005-09-20  Petr Ovtchenkov  <complement@users.sourceforge.net>
@@ -52,15 +52,13 @@
 	that has never proved of being useful, it only introduce problem with some
 	limited compilers.
 
-	* stlport/stl/_string_woraround.h, _string.h, debug/_string.h: Fix string
+	* stlport/stl/_string_workaround.h, _string.h, debug/_string.h: Fix string
 	range constructor bug in the VC6 specific workaround implementation that was
 	resulting in a memory leak. Thanks Felix Wyss report.
 
 2005-09-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_hash_fun.h: add hash function for void *.
-
-	* stlport/stl/_hash_map.h: add operator [] that return const reference.
 
 	* src/facets_byname.cpp, src/message_facets.h: introduce map between
 	nl_catd type [that is void * on Linux] and messages_base::catalog
