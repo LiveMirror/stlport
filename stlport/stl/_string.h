@@ -164,20 +164,17 @@ public:
 public:                         // Constructor, destructor, assignment.
   typedef typename _String_base<_CharT,_Alloc>::allocator_type allocator_type;
 
-  allocator_type get_allocator() const {
-    return _STLP_CONVERT_ALLOCATOR((const allocator_type&)this->_M_end_of_storage, _CharT);
-  }
+  allocator_type get_allocator() const
+  { return _STLP_CONVERT_ALLOCATOR((const allocator_type&)this->_M_end_of_storage, _CharT); }
 
   explicit basic_string(const allocator_type& __a = allocator_type())
-      : _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE) {
-    _M_terminate_string();
-  }
+      : _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE)
+  { _M_terminate_string(); }
 
   basic_string(_Reserve_t, size_t __n,
                const allocator_type& __a = allocator_type())
-    : _String_base<_CharT,_Alloc>(__a, __n + 1) {
-    _M_terminate_string();
-  }
+    : _String_base<_CharT,_Alloc>(__a, __n + 1)
+  { _M_terminate_string(); }
 
   basic_string(const _Self&);
 
@@ -1206,7 +1203,7 @@ public:                         // find_first_not_of
     { return find_first_not_of(__s._M_Start(), __pos, __s.size()); }
 
   size_type find_first_not_of(const _CharT* __s, size_type __pos = 0) const 
-    { _STLP_FIX_LITERAL_BUG(__s) return find_first_not_of(__s, __pos, _Traits::length(__s)); }
+  { _STLP_FIX_LITERAL_BUG(__s) return find_first_not_of(__s, __pos, _Traits::length(__s)); }
 
   size_type find_first_not_of(const _CharT* __s, size_type __pos,
                               size_type __n) const;
@@ -1217,7 +1214,7 @@ public:                         // find_last_not_of
 
   size_type find_last_not_of(const _Self& __s, 
                              size_type __pos = npos) const
-    { return find_last_not_of(__s._M_Start(), __pos, __s.size()); }
+  { return find_last_not_of(__s._M_Start(), __pos, __s.size()); }
 
   size_type find_last_not_of(const _CharT* __s, size_type __pos = npos) const
     { _STLP_FIX_LITERAL_BUG(__s) return find_last_not_of(__s, __pos, _Traits::length(__s)); }
@@ -1228,17 +1225,12 @@ public:                         // find_last_not_of
   size_type find_last_not_of(_CharT __c, size_type __pos = npos) const;
 
 public:                         // Substring.
-  _Self substr(size_type __pos = 0, size_type __n = npos) const {
-    if (__pos > size())
-      this->_M_throw_out_of_range();
-    return _Self(this->_M_Start() + __pos, 
-                 this->_M_Start() + __pos + (min) (__n, size() - __pos));
-  }
+  _Self substr(size_type __pos = 0, size_type __n = npos) const
+  { return _Self(*this, __pos, __n, get_allocator()); }
 
 public:                         // Compare
-
   int compare(const _Self& __s) const 
-    { return _M_compare(this->_M_Start(), this->_M_Finish(), __s._M_Start(), __s._M_Finish()); }
+  { return _M_compare(this->_M_Start(), this->_M_Finish(), __s._M_Start(), __s._M_Finish()); }
 
   int compare(size_type __pos1, size_type __n1,
               const _Self& __s) const {

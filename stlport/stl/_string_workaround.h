@@ -712,12 +712,8 @@ public:                         // Other modifier member functions.
 
 public:                         // Substring.
 
-  _Self substr(size_type __pos = 0, size_type __n = _NonDbgBase::npos) const {
-    if (__pos > this->size())
-      this->_M_throw_out_of_range();
-    return _Self(this->_M_Start() + __pos, 
-                 this->_M_Start() + __pos + (min) (__n, this->size() - __pos));
-  }
+  _Self substr(size_type __pos = 0, size_type __n = _NonDbgBase::npos) const
+  { return _Self(*this, __pos, __n, get_allocator()); }
 
 #if defined (_STLP_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_DEBUG)
 #  define _STLP_STRING_SUM_BASE _STLP_NO_MEM_T_STRING_BASE
