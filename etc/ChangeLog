@@ -4,15 +4,20 @@
 	for pointers to member function, skip this test for gcc 2.95.
 
 	* build/Makefiles/gmake/gcc.mak: gcc 2.95 has no -fcxa-at-exit option.
+
+	* build/lib/gcc.mak: don't use LEAK_PEDANTIC with gcc 2.95 [but this not help,
+	segfault at program termination still happens].
 	
 	* stlport/config/stl_gcc.h: gcc 2.95 has problem with llabs, so force to use
-	_STLP_NO_VENDOR_STDLIB_L.
+	_STLP_NO_VENDOR_STDLIB_L; 2.95 fails to initialize builtin types.
 
 	* stlport/stl/_cmath.h: workaround for gcc 2.95---it has problem with 'using'
 	directive [problem with 'abs' with float types as argument].
 
 	* stlport/stl/type_traits.h: workaround for gcc 2.95 [parentheses around
 	template argument]. Thanks Thomas Kho.
+
+	* test/unit/fstream_test.cpp: custom facet test compilation fail for gcc 2.95
 
 2005-09-19  Francois Dumont  <dums@stlport...>
 
