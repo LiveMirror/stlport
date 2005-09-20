@@ -19,6 +19,10 @@
 
 	* test/unit/fstream_test.cpp: custom facet test compilation fail for gcc 2.95
 
+	* build/Makefiles/gmake/icc.mak, build/test/unit/icc.mak: support icc 9.0,
+	thanks John Fisher-Ogden and Thomas Kho.
+
+
 2005-09-19  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/nmake/clean.mak, lib/clean.mak, app/clean.mak: Add check

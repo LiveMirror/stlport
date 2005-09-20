@@ -34,10 +34,16 @@ stldbg-shared:	LDLIBS = -lpthread -lstlportstlg -lcprts -lunwind
 dbg-shared:	LDLIBS = -lpthread -lstlportg -lcprts -lunwind
 endif
 else
+ifeq ($(CXX_VERSION_MAJOR),9)
+# 9.0 build 20050430
+release-shared:	LDLIBS = -lpthread -lstlport -lcprts -lunwind
+stldbg-shared:	LDLIBS = -lpthread -lstlportstlg -lcprts -lunwind
+dbg-shared:	LDLIBS = -lpthread -lstlportg -lcprts -lunwind
+else
 # 7.1 build 20030307Z
 release-shared:	LDLIBS = -lpthread -lstlport
 stldbg-shared:	LDLIBS = -lpthread -lstlportstlg
 dbg-shared:	LDLIBS = -lpthread -lstlportg
 endif
 endif
-
+endif
