@@ -111,7 +111,7 @@ private:
 
 #if defined (_STLP_USE_NL_CATD_MAPPING)
   mutable map_type M;
-  rmap_type Mr;
+  mutable rmap_type Mr;
   static int _count;
 #endif
 };
