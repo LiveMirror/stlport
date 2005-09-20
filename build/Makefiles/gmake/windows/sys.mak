@@ -1,7 +1,7 @@
 # Time-stamp: <05/09/09 21:12:38 ptr>
 # $Id$
 
-RM := del
+RC := windres
 INSTALL := copy
 
 INSTALL_SO := ${INSTALL}
