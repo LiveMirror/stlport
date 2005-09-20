@@ -16,7 +16,7 @@ echo.
 REM no options at all?
 if NOT "%1xyz123" == "xyz123" goto init
 
-echo Please specify some options or use "configure.bat --help" to see the
+echo Please specify some options or use "configure --help" to see the
 echo available options.
 goto skp_comp
 
@@ -26,7 +26,7 @@ REM initially create/overwrite config.mak
 echo # STLport Configuration Tool for Windows > ..\Makefiles\config.mak
 echo # >> ..\Makefiles\config.mak
 echo # config.mak generated with command line: >> ..\Makefiles\config.mak
-echo # configure.bat %1 %2 %3 %4 %5 %6 %7 %8 %9 >> ..\Makefiles\config.mak
+echo # configure %1 %2 %3 %4 %5 %6 %7 %8 %9 >> ..\Makefiles\config.mak
 echo # >> ..\Makefiles\config.mak
 
 set STLPORT_COMPILE_COMMAND=
@@ -56,6 +56,9 @@ if "%1" == "--cross" goto opt_x
 REM C runtime library
 if "%1" == "--rtl-static" goto opt_rtl
 if "%1" == "--rtl-dynamic" goto opt_rtl
+
+REM additional compiler options
+if "%1" == "--extra-cxxflag" goto opt_xtra
 
 REM MinGW without Msys config
 if "%1" == "--mingw" goto opt_mingw
@@ -95,7 +98,7 @@ echo    evc3     Microsoft eMbedded Visual C++ 3 (*)
 echo    evc4     Microsoft eMbedded Visual C++ .NET (*)
 echo  (*) For these compilers the target processor is determined automatically.
 echo      You must run the WCE*.BAT file you wish to build STLport for before
-echo      running configure.bat.
+echo      running configure.
 echo.
 echo "-x"
 echo    Enables cross-compiling; the result is that all built files that are
@@ -114,6 +117,15 @@ echo    _site_config.h set the following macro depending on the configure option
 echo    "--rtl-dynamic -> _STLP_USE_DYNAMIC_LIB"
 echo    "--rtl-static  -> _STLP_USE_STATIC_LIB"
 echo    This is a Microsoft-only option.
+echo.
+echo "--extra-cxxflag <additional compilation options>"
+echo    Use this option to add any compilation flag to the build system. For instance
+echo    it can be used to activate a specific processor optimization depending on your
+echo    processor. For Visual C++ .Net 2003, to activate pentium 3 optim you will use:
+echo    --extra-cxxflag /G7
+echo    If you have several options use several --extra-cxxflag options. For instance
+echo    to also force use of wchar_t as an intrinsic type:
+echo    --extra-cxxflag /G7 --extra-cxxflag /Zc:wchar_t
 echo.
 echo "--mingw"
 echo    If you want to build STLport libraries using the MinGW package in a cmd or
@@ -322,6 +334,26 @@ if "%1" == "--rtl-dynamic" echo Selecting dynamic C runtime library for STLport
 if "%1" == "--rtl-dynamic" echo STLP_BUILD_FORCE_DYNAMIC_RUNTIME=1 >> ..\Makefiles\config.mak
 
 :or_end
+goto cont_lp
+
+REM **************************************************************************
+REM *
+REM * Extra compilation flags
+REM *
+REM **************************************************************************
+:opt_xtra
+echo Adding '%2' compilation option
+if "%ONE_OPTION_ADDED%" == "1" goto ox_n
+
+echo DEFS = %2 >> ..\Makefiles\config.mak
+set ONE_OPTION_ADDED=1
+goto ox_end
+
+:ox_n
+echo DEFS = $(DEFS) %2 >> ..\Makefiles\config.mak
+
+:ox_end
+shift
 goto cont_lp
 
 REM **************************************************************************
