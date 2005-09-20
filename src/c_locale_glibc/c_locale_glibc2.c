@@ -91,8 +91,13 @@ typedef __locale_t __c_locale;
 # define __nl_langinfo_l nl_langinfo_l
 #endif
 
-#define __LOCALE_CREATE(nm,category) (void*)__newlocale(1 << category, nm, (__c_locale)0 )
-#define __LOCALE_DESTROY(__loc)      __freelocale((__c_locale)__loc)
+#if (__GLIBC__ > 2) || ((__GLIBC__ == 2) && (__GLIBC_MINOR__ > 2))
+#  define __LOCALE_CREATE(nm,category) (void*)newlocale(1 << category, nm, NULL )
+#  define __LOCALE_DESTROY(__loc)      freelocale((__c_locale)__loc)
+#else
+#  define __LOCALE_CREATE(nm,category) (void*)__newlocale(1 << category, nm, NULL )
+#  define __LOCALE_DESTROY(__loc)      __freelocale((__c_locale)__loc)
+#endif
 
 static const char *_empty_str = "";
 static const char *_C_name = "C";
