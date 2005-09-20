@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Time-stamp: <05/06/03 21:19:35 ptr>
+# Time-stamp: <05/09/21 00:17:55 ptr>
 # $Id$
 
 
@@ -36,7 +36,7 @@ Available options:
                         i.e. something like "c:/Novell/ndk/nwsdk"
   --no-cygwin           Specific cygwin distribution option. Use it to build STLport using
                         the cygwin tools but without dependency on the cygwin1.dll
-  --extra-cxxflags=<options>
+  --with-extra-cxxflags=<options>
                         pass extra options to C++ compiler
   --clean               remove custom settings (file ${configmak})
                         and use default values
@@ -78,7 +78,7 @@ do
     --with-stlport=*)
       write_option "$option" STLPORT_DIR
       ;;
-    --extra-cxxflags=*)
+    --with-extra-cxxflags=*)
       write_option "$option" EXTRA_CXXFLAGS
       ;;
     --with-nwsdk=*)
