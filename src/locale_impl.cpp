@@ -42,6 +42,31 @@ inline bool is_C_locale_name (const char* name) {
   return ((name[0] == 'C') && (name[1] == 0));
 }
 
+_Locale_impl * _STLP_CALL _copy_Locale_impl(_Locale_impl *loc)
+{
+  _STLP_ASSERT( loc != 0 );
+  loc->_M_incr();
+  _Locale_impl *loc_new = new _Locale_impl(*loc);
+  loc->_M_decr();
+  return loc_new;
+}
+
+locale::facet * _STLP_CALL _get_facet(locale::facet *f)
+{
+  if (f != 0)
+    f->_M_incr();
+  return f;
+}
+
+void _STLP_CALL _release_facet(locale::facet *&f)
+{
+  if ((f != 0) && (f->_M_decr() == 0)) {
+    if (f->_M_delete)
+      delete f;
+    f = 0;
+  }
+}
+
 size_t locale::id::_S_max = 39;
 
 static void _Stl_loc_assign_ids();
@@ -696,13 +721,15 @@ _STLP_STATIC_MEMBER_DECLSPEC locale::id numpunct<wchar_t>::id = { 25 };
 _STLP_STATIC_MEMBER_DECLSPEC locale::id messages<wchar_t>::id = { 26 };
 #endif
 
-_STLP_DECLSPEC _Locale_impl* _STLP_CALL _get_Locale_impl(_Locale_impl *loc) {
+_STLP_DECLSPEC _Locale_impl* _STLP_CALL _get_Locale_impl(_Locale_impl *loc)
+{
   _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
   return loc;
 }
 
-void _STLP_CALL _release_Locale_impl(_Locale_impl *& loc) {
+void _STLP_CALL _release_Locale_impl(_Locale_impl *& loc)
+{
   _STLP_ASSERT( loc != 0 );
   if (loc->_M_decr() == 0) {
     if (*loc != *_Stl_classic_locale)
@@ -713,35 +740,14 @@ void _STLP_CALL _release_Locale_impl(_Locale_impl *& loc) {
   }
 }
 
-_Locale_impl * _STLP_CALL _copy_Locale_impl(_Locale_impl *loc) {
-  _STLP_ASSERT( loc != 0 );
-  loc->_M_incr();
-  _Locale_impl *loc_new = new _Locale_impl(*loc);
-  loc->_M_decr();
-  return loc_new;
-}
-
-_STLP_DECLSPEC _Locale_impl* _STLP_CALL _copy_Nameless_Locale_impl(_Locale_impl *loc) {
+_STLP_DECLSPEC _Locale_impl* _STLP_CALL _copy_Nameless_Locale_impl(_Locale_impl *loc)
+{
   _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
   _Locale_impl *loc_new = new _Locale_impl(*loc);
   loc->_M_decr();
   loc_new->name = _Nameless;
   return loc_new;
-}
-
-locale::facet * _STLP_CALL _get_facet(locale::facet *f) {
-  if (f != 0)
-    f->_M_incr();
-  return f;
-}
-
-void _STLP_CALL _release_facet(locale::facet *&f) {
-  if ((f != 0) && (f->_M_decr() == 0)) {
-    if (f->_M_delete)
-      delete f;
-    f = 0;
-  }
 }
 
 _STLP_END_NAMESPACE

@@ -1,3 +1,8 @@
+2005-09-21  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* src/locale_impl.cpp: some internal functions used before declared.
+	Thanks Thomas Kho for report.
+
 2005-09-20  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string.h, _string_workaround.h: code refactoring, substr method
