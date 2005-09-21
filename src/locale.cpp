@@ -62,7 +62,7 @@ void _STLP_CALL locale::_M_throw_runtime_error(const char* name) {
 // value is always positive.
 static size_t _Stl_loc_get_index(locale::id& id) {
   if (id._M_index == 0) {
-#if defined (_STLP_WIN32THREADS) && defined (_STLP_NEW_PLATFORM_SDK)
+#if defined (_STLP_ATOMIC_INCREMENT)
     id._M_index = _STLP_ATOMIC_INCREMENT(&(locale::id::_S_max));
 #else
     static _STLP_STATIC_MUTEX _Index_lock _STLP_MUTEX_INITIALIZER;

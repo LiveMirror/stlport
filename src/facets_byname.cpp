@@ -972,18 +972,22 @@ locale _Catalog_locale_map::lookup(nl_catd_type key) const {
 
 #if defined (_STLP_USE_NL_CATD_MAPPING)
 int _Catalog_nl_catd_map::_count = 0;
-_STLP_STATIC_MUTEX _Catalog_nl_catd_map_lock _STLP_MUTEX_INITIALIZER;
 
 messages_base::catalog _Catalog_nl_catd_map::insert(nl_catd_type cat) {
-  // rmap_type::iterator mit(Mr.insert(rmap_type::value_type(cat, 0)).first);
-  messages_base::catalog res = Mr[cat];
-  if ( res == 0 /* (*mit).second == 0 */ ) {
-    _STLP_auto_lock lock(_Catalog_nl_catd_map_lock);
-    // (*mit).second = ++_count;
-    Mr[cat] = ++_count;
-    M[_count] = cat;
+  messages_base::catalog &res = Mr[cat];
+  if ( res == 0 ) {
+#if defined (_STLP_ATOMIC_INCREMENT)
+    res = _STLP_ATOMIC_INCREMENT(&_count);
+#else
+    static _STLP_STATIC_MUTEX _Count_lock _STLP_MUTEX_INITIALIZER;
+    {
+      _STLP_auto_lock sentry(_Count_lock);
+      res = ++_count;
+    }
+#endif
+    M[res] = cat;
   }
-  return res; // (*mit).second;
+  return res;
 }
 
 void _Catalog_nl_catd_map::erase(messages_base::catalog cat) {
