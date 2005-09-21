@@ -1,4 +1,4 @@
-# Time-stamp: <05/09/09 20:39:43 ptr>
+# Time-stamp: <05/09/22 01:10:06 ptr>
 # $Id$
 
 ifndef BUILD_DATE
@@ -36,9 +36,9 @@ else
 
 # TARGET_OS defined, cross compilation assumed
 ifndef (mwccnlm,$(COMPILER_NAME))
-OSNAME := $(shell echo ${TARGET_OS} | sed 's/^[a-z0-9]\+-[a-z0-9]\+-\([a-z]\+\).*/\1/' )
-OSREL  := $(shell echo ${TARGET_OS} | sed 's/^[[:alnum:]]\+-[a-z0-9]\+-[a-z]\+\([a-zA-Z.0-9]*\).*/\1/' )
-M_ARCH := $(shell echo ${TARGET_OS} | sed 's/^\([a-z0-9]\+\)-.*/\1/' )
+OSNAME := $(shell echo ${TARGET_OS} | sed 's/^[a-z0-9_]\+-[a-z0-9]\+-\([a-z]\+\).*/\1/' )
+OSREL  := $(shell echo ${TARGET_OS} | sed 's/^[[:alnum:]_]\+-[a-z0-9]\+-[a-z]\+\([a-zA-Z.0-9]*\).*/\1/' )
+M_ARCH := $(shell echo ${TARGET_OS} | sed 's/^\([a-z0-9_]\+\)-.*/\1/' )
 P_ARCH := unknown
 else
 OSNAME := netware
