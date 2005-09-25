@@ -1,3 +1,8 @@
+2005-09-25  Francois Dumont  <dums@stlport...>
+
+	* build/test/unit/gcc.mak: Remove _STLP_LEAKS_PEDANTIC option when building
+	unit tests as this option is not defined when building the libs.
+
 2005-09-22  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* build/Makefiles/gmake/sysid.mak: add underscore in architecture recognition,
