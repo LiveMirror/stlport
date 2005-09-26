@@ -1,3 +1,7 @@
+2005-09-26  Francois Dumont  <dums@stlport...>
+
+	* build/*: Finished _STLP_LEAKS_PEDANTIC clean up from all make files.
+
 2005-09-25  Francois Dumont  <dums@stlport...>
 
 	* build/test/unit/gcc.mak: Remove _STLP_LEAKS_PEDANTIC option when building

@@ -13,12 +13,6 @@ INCLUDES += -I$(STLPORT_INCLUDE_DIR)
 
 ifeq ($(OSNAME),linux)
 DEFS += -D_STLP_REAL_LOCALE_IMPLEMENTED -D_GNU_SOURCE
-
-# gcc 2.95 don't have cxa-at-exit feature; without it we can't clear locale
-# support safely
-ifneq ($(CXX_VERSION_MAJOR),2)
-DEFS += -D_STLP_LEAKS_PEDANTIC
-endif
 endif
 
 # options for build with boost support
