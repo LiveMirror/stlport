@@ -1,3 +1,10 @@
+2005-09-30  Francois Dumont  <dums@stlport...>
+
+	* INSTALL, README, doc/FAQ, doc/README.msvc: Documentation updates.
+
+	* doc/stlport_namespaces.txt: Small doc about STLport namespaces and how
+	STLport replace native Standard library.
+
 2005-09-26  Francois Dumont  <dums@stlport...>
 
 	* build/*: Finished _STLP_LEAKS_PEDANTIC clean up from all make files.

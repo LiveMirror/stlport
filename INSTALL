@@ -21,7 +21,7 @@ Now you have to choose between STLport iostreams or no iostreams.
    reading this file though ;)
 
 2) Make sure "stlport" directory of this distribution comes before compiler's one 
-   in your include paths when you compile the project;
+   in your include paths when you compile the project.
 
    Note: for SunPro CC 5.0 and higher, there used to be special directory "stlport/SC5"
 	 this is now obsolete, please make sure you do not use it anymore.
@@ -30,8 +30,9 @@ Now you have to choose between STLport iostreams or no iostreams.
    that may result in compilation errors.
 
    NOTE:  Your compiler should be recognized by STLport source code with no configuring.
-	        Please edit appropriate configuration header for your compiler
-          directly if you have to make compiler-specific configuration changes.
+          Please edit appropriate configuration header for your compiler
+          directly if you have to make compiler-specific configuration changes
+          (see stlport/config). 
 
 
 4)  Go to "build/lib" subdirectory. It contains various makefiles for different
@@ -43,24 +44,24 @@ Now you have to choose between STLport iostreams or no iostreams.
     Verify you can do command line compiles. IDE users may have to do something 
     special, like add environment variables (for Microsoft) or install 
     additional compiler components (for Metrowerks), before they can use their 
-    command line compilers.
+    command line compilers (see doc/README.xxxx for additionnal inrformation).
 
-   IMPORTANT:
+    IMPORTANT:
 
-   If you DO NOT plan to use STLport iostreams and/or locale implementation but just
-   the STL, you do not have to build the library.
+    If you DO NOT plan to use STLport iostreams and/or locale implementation but just
+    the STL, you do not have to build the library.
  
-   If you have decided to disable STLport iostreams and locale, you may stop reading here.
+    If you have decided to disable STLport iostreams and locale, you may stop reading here.
 
 
 ==== Building STLport iostreams library ==========
 
 Below are step-by-step instructions to build STLport streams library. This is a general
-build process description, for a more detailed one check the doc folder:
+build process description, for a more detailed one check README files in the doc folder:
 
 5)  Using appropriate makefile, do
 
-      make -f <compiler name>.mak clean; make -f <compiler name>.mak depend
+      make -f <compiler name>.mak clean
       make -f <compiler name>.mak install
 
     to build the STLport libraries. Makefiles are set up to build several different
@@ -81,9 +82,9 @@ build process description, for a more detailed one check the doc folder:
 
 
     Note: 'install' taget work slightly different from ordinal---it installs libraries into
-    <STLport root dir>/lib catalog, NOT IN SYSTEM CATALOG. You can do the system install
-    by just copying stlport and lib folder to the destination of your choise. For example
-    on UNIX-like platforms this can be done with the following commands:
+    <STLport root dir>/lib and bin catalog, NOT IN SYSTEM CATALOG. You can do the system
+    install by just copying stlport and lib folder to the destination of your choise. For
+    example on UNIX-like platforms this can be done with the following commands:
 
       su
       tar cf - stlport | (cd /usr/local/include; tar xf -)
@@ -139,7 +140,7 @@ build process description, for a more detailed one check the doc folder:
 	.....
    [ Visual C++ specific ] For VC++, you do not have to specify "stlport_XXX.lib" explicitly,
    as it is being choosen and forced to link automatically by "#pragma"'s in compiler config
-   file in stlport/config/????????.h.
+   file in stlport/config/stl_msvc.h.
    Appropriate version is being selected based on /MD[d] vs /MT[d] options and _STLP_DEBUG setting.
    All you have to do is to set library search path for the linker.
 	Example :
@@ -150,7 +151,7 @@ build process description, for a more detailed one check the doc folder:
    is to copy all .dll's next to the executable. Or, you might choose to add bin directory
    containing STLport dlls to the PATH environment string.
 
-10) STLport build only multithreaded libraries, so you application should be compiled
+10) STLport build only multithreaded libraries, so your application should be compiled
    as multithreaded too. Use -pthread (or -pthreads on Solaris) option for gcc, -mt for SunPro,
    /MT for VC, and so on. Sometimes you should define _REENTRANT or something else, depends
    upon platform/compiler. See compiler's and linker's options on command line when you build
