@@ -162,6 +162,9 @@ protected:
   virtual iter_type do_get_year(iter_type __s, iter_type  __end,
                                 ios_base&, ios_base::iostate& __err,
                                 tm* __t) const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = (sizeof(char_type) - 1) ? 35 : 16;
+# endif
 };
 
 time_base::dateorder _STLP_CALL
@@ -253,6 +256,9 @@ protected:
   virtual iter_type do_put(iter_type __s, ios_base& __f,
                            char_type  /* __fill */, const tm* __tmb,
                            char __format, char /* __modifier */) const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = (sizeof(char_type) - 1) ? 37 : 18;
+# endif
 };
 
 template <class _Ch, __DFL_TMPL_PARAM( _InIt , ostreambuf_iterator<_Ch> ) >

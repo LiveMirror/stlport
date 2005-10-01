@@ -26,13 +26,25 @@
 # endif
 
 # ifdef __BORLANDC__
+#  if __BORLANDC__ < 0x560 // workaround for string_test
+#   undef min
+#   undef max
+#   define min broken
+#   define max broken
+#  else
 #  undef _USE_OLD_RW_STL
+# endif
 # endif
 
 # include _STLP_NATIVE_C_HEADER(stdlib.h)
 
 # ifdef __BORLANDC__
+#  if __BORLANDC__ < 0x560 // workaround for string_test
+#   undef min
+#   undef max
+#  else
 #  define _USE_OLD_RW_STL 1
+# endif
 # endif
 
 # if (_STLP_OUTERMOST_HEADER_ID == 0x265)

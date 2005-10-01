@@ -1,3 +1,41 @@
+2005-09-24  Eric Sanford  <...@comp...>
+
+	* stlport/stl/_locale.h: workaround for fstream_test, sstream_test, floatio_test, locale_test
+
+	* stlport/stl/_codecvt.h: same
+
+	* stlport/stl/_collate.h: same
+
+	* stlport/stl/_ctype.h: same
+
+	* stlport/stl/_monetary.h: same
+
+	* stlport/stl/_num_get.h: same
+
+	* stlport/stl/_num_put.h: same
+
+	* stlport/stl/_numpunct.h: same
+
+	* stlport/stl/_time_facets.h: same
+
+	* stlport/config/stl_bc.h: same
+
+	* src/c_locale_win32/c_locale_win32.c: workaround for locale_test
+
+	* stlport/stl/_monetary.c: same
+
+	* stlport/stl/_deque.h: workaround for deque_test, string_test
+
+	* stlport/stdlib.h: workaround for string_test
+
+	* stlport/stl/_algobase.c: workaround for find_test
+
+	* stlport/stl/_rope.h: workaround for hash_test
+
+	* build/test/unit/bc55.mak: exclude type_traits_test only
+
+	* build/test/unit/bc56.mak: build all unit tests
+
 2005-09-05  Eric Sanford  <...@comp...>
 
 	* stlport/math.h: workarounds for cmath_test for bc55, bc56

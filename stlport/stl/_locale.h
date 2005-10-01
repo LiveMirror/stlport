@@ -283,6 +283,11 @@ _Use_facet<_Facet>::operator *() const
 template <class _Facet> inline const _Facet& use_facet(const locale& __loc)
 # endif
 {
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  if( !_Facet::id._M_index ) {
+    _Facet::id._M_index = _Facet::_S_facet_index;
+  }
+# endif
   return *__STATIC_CAST(const _Facet*,__loc._M_use_facet(_Facet::id));
 }
 

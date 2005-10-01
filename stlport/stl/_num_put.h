@@ -123,6 +123,9 @@ protected:
                            unsigned _STLP_LONG_LONG __val) const ;
 # endif /* _STLP_LONG_LONG  */
   virtual _OutputIter do_put(_OutputIter __s, ios_base& __f, _CharT __fill, const void* __val) const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = (sizeof(char_type) - 1) ? 33 : 14;
+# endif
 };
 
 #ifdef _STLP_USE_TEMPLATE_EXPORT

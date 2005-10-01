@@ -1082,6 +1082,10 @@ _STLP_END_NAMESPACE
 #  include <stl/wrappers/_deque.h>
 # endif
   
+# if defined (__BORLANDC__) && defined (_STLP_DEBUG) //workaround for deque_test, string_test, etc.
+#  define deque __deque__
+# endif
+
 #endif /* _STLP_INTERNAL_DEQUE_H */
 
 // Local Variables:

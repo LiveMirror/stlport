@@ -63,6 +63,7 @@
 // bugs
 # define _STLP_STATIC_CONST_INIT_BUG 1
 # define _STLP_NON_TYPE_TMPL_PARAM_BUG 1
+# define _STLP_FACET_INDEX_BUG 1 // workaround for fstream_test, sstream_test, floatio_test, locale_test, etc
 
 // math, complex, limits
 # define __MINMAX_DEFINED 1

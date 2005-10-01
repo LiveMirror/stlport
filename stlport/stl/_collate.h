@@ -75,6 +75,9 @@ protected:
 private:
   collate(const collate<char>&);
   collate<char>& operator =(const collate<char>&);  
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 1;
+# endif
 };
 
 # ifndef _STLP_NO_WCHAR_T
@@ -114,6 +117,9 @@ protected:
 private:
   collate(const collate<wchar_t>&);
   collate<wchar_t>& operator = (const collate<wchar_t>&);  
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 20;
+# endif
 };
 
 # endif /* NO_WCHAR_T */

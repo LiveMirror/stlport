@@ -148,6 +148,9 @@ private:
 
   static const unsigned char _S_upper[table_size];
   static const unsigned char _S_lower[table_size];
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 2;
+# endif
 };
 
 _STLP_TEMPLATE_NULL
@@ -237,6 +240,9 @@ protected:
   virtual char  do_narrow(wchar_t __c, char __dfault) const;
   virtual const wchar_t* do_narrow(const wchar_t*, const wchar_t*,
                                    char, char*) const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 21;
+# endif
 };
 
 _STLP_TEMPLATE_NULL

@@ -186,7 +186,9 @@ protected:
   virtual _InputIter do_get(_InputIter __ii, _InputIter __end, ios_base& __str,
                            ios_base::iostate& __err, unsigned _STLP_LONG_LONG& __val) const;
 #endif /* _STLP_LONG_LONG */
-
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = (sizeof(char_type) - 1) ? 31 : 12;
+# endif
 };
 
 

@@ -424,11 +424,18 @@ _OutputIter _S_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
   bool __is_negative = *__digits_first == __minus;
   if (__is_negative)
     ++__digits_first;
-
+# ifdef __BORLANDC__ // workaround for locale_test
+  string_type __sign;
+  if ( __intl )
+    __sign = __is_negative ? __punct_intl.negative_sign() : __punct_intl.positive_sign();
+  else
+    __sign = __is_negative ? __punct.negative_sign() : __punct.positive_sign();
+# else
   string_type __sign = __intl ? __is_negative ? __punct_intl.negative_sign()
                                               : __punct_intl.positive_sign()
                               : __is_negative ? __punct.negative_sign()
                                               : __punct.positive_sign();
+# endif
   if (__check_digits) {
     typename string_type::const_iterator __cp = __digits_first;
     while (__cp != __digits_last && __c_type.is(ctype_base::digit, *__cp))

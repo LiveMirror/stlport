@@ -79,6 +79,9 @@ protected:
   virtual iter_type do_get(iter_type __s, iter_type __end, bool __intl,
                            ios_base&  __str, ios_base::iostate& __err,
                            string_type& __digits) const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = (sizeof(char_type) - 1) ? 27 : 8;
+# endif
 };
 
 
@@ -128,6 +131,9 @@ protected:
   virtual pattern     do_neg_format()    const;
 
   friend class _Locale_impl;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 4;
+# endif
 };
 
 _STLP_TEMPLATE_NULL
@@ -175,6 +181,9 @@ protected:
   virtual pattern     do_neg_format()    const;
 
   friend class _Locale_impl;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 5;
+# endif
 };
 
 
@@ -222,6 +231,9 @@ protected:
   virtual int         do_frac_digits()   const;
   virtual pattern     do_pos_format()    const;
   virtual pattern     do_neg_format()    const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 23;
+# endif
 };
 
 
@@ -267,6 +279,9 @@ protected:
   virtual int         do_frac_digits()   const;
   virtual pattern     do_pos_format()    const;
   virtual pattern     do_neg_format()    const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 24;
+# endif
 };
 
 # endif
@@ -426,6 +441,9 @@ protected:
   virtual iter_type do_put(iter_type __s, bool  __intl, ios_base&  __str,
                            char_type __fill,
                            const string_type& __digits) const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = (sizeof(char_type) - 1) ? 29 : 10;
+# endif
 };
 
 # if defined (_STLP_USE_TEMPLATE_EXPORT)

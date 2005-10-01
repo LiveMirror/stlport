@@ -128,7 +128,6 @@ _STLP_INLINE_LOOP _RandomAccessIter __find(_RandomAccessIter __first, _RandomAcc
   }
 }
 
-#if !defined (__BORLANDC__)
 inline char* 
 __find(char* __first, char* __last, char __val, const random_access_iterator_tag &) {
   void *res =  memchr(__first, __val, __last - __first);
@@ -139,7 +138,6 @@ __find(const char* __first, const char* __last, char __val, const random_access_
   const void *res =  memchr(__first, __val, __last - __first);
   return res != 0 ? __STATIC_CAST(const char*,res) : __last;
 }
-#endif
 
 template <class _RandomAccessIter, class _Predicate>
 _STLP_INLINE_LOOP _RandomAccessIter __find_if(_RandomAccessIter __first, _RandomAccessIter __last,
@@ -207,6 +205,13 @@ _InputIter find(_InputIter __first, _InputIter __last, const _Tp& __val) {
   _STLP_DEBUG_CHECK(__check_range(__first, __last))
   return __find(__first, __last, __val, _STLP_ITERATOR_CATEGORY(__first, _InputIter));
 }
+
+# ifdef __BORLANDC__ // workaround for find_test
+const char* find(const char* __first, const char* __last, char __val) {
+  _STLP_DEBUG_CHECK(__check_range(__first, __last))
+  return __find(__first, __last, __val, _STLP_ITERATOR_CATEGORY(__first, const char*));
+}
+# endif
 
 template <class _ForwardIter1, class _ForwardIter2, class _BinaryPred>
 _ForwardIter1 search(_ForwardIter1 __first1, _ForwardIter1 __last1,

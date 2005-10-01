@@ -80,6 +80,9 @@ protected:
   virtual string do_grouping() const;
   virtual string do_truename() const;
   virtual string do_falsename()  const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 6;
+# endif
 };
 
 # if ! defined (_STLP_NO_WCHAR_T)
@@ -114,6 +117,9 @@ protected:
   virtual string do_grouping() const;
   virtual wstring do_truename() const;
   virtual wstring do_falsename()  const;
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 25;
+# endif
 };
 
 # endif /* WCHAR_T */

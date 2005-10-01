@@ -137,6 +137,9 @@ protected:
 private:
   codecvt(const codecvt<char, char, mbstate_t>&);
   codecvt<char, char, mbstate_t>& operator =(const codecvt<char, char, mbstate_t>&); 
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 3;
+# endif
 };
 
 # ifndef _STLP_NO_WCHAR_T
@@ -233,6 +236,9 @@ protected:
 private:
   codecvt(const codecvt<wchar_t, char, mbstate_t>&);
   codecvt<wchar_t, char, mbstate_t>& operator = (const codecvt<wchar_t, char, mbstate_t>&);  
+# ifdef _STLP_FACET_INDEX_BUG // workaround for fstream_test, sstream_test, floatio_test, locale_test
+  static const int _S_facet_index = 22;
+# endif
 };
 
 # endif
