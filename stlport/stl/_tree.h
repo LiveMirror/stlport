@@ -316,37 +316,37 @@ protected:
   _Compare _M_key_compare;
 
   _Base_ptr _M_root() const
-    { return this->_M_header._M_data._M_parent; }
+  { return this->_M_header._M_data._M_parent; }
   _Base_ptr _M_leftmost() const
-    { return this->_M_header._M_data._M_left; }
+  { return this->_M_header._M_data._M_left; }
   _Base_ptr _M_rightmost() const
-    { return this->_M_header._M_data._M_right; }
+  { return this->_M_header._M_data._M_right; }
 
   _Base_ptr& _M_root()
-    { return this->_M_header._M_data._M_parent; }
+  { return this->_M_header._M_data._M_parent; }
   _Base_ptr& _M_leftmost()
-    { return this->_M_header._M_data._M_left; }
+  { return this->_M_header._M_data._M_left; }
   _Base_ptr& _M_rightmost()
-    { return this->_M_header._M_data._M_right; }
+  { return this->_M_header._M_data._M_right; }
 
   static _Base_ptr& _STLP_CALL _S_left(_Base_ptr __x)
-    { return __x->_M_left; }
+  { return __x->_M_left; }
   static _Base_ptr& _STLP_CALL _S_right(_Base_ptr __x)
-    { return __x->_M_right; }
+  { return __x->_M_right; }
   static _Base_ptr& _STLP_CALL _S_parent(_Base_ptr __x)
-    { return __x->_M_parent; }
-  static reference  _STLP_CALL _S_value(_Base_ptr __x)
-    { return __STATIC_CAST(_Link_type, __x)->_M_value_field; }
+  { return __x->_M_parent; }
+  static value_type& _STLP_CALL _S_value(_Base_ptr __x)
+  { return __STATIC_CAST(_Link_type, __x)->_M_value_field; }
   static const _Key& _STLP_CALL _S_key(_Base_ptr __x)
-    { return _KeyOfValue()(_S_value(__x));}
+  { return _KeyOfValue()(_S_value(__x));}
   static _Color_type& _STLP_CALL _S_color(_Base_ptr __x)
-    { return (_Color_type&)(__x->_M_color); }
+  { return (_Color_type&)(__x->_M_color); }
 
   static _Base_ptr _STLP_CALL _S_minimum(_Base_ptr __x)
-    { return _Rb_tree_node_base::_S_minimum(__x); }
+  { return _Rb_tree_node_base::_S_minimum(__x); }
 
   static _Base_ptr _STLP_CALL _S_maximum(_Base_ptr __x)
-    { return _Rb_tree_node_base::_S_maximum(__x); }
+  { return _Rb_tree_node_base::_S_maximum(__x); }
 
 public:
   typedef typename _Traits::_NonConstTraits _NonConstTraits;

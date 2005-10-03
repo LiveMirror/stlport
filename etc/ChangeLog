@@ -1,3 +1,10 @@
+2005-10-03  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_tree.h: Fix _S_value method definition that returns
+	a value_type& rather than the reference typedef as reference might be,
+	depending on the traits used to instanciate _Rb_tree, equivalent to
+	a const_reference.
+
 2005-09-30  Francois Dumont  <dums@stlport...>
 
 	* INSTALL, README, doc/FAQ, doc/README.msvc: Documentation updates.
