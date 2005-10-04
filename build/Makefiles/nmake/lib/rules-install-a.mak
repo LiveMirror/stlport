@@ -3,26 +3,15 @@
 
 install-static: install-release-static install-dbg-static install-stldbg-static
 
-!if "$(COMPILER_NAME)" != "icl"
 install-release-static: release-static $(INSTALL_STATIC_LIB_DIR)
 	$(INSTALL_A) $(A_NAME_OUT) $(INSTALL_STATIC_LIB_DIR)
-	$(INSTALL_A) $(A_PDB_NAME_OUT) $(INSTALL_STATIC_LIB_DIR)
+	@if exist $(A_PDB_NAME_OUT) $(INSTALL_A) $(A_PDB_NAME_OUT) $(INSTALL_STATIC_LIB_DIR)
 
 install-dbg-static: dbg-static $(INSTALL_STATIC_LIB_DIR_DBG)
 	$(INSTALL_A) $(A_NAME_OUT_DBG) $(INSTALL_STATIC_LIB_DIR_DBG)
-	$(INSTALL_A) $(A_PDB_NAME_OUT_DBG) $(INSTALL_STATIC_LIB_DIR_DBG)
+	@if exist $(A_PDB_NAME_OUT_DBG) $(INSTALL_A) $(A_PDB_NAME_OUT_DBG) $(INSTALL_STATIC_LIB_DIR_DBG)
 
 install-stldbg-static: stldbg-static $(INSTALL_STATIC_LIB_DIR_STLDBG)
 	$(INSTALL_A) $(A_NAME_OUT_STLDBG) $(INSTALL_STATIC_LIB_DIR_STLDBG)
-	$(INSTALL_A) $(A_PDB_NAME_OUT_STLDBG) $(INSTALL_STATIC_LIB_DIR_STLDBG)
-!else
-install-release-static: release-static $(INSTALL_STATIC_LIB_DIR)
-	$(INSTALL_A) $(A_NAME_OUT) $(INSTALL_STATIC_LIB_DIR)
-
-install-dbg-static: dbg-static $(INSTALL_STATIC_LIB_DIR_DBG)
-	$(INSTALL_A) $(A_NAME_OUT_DBG) $(INSTALL_STATIC_LIB_DIR_DBG)
-
-install-stldbg-static: stldbg-static $(INSTALL_STATIC_LIB_DIR_STLDBG)
-	$(INSTALL_A) $(A_NAME_OUT_STLDBG) $(INSTALL_STATIC_LIB_DIR_STLDBG)
-!endif
+	@if exist $(A_PDB_NAME_OUT_STLDBG) $(INSTALL_A) $(A_PDB_NAME_OUT_STLDBG) $(INSTALL_STATIC_LIB_DIR_STLDBG)
 
