@@ -1,3 +1,18 @@
+2005-10-04  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/debug/_list.h: Fix resize method implementation in safe
+	STL mode thanks Ethan Fenn report.
+
+	* test/unit/list_test.cpp: Add test case for list::resize method.
+
+	* build/Makefiles/nmake/lib/rules-install-a.mak, app/rules-install-a.mak:
+	Install .pdb files only if exist, Intel C++ compiler do not generate them
+	when building static libraries. Thanks Albrecht Fritzsche
+
+	* stlport/stl/_ostream.h, _ostream.c: Move _M_init function implementation
+	from .c to .h as .c is not included when _STLP_NO_CUSTOM_IO is defined
+	but _M_init might not be exported if compiler fully inline it.
+
 2005-10-03  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_tree.h: Fix _S_value method definition that returns
