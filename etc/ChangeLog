@@ -1,3 +1,8 @@
+2005-10-05  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/nmake/vc-common.mak: Remove /Fd option for the icl
+	compiler that do not know it.
+
 2005-10-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_list.h: Fix resize method implementation in safe
