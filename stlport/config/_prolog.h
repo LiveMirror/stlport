@@ -4,15 +4,15 @@
 #  if !(defined (_STLP_MSVC) && (_STLP_MSVC < 1200))
 #    pragma warning(push)
 #  endif
-/* We are using a special memory alignment for the node_allocator
- * implementation.
+#  include <config/_msvc_warnings_off.h>
+/* We are forcing the alignment to guaranty that libraries are use
+ * with the same alignment as the one use to build them.
  */
 #  if !defined (_WIN64)
 #    pragma pack(push, 8)
 #  else
 #    pragma pack(push, 16)
 #  endif
-#  include <config/_msvc_warnings_off.h>
 
 #elif defined (__BORLANDC__)
 
