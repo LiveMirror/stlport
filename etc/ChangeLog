@@ -1,3 +1,9 @@
+2005-10-07  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/gmake/darwin/sys.mak, freebsd/sys.mak: Fix EXT_TEST
+	definition to test rather than /usr/bin/test thanks sourceforge
+	compiler farm.
+
 2005-10-05  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/nmake/vc-common.mak: Remove /Fd option for the icl
