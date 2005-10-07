@@ -78,7 +78,7 @@
 
 	* build/lib/gcc.mak: don't use LEAK_PEDANTIC with gcc 2.95 [but this not help,
 	segfault at program termination still happens].
-	
+
 	* stlport/config/stl_gcc.h: gcc 2.95 has problem with llabs, so force to use
 	_STLP_NO_VENDOR_STDLIB_L; 2.95 fails to initialize builtin types.
 
@@ -107,7 +107,7 @@
 	MinGW distrib.
 
 	* stlport/stl/type_traits.h: Simplified code removing the _IsConvertibleIfNot
-	that has never proved of being useful, it only introduce problem with some
+	that has never proved of being useful, it only introduces problem with some
 	limited compilers.
 
 	* stlport/stl/_string_workaround.h, _string.h, debug/_string.h: Fix string
@@ -160,7 +160,7 @@
 
 	* build/Makefiles/gmake/?/sys.mak, build/Makefiles/gmake/?/targetsys.mak:
 	ditto.
-	
+
 2005-09-09  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32.c: Fix _Locale_wchar_[tolower,toupper] implementation
@@ -196,7 +196,7 @@
 
 	* stlport/config/stl_msvc.h: Modify MSVC auto link feature to reflect
 	above modifications.
- 
+
 2005-09-06  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_gcc.h: Fix cygwin config that do have native
@@ -222,8 +222,8 @@
 
 	* stlport/config/stl_msvc.h, stl/_move_construct_fwk.h: Add the 
 	_STLP_NO_MOVE_SEMANTIC configuration macro to remove move semantic
-	 support for MSVC .Net 2002 that seems to be unable to support it.
-	 Maybe we should rather remove this compiler version support...
+	support for MSVC .Net 2002 that seems to be unable to support it.
+	Maybe we should rather remove this compiler version support...
 
 	* test/unit/mvctor_test.cpp: Add _STLP_NO_MOVE_SEMANTIC check.
 
@@ -307,7 +307,7 @@
 	* stlport/stl/_string.h, _rope.h: Removed __move_traits specialization
 	for string wstring crope and wrope. There is no reason to believe that
 	its move construtor will be complete as an STLport user has the right
-	to specialized the std::allocator<char> or wchar_t.
+	to specialized the std::allocator<> with char or wchar_t.
 
 	* stlport/stl/_function_base.h, _alloc.h: Generalized use of the
 	__stlport_class struct rather than introducing a new helper type
@@ -325,7 +325,7 @@
 
 	* stlport/stl/_deque.h, _hashtable.h, _string.h, _tree.h, _vector.h:
 	Simplification of the move framework application especially in the
-	definition of the containers __move_traits specialization. Many 
+	definition of the containers __move_traits specialization. Many
 	_AsMoveSource call replaced by explicit call to the move constructor
 	when we are sure that there is one.
 
@@ -379,7 +379,7 @@
 	* stlport/stl/_time_facets.c: Complete integration of the '#' MS extension
 	in the date/time format string, reported thanks to the recent locale time_get
 	new test case.
-	
+
 2005-08-14  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Fix platform SDK compiler config, even latest
@@ -452,7 +452,7 @@
 	bits. Under Windows 64, even if the API is still 32 bits handles are still
 	defined as void*. We will see when code will run under a real Windows 64 platform
 	if it is a problem.
-	
+
 	* stlport/config/stl_msvc.h: Add configuration for Windows 64 Platform SDK.
 	Expecially add automatic link to bufferoverflowU.lib to avoid modification
 	of STLport build system and STLport users projects.
@@ -523,7 +523,7 @@
 	library.
 
 	* stlport/queue, stl/_ctraits_fns.h, _hashtable.h, _numeric.h, _string.h
-	_tree.h: Fix macro guards used to avoid inclusion of _function.h or 
+	_tree.h: Fix macro guards used to avoid inclusion of _function.h or
 	_function_base.h or functional thanks Dinesh Monga report.
 
 2005-07-26  Petr Ovtchenkov  <ptr@island...>
@@ -621,7 +621,7 @@
 	_STLP_NO_CUSTOM_IO option, see reason below.
 
 	* test/unit/fstream_test.cpp: Add custom_facet test to check that STLport
-	support instanciation of basic_fstream with somthing else that the std::char_traits
+	support instanciation of basic_fstream with something else that the std::char_traits
 	For the moment the test fail when we try to use the stream for I/O operations
 	should be fixed after 5.0 release.
 
@@ -667,7 +667,7 @@
 
 	* stlport/stl/_ios.h, _ios_base.h, _num_get.c, _num_put.c, _complex.c,
 	_istream.c, _time_facets.c: Fix cast expression for the cached facets,
-	C casts replaced by static_cast and const added when missing. 
+	C casts replaced by static_cast and const added when missing.
 	Thanks Oliver Stoeneberg report.
 
 	* test/unit/unary.h: Replaced old STLport with new style ones. Get sqrt
@@ -725,7 +725,7 @@
 
 2005-06-10  Francois Dumont  <dums@stlport...>
 
-	* stlport/stl/c_locale.h: Fix Cygwin configuration, seperate alpha mask
+	* stlport/stl/c_locale.h: Fix Cygwin configuration, separate alpha mask
 	from lower and upper one to avoid all lower character to also be upper
 	and opposite.
 
@@ -772,10 +772,10 @@
 
 	* build/test/unit: Removed references to the now useless CPPUNIT_MINI
 	macro.
-  
+
 	* test/unit/type_traits_test.cpp: Add new test case for trivial destructor
 	detection.
-  
+
 	* stlport/stl/_fstream.h: Add missing basic_fstream construction from a
 	Win32 file handle, was already done for basic_ifstream and basic_ofstream,
 	thanks Alex Cosealin report.
@@ -804,7 +804,7 @@
 
 	* test/unit/locale_test.cpp: Remove the very platform dependent LColl
 	class that was listing supported locales. STLport already do so and
-	report it using a rutime_error exception when not supported. When
+	report it using a runtime_error exception when not supported. When
 	compiler do not support exception only the C locale is checked.
 
 	* build/Makefiles/nmake: Patches from Michael Fink to
@@ -815,8 +815,8 @@
 2005-06-02  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32/c_locale_win32.c: Add workaround for a Windows PSDK bug
-	concerning currency international symbol, the seperation character is missing.
-	
+	concerning currency international symbol, the separation character is missing.
+
 	* src/locale_impl.h, locale_impl.cpp: Fix implementation to make classic locale
 	implementation a normal instance that is released when the counter reach 0, the
 	only difference is that no delete is performed on this instance. Idem for classic
@@ -851,7 +851,7 @@
 	are in _Locale_impl::make_classic_locale method. Removed useless _Stl_aligned_buffer
 	union use in this locale initialization. Removed now useless _Locale_impl::free_classic_locale
 	method.
-	
+
 2005-05-30  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_windows.h: worry about Windows CE when check Interlocked
@@ -892,15 +892,15 @@
 	* build/Makefiles/nmake/evc4.mak: Patch from Ulrich Eckhardt to use CC
 	environment variable defined by WCE*.bat script rather than redefining
 	it.
-	
+
 	* src/locale.cpp, locale_impl.cpp, locale_catalog.cpp: New pass to move
 	static global variable in function to make initialization order clear.
-	
+
 2005-05-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/ciso646: Creation of this missing C++ standard header STLport
 	wrapper.
-	
+
 	* stlport/stl/_istream.h, _num_get.c, _algo.c, _monetary.c, _time_facets.h,
 	_time_facets.c: Replaced occurences of __in and __out reserved by Microsoft.
 
@@ -934,7 +934,7 @@
 
 	* test/unit: Add of many test to check Standard C/C++ headers independancy
 	and correct C header implementation.
-	
+
 2005-05-18  Francois Dumont  <dums@stlport...>
 
 	* src/fstream.cpp: Fix buffer overflow in _Filebuf_base::_M_read method
@@ -984,7 +984,7 @@
 	* build/Makefiles/gmake/hp-ux/extern.mak, lib.mak: ditto.
 
 	* build/Makefiles/gmake/hp-ux/rules-install-so.mak, rules-so.mak: ditto.
-	
+
 	* build/Makefiles/gmake/hp-ux/gmake/hp-ux/sys.mak: ditto.
 
 	* build/lib/aCC.mak: ditto.
@@ -1017,12 +1017,12 @@
 	system to be more unix compliant. Now you can pass locale name like
 	lang_country[.codepage] with lang being one of the ISO 639 values and
 	country one of the ISO 3166 ones.
-  
+
 	* test/unit/locale_test.cpp: Add a test case for the ctype facet.
-  
+
 	* test/unit/locale_test.cpp: Now list all the installed locales under
 	Win32 to test more locale than the simple french one.
-  
+
 	* stlport/config/stl_msvc.h: Removed _WINDLL macro check when trying
 	to guess what type of library (dynamic/static) the STLport user want
 	to link with. _WINDLL is defined when generating a dll but it do not
@@ -1043,19 +1043,19 @@
 
 2005-05-09  Francois Dumont  <dums@stlport...>
 
-	* stlport/stl/_ctype.h, src/ctype.cpp: Reenforce data encapsulation of the 
+	* stlport/stl/_ctype.h, src/ctype.cpp: Reenforce data encapsulation of the
 	ctype<char> template specialization class. class static arrays
 	_S_upper, _S_lower, _S_classic_table removed from the definition and hiden
 	in the .cpp file.
-	
+
 	* src/dll_main.cpp: Change _STLP_UNIX macro check in _STLP_PTHREADS check
 	as per thread allocator is only supported if the Posix pthread API is used,
 	thanks a Albrecht Fritzsche remarked.
-	
+
 2005-05-07  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_gcc.h: Patch from John Smith for Mac OS X support.
-	
+
 	* test/unit/locale_test.cpp: Idem previous.
 
 	* build/Makefiles/gmake/cygming/lib.mak, sys.mak: Import lib extension
@@ -1088,7 +1088,7 @@
 	* stlport/config/stl_mwerks.h: ditto
 
 	* stlport/stl/_config.h, _fstream.h, _hashtable.c, _sstream.c: ditto
-	
+
 	* stlport/stl/_threads.h, c_locale.h, char_traits.h: ditto
 
 	* build/Makefiles/gmake/sysid.mak: treat mwccnlm as cross-compiler,
@@ -1099,17 +1099,17 @@
 2005-05-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Change configuration for MSVC .Net 2003 and
-	2005 that seems to have a bug in the namespace management thanks .
-	
+	2005 that seems to have a bug in the namespace management.
+
 	* stlport/stdlib.h: Add errno.h inclusion from this file for gcc mingw
 	as this	compiler version do define errno macro in stdlib.h as MSVC do.
-	
+
 2005-05-03  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl_user_config.h, stl/_site_config.h, config/stl_gcc.h, _prolog.h,
 	_epilog.h: Use strict Ansi C comments (/**/) for headers accessible thought 
 	the STLport C headers.
-	
+
 	* stlport/C headers: Cleaned from C++ style comments.
 
 2005-05-02  Francois Dumont  <dums@stlport...>
@@ -1117,17 +1117,17 @@
 	* build/Makefiles/nmake/vc-common.mak: Restore of LDFLAGS_A_REL introduce
 	the 2004-10-30 and lost the 2005-04-16, it avoids warning due to use
 	of the whole program optimization with VC.Net 2003 and 2005.
-	
+
 	* stlport/stl/_string_io.c: Modification of the basic_string i/o operators
 	in the way it deals with the size_type and streamsize difference; it is
 	equivalent with the former one but do not generate warning with gcc
 	(mingwin).
-	
+
 	* stlport/stddef.h, stdlib.h, errno.h: Fix issue under MSVC compilers where
 	native stdlib.h and stddef.h are defining errno macro without including
-	errno.h forbiding STLport to do so thanks report. Now errno.h will report
-	this problem with an explicit #error.
-	
+	errno.h forbiding STLport to do so. Now errno.h will report this problem with
+	an explicit #error.
+
 	* test/unit/test_errno.cpp: Improvement of the test to reveal the previous
 	issue.
 
@@ -1140,16 +1140,16 @@
 
 	* stlport/stl/_time_facets.c: gcc warnings reveal that we were missing some
 	ctype::widen method call to compare things like month or day names.
-	Also simplified implementation of the __math and __get_formatted_time that
+	Also simplified implementation of the __match and __get_formatted_time that
 	do not really need all the template parameters passed to it.
-	
+
 	* stlport/stl/_num_put.c: Add a cast to make call to the function min more
 	clear, it will perhaps help EVC++ builds correctly.
-	
+
 	* src/strstream.cpp, stlport/stl/_sstream.c: Removed static assertion
 	replaced by modified implementation that takes into account the difference
 	between size_t and streamsize.
-	
+
 2005-04-28  Francois Dumont  <dums@stlport...>
 
 	* test/unit/limits_test.cpp: Improve integral types limit test for type
@@ -1157,15 +1157,15 @@
 	if 0 the type is unsigned. Moreover we check, except for the bool type,
 	the sign of -1 cast to the integral type, bool is a special type that
 	generate warning when built from -1 (MSVC).
-	
+
 	* src/ctype.cpp: Creation of a small helper structure to check the validity
 	of a wchar_t value used as an index. This helper struct takes into account
 	the compiler representation of the wchar_t type, is it a sign type or not.
 	This helper avoids warning when wchar_t is unsigned.
-	
+
 	* src/num_get.cpp: Removed unused _Initialize_get_digit function and
 	associated narrow_digits and narrow_xdigits arrays.
-	
+
 2005-04-28  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_sstream.h, _num_put.c: __in replaced by __imode, __out
@@ -1176,17 +1176,17 @@
 	* src/fstream.cpp: Fix Win32-64 file stream implementation. _M_read and
 	_M_write can now correctly handle respectively read and write of really
 	big buffers ( > 2Go)
-	
+
 	* using/iosfwd.h, stlport/strstream.h, stl/_rope.h, _rope.c, _complex.h: Removed 
-	references to the _STLP_USE_NEW_IOSTREAMS macro, STLport only support "new" 
+	references to the _STLP_USE_NEW_IOSTREAMS macro, STLport only support "new"
 	iostreams.
-	
+
 	* test/unit/max_test.cpp, min_test.cpp: Add tests to check that min and
 	max are not defined as macros.
-	
+
 	* test/fstream_test.cpp: Add check in creation of test_file.txt
 	as following tests depends on its content.
-	
+
 	* src/strstream.cpp, stdio_streambuf.cpp: Fix potential issue because of
 	the difference between streamsize and size_t of ptrdiff_t.
 	Add static assertion to clearly specify how streamsize must be to have
@@ -1195,8 +1195,8 @@
 	* stlport/stl/_num_put.c, _num_get.c, _fstream.c, _moneraty.c: ditto.
 
 	* src/ctype.cpp: Restore check on wchar_t positivity as according
-	2005-02-22 Petr Ovtchenkov reports wchar_t can be unsigned.
-	
+	2005-02-22 Petr Ovtchenkov reports wchar_t can be signed.
+
 2005-04-26  Francois Dumont  <dums@stlport...>
 
 	* src/num_get_float.cpp: Fix mingwin support for 64bits integer type 
@@ -1206,15 +1206,15 @@
 
 	* stlport/stl/_time_facets.c: Fix __pos type in __match function and removed
 	unused __max_pos definition and initialisation.
-	
+
 	* src/c_locale_win32/c_locale_win32.c: Add some cast to remove warnings.
-	
+
 	* stlport/stl/_moneraty.c: Fix __witdh definition to use streamsize rather
 	than size_t to avoid warnings.
 
 2005-04-25  Petr Ovtchenkov  <ptr@island...>
 
-	* build/test/gcc.mak: workaround for [bug?] gmake, that sometimes loss
+	* build/test/gcc.mak: workaround for [bug?] gmake, that sometimes lose
 	increment of target-specific macro and, may be, under condition.
 	Thanks Jeff Williams.
 
@@ -1229,19 +1229,19 @@
 2005-04-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_ioerr.h: #error message modification thanks Michael Fink.
-	
+
 2005-04-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_istream.c: Fix _M_read_buffered function implementation,
 	there used to be a wrong implicit conversion from streamsize to ptrdiff_t,
 	which fail when sizeof(streamsize) > sizeof(ptrdiff_t).
 	See 2005-04-21 Petr report.
-	
+
 	* test/unit/: Replaced all _STLP_NO_IOSTREAMS occurences with the STLport
 	internal equivalent _STLP_USE_NO_IOSTREAMS. The first one is defined
 	by the client while the second depends on the first and on the compiler
 	abilities, makes the unit tests more portable.
-	
+
 	* stlport/stl/_cmath.h: Fix for Intel C++ compiler that also have all
 	C math functions in global namespace.
 
@@ -1249,25 +1249,25 @@
 
 	* stlport/stl/_hashtable.h: Extend the hashtable template methods extension
 	to the method computing the bucket from the key thanks Dominik Siatkowski.
-	
+
 	* stlport/stl/_threads.h: Disable 64 bits portability warning for
 	MSVC compilers. MSVC do not see that the called function comes from
 	a macro that is different under Win32 and Win64.
-	
+
 2005-04-21  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/sstream_test.cpp, fstream_test.cpp: integral type for
         ptrdiff_t shorter than for streamsize; this cause problem on
-	Win32 platform, that support files larger 4GB.
+	Win32 platform, that support files larger than 4GB.
 	Thanks Timothy Tenebekov for report.
 
 2005-04-20  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_debug.c: Small Borland compiler fix to avoid call to
 	vsnprintf before version 0x550 thanks esanfo.
-	
+
 	* src/dll_main.cpp: Fix bug reported by Intel C++ (icl) compiler.
-	
+
 2005-04-20  Petr Ovtchenkov  <ptr@island...>
 
 	* src/num_get_float.c: use uint64_t for 64-bit, but unsigned long long
@@ -1284,13 +1284,13 @@
 	even in release mode and to install them in bin and lib folders next to
 	the .dll and .lib files.
 
-	* stlport/stl/_algobase.c: Add missing const in return type of the const 
+	* stlport/stl/_algobase.c: Add missing const in return type of the const
 	version of find specialized for const char*.
 
 2005-04-16  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_algobase.c: memchr return NULL if value not found,
-	while find() [specializtion for char *] should return last
+	while find() [specialization for char *] should return last
 	[see record 2005-02-27 below]. Thanks Joshua Berne for report.
 
 	* test/unit/find_test.cpp: if char not found, char specialization of
@@ -1326,27 +1326,27 @@
 
 2005-04-08  Francois Dumont  <dums@stlport...>
 
-	* test/unit/locale_test.cpp: Add __FreeBSD__ macro check for the wordaround
+	* test/unit/locale_test.cpp: Add __FreeBSD__ macro check for the workaround
 	announced as Free BSD specific by the comment next to it.
-	
+
 	* stlport/stl/_config.h: Add undef of _STLP_USE_DYNAMIC_LIB when in
 	NO_IOSTREAMS mode, this macro was generating buggy code in this case
 	for some commpilers (gcc mingwin).
-	
+
 2005-04-07  Francois Dumont  <dums@stlport...>
 
 	* build/lib/nmake-vc-common.mak: Removed useless add of STLport/lib to 
 	library paths when building STLport lib.
-	
+
 	* build/Makefiles/nmake/*: Removed useless specification of the MSVC default
 	install	directory, all the job is done by the vcvcars32.bat script that sets
 	the LIB env variable to the real MSVC install directory.
-	
+
 	* test/unit/unordered_test.cpp, locale_test.cpp: Removed gcc mingw warnings.
-	
+
 	* build/Makefiles/nmake/icl.mak, app/icl.mak, lib/icl.mak: Removed the
 	whole program optimization option, looks like it is confusing icl.
-	
+
 	* stlport/stl/debug/*.h: Removed useless _Get_base non-const overload. 
 	In addition to being useless Intel compiler emit compilation error about it.
 
@@ -1368,22 +1368,22 @@
 
 	* stlport/config/stl_evc.h: apply patch from Michael Fink to add support for
 	various EVC SDK.
-	
+
 	* stlport/stl/_cmath.h: An other adaptation to the Intel C++ compiler.
-	
+
 	* build/lib/nmake-vc-common.mak, test/unit/nmake-vc-common.mak: Removed check
 	of STLP_BUILD_FORCE_[STATIC,DYNAMIC]_RUNTIME environment variables,
 	moved in a common build system file.
-	
+
 	* build/Makefiles/nmake/vc-common.mak: Add checks of 
 	STLP_BUILD_FORCE_[STATIC,DYNAMIC]_RUNTIME variables.
-	
+
 	* build/lib/configure.bat: Add a clean option to remove the hidden 
 	Makefiles/config.mak file.
-	
+
 	* stlport/stdexcept: Disable 'non dll-interface class used as base' warning
 	when building STLport dll linked with the static runtime.
-	
+
 2005-04-04  Francois Dumont  <dums@stlport...>
 
 	* test/unit/mfunptr_test.cpp: Add necessary macro checks for a test
@@ -1421,13 +1421,13 @@
 2005-04-01  Francois Dumont  <dums@stlport...>
 
 	* stlport/errno.h: Add comments to explain the file code.
-	
+
 	* stlport/stl/_string_io.h: Yet an other fix to the i/o basic_string
 	operators that was not right under cygwin/mingwin.
 
 	* build/Makefiles/gmake/gcc.mak: Merge the 2 distinct cygmin blocks
 	in one and add -Wall and -Wsign-promo warnings.
-	
+
 2005-04-01  Petr Ovtchenkov  <ptr@island...>
 
 	* test/unit/test_errno.cpp: fix test, errno may be non-zero without
@@ -1442,22 +1442,22 @@
 
 	* stlport/errno.h: Fixed for MSVC compilers, should still be fine for
 	others.
-	
+
 	* test/unit/test_errno.cpp: Modified to be a real unit test. Also test
 	errno assignment.
-	
+
 2005-03-30  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_fstream.c: Try to fix ambiguous type deduction in a max
 	call under WinCE.
-	
+
 	* stlport/stl/_cmath.h: Fix missing non Standard hypot function under
 	WinCE thanks Michael Fink.
-	
+
 	* stlport/stl/_cmath.h: Attempt to fix the WinCE math function support
 	where neither *f nor *l functions are present even if the compiler
 	support the long double type.
-	
+
 2005-03-30  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/assert.h, float.h, iso646.h, limits.h, errno.h:
@@ -1472,7 +1472,7 @@
 
 	* test/eh/LeakCheck.h, TestClass.cpp, TestClass.h: fix and clear.
 
-	* test/eh/test_hash_map.cpp, test_hash_set.cpp: mutiset/multimap
+	* test/eh/test_hash_map.cpp, test_hash_set.cpp: hash_set/hash_map
 	has no == operator [no container equality]; this fix is quick-and-dirty
 
 2005-03-29  Petr Ovtchenkov  <ptr@island...>
@@ -1501,7 +1501,7 @@
 
 	* build/Makefiles/nmake/icl.mak: Fix Intel compiler build system under
 	Windows.
-	
+
 2005-03-28  Petr Ovtchenkov  <ptr@island...>
 
 	* src/num_put_float.cpp: in FreeBSD no *cvt* functions now, use sprintf;
@@ -1551,12 +1551,12 @@
 
 	* stlport/stl/_string_io.c: Fix basic_string stream output operator 
 	implementation for cygwin.
-	
+
 	* stlport/stl/_cmath.h: Add fixes for cygwin support that handle long double
 	but do not have *l maths function per default.
-	
+
 	* src/complex_exp.cpp: Fix call to logl, replaced by call to log.
-	
+
 	* src/complex_trig.cpp: Fix mingw support by checking M_LN2l existence
 	before using it.
 
@@ -1583,14 +1583,14 @@
 
 	* test/unit: Modified some test in order to check the _STLP_NO_IOSTREAMS
 	mode. This new mode of tests reveals the following bugs:
-	
+
 	* stlport/stl/_rope.c: Add check of _STLP_USE_NO_IOSTREAMS macro before
 	include of iostream header.
-	
+
 	* src/dll_main.cpp, stlport/stl/_string_fwd.h: Removed implementation 
 	of __get_c_string, moved to _string.h header, once string has been defined,
 	as an inline function.
-	
+
 2005-03-18  Petr Ovtchenkov  <ptr@island...>
 
 	* src/complex_trig.cpp: avoid call log functions during static
@@ -1600,18 +1600,18 @@
 
 	* stlport/stl/_string_io.h: Fix implementation that used to think that
 	size_t and streamsize was simply aliases. Thanks Jay Amin report.
-	
+
 	* stlport/config/_prolog.h: Add comment about the reason of alignment
 	specification when using MSVC compilers. Fix alignment for Win64 platform.
-	
+
 	* stlport/stl/_alloc.h: Fix _ALIGN enum definition for _Win64 platform.
-	
+
 	* src/string_w.cpp: Fix wrong class export under debug mode thanks
 	Charlemagne report.
-	
+
 	* build/Makefiles/nmake: Preparation of the build system for icl (Intel cl
 	compiler (mimic cl compiler from Microsoft).
-	
+
 2005-03-16  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_cmath.h: added logf, expf, sinf, cosf---this fix
@@ -1623,7 +1623,7 @@
 	* stlport/config/*: Clean native header include path macro definition. 
 	Removed many useless definition simply recreating the default behavior. 
 	Removed the unreferenced _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH macro.
-	
+
 	* stlport/stl/_site_config.h: Update relative path headers macros 
 	documentation to reflect more accurately default behavior and add 
 	the unreference	_STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH macro.
@@ -1648,29 +1648,29 @@
 	* stlport/config/stl_msvc.h: _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG notion
 	removed, impossible to reproduce, maybe fixed by the #pragma intrinsic/function
 	directives.
-	
+
 	* stlport/stl/_cmath.h, cstdlib: Fix .Net 2003 and .Net 2005 beta support.
-	
+
 	* stlport/stl/_cmath.h: Removed _STLP_SAME_FUNCTION_NAME_RESOLUTION_BUG notion,
 	no more _STLP_DO_* macros.
-	
+
 	* test/unit/valarray_test.cpp: New tests to check right compilation of 
 	transcendentals valarray functions.
-	
+
 	* stlport/stl/_valarray.h: Replaced all the _STLP_DO_* macros by real 
 	function calls.
-	
+
 	* src/fstream.cpp: Add INVALID_SET_FILE_POINTER definition when missing for
 	Win32 IO implementation thanks Michael Fink report. Add compilation check 
 	of right STLport file descriptor definition.
-	
+
 2005-03-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_tree.h: Fix equal_range_unique bug thanks Gunter.
-	
+
 	* test/unit/map_test.cpp: Add of the test to reproduce the bug
 	above.
-	
+
 2005-03-11  Petr Ovtchenkov  <ptr@island...>
 
 	* build/test/unit/gcc.mak: don't write runtime path to libstlport
@@ -1703,7 +1703,7 @@
 	definition to take into account the 64 bits file access support.
 
 	* test/unit/fstream.cpp: New test for big files ( > 2Go) unactivated by
-	default. 
+	default.
 
 2005-03-06  Petr Ovtchenkov  <ptr@island...>
 
@@ -1853,9 +1853,9 @@
 	are correctly disable but template instanciation context is kept until
 	an enable warning or an error happen. There is nothing to do against that
 	at STLport level except fixing or disabling warnings for unit tests build.
-	
+
 	* build/Makefiles/nmake/vc70.mak: Add missing file.
-	
+
 2005-02-18  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.h, _unordered_set.h, _unordered_map.h: Code review
@@ -1885,6 +1885,7 @@
 	Szkudlarek.
 
 2005-02-07  Boris Fomitchev  <boris@stlport...>
+
 	* stlport/stl/_config_compat_post.h, stlport/stl/_relops_hash_cont.h 
 	stlport/stl/_list.h, stlport/stl/_slist.h, stlport/stl/_map.h, 
 	stlport/stl/_set.h: 4.6 compatibility fix
@@ -1930,15 +1931,15 @@
 
 	* stlport/deque, list, map, set, slist, stack, valarray: _STLP_WHOLE_VENDOR_STD
 	replaced by the official _STLP_IMPORT_VENDOR_STD macro.
-	
+
 	* stlport/stl/_algobase.h: Add find algo overload for char* and const char* 
 	forwarding the call to the memchr C function thanks Jim Xochellis report.
-	
+
 	* test/unit/find_test.cpp: Add check for the new find overload.
-	
+
 	* test/unit/cmath_test.cpp: Fix of the atan and atan2 tests to avoid precision
 	problems.
-	
+
 	* test/unit/ptrspec_test.cpp: Add check for containers of function pointers and
 	member function pointers.
 
@@ -1951,26 +1952,26 @@
 	Mike Roberts report.
 
 	* test/unit/mvctor_test.cpp: Add of a test case for vector class.
-	
+
 2005-01-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl_user_config.h: Pointer specialization feature is now off 
 	by default as it do not handle pointer to function and pointer to member
 	methods correctly yet. Feature documentation has been updated to report
 	this limitation.
-	
+
 	* src/ctype.h: removal of the '>= 0' check for wchar_t variables reported 
 	as a always true condition by gcc.
-	
+
 	* stlport/stl/_hashtable.c: Removal of an unused variable in hashtable::resize
 	method thanks Jeff Grills report.
-	
+
 	* stlport/stl/_algo.c: Fix of the search_n algo thanks Jim Xochellis report.
 
 2005-01-24  Francois Dumont  <dums@stlport...>
 
 	* Some more warning fixes. Mostly add of missing char_traits::to_char_type calls.
-	
+
 2005-01-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_workaround.h, debug/_string_workaround.h: Fix of the
@@ -1984,10 +1985,10 @@
 		- modification of some template function signature to keep the character type
 		information and avoid the wchar_t to char type warning which was surely an
 		important warning for the wide streams support.
-		
+
 	* stlport/stl/_monetary.c: removal of the call to the ctype::widen method 
 	on the result of the moneypunct<_CharT, false>::decimal_point call as this
-	method is already supposed to returned a wide character. 
+	method is already supposed to return a wide character. 
 
 2005-01-19  Francois Dumont  <dums@stlport...>
 
@@ -2012,8 +2013,8 @@
 
 	* stlport/stl/_algo.c: Modification of the stable_partition implementation
 	to limit the size of the allocated temporary buffer of the begin and end
-	of the range are already at the right place thanks an Stephen Howe idear.
-	
+	of the range are already at the right place thanks a Stephen Howe idear.
+
 	* build/test/unit/nmake-vc-common.mak, nmake-evc-common.mak: Removal of the 
 	_STLP_USE_AUTO_LINK macro which is now the default.
 
@@ -2022,7 +2023,7 @@
 	* stlport/stl/_windows.h, char_traits.h, src/c_locale_win32/c_locale_win32.c:
 	Patch from Patrick Bergeron to support 64 bits compilation under Windows using
 	VC8.
-	
+
 	* stlport/stl/boost_type_traits.h: boost support check and fixing.
 
 2005-01-13  Francois Dumont  <dums@stlport...>
@@ -2033,27 +2034,27 @@
 
 	* stlport/stl/_alloc.h: Deactivation of the lock free allocator implementation
 	not mature enough to be release yet.
-	
+
 	* stlport/stl/_uninitialized.h: Fix of non Standard algo signature:
 			- uninitialized_fill_n
-			
+
 	* stlport/stl/_iterator_base.h: Fix of non Standard algo signature:
 			- distance
-			
+
 	* stlport/stl/_algobase.h: Fix of non Standard algo signature:
 			- fill_n
-			
+
 	* stlport/stl/_algo.h: Fix of non Standard algo signature:
 			- rotate
 			- generate_n
-			
+
 	* stlport/stl/_string.h, debug/_string.h: Fix of the non Standard basic_string
 	default constructor.
-			
-	* stlport/stl/_algobase.h, _function.h, _iterator_base.h, _move_construct_fwk.h, 
-	_ptr_specialize.h, char_traits.h, debug/_debug.h: Fix of the macro name check 
+
+	* stlport/stl/_algobase.h, _function.h, _iterator_base.h, _move_construct_fwk.h,
+	_ptr_specialize.h, char_traits.h, debug/_debug.h: Fix of the macro name check
 	before including type_traits.h.
-	
+
 2005-01-08  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_codecvt.h: Add of a missing export declaration for the wchar_t
@@ -2063,7 +2064,7 @@
 	Especially add of the compiler options.
 
 	* stlport/stl/_stlport_version.h: Creation of a special file containing all the
-	version informations; very usefull to avoid problem with the ressource compiler.
+	version informations; very useful to avoid problem with the ressource compiler.
 
 	* stlport/stl/_config.h: Removal of the unused _STLP_USING_VENDOR_STD macro.
 	Inclusion of the _stlport_version.h file. Update of the comment explaining why
@@ -2092,17 +2093,17 @@
 
 2005-01-02  Francois Dumont  <dums@stlport...>
 
-	* stlport/stl/_string_sum.h, _string_operators.h: Fix of a assignment bug
+	* stlport/stl/_string_sum.h, _string_operators.h: Fix of an assignment bug
 	in the append method taking a C string wrapper. Modification of the __bstr_sum
-	get_allocator method to avoid an useless allocation.
+	get_allocator method to avoid a useless allocation.
 
 	* build/lib/nmake-src-prefix.mak: Add of missing rules for .c and .rc file type.
 
 2004-12-29  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.c: Fix missing allocator argument in new slist
-	construction and band number of buckets thanks See Wong report.
-	
+	construction and bad number of buckets thanks See Wong report.
+
 	* test/unit/unordered_test.cpp: Add of a test to report the previous
 	problem.
 
@@ -2114,7 +2115,7 @@
 
 	* stlport/stl/_string_sum.h, _string_sum_methods.h: Fixing of many bugs in the
 	string template expressions implementation.
-	
+
 	* stlport/stl/_tree.c: Add of a comment in the _M_increment method explaining
 	a surprising checks thanks Ulrich Eckhardt.
 
@@ -2135,36 +2136,36 @@
 	* stlport/stl/_vector.h, _vector.c: Fix of the code for movable types
 	in call to push_back or insert of a value in case of auto referencing
 	thanks Benjamin Redelings.
-	
+
 	* stlport/stl/_hashtable.c: Fix of the _M_copy method thanks Timothy
 	Tenebekov.
-	
+
 2004-12-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_string.h: Fix of missing scopes thanks arabesc and
 	Benjamin Redelings
-	
+
 	*stlport/config/stl_gcc.h: include schema fix for gcc >= 4.0.0 thanks 
 	Oliver Stoeneberg
-	
+
 2004-12-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_hashtable.c: Fix copy method thanks KL report.
-	
+
 	* stlport/stl/_vector.h, _deque.h: Fix implementation for vector of 
 	movable objects when calling erase of a null range thanks to arabesc report.
-	
+
 	* stlport/stl/_string.h, _string_workaround.h, debug/_string.h, 
-	  debug/_string_workaround.h: Implementation of the MSVC6 template method bug
-	  workaround exclusively for MSVC6 and not anymore for all compilers.
-	
+	debug/_string_workaround.h: Implementation of the MSVC6 template method bug
+	workaround exclusively for MSVC6 and not anymore for all compilers.
+
 2004-12-21  Petr Ovtchenkov  <ptr@island...>
 
 	* src: untested (lost support) .mak and installation files moved into
 	initial_mak catalog.
 
 	* explore, src: explore catalog moved into src catalog. Makefiles from
-	explore catalog became main makesystem of STLport.
+	explore catalog become main makesystem of STLport.
 
 2004-12-20  Francois Dumont  <dums@stlport...>
 
@@ -2179,9 +2180,9 @@
 2004-12-17  Boris Fomitchev  <boris@stlport...>
 
 	* char_traits.h: fixed _STLP_NO_WCHAR_T case
-	
+
 	* src/common_macros.mak: deleted locale.cpp
-	
+
 2004-12-17  Francois Dumont  <dums@stlport...>
 
 	* src/explore/Makefiles/nmake/app/rules-install-a.mak, rules-install-so.mak
@@ -2192,32 +2193,32 @@
 
 	* stlport/stl/debug/_debug.h, _debug.c: Creation of functions to change iterators
 	list owner.
-	
+
 	* stlport/stl/debug/_list.h, _slist.h: Modification of the iterator owners in the
 	splice, splice_after and merge method which do not invalidate iterators but only
 	move them from a [s]list to an other.
-	
+
 	* stlport/stl/_relops_hash_cont.h: removal of the == operator on hashed containers
 	This operator is just impossible, or at least very complicated, to implement 
 	for this container which do not require any ordering operation on the type used
 	to instanciate the container.
-	
+
 	* test/unit/hash_test.cpp: Addition of a commented test showing why the == operator
 	is invalid on hashed constainers.
-	
+
 	* stlport/stl/_hashtable.h: Modification of the hashtable implementation based
 	on a slist and a vector. Compared to the previous one the advantages are:
 		- lighter hashtable::iterator
 		- iterator increment operation do no require call to the hash function.
-		- no more special implementation for the debug mode, once validate debug/_hashtable.h
-			will be removed.
+		- no more special implementation for the debug mode, once validated debug/_hashtable.h
+	        will be removed.
 	The drawback is a small overhead on the insert/erase methods.
-	
+
 	* stlport/unordered_set, unordered_map: Introduction of the almost Standard hash containers.
-	The marjor difference with hash_set or hash_map containers from SGI is the load factor
+	The major difference with hash_set or hash_map containers from SGI is the load factor
 	that gives the user the ability to change the container ratio of the number of elements per
 	bucket.
-	
+
 2004-12-13  Francois Dumont  <dums@stlport...>
 
 	* stlport/stdio.h: patch from Michael Fink to avoid warning on the EVC platform.
@@ -2236,20 +2237,20 @@
 	* stlport/stl/_locale.h, _collate.h, stlport/config/stl_msvc.h, src/locale.cpp, 
 	src/locale_impl.h: restoration of the MSVC6 workaround for the locale class to 
 	correctly handle the member template methods.
-	
+
 2004-12-09  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_messages_facets.h: fixed messages_base::catalog from long typedef
 	to int thanks Ulrich Eckhardt report.
-	
+
 	* stlport/stl_user_config.h, config/stl_msvc.h: addition of the _STLP_VERBOSE_AUTO_LINK 
 	config macro to make the automatic linking feature more verbose thanks Ulrich Eckhardt
 	patch.
-	
+
 	* stlport/exception: Add check of the _STLP_HAS_SPECIFIC_PROLOG_EPILOG macro before
 	including _msvc_warning_off.h to avoid bad resulting warning status when the _epilog.h
 	header is not included thanks Gail (baker88) report.
-	
+
 	* stlport/cassert, cerrno, csignal, ctype.h, cwctype, stdarg.h, stdlib.h, string.h,
 	config/stl_evc.h: Patch from Michael Fink to fix compilation problem using ressource
 	compiler for evc3 and evc4 and problems with cerrno and cassert inclusions reported
@@ -2275,8 +2276,6 @@
 
 	* stlport/stl/_num_get.h, _num_put.h, _numpunct.h, _time_facets.h: ditto.
 
-
-
 2004-11-30  Petr Ovtchenkov  <ptr@island...>
 
 	* src/explore/configure.bat: added quotes. Thanks Ulrich Eckhardt and Michael Fink.
@@ -2293,7 +2292,6 @@
 	* src/locale_impl.cpp: use simple resize of facets_vec; reserve space for facets_vec to be
 	sure that allocation don't throw exception during vector resize in insert_*_facets functions.
 	Thanks Ulrich Eckhardt.
-
 
 2004-11-29  Petr Ovtchenkov  <ptr@island...>
 
@@ -2317,13 +2315,13 @@
 	* src/locale.cpp, locale_impl.cpp, locale_impl.h: general revision of locale
 	implementation; code clean, corrected, concepts fixed, errors fixed,
 	new bugs added.
-	
+
 	* src/ctype.cpp, facets_byname.cpp, locale_catalog.cpp, messages.cpp, monetary.cpp:
 	ditto.
 
 	* stlport/stl/_codecvt.h, _collate.h, _ctype.h, _locale.h, _messages_facets.h:
 	ditto.
-	
+
 	* _monetary.h, _num_get.h, _num_put.h, _numpunct.h, _time_facets.h: ditto.
 
 	* src/locale_nonclassic.h: removed due to code revision.
@@ -2332,7 +2330,6 @@
 
 	* src/explore/gcc.mak, test/unit/gcc.mak: use _STLP_LEAKS_PEDANTIC before release
 	by default.
-	
 
 2004-11-24  Francois Dumont  <dums@stlport...>
 
@@ -2341,7 +2338,7 @@
 
 	* stlport/stl/_cmath.h: Fix of the Internal Compiler Error from MSVC6
 	when defining math functions in the STLport namespace thanks Ulrich
-	Eckhardt and myself.
+	Eckhardt and I.
 
 	* stlport/stl/debug: Creation of a debug iterator traits used to make
 	an additional test when checking iterator deferencing status, on slist
@@ -2381,7 +2378,7 @@
 
 	* stlport/cmath, stl/_cmath.h: Modification of the import of the pow function
 	for MSVC6 that has a bugged overload thanks Michael Fink report.
-	 
+
 2004-11-09  Francois Dumont  <dums@stlport...>
 
 	* test/unit/config_test.cpp: Creation of a test case to check correct
@@ -2389,10 +2386,10 @@
 
 	* stlport/config/stl_msvc.h: Definition of the _STLP_HAS_NATIVE_FLOAT_ABS
 	now start with MSVC6.
-	
+
 	* stlport/cstdlib, stl/_cmath.h: Addition of some missing math function
 	 overloads for MSVC6.
-	
+
 2004-11-05  Francois Dumont  <dums@stlport...>
 
 	* stlport/config/stl_msvc.h: Definition of the _STLP_HAS_NATIVE_FLOAT_ABS
@@ -2410,21 +2407,21 @@
 
 	* stlport/stl/_function.h, _queue.h, _stack.h, _map.h, _iterator.h: 
 	restoration of the Standard names of the protected datas.
-	
+
 	* stlport/stl/_alloc.h, _alloc.c: implementation of a lock free version
 	of the default STLport node_allocator. Supported by the Win32 platform
 	for the moment.
-	
+
 	* src/ios.cpp, locale.cpp, locale_impl.cpp: use of atomic operations
 	under Win32 platform rather than using synchronisation primitives.
-	
+
 	* stlport/stl/_tree.h, _map.h, _set.h: creation of the erase_unique and
 	equal_range_unique methods to use the unicity information of the map and
 	set containers in binary tree searches.
 
 	* stlport/stl/_string.h: Add _STLP_USE_NO_IOSTREAMS check beforing deciding
 	not to include _string.c thanks KL
-	
+
 2004-11-02  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/pointers/_deque.h: Fix for the problem of the deque<void*>
@@ -2477,17 +2474,17 @@
 	means that the client do not want to use the C++ exception feature. It is
 	different from the _STLP_NO_EXCEPTIONS which means that the compiler do not
 	support exceptions at all. The distinction is important for some macros definition.
-	
+
 	* test/unit: Modification of the _STLP_NO_EXCEPTIONS test to the more general
 	_STLP_USE_EXCEPTION macro.
 
-	* stlport/stl/_ios_base.h, src/ios.cpp: roolback of the modifications of the
+	* stlport/stl/_ios_base.h, src/ios.cpp: rollback of the modifications of the
 	2004-10-24.
-	
+
 	* stlport/config/stl_msvc.h, stl_gcc.h: Those 2 compilers have a exception 
 	support switch, when exceptions are unactivated they now define
 	_STLP_DONT_USE_EXCEPTIONS rather than _STLP_NO_EXCEPTIONS.
-	
+
 2004-10-25  Petr Ovtchenkov  <ptr@island...>
 
 	* stlport/stl/_sstream.c: cur direction missed in seekoff. Thanks David Obermann.
@@ -2498,18 +2495,18 @@
 
 	* stlport/stl/_ios_base.h, src/ios.cpp: definition of the ios_base::failure
 	nested class only when exception support is activated.
-	
+
 	* stlport/stl/_deque.h, _deque.c: Modification of the deque implementation
 	to use the internal move framework.
-	
+
 	* test/unit/mvctor_test.cpp: New test case for the use of the move
 	framework within the deque container.
-	
+
 2004-10-21  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_iostring_stream.h: Simplification of the __stl_alloc_rebind
 	 overload to make it less ambiguous for the compilers using it.
-	
+
 2004-10-18  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_vector.h, _vector.c: Add of checks to know if a reference
@@ -2533,7 +2530,7 @@
 	methods implementation outside struct definition to fix call on incomplete 
 	type compile error generated by the call to the _Incrementable or _Dereferenceable
 	functions passing *this as input parameter thanks Alexey Sarytchev
-	
+
 	* test/unit/sstream_test.cpp, fstream_test.cpp: Fix of the tests on streambuf 
 	throwing exception for platform with no exception support.
 
@@ -2544,7 +2541,6 @@
 	* stlport/stl/debug/_vector.h, _deque.h: Add check on the insert range method, 
 	the inserted can not be pointing to the this instance where the insertion occur.
 
-
 2004-10-13  Petr Ovtchenkov  <ptr@island...>
 
 	* src/explore/Makefiles/gmake: a bit correction of compiled and installed names
@@ -2553,7 +2549,7 @@
 2004-10-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_config.h: typo fix thanks KL
-	
+
 	* stlport/stl/_move_construct_fwk.h, _set.h, _map.h, _hash_set.h, _hash_map.h:
 	Extra semicolons removal thanks Wlodek Szafran reports.
 
@@ -2565,59 +2561,59 @@
 
 	* stlport/stl/_deque.h, _hashtable.h, _tree.h, _bvector.h: Specialization of the
 	__type_traits struct for the iterator types.
-	
+
 	* stlport/stl/_uninitialized.h, _vector.h: Relax of the rules to perform some 
 	optimizations, no more POD check, rather use of the trivial copy constructor, 
 	trivial assignment operator informations.
-	
+
 	* stlport/stl/_config.h, _epilog.h: Adoption of stlport as the official STLport
 	namespace when users cannot use the std namespace.
-	
+
 2004-10-07  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_list.h: Specialization of the __type_traits struct for list iterators.
 	Move of the == and != operators from the base iterator class to the iterator class
 	to make iterator of different list instanciation not comparable anymore.
-	
+
 	* stlport/stl/_slist.h: ditto.
-	
+
 2004-10-06  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_rope.h, _rope.c: Code review, use of general STLport tools rather
 	than specific rope ones. Use of compile time checks rather than runtime.
-	
+
 	* stlport/stl/_bvector.h: fix to make the vector<bool> specialization movable
 	thanks a Kelly Thompson report.
-	
+
 2004-10-05  Francois Dumont  <dums@stlport...>
 
 	* src/explore/Makefiles/nmake: Application of a patch from Michael Fink to simplify
 	the evc make system.
-	
+
 	* doc/README.evc4: New version from Zdenek Nemec.
-	
+
 2004-10-04  Francois Dumont  <dums@stlport...>
 
 	* test/unit/type_traits_test.cpp: A new test case to check behavior of
 	the numerous helper functions from type_traits.h and type_manips.h.
-	
+
 	* stlport/stl/type_traits.h: Fix of some bugs and addition of the __type_traits
 	specializations of const, volatile and const volatile native types.
-	
+
 	* stlport/stl/type_manips.h: Modification of the __bool2type default value
 	so that it concider any value as true and only the 0 value false.
-	
+
 	* stlport/config/stl_msvc.h, stlport/stl/_config.h: Modification of the STLport
 	std equivalent namespace to be sure that the user rebuild correctly the STLport 
 	library when he forces the use of the dynamic or static library.
-	
+
 	* src/explore/Makefiles/nmake/lib/vc-common.mak, app/vc-common.mak: Creation
 	of the STLP_BUILD_FORCE_STATIC_RUNTIME that forces use of the static version
 	of the native runtime.
-	
+
 	* test/unit: fix of some tests that failed to compile using the 
 	_STLP_NO_ANACHRONISMS macro.
-	
+
 2004-09-30  Petr Ovtchenkov  <ptr@island...>
 
 	* test/regression: catalog removed---it obsolete and unsupported; use
@@ -2627,13 +2623,13 @@
 2004-09-29  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_io.c: Removal of the native library specific calls of 
-	use_facet, only the	STLport standard one is used.
-	
+	use_facet, only the STLport standard one is used.
+
 	* stlport/stl/_alloc.h, _alloc.c, src/dll_main.cpp: Implementation of a clean
 	process for the node_alloc allocator. This clean is active only when 
 	_STLP_LEAKS_PEDANTIC is defined and you are using STLport as a dynamic
 	library under Win32.
-	
+
 	* src/explore: Updates of several makefiles to conform to the new library
 	and binary naming convention.
 
@@ -2662,13 +2658,13 @@
 	* stlport/config/stl_gcc.h: Fix of the relative include path used to access the
 	native gcc headers. Before version 3.4.0 the 0 patch level was not part of the 
 	include	path.
-	
+
 	* stlport/stl/type_traits.h, _vector.h, _algobase.h, _construct.h: Removal
 	of the __action_on_move type traits replaced by a generalization of the 
 	already existing __move_traits.
-	
+
 	* test/unit/mvctor_test.cpp: New test case for the __move_traits feature.
-	
+
 2004-09-24  Petr Ovtchenkov  <ptr@island...>
 
 	* src/explore/Makefiles/gmake/sunos: 'explore' makesystem adopted to work
@@ -2704,10 +2700,10 @@
 
 	* stlport/stl/debug: Modification of the __check_range class in the more general
 	__check_construct. Now it also checks for null pointers in the string interface.
-	
+
 	* src/explore: Adoption of the new library naming convention for all Microsoft
 	compilers thanks Michael Fink
-	
+
 2004-09-20  Francois Dumont  <dums@...>
 
 	* src/explore/Makefiles/gmake/cygwin, mingw: Build configuration files merges
@@ -2718,47 +2714,47 @@
 	* stlport/stl/_vector.h: Modification of the destructor implementation to destroyed
 	object instances in a reverse order taking advantage of the way elements are
 	normaly added to this container.
-	
+
 2004-09-16  Francois Dumont  <dums@...>
 
 	* test/unit/cppunit/cppunit_mini.h, cppunit_proxy.h: Adaptation of the CPPUNIT
 	framework to take care of the exception as failures thanks Zdenek Nemec
-	
+
 	* stlport/config/stl_msvc.h, stl_bc.h, stl_mwerks.h, stlport/stl_user_config.h:
 	Removal of the non intuitive and difficult to maintain automatic linking feature.
-	
-	* Fixing of the locale implementation mecanism. Classis locale implementation is
+
+	* Fixing of the locale implementation mecanism. Classic locale implementation is
 	also managed by a reference counter to be sure when it is possible to release
 	the associated ressources. Fix of a missing locale impl ref counter decrement
 	in the template locale constructor taking a facet, it was a possible source of
 	memory leak . Addition of a static object within locale_impl.cpp in 
 	_STLP_LEAKS_PEDANTIC mode to decrement the global locale impl ref counter when 
 	STLport library is unloaded. Addition of all the missing classic locale facets
-	 destructor in free_classic_locale.
-	 
+	destructor in free_classic_locale.
+
 	* src/locale_catalog.cpp: The locale by name constructor checks the "C" name
 	to simply copy (increment the ref counter) the classic locale implementation 
-	rather than instanciating	a new one.
-	
+	rather than instanciating a new one.
+
 2004-09-15  Francois Dumont  <dums@...>
 
 	* stlport/stl/_list.c: Modification of the _S_sort implementation, the __carry 
 	list instance is created using the __that allocator instance copy to be more
 	allocator friendly.
-	
+
 2004-09-11  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_intel.h: Configuration update for Win32 Intel 8.0 
 	compiler thanks Charlemagne.
-	
+
 2004-09-10  Francois Dumont  <dums@...>
 
 	* stlport/stl/_config.h: The new official namespace is now stlp_std. _STL is
 	just an alias. STLPORT macro still contains the STLport std namespace equivalent.
-	Moreover in _STLP_DEBUG mode, which is not a binary compatible with the release
+	Moreover in _STLP_DEBUG mode, which is not binary compatible with the release
 	or debug mode, the namespace is stlpd_std to generate link error rather
 	than runtime crash.
-	
+
 2004-09-09  Francois Dumont  <dums@...>
 
 	* stlport/stl/_config.h: _STLP_DONT_USE_NESTED_TCLASS_THROUGHT_TPARAM 
@@ -2767,27 +2763,27 @@
 	* stlport/stl/_config.h: Introduction of a new namespace stlp_private
 	defined in the global namespace. Everything that is STLport implementation
 	details should be in this namespace to avoid polution of the std namespace.
-	
+
 	* stlport/stl/_iterator_base.h: Modification of the macro used to create
 	iterator traits for all tree and hashtable based containers to move it in
 	the stlp_private namespace rather than defining it as nested struct, limits
 	the symbol size.
-	
+
 2004-09-08  Francois Dumont  <dums@...>
 
 	* test/unit/fstream_test.cpp: restauration of the test added by Petr
 	the 2004-09-03, it is finaly a different test from the one in sstream_test.cpp.
 	Some more checks have also been integrated.
-	
+
 	* stlport/stl/_ostream.c: New fix of the _M_unbuffured_copy method that was
 	still bugged in case of a throwing output streambuf, detected thanks to the
 	test case.
-	
+
 2004-09-07  Francois Dumont  <dums@...>
 
 	* stlport/config/stl_msvc.h: Add defines of the _STLP_USE_STATIC_LIB
 	or _STLP_USE_DYNAMIC_LIB depending on the current kind of build.
-	
+
 	* stlport/stl/_streambuf.h, _streambug.c: Fix an unresolved symbol 
 	problem for MSVC6 (and before?) when STLport is used as a static library.
 
@@ -2795,57 +2791,57 @@
 
 	* test/unit/nmake-evc-common.mak: Use of the dynamic runtime for the
 	*-shared rules rather than the previous static thanks Michael Fink.
-	
+
 	* test/unit/nmake-evc*.mak: end of build code factorisation, use of 
 	nmake-evc-common.mak within all makefiles thanks Michael Fink.
-	
+
 	* test/unit/locale_test.cpp: Application of a patch from Michael Fink
 	to check the "C" locale on all platforms. Fix of the money_get_put test
 	case for the "C" locale.
-	
+
 	* test/unit/allocator_test.cpp: new test case for std::allocator checks.
 
 2004-09-05  Francois Dumont  <dums@...>
 
 	* stlport/stl/_string_hash.h: Performance improvement, multiplication
 	replaced by shift operations thanks Greg S.
-	
+
 	* stlport/config/stl_wince_4.h: removed, never used, stl_evc.h has been 
 	prefered.
-	
+
 	* test/unit/string_test.cpp: addition of a new test short_string_optim_bug
 	to check for a compiler bugs making the short string optim invalid thanks
 	Michael Fink.
-	
+
 	* stlport/config/stl_evc.h: Deactivation of the short string optimization
 	because of a compiler bug thanks Michael Fink.
-	
+
 	* src/explore: factorisation of the evc build makefiles thanks Michael Fink.
-	
+
 	* src/explore/Makefiles/nmake/lib/clean.mak, macro.mak: Addition of some
 	file clean up for the clobber rule thanks Michael Fink.
-	
+
 2004-09-03  Francois Dumont  <dums@...>
 
 	* test/unit/fstream_test.cpp, sstream_test.cpp: Move of the test for the
 	infinite loop from FstreamTest test case to SstreamTest, addition of some
 	checks.
-	
+
 	* test/unit/full_streambuf.h: streambuf implementation simulating full
 	output.
-	
+
 	* stlport/exception: restauration of some modification removed after the
 	rollback of the 2004-09-01.
-	
+
 	* stlport/config/stl_gcc.h: homogeneification of the coding standard used
 	within STLport, 2 spaces indentations even for preprocessor directives.
 	Doing so, discovered a weird configuration for Mac OS platform (__APPLE__)
 	concerning the _STLP_NATIVE_INCLUDE_PATH macro definition, fixed.
-	
+
 	* stlport/stl/config/stl_*.mak: removal of all references to the 
-	_STLP_REDEFINED_STD	macro as it is now the default and only way STLport 
-	use to replace native	Standard library.
-	
+	_STLP_REDEFINED_STD macro as it is now the default and only way STLport 
+	use to replace native Standard library.
+
 	* test/unit/nmake-vc-common.mak: add inclusion of the vc_warning_disable.h
 	file to avoid warnings during build process thanks Michael Fink.
 
@@ -2862,15 +2858,15 @@
 	Creation of the _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT macro to signal support of
 	the unexpected exception mecanism. Related type/function are only brought to the
 	STLport namespace if correctly supported, exception_test.cpp check that.
-	
+
 	* New modification of the _Rb_tree and _Hashtable associated iterator structs.
 	Removal of the container_type pass through the iterator traits; iterator traits
 	is the type that will make each derived container iterator type real different
 	type making them uncomparable.
-	
+
 	* stlport/ctype.h: rollback of the above rollback ;-) only of course for the 
 	Win CE code fix that was part of the previous commitment.
-	
+
 2004-09-01  Petr Ovtchenkov  <ptr@Island...>
 
 	* Rollback include schema: code is broken.
@@ -2879,7 +2875,7 @@
 
 	* _STLP_INCOMPLETE_EXCEPTION_HEADER replace by the more intuitive
 	_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT macro.
-	
+
 	* Modification of the include schema of all public headers in stlport folder
 	that need to be reentrant. Now those files are fully guarded and the specific
 	STLport code is only included once at the end of the inclusion, the reentrancy
@@ -2889,7 +2885,7 @@
 
 	* stlport/stl/_deque.c: Fix of a pseudo 'uninitialized variable used' thanks 
 	Oliver Stoeneberg.
-	
+
 2004-08-27  Francois Dumont  <dums@...>
 
 	* .Net 2002 (VC70) portage.
@@ -2947,24 +2943,24 @@
 2004-08-13  Francois Dumont  <dums@...>
 
 	* test/unit/gcc.mak: Addition of the _STLP_NO_CUSTOM_IO define to make test
-	faster.
-	
+	build faster.
+
 	* stlport/stl/_limits.h, _limits.c: Modification of the _LimG class definition.
 	Removal of the static variables, replaced by static method having the same role
 	but more portable. Fix link problem with MSVC compilers family when using STLport
 	static library.
-	
+
 	* stlport/stl/_bitset.h, _bitset.c: Ditto for the _Bs_G class.
-	
+
 	* stlport/stl/_hashtable.h, _hashtable.c: Ditto for the _Stl_prime class.
-	
+
 	* src/dll_main.cpp: thanks to the previous modification, removal of the 
 	concerned code within force_link.
 
 2004-08-13  Petr Ovtchenkov  <ptr@Island...>
 
 	* test/unit/cppunit/cppunit_mini.h, file_reporter.h, test_main.cpp:
-	add funcion to print mess; remove def of CPPUNIT_MINI, not required; add const
+	add function to print mess; remove def of CPPUNIT_MINI, not required; add const
 	qualifiers.
 
 	* test/unit/locale_test.cpp: print checked locale name; restore table with format
@@ -2980,7 +2976,7 @@
 	rules generates executable using the STLport dynamic library and static rules
 	use the static libraries.
 
-	* stlport/stl/_string.h: Add check of _STLP_NO_IOSTREAM to force inclusion of
+	* stlport/stl/_string.h: Add check of _STLP_NO_IOSTREAMS to force inclusion of
 	_string.c in this case.
 	
 	* stlport/stl/_string.c: removal of the _STLP_LINK_TIME_INSTANTIATION macro check 
@@ -3003,8 +2999,8 @@
 	* stlport/stl/_string.h: add check of the _STLP_EXPOSE_STREAM_IMPLEMENTATION
 	macro to include the _string.c file. Improve compile time when _STLP_NO_CUSTOM_IO
 	is defined.
-	
-	* stlport/stl/_sintrg.h, stlport/stl/debug/_string.h, _string_mem_t.h: restoration
+
+	* stlport/stl/_string.h, stlport/stl/debug/_string.h, _string_mem_t.h: restoration
 	of the template method specialization for backward compatibility between compilers
 	implementating template method and the most recent one. It is concidered as an 
 	STLport extension.
@@ -3058,7 +3054,7 @@
 2004-08-03  Francois Dumont <dums@...>
 
 	* stlport/stl/_iterator.h: Fix of the back_insert_iterator, front_insert_iterator
-	nd insert_iterator to make them assignable like specify in the Standard requirements
+	and insert_iterator to make them assignable like specify in the Standard requirements
 	of the output iterators.
 
 	* test/unit/insert_test.cpp, finsert_test.cpp, binsert_test.cpp: Addition of tests for
@@ -3069,7 +3065,7 @@
 	* stlport/stl/_string.h, _string.c, debug/_string.h: split of the basic_string
 	implementation into a class with no member templates and one with the member 
 	templates. Only the one with no member templates is exported. This is a MSVC6
-	bug workaround as this compiler try  to look for the class method symbols within
+	bug workaround as this compiler try to look for the class method symbols within
 	the dynamic library even if this symbol is the one of template method which is 
 	not exported. That also make the basic_string implementation more clean so it
 	has been adopted for all compilers.
@@ -3099,7 +3095,7 @@
 
 	* stlport/config/stl_gcc.h: Fix of a gcc 3.3.0 test that did not handle
 	the gcc 2.95.x correctly thanks Jordan Breeding.
-  
+
 	* src/common_rules.mak: Addition of the stlport/stl/pointers folder within
 	the folder to be install. Add of a call to ranlib under linux mandatory under
 	Mac OS X and without impact under the other Unixes systems.
@@ -3175,7 +3171,7 @@
 	of type_traits.h.
 
 	* stlport/stl/_algo.h, stlport/stl/_algo.c: move of the _tempbuf.h
-	inclusion from the .h to the .c that is the only one to need it.
+	inclusion from the .h to the .c that is the only one that need it.
 
 	* stlport/stl/_config.h: addition of the boost support section.
 
@@ -3276,7 +3272,7 @@
 2004-06-22  Francois Dumont  <dums@...>
 
 	* src/locale_catalog.cpp: fix of the locale facets registration system.
-	The hash container use string has key rather than char const* so that
+	The hash container use string as key rather than char const* so that
 	a copy of the facet name is stored rather than a copy of the string
 	pointer that might be freed. We also extract the complete facet name
 	before storing it to avoid store of facet aliases that cannot be retrieved
@@ -3396,7 +3392,7 @@
 
 	* stlport/stl/_iostream_string.h:
 	Fix of the iostring_allocator rebind embedded struct and implementation
-	of the missing __stl_alloc_rebind and __stl_alloc_create usefull for compiler
+	of the missing __stl_alloc_rebind and __stl_alloc_create useful for compiler
 	not supporting or buggy on the member template feature (VC6 for instance).
 
 2004-05-22  Francois Dumont  <dums@...>
@@ -3827,18 +3823,18 @@
 
 	* _limits.c: Correction of the quiet and signaling NaN that was inverted
 	for several platform; thanks Alexey Sarytchev.
-               
+
 2003-11-01  Francois Dumont  <dums@s...>
 
 	* _string.c: judicious correction for string::find_first_not_of to
 	improve performance; thanks Stephen Cleary.
-               
+
 	* _bitset.h: integration of a workaround for up to MSVC6 compilers
 	for the bitset input and output operators; thanks Jesse Booher.
-               
+
 	* _ostream.h, _istream.h: fix of a non-standard behavior of the seekp
         and seekg calls and conformance to the latest 2003 standard; thanks Tanaka.
-	
+
 2003-10-26  Francois Dumont  <dums@s...>
 
         * _monetary.c: fix an other memory overrun on monetary display;
@@ -3871,25 +3867,25 @@
 2003-10-16  Francois Dumont  <dums@s...>
 
 	* _alloc.h: Add of the throw() specification on allocator comparision.
-	
+
 	* _iterator.h: Correction of the operator++(int) signature to conform
 	to the standard.
-	
+
 	* _ctype.h: tolower and toupper for wchar_t types.
-	
+
 	* _valarray.h: gslice_array::operator = (const value_type&) not
 	const anymore
-	
+
 	* _valarray.h: slice_array idem
-	
+
 	* _valarray.h: valarray<T> operator [](const gslice&) former version
 	was taking a copy of gslice
-	
+
 	* _codecvt.h: correction of the default codecvt class definition and
 	correction of the out method 
-	
+
 	(all thanks Richard Peng)
-    
+
 2003-10-16  Francois Dumont  <dums@s...>
 
 	* debug/: add of the iterator range check on all container constructors.
@@ -3910,29 +3906,29 @@
 
 	* _istreambuf_iterator.h, _ostreambuf_iterator.h: correction
 	of the missing iterator base class (Thanks Tanaka)
-  
+
 2003-10-05  Francois Dumont  <dums@s...>
 
 	* _string.h: correction of the replace implementation badling form
 	for self referencing
 
-	* _string.h, _string.c: Modifiction of the _M_copy method
+	* _string.h, _string.c: Modification of the _M_copy method
 	to _M_move as basic_string do not correctly handled self referecing;
 	thanks Tanaka
-             
+
 2003-09-25  Francois Dumont  <dums@s...>
-  
+
 	* como 4.3.0 on linux support (thanks Synge Todo and Karel Gardas)
-  
+
 	* Quazy-leak patch: make memory detection tools happier,
 	option _STLP_LEAKS_PEDANTIC in _site_config.h. (thanks Petr Ovtchenkov)
-  
+
 2003-09-19  Francois Dumont  <dums@s...>
-  
+
 	* Support of the Linux Intel C++ support (thanks Blaine Kubesh)
 
 	* FreeBSD support update (thanks Guy Middleton).
-  
+
   ----
 
   * codecvt.cpp: charcode correction in the do_in method (thanks J Hamilton report)
@@ -4046,7 +4042,7 @@
 
 	* complex.cpp, _complex.h : template<> used for specializations
 
-	* _num_put.c : unised locale variable removed (thanks Petr Ovtchenkov)
+	* _num_put.c : unused locale variable removed (thanks Petr Ovtchenkov)
 
 	* _algo.h : __reverse beautified (thanks Kabanov)
 
