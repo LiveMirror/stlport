@@ -1,3 +1,12 @@
+2005-10-08  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_config.h: Add endianess specification for DEC alpha thanks
+	sourceforge compiler farm.
+
+	* stlport/config/stl_intel.h: Remove reference to _STLP_GLOBAL_NEW_HANDLER
+	in this file as this macro depends on native Standard library which is
+	the back end MSVC compiler one so macro set in stl_msvc.h.
+
 2005-10-07  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/gmake/darwin/sys.mak, freebsd/sys.mak: Fix EXT_TEST

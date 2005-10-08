@@ -321,20 +321,20 @@ Operational environment:        Windows XP Professionnal 2002 SP2
 -----------------------------------------------------------------------
 Compiler:                       Visual C++ 6 SP5
 -----------------------------------------------------------------------
-Date:                           2005-08-31
+Date:                           2005-10-08
 STLP Version:                   current CVS STLPORT_5_0 branch
 Reporter:                       dums (Francois Dumont)
-Status (release-shared):        All pass (326 tests)
+Status (release-shared):        All pass (327 tests)
 Notes:
-Status (dbg-shared):            All pass (326 tests)
+Status (dbg-shared):            All pass (327 tests)
 Notes:
-Status (stldbg-shared):         All pass (326 tests)
+Status (stldbg-shared):         All pass (327 tests)
 Notes:
-Status (release-static):        All pass (326 tests)
+Status (release-static):        All pass (327 tests)
 Notes:
-Status (dbg-static):            All pass (326 tests)
+Status (dbg-static):            All pass (327 tests)
 Notes:
-Status (stldbg-static):         All pass (326 tests)
+Status (stldbg-static):         All pass (327 tests)
 Notes:
 
 -----------------------------------------------------------------------
