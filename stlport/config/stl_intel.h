@@ -19,7 +19,3 @@
 #if (__ICL >= 800)
 #  define _STLP_STATIC_CONST_INIT_BUG 1
 #endif 
-
-#if (__ICL < 900)
-#  define _STLP_GLOBAL_NEW_HANDLER 1
-#endif
