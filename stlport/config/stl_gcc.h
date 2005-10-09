@@ -227,7 +227,7 @@ typedef unsigned int wint_t;
 */
 #endif
 
-#if defined(__OpenBSD__) || defined(__FreeBSD__)
+#if defined (__OpenBSD__) || defined (__FreeBSD__)
 #  define _STLP_NO_VENDOR_MATH_L
 #  define _STLP_NO_VENDOR_STDLIB_L /* no llabs */
 #  ifndef __unix
@@ -235,7 +235,11 @@ typedef unsigned int wint_t;
 #  endif
 #endif
 
-#ifdef __hpux
+#if defined (__alpha__)
+#  define _STLP_NO_VENDOR_MATH_L
+#endif
+
+#if defined (__hpux)
 #  define _STLP_NO_VENDOR_STDLIB_L /* no llabs */
   /* No *f math fuctions variants (i.e. sqrtf, fabsf, etc.) */
 #  define _STLP_NO_VENDOR_MATH_F
