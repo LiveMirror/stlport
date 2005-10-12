@@ -1,3 +1,9 @@
+2005-10-12  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_threads.h, _threads.c: Fix regression for some platforms
+	introduce by modification of _Atomic_swap_ptr implementation thanks
+	Albrecht Fritzche.
+
 2005-10-09  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* repository: RC6, tag STLPORT_5_0_RC6

@@ -407,21 +407,29 @@ class _STLP_CLASS_DECLSPEC _Refcount_Base
 # endif
 };
 
-// Atomic swap on unsigned long
-// This is guaranteed to behave as though it were atomic only if all
-// possibly concurrent updates use _Atomic_swap.
-// In some cases the operation is emulated with a lock.
-// Idem for _Atomic_swap_ptr
-#if defined (_STLP_THREADS)
-#  if defined (_STLP_ATOMIC_EXCHANGE)
-inline __stl_atomic_t _Atomic_swap(volatile __stl_atomic_t * __p, __stl_atomic_t __q)
-{ return (__stl_atomic_t) _STLP_ATOMIC_EXCHANGE(__p,__q); }
-#  elif defined(_STLP_PTHREADS) || defined (_STLP_UITHREADS) || defined (_STLP_OS2THREADS) || defined(_STLP_USE_PTHREAD_SPINLOCK) || defined(_STLP_NWTHREADS)
+/* Atomic swap on unsigned long
+ * This is guaranteed to behave as though it were atomic only if all
+ * possibly concurrent updates use _Atomic_swap.
+ * In some cases the operation is emulated with a lock.
+ * Idem for _Atomic_swap_ptr
+ */
+
+#if defined (_STLP_THREADS) && \
+    (!defined (_STLP_ATOMIC_EXCHANGE) || !defined (_STLP_ATOMIC_EXCHANGE_PTR)) && \
+    (defined (_STLP_PTHREADS) || defined (_STLP_UITHREADS) || defined (_STLP_OS2THREADS) || \
+     defined (_STLP_USE_PTHREAD_SPINLOCK) || defined (_STLP_NWTHREADS))
+#  define _STLP_USE_SWAP_LOCK_STRUCT
 // We use a template here only to get a unique initialized instance.
 template <int __dummy>
 struct _Swap_lock_struct
 { static _STLP_STATIC_MUTEX _S_swap_lock; };
+#endif
 
+#if defined (_STLP_THREADS)
+#  if defined (_STLP_ATOMIC_EXCHANGE)
+inline __stl_atomic_t _Atomic_swap(volatile __stl_atomic_t * __p, __stl_atomic_t __q)
+{ return (__stl_atomic_t) _STLP_ATOMIC_EXCHANGE(__p,__q); }
+#  elif defined (_STLP_USE_SWAP_LOCK_STRUCT)
 // This should be portable, but performance is expected
 // to be quite awful.  This really needs platform specific
 // code.
@@ -432,7 +440,9 @@ inline __stl_atomic_t _Atomic_swap(volatile __stl_atomic_t * __p, __stl_atomic_t
   _Swap_lock_struct<0>::_S_swap_lock._M_release_lock();
   return __result;
 }
-#  endif // _STLP_PTHREADS || _STLP_UITHREADS || _STLP_OS2THREADS || _STLP_USE_PTHREAD_SPINLOCK
+#  else
+#    error Missing _Atomic_swap implementation
+#  endif
 #else // !_STLP_THREADS
 /* no threads */
 static inline __stl_atomic_t  _STLP_CALL
@@ -452,14 +462,14 @@ _Atomic_swap(volatile __stl_atomic_t * __p, __stl_atomic_t __q) {
  */
 #      pragma warning (push)
 #      pragma warning (disable : 4311) // pointer truncation from void* to long
-#      pragma warning (disable : 4312) // conversion from long to void*  of greater size
+#      pragma warning (disable : 4312) // conversion from long to void* of greater size
 #    endif
 inline void* _Atomic_swap_ptr(void* volatile* __p, void* __q)
 { return _STLP_ATOMIC_EXCHANGE_PTR(__p,__q); }
 #    if defined (_STLP_MSVC)
 #      pragma warning (pop)
 #    endif
-#  elif defined(_STLP_PTHREADS) || defined (_STLP_UITHREADS) || defined (_STLP_OS2THREADS) || defined(_STLP_USE_PTHREAD_SPINLOCK) || defined(_STLP_NWTHREADS)
+#  elif defined (_STLP_USE_SWAP_LOCK_STRUCT)
 inline void* _Atomic_swap_ptr(void* volatile* __p, void* __q) {
   /* We use the same struct as in _Atomic_swap function */
   _Swap_lock_struct<0>::_S_swap_lock._M_acquire_lock();
@@ -468,6 +478,8 @@ inline void* _Atomic_swap_ptr(void* volatile* __p, void* __q) {
   _Swap_lock_struct<0>::_S_swap_lock._M_release_lock();
   return __result;
 }
+#  else
+#    error Missing _Atomic_swap_ptr implementation
 #  endif
 #else
 /* no thread */
