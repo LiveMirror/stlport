@@ -1,3 +1,15 @@
+2005-11-01  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* Repository: STLport 5.0, tag STLPORT_5_0_RELEASE
+
+	* Repository: merge HEAD and STLPORT_5_0 branch.
+
+	* build/Makefiles/gmake/app/rules-install.mak: install-shared rule
+	added (patch by Michael Fink).
+
+	* build/Makefiles/gmake/lib/rules-install-a.mak: install-static rule
+	added (patch by Michael Fink).
+
 2005-10-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_threads.h, _threads.c: Fix regression for some platforms
