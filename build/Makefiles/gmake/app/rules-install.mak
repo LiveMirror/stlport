@@ -1,7 +1,7 @@
 # -*- makefile -*- Time-stamp: <04/07/25 17:58:50 ptr>
 # $Id$
 
-install:	install-release-shared install-dbg-shared install-stldbg-shared
+install:	install-shared
 
 # The program name to be installed will be the same as compiled name,
 # but it will be a bit altered in case of installation debug and/or
@@ -25,6 +25,8 @@ ifeq (${INSTALL_BIN_DIR_DBG},${INSTALL_BIN_DIR_STLDBG})
 INSTALL_PRGNAME_DBG := ${PRGNAME}g${EXE}
 INSTALL_PRGNAME_STLDBG := ${PRGNAME}stlg${EXE}
 endif
+
+install-shared: install-release-shared install-dbg-shared install-stldbg-shared
 
 ifneq ($(OSNAME),windows)
 install-release-shared: release-shared
