@@ -131,7 +131,7 @@ echo "--mingw"
 echo    If you want to build STLport libraries using the MinGW package in a cmd or
 echo    command console that is to say without help of a Msys or Cygwin environment
 echo    you have to activate this option.
-echo.    
+echo.
 echo "--clean"
 echo    Removes the build configuration file.
 goto skp_comp
@@ -233,8 +233,8 @@ goto pr_err
 :prc_x86
 if "%TARGETCPU%" == "X86" goto pr_x86
 if "%TARGETCPU%" == "X86EMnset CFG=none" goto pr_x86
-if "%TARGETCPU%" == "emulator" goto pr_x86
 if "%TARGETCPU%" == "x86" goto pr_x86
+if "%TARGETCPU%" == "emulator" goto pr_emul
 goto pr_err
 
 :prc_mips
@@ -264,8 +264,14 @@ echo TARGET_PROC=arm >> ..\Makefiles\config.mak
 goto pr_end
 
 :pr_x86
-echo Target processor: x86 (Emulator)
+echo Target processor: x86
 echo TARGET_PROC=x86 >> ..\Makefiles\config.mak
+goto pr_end
+
+:pr_emul
+echo Target processor: Emulator
+echo TARGET_PROC=x86 >> ..\Makefiles\config.mak
+echo TARGET_PROC_SUBTYPE=emulator >> ..\Makefiles\config.mak
 goto pr_end
 
 :pr_mips
