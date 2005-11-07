@@ -85,6 +85,14 @@ inline void swap(_Bit_reference& __x, _Bit_reference& __y) {
   __y = __tmp;
 }
 
+# if defined(__BORLANDC__) && defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+inline void swap(bool __x, bool __y) {
+  bool __tmp = __x;
+  __x = __y;
+  __y = __tmp;
+}
+# endif
+
 // Might not be very useful but costs nothing!
 _STLP_TEMPLATE_NULL
 struct __type_traits<_Bit_reference> { 

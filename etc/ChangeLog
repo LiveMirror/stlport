@@ -1,6 +1,137 @@
+2005-10-14  Eric Sanford  <...@comp...>
+
+	* build/test/unit/bc55.mak: Build all unit tests.
+
+	* stlport/config/stl_bc.h: Add defines to include native Borland <except.h>
+	  in stlport/stdexcept to restore full support for std::unexpected_handler 
+	  and partial support for std::uncaught_exception.  Delete 
+	  _STLP_NO_CLASS_PARTIAL_SPECIALIZATION define to restore class partial 
+	  specialization support for Borland 5.5. Define _STLP_BC5_BOOLEAN_TYPE_BUG 
+	  to resolve errors in type_traits_test where Borland 5.5 and 5.6 fail to 
+	  select the correct boolean typedef (__true_type or __false_type).
+	  
+	* stlport/stdexcept: Include native Borland <except.h> header to restore
+	  support for std::unexpected_handler (all builds) and 
+	  std::uncaught_exception (static build only).  Due to a bug, Borland 
+	  fails uncaught_exception test in dynamic build. 
+	  See http://qc.borland.com/qc/wc/qcmain.aspx?d=4145
+
+	* stlport/stl/_algobase.h: Add _STLP_BC5_BOOLEAN_TYPE_BUG macro
+	  in iter_swap, __iter_swap_aux, __copy_aux, __copy_backward_aux functions. 
+	  Borland 5.5 and 5.6 may fail to select the correct boolean typedef 
+	  (__true_type or __false_type).  Comment obsolete 'min/max' workarounds 
+	  for legacy Borland compilers. 
+
+	* stlport/stl/_alloc.h: Add Borland-specific workaround in _STLP_alloc_proxy.
+	  Borland compilers complain about conversion from '__move_source<char *>' to 
+	  'char *' in _STLP_alloc_proxy function and fail to find a match for 
+	  'allocator<char>::allocator(__move_source<allocator<char> >)'.
+
+	* stlport/stl/_bvector.h: Add Borland-specific swap(bool __x, bool __y) 
+	  function in _Bit_reference struct. Borland compilers fail to find a
+	  match for swap<_Tp,_Alloc>(_Bit_reference,_Bit_reference) when 
+	  _STLP_BC5_BOOLEAN_TYPE_BUG is defined.
+
+	* stlport/stl/_fstream.c: Add Borland-specific workaround in seekoff 
+	  function. This should resolve a tellg error in fstream_test. Move 
+	  defines for __BF_int_type__, __BF_pos_type__ and __BF_off_type__ outside
+	  namespace.  Some Borland compilers have been known to choke when macros
+	  are defined in namespace and undefined outside namespace.  This change
+	  makes _fstream.c more consistent with _istream.c and _sstream.c, where 
+	  __xxx_int_type__, __xxx_pos_type__ and __xxx_off_type__ are defined 
+	  outside namespace.
+	  
+	* stlport/stl/_iterator_base.h: Add alternate _STLP_IS_REF_TYPE_REAL_REF
+	  macro when _STLP_BC5_BOOLEAN_TYPE_BUG is defined. Borland 5.5 and 5.6 
+	  may fail to select the correct boolean typedef (__true_type or 
+	  __false_type) in iter_swap function.
+	
+	* stlport/stl/_move_construct_fwk.h: Add Borland-specific workaround in
+	  _MoveSourceTraits template. Borland 5.6 fails to select the correct
+	  value for _MvImp.
+	
+	* stlport/stl/_rope.h:  Add alternate _IsChar and _IsWCharT typedefs in
+	  _Rope_RopeRep template when _STLP_BC5_BOOLEAN_TYPE_BUG is defined.
+	  Borland 5.5 and 5.6 may fail to select the correct boolean typedef 
+	  (__true_type or __false_type) for _IsBasicCharType.
+	  
+	* stlport/stl/_string.h:  Add alternate _IsIterator and _IsConstIterator 
+	  typedefs in _M_insert_dispatch and _M_replace_dispatch when 
+	  _STLP_BC5_BOOLEAN_TYPE_BUG is defined. Borland 5.5 and 5.6 may fail to 
+	  select the correct boolean typedef (__true_type or __false_type) for 
+	  _CheckInside.
+
+	* stlport/stl/_uninitialized.h: Add _STLP_BC5_BOOLEAN_TYPE_BUG macro
+	  in __ucopy_aux function. Borland 5.5 and 5.6 may fail to select the 
+	  correct boolean typedef (__true_type or __false_type) for 
+	  __ucopy_ptrs function. 
+
+	* stlport/stl/_vector.h: Add Borland-specific workaround in 
+	  _Vector_base(__move_source<_Self> src) function. This should resolve 
+	  crash in mvctor_test where Borland compilers return an incorrect
+	  value for _M_end_of_storage in erase function, such as 
+	  v_v_ints.erase(v_v_ints.begin() + 1).
+
+	* stlport/stl/debug/_deque.h:  Add alternate _IsNonConstIterator and 
+	  _IsConstIterator typedefs in insert(iterator, _InputIterator, _InputIterator)
+	  when _STLP_BC5_BOOLEAN_TYPE_BUG is defined. Borland 5.5 and 5.6 may fail 
+	  to select the correct boolean typedef (__true_type or __false_type) for 
+	  _DoCheck.
+
+	* stlport/stl/debug/_list.h:  Add alternate _IsListIterator and 
+	  _IsListConstIterator typedefs in insert(iterator, _InputIterator, 
+	  _InputIterator) when _STLP_BC5_BOOLEAN_TYPE_BUG is defined. Borland 5.5
+	  and 5.6 may fail to select the correct boolean typedef (__true_type or 
+	  __false_type) for _DoCheck.
+
+	* stlport/stl/debug/_string.h:  Add alternate _IsNonConstIterator and 
+	  _IsConstIterator typedefs in insert(iterator, _InputIter, _InputIter)
+	  when _STLP_BC5_BOOLEAN_TYPE_BUG is defined. Borland 5.5 and 5.6 may fail
+	  to select the correct boolean typedef (__true_type or __false_type) for 
+	  _IsIterator.
+
+	* stlport/stl/debug/_vector.h:  Same as stlport/stl/debug/_deque.h.
+
+	* stlport/stl/pointers/_void_ptr_traits.h: Add 
+	  _STLP_QUALIFIED_SPECIALIZATION_BUG workaround to resolve compiler errors
+	  in __void_ptr_traits_cv<_Tp const>, __void_ptr_traits_cv<_Tp volatile>
+	  and __void_ptr_traits_cv<_Tp const volatile> templates. Add Borland-
+	  specific workaround in void * cast(_Tp *__ptr) function.  Borland 5.5 
+	  complains about a cast from 'const char *' to 'void *' in function 
+	  __void_ptr_traits<const char>::cast(const char *).
+
+	* stlport/stl/pointers/_void_ptr_traits.h: Add 
+	  _STLP_QUALIFIED_SPECIALIZATION_BUG workarounds to resolve compiler errors
+	  in _UnCVType<const _Tp>, _UnCVType<volatile _Tp> and 
+	  _UnCVType<const volatile _Tp> templates.
+
+  	* stlport/stl/type_traits.h: Remove unneeded Borland workaround in 
+	  __type_traits template. Add _STLP_BC5_BOOLEAN_TYPE_BUG workaround in
+	  _BothPtrType, _OKToMemCpy, _TrivialUCopyAux, and _OKToSwap templates
+	  to set a boolean value, which can then be converted to appropriate 
+	  boolean type at runtime.  This should resolve errors in type_traits_test
+	  where Borland 5.5 and 5.6 fail to select the correct boolean typedef 
+	  (__true_type or __false_type).
+
+	* test/unit/exception_test.cpp: Fix duplicate reference to 
+	  _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
+
+	* test/unit/type_traits_test.cpp: Add _STLP_BC5_BOOLEAN_TYPE_BUG macro
+	  in are_same_uncv_types, is_pointer_type, reference_type, 
+	  are_both_pointer_type and is_ok_to_use_memcpy functions. This should 
+	  resolve errors where Borland 5.5 and 5.6 fail to select the correct 
+	  boolean typedef (__true_type or __false_type). 
+
 2005-09-24  Eric Sanford  <...@comp...>
 
-	* stlport/stl/_locale.h: workaround for fstream_test, sstream_test, floatio_test, locale_test
+	* stlport/stl/_locale.h: Add _STLP_FACET_INDEX_BUG macro to the 
+	  'use_facet' function to check whether '_Facet::id._M_index' is null, 
+	  and if so, assign the correct value.  The correct values for 
+	  '_Facet::id._M_index' are assigned in '_Stl_loc_assign_ids' 
+	  function in src/locale_impl.cpp.  However, Borland compilers may pass a
+	  null value to 'use_facet' function at runtime.  If so, fstream_test, 
+	  sstream_test, floatio_test, locale_test and other unit tests will crash. 
+	  This workaround should resolve this issue with Borland 5.5 and 5.6.
 
 	* stlport/stl/_codecvt.h: same
 
@@ -20,21 +151,39 @@
 
 	* stlport/config/stl_bc.h: same
 
-	* src/c_locale_win32/c_locale_win32.c: workaround for locale_test
+	* src/c_locale_win32/c_locale_win32.c:  Add Borland-specific locale 
+	  categories in the '__Extract_locale_name' function.  This should 
+	  resolve an error in 'locale_by_name' test in locale_test where 
+	  Borland compilers fail to return false for locale loc('yasli_language'). 
 
-	* stlport/stl/_monetary.c: same
+	* stlport/stl/_monetary.c: Add workaround in the '_S_do_put' function
+	  to assign the correct value to the '__sign' variable.  This should 
+	  resolve a runtime error in locale_test where Borland 5.5 and 5.6 
+	  fail to correctly parse the multi-level 'x ? y : z' conditional-
+	  assigment expression.
 
-	* stlport/stl/_deque.h: workaround for deque_test, string_test
+	* stlport/stl/_deque.h: Add '#define deque __deque__' macro for 
+	  _STLP_DEBUG build. This should resolve a compiler error in deque_test
+	  and string_test with Borland 5.5 and 5.6 when _STLP_DEBUG is defined. 
 
-	* stlport/stdlib.h: workaround for string_test
+	* stlport/stdlib.h: Add workaround for broken Borland native 'min/max'. 
+	  This should resolve a compiler error in Borland <stdlib.h> where Borland 
+	  allows 'using std::min' and 'using std::max'.
 
-	* stlport/stl/_algobase.c: workaround for find_test
+	* stlport/stl/_algobase.c: Add a Borland-specific 'find' function for 
+	  'const char *'. Borland 5.5 and 5.6 fail to find a match for 
+	  'find<_InputIter,_Tp>(const char *, const char *, char)' in find_test.
+	  Delete unneeded workaround for legacy Borland compilers in '__find' 
+	  function. 
 
-	* stlport/stl/_rope.h: workaround for hash_test
+	* stlport/stl/_rope.h: Added Borland-specific workarounds in 
+	  '_Rope_iterator_base' class.  This should resolve an internal compiler 
+	  error with Borland 5.5.  
 
-	* build/test/unit/bc55.mak: exclude type_traits_test only
+	* build/test/unit/bc55.mak: Restore all excluded unit tests except
+	  'type_traits_test', to be restored separately. 
 
-	* build/test/unit/bc56.mak: build all unit tests
+	* build/test/unit/bc56.mak: Build all unit tests.  
 
 2005-09-05  Eric Sanford  <...@comp...>
 

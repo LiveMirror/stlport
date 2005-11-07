@@ -365,9 +365,19 @@ public:
     return (__n + _S_alloc_granularity - 1) & ~(_S_alloc_granularity-1);
   }
   
+# if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) 
+  enum { _Same1 = _AreSameUnCVTypes<_CharT, char>::_Same };
+  typedef typename __bool2type<_Same1>::_Ret _IsChar;
+# else
   typedef typename _AreSameUnCVTypes<_CharT, char>::_Ret _IsChar;
+# endif
 # ifdef _STLP_HAS_WCHAR_T
+#  if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) 
+  enum { _Same2 = _AreSameUnCVTypes<_CharT, wchar_t>::_Same };
+  typedef typename __bool2type<_Same2>::_Ret _IsWCharT;
+#  else
   typedef typename _AreSameUnCVTypes<_CharT, wchar_t>::_Ret _IsWCharT;
+#  endif
 # else
   typedef __false_type _IsWCharT;
 # endif

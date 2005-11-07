@@ -16,7 +16,7 @@
 //
 #if defined (_STLP_USE_EXCEPTIONS)
 
-#  if !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT) || !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT)
+#  if !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT) || !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
 
 class ExceptionTest : public CPPUNIT_NS::TestCase
 {

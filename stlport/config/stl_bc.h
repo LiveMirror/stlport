@@ -64,6 +64,7 @@
 # define _STLP_STATIC_CONST_INIT_BUG 1
 # define _STLP_NON_TYPE_TMPL_PARAM_BUG 1
 # define _STLP_FACET_INDEX_BUG 1 // workaround for fstream_test, sstream_test, floatio_test, locale_test, etc
+# define _STLP_BC5_BOOLEAN_TYPE_BUG 1
 
 // math, complex, limits
 # define __MINMAX_DEFINED 1
@@ -88,7 +89,6 @@
 #  ifndef _STLP_OWN_IOSTREAMS
 #   define _STLP_NO_OWN_IOSTREAMS
 #  endif
-#  define _STLP_ISTREAM_TRAILING_SPACE_BUG // workaround for fstream_test, sstream_test
 
 // memory
 #  define _STLP_NEW_DONT_THROW_BAD_ALLOC 1 // stl/_new.h (don't import native bad_alloc)
@@ -98,7 +98,13 @@
 #  define _STLP_USE_OWN_BAD_ALLOC 1
 
 // exception
-#  ifndef _STLP_USE_OWN_EXCEPTION_CLASS
+#  ifdef _STLP_USE_OWN_EXCEPTION_CLASS
+#   ifndef _RTLDLL 
+//   uncaught_exception() always returns false if linking with dynamic RTL
+//   http://qc.borland.com/qc/wc/qcmain.aspx?d=4145
+#    define _UNCAUGHT_EXCEPTION 1
+#   endif
+#  else
 #   define _STLP_VENDOR_UNEXPECTED_STD 1 // stlport/exception (global namespace)
 #  endif
 #  ifndef __BUILDING_STLPORT
@@ -273,7 +279,6 @@ typedef char mbstate_t;
 // Borland 5.5 only
 
 # if __BORLANDC__ >= 0x550 && __BORLANDC__ < 0x560
-#  define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1
 #  define _STLP_QUALIFIED_SPECIALIZATION_BUG 1
 #  define _STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS 1
 #  ifdef __cplusplus // workaround for string_test, stdlib.h

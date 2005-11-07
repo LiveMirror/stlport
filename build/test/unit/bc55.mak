@@ -26,7 +26,7 @@ INCLUDES      = $(SRCDIR);$(SRCDIR)\cppunit
 DEFS          = CPPUNIT_MINI
 
 # Macro to temporarily exclude specific unit tests.
-EXCLUDE_TESTS          = 1
+# EXCLUDE_TESTS          = 1
 
 !ifdef EXCLUDE_TESTS
 ALLORIG	                 = $(SRC_CPP) $(SRC_CC) $(SRC_C)

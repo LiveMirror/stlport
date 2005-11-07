@@ -117,6 +117,7 @@ struct __void_ptr_traits_cv_base {
   }
 };
 
+# if !defined (_STLP_QUALIFIED_SPECIALIZATION_BUG) 
 template <class _Tp>
 struct __void_ptr_traits_cv<_Tp const> : __void_ptr_traits_cv_base<void const>
 {};
@@ -128,6 +129,7 @@ struct __void_ptr_traits_cv<_Tp volatile> : __void_ptr_traits_cv_base<void volat
 template <class _Tp>
 struct __void_ptr_traits_cv<_Tp const volatile> : __void_ptr_traits_cv_base<void const volatile>
 {};
+# endif
 
 template <class _Tp>
 struct __void_ptr_traits {
@@ -162,7 +164,11 @@ struct __void_ptr_traits {
    * Reverse versions
    */
   inline static void * cast(_Tp *__ptr) {
+# if defined (__BORLANDC__) && (__BORLANDC__ < 0x560) // workaround for iter_test
+    return __cv::cast(reinterpret_cast<void_cv_type>(*((void_cv_type*)&__ptr)));
+# else
     return __cv::cast(reinterpret_cast<void_cv_type>(__ptr));
+# endif
   }
 
   inline static void ** ptr_cast(_Tp **__ptr) {

@@ -99,7 +99,11 @@ struct derived : base
 //
 template <typename _Tp1, typename _Tp2>
 int are_same_uncv_types(_Tp1, _Tp2) {
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  typedef typename __bool2type<_AreSameUnCVTypes<_Tp1, _Tp2>::_Same>::_Ret _Ret;
+# else
   typedef typename _AreSameUnCVTypes<_Tp1, _Tp2>::_Ret _Ret;
+# endif
   return type_to_value(_Ret());
 }
 #if defined(_STLP_USE_PARTIAL_SPEC_WORKAROUND)
@@ -313,7 +317,11 @@ void TypeTraitsTest::rational()
 
 template <typename _Type>
 int is_pointer_type(_Type) {
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  return type_to_value(__bool2type<_IsPtrType<_Type>::is_ptr>::_Ret());
+# else
   return type_to_value(_IsPtrType<_Type>::_Ret());
+# endif
 }
 
 void TypeTraitsTest::pointer_type()
@@ -339,19 +347,32 @@ void TypeTraitsTest::reference_type()
   CPPUNIT_ASSERT( _IsRef<int const volatile&>::_Ret == 1 );
   CPPUNIT_ASSERT( type_to_value(_IsRefType<int>::_Ret()) == 0 );
   CPPUNIT_ASSERT( type_to_value(_IsRefType<int*>::_Ret()) == 0 );
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  CPPUNIT_ASSERT( type_to_value(__bool2type<_IsRefType<int&>::is_ref>::_Ret()) == 1 );
+  CPPUNIT_ASSERT( type_to_value(__bool2type<_IsRefType<int const&>::is_ref>::_Ret()) == 1 );
+  CPPUNIT_ASSERT( type_to_value(__bool2type<_IsRefType<int const volatile&>::is_ref>::_Ret()) == 1 );
+  CPPUNIT_ASSERT( type_to_value(__bool2type<_OKToSwap<int, int, int&, int&>::ok_swap>::_Ret()) == 1 );
+  CPPUNIT_ASSERT( _IsOKToSwap(int_pointer, int_pointer, __true_type(), __true_type())._Ret() == 1 );
+  CPPUNIT_ASSERT( _IsOKToSwap(int_pointer, int_pointer, __false_type(), __false_type())._Ret() == 0 );
+# else
   CPPUNIT_ASSERT( type_to_value(_IsRefType<int&>::_Ret()) == 1 );
   CPPUNIT_ASSERT( type_to_value(_IsRefType<int const&>::_Ret()) == 1 );
   CPPUNIT_ASSERT( type_to_value(_IsRefType<int const volatile&>::_Ret()) == 1 );
-
   CPPUNIT_ASSERT( type_to_value(_OKToSwap<int, int, int&, int&>::_Answer()) == 1 );
   CPPUNIT_ASSERT( type_to_value(_IsOKToSwap(int_pointer, int_pointer, __true_type(), __true_type())._Answer()) == 1 );
   CPPUNIT_ASSERT( type_to_value(_IsOKToSwap(int_pointer, int_pointer, __false_type(), __false_type())._Answer()) == 0 );
+# endif
+
 }
 #endif
 
 template <typename _Tp1, typename _Tp2>
 int are_both_pointer_type (_Tp1, _Tp2) {
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  return type_to_value(__bool2type<_BothPtrType<_Tp1, _Tp2>::both_ptrs>::_Ret());
+# else
   return type_to_value(_BothPtrType<_Tp1, _Tp2>::_Ret());
+# endif
 }
 void TypeTraitsTest::both_pointer_type()
 {
@@ -368,7 +389,12 @@ void TypeTraitsTest::both_pointer_type()
 
 template <typename _Tp1, typename _Tp2>
 int is_ok_to_use_memcpy(_Tp1 val1, _Tp2 val2) {
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  static const int _Ret = _IsOKToMemCpy(val1, val2)._Ret();
+  return (_Ret == 0) ? type_to_value(__false_type()) : type_to_value(__true_type());
+# else
   return type_to_value(_IsOKToMemCpy(val1, val2)._Answer());
+# endif
 }
 void TypeTraitsTest::ok_to_use_memcpy()
 {

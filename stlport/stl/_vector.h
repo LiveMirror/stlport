@@ -77,7 +77,11 @@ public:
 
   _Vector_base(__move_source<_Self> src)
     : _M_start(src.get()._M_start), _M_finish(src.get()._M_finish),
+# if defined (__BORLANDC__) // workaround for mvctor_test, vector_test
+      _M_end_of_storage(src.get()._M_end_of_storage) {
+# else
       _M_end_of_storage(_AsMoveSource<_AllocProxy>(src.get()._M_end_of_storage)) {
+# endif
     //Set the source as empty:
     src.get()._M_start = 0;
     src.get()._M_finish = 0;

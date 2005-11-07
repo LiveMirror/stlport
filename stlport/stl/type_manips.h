@@ -162,7 +162,7 @@ struct __select {
 
 #endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
-# ifdef _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
+#if defined (_STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS) || defined (_STLP_QUALIFIED_SPECIALIZATION_BUG) // workaround for mvctor_test, type_traits_test
 // Boris : simulation technique is used here according to Adobe Open Source License Version 1.0.
 // Copyright 2000 Adobe Systems Incorporated and others. All rights reserved.
 // Authors: Mat Marcus and Jesse Jones
@@ -191,7 +191,7 @@ struct _UnCVType {
   typedef _Tp _Type;
 };
 
-#  ifdef _STLP_CLASS_PARTIAL_SPECIALIZATION
+#  if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION) && !defined (_STLP_QUALIFIED_SPECIALIZATION_BUG) // workaround for mvctor_test, type_traits_test
 
 template <class _Tp>
 struct _IsSameAux<_Tp, _Tp> { enum { _Ret = 1 }; };
@@ -217,7 +217,6 @@ template <class _Tp1, class _Tp2>
 struct _IsSame {
   typedef typename _UnCVType<_Tp1>::_Type _Type1;
   typedef typename _UnCVType<_Tp2>::_Type _Type2;
-
   enum { _Ret = _IsSameAux<_Type1, _Type2>::_Ret };
 };
 

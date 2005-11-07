@@ -294,8 +294,13 @@ public:                         // Insert
 #ifdef _STLP_MEMBER_TEMPLATES  
   template <class _InputIterator>
   void insert(iterator __pos, _InputIterator __first, _InputIterator __last) {
+# if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for mvctor_test
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIterator, iterator>::_Same>::_Ret _IsNonConstIterator;
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIterator, const_iterator>::_Same>::_Ret _IsConstIterator;
+# else
     typedef typename _AreSameUnCVTypes<_InputIterator, iterator>::_Ret _IsNonConstIterator;
     typedef typename _AreSameUnCVTypes<_InputIterator, const_iterator>::_Ret _IsConstIterator;
+# endif
     typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _DoCheck;
     _STLP_DEBUG_CHECK(__check_if_owner(&_M_iter_list, __pos))
     _STLP_DEBUG_CHECK(__check_range(__first, __last))

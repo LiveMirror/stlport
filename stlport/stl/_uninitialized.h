@@ -56,12 +56,12 @@ __ucopy_trivial(const void* __first, const void* __last, void* __result) {
 
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __ucopy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
-                               const __false_type& /*IsOKToMemCpy*/) {
+                               const __false_type& /*_IsOKToMemCpy*/) {
   return __copy(__first, __last, __result, random_access_iterator_tag(), (ptrdiff_t*)0);
 }
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __ucopy_ptrs(_InputIter __first, _InputIter __last, _OutputIter __result, 
-                               const __true_type& /*IsOKToMemCpy*/) {
+                               const __true_type& /*_IsOKToMemCpy*/) {
 // we know they all pointers, so this cast is OK 
   //  return (_OutputIter)__copy_trivial(&(*__first), &(*__last), &(*__result));
   return (_OutputIter)__ucopy_trivial(__first, __last, __result);
@@ -69,15 +69,23 @@ inline _OutputIter __ucopy_ptrs(_InputIter __first, _InputIter __last, _OutputIt
 
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __ucopy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
-                               const __true_type& /*BothPtrType*/) {
+                               const __true_type& /*_BothPtrType*/) {
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  static const int _Ret = _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter), 
+                                        _STLP_VALUE_TYPE(__result, _OutputIter))._Ret();
+  return (_Ret == 0) ? __ucopy_ptrs(__first, __last, __result, __false_type()) 
+                     : __ucopy_ptrs(__first, __last, __result, __true_type());
+
+# else
   return __ucopy_ptrs(__first, __last, __result, 
                       _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter),
                                     _STLP_VALUE_TYPE(__result, _OutputIter))._Answer());
+# endif
 }
 
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __ucopy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
-                               const __false_type& /*BothPtrType*/) {
+                               const __false_type& /*_BothPtrType*/) {
   return __copy(__first, __last, __result, 
 		            _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
                 _STLP_DISTANCE_TYPE(__first, _InputIter));

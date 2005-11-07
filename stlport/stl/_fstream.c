@@ -26,8 +26,6 @@
 #  include <stl/_limits.h>
 #endif
 
-_STLP_BEGIN_NAMESPACE
-
 # if defined ( _STLP_NESTED_TYPE_PARAM_BUG )
 // no wchar_t is supported for this mode
 # define __BF_int_type__ int
@@ -39,6 +37,7 @@ _STLP_BEGIN_NAMESPACE
 # define __BF_off_type__ _STLP_TYPENAME_ON_RETURN_TYPE basic_filebuf<_CharT, _Traits>::off_type
 # endif
 
+_STLP_BEGIN_NAMESPACE
 
 //----------------------------------------------------------------------
 // Public basic_filebuf<> member functions
@@ -321,7 +320,11 @@ basic_filebuf<_CharT, _Traits>::seekoff(off_type __off,
           streamoff __eadj =  _M_base._M_get_offset(_M_ext_buf + __iadj, _M_ext_buf_end);
 
           if (__off == 0) {
+# if defined(__BORLANDC__) // workaround for fstream_test
+            return pos_type(__iadj);
+# else
             return pos_type(_M_base._M_seek(0, ios_base::cur) - __eadj);
+# endif
           }  else {
             return _M_seek_return(_M_base._M_seek(__off - __eadj, ios_base::cur), _State_type());
           }

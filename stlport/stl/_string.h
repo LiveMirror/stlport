@@ -852,8 +852,13 @@ protected:  // Helper functions for insert.
      * A user could encapsulate those iterator within their own iterator interface
      * and in this case lead to a bad behavior, this is a known limitation.
      */
+# if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for string_test, vector_test
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, iterator>::_Same>::_Ret _IsIterator;
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, const_iterator>::_Same>::_Ret _IsConstIterator;
+# else
     typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsIterator;
     typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+# endif
     typedef typename _Lor2<_IsIterator, _IsConstIterator>::_Ret _CheckInside;
     _M_insert_aux(__p, __first, __last, _CheckInside());
   }
@@ -1033,8 +1038,13 @@ public:
   _Self& _M_replace_dispatch(iterator __first, iterator __last,
                              _InputIter __f, _InputIter __l, const __false_type& /*IsIntegral*/) {
     _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
+# if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for string_test, vector_test
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, iterator>::_Same>::_Ret _IsIterator;
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, const_iterator>::_Same>::_Ret _IsConstIterator;
+# else
     typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsIterator;
     typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+# endif
     typedef typename _Lor2<_IsIterator, _IsConstIterator>::_Ret _CheckInside;
     return _M_replace_aux(__first, __last, __f, __l, _CheckInside());
   }

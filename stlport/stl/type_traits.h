@@ -288,9 +288,7 @@ struct _IsPtrType {
 #    if defined (_STLP_MEMBER_TEMPLATE_CLASSES)
   typedef typename _Is_integer<_Tp>::_Integral _Tr1;
   typedef typename _Is_rational<_Tp>::_Rational _Tr2;
-
   typedef typename _Lor2<_Tr1, _Tr2>::_Ret _Tr3;
-
   enum { _Is = _IsPtrIfNot<_Tr3, _Tp>::_Ret } ;
 #    else
   enum { _Is =  _IsPtr<_Tp>::_Ret } ;
@@ -337,11 +335,7 @@ struct _BothPtrType {
 
 // we make general case dependant on the fact the type is actually a pointer.
 template <class _Tp>
-#  if defined (__BORLANDC__) && (__BORLANDC__ < 0x560) 
-struct __type_traits : __type_traits_aux<_IsPtr<class _Tp>::_Ret > {};
-#   else
 struct __type_traits : __type_traits_aux<_IsPtr<_Tp>::_Ret> {};
-#   endif
 
 #  else /* _STLP_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS */
 
@@ -385,9 +379,13 @@ template <class _Tp>  struct _IsPtrType {
   typedef typename __bool2type<is_ptr>::_Ret _Type;
   static _Type _Ret() { return _Type();} 
 };
+
 template <class _Tp1, class _Tp2>  struct _BothPtrType { 
   enum { is_ptr1 = _IsPtr<_Tp1>::_Ret };
   enum { is_ptr2 = _IsPtr<_Tp2>::_Ret };
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  enum { both_ptrs = is_ptr1 && is_ptr2 };
+# endif
   typedef typename __bool2type<is_ptr1 && is_ptr2>::_Ret _Type;
   static _Type _Ret() { return _Type();} 
 };
@@ -442,9 +440,21 @@ _STLP_DEFINE_TYPE_TRAITS_FOR(long double);
 template <class _Tp1, class _Tp2>
 struct _OKToMemCpy {
   typedef typename __type_traits<_Tp1>::has_trivial_assignment_operator _Tr1;
+# if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for type_traits_test
+  enum { _Same = _AreSameUnCVTypes<_Tp1, _Tp2>::_Same };
+  typedef typename __bool2type<_Same>::_Ret _Tr2;
+# else
   typedef typename _AreSameUnCVTypes<_Tp1, _Tp2>::_Ret _Tr2;
+# endif
   typedef typename _Land2<_Tr1, _Tr2>::_Ret _Type;
   static _Type _Answer() { return _Type(); }
+# if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for type_traits_test
+  static int _Ret() {
+    static const int _S_trivial_assign = __type2bool<__type_traits<_Tp1>::has_trivial_assignment_operator>::_Ret;
+    static const int _S_same = _AreSameUnCVTypes<_Tp1, _Tp2>::_Same;
+    return (_S_trivial_assign && _S_same) ? 1 : 0;
+  };
+# endif
 };
 
 template <class _Tp>
@@ -457,7 +467,12 @@ struct _TrivialUCopy {
 template <class _Tp1, class _Tp2>
 struct _TrivialUCopyAux {
   typedef typename _TrivialUCopy<_Tp1>::_Ret _Tr1;
+# if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for type_traits_test
+  enum { _Same = _AreSameUnCVTypes<_Tp1, _Tp2>::_Same };
+  typedef typename __bool2type<_Same>::_Ret _Tr2;
+# else
   typedef typename _AreSameUnCVTypes<_Tp1, _Tp2>::_Ret _Tr2;
+# endif
   typedef typename _Land2<_Tr1, _Tr2>::_Ret _Type;
   static _Type _Answer() { return _Type(); }
 };
@@ -514,12 +529,16 @@ inline _OKToMemCpy<_Tp1, _Tp2> _IsOKToMemCpy(_Tp1*, _Tp2*) {
 template <class _Tp1, class _Tp2, class _IsRef1, class _IsRef2>
 struct _OKToSwap {
   enum { same = _AreSameUnCVTypes<_Tp1, _Tp2>::_Same };
-
   enum { is_ref1 = __type2bool<_IsRef1>::_Ret };
   enum { is_ref2 = __type2bool<_IsRef2>::_Ret };
-
   typedef typename __bool2type<same && is_ref1 && is_ref2>::_Ret _Type;
   static _Type _Answer() { return _Type(); }
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  enum { ok_swap = same && is_ref1 && is_ref2 };
+  static int _Ret() {
+    return ok_swap;
+  };
+# endif
 };
 
 template <class _Tp1, class _Tp2, class _IsRef1, class _IsRef2>

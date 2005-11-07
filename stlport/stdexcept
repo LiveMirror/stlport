@@ -49,6 +49,31 @@
 #      include <stl/_string_fwd.h>
 #    endif
 
+# if defined(__BORLANDC__) && defined(_STLP_USE_OWN_EXCEPTION_CLASS) // workaround for exception_test
+#  undef _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
+#  ifdef _UNCAUGHT_EXCEPTION
+#   undef _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT
+#  endif
+namespace std { using _STLP_STD_NAME::exception; }
+#  undef __EXCEPT_H
+#  define char_traits rw_char_traits
+#  define allocator rw_allocator
+#  define string rw_string
+#  include _STLP_NATIVE_CPP_RUNTIME_HEADER(except.h)
+#  undef char_traits
+#  undef allocator
+#  undef string
+_STLP_BEGIN_NAMESPACE
+using std::terminate;
+using std::terminate_handler;
+using std::set_terminate;
+using std::unexpected;
+using std::unexpected_handler;
+using std::set_unexpected;
+using std::uncaught_exception;
+_STLP_END_NAMESPACE
+# endif
+
 #    ifndef _STLP_USE_NO_IOSTREAMS
 #      define _STLP_OWN_STDEXCEPT 1
 #    endif

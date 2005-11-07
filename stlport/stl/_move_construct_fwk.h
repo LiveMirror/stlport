@@ -73,13 +73,29 @@ struct __move_traits {
  * in such a case will be __invalid_source<_Tp> to generate a compile error
  * revealing the configuration problem.
  */
+
+# if defined (__BORLANDC__) && (__BORLANDC__ >= 0x560) // workaround for mvctor_test
+template <class _Tp>
+struct _MoveSourceTraitsAux {
+  typedef typename __move_traits<_Tp>::implemented _MvImpRet;
+  enum {_MvImp = __type2bool<_MvImpRet>::_Ret};
+};
+# endif
+
 template <class _Tp>
 struct _MoveSourceTraits {
+# if defined (__BORLANDC__) && (__BORLANDC__ >= 0x560) // workaround for mvctor_test
+  typedef typename _MoveSourceTraitsAux<_Tp> __MoveSourceTraitsAux;
+  typedef typename __select<__MoveSourceTraitsAux::_MvImp,
+                            __move_source<_Tp>,
+                            _Tp const&>::_Ret _Type;
+# else
   typedef typename __move_traits<_Tp>::implemented _MvImpRet;
   enum {_MvImp = __type2bool<_MvImpRet>::_Ret};
   typedef typename __select<_MvImp,
                             __move_source<_Tp>,
                             _Tp const&>::_Ret _Type;
+# endif
 };
 
 //The helper function

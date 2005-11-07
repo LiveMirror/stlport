@@ -91,7 +91,11 @@ struct iterator<output_iterator_tag, void, void, void, void> {
 #    else
 #      define _STLP_ITERATOR_CATEGORY(_It, _Tp) typename iterator_traits< _Tp >::iterator_category()
 #    endif
+#    if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+#    define _STLP_IS_REF_TYPE_REAL_REF(_It, _Tp) __bool2type<_IsRefType<typename iterator_traits<_Tp>::reference>::is_ref>::_Ret()
+#    else
 #    define _STLP_IS_REF_TYPE_REAL_REF(_It, _Tp) _IsRefType< typename iterator_traits< _Tp >::reference >::_Ret()
+#    endif
 #  else
 #    define _STLP_ITERATOR_CATEGORY(_It, _Tp)   __iterator_category(_It, _IsPtrType<_Tp>::_Ret())
 #    define _STLP_DISTANCE_TYPE(_It, _Tp)       (ptrdiff_t*)0

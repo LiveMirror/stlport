@@ -95,13 +95,35 @@ inline void __iter_swap_aux_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, _Value
   *__i2 = tmp;
 }
 
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+
 template <class _ForwardIter1, class _ForwardIter2>
-inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, const __true_type& /*OKToSwap*/) {
+inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, const bool ok_swap /*_OKToSwap*/) {
+  if (ok_swap) {
+  swap(*__i1, *__i2);
+  } else {
+    __iter_swap_aux_aux( __i1, __i2, _STLP_VALUE_TYPE(__i1,_ForwardIter1) );
+  }
+}
+
+template <class _ForwardIter1, class _ForwardIter2>
+inline void iter_swap(_ForwardIter1 __i1, _ForwardIter2 __i2) {
+  // swap(*__i1, *__i2);
+  __iter_swap_aux( __i1, __i2, _IsOKToSwap(_STLP_VALUE_TYPE(__i1, _ForwardIter1), 
+                                           _STLP_VALUE_TYPE(__i2, _ForwardIter2), 
+                                           _STLP_IS_REF_TYPE_REAL_REF(__i1, _ForwardIter1), 
+                                           _STLP_IS_REF_TYPE_REAL_REF(__i2, _ForwardIter2))._Ret());
+}
+
+# else
+
+template <class _ForwardIter1, class _ForwardIter2>
+inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, const __true_type& /*_OKToSwap*/) {
   swap(*__i1, *__i2);
 }
 
 template <class _ForwardIter1, class _ForwardIter2>
-inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, const __false_type& /*OKToSwap*/) {
+inline void __iter_swap_aux(_ForwardIter1& __i1, _ForwardIter2& __i2, const __false_type& /*_OKToSwap*/) {
   __iter_swap_aux_aux( __i1, __i2, _STLP_VALUE_TYPE(__i1,_ForwardIter1) );
 }
 
@@ -113,21 +135,23 @@ inline void iter_swap(_ForwardIter1 __i1, _ForwardIter2 __i2) {
                                            _STLP_IS_REF_TYPE_REAL_REF(__i2, _ForwardIter2))._Answer());
 }
 
+# endif /* _STLP_BC5_BOOLEAN_TYPE_BUG */
+
 //--------------------------------------------------
 // min and max
 
-# if !defined (__BORLANDC__) || defined (_STLP_USE_OWN_NAMESPACE)
+# if /*!defined (__BORLANDC__) ||*/ defined (_STLP_USE_OWN_NAMESPACE)
 template <class _Tp>
 inline const _Tp& (min)(const _Tp& __a, const _Tp& __b) { return __b < __a ? __b : __a; }
 template <class _Tp>
 inline const _Tp& (max)(const _Tp& __a, const _Tp& __b) {  return  __a < __b ? __b : __a; }
 #endif /* __BORLANDC__ */
-
+/*
 # if defined (__BORLANDC__) && ( __BORLANDC__ < 0x530 || defined (_STLP_USE_OWN_NAMESPACE))
 inline unsigned long (min) (unsigned long __a, unsigned long __b) { return __b < __a ? __b : __a; }
 inline unsigned long (max) (unsigned long __a, unsigned long __b) {  return  __a < __b ? __b : __a; }
 # endif
-
+*/
 template <class _Tp, class _Compare>
 inline const _Tp& (min)(const _Tp& __a, const _Tp& __b, _Compare __comp) { 
   return __comp(__b, __a) ? __b : __a;
@@ -240,15 +264,23 @@ inline _OutputIter __copy_ptrs(_InputIter __first, _InputIter __last, _OutputIte
 
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __copy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
-                              const __true_type& /*BothPtrType*/) {
+                              const __true_type& /*_BothPtrType*/) {
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  static const int _Ret = _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter), 
+                                        _STLP_VALUE_TYPE(__result, _OutputIter))._Ret();
+  return (_Ret == 0) ? __copy_ptrs(__first, __last, __result, __false_type()) 
+                     : __copy_ptrs(__first, __last, __result, __true_type());
+
+# else
   return __copy_ptrs(__first, __last, __result, 
                      _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter), 
                                    _STLP_VALUE_TYPE(__result, _OutputIter))._Answer());
+# endif
 }
 
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __copy_aux(_InputIter __first, _InputIter __last, _OutputIter __result, 
-                              const __false_type& /*BothPtrType*/) {
+                              const __false_type& /*_BothPtrType*/) {
   return __copy(__first, __last, __result, 
                 _STLP_ITERATOR_CATEGORY(__first, _InputIter), 
                 _STLP_DISTANCE_TYPE(__first, _InputIter));
@@ -262,12 +294,12 @@ inline _OutputIter copy(_InputIter __first, _InputIter __last, _OutputIter __res
 
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __copy_backward_ptrs(_InputIter __first, _InputIter __last, 
-                                        _OutputIter __result, const __false_type& /*TrivialAssignment*/) {
+                                        _OutputIter __result, const __false_type& /*_TrivialAss*/) {
   return __copy_backward(__first, __last, __result, _STLP_ITERATOR_CATEGORY(__first, _InputIter), _STLP_DISTANCE_TYPE(__first, _InputIter));
 }
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __copy_backward_ptrs(_InputIter __first, _InputIter __last, 
-                                        _OutputIter __result, const __true_type& /*TrivialAssignment*/) {
+                                        _OutputIter __result, const __true_type& /*_TrivialAss*/) {
   return (_OutputIter)__copy_trivial_backward(__first, __last, __result);  
 }
 
@@ -278,9 +310,16 @@ inline _OutputIter __copy_backward_aux(_InputIter __first, _InputIter __last, _O
 
 template <class _InputIter, class _OutputIter>
 inline _OutputIter __copy_backward_aux(_InputIter __first, _InputIter __last, _OutputIter __result, const __true_type&) {
+# if defined(_STLP_BC5_BOOLEAN_TYPE_BUG)
+  static const int _Ret = _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter), 
+                                        _STLP_VALUE_TYPE(__result, _OutputIter))._Ret();
+  return (_Ret == 0) ? __copy_backward_ptrs(__first, __last, __result, __false_type()) 
+                     : __copy_backward_ptrs(__first, __last, __result, __true_type());
+# else
   return __copy_backward_ptrs(__first, __last, __result,  
                               _IsOKToMemCpy(_STLP_VALUE_TYPE(__first, _InputIter), 
                                             _STLP_VALUE_TYPE(__result, _OutputIter))._Answer());
+# endif
 }
 
 template <class _InputIter, class _OutputIter>

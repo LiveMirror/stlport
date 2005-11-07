@@ -556,7 +556,11 @@ public:
     _MaybeReboundAlloc(__a), _M_data(__p) {}
 
   _STLP_alloc_proxy (__move_source<_Self> src) :
+#if defined (__BORLANDC__) // workaround for mvctor_test
+    _MaybeReboundAlloc(*((_Self*)&_AsMoveSource<_Base>(src.get()))),_M_data(*(_Value*)&(_AsMoveSource<_Value>(src.get()._M_data))) {}
+# else
     _MaybeReboundAlloc(_AsMoveSource<_Base>(src.get())), _M_data(_AsMoveSource<_Value>(src.get()._M_data)) {}
+# endif
 
 #if 0
 /*

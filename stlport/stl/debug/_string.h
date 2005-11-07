@@ -484,10 +484,14 @@ public:
     _STLP_DEBUG_CHECK(__check_if_owner(&this->_M_iter_list,__p))
     _STLP_DEBUG_CHECK(__check_range(__first,__last))
 
+#  if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for mvctor_test
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, iterator>::_Same>::_Ret _IsNonConstIterator;
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, const_iterator>::_Same>::_Ret _IsConstIterator;
+#  else
     typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsNonConstIterator;
     typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+#  endif
     typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _IsIterator;
-
     size_type __old_capacity = this->capacity();
     _M_insert_aux(__p, __first, __last, _IsIterator());
     _Compare_Capacity(__old_capacity);
@@ -637,8 +641,13 @@ public:
     _STLP_DEBUG_CHECK(__check_range(__first, __last, this->begin(), this->end()))
     _STLP_DEBUG_CHECK(__check_range(__f, __l))
 
+#  if defined (_STLP_BC5_BOOLEAN_TYPE_BUG) // workaround for mvctor_test
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, iterator>::_Same>::_Ret _IsNonConstIterator;
+    typedef typename __bool2type<_AreSameUnCVTypes<_InputIter, const_iterator>::_Same>::_Ret _IsConstIterator;
+#  else
     typedef typename _AreSameUnCVTypes<_InputIter, iterator>::_Ret _IsNonConstIterator;
     typedef typename _AreSameUnCVTypes<_InputIter, const_iterator>::_Ret _IsConstIterator;
+#  endif
     typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _IsIterator;
 
     size_type __old_capacity = this->capacity();
