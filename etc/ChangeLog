@@ -1,5 +1,11 @@
 2005-11-07  Michael Fink  <vividos@users.sourceforge...>
 
+	* build/lib/configure.bat: Fixed configuring for Visual Studio .NET 2003.
+	Fixed jump target names for Win9x OSes: they must be 8 characters or
+	shorter.
+
+2005-11-07  Michael Fink  <vividos@users.sourceforge...>
+
 	* build/Makefiles/nmake/evc3.mak, build/Makefiles/nmake/evc4.mak,
 	build/lib/configure.bat, stlport/config/stl_evc.h: Added check if
 	using x86 emulator configuration; using of proper include paths in

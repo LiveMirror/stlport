@@ -61,10 +61,10 @@ REM additional compiler options
 if "%1" == "--extra-cxxflag" goto opt_xtra
 
 REM MinGW without Msys config
-if "%1" == "--mingw" goto opt_mingw
+if "%1" == "--mingw" goto opt_mngw
 
 REM clean rule
-if "%1" == "--clean" goto opt_clean
+if "%1" == "--clean" goto opt_cln
 
 echo Unknown option: %1
 
@@ -146,8 +146,8 @@ REM **************************************************************************
 set STLPORT_SELECTED_CONFIG=%2
 
 if "%2" == "msvc6" goto oc_msvc6
+if "%2" == "msvc71" goto oc_msv71
 if "%2" == "msvc7" goto oc_msvc7
-if "%2" == "msvc71" goto oc_msvc71
 if "%2" == "msvc8" goto oc_msvc8
 if "%2" == "icl"   goto oc_icl
 
@@ -169,7 +169,7 @@ echo TARGET_OS=x86 >> ..\Makefiles\config.mak
 set STLPORT_COMPILE_COMMAND=nmake -f nmake-vc70.mak
 goto oc_end
 
-:oc_msvc71
+:oc_msv71
 echo Setting compiler: Microsoft Visual C++ .NET 2003
 echo TARGET_OS=x86 >> ..\Makefiles\config.mak
 set STLPORT_COMPILE_COMMAND=nmake -f nmake-vc71.mak
@@ -367,7 +367,7 @@ REM *
 REM * MinGW build
 REM *
 REM **************************************************************************
-:opt_mingw
+:opt_mngw
 echo Setting up for Mingw build.
 echo include $(SRCROOT)\Makefiles\gmake\windows\sysid.mak >> ..\Makefiles\config.mak
 goto cont_lp
@@ -377,7 +377,7 @@ REM *
 REM * Clean
 REM *
 REM **************************************************************************
-:opt_clean
+:opt_cln
 del ..\Makefiles\config.mak
 goto cont_lp
 
