@@ -62,6 +62,8 @@ using _STLP_VENDOR_CSTD::_streams;
 
 #if defined(__MWERKS__)
 # pragma suppress_init_code on
+#elif defined (__BORLANDC__) // no underscores, define in noinit.def file
+# pragma codeseg NOINIT
 #else
 # pragma init_seg("STLPORT_NO_INIT")
 #endif
