@@ -36,7 +36,11 @@
 
 typedef TestClass DQTestClass;
 
+# ifdef __BORLANDC__
+typedef EH_STD::deque<DQTestClass, eh_allocator(DQTestClass) > TestDeque;
+# else
 typedef EH_STD::__deque__<DQTestClass, eh_allocator(DQTestClass) > TestDeque;
+# endif
 
 inline sequence_container_tag
 container_category(const TestDeque&)

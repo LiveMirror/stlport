@@ -140,18 +140,13 @@ inline void iter_swap(_ForwardIter1 __i1, _ForwardIter2 __i2) {
 //--------------------------------------------------
 // min and max
 
-# if /*!defined (__BORLANDC__) ||*/ defined (_STLP_USE_OWN_NAMESPACE)
+# if defined (_STLP_USE_OWN_NAMESPACE)
 template <class _Tp>
 inline const _Tp& (min)(const _Tp& __a, const _Tp& __b) { return __b < __a ? __b : __a; }
 template <class _Tp>
 inline const _Tp& (max)(const _Tp& __a, const _Tp& __b) {  return  __a < __b ? __b : __a; }
-#endif /* __BORLANDC__ */
-/*
-# if defined (__BORLANDC__) && ( __BORLANDC__ < 0x530 || defined (_STLP_USE_OWN_NAMESPACE))
-inline unsigned long (min) (unsigned long __a, unsigned long __b) { return __b < __a ? __b : __a; }
-inline unsigned long (max) (unsigned long __a, unsigned long __b) {  return  __a < __b ? __b : __a; }
 # endif
-*/
+
 template <class _Tp, class _Compare>
 inline const _Tp& (min)(const _Tp& __a, const _Tp& __b, _Compare __comp) { 
   return __comp(__b, __a) ? __b : __a;

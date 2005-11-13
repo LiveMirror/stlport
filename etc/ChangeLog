@@ -1,3 +1,70 @@
+2005-11-12  Eric Sanford  <...@comp...>
+
+	* build/lib/README: Add install instructions for bc55 (free compiler)
+
+	* build/Makefiles/borland: Clean up warnings when user fails to perform
+	  'depend' step before 'install' step; Add switch to purge comment 
+	  records from archive libraries; Save PROCESSOR_IDENTIFIER and
+	  PROCESSOR_ARCHITECTURE information from environment variables;
+	  Comment tzwin.cpp for removal from distribution.
+
+	* build/test/unit/borland: Comment duplicate and superceded files for
+	  removal from distribution.
+
+	* doc/BUGS.bc: Update and clarify workarounds for various Borland bugs. 
+	
+	* doc/README.bc: Add "Supported Borland compilers" section; Add
+	  instructions for configure.bat; Add uninstall instructions; Add
+	  experimental wcout information; Cleanup non-essential information.
+
+	* src/fstream.cpp: Workaround __pioinfo error. This should resolve a 
+	  Borland compiler error when _STLP_USE_WIN32_IO is defined. Workaround 
+	  conflicting remove and rename functions in native <io.h>, which is 
+	  included when _STLP_USE_WIN32_IO is defined. Delete obsolete workaround 
+	  for legacy Borland compilers.
+
+	* src/iostream.cpp: Add 'pragma codeseg NOINIT' option to avoid Borland
+	  compiler error if user tries to put global I/O objects into a special 
+	  initialization segment.
+	  
+	* src/num_put_float.cpp: Delete obsolete workaround for legacy Borland
+	  compiler.
+
+	* stlport/config/_epilog.h: same
+
+	* stlport/config/_prolog.h: same
+
+	* stlport/config/stl_bc.h: Comment _STLP_USE_STDIO_IO define to allow 
+	  _STLP_USE_WIN32_IO to be defined by default in stlport/stl/_fstream.h.
+	  Cleanup pragma message definition.
+		
+	* stlport/cstdio: Delete obsolete workaround for legacy Borland compilers.
+
+	* stlport/cwchar: same
+
+	* stlport/cwctype: same
+
+	* stlport/new: same
+
+	* stlport/stl/_algobase.h: same
+
+	* stlport/stl/_construct.h: same
+
+	* stlport/stl/_ios.h: same
+
+	* stlport/stl/_monetary.h: same
+
+	* stlport/stl/_num_get.h: same
+
+	* stlport/stl/_num_put.h: same
+
+	* stlport/stl/_time_facets.h: same
+
+	* test/eh/_prefix.h: same
+
+	* test/eh/deque_test.cpp: Add workaround for TestDeque class to fix
+	  Borland compiler error where '__deque__' is used instead of 'deque'.
+
 2005-10-14  Eric Sanford  <...@comp...>
 
 	* build/test/unit/bc55.mak: Build all unit tests.

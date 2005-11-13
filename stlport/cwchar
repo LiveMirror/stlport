@@ -27,7 +27,7 @@
 
 # if !defined(_STLP_WINCE) && !defined(_STLP_WCE_EVC3)
 
-# if defined (__BORLANDC__) && (__BORLANDC__ >= 0x530 ) && ! defined (_STLP_OWN_IOSTREAMS)
+# if defined (__BORLANDC__) && !defined (_STLP_OWN_IOSTREAMS)
 /*  Borland defines this stuff here */
 #   include <iosfwd>
 # endif
@@ -42,8 +42,8 @@
 typedef _BSD_WINT_T_ wint_t;
 #  endif /* __OpenBSD__ */
 
-# elif defined (_STLP_NO_WCHAR_T) || defined (__MRC__) || (defined (__SC__) && !defined (__DMC__)) || defined (__BORLANDC__) || \
-     defined(__OpenBSD__) || defined(__FreeBSD__) || \
+# elif defined (_STLP_NO_WCHAR_T) || defined (__MRC__) || (defined (__SC__) && !defined (__DMC__)) || \
+       defined (__BORLANDC__) || defined(__OpenBSD__) || defined(__FreeBSD__) || \
      (defined (__GNUC__) && (defined (__APPLE__) || defined( __Lynx__ )))
 #  include _STLP_NATIVE_C_HEADER(stddef.h)
 #  if defined (__Lynx__)
@@ -86,7 +86,7 @@ extern int      wscanf();
 #  endif
 # endif
 
-#if defined(__MSL__) && __MSL__ <= 0x51FF	/* dwa 2/28/99 - not yet implemented by MSL  */
+#if defined(__MSL__) && (__MSL__ <= 0x51FF) /* dwa 2/28/99 - not yet implemented by MSL  */
 #   define _STLP_WCHAR_MSL_EXCLUDE 1
 namespace std
 { 
@@ -98,10 +98,6 @@ namespace std
 #   define _STLP_NO_NATIVE_MBSTATE_T
 #  endif
 #  define _STLP_WCHAR_BORLAND_EXCLUDE 1
-#  if (__BORLANDC__ < 0x540 )
-#   define _STLP_NO_MBSTATE_T 1
-#   define _STLP_WCHAR_SUNPRO_EXCLUDE
-#  endif
 #endif
 
 #ifndef _STLP_CWCHAR_H
@@ -199,7 +195,6 @@ using _STLP_VENDOR_CSTD::wcstok;
 
 #  endif
 
-# if !(defined (__BORLANDC__) && (__BORLANDC__ < 0x540))
 #  ifndef _STLP_WCE_NET
 using _STLP_VENDOR_CSTD::wcscoll;
 using _STLP_VENDOR_CSTD::wcsxfrm;
@@ -219,8 +214,6 @@ using _STLP_VENDOR_CSTD::wcspbrk;
 using _STLP_VENDOR_CSTD::wcschr;
 
 using _STLP_VENDOR_CSTD::wcsspn;
-
-# endif
 
 #  if !defined (_STLP_WCHAR_BORLAND_EXCLUDE)
 

@@ -48,7 +48,7 @@
 #  define _STLP_USE_NEWALLOC
 # endif
 
-# if 0 // !defined  (_STLP_NO_CUSTOM_IO) && ! defined (__BORLANDC__)
+# if 0 // !defined  (_STLP_NO_CUSTOM_IO) 
 #  define _STLP_NO_CUSTOM_IO
 # endif
 
