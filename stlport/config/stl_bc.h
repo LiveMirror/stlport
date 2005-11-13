@@ -74,7 +74,7 @@
 # define _STLP_LONG_LONG __int64
 
 // streams
-#  define _STLP_USE_STDIO_IO 1 // __pioinfo error in 'fstream.cpp'
+//#  define _STLP_USE_STDIO_IO 1 // optional non-windows io
 #  define _STLP_USE_NEW_IOSTREAMS 1 // for eh_test
 #  ifdef _STLP_OWN_IOSTREAMS // oldstl header gurards
 #   define __STD_FSTREAM__
@@ -396,7 +396,9 @@ namespace std { void broken(){}; }
 # define _STLP_ALT_EXENAME _LIB_COMBINE_KEYS(_LIB_ALT_KEY(_STLP_LIB_BASENAME),_LIB_ALT_KEY(_LIB_SHARED_KEY),_LIB_ALT_KEY(_LIB_DEBUG_KEY))
 
 #  ifndef __BUILDING_STLPORT_EXECUTABLE
+#   ifndef _STLP_EXCLUDE_BC5_LIBS
 #   pragma message STLport lib: _STLP_ALT_LIBNAME
+#   endif
 #else
 #   ifndef _STLP_EXCLUDE_BC5_LIBS
 #    define _STLP_EXCLUDE_BC5_LIBS 1
