@@ -16,10 +16,15 @@ Quick start.
     nmake -f nmake-vc6 install
 
 
-  Borland MAKE (MS Windows), with BCBX:
+  Borland MAKE (MS Windows), with bc56 (CBuilderX):
 
     make -f bc56.mak depend
     make -f bc56.mak install
+
+  Borland MAKE (MS Windows), with bc55 (free compiler):
+
+    make -f bc55.mak depend
+    make -f bc55.mak install
 
 Make system goals.
 
