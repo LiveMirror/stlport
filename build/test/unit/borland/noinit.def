@@ -1,2 +1,3 @@
+# esanfo - duplicate of build/Makefiles/borland/noinit.def; please remove from distribution
 SEGMENTS
   NOINIT
