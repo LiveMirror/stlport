@@ -1,11 +1,22 @@
-Borland C++ 5.6.4 README.TXT for STLPort 5.0.0
+Borland C++ 5.5 / 5.6 README.bc for STLPort 5.0.x
 
-1. Basic installation:
+1. Supported Borland compilers:
+	STLport 5.0.x currently supports the following Borland compilers:
+		Borland C++ 5.5.x (free compiler)
+		Borland C++ 5.6.x (CBuilderX)
+	For earlier Borland compilers, please refer to STLport 3.x or 4.x,
+	available for download from sourceforge.net/projects/stlport.
+
+2. Basic installation:
    cd [STLPORT_DIR]\build\lib
-   make -f bc56.mak depend
-   make -f bc56.mak install
+	make -f bc5x.mak depend
+	make -f bc5x.mak install
+	STLport libraries are saved in "[DRIVE]\[BCROOT]\[STLPORT_DIR]\lib"
+	To use STLport dynamic-link libraries, do one or both of the following:
+	 Add [DRIVE]\[BCROOT]\[STLPORT_DIR]\lib to PATH statement, or 
+	 Copy STLport dynamic-link libraries to Windows system|system32 directory.
 
-2. Pre-installation checklist:
+3. Pre-installation checklist:
    - Unpack STLport source files to [DRIVE]:\[BCROOT]\[STLPORT_DIR]
      After unpacking, STLport directory tree should look like this:
       [DRIVE]\
@@ -23,14 +34,23 @@ Borland C++ 5.6.4 README.TXT for STLPort 5.0.0
         [...]
       [...]
    - To make minor setup changes, edit the following files:
-     [STLPORT_DIR]\build\lib\bc56.mak
-     [STLPORT_DIR]\build\test\unit\bc56.mak
-     [STLPORT_DIR]\build\test\eh\bc56.mak
+     [STLPORT_DIR]\build\lib\bc5x.mak
+     [STLPORT_DIR]\build\test\unit\bc5x.mak
+     [STLPORT_DIR]\build\test\eh\bc5x.mak
    - Open DOS box in Windows
-   - Follow basic instuctions above
+   - Follow basic installation instuctions above
 
-3. Pre-installed STLport libraries with Borland distributions.
-   - To avoid potential conflicts with pre-installed STLport library,
+4. Configuration using configure.bat (optional).
+	For default build, ignore configure.bat. To save windows configuration
+	information (such as SystemDirectory and BUILD_DATE) to 
+	build/Makefiles/config.mak:
+		cd [STLPORT_DIR]\build\lib
+		configure -c bc5x
+	To display windows configuration information:
+		make -f bc5x.mak info
+
+5. Pre-installed STLport libraries in Borland distributions.
+   - To avoid potential conflicts with pre-installed STLport libraries,
      you may want to rename the pre-installed STLport directories, e.g.
         [BCROOT]\
           include\
@@ -38,81 +58,137 @@ Borland C++ 5.6.4 README.TXT for STLPort 5.0.0
             old_stlp_stl\
             old_stlp_stlport\
             old_stlp_using\
-   - Don't rename 'include\oldstl'.
+   - Don't rename '[BCROOT]\include\oldstl'.
 
 General notes:
 
-1. To use STLPort 5.0.0 with Borland compilers, 
+1. To use STLPort 5.0.x with Borland compilers, 
    the following directories must be included in order:
-   C:\[BCROOT]\STLPort-5.0.0\stlport;
-   C:\[BCROOT]\STLPort-5.0.0;
-   C:\[BCROOT]\include;
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\stlport;
+   [DRIVE]\[BCROOT]\include;
    [other directories];
 
 2. To set preferences or make minor setup changes, edit these files first:
-   C:\[BCROOT]\STLPort-5.0.0\build\lib\bc56.mak
-   C:\[BCROOT]\STLPort-5.0.0\build\test\unit\bc56.mak
-   C:\[BCROOT]\STLPort-5.0.0\build\test\eh\bc56.mak
-   C:\[BCROOT]\STLPort-5.0.0\stlport\config\stl_bc.h
-   C:\[BCROOT]\STLPort-5.0.0\stlport\stl_user_config.h
-   C:\[BCROOT]\STLPort-5.0.0\stlport\stl\_site_config.h
-   C:\[BCROOT]\STLPort-5.0.0\stlport\config\_prolog.h
-   C:\[BCROOT]\STLPort-5.0.0\stlport\config\_epilog.h
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\lib\bc5x.mak
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\unit\bc5x.mak
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\eh\bc5x.mak
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\stlport\config\stl_bc.h
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\stlport\stl_user_config.h
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\stlport\stl\_site_config.h
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\stlport\config\_prolog.h
+   [DRIVE]\[BCROOT]\[STLPORT_DIR]\stlport\config\_epilog.h
 
 3. To build and run unit test: 
-   cd C:\[BCROOT]\STLPort-5.0.0\build\test\unit
-   make -f bc56.mak depend
-   make -f bc56.mak install
-   cd C:\[BCROOT]\STLPort-5.0.0\bin
+   cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\unit
+   make -f bc5x.mak depend
+   make -f bc5x.mak install
+   cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\bin
    
 4. To build and run execption handling test: 
-   cd C:\[BCROOT]\STLPort-5.0.0\build\test\eh
-   make -f bc56.mak depend
-   make -f bc56.mak install
-   cd C:\[BCROOT]\STLPort-5.0.0\bin
+   cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\eh
+   make -f bc5x.mak depend
+   make -f bc5x.mak install
+   cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\bin
 
-5. sysid.inc and depends.inc
-   Must exist (but may be empty).
-   To reset, run reset.bat from: 
-     C:\[BCROOT]\STLPort-5.0.0\build\[BUILD DIR]\borland
+5. build/Makefiles/borland/sysid.inc
+   This file must exist (but may be empty).
+   To reset, run configure.bat from "[DRIVE]\[BCROOT]\[STLPORT_DIR]\build\lib"
+   or type "echo. > sysid.inc" in the build/Makefiles/borland directory.
 
-6. stlp500.cpp
-   Combines all sources for static builds (Make_A.inc)
+6. build/Makefiles/borland/noinit.def (optional)
+    Optional. Intended to prevent iostreams from being initialized in 
+	src/iostream.cpp until after locale base class is initialized. By default, 
+	local base class is initialized at startup level 32. To avoid conflicts 
+	with locale startup and test other locale/iostream workarounds, iostreams 
+	could be initialized later. For example, "ios_base::Init" could be 
+	delayed until startup level 64 as follows: 
 
-7. sysver.cpp and sysver.exe
-   Retrieves version info from Windows registry for sysid.inc
+	void _ios_base_init_64 (void) {
+	# pragma startup _ios_base_init_64 64
+	  static ios_base::Init _IosInit;
+	}
 
-8. tzwin.cpp and tzwin.exe
-   Retrieves timezone info from Windows registry for sysid.inc
+7. "pragma checkoption" settings in stlport/config/stl_bc.h
+    Checks several common Borland options for compatiblity with STLport.  
+	Comment or uncomment these to try other configurations. 
 
-9. options.h
-   Include anywhere to see which options are enabled.
-   Messages must be enabled (-wmsg)
+8. Uninstalling STLport
+	To delete only depend files, obj files, and other intermediate files:
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\unit
+		make -f bc5x.mak clean
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\eh
+		make -f bc5x.mak clean
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\lib
+		make -f bc5x.mak clean
+	To delete intermediate directories and everything in them (in addition
+	to intermediate files):
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\unit
+		make -f bc5x.mak clobber
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\eh
+		make -f bc5x.mak clobber
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\lib
+		make -f bc5x.mak clobber
+	To delete entire STLport installation (except source files), including 
+	intermediate directories and intermediate files (use with caution):
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\unit
+		make -f bc5x.mak distclean
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\test\eh
+		make -f bc5x.mak distclean
+		cd [DRIVE]\[BCROOT]\[STLPORT_DIR]\build\lib
+		make -f bc5x.mak distclean
 
-10. borland.def
-    Prevents iostreams from being initialized in src/iostream.cpp
-    until after base classes are defined. Base classes are defined at 
-    startup level 32. Iostreams are initialized at startup level 64.
+9. Borland bugs.
+    Please see doc/BUGS.bc for some obscure Borland bugs and workarounds.
+	For bugs in current Borland products, please report to Borland at 
+	qc.borland.com.
     
-11. pragma checkoption
-    Checks several common options in config\stl_bc.h.  
-	Disable these to try new configurations. 
+10. Using wcout with STLport iostreams (experimental).
+	First, confirm that your system supports native Borland iostreams using 
+	wcout_rw.cpp and wcout_rw.mak.  If successful, then try wcout with STLport 
+	iostreams using wcout_stlp.cpp and wcout_stlp.mak. Note that wmain, tWU, 
+	Tpe and c0x32w.obj all appear to be required to use wcout with Borland 
+	compilers.  In addition, _STLP_USE_WIN32_IO must be defined to use wcout 
+	with STLport iostreams. 
 
-12. CBuilderX C++ Class Browsing
-    For Borland IDE users, note some issues with the
-    CBuilderX class browser
-     Files without extensions, e.g. <iostream>, <locale>:
-      - excluded from searches
-      - unpredictable and intermittent syntax highlighting
-      - can't designate *. as a recognized file type
-     Macros:
-      - header macros aren't expanded, e.g. _STLP_NATIVE_CPP_C_HEADER(cstdio.h)
-      - template class macros aren't recognized, e.g., __BVECTOR
-      - arithmetic operators aren't recognized in macros, e.g. #if (__DEBUG > 1)
-      - empty macros aren't ignored, e.g. _STLP_PSPEC2
-     Class browser refresh:
-      - takes too much time to refresh
-      - no option for manual refresh 
-      - no manual override to stop unnecessary refresh
-     unsigned __int64
-      - class browser doesn't recognize it
+	--wcout_rw.cpp----------------
+	#define _USE_OLD_RW_STL
+	#include <iostream>
+	void wmain() {
+		wchar_t* wbuf = L"This is wide-stream output of wchar_t string using RogueWave iostreams.";
+		std::wcout << wbuf << std::endl;
+	}
+	--wcout_rw.mak----------------
+	BCROOT = $(MAKEDIR)\..
+
+	all: wcout_rw.exe
+
+	wcout_rw.obj: wcout_rw.cpp
+		bcc32 -D_DEBUG -g100 -j25 -tWU -Od -r- -k -y -v -vi- -c \
+        -I$(BC5ROOT)\include -owcout_rw.obj wcout_rw.cpp
+
+	wcout_rw.exe: wcout_rw.obj
+		ilink32 -D -Tpe -x -Gn -v -L$(BC5ROOT)\lib \
+        c0x32w.obj wcout_rw.obj, wcout_rw.exe,,cw32.lib import32.lib,,
+
+	--wcout_stlp.cpp----------------
+	#include <iostream>
+	void wmain() {
+		wchar_t* wbuf = L"This is wide-stream output of wchar_t string using STLport iostreams.";
+		std::wcout << wbuf << std::endl;
+	}
+	--wcout_stlp.mak----------------
+	BCROOT = $(MAKEDIR)\..
+
+	all: wcout_stlp.exe
+
+	wcout_stlp.obj: wcout_stlp.cpp
+        bcc32 -D_DEBUG -D__DEBUG=1 -D_RTLDLL \
+        -4 -He- -Hs- -R -tWU -xp -Od -r- -k -y -v -tWM -c \
+        -I$(BCROOT)\[STLPORT_DIR]\stlport;$(BCROOT)\include \
+        -owcout_stlp.obj wcout_stlp.cpp
+
+	wcout_stlp.exe: wcout_stlp.obj
+        ilink32 -Tpe -x -Gn -v \
+        -L$(BCROOT)\lib;$(BCROOT)\[STLPORT_DIR]\lib \
+        c0x32w.obj wcout_stlp.obj,wcout_stlp.exe,,cw32mti.lib import32.lib,,
+
