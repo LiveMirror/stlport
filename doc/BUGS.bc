@@ -1,21 +1,32 @@
-Borland C++ 5.6.4 BUGS.TXT for STLPort 5.0.0
+Borland C++ 5.x BUGS.bc for STLPort 5.0.x
 
 This file describes various obscure bugs and workarounds.
-Please see INSTALL.TXT and README.TXT for basic installation info.
+Please see INSTALL and doc/README.bc for basic installation info.
 
 1. "Additional segments need to be defined in a .def file"
-     Add 'noinit.def' to the project.  See iostream.cpp for details.
+	If this error occurs, it probably means that the user is experimenting
+	with STLport iostreams and the compiler has seen the following lines
+	after "# pragma suppress_init_code on" in src/iostream.cpp.
+		#elif defined (__BORLANDC__)
+		# pragma codeseg NOINIT
+    To fix, add build/Makefiles/borland/noinit.def to the project or, if it 
+	doesn't exist, copy the following lines to a new file and save it as 
+	build/Makefiles/borland/noinit.def.
+		SEGMENTS
+			NOINIT CODE
 
 2. _STLP_STATIC_CONST_INIT_BUG
-    Borland generally has problems with static const. For example,
-    in _limits.h, a static const declared in the base class won't be
+    Borland generally has problems with static const. For example, in 
+	stlport/stl/_limits.h, a static const declared in the base class won't be
     inherited.  It may be possible to use static const declarations by
     declaring every static const in the base class and in every inherited
-    class, one static const per line, end each line with a semi-colon.
-    Otherwise, define _STLP_STATIC_CONST_INIT_BUG.
+    class, one static const per line, with each line ending with a semi-colon.
+    Otherwise, just define _STLP_STATIC_CONST_INIT_BUG.
 
-3. CBuilderX C++ Class Browser annoyances
-    1. Files without extensions, e.g. <iostream>, <locale>
+3. CBuilderX C++ class browser annoyances
+    Borland's class browser and search utility are unsuitable for *nix based
+	projects. Below are some common problems and workarounds.
+    1. Files without extensions, e.g. <iostream>, <locale>:
       - excluded from searches
       - unpredictable, intermittent syntax highlighting
       - can't designate *. as a recognized file type
@@ -34,7 +45,7 @@ Please see INSTALL.TXT and README.TXT for basic installation info.
           #endif
     5. To avoid class browser warning re duplicate complex class, define
        _STLP_USE_OWN_COMPLEX_CLASS in stl_bc.h and change line 96 of native
-       Borland 'include/math.h' header file from this:
+       CBuilderX 'include/math.h' header file from this:
           #if defined (__cplusplus)
        to this:
           #if defined (__cplusplus) || defined (_STLP_USE_OWN_COMPLEX_CLASS)
