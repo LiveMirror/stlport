@@ -53,18 +53,21 @@ extern "C" {
 #  define WIN32_LEAN_AND_MEAN
 #  include <windows.h>
 
+#  ifndef _STLP_WCE
 #  ifdef __BORLANDC__
-#    if (__BORLANDC__ > 0x530)
+#      define remove conflict1
+#      define rename conflict2
+#      include <cio.h>            // For _get_osfhandle
+#      undef remove
+#      undef rename
 #      include <cfcntl.h>            // For _O_RDONLY, etc
 #    else
-#      include <fcntl.h>            // For _O_RDONLY, etc
-#    endif
-#    include <sys/stat.h>         // For _fstat
-#  elif !defined(_STLP_WCE)
 #    include <io.h>               // For _get_osfhandle
 #    include <fcntl.h>            // For _O_RDONLY, etc
+#    endif
 #    include <sys/stat.h>         // For _fstat
 #  endif
+
 #  define _TEXTBUF_SIZE 0x1000
 #elif defined (_STLP_USE_UNIX_EMULATION_IO)
 #  if defined( __MSL__ )
@@ -310,8 +313,11 @@ extern "C" {
     CRITICAL_SECTION lock;
 #  endif  /* _MT */
   };
+
 #  ifdef __MINGW32__
  __MINGW_IMPORT ioinfo * __pioinfo[];
+#  elif defined (__BORLANDC__)
+  ioinfo * __pioinfo[256];
 #  else
   extern _CRTIMP ioinfo * __pioinfo[];
 #  endif
