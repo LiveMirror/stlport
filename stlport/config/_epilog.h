@@ -1,12 +1,7 @@
 #if defined (_STLP_MSVC) || defined (__ICL) || defined (__BORLANDC__)
 
 # if defined (__BORLANDC__)
-#  if (__BORLANDC__ < 0x530)
-#   pragma pack(pop)
-#   pragma nopackwarning
-#  else
 #  pragma option pop
-#  endif
 #  pragma option -w.ccc	    // -w-8008 Condition is always true OR Condition is always false
 #  pragma option -w.inl     // -w-8027 Functions containing reserved words are not expanded inline
 #  pragma option -w.ngu     // -w-8041 Negating unsigned value

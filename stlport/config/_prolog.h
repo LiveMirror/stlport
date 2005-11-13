@@ -16,11 +16,7 @@
 
 #elif defined (__BORLANDC__)
 #  pragma option -w-pck
-#  if (__BORLANDC__ < 0x530)
-#   pragma pack(push)
-#  else
 #   pragma option push 
-#  endif
 #  pragma option -Vx- -Ve- -a8 -b -pc
 #  pragma option -w-aus     // -w-8004 'identifier' is assigned a value that is never used
 #  pragma option -w-ccc	    // -w-8008 Condition is always true OR Condition is always false

@@ -238,11 +238,6 @@ inline bool _Stl_is_nan_or_inf(double x) { return IsNANorINF(x); }
 inline bool _Stl_is_inf(double x)        { return IsNANorINF(x) && IsINF(x); }
 inline bool _Stl_is_neg_inf(double x)    { return (IsINF(x)) && (x < 0.0); }
 inline bool _Stl_is_neg_nan(double x)    { return IsNegNAN(x); }
-# elif defined (__BORLANDC__) && ( __BORLANDC__ < 0x540 )
-inline bool _Stl_is_nan_or_inf(double x) {  return !_finite(x); }
-inline bool _Stl_is_inf(double x)        {  return _Stl_is_nan_or_inf(x) && ! _isnan(x);}
-inline bool _Stl_is_neg_inf(double x)    {  return _Stl_is_inf(x) && x < 0 ; }
-inline bool _Stl_is_neg_nan(double x)    { return _isnan(x) && x < 0 ; } 
 # elif defined (_MSC_VER) || defined (__MINGW32__) || defined (__BORLANDC__)
 inline bool _Stl_is_nan_or_inf(double x) { return !_finite(x); }
 inline bool _Stl_is_inf(double x)        { 
