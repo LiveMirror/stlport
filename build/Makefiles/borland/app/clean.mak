@@ -64,3 +64,5 @@ distclean:      clobber
 	@echo distclean done.
 
 
+.precious: clobber
+.precious: distclean

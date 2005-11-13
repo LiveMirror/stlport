@@ -16,7 +16,7 @@ EXE = exe
 ARCH     = lib
 AR       = tlib
 AR_INS_R = 
-AR_EXTR  = /C /E /P128
+AR_EXTR  = /C /E /P128 /0
 AR_OUT   = 
 
 # install utility:

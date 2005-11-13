@@ -1,3 +1,5 @@
+//esanfo - not essential to STLport; ok to remove from distribution
+
 #include <windows.h>
 #include <stdio.h>
 

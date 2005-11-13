@@ -85,3 +85,6 @@ distclean:      clobber
 	@echo SETUP_MSG = This file is required for setup. > ..\Makefiles\$(USE_MAKE)\sysid.inc
 	
 	@echo distclean done.
+
+.precious: clobber
+.precious: distclean
