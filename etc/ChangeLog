@@ -1,3 +1,17 @@
+2005-11-17  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_messages_facets.h, src/messages.cpp: Move message facet
+	constructor private to guaranty that it is only called from the _Locale_impl
+	class for classic locale facets creation. Change constructor implementation
+	as now passed _Message instance is dynamically instanciated so needs to be
+	destroy on facet destruction; moreover the facet is also dynamically allocated
+	and has to be destroyed when reference counter reach 0.
+
+	* src/locale_impl.cpp: Removed call to now useless free_classic_locale function.
+	Change make_classic_locale implementation, now classic locale facets are
+	allocated on the heap and have to be destroyed like any ordinary facets
+	when reference counter reach 0.
+
 2005-11-15  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_tree.h: check iterator returned from lower_bound
