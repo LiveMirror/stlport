@@ -1,3 +1,8 @@
+2005-11-19  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* stlport/stdlib.h: replace C++ comments by C, to satisfy -ansi
+	option of compiler.
+
 2005-11-18  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/nmake/lib/rules-install-so.mak, 
