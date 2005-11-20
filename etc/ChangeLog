@@ -1,3 +1,16 @@
+2005-11-20  Gail Baker  <baker88@users.sourceforge.net>
+
+	* build/Makefiles/gmake/CC.mak: Updated compiler option
+	to compile larger inline functions inline.
+
+	* build/Makefiles/gmake/lib/CC.mak: Changed how the header
+	file linking is done to only do it once instead of with
+	every compile.
+
+	* build/lib/README: include instructions for SunPro compiler.
+ 
+	* build/test/unit/CC.mak: allow the STLP_DEBUG version to compile.
+
 2005-11-19  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stdlib.h: replace C++ comments by C, to satisfy -ansi

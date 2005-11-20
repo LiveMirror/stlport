@@ -631,3 +631,24 @@ Status (release-static):        All pass (322 tests)
 Notes:
 Status (dbg-static):            All pass (322 tests)
 Notes:
+
+=======================================================================
+Operational environment:        Solaris 10, SPARC
+=======================================================================
+
+-----------------------------------------------------------------------
+Compiler:                       Sun Studio 10, SunPro CC 5.7
+-----------------------------------------------------------------------
+Date:                           2005-11-18
+STLP Version:                   current CVS STLPORT_5_0 branch
+Reporter:                       baker88 (Gail Baker)
+Status (release-shared):        Fail 1 of 330 tests
+Notes:                          mvctor_test.cpp(839) : CPPUNIT_ASSERT(MovableStruct::nb_destruct_call == 7);
+Status (dbg-shared):            Fail 1 of 330 tests
+Notes:                          mvctor_test.cpp(839) : CPPUNIT_ASSERT(MovableStruct::nb_destruct_call == 7);
+Status (stldbg-shared):         Runtime failure
+Notes:                          PartitionTest::stblptn1
+                                ../../stlport/stl/debug/_debug.c(518): STL assertion failure : __next && __next->_Owner() == __l
+                                Abort(coredump)
+
+
