@@ -1,3 +1,9 @@
+2005-11-24  Francois Dumont  <dums@stlport...>
+
+	* test/unit/locale_test.cpp: Fix money facet test case taking
+	into account new hypothesis that international currency symbol
+	should always be first in international format.
+
 2005-11-24  Michael Fink  <vividos@users.sourceforge.net>
 
 	* build/Makefiles/nmake/evc4.mak: the target processors MIPSII_FP and
@@ -28,7 +34,7 @@
 	be the first (not depends upon where currency symbol situated in
 	the national format).
 
-	* test/unit/locale_test.cpp: tests for problems this problems.
+	* test/unit/locale_test.cpp: tests for reproducing this problems.
 
 2005-11-20  Gail Baker  <baker88@users.sourceforge.net>
 
