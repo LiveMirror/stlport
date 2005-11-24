@@ -1,3 +1,14 @@
+2005-11-24  Michael Fink  <vividos@users.sourceforge.net>
+
+	* build/Makefiles/nmake/evc4.mak: the target processors MIPSII_FP and
+	MIPSIV_FP can also be used along with MIPSII and MIPSIV.
+
+	* build/Makefiles/nmake/app/evc4.mak: idem.
+
+	* build/Makefiles/nmake/lib/evc4.mak: idem.
+
+	* build/lib/configure.bat: idem
+
 2005-11-21  Francois Dumont  <dums@stlport...>
 
 	* Fix classic locale facet initial reference counter thanks

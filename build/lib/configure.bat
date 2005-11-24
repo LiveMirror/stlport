@@ -281,13 +281,18 @@ REM version gets redefined here
 if "%STLPORT_SELECTED_CONFIG%" == "evc4" echo CEVERSION=400 >> ..\Makefiles\config.mak
 echo TARGET_PROC=mips >> ..\Makefiles\config.mak
 
-if "%TARGETCPU%" == "MIPS16" echo DEFS_COMMON=/DMIPS16 >> ..\Makefiles\config.mak
-if "%TARGETCPU%" == "MIPSII" echo DEFS_COMMON=/DMIPSII >> ..\Makefiles\config.mak
-if "%TARGETCPU%" == "MIPSIV" echo DEFS_COMMON=/DMIPSIV >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPS16"    echo DEFS_COMMON=/DMIPS16 >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSII"    echo DEFS_COMMON=/DMIPSII >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSII_FP" echo DEFS_COMMON=/DMIPSII_FP >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSIV"    echo DEFS_COMMON=/DMIPSIV >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSIV_FP" echo DEFS_COMMON=/DMIPSIV_FP >> ..\Makefiles\config.mak
 
-if "%TARGETCPU%" == "MIPS16" echo MIPS_MACHINE_TYPE=MIPS16 >> ..\Makefiles\config.mak
-if "%TARGETCPU%" == "MIPSII" echo MIPS_MACHINE_TYPE=MIPS >> ..\Makefiles\config.mak
-if "%TARGETCPU%" == "MIPSIV" echo MIPS_MACHINE_TYPE=MIPSFPU >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPS16"    echo TARGET_PROC_SUBTYPE=MIPS16 >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSII"    echo TARGET_PROC_SUBTYPE=MIPSII >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSII_FP" echo TARGET_PROC_SUBTYPE=MIPSII_FP >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSIV"    echo TARGET_PROC_SUBTYPE=MIPSIV >> ..\Makefiles\config.mak
+if "%TARGETCPU%" == "MIPSIV_FP" echo TARGET_PROC_SUBTYPE=MIPSIV_FP >> ..\Makefiles\config.mak
+
 goto pr_end
 
 :pr_sh3
