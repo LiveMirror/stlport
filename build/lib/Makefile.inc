@@ -4,7 +4,7 @@
 LIBNAME = stlport
 MAJOR = 5
 MINOR = 0
-PATCH = 0
+PATCH = 1
 SRC_CPP = ../../src/dll_main.cpp \
           ../../src/fstream.cpp \
           ../../src/strstream.cpp \
