@@ -1,3 +1,7 @@
+2005-12-04  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/gmake/app/gcc.mak: Fix typo in FreeBSD configuration.
+
 2005-12-02  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* repository: bump library version to 5.0.1 in branch STLPORT_5_0
