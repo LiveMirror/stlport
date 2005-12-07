@@ -1,6 +1,4 @@
-# Time-stamp: <05/09/20 00:38:58 ptr>
-# $Id$
-
+# Time-stamp: <05/12/08 00:12:03 ptr>
 
 #INCLUDES = -I$(SRCROOT)/include
 INCLUDES :=
@@ -37,6 +35,12 @@ endif
 DEFS ?=
 OPT ?=
 
+ifdef WITHOUT_STLPORT
+INCLUDES =
+else
+INCLUDES = -I${STLPORT_INCLUDE_DIR}
+endif
+
 OUTPUT_OPTION = -o $@
 LINK_OUTPUT_OPTION = ${OUTPUT_OPTION}
 CPPFLAGS = $(DEFS) $(INCLUDES)
@@ -46,7 +50,7 @@ release-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUI
 dbg-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUILD=d -DBUILD_INFOS="-g" --output-format coff
 stldbg-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUILD=stld -DBUILD_INFOS="-g -D_STLP_DEBUG" --output-format coff
 RC_OUTPUT_OPTION = -o $@
-CXXFLAGS = -Wall -Wsign-promo -fexceptions -fident 
+CXXFLAGS = -Wall -Wsign-promo -fexceptions -fident
 ifeq ($(OSREALNAME), mingw)
 CCFLAGS += -mthreads
 CFLAGS += -mthreads
@@ -65,7 +69,7 @@ release-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUI
 dbg-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUILD=d -DBUILD_INFOS="-g" --output-format coff
 stldbg-shared : RCFLAGS = --include-dir=${STLPORT_INCLUDE_DIR} -DCOMP=gcc -DBUILD=stld -DBUILD_INFOS="-g -D_STLP_DEBUG" --output-format coff
 RC_OUTPUT_OPTION = -o $@
-CXXFLAGS = -Wall -Wsign-promo -fexceptions -fident 
+CXXFLAGS = -Wall -Wsign-promo -fexceptions -fident
 CCFLAGS += -mthreads
 CFLAGS += -mthreads
 CXXFLAGS += -mthreads
