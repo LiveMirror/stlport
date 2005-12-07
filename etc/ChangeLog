@@ -1,3 +1,30 @@
+2005-12-08  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/Makefiles/gmake/gcc.mak: check configuration macro
+	WITHOUT_STLPORT [useful for tests]; force usage of stlport
+	headers first otherwise.
+
+	* build/Makefiles/gmake/targetdirs.mak: fix catalogs creation
+	procedure [loop through catalogs required]; comment problematic
+	code when we have no good tools.
+
+	* build/Makefiles/gmake/lib/gcc.mak: fix typo [FreeBSD]; fix
+	set of libraries when link for FreeBSD; fix typo in macro name
+	[FreeBSD again].
+
+	* build/Makefiles/gmake/app/gcc.mak: fix set of libraries when
+	link for FreeBSD; insert stlport lib in STDLIB set [when STLPORT
+	in force], to avoid set one in application's makefile.
+
+	* build/test/unit/gcc.mak: explicit refrence to libstlport in
+	this makefile not required more [see message above].
+
+	* build/Makefiles/gmake/lib/gcc.mak: remove names inherited from
+	Complement project.
+
+	* Build: building library and unit tests with cross [gcc 3.4.5]
+	on Linux for FreeBSD 5.3.
+	
 2005-12-04  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/gmake/app/gcc.mak: Fix typo in FreeBSD configuration.
