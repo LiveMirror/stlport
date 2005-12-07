@@ -1,4 +1,4 @@
-# -*- Makefile -*- Time-stamp: <05/12/08 01:09:05 ptr>
+# -*- Makefile -*- Time-stamp: <05/12/08 01:48:58 ptr>
 
 ifndef NOT_USE_NOSTDLIB
 
@@ -86,7 +86,7 @@ STDLIBS = ${STLPORT_LIB} -lgcc -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),freebsd)
 # FreeBSD < 5.3 should use -lc_r, while FreeBSD >= 5.3 use -lpthread
-PTHR := $(shell if [ ${OSREL_MAJOR} -gt 5 ] ; then echo "pthread" ; else if [ ${OSREL_MAJOR} -lt 5 ] ; then echo "c_r" ; else if [ ${OSREL_MINOR} -lt 3 ] ; then echo "-lc_r" ; else echo "pthread"; fi ; fi ; fi)
+PTHR := $(shell if [ ${OSREL_MAJOR} -gt 5 ] ; then echo "pthread" ; else if [ ${OSREL_MAJOR} -lt 5 ] ; then echo "c_r" ; else if [ ${OSREL_MINOR} -lt 3 ] ; then echo "c_r" ; else echo "pthread"; fi ; fi ; fi)
 START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
 END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
 STDLIBS = ${STLPORT_LIB} -lgcc -l${PTHR} -lc -lm
