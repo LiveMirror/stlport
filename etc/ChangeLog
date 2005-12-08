@@ -1,5 +1,15 @@
 2005-12-08  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
+	* stlport/ctype.h: forward-declaration for _exception struct
+	for WinCE/eVC3; prevents warning message
+	../include/stdlib.h(817) : warning C4115:
+	'_exception' : named type definition in parentheses
+	[Michael Fink's suggestion]
+
+	* stlport/float.h, stlport/limits.h, stlport/setjmp.h: idem.
+
+	* stlport/stdarg.h, stlport/string.h: idem.
+
 	* build/Makefiles/gmake/gcc.mak: check configuration macro
 	WITHOUT_STLPORT [useful for tests]; force usage of stlport
 	headers first otherwise.

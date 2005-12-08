@@ -29,6 +29,9 @@
 #  if defined (__BORLANDC__)
 #    include _STLP_NATIVE_CPP_C_HEADER(_str.h)
 #  else
+#    if defined(_STLP_WCE_EVC3)
+struct _exception;
+#    endif
 #    include _STLP_NATIVE_C_HEADER(string.h)
 #  endif
 
@@ -45,9 +48,3 @@
 #    endif
 #  endif
 #endif /* RC_INVOKED */
-
-/* Local Variables:
- * mode:C++
- * End:
- */
-

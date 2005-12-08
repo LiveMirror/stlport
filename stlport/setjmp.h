@@ -20,6 +20,10 @@
 #  define _STLP_DONT_POP_HEADER_ID
 #endif
 
+#if defined(_STLP_WCE_EVC3)
+struct _exception;
+#endif
+
 #if !defined (setjmp)
 #  define _STLP_NATIVE_SETJMP_H_INCLUDED
 #  include _STLP_NATIVE_C_HEADER(setjmp.h)
@@ -39,9 +43,3 @@
 #    undef  _STLP_DONT_POP_HEADER_ID
 #  endif
 #endif
-
-/*
-  Local Variables:
-  mode:C++
-  End:
-*/
