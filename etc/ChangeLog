@@ -1,3 +1,11 @@
+2005-12-09  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/lib/Makefile.inc: add cxa.c into compilation; this
+	is useful for FreeBSD 4.11 C++ ABI workaround.
+
+	* src/cxa.c: use _cxa_atexit and related functions on
+	FreeBSD 4.11 [workaround for missed C++ ABI functions].
+
 2005-12-08  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/ctype.h: forward-declaration for _exception struct
