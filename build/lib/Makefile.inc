@@ -35,6 +35,7 @@ SRC_CPP = ../../src/dll_main.cpp \
           ../../src/complex_io_w.cpp \
           ../../src/string_w.cpp
 
-SRC_C = ../../src/c_locale.c
+SRC_C = ../../src/c_locale.c \
+        ../../src/cxa.c
 
 SRC_RC = ../../src/stlport.rc
