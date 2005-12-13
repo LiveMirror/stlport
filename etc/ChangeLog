@@ -1,3 +1,8 @@
+2005-12-13  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/Makefiles/gmake/targetdirs.mak: built-in
+	test in /bin/sh on Solaris has no -e.
+
 2005-12-09  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* build/lib/Makefile.inc: add cxa.c into compilation; this

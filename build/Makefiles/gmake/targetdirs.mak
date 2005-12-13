@@ -1,4 +1,4 @@
-# Time-stamp: <05/12/07 23:45:33 ptr>
+# Time-stamp: <05/12/13 23:12:03 ptr>
 
 ifdef TARGET_OS
 TARGET_NAME := ${TARGET_OS}-
@@ -53,10 +53,10 @@ INSTALL_DIRS := $(sort $(INSTALL_LIB_DIRS) $(INSTALL_BIN_DIRS))
 
 PHONY += $(OUTPUT_DIRS) $(INSTALL_DIRS)
 
-#ifneq (${OSNAME},windows)
+ifneq (${OSNAME},windows)
 $(OUTPUT_DIRS):
 	@for d in $@ ; do \
-	  if [ -e $$d -a -f $$d ] ; then \
+	  if ${EXT_TEST} -e $$d -a -f $$d ; then \
 	    echo "ERROR: Regular file $$d present, directory instead expected" ; \
 	    exit 1; \
 	  elif [ ! -d $$d ] ; then \
@@ -66,20 +66,17 @@ $(OUTPUT_DIRS):
 
 $(INSTALL_DIRS):
 	@for d in $@ ; do \
-	  if [ -e $$d -a -f $$d ] ; then \
+	  if ${EXT_TEST} -e $$d -a -f $$d ; then \
 	    echo "ERROR: Regular file $$d present, directory instead expected" ; \
 	    exit 1; \
 	  elif [ ! -d $$d ] ; then \
 	    mkdir -p $$d ; \
 	  fi ; \
 	done
-#else
+else
+$(OUTPUT_DIRS):
+	@if not exist $@ mkdir $(subst /,\,$@)
 
-# Seems, this wrong (loop through catalogs list required):
-
-#$(OUTPUT_DIRS):
-#	@if not exist $@ mkdir $(subst /,\,$@)
-#
-#$(INSTALL_DIRS):
-#	@if not exist $@ mkdir $(subst /,\,$@)
-#endif
+$(INSTALL_DIRS):
+	@if not exist $@ mkdir $(subst /,\,$@)
+endif
