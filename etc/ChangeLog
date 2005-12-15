@@ -23,6 +23,10 @@
 	* Build: lib, all unit tests builded fine and passed [334 tests]
 	on Solaris 9 [SPARC] with gcc 3.3.2.
 
+	* Repository: remove obsolete files that has relation
+	to unsupported [and no chances to be supported] platforms in
+	STLPORT_5_0 (STLport 5.0.x) branch.
+
 2005-12-13  Francois Dumont  <dums@stlport...>
 
 	* src/cxa.c: Add include of stlport_prefix.h first, this file
