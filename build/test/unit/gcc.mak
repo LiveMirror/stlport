@@ -8,7 +8,6 @@ STLPORT_DIR := ../../..
 include Makefile.inc
 include ${SRCROOT}/Makefiles/top.mak
 
-INCLUDES += -I${STLPORT_INCLUDE_DIR}
 DEFS += -D_STLP_NO_CUSTOM_IO
 
 dbg-shared:	DEFS += -D_STLP_DEBUG_UNINITIALIZED 
@@ -50,11 +49,6 @@ ifeq ($(OSNAME), linux)
 release-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
 dbg-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
 stldbg-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
-endif
-ifeq ($(OSNAME),darwin)
-release-shared:	LDFLAGS += -Wl,-L${STLPORT_LIB_DIR}
-dbg-shared:	LDFLAGS += -Wl,-L${STLPORT_LIB_DIR}
-stldbg-shared:	LDFLAGS += -Wl,-L${STLPORT_LIB_DIR}
 endif
 endif
 
