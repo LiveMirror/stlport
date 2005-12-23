@@ -152,6 +152,7 @@
 /* Mac OS X is a little different with namespaces and cannot instantiate
  * static data members in template classes */
 #if defined (__APPLE__)
+#  define _STLP_NO_VENDOR_MATH_F
 #  if ((__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ < 3)))
 /* Mac OS X is missing a required typedef and standard macro */
 typedef unsigned int wint_t;
@@ -374,10 +375,10 @@ __GIVE_UP_WITH_STL(GCC_272);
 #if (__GNUC__ >= 3)
 
 #  if !defined (_STLP_NATIVE_INCLUDE_PATH)
-#    if ( (__GNUC__ == 3 ) && ((__GNUC_MINOR__ == 0) || ((__GNUC_MINOR__ < 3) && __APPLE__)))
+#    if ( (__GNUC__ == 3 ) && ((__GNUC_MINOR__ == 0) || ((__GNUC_MINOR__ < 3) && defined(__APPLE_CC__))))
 #      define _STLP_NATIVE_INCLUDE_PATH ../g++-v3
 #    else
-#      if ( ((__GNUC__ == 4 ) || (__GNUC_MINOR__ >= 3)) && __APPLE__)
+#      if ( ((__GNUC__ == 4 ) || (__GNUC_MINOR__ >= 3)) && defined(__APPLE_CC__))
 #        define _STLP_NATIVE_INCLUDE_PATH ../c++
 /*
 * Before version 3.4.0 the 0 patch level was not part of the include path:
