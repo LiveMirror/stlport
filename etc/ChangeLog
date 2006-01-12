@@ -1,3 +1,11 @@
+2006-01-12  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* stlport/stl/_rope.h, stlport/stl/_rope.c: pass CharConsumer
+	via reference, to take into account CharConsumer modifications.
+	This has relation to find(char) in rope. Thanks Cristian Vlasceanu.
+
+	* test/unit/rope_test.cpp: test for fixed bug above.
+
 2005-12-26  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* Repository: STLport 5.0.1, tag STLPORT_5_0_1
