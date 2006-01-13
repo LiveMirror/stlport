@@ -228,10 +228,12 @@ public:                         // Size, capacity, etc.
 
 public:                         // Element access.
 
-  const_reference operator[](size_type __n) const {
-    _STLP_VERBOSE_ASSERT(__n < this->size(), _StlMsg_OUT_OF_BOUNDS)
-    return *(begin() + __n); 
+  const_reference operator[](size_type __n) const
+  {
+    _STLP_VERBOSE_ASSERT(__n <= this->size(), _StlMsg_OUT_OF_BOUNDS);
+    return __n == this->size() ? __STATIC_CAST(const _CharT&,_STLP_DEFAULT_CONSTRUCTED(_CharT)) : *(begin() + __n);
   }
+
   reference operator[](size_type __n) {
     _STLP_VERBOSE_ASSERT(__n < this->size(), _StlMsg_OUT_OF_BOUNDS)
     return *(begin() + __n); 

@@ -1,3 +1,11 @@
+2006-01-13  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* stlport/stl/_string.h, stlport/stl/debug/_string.h:
+	const operator [n] should return CharT() in case of
+	n == size(), ISO/IEC 14882:2003(E), 21.3.4; thanks Russ Miller.
+
+	* test/unit/string_test.cpp: test for fixed bug above.
+
 2006-01-12  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_rope.h, stlport/stl/_rope.c: pass CharConsumer
