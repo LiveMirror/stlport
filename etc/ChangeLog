@@ -1,3 +1,15 @@
+2006-01-17  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* src/c_locale_glibc/c_locale_glibc2.c: really implemented
+	getting default locale categories from environment; replace
+	a few strcpy by strncpy to protect from possible buffer overflow
+	attack.
+	
+	* Repository: bump library version to 5.0.2 in branch STLPORT_5_0
+
+	* stlport/new.h, stlport/typeinfo: few workarounds for ICC 9
+	[suggested by Lim Hwan Cheol].
+
 2006-01-13  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_string.h, stlport/stl/debug/_string.h:
