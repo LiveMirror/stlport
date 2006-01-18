@@ -1,3 +1,11 @@
+2006-01-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/Makefiles/gmake/app/gcc.mak,
+	build/Makefiles/gmake/lib/gcc.mak: detect whether gcc
+	was builded with --disable-shared and use correct libgcc.
+
+	* build/lib/configure: add --use-static-gcc option
+
 2006-01-17  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* src/c_locale_glibc/c_locale_glibc2.c: really implemented

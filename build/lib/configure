@@ -38,6 +38,9 @@ Available options:
                         the cygwin tools but without dependency on the cygwin1.dll
   --with-extra-cxxflags=<options>
                         pass extra options to C++ compiler
+  --use-static-gcc      use static gcc libs instead of shared libgcc_s (useful for gcc compiler,
+                        that was builded with --enable-shared [default]; if compiler was builded
+                        with --disable-shared, static libraries will be used in any case)
   --clean               remove custom settings (file ${configmak})
                         and use default values
 
@@ -92,6 +95,9 @@ do
       write_option -D_STLP_NO_CYGWIN DEFS
       echo "--no-cygwin: Don't forget to uncomment _STLP_NO_CYGWIN macro"
       echo "in stlport/stl/_site_config.h to use such a configuration."
+      ;;
+    --use-static-gcc)
+      write_option "$option" USE_STATIC_LIBGCC
       ;;
   esac
 done
