@@ -1,3 +1,13 @@
+2006-01-24  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* test/unit/bind_test.cpp: add test for member function
+	binding that show workaround for const function call.
+
+	* build/lib/configure: add --with-boost option from STLport 5.1
+
+	* src/cxa.c: __cxa_finalize and __cxa_atexit present in libc
+	in FreeBSD 5.3, but again absent in 6.0
+
 2006-01-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* build/Makefiles/gmake/app/gcc.mak,
