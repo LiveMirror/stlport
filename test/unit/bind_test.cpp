@@ -16,6 +16,7 @@ class BindTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(bind1st1);
   CPPUNIT_TEST(bind2nd1);
   CPPUNIT_TEST(bind2nd2);
+  CPPUNIT_TEST(bind_memfn);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -23,6 +24,7 @@ protected:
   void bind2nd1();
   void bind2nd2();
   void bind2nd3();
+  void bind_memfn();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(BindTest);
@@ -81,4 +83,30 @@ void BindTest::bind2nd3()
   CPPUNIT_ASSERT(array[1]==2);
   CPPUNIT_ASSERT(array[2]==4);
 #endif
+}
+
+class A
+{
+  public:
+    A() :
+        m_n( 0 )
+      {	}
+
+    void f( int n ) const
+      { m_n = n; }
+
+    int v() const
+      { return m_n; }
+
+  private:
+    mutable int m_n;
+};
+
+void BindTest::bind_memfn()
+{
+  A array[3];
+
+  for_each( array, array + 3, bind2nd( mem_fun_ref(&A::f), 12 ) );
+
+  CPPUNIT_CHECK( array[0].v() == 12 );
 }
