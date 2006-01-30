@@ -21,7 +21,7 @@ has failed under Windows using MSVC because of a wrong include schema.
 
  impact:
 
-	It hasn't been quantify and highly depends on the way you use
+	It hasn't been quantified and highly depends on the way you use
 it. If you have specialised the boost::type_traits struct for all the
 types you are using to instanciate the STL containers it might be a 
 very important feature. Otherwise you will have to count on the boost
@@ -53,7 +53,7 @@ compilers.
  impact:
 
 	Most of the time people are using this feature to avoid 
-distribution of the STLport dll. So they link their numerous dll 
+distribution of the STLport dll. So they link their numerous dlls 
 with the static version of the STLport library but keep the dynamic
 native runtime. Such a configuration might be dangerous. For instance
 if you have always the same dll allocating memory and an other one 

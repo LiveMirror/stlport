@@ -1,3 +1,8 @@
+2006-01-30  Francois Dumont  <dums@stlport...>
+
+	* Patch from Ulrich Eckhardt for EVC4 ICE + some documentation
+	updates and fixes.
+
 2006-01-24  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* test/unit/bind_test.cpp: add test for member function
