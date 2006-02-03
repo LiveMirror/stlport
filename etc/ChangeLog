@@ -1,3 +1,9 @@
+2006-02-02  Francois Dumont  <dums@stlport...>
+
+	* stlport/config/_stl_evc.h, stl/_config.h: Patch from Ulrich
+	Eckhardt to signal endianess detection problem and set EVC
+	endianess for MIPS SDK.
+
 2006-01-30  Francois Dumont  <dums@stlport...>
 
 	* Patch from Ulrich Eckhardt for EVC4 ICE + some documentation

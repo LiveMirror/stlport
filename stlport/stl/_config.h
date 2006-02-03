@@ -176,7 +176,7 @@
 #      define _STLP_LITTLE_ENDIAN 1
 #    endif
 #  else
-#    define _STLP_UNKNOWN_ENDIAN 1
+#    error "can't determine endianess"
 #  endif
 #endif /* _STLP_BIG_ENDIAN */
 
