@@ -21,11 +21,13 @@ class FloatIOTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST_SUITE(FloatIOTest);
   CPPUNIT_TEST(float_output_test);
   CPPUNIT_TEST(float_input_test);
+  CPPUNIT_TEST(fix_float_long);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void float_output_test();
   void float_input_test();
+  void fix_float_long();
 
   static bool check_float (float val, float ref) {
     float epsilon = numeric_limits<float>::epsilon();
@@ -47,10 +49,10 @@ void FloatIOTest::float_output_test()
 {
   ostringstream ostr;
   string output;
-  
+
   ostr.precision(6);
   float test_val = (float)1.23457e+17;
-  
+
   ostr << test_val;
   CPPUNIT_ASSERT(ostr.good());
   output = reset_stream(ostr);
@@ -76,7 +78,7 @@ void FloatIOTest::float_output_test()
   CPPUNIT_ASSERT(output.size() == 120);
   CPPUNIT_ASSERT(output.substr(0, 6) == "+12345");
   CPPUNIT_ASSERT(output.substr(19) == ".0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" );
-  
+
   ostr << noshowpos << scientific;
   CPPUNIT_ASSERT(ostr.good());
 
@@ -85,17 +87,17 @@ void FloatIOTest::float_output_test()
   CPPUNIT_ASSERT(ostr.good());
   output = reset_stream(ostr);
   CPPUNIT_ASSERT(output == "1.23456784e-01");
-  
+
   ostr << setw(30) << fixed << setfill('0') << test_val;
   CPPUNIT_ASSERT(ostr.good());
   output = reset_stream(ostr);
   CPPUNIT_ASSERT(output == "000000000000000000000.12345678");
-  
+
   ostr << setw(30) << showpos << test_val;
   CPPUNIT_ASSERT(ostr.good());
   output = reset_stream(ostr);
   CPPUNIT_ASSERT(output == "0000000000000000000+0.12345678");
-  
+
   ostr << setw(30) << left << test_val;
   CPPUNIT_ASSERT(ostr.good());
   output = reset_stream(ostr);
@@ -110,7 +112,7 @@ void FloatIOTest::float_output_test()
 void FloatIOTest::float_input_test()
 {
   float in_val;
-  
+
   istringstream istr;
 
   istr.str("1.2345");
@@ -173,6 +175,40 @@ void FloatIOTest::float_input_test()
     str.clear();
   }
 }
+
+void FloatIOTest::fix_float_long()
+{
+  ostringstream str;
+
+  str.setf(ios::fixed, ios::floatfield);
+  str << 1.0e+5;
+  // cerr << str.str() << endl;
+  CPPUNIT_CHECK( str.str() == "100000.000000" );
+
+  reset_stream(str);
+  str.precision(0);
+  str << 1.0e+5;
+  CPPUNIT_CHECK( str.str() == "100000" );
+
+  reset_stream(str);
+  str.precision(4);
+  str << 1.0e+5;
+  CPPUNIT_CHECK( str.str() == "100000.0000" );
+
+  reset_stream(str);
+  str.precision(0);
+  // str << 1.0e+83;
+  // CPPUNIT_CHECK( str.str() == "100000000000000000000000000000000000000000000000000000000000000000000000000000000000" );
+  reset_stream(str);
+  str.precision(0);
+  // str << 1.0e+22; // 1.0e+23 critical for fcvt_r on Linux
+  // CPPUNIT_CHECK( str.str() == "10000000000000000000000" );
+
+  // cerr.setf(ios::fixed, ios::floatfield);
+  // cerr << DBL_MAX << endl;
+  // cerr << 1.0e+37 << endl;
+}
+
 
 /*
 int main (int argc, char *argv[]) {
