@@ -91,6 +91,11 @@ CCFLAGS = -pthreads $(OPT)
 CFLAGS = -pthreads $(OPT)
 # CXXFLAGS = -pthreads -nostdinc++ -fexceptions -fident $(OPT)
 CXXFLAGS = -pthreads  -fexceptions -fident $(OPT)
+# This is here due to bug in GNU make 3.79.1 from Solaris build:
+stldbg-static:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
+stldbg-shared:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
+stldbg-static-dep:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
+stldbg-shared-dep:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
 endif
 
 ifeq ($(OSNAME),linux)
