@@ -51,6 +51,7 @@ class StringTest : public CPPUNIT_NS::TestCase
 #if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
   CPPUNIT_TEST(io);
 #endif
+  CPPUNIT_TEST(capacity);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -73,6 +74,7 @@ protected:
 #if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
   void io();
 #endif
+  void capacity();
 
   static string func(const string& par) {
     string tmp( par );
@@ -777,3 +779,25 @@ void StringTest::io()
   }
 }
 #endif
+
+void StringTest::capacity()
+{
+  string s;
+
+  CPPUNIT_CHECK( s.capacity() >= 0 );
+  CPPUNIT_CHECK( s.capacity() < s.max_size() );
+  CPPUNIT_CHECK( s.capacity() >= s.size() );
+#ifdef _STLP_USE_SHORT_STRING_OPTIM
+
+# ifndef _STLP_SHORT_STRING_SZ
+#   define _STLP_SHORT_STRING_SZ 16 // see stlport/stl/_string_base.h
+# endif
+
+  for ( int i = 0; i < _STLP_SHORT_STRING_SZ + 2; ++i ) {
+    s += ' ';
+    CPPUNIT_CHECK( s.capacity() >= 0 );
+    CPPUNIT_CHECK( s.capacity() < s.max_size() );
+    CPPUNIT_CHECK( s.capacity() >= s.size() );
+  }
+#endif
+}
