@@ -92,10 +92,12 @@ static pthread_mutex_t lock =
     NULL, { NULL }, /* MUTEX_FLAGS_PRIVATE */ 0x1, 0, 0, 0, {NULL, NULL},
     { 0, 0, 0, 0 } };
 #endif
+#if 0
 #ifdef __sun
 static pthread_mutex_t lock =
   {{0, 0, 0, PTHREAD_MUTEX_RECURSIVE, _MUTEX_MAGIC}, {{{0}}}, 0};
 #endif
+#endif /* 0 */
 
 
 static struct exit_function_list initial;
@@ -106,7 +108,9 @@ struct exit_function *__new_exitfn(void)
   struct exit_function_list *l;
   size_t i = 0;
 
+#ifndef __FreeBSD__
   pthread_mutex_lock( &lock );
+#endif
 
   for (l = __exit_funcs; l != NULL; l = l->next) {
     for (i = 0; i < l->idx; ++i)
@@ -136,7 +140,9 @@ struct exit_function *__new_exitfn(void)
   if ( l != NULL )
     l->fns[i].flavor = ef_us;
 
+#ifndef __FreeBSD__
   pthread_mutex_unlock( &lock );
+#endif
 
   return l == NULL ? NULL : &l->fns[i];
 }
@@ -153,7 +159,10 @@ void __cxa_finalize(void *d)
 {
   struct exit_function_list *funcs;
 
+#ifndef __FreeBSD__
   pthread_mutex_lock( &lock );
+#endif
+
   for (funcs = __exit_funcs; funcs; funcs = funcs->next) {
     struct exit_function *f;
 
@@ -171,7 +180,9 @@ void __cxa_finalize(void *d)
   if (d != NULL)
     UNREGISTER_ATFORK (d);
 #endif
+#ifndef __FreeBSD__
   pthread_mutex_unlock( &lock );
+#endif
 }
 
 /* __asm__ (".symver " "__cxa_finalize" "," "__cxa_finalize" "@@" "STLPORT_5_0_0"); */

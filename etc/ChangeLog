@@ -1,3 +1,14 @@
+2006-03-15  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* src/cxa.c: remove usage of recursive mutex on FreeBSD prior to 5.3,
+	due to problem with recursive mutex static initialization on such
+	[i.e. FreeBSD 4.11 and above] platforms. I hope nobody will try to unload
+	C++ shared objects [aka shared libs] in a few threads at same time---no
+	workaround for FreeBSD 4.11. This problem has no relation
+	to FreeBSD 5.3 and newer.
+
+	* build/lib/Makefile.inc: bump working version to 5.0.3
+
 2006-03-01  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* Repository: STLport 5.0.2, tag STLPORT_5_0_2
