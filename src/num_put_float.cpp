@@ -18,24 +18,25 @@
 
 # include "stlport_prefix.h"
 
-# ifdef __DECCXX
-#define NDIG 400
-# else
-#define NDIG 82
-# endif
+//# ifdef __DECCXX
+//#define NDIG 400
+//# else
+//#define NDIG 82
+//# endif
 
 # ifdef _STLP_NO_LONG_DOUBLE
-#  define MAXECVT 17
-#  define MAXFCVT 18
-typedef double max_double_type;
+//#  define MAXECVT 17
+//#  define MAXFCVT 18
+//typedef double max_double_type;
 # else
-#  define MAXECVT 35
-#  define MAXFCVT 36
-typedef long double max_double_type;
+//#  define MAXECVT 35
+//#  define MAXFCVT 36
+//typedef long double max_double_type;
 # endif
 
-#define MAXFSIG MAXECVT
-#define MAXESIZ 5
+//#define MAXFSIG MAXECVT
+//#define MAXESIZ 5
+
 
 #define todigit(x) ((x)+'0')
 
@@ -200,6 +201,29 @@ _STLP_BEGIN_NAMESPACE
 # define USE_SPRINTF_INSTEAD
 #endif
 
+template <int N>
+struct _Dig
+{
+    enum { dig = _Dig<N/10>::dig + 1 };
+};
+
+template <>
+struct _Dig<0>
+{
+    enum { dig = 0 };
+};
+
+#ifdef _STLP_NO_LONG_DOUBLE
+# define MAXESIZ int(_Dig<DBL_MAX_10_EXP>::dig)
+# define MAXFSIG DBL_DIG
+# define MAXFCVT (DBL_DIG + 1)
+#else
+# define MAXESIZ int(_Dig<LDBL_MAX_10_EXP>::dig)
+# define MAXFSIG LDBL_DIG
+# define MAXFCVT (LDBL_DIG + 1)
+#endif
+
+
 #if defined (_AIX) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 // Some OS'es only provide non-reentrant primitives, so we have to use additional synchronization here
 
@@ -221,6 +245,9 @@ static _STLP_STATIC_MUTEX __put_float_mutex _STLP_MUTEX_INITIALIZER;
   || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 #  if defined (isfinite) 
 inline bool _Stl_is_nan_or_inf(double x) { return !isfinite(x); }
+#   ifndef _STLP_NO_LONG_DOUBLE
+inline bool _Stl_is_nan_or_inf(long double x) { return !isfinite(x); }
+#   endif
 #  else
 inline bool _Stl_is_nan_or_inf(double x) { return !finite(x); }
 #  endif
@@ -228,6 +255,12 @@ inline bool _Stl_is_neg_nan(double x)    { return isnan(x) && ( copysign(1., x) 
 inline bool _Stl_is_inf(double x)        { return isinf(x); }
 // inline bool _Stl_is_neg_inf(double x)    { return isinf(x) < 0; }  
 inline bool _Stl_is_neg_inf(double x)    { return isinf(x) && x < 0; }
+#  ifndef _STLP_NO_LONG_DOUBLE
+inline bool _Stl_is_neg_nan(long double x)    { return isnan(x) && ( copysign(1., x) < 0 ); }
+inline bool _Stl_is_inf(long double x)        { return isinf(x); }
+// inline bool _Stl_is_neg_inf(long double x)    { return isinf(x) < 0; }
+inline bool _Stl_is_neg_inf(long double x)    { return isinf(x) && x < 0; }
+#  endif
 # elif (defined(__unix) || defined(__unix__)) \
       && !defined(__APPLE__) && !defined(__DJGPP) && !defined(__osf__) \
       && !defined(_CRAY)
@@ -304,14 +337,14 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
 #    endif
 #  elif defined (_STLP_USE_GLIBC)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
-    { return buf + ecvt_r(x, n, pt, sign, buf, NDIG+2); }
+    { return buf + ecvt_r(x, n, pt, sign, buf, DBL_MAX_10_EXP + 6); }
   inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf)
-    { return buf + fcvt_r(x, n, pt, sign, buf, NDIG+2); }
+    { return buf + fcvt_r(x, n, pt, sign, buf, DBL_MAX_10_EXP + 6); }
 #    ifndef _STLP_NO_LONG_DOUBLE
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
-    { return buf + qecvt_r(x, n, pt, sign, buf, NDIG+2); }
+    { return buf + qecvt_r(x, n, pt, sign, buf, LDBL_MAX_10_EXP + 6); }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
-    { return buf + qfcvt_r(x, n, pt, sign, buf, NDIG+2); }
+    { return buf + qfcvt_r(x, n, pt, sign, buf, LDBL_MAX_10_EXP + 6); }
 #    endif
 #  elif defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
   inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
@@ -343,9 +376,9 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
 #    ifndef _STLP_NO_LONG_DOUBLE
 // fbp : no "long double" conversions !
   inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
-    { return (ecvt_r((double)x, n, pt, sign, buf, NDIG)==0 ? buf : 0) ; }
+    { return (ecvt_r((double)x, n, pt, sign, buf, LDBL_MAX_10_EXP + 6)==0 ? buf : 0) ; }
   inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
-    { return (fcvt_r((double)x, n, pt, sign, buf, NDIG)==0 ? buf : 0); }
+    { return (fcvt_r((double)x, n, pt, sign, buf, LDBL_MAX_10_EXP + 6)==0 ? buf : 0); }
 #    endif
 #  elif defined (__hpux)
    inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf)
@@ -356,9 +389,9 @@ inline bool _Stl_is_neg_nan(double x)    { return false; }
 
 #      if defined( _REENTRANT ) && (defined(_PTHREADS_DRAFT4) || defined(PTHREAD_THREADS_MAX))
    inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
-     { return (_ldecvt_r(*(long_double*)&x, n, pt, sign, buf, NDIG+2)==0 ? buf : 0); }
+     { return (_ldecvt_r(*(long_double*)&x, n, pt, sign, buf, LDBL_MAX_10_EXP + 6)==0 ? buf : 0); }
    inline char* _Stl_qfcvtR(long double x, int n, int* pt, int* sign, char* buf)
-     { return (_ldfcvt_r(*(long_double*)&x, n, pt, sign, buf, NDIG+2)==0 ? buf : 0); }
+     { return (_ldfcvt_r(*(long_double*)&x, n, pt, sign, buf, LDBL_MAX_10_EXP + 6)==0 ? buf : 0); }
 #      else
    inline char* _Stl_qecvtR(long double x, int n, int* pt, int* sign, char* buf)
      { return _ldecvt(*(long_double*)&x, n, pt, sign); }
@@ -501,7 +534,11 @@ static size_t __format_float_fixed( __iostring &buf, const char *bp,
     buf += '+';
 
   int k       = 0;
-  int maxfsig = islong ? 2*MAXFSIG : MAXFSIG;
+# ifndef _STLP_NO_LONG_DOUBLE
+  const int maxfsig = islong ? int(numeric_limits<long double>::digits10) : int(numeric_limits<double>::digits10);
+# else
+  const int maxfsig = int(numeric_limits<double>::digits10);
+# endif
 
   int nnn = decpt;
   do {
@@ -516,21 +553,22 @@ static size_t __format_float_fixed( __iostring &buf, const char *bp,
   }
 
   // digits after decimal point if any
-  nnn = (min) (precision, MAXFCVT);
+  nnn = (min) (precision, maxfsig + 1);
 
   while ( --nnn >= 0 ) {
     buf += (++decpt <= 0 || *bp == 0 || k >= maxfsig) ? '0' : (++k, *bp++);
   }
 
   // trailing zeros if needed
-  if ( precision > MAXFCVT ) {
-    buf.append( precision - MAXFCVT, '0' );
+  if ( precision > (maxfsig + 1) ) {
+    buf.append( precision - (maxfsig + 1), '0' );
   }
 
   return __group_pos;
 }
 
-static void __format_nan_or_inf(__iostring& buf, double x, ios_base::fmtflags flags)
+template <class max_double_type>
+static void __format_nan_or_inf(__iostring& buf, max_double_type x, ios_base::fmtflags flags)
 {
   static const char* inf[2] = { "inf", "Inf" };
   static const char* nan[2] = { "nan", "NaN" };
@@ -559,8 +597,8 @@ static inline size_t __format_float( __iostring &buf, const char * bp,
 {
   size_t __group_pos = 0;
   // Output of infinities and NANs does not depend on the format flags
-  if (_Stl_is_nan_or_inf((double)x)) {       // Infinity or NaN
-    __format_nan_or_inf(buf, (double)x, flags);
+  if (_Stl_is_nan_or_inf(x)) {       // Infinity or NaN
+    __format_nan_or_inf(buf, x, flags);
   } else {                        // representable number
     switch (flags & ios_base::floatfield) {
       case ios_base::scientific:
@@ -661,15 +699,14 @@ static int fill_fmtbuf(char* fmtbuf, ios_base::fmtflags flags, char long_modifie
 size_t  _STLP_CALL
 __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
               double x) {
-#ifdef USE_SPRINTF_INSTEAD
-  /* If we want 'abitrary' precision, we should use 'abitrary' buffer size
-   * below. - ptr
+  /* In theory, if we want 'abitrary' precision, we should use 'abitrary'
+   * buffer size below, but really we limited by exponent part in double.
+   *    - ptr
    */
-  char static_buf[128];
-  // char *static_buf = new char [128+precision];
+#ifdef USE_SPRINTF_INSTEAD
+  char static_buf[DBL_MAX_10_EXP+6]; // 6: -xxx.yyyE-zzz (sign, dot, E, exp sign, \0)
   char fmtbuf[32];
   fill_fmtbuf(fmtbuf, flags, 0);
-  // snprintf(static_buf, 128+precision, fmtbuf, precision, x);
 # ifndef N_PLAT_NLM
   snprintf(ARRAY_AND_SIZE(static_buf), fmtbuf, precision, x);
 # else 
@@ -679,19 +716,19 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
   // delete [] static_buf;
   return find_if(buf.begin(), buf.end(), GroupPos()) - buf.begin();
 #else
-  char cvtbuf[NDIG+2];
-  char * bp;
+  char cvtbuf[DBL_MAX_10_EXP+6]; // 6: -xxx.yyyE-zzz (sign, dot, E, exp sign, \0)
+  char *bp;
   int decpt, sign;
 
   switch (flags & ios_base::floatfield) {
   case ios_base::fixed:
-    bp = _Stl_fcvtR(x, (min) (precision, MAXFCVT), &decpt, &sign, cvtbuf);
+    bp = _Stl_fcvtR(x, (min) (precision, DBL_MAX_10_EXP), &decpt, &sign, cvtbuf);
     break;
   case ios_base::scientific :
-    bp = _Stl_ecvtR(x, (min) (precision + 1, MAXECVT), &decpt, &sign, cvtbuf);
+    bp = _Stl_ecvtR(x, (min) (precision, DBL_MAX_10_EXP), &decpt, &sign, cvtbuf);
     break;
   default :
-    bp = _Stl_ecvtR(x, (min) (precision, MAXECVT), &decpt, &sign, cvtbuf);
+    bp = _Stl_ecvtR(x, (min) (precision, DBL_MAX_10_EXP), &decpt, &sign, cvtbuf);
     break;
   }
   return __format_float(buf, bp, decpt, sign, x, flags, precision, false);
@@ -702,15 +739,14 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
 size_t _STLP_CALL
 __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
               long double x) {
-#  ifdef USE_SPRINTF_INSTEAD
-  /* If we want 'abitrary' precision, we should use 'abitrary' buffer size
-   * below. - ptr
+  /* In theory, if we want 'abitrary' precision, we should use 'abitrary'
+   * buffer size below, but really we limited by exponent part in long double.
+   *    - ptr
    */
-  char static_buf[128];
-  // char *static_buf = new char [128+precision];
+#  ifdef USE_SPRINTF_INSTEAD
+  char static_buf[LDBL_MAX_10_EXP+6]; // 6: -xxx.yyyE-zzz (sign, dot, E, exp sign, \0)
   char fmtbuf[64];
   int i = fill_fmtbuf(fmtbuf, flags, 'L');
-  // snprintf(static_buf, 128+precision, fmtbuf, precision, x);
 #   ifndef N_PLAT_NLM
   snprintf(ARRAY_AND_SIZE(static_buf), fmtbuf, precision, x);    
 #   else
@@ -718,22 +754,21 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
 #   endif
   // we should be able to return buf + sprintf(), but we do not trust'em...
   buf = static_buf;
-  // delete [] static_buf;
   return find_if(buf.begin(), buf.end(), GroupPos()) - buf.begin();
 #  else
-  char cvtbuf[NDIG+2];
+  char cvtbuf[LDBL_MAX_10_EXP+6]; // 6: -xxx.yyyE-zzz (sign, dot, E, exp sign, \0)
   char * bp;
   int decpt, sign;
 
   switch (flags & ios_base::floatfield) {
   case ios_base::fixed:
-    bp = _Stl_qfcvtR(x, (min) (precision, MAXFCVT), &decpt, &sign, cvtbuf);
+    bp = _Stl_qfcvtR(x, (min) (precision, LDBL_MAX_10_EXP), &decpt, &sign, cvtbuf);
     break;
   case ios_base::scientific:
-    bp = _Stl_qecvtR(x, (min) (precision + 1, MAXECVT), &decpt, &sign, cvtbuf);
+    bp = _Stl_qecvtR(x, (min) (precision, LDBL_MAX_10_EXP), &decpt, &sign, cvtbuf);
     break;
   default :
-    bp = _Stl_qecvtR(x, (min) (precision, MAXECVT), &decpt, &sign, cvtbuf);
+    bp = _Stl_qecvtR(x, (min) (precision, LDBL_MAX_10_EXP), &decpt, &sign, cvtbuf);
     break;
   }
   return __format_float(buf, bp, decpt, sign, x, flags, precision, true);
@@ -743,7 +778,7 @@ __write_float(__iostring &buf, ios_base::fmtflags flags, int precision,
 
 void _STLP_CALL __get_floor_digits(__iostring &out, _STLP_LONG_DOUBLE __x) {
 #ifdef USE_SPRINTF_INSTEAD
-  char cvtbuf[128];
+  char cvtbuf[LDBL_MAX_10_EXP+6];
 #  ifndef _STLP_NO_LONG_DOUBLE
 #   ifndef N_PLAT_NLM
   snprintf(ARRAY_AND_SIZE(cvtbuf), "%Lf", __x); // check for 1234.56!
@@ -760,7 +795,7 @@ void _STLP_CALL __get_floor_digits(__iostring &out, _STLP_LONG_DOUBLE __x) {
     out.append( cvtbuf, p );
   }
 #else
-  char cvtbuf[NDIG+2];
+  char cvtbuf[LDBL_MAX_10_EXP+6];
   char * bp;
   int decpt, sign;
 #ifndef _STLP_NO_LONG_DOUBLE
