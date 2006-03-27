@@ -7,7 +7,7 @@
 #endif
 
 #if (defined(__FreeBSD__) && (__FreeBSD_version < 503001)) || defined(__sun)
-/* Note: __cxa_finalize and __cxa_atexit present in libc in FreeBSD 5.3, but again absent in 6.0 */
+/* Note: __cxa_finalize and __cxa_atexit present in libc in FreeBSD 5.3 */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -86,18 +86,17 @@ int __cxa_atexit(void (*func)(void *), void *arg, void *d)
 #ifdef __linux__
 static pthread_mutex_t lock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 #endif
-#ifdef __FreeBSD__
+/* #ifdef __FreeBSD__ */
+#if 0
 static pthread_mutex_t lock =
   { PTHREAD_MUTEX_RECURSIVE /* PTHREAD_MUTEX_DEFAULT */, PTHREAD_PRIO_NONE, {NULL,NULL},
     NULL, { NULL }, /* MUTEX_FLAGS_PRIVATE */ 0x1, 0, 0, 0, {NULL, NULL},
     { 0, 0, 0, 0 } };
 #endif
-#if 0
 #ifdef __sun
 static pthread_mutex_t lock =
   {{0, 0, 0, PTHREAD_MUTEX_RECURSIVE, _MUTEX_MAGIC}, {{{0}}}, 0};
 #endif
-#endif /* 0 */
 
 
 static struct exit_function_list initial;
