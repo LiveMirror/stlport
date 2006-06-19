@@ -1,3 +1,8 @@
+2006-06-19  Francois Dumont  <dums@stlport...>
+
+	* STLport 5.1.0 candidate released. STLPORT_5_1 branch created in
+	CVS. Version tagged STLPORT_5_1_RC1.
+
 2006-06-17  Francois Dumont  <dums@stlport...>
 
 	* test/unit/type_traits_test.cpp, uninitialized_test.cpp: Add
