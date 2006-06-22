@@ -110,56 +110,28 @@ _STLP_INLINE_LOOP _RandomAccessIter __find(_RandomAccessIter __first, _RandomAcc
   _STLP_DIFFERENCE_TYPE(_RandomAccessIter) __trip_count = (__last - __first) >> 2;
 
   for ( ; __trip_count > 0 ; --__trip_count) {
-    if (*__first == __val) {
-      _STLP_VERBOSE_ASSERT((__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-      return __first;
-    }
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+    if (*__first == __val) return __first;
     ++__first;
 
-    if (*__first == __val) {
-      _STLP_VERBOSE_ASSERT((__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-      return __first;
-    }
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+    if (*__first == __val) return __first;
     ++__first;
 
-    if (*__first == __val) {
-      _STLP_VERBOSE_ASSERT((__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-      return __first;
-    }
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+    if (*__first == __val) return __first;
     ++__first;
 
-    if (*__first == __val) {
-      _STLP_VERBOSE_ASSERT((__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-      return __first;
-    }
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+    if (*__first == __val) return __first;
     ++__first;
   }
 
   switch (__last - __first) {
   case 3:
-    if (*__first == __val) {
-      _STLP_VERBOSE_ASSERT((__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-      return __first;
-    }
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+    if (*__first == __val) return __first;
     ++__first;
   case 2:
-    if (*__first == __val) {
-      _STLP_VERBOSE_ASSERT((__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-      return __first;
-    }
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+    if (*__first == __val) return __first;
     ++__first;
   case 1:
-    if (*__first == __val) {
-      _STLP_VERBOSE_ASSERT((__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-      return __first;
-    }
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+    if (*__first == __val) return __first;
     //++__first;
   case 0:
   default:
@@ -218,12 +190,7 @@ template <class _InputIter, class _Tp>
 _STLP_INLINE_LOOP _InputIter __find(_InputIter __first, _InputIter __last,
                                     const _Tp& __val,
                                     const input_iterator_tag &) {
-  while (__first != __last && !(*__first == __val)) {
-    _STLP_VERBOSE_ASSERT(!(__val == *__first), _StlMsg_INVALID_EQUIVALENT_PREDICATE)
-    ++__first;
-  }
-  _STLP_VERBOSE_ASSERT((__first == __last) || (__val == *__first),
-                       _StlMsg_INVALID_EQUIVALENT_PREDICATE)
+  while (__first != __last && !(*__first == __val)) ++__first;
   return __first;
 }
 
