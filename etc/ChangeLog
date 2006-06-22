@@ -1,3 +1,19 @@
+2006-06-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_algobase.c: Removed check of equivalent predicate
+	commutativity in find algorithm. In this case, equivalence relation
+	might have been implemented using a member operator == which is
+	not commutative thanks Grisha Spivak report. Other checks that are
+	using an explicit predicate parameter has been kept even if it forces
+	STLport users to implement commutative functor.
+
+	* test/unit/find_test.cpp: Add test to show above issue.
+
+	* stlport/stl/_hashtable.c: Removed equivalent predicate checks
+	that are useless as in _STLP_DEBUG mode the debug wrapping add this
+	check in the functor used to instanciate the non debug hashtable
+	implementation.
+
 2006-06-19  Francois Dumont  <dums@stlport...>
 
 	* STLport 5.1.0 candidate released. STLPORT_5_1 branch created in
