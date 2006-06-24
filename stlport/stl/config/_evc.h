@@ -34,6 +34,10 @@
 // This is defined for all platforms using Windows CE
 #define _STLP_WCE
 
+/* All Windows CE versions up to at least version 5 are little-endian, even
+ * if the hardware (like e.g. MIPS) can be configured for big-endian, too. */
+#define _STLP_LITTLE_ENDIAN
+
 // Ensure _DEBUG is defined.
 #if defined (DEBUG) && !defined (_DEBUG)
 #  define _DEBUG
@@ -214,11 +218,6 @@
 #      error Unknown SDK.
 #    endif
 #  endif /* !_STLP_NATIVE_INCLUDE_PATH */
-
-
-/* All Windows CE versions up to at least version 5 are little-endian, even
- * if the hardware (like e.g. MIPS) can be configured for big-endian, too. */
-#define _STLP_LITTLE_ENDIAN
 
 /* Workaround when using MFCCE and using <new> together: MFCCE's wcealt.h doesn't
  * check for __PLACEMENT_NEW_INLINE before defining operator new, so when <new>
