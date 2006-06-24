@@ -1,3 +1,13 @@
+2006-06-23  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_pair.h, _bvector.h, config/_evc.h: Patch from
+	Ulrich Eckhardt to extend an evc4 MIPS workaround for eVC8
+	and to generalize little endian configuration.
+
+	* DMC patch from Eric Sanford. Define _STLP_NO_FUNTION_TMPL_PARTIAL_ORDER
+	so that many ignored unit test could be now passed. Also specify
+	Intel 386 instruction set during compilation to limit link errors.
+
 2006-06-22  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_algobase.c: Removed check of equivalent predicate
@@ -22,7 +32,7 @@
 2006-06-17  Francois Dumont  <dums@stlport...>
 
 	* test/unit/type_traits_test.cpp, uninitialized_test.cpp: Add
-	implicit public inheritance relation to avoid an ICL warning.
+	explicit public inheritance relation to avoid an ICL warning.
 
 	* stlport/stl/config/features.h: Add definition of
 	_STLP_DEBUG_LEVEL to _STLP_STLPORT_DBG_LEVEL when _STLP_DEBUG
