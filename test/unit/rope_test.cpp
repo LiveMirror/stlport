@@ -45,8 +45,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(RopeTest);
 //
 void RopeTest::io()
 {
-#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS) && !defined (_STLP_USE_NO_IOSTREAMS) && \
-    !defined (__DMC__)
+#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS) && !defined (_STLP_USE_NO_IOSTREAMS) 
   char const* cstr = "rope test string";
   crope rstr(cstr);
 
@@ -62,8 +61,7 @@ void RopeTest::io()
 
 void RopeTest::find1()
 {
-#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS) && \
-    !defined (__DMC__)
+#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS) 
   crope r("Fuzzy Wuzzy was a bear");
   crope::size_type n = r.find( "hair" );
   CPPUNIT_ASSERT( n == crope::npos );
@@ -76,8 +74,7 @@ void RopeTest::find1()
 
 void RopeTest::find2()
 {
-#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS) && \
-    !defined (__DMC__)
+#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS) 
   crope r("Fuzzy Wuzzy was a bear");
   crope::size_type n = r.find( 'e' );
   CPPUNIT_ASSERT( n == (r.size() - 3) );

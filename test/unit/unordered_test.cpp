@@ -20,16 +20,27 @@ using namespace std;
 class UnorderedTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(UnorderedTest);
-#if !defined (STLPORT) || defined (__DMC__)
+#if !defined (STLPORT) 
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(uset);
   CPPUNIT_TEST(umultiset);
+#if defined (__DMC__)
+  CPPUNIT_IGNORE;
+#endif
   CPPUNIT_TEST(umap);
+  CPPUNIT_STOP_IGNORE;
   CPPUNIT_TEST(umultimap);
+#if defined (__DMC__)
+  CPPUNIT_IGNORE;
+#endif
   CPPUNIT_TEST(user_case);
+  CPPUNIT_STOP_IGNORE;
   CPPUNIT_TEST(hash_policy);
   CPPUNIT_TEST(buckets);
+#if defined (__DMC__)
+  CPPUNIT_IGNORE;
+#endif
   CPPUNIT_TEST(equal_range);
 #if !defined (_STLP_USE_CONTAINERS_EXTENSION)
   CPPUNIT_IGNORE;
@@ -58,7 +69,7 @@ const int NB_ELEMS = 2000;
 //
 void UnorderedTest::uset()
 {
-#if defined (STLPORT) && !defined (__DMC__)
+#if defined (STLPORT)
   typedef unordered_set<int, hash<int>, equal_to<int> > usettype;
   usettype us;
 
@@ -108,7 +119,7 @@ void UnorderedTest::uset()
 
 void UnorderedTest::umultiset()
 {
-#if defined (STLPORT) && !defined (__DMC__)
+#if defined (STLPORT)
   typedef unordered_multiset<int, hash<int>, equal_to<int> > usettype;
   usettype us;
 
@@ -216,7 +227,7 @@ void UnorderedTest::umap()
 
 void UnorderedTest::umultimap()
 {
-#if defined (STLPORT) && !defined (__DMC__)
+#if defined (STLPORT)
   typedef unordered_multimap<int, int, hash<int>, equal_to<int> > umaptype;
   umaptype us;
 
@@ -286,7 +297,7 @@ void UnorderedTest::user_case()
 
 void UnorderedTest::hash_policy()
 {
-#if defined (STLPORT) && !defined (__DMC__)
+#if defined (STLPORT)
   unordered_set<int> int_uset;
 
   CPPUNIT_ASSERT( int_uset.max_load_factor() == 1.0f );
@@ -313,7 +324,7 @@ void UnorderedTest::hash_policy()
 
 void UnorderedTest::buckets()
 {
-#if defined (STLPORT) && !defined (__DMC__)
+#if defined (STLPORT) 
   unordered_set<int> int_uset;
 
   CPPUNIT_ASSERT( int_uset.bucket_count() < int_uset.max_bucket_count() );

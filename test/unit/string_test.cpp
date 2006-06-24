@@ -57,11 +57,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(insert);
   CPPUNIT_TEST(replace);
   CPPUNIT_TEST(resize);
-#if defined (__DMC__)
-  CPPUNIT_IGNORE;
-#endif
   CPPUNIT_TEST(short_string);
-  CPPUNIT_STOP_IGNORE;
   CPPUNIT_TEST(find);
 #if !defined (USE_PTHREAD_API) && !defined (USE_WINDOWS_API)
   CPPUNIT_IGNORE;
@@ -87,8 +83,7 @@ class StringTest : public CPPUNIT_NS::TestCase
 #endif
   CPPUNIT_TEST(io);
   CPPUNIT_STOP_IGNORE;
-#if defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO) || \
-    defined (__DMC__)
+#if defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO) 
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(allocator_with_state);
@@ -736,20 +731,10 @@ void StringTest::template_expression()
 #if 1 // defined (_STLP_USE_TEMPLATE_EXPRESSION)
       // strsum-string
       (one+two) == three;
-#if  !defined (__DMC__)
       (one+two) != three;
-#else
-      string one_two = one+two;
-      one_two != three;
-#endif
       // string-strsum
       one == (two+three);
-#if  !defined (__DMC__)
       one != (two+three);
-#else
-      string two_three = two+three;
-      one != two_three;
-#endif
       // strsum-literal
       (one+two) == "three";
       (one+two) != "three";
@@ -1014,8 +999,8 @@ void StringTest::io()
 
 void StringTest::allocator_with_state()
 {
-#if !(defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO)) && \
-    !defined (__DMC__)
+#if !(defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO)) 
+
   char buf1[1024];
   StackAllocator<char> stack1(buf1, buf1 + sizeof(buf1));
 

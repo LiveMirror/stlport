@@ -54,22 +54,20 @@ class LocaleTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(locale_by_name);
   CPPUNIT_STOP_IGNORE;
   CPPUNIT_TEST(loc_has_facet);
-#if defined (__DMC__)
-  CPPUNIT_IGNORE;
-#endif
   CPPUNIT_TEST(num_put_get);
   CPPUNIT_TEST(money_put_get);
   CPPUNIT_TEST(money_put_X_bug);
   CPPUNIT_TEST(time_put_get);
+#if defined (__DMC__) && defined (_DLL)
+  CPPUNIT_IGNORE;
+#endif
   CPPUNIT_TEST(collate_facet);
   CPPUNIT_TEST(ctype_facet);
 #if defined (STLPORT) && defined (_STLP_NO_MEMBER_TEMPLATES)
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(locale_init_problem);
-#if !defined (__DMC__)
   CPPUNIT_STOP_IGNORE;
-#endif
   CPPUNIT_TEST(default_locale);
 #if !defined (STLPORT)
   CPPUNIT_IGNORE;

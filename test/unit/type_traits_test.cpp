@@ -590,16 +590,12 @@ void TypeTraitsTest::is_POD()
 template <typename _Tp>
 int is_stlport_class(_Tp) {
   typedef _IsSTLportClass<_Tp> _STLportClass;
-#  if !defined (__DMC__)
 #    if !defined (__BORLANDC__)
   typedef typename _STLportClass::_Ret _Is;
 #    else
   typedef typename __bool2type<_STLportClass::_Is>::_Ret _Is;
 #    endif
   return type_to_value(_Is());
-#  else
-  return type_to_value(_STLportClass::_Ret());
-#  endif
 }
 #endif
 
