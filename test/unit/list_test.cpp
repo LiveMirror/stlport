@@ -21,6 +21,7 @@ class ListTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(resize);
   CPPUNIT_TEST(push_back);
   CPPUNIT_TEST(push_front);
+  CPPUNIT_TEST(swap);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
@@ -32,6 +33,7 @@ protected:
   void resize();
   void push_back();
   void push_front();
+  void swap();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ListTest);
@@ -245,4 +247,26 @@ void ListTest::push_front()
   CPPUNIT_ASSERT( *i == 1 );
   ++i;
   CPPUNIT_ASSERT( *i == 2 );
+}
+
+void ListTest::swap()
+{
+  list<int> lst1;
+  list<int> lst2;
+
+  lst1.push_back(1);
+  lst2.push_back(2);
+
+  lst1.swap( lst2 );
+
+  CPPUNIT_CHECK( lst1.front() == 2 );
+  CPPUNIT_CHECK( lst2.front() == 1 );
+  CPPUNIT_CHECK( lst1.size() == 1 );
+  CPPUNIT_CHECK( lst2.size() == 1 );
+
+  lst1.pop_front();
+  lst2.pop_front();
+
+  CPPUNIT_CHECK( lst1.empty() );
+  CPPUNIT_CHECK( lst2.empty() );
 }
