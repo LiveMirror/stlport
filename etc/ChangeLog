@@ -1,3 +1,21 @@
+2006-06-27  Francois Dumont  <dums@stlport...>
+
+	* build/lib/configure: Add --with-lib_motif option to grant STLport
+	users the possibility of tweaking the generated libraries name.
+
+	* build/Makefiles/gmake/unix/lib.mak: Add code to take into account
+	configured lib motif in generated library name.
+
+	* build/Makefiles/gmake/netware/lib.mak: Looks like it needs same
+	defines as the ones in cygming/lib.mak so we simply include this
+	file.
+
+	* stlport/stl/config/_evc.h: Patch from Michael Fink to fix a
+	compilation error.
+
+	* test/unit/cppunit/cppunit_mini.h: Patch from Michael Fink to
+	avoid unused parameter warning.
+
 2006-06-23  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_pair.h, _bvector.h, config/_evc.h: Patch from
