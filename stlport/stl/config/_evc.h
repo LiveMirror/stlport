@@ -73,7 +73,7 @@
 
 #if _WIN32_WCE < 400
 // no long double under CE3 and older
-#  _STLP_NO_LONG_DOUBLE
+#  define _STLP_NO_LONG_DOUBLE
 #endif
 
 // no *f and *l math functions available
