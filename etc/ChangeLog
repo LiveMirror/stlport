@@ -1,3 +1,18 @@
+2006-06-28  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_string_sum_methods.h, debug/_string_sum_methods.h:
+	Small refactoring and simplification of code to avoid a parameter
+	with default value. This fixing an ICE using MSVC6.
+
+	* test/unit/string_test.cpp: Ignore the newly introduce te_tmp
+	test using MSVC6.
+
+2006-06-27  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* stlport/stl/_list.h: fix bug in list.swap, thanks Viktor Govako.
+
+	* test/unit/list_test.cpp: test for bug above.
+
 2006-06-27  Francois Dumont  <dums@stlport...>
 
 	* build/lib/configure: Add --with-lib_motif option to grant STLport
