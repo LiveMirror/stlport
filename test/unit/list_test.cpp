@@ -27,6 +27,7 @@ class ListTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(push_back);
   CPPUNIT_TEST(push_front);
   CPPUNIT_TEST(allocator_with_state);
+  CPPUNIT_TEST(swap);
   //CPPUNIT_TEST(const_list);
   CPPUNIT_TEST_SUITE_END();
 
@@ -40,6 +41,7 @@ protected:
   void push_back();
   void push_front();
   void allocator_with_state();
+  void swap();
   //void const_list();
 };
 
@@ -414,3 +416,24 @@ void ListTest::const_list()
   cint_list.push_front(2);
 }
 */
+void ListTest::swap()
+{
+  list<int> lst1;
+  list<int> lst2;
+
+  lst1.push_back(1);
+  lst2.push_back(2);
+
+  lst1.swap( lst2 );
+
+  CPPUNIT_CHECK( lst1.front() == 2 );
+  CPPUNIT_CHECK( lst2.front() == 1 );
+  CPPUNIT_CHECK( lst1.size() == 1 );
+  CPPUNIT_CHECK( lst2.size() == 1 );
+
+  lst1.pop_front();
+  lst2.pop_front();
+
+  CPPUNIT_CHECK( lst1.empty() );
+  CPPUNIT_CHECK( lst2.empty() );
+}

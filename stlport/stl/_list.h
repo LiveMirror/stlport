@@ -399,12 +399,12 @@ public:
         return;
       }
       this->_M_swap_aux(__x);
-    }
-    else if (this->empty()) {
+    } else if (this->empty()) {
       __x._M_swap_aux(*this);
     } else {
       this->_M_node.swap(__x._M_node);
       _STLP_STD::swap(this->_M_node._M_data._M_prev->_M_next, __x._M_node._M_data._M_prev->_M_next);
+      _STLP_STD::swap(this->_M_node._M_data._M_next->_M_prev, __x._M_node._M_data._M_next->_M_prev);
     }
   }
 
