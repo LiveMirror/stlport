@@ -70,6 +70,14 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(template_expression);
+#if defined (STLPORT) && defined (_STLP_MSVC) && (_STLP_MSVC < 1300)
+#  define TE_TMP_TEST_IGNORED
+  CPPUNIT_IGNORE;
+#endif
+  CPPUNIT_TEST(te_tmp);
+#if defined (TE_TMP_TEST_IGNORED)
+  CPPUNIT_STOP_IGNORE;
+#endif
 #if defined (STLPORT) && defined (_STLP_NO_WCHAR_T)
   CPPUNIT_IGNORE;
 #endif
@@ -108,6 +116,7 @@ protected:
   void short_string_optim_bug();
   void compare();
   void template_expression();
+  void te_tmp();
   void template_wexpression();
   void io();
   void allocator_with_state();
@@ -730,20 +739,20 @@ void StringTest::template_expression()
       "one" != two;
 #if 1 // defined (_STLP_USE_TEMPLATE_EXPRESSION)
       // strsum-string
-      (one+two) == three;
-      (one+two) != three;
+      (one + two) == three;
+      (one + two) != three;
       // string-strsum
-      one == (two+three);
-      one != (two+three);
+      one == (two + three);
+      one != (two + three);
       // strsum-literal
-      (one+two) == "three";
-      (one+two) != "three";
+      (one + two) == "three";
+      (one + two) != "three";
       // literal-strsum
-      "one" == (two+three);
-      "one" != (two+three);
+      "one" == (two + three);
+      "one" != (two + three);
       // strsum-strsum
-      (one+two) == (two+three);
-      (one+two) != (two+three);
+      (one + two) == (two + three);
+      (one + two) != (two + three);
 #endif
   }
 
@@ -752,6 +761,7 @@ void StringTest::template_expression()
     CPPUNIT_CHECK( result == "one two three" );
   }
 
+#if !defined (STLPORT) || !defined (_STLP_MSVC) || (_STLP_MSVC > 1200)
   {
     string result(one + ' ' + two + ' ' + three, 4);
     CPPUNIT_CHECK( result == "two three" );
@@ -761,6 +771,7 @@ void StringTest::template_expression()
     string result(one + ' ' + two + ' ' + three, 4, 3);
     CPPUNIT_CHECK( result == "two" );
   }
+#endif
 
   //2 members expressions:
   CPPUNIT_CHECK( (' ' + one) == " one" );
@@ -855,6 +866,40 @@ void StringTest::template_expression()
   //MSVC sees no problem. gcc limitation or MSVC is too cool ??
   mystring b = "str" + a;
   */
+}
+
+#if !defined (TE_TMP_TEST_IGNORED)
+class superstring
+{
+  public:
+    superstring() :
+      s("super")
+    {}
+
+    superstring( const string& str ) :
+      s( str )
+    {}
+
+  superstring operator / (const string& str )
+    { return superstring( s + "/" + str ); }
+
+  superstring operator / (const char* str )
+    { return superstring( s + "/" + str ); }
+
+  private:
+    string s;
+};
+#endif
+
+void StringTest::te_tmp()
+{
+#if !defined (TE_TMP_TEST_IGNORED)
+  superstring s;
+  string more( "more" );
+  string less( "less" );
+
+  superstring r = s / (more + less);
+#endif
 }
 
 void StringTest::template_wexpression()
