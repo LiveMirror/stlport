@@ -1,3 +1,12 @@
+2006-06-29  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_algo.h, _algo.c, _algobase.h, _algobase.c,
+	_hashtable.c: Patch from Andriy Syrovenko to fix implementation
+	of __equal_range, __lower_bound, __upper_bound when dealing with
+	a key whom type is different from the value_type of the iterator.
+
+	* test/unit/equal_test.cpp: Add some tests to show above bug.
+
 2006-06-28  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_string_sum_methods.h, debug/_string_sum_methods.h:
