@@ -149,6 +149,21 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   fostr.str("");
   fostr << val;
   CPPUNIT_ASSERT( fostr.str() == "1e+09" );
+
+  val = 1234.0f;
+  ref = "1";
+  if (!npct.grouping().empty()) {
+    ref += npct.thousands_sep();
+  }
+  ref += "234";
+  fostr.str("");
+  fostr << val;
+  CPPUNIT_ASSERT( fostr.str() == ref );
+
+  val = 10000001.0f;
+  fostr.str("");
+  fostr << val;
+  CPPUNIT_ASSERT( fostr.str() == "1e+07" );
 }
 
 void LocaleTest::_money_put_get( const locale& loc, const ref_locale& rl )
