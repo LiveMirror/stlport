@@ -1,3 +1,11 @@
+2006-06-30  Francois Dumont  <dums@stlport...>
+
+	* src/num_put.cpp, num_put_float.cpp: Patch from Glen Summers
+	to fix float output using locale with grouping and float value
+	has no decimal.
+
+	* test/unit/locale_test.cpp: Add some tests showing above bug.
+
 2006-06-29  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_algo.h, _algo.c, _algobase.h, _algobase.c,
