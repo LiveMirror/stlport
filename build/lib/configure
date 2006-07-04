@@ -114,18 +114,18 @@ do
     --no-cygwin)
       write_option "-mno-cygwin" OPT
       write_option -D_STLP_NO_CYGWIN DEFS
-      echo "--no-cygwin: Don't forget to uncomment _STLP_NO_CYGWIN macro"
-      echo "in stlport/stl/config/host.h to use such a configuration."
+      echo --no-cygwin: Don't forget to uncomment _STLP_NO_CYGWIN macro
+      echo in stlport/stl/config/host.h to use such a configuration.
       ;;
     --not-thread-safe)
       write_option 1 STLP_BUILD_NO_THREAD
       ;;
     --with-boost=*)
-      echo "Don't forget to define _STLP_USE_BOOST_SUPPORT in stlport/stl/config/user_config.h file"
+      echo Don't forget to define _STLP_USE_BOOST_SUPPORT in stlport/stl/config/user_config.h file
       write_option "$option" STLP_BUILD_BOOST_PATH
       ;;
     --with-lib-motif=*)
-      echo "Using $option in generated library names
+      echo Using a motif in generated library names.
       write_option "$option" STLP_BUILD_LIB_MOTIF
       ;;
     --use-static-gcc)
