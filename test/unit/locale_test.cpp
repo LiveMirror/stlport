@@ -105,16 +105,10 @@ CPPUNIT_TEST_SUITE_REGISTRATION(LocaleTest);
 // tests implementation
 //
 void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
-  float val = 1234.56f;
-  ostringstream ostr;
-  ostr << val;
-  CPPUNIT_ASSERT( ostr );
-  CPPUNIT_ASSERT( ostr.str() == "1234.56" );
-
   numpunct<char> const& npct = use_facet<numpunct<char> >(loc);
-
   CPPUNIT_ASSERT( npct.decimal_point() == *rl.decimal_point );
 
+  float val = 1234.56f;
   ostringstream fostr;
   fostr.imbue(loc);
   fostr << val;
@@ -130,10 +124,6 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   CPPUNIT_ASSERT( fostr.str() == ref );
 
   val = 12345678.9f;
-  ostr.str("");
-  ostr << val;
-  CPPUNIT_ASSERT( ostr.str() == "1.23457e+07" );
-
   ref = "1";
   ref += npct.decimal_point();
   ref += "23457e+07";
@@ -142,10 +132,6 @@ void LocaleTest::_num_put_get( const locale& loc, const ref_locale& rl ) {
   CPPUNIT_ASSERT( fostr.str() == ref );
 
   val = 1000000000.0f;
-  ostr.str("");
-  ostr << val;
-  CPPUNIT_ASSERT( ostr.str() == "1e+09" );
-
   fostr.str("");
   fostr << val;
   CPPUNIT_ASSERT( fostr.str() == "1e+09" );
@@ -846,6 +832,7 @@ void LocaleTest::locale_init_problem() {
  * initialization is done correctly.
  */
 static locale global_loc;
+static locale other_loc("");
 
 #if !defined (STLPORT) || !defined (_STLP_NO_MEMBER_TEMPLATES)
 void LocaleTest::_locale_init_problem( const locale& loc, const ref_locale&)
