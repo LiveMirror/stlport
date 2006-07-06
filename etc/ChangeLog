@@ -1,3 +1,25 @@
+2006-07-06  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_num_put.c: Small refactoring with introduction
+	of the __do_put_integer function for integer types output. Moreover
+	static buffer size used for formating is now based on output
+	type sizeof.
+
+	* stlport/stl/_ostream.c: Add some assertion before cast to check that
+	no significant digit is lost. Add cast to long in int and short output
+	in order to make type of expression more explicit and correct. This
+	fix the bug report from Geoffrey Bache on sourceforge about output of
+	-1 ont value on 64bits linux.
+
+	* test/unit/floatio_test.cpp: Removed, all code moved to NumPutGetTest
+	test fixture.
+
+	* test/unit/num_put_get_test.cpp: New, contains all tests regarding
+	input/output of numeric values (locale independant).
+
+	* test/unit/locale_test.cpp: locale independant tests of numeric input/
+	output moved to NumPutGetTest test fixture.
+
 2006-07-04  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_rope.h, _rope.c: Patch from Peter Hercek to fix a
