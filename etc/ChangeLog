@@ -1,3 +1,9 @@
+2006-07-07  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/lib/configure: rollback changes 4 Jul 2006 19:42:55,
+	it's definitely wrong (phrase with quotes ['] requires double
+	quotes ["]).
+
 2006-07-06  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_num_put.c: Small refactoring with introduction
