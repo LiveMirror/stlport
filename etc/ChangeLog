@@ -1,3 +1,15 @@
+2006-07-10  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/debug/_iterator.h: Creation of _Non_Dbg_iter function
+	returning native iterator of special debug iterator with
+	compilers supporting partial template function ordering. Fix
+	a MSVC .Net 2003 issue that seems to be related to a too important
+	template depth.
+
+	* stlport/stl/debug/_deque.h, _list.h, _slist.h, _string.h, _vector.h:
+	Use new _Non_Dbg_iter function in constructors from iterator
+	range.
+
 2006-07-07  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* build/lib/configure: rollback changes 4 Jul 2006 19:42:55,
