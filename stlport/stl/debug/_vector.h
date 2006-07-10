@@ -204,13 +204,15 @@ public:
   template <class _InputIterator>
   vector(_InputIterator __first, _InputIterator __last,
          const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _ConstructCheck(__first, __last), _M_non_dbg_impl(__first, __last, __a),
+    : _ConstructCheck(__first, __last),
+      _M_non_dbg_impl(_STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last), __a),
       _M_iter_list(&_M_non_dbg_impl) {}
 
 #  if defined (_STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS)
   template <class _InputIterator>
   vector(_InputIterator __first, _InputIterator __last)
-    : _ConstructCheck(__first, __last), _M_non_dbg_impl(__first, __last),
+    : _ConstructCheck(__first, __last),
+      _M_non_dbg_impl(_STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last)),
       _M_iter_list(&_M_non_dbg_impl) {}
 #  endif
 #else
