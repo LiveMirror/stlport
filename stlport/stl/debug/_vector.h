@@ -288,12 +288,13 @@ public:
     typedef typename _AreSameUnCVTypes<_InputIterator, iterator>::_Ret _IsNonConstIterator;
     typedef typename _AreSameUnCVTypes<_InputIterator, const_iterator>::_Ret _IsConstIterator;
     typedef typename _Lor2<_IsNonConstIterator, _IsConstIterator>::_Ret _DoCheck;
-    _STLP_DEBUG_CHECK(_STLP_PRIV __check_range(__first,__last))
+    _STLP_DEBUG_CHECK(_STLP_PRIV __check_range(__first, __last))
     _STLP_DEBUG_CHECK(_STLP_PRIV __check_if_owner(&_M_iter_list, __pos))
     //Sequence requirements 23.1.1 Table 67:
     _STLP_DEBUG_CHECK(_STLP_PRIV __check_if_not_owner(&_M_iter_list, __first, _DoCheck()));
     size_type __old_capacity = capacity();
-    _M_non_dbg_impl.insert(__pos._M_iterator, __first, __last);
+    _M_non_dbg_impl.insert(__pos._M_iterator,
+                           _STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last));
     _Compare_Capacity(__old_capacity);
   }
 #else
@@ -374,7 +375,7 @@ private:
     _STLP_DEBUG_CHECK(_STLP_PRIV __check_range(__first,__last))
     size_type __len = distance(__first, __last);
     _M_check_assign(__len);
-    _M_non_dbg_impl.assign(__first, __last);
+    _M_non_dbg_impl.assign(_STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last));
   }
 
 public:

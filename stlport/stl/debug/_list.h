@@ -130,7 +130,7 @@ public:
       _M_non_dbg_impl(_STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last)),
       _M_iter_list(&_M_non_dbg_impl) {}
 #  endif
-#else /* _STLP_MEMBER_TEMPLATES */
+#else
 
   list(const value_type* __first, const value_type* __last,
        const allocator_type& __a = allocator_type())
@@ -143,7 +143,7 @@ public:
       _M_non_dbg_impl(__first._M_iterator, __last._M_iterator, __a),
       _M_iter_list(&_M_non_dbg_impl) {}
 
-#endif /* _STLP_MEMBER_TEMPLATES */
+#endif
 
   list(const _Self& __x) :
     _ConstructCheck(__x),
@@ -223,7 +223,8 @@ public:
     _STLP_DEBUG_CHECK(_STLP_PRIV __check_if_owner(&_M_iter_list, __pos))
     _STLP_DEBUG_CHECK(_STLP_PRIV __check_range(__first, __last))
     _STLP_STD_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()))
-    _M_non_dbg_impl.insert(__pos._M_iterator, __first, __last);
+    _M_non_dbg_impl.insert(__pos._M_iterator,
+                           _STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last));
   }
 #else
   void insert(iterator __pos, const _Tp* __first, const _Tp* __last) {
@@ -239,7 +240,7 @@ public:
     _STLP_STD_DEBUG_CHECK(__check_if_not_owner(&_M_iter_list, __first, _DoCheck()))
     _M_non_dbg_impl.insert(__pos._M_iterator, __first._M_iterator, __last._M_iterator);
   }
-#endif /* _STLP_MEMBER_TEMPLATES */
+#endif
 
   void insert(iterator __pos, size_type __n, const _Tp& __x) {
     _STLP_DEBUG_CHECK(_STLP_PRIV __check_if_owner(&_M_iter_list,__pos))
@@ -305,7 +306,7 @@ private:
                           const __false_type& /*_IsIntegral*/) {
     size_type __len = distance(__first, __last);
     _M_check_assign(__len);
-    _M_non_dbg_impl.assign(__first, __last);
+    _M_non_dbg_impl.assign(_STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last));
   }
 
 public:
@@ -486,7 +487,7 @@ public:
   void sort(_StrictWeakOrdering __comp) {
     _M_non_dbg_impl.sort(__comp);
   }
-#endif /* _STLP_MEMBER_TEMPLATES */
+#endif
 };
 
 

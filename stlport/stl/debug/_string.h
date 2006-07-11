@@ -242,7 +242,7 @@ public:
   _Self& append(_InputIter __first, _InputIter __last) {
     _STLP_DEBUG_CHECK(_STLP_PRIV __check_range(__first, __last))
     size_type __old_capacity = capacity();
-    _M_non_dbg_impl.append(__first, __last);
+    _M_non_dbg_impl.append(_STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last));
     _Compare_Capacity(__old_capacity);
     return *this;
   }
@@ -377,7 +377,7 @@ private:
   template <class _InputIter>
   void _M_assign_dispatch(_InputIter __f, _InputIter __l, const __false_type& /*_Integral*/)  {
     _M_check_assign(distance(__f, __l));
-    _M_non_dbg_impl.assign(__f, __l);
+    _M_non_dbg_impl.assign(_STLP_PRIV _Non_Dbg_iter(__f), _STLP_PRIV _Non_Dbg_iter(__l));
   }
 public:
   template <class _InputIter>
@@ -469,8 +469,10 @@ private:
 
   template<class _InputIter>
   void _M_insert_aux (iterator __p, _InputIter __first, _InputIter __last,
-                      const __false_type& /*_IsIterator*/)
-  { _M_non_dbg_impl.insert(__p._M_iterator, __first, __last); }
+                      const __false_type& /*_IsIterator*/) {
+    _M_non_dbg_impl.insert(__p._M_iterator,
+                           _STLP_PRIV _Non_Dbg_iter(__first), _STLP_PRIV _Non_Dbg_iter(__last));
+  }
 
 public:
   template <class _InputIter>
@@ -623,8 +625,10 @@ private:
 
   template <class _InputIter>
   void _M_replace_aux(iterator __first, iterator __last,
-                      _InputIter __f, _InputIter __l, __false_type const& /*_IsIterator*/)
-  { _M_non_dbg_impl.replace(__first._M_iterator, __last._M_iterator, __f, __l); }
+                      _InputIter __f, _InputIter __l, __false_type const& /*_IsIterator*/) {
+    _M_non_dbg_impl.replace(__first._M_iterator, __last._M_iterator,
+                            _STLP_PRIV _Non_Dbg_iter(__f), _STLP_PRIV _Non_Dbg_iter(__l));
+  }
 
 public:
   template <class _InputIter>
