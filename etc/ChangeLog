@@ -1,3 +1,28 @@
+2006-07-11  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/debug/_deque.h, _list.h, _slist.h, _string.h, _vector.h:
+	Extend use of _Non_Dbg_iter function in all template methods dealing
+	with iterator range.
+
+	* _num_put.c: Fix to show base in octal or hexadecimal mode even for
+	0 value.
+
+	* stlport/stl/_istream.c: Avoid modification of value to extract in
+	formatted input of short and int when value would overflow.
+
+	* test/unit/num_put_get_test.cpp: Add some tests for above fixes.
+
+	* test/unit/iostream_test.cpp: New tests for general stream
+	manipulations.
+
+	* stlport/stl/_istream.h: Fix ws iostream function, it do not set failbit
+	anymore when stream is in eof state.
+
+	* build/lib/msvc.mak: Generation of config.mak is not mandatory anymore
+	as Intel compiler do not need it for the moment. Only a COMPILER_NAME
+	is mandatory which is given by icl.mak for Intel compilers and by
+	config.mak for Microsoft ones.
+	
 2006-07-10  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_iterator.h: Creation of _Non_Dbg_iter function
