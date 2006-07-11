@@ -74,6 +74,7 @@ SRC_CPP = ../../../test/unit/cppunit/test_main.cpp \
 	../../../test/unit/ios_header_test.cpp \
 	../../../test/unit/iosfwd_header_test.cpp \
 	../../../test/unit/iostream_header_test.cpp \
+	../../../test/unit/iostream_test.cpp \
 	../../../test/unit/iota_test.cpp \
 	../../../test/unit/istmit_test.cpp \
 	../../../test/unit/istream_header_test.cpp \
