@@ -143,13 +143,16 @@ void NumPutGetTest::num_put_float()
   }
 }
 
-#define CHECK(type, val, base, expected) \
+#define CHECK_COMPLETE(type, val, base, showbase, showpos, casing, width, adjust, expected) \
 { \
   type tmp = val; \
   ostringstream ostr; \
-  ostr << base << tmp; \
+  ostr << base << showbase << showpos << casing << setw(width) << adjust << tmp; \
   CPPUNIT_CHECK( ostr.str() == expected ); \
 }
+
+#define CHECK(type, val, base, expected) \
+  CHECK_COMPLETE(type, val, base, noshowbase, noshowpos, nouppercase, 0, right, expected)
 
 void NumPutGetTest::num_put_integer()
 {
@@ -197,6 +200,12 @@ void NumPutGetTest::num_put_integer()
     CHECK(unsigned _STLP_LONG_LONG, 0, oct, "0")
     CHECK(unsigned _STLP_LONG_LONG, 12345678, oct, "57060516")
 #endif
+
+    CHECK_COMPLETE(short, 0, oct, showbase, noshowpos, nouppercase, 0, right, "00")
+    CHECK_COMPLETE(short, 0, oct, showbase, noshowpos, nouppercase, 6, right, "    00")
+    CHECK_COMPLETE(short, 1, oct, showbase, noshowpos, nouppercase, 6, right, "    01")
+    CHECK_COMPLETE(short, 1, oct, showbase, noshowpos, nouppercase, 6, left, "01    ")
+    CHECK_COMPLETE(short, 1, oct, showbase, noshowpos, nouppercase, 6, internal, "    01")
   }
 
   //decimal outputs
@@ -233,6 +242,12 @@ void NumPutGetTest::num_put_integer()
     CHECK(unsigned _STLP_LONG_LONG, 0, dec, "0")
     CHECK(unsigned _STLP_LONG_LONG, 12345678, dec, "12345678")
 #endif
+
+    CHECK_COMPLETE(short, 0, dec, showbase, showpos, nouppercase, 0, right, "+0")
+    CHECK_COMPLETE(short, 0, dec, showbase, showpos, nouppercase, 6, right, "    +0")
+    CHECK_COMPLETE(short, 1, dec, showbase, showpos, nouppercase, 6, right, "    +1")
+    CHECK_COMPLETE(short, 1, dec, showbase, showpos, nouppercase, 6, left, "+1    ")
+    CHECK_COMPLETE(short, 1, dec, showbase, showpos, nouppercase, 6, internal, "+    1")
   }
 
   //hexadecimal outputs
@@ -277,6 +292,14 @@ void NumPutGetTest::num_put_integer()
     CHECK(unsigned _STLP_LONG_LONG, 0, hex, "0")
     CHECK(unsigned _STLP_LONG_LONG, 12345678, hex, "bc614e")
 #endif
+
+    CHECK_COMPLETE(short, 0, hex, showbase, noshowpos, nouppercase, 0, right, "0x0")
+    CHECK_COMPLETE(short, 0, hex, showbase, noshowpos, nouppercase, 6, right, "   0x0")
+    CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, right, "   0x1")
+    CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, left, "0x1   ")
+    CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, internal, "0x   1")
+    CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, uppercase, 6, left, "0X1   ")
+    CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, uppercase, 6, internal, "0X   1")
   }
 }
 
@@ -349,6 +372,117 @@ void NumPutGetTest::num_get_float()
 
 void NumPutGetTest::num_get_integer()
 {
+  //octal input
+  {
+    istringstream istr;
+    istr.str("30071");
+    short val;
+    istr >> oct >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( istr.eof() );
+    CPPUNIT_ASSERT( val == 12345 );
+    istr.clear();
+
+    if (sizeof(short) == 2) {
+      istr.str("177777");
+      istr >> oct >> val;
+      CPPUNIT_ASSERT( !istr.fail() );
+      CPPUNIT_ASSERT( istr.eof() );
+      CPPUNIT_ASSERT( val == -1 );
+      istr.clear();
+    }
+  }
+
+  //decimal input
+  {
+    istringstream istr;
+    istr.str("10000");
+    short val = -1;
+    istr >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( istr.eof() );
+    CPPUNIT_ASSERT( val == 10000 );
+    istr.clear();
+
+    istr.str("+10000");
+    val = -1;
+    istr >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( istr.eof() );
+    CPPUNIT_ASSERT( val == 10000 );
+    istr.clear();
+
+    if (sizeof(short) == 2) {
+      val = -1;
+      istr.str("10000000");
+      istr >> val;
+      CPPUNIT_ASSERT( istr.fail() );
+      CPPUNIT_ASSERT( istr.eof() );
+      CPPUNIT_ASSERT( val == -1 );
+      istr.clear();
+    }
+
+    val = -1;
+    istr.str("0x0");
+    istr >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( !istr.eof() );
+    CPPUNIT_ASSERT( val == 0 );
+    istr.clear();
+
+    val = -1;
+    istr.str("000001");
+    istr >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( istr.eof() );
+    CPPUNIT_ASSERT( val == 1 );
+    istr.clear();
+  }
+
+  //hexadecimal input
+  {
+    istringstream istr;
+    istr.str("3039");
+    short val = -1;
+    istr >> hex >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( istr.eof() );
+    CPPUNIT_ASSERT( val == 12345 );
+    istr.clear();
+
+    istr.str("x3039");
+    val = -1;
+    istr >> hex >> val;
+    CPPUNIT_ASSERT( istr.fail() );
+    CPPUNIT_ASSERT( !istr.eof() );
+    CPPUNIT_ASSERT( val == -1 );
+    istr.clear();
+
+    istr.str("03039");
+    val = -1;
+    istr >> hex >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( istr.eof() );
+    CPPUNIT_ASSERT( val == 12345 );
+    istr.clear();
+
+    istr.str("0x3039");
+    istr >> hex >> val;
+    CPPUNIT_ASSERT( !istr.fail() );
+    CPPUNIT_ASSERT( istr.eof() );
+    CPPUNIT_ASSERT( val == 12345 );
+    istr.clear();
+
+    if (sizeof(short) == 2) {
+      val = -1;
+      istr.str("cfc7");
+      istr >> hex >> val;
+      CPPUNIT_ASSERT( !istr.fail() );
+      CPPUNIT_ASSERT( istr.eof() );
+      CPPUNIT_ASSERT( val == -12345 );
+      istr.clear();
+    }
+  }
 }
 
 #endif

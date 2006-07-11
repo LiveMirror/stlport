@@ -173,7 +173,7 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
       __oi = __fill_n(__oi, __pad, __fill);
       return copy(__buf + 1, __buf + __len, __oi);
     }
-    else if (__dir == ios_base::internal && __len >= 2 &&
+    else if (__dir == ios_base::internal &&
              (__flg & ios_base::showbase) &&
              (__flg & ios_base::basefield) == ios_base::hex) {
       *__oi++ = __buf[0];
@@ -313,23 +313,21 @@ template <class _Integer>
 char* _STLP_CALL
 __write_integer_backward(char* __buf, ios_base::fmtflags __flags, _Integer __x) {
   char* __ptr = __buf;
-  __umax_int_t __temp;
 
-  if (__x == 0) {
+  if (__x == 0)
     *--__ptr = '0';
-    if ((__flags & ios_base::showpos) && ( (__flags & (ios_base::hex | ios_base::oct)) == 0 ))
-      *--__ptr = '+';
-  }
-  else {
-    switch (__flags & ios_base::basefield) {
-    case ios_base::oct:
-      __temp = __x;
-      // if the size of integer is less than 8, clear upper part
-      if ( sizeof(__x) < 8  && sizeof(__umax_int_t) >= 8 )
-        __temp &= 0xFFFFFFFF;
 
-      for (; __temp != 0; __temp >>=3)
-        *--__ptr = (char)((((unsigned)__temp)& 0x7) + '0');
+  switch (__flags & ios_base::basefield) {
+    case ios_base::oct:
+      if (__x != 0) {
+        __umax_int_t __temp = __x;
+        // if the size of integer is less than 8, clear upper part
+        if ( sizeof(__x) < 8  && sizeof(__umax_int_t) >= 8 )
+          __temp &= 0xFFFFFFFF;
+
+        for (; __temp != 0; __temp >>=3)
+          *--__ptr = (char)((((unsigned)__temp)& 0x7) + '0');
+      }
 
       // put leading '0' if showbase is set
       if (__flags & ios_base::showbase)
@@ -339,13 +337,15 @@ __write_integer_backward(char* __buf, ios_base::fmtflags __flags, _Integer __x) 
       {
         const char* __table_ptr = (__flags & ios_base::uppercase) ?
           __hex_char_table_hi() : __hex_char_table_lo();
-      __temp = __x;
-      // if the size of integer is less than 8, clear upper part
-      if ( sizeof(__x) < 8  && sizeof(__umax_int_t) >= 8 )
-        __temp &= 0xFFFFFFFF;
+        if (__x != 0) {
+          __umax_int_t __temp = __x;
+          // if the size of integer is less than 8, clear upper part
+          if ( sizeof(__x) < 8  && sizeof(__umax_int_t) >= 8 )
+            __temp &= 0xFFFFFFFF;
 
-        for (; __temp != 0; __temp >>=4)
-          *--__ptr = __table_ptr[((unsigned)__temp & 0xF)];
+          for (; __temp != 0; __temp >>=4)
+            *--__ptr = __table_ptr[((unsigned)__temp & 0xF)];
+        }
 
         if (__flags & ios_base::showbase) {
           *--__ptr = __table_ptr[16];
@@ -353,22 +353,27 @@ __write_integer_backward(char* __buf, ios_base::fmtflags __flags, _Integer __x) 
         }
       }
       break;
+    //case ios_base::dec:
     default:
       {
+        if (__x != 0) {
 #if defined(__HP_aCC) && (__HP_aCC == 1)
-        bool _IsSigned = !((_Integer)-1 > 0);
-        if (_IsSigned)
-          __ptr = __write_decimal_backward(__ptr, __x, __flags, __true_type() );
-        else
-          __ptr = __write_decimal_backward(__ptr, __x, __flags, __false_type() );
+          bool _IsSigned = !((_Integer)-1 > 0);
+          if (_IsSigned)
+            __ptr = __write_decimal_backward(__ptr, __x, __flags, __true_type() );
+          else
+            __ptr = __write_decimal_backward(__ptr, __x, __flags, __false_type() );
 #else
-        typedef typename __bool2type<numeric_limits<_Integer>::is_signed>::_Ret _IsSigned;
-        __ptr = __write_decimal_backward(__ptr, __x, __flags, _IsSigned());
+          typedef typename __bool2type<numeric_limits<_Integer>::is_signed>::_Ret _IsSigned;
+          __ptr = __write_decimal_backward(__ptr, __x, __flags, _IsSigned());
 #endif
+        }
+        else if (__flags & ios_base::showpos)
+          *--__ptr = '+';
       }
       break;
     }
-  }
+
   // return pointer to beginning of the string
   return __ptr;
 }
