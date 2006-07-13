@@ -9,6 +9,10 @@
 	types cannot be pass by value in function calls. Thanks andy2222 from
 	sourceforge.
 
+	* build/Makefiles/nmake/evc3.mak, evc4.mak, evc8.mak: Patch from Ulrich
+	Eckhardt to remove commctrl.lib dependency, for the moment evc3 and evc4
+	only contains a note about this potentially useless dependency.
+
 2006-07-11  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_deque.h, _list.h, _slist.h, _string.h, _vector.h:
