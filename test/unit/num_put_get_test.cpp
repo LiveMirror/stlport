@@ -201,11 +201,13 @@ void NumPutGetTest::num_put_integer()
     CHECK(unsigned _STLP_LONG_LONG, 12345678, oct, "57060516")
 #endif
 
-    CHECK_COMPLETE(short, 0, oct, showbase, noshowpos, nouppercase, 0, right, "00")
-    CHECK_COMPLETE(short, 0, oct, showbase, noshowpos, nouppercase, 6, right, "    00")
+    //Even with showbase, 0 value gives "0" (see printf documentation)
+    CHECK_COMPLETE(short, 0, oct, showbase, noshowpos, nouppercase, 0, right, "0")
+    CHECK_COMPLETE(short, 0, oct, showbase, showpos, nouppercase, 6, right, "     0")
+
     CHECK_COMPLETE(short, 1, oct, showbase, noshowpos, nouppercase, 6, right, "    01")
     CHECK_COMPLETE(short, 1, oct, showbase, noshowpos, nouppercase, 6, left, "01    ")
-    CHECK_COMPLETE(short, 1, oct, showbase, noshowpos, nouppercase, 6, internal, "    01")
+    CHECK_COMPLETE(short, 1, oct, showbase, showpos, nouppercase, 6, internal, "    01")
   }
 
   //decimal outputs
@@ -293,13 +295,15 @@ void NumPutGetTest::num_put_integer()
     CHECK(unsigned _STLP_LONG_LONG, 12345678, hex, "bc614e")
 #endif
 
-    CHECK_COMPLETE(short, 0, hex, showbase, noshowpos, nouppercase, 0, right, "0x0")
-    CHECK_COMPLETE(short, 0, hex, showbase, noshowpos, nouppercase, 6, right, "   0x0")
+    //Even with showbase, 0 value gives "0" output (see printf documentation)
+    CHECK_COMPLETE(short, 0, hex, showbase, showpos, nouppercase, 0, right, "0")
+    CHECK_COMPLETE(short, 0, hex, showbase, noshowpos, nouppercase, 6, right, "     0")
+
     CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, right, "   0x1")
     CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, left, "0x1   ")
     CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, internal, "0x   1")
     CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, uppercase, 6, left, "0X1   ")
-    CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, uppercase, 6, internal, "0X   1")
+    CHECK_COMPLETE(short, 1, hex, showbase, showpos, uppercase, 6, internal, "0X   1")
   }
 }
 
