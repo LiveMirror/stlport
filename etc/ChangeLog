@@ -13,6 +13,14 @@
 	Eckhardt to remove commctrl.lib dependency, for the moment evc3 and evc4
 	only contains a note about this potentially useless dependency.
 
+	* stlport/stl/debug/_string.h: Add missing copy methods in the debug
+	string implementation thanks Patrick Bennett report.
+
+	* test/unit/string_test.cpp: New copy test case for string::copy.
+
+	* stlport/stl/_algo.h: Add missing _STLP_PRIV namespace scope in calls
+	to __find_first_of thanks Patrick Bennett report.
+
 2006-07-11  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_deque.h, _list.h, _slist.h, _string.h, _vector.h:
