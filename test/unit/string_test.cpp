@@ -59,6 +59,7 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(resize);
   CPPUNIT_TEST(short_string);
   CPPUNIT_TEST(find);
+  CPPUNIT_TEST(copy);
 #if !defined (USE_PTHREAD_API) && !defined (USE_WINDOWS_API)
   CPPUNIT_IGNORE;
 #endif
@@ -111,6 +112,7 @@ protected:
   void resize();
   void short_string();
   void find();
+  void copy();
   void assign();
   void mt();
   void short_string_optim_bug();
@@ -409,7 +411,7 @@ void StringTest::null_char()
     CPPUNIT_CHECK( s.at(s.size()) == '\0' );
     CPPUNIT_ASSERT( false );
   }
-  catch ( out_of_range& ) {
+  catch (out_of_range const&) {
     CPPUNIT_ASSERT( true );
   }
   catch ( ... ) {
@@ -623,6 +625,38 @@ void StringTest::find()
 
   CPPUNIT_ASSERT( s.find_first_not_of("enotw ") == 9 );
   CPPUNIT_ASSERT( s.find_last_not_of("ehortw ") == 15 );
+}
+
+void StringTest::copy()
+{
+  string s("foo");
+  char dest[4];
+  dest[0] = dest[1] = dest[2] = dest[3] = 1;
+  s.copy(dest, 4);
+  int pos = 0;
+  CPPUNIT_ASSERT( dest[pos++] == 'f' );
+  CPPUNIT_ASSERT( dest[pos++] == 'o' );
+  CPPUNIT_ASSERT( dest[pos++] == 'o' );
+  CPPUNIT_ASSERT( dest[pos++] == 1 );
+
+  dest[0] = dest[1] = dest[2] = dest[3] = 1;
+  s.copy(dest, 4, 2);
+  pos = 0;
+  CPPUNIT_ASSERT( dest[pos++] == 'o' );
+  CPPUNIT_ASSERT( dest[pos++] == 1 );
+
+#if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
+  try {
+    s.copy(dest, 4, 5);
+    CPPUNIT_ASSERT( false );
+  }
+  catch (out_of_range const&) {
+    CPPUNIT_ASSERT( true );
+  }
+  catch ( ... ) {
+    CPPUNIT_ASSERT( false );
+  }
+#endif
 }
 
 void StringTest::assign()

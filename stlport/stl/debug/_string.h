@@ -719,6 +719,9 @@ public:
   const _CharT* c_str() const { return _M_non_dbg_impl.c_str(); }
   const _CharT* data()  const { return _M_non_dbg_impl.data(); }
 
+  size_type copy(_CharT* __s, size_type __n, size_type __pos = 0) const
+  { return _M_non_dbg_impl.copy(__s, __n, __pos); }
+
   // find.
   size_type find(const _Self& __s, size_type __pos = 0) const
   { return _M_non_dbg_impl.find(__s._M_non_dbg_impl, __pos); }
