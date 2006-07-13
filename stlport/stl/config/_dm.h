@@ -15,7 +15,7 @@
 #endif
 #define _STLP_VENDOR_GLOBAL_CSTD
 
-//DMC prefer enum to real static const variable because it do not concider
+//DMC prefer enum to real static const variable because it do not consider
 //static const as const enough to be used in switch declaration...
 #define _STLP_STATIC_CONST_INIT_BUG
 

@@ -55,9 +55,9 @@
 /*
  * You can also choose the debug level:
  * STLport debug level: Default value
- *                      Check only what the STLport implementation concider as invalid.
+ *                      Check only what the STLport implementation consider as invalid.
  *                      It also change the iterator invalidation schema.
- * Standard debug level: Check for all operations the standard concider as "undefined behavior"
+ * Standard debug level: Check for all operations the standard consider as "undefined behavior"
  *                       even if STlport implement it correctly. It also invalidates iterators
  *                       more often.
  */

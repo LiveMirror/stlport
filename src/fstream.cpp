@@ -295,7 +295,7 @@ static ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
   if (fd >= 0)
     dosflags = _pioinfo(fd)->osfile;
   //else
-    //the file will be concidered as open in binary mode with no append attribute
+    //the file will be considered as open in binary mode with no append attribute
   // end of 'semi-documented' stuff
 
   int mode = 0;
