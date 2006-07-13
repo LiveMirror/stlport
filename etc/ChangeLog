@@ -1,3 +1,14 @@
+2006-07-13  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_num_put.c: Rollback modif above, according C printf doc
+	0 value shouldn't show their base.
+
+	* stlport/stl/type_traits.h: Avoid instanciation of _IsCVConvertible if
+	not dealing with pointers. Systematical instanciation was giving
+	compilation error as soon as type had a special memory alignment, such
+	types cannot be pass by value in function calls. Thanks andy2222 from
+	sourceforge.
+
 2006-07-11  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/debug/_deque.h, _list.h, _slist.h, _string.h, _vector.h:
