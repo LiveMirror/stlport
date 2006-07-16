@@ -1305,7 +1305,7 @@ static bool type_to_bool(__false_type)
 { return false; }
 
 template <class _Tp>
-static bool is_movable(_Tp) {
+static bool is_movable(const _Tp&) {
 #if defined (__BORLANDC__)
   return __type2bool<typename __move_traits<_Tp>::implemented>::_Ret != 0;
 #else
