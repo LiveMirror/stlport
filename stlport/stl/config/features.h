@@ -151,9 +151,8 @@
 #  define _STLP_USE_SHORT_STRING_OPTIM 1
 #endif
 
-#if !defined (_STLP_DONT_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES) &&\
-    !defined (_STLP_USE_TEMPLATE_EXPRESSION)
-#  define _STLP_USE_TEMPLATE_EXPRESSION
+#if defined (_STLP_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_NO_MEMBER_TEMPLATE_CLASSES)
+#  error "Sorry but according the STLport settings your compiler can not support the string template expressions feature."
 #endif
 
 #if defined (_STLP_MEMBER_TEMPLATES) && !defined (_STLP_NO_EXTENSIONS) && \

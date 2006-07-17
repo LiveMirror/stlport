@@ -795,7 +795,6 @@ void StringTest::template_expression()
     CPPUNIT_CHECK( result == "one two three" );
   }
 
-#if !defined (STLPORT) || !defined (_STLP_MSVC) || (_STLP_MSVC > 1200)
   {
     string result(one + ' ' + two + ' ' + three, 4);
     CPPUNIT_CHECK( result == "two three" );
@@ -805,7 +804,6 @@ void StringTest::template_expression()
     string result(one + ' ' + two + ' ' + three, 4, 3);
     CPPUNIT_CHECK( result == "two" );
   }
-#endif
 
   //2 members expressions:
   CPPUNIT_CHECK( (' ' + one) == " one" );
