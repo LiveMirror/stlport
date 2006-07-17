@@ -1,3 +1,15 @@
+2006-07-17  Francois Dumont  <dums@stlport...>
+
+	* test/unit/alg_test.cpp: New test for find_first_of algo.
+
+	* stlport/stl/config/user_config.h, features.h: string template
+	expressions is not a transparent feature, some compilers (VC6)
+	are experimenting ICE with it or some other (gcc) do not accept
+	it when extending string class (see mystring in
+	test/unit/string_test.cpp). So default STLport configuration will
+	be without string template expression, _STLP_DONT_USE_TEMPLATE_EXPRESSION
+	has been replaced by _STLP_USE_TEMPLATE_EXPRESSION.
+
 2006-07-16  Francois Dumont  <dums@stlport...>
 
 	* test/unit/mvctor_test.cpp: Patch from Michael Fink to avoid a EVC
