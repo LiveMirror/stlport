@@ -1,3 +1,9 @@
+2006-07-18  Francois Dumont  <dums@stlport...>
+
+	* test/unit/unordered_test.cpp: Change Key data type from size_t
+	to the more portable int. Fix what seems to be a bad code generation
+	of gcc under Linux 64 bits resulting in a test failure.
+
 2006-07-17  Francois Dumont  <dums@stlport...>
 
 	* test/unit/alg_test.cpp: New test for find_first_of algo.
