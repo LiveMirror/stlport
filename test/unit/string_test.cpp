@@ -771,7 +771,6 @@ void StringTest::template_expression()
       // literal-string
       "one" == two;
       "one" != two;
-#if 1 // defined (_STLP_USE_TEMPLATE_EXPRESSION)
       // strsum-string
       (one + two) == three;
       (one + two) != three;
@@ -787,7 +786,6 @@ void StringTest::template_expression()
       // strsum-strsum
       (one + two) == (two + three);
       (one + two) != (two + three);
-#endif
   }
 
   {
