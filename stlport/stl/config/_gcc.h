@@ -2,8 +2,10 @@
  * It is internal STLport header - DO NOT include it directly
  */
 
+#define _STLP_COMPILER "gcc"
+
 /* Systems having GLIBC installed have different traits */
-#if defined (__linux__) || defined (__CYGWIN__)
+#if defined (__linux__)
 #  ifndef _STLP_USE_GLIBC
 #    define _STLP_USE_GLIBC 1
 #  endif

@@ -3,6 +3,10 @@
  * Microsoft Visual C++ 6.0, 7.0, 7.1, 8.0, ICL
  */
 
+#if !defined (_STLP_COMPILER)
+#  define _STLP_COMPILER "Microsoft Visual Studio C++"
+#endif
+
 #if !defined (__ICL) && !defined (_STLP_MSVC)
 #  define _STLP_MSVC _MSC_VER
 #endif

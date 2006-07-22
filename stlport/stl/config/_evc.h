@@ -8,6 +8,8 @@
 #ifndef _STLP_EVC_H
 #define _STLP_EVC_H
 
+#define _STLP_COMPILER "eMbedded Visual C++"
+
 // This flag is being used by STLport to support
 // old-fashioned Windows CE SDK (see stl_wince.h)
 // do not use with eMebedded Visual C++ 3 or 4!

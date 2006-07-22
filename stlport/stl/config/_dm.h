@@ -2,6 +2,8 @@
 
 //#define _STLP_VERBOSE
 
+#define _STLP_COMPILER "DMC"
+
 #if defined (_STLP_VERBOSE)
 #  pragma message __DMC_VERSION_STRING__
 #endif
