@@ -1,3 +1,28 @@
+2006-07-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/config: Add _STLP_PLATFORM and _STLP_COMPILER repectively
+	containing STLport detected platform and compiler names. Some names
+	are surely not accurate and will be fixed but introducing those macros,
+	especially _STLP_COMPILER, help to report detection issue.
+
+	* stlport/stl/config/_system.h: Change macro checks in order to guaranty
+	that only one platform and only one compiler configuration file will be
+	included.
+
+	* stlport/stl/config/_cygwin.h, _mingw.h: Added
+
+	* stlport/stl/config/features.h: Removed _STLP_NO_MEMBER_TEMPLATE_CLASSES
+	check when _STLP_USE_TEMPLATE_EXPRESSION is activated.
+
+	* stlport/stl/config/_gcc.h, features.h: Add _STLP_NORETURN_FUNCTION
+	to signal function not returning, under gcc we use __attribute__((noreturn)). 
+
+	* src/locale_impl.h, stlport/stl/_ios_base.h, _locale.h, _range_errors.h,
+	_rope.h, _string_base.h, _vector.h, debug/_debug.h: Add
+	_STLP_NORETURN_FUNCTION to function that encapsulate raising of exceptions.
+	This help to limit warnings about uninitialized variable before use under
+	gcc.
+
 2006-07-18  Francois Dumont  <dums@stlport...>
 
 	* test/unit/unordered_test.cpp: Change Key data type from size_t
