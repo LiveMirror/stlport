@@ -979,6 +979,10 @@ namespace _STL = _STLP_STD_NAME;
 #  define _STLP_NOTHROW_INHERENTLY
 #endif
 
+#if !defined (_STLP_NORETURN_FUNCTION)
+#  define _STLP_NORETURN_FUNCTION
+#endif
+
 #if defined(_STLP_NO_BOOL)
 #  if (defined (__IBMCPP__) && (__IBMCPP__ < 400)) && ! defined (_AIX)
 #    include <isynonym.hpp>

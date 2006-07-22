@@ -115,6 +115,8 @@
 #  define _STLP_NO_NATIVE_WIDE_STREAMS   1
 #endif
 
+#define _STLP_NORETURN_FUNCTION __attribute__((noreturn))
+
 /* Mac OS X is a little different with namespaces and cannot instantiate
  * static data members in template classes */
 #if defined (__APPLE__)
