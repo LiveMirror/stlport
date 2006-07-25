@@ -136,10 +136,11 @@
 #    include <stl/config/_gcc.h>
 #  endif
 #elif defined (__MINGW32__)
-#  include <stl/config/_mingw.h>
+#  define _STLP_PLATFORM "MinGW"
 #  if defined (__GNUC__)
 #    include <stl/config/_gcc.h>
 #  endif
+#  include <stl/config/_windows.h>
 #elif defined (_WIN32) || defined (__WIN32) || defined (WIN32) || defined (__WIN32__) || \
       defined (__WIN16) || defined (WIN16) || defined (_WIN16)
 #  if defined ( __BORLANDC__ )  /* Borland C++ ( 4.x - 5.x ) */

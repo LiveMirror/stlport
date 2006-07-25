@@ -21,7 +21,9 @@
 #ifndef _STLP_INTERNAL_WINDOWS_H
 #define _STLP_INTERNAL_WINDOWS_H
 
-#define _STLP_PLATFORM "Windows"
+#if !defined (_STLP_PLATFORM)
+#  define _STLP_PLATFORM "Windows"
+#endif
 
 #if !defined (_STLP_BIG_ENDIAN) && !defined (_STLP_LITTLE_ENDIAN)
 #  if defined (_MIPSEB)
