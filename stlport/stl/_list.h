@@ -77,12 +77,6 @@ class _List_node : public _List_node_base {
 public:
   _Tp _M_data;
   __TRIVIAL_STUFF(_List_node)
-
-#if defined (__DMC__)
-  // for some reason, Digital Mars C++ needs a constructor...
- private:
-  _List_node();
-#endif
 };
 
 struct _List_iterator_base {
@@ -405,12 +399,12 @@ public:
         return;
       }
       this->_M_swap_aux(__x);
-    }
-    else if (this->empty()) {
+    } else if (this->empty()) {
       __x._M_swap_aux(*this);
     } else {
       this->_M_node.swap(__x._M_node);
       _STLP_STD::swap(this->_M_node._M_data._M_prev->_M_next, __x._M_node._M_data._M_prev->_M_next);
+      _STLP_STD::swap(this->_M_node._M_data._M_next->_M_prev, __x._M_node._M_data._M_next->_M_prev);
     }
   }
 

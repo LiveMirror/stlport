@@ -57,12 +57,9 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(insert);
   CPPUNIT_TEST(replace);
   CPPUNIT_TEST(resize);
-#if defined (__DMC__)
-  CPPUNIT_IGNORE;
-#endif
   CPPUNIT_TEST(short_string);
-  CPPUNIT_STOP_IGNORE;
   CPPUNIT_TEST(find);
+  CPPUNIT_TEST(copy);
 #if !defined (USE_PTHREAD_API) && !defined (USE_WINDOWS_API)
   CPPUNIT_IGNORE;
 #endif
@@ -74,6 +71,14 @@ class StringTest : public CPPUNIT_NS::TestCase
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(template_expression);
+#if defined (STLPORT) && defined (_STLP_MSVC) && (_STLP_MSVC < 1300)
+#  define TE_TMP_TEST_IGNORED
+  CPPUNIT_IGNORE;
+#endif
+  CPPUNIT_TEST(te_tmp);
+#if defined (TE_TMP_TEST_IGNORED)
+  CPPUNIT_STOP_IGNORE;
+#endif
 #if defined (STLPORT) && defined (_STLP_NO_WCHAR_T)
   CPPUNIT_IGNORE;
 #endif
@@ -87,8 +92,7 @@ class StringTest : public CPPUNIT_NS::TestCase
 #endif
   CPPUNIT_TEST(io);
   CPPUNIT_STOP_IGNORE;
-#if defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO) || \
-    defined (__DMC__)
+#if defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO) 
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(allocator_with_state);
@@ -108,11 +112,13 @@ protected:
   void resize();
   void short_string();
   void find();
+  void copy();
   void assign();
   void mt();
   void short_string_optim_bug();
   void compare();
   void template_expression();
+  void te_tmp();
   void template_wexpression();
   void io();
   void allocator_with_state();
@@ -405,7 +411,7 @@ void StringTest::null_char()
     CPPUNIT_CHECK( s.at(s.size()) == '\0' );
     CPPUNIT_ASSERT( false );
   }
-  catch ( out_of_range& ) {
+  catch (out_of_range const&) {
     CPPUNIT_ASSERT( true );
   }
   catch ( ... ) {
@@ -621,6 +627,38 @@ void StringTest::find()
   CPPUNIT_ASSERT( s.find_last_not_of("ehortw ") == 15 );
 }
 
+void StringTest::copy()
+{
+  string s("foo");
+  char dest[4];
+  dest[0] = dest[1] = dest[2] = dest[3] = 1;
+  s.copy(dest, 4);
+  int pos = 0;
+  CPPUNIT_ASSERT( dest[pos++] == 'f' );
+  CPPUNIT_ASSERT( dest[pos++] == 'o' );
+  CPPUNIT_ASSERT( dest[pos++] == 'o' );
+  CPPUNIT_ASSERT( dest[pos++] == 1 );
+
+  dest[0] = dest[1] = dest[2] = dest[3] = 1;
+  s.copy(dest, 4, 2);
+  pos = 0;
+  CPPUNIT_ASSERT( dest[pos++] == 'o' );
+  CPPUNIT_ASSERT( dest[pos++] == 1 );
+
+#if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
+  try {
+    s.copy(dest, 4, 5);
+    CPPUNIT_ASSERT( false );
+  }
+  catch (out_of_range const&) {
+    CPPUNIT_ASSERT( true );
+  }
+  catch ( ... ) {
+    CPPUNIT_ASSERT( false );
+  }
+#endif
+}
+
 void StringTest::assign()
 {
   string s;
@@ -733,33 +771,21 @@ void StringTest::template_expression()
       // literal-string
       "one" == two;
       "one" != two;
-#if 1 // defined (_STLP_USE_TEMPLATE_EXPRESSION)
       // strsum-string
-      (one+two) == three;
-#if  !defined (__DMC__)
-      (one+two) != three;
-#else
-      string one_two = one+two;
-      one_two != three;
-#endif
+      (one + two) == three;
+      (one + two) != three;
       // string-strsum
-      one == (two+three);
-#if  !defined (__DMC__)
-      one != (two+three);
-#else
-      string two_three = two+three;
-      one != two_three;
-#endif
+      one == (two + three);
+      one != (two + three);
       // strsum-literal
-      (one+two) == "three";
-      (one+two) != "three";
+      (one + two) == "three";
+      (one + two) != "three";
       // literal-strsum
-      "one" == (two+three);
-      "one" != (two+three);
+      "one" == (two + three);
+      "one" != (two + three);
       // strsum-strsum
-      (one+two) == (two+three);
-      (one+two) != (two+three);
-#endif
+      (one + two) == (two + three);
+      (one + two) != (two + three);
   }
 
   {
@@ -870,6 +896,40 @@ void StringTest::template_expression()
   //MSVC sees no problem. gcc limitation or MSVC is too cool ??
   mystring b = "str" + a;
   */
+}
+
+#if !defined (TE_TMP_TEST_IGNORED)
+class superstring
+{
+  public:
+    superstring() :
+      s("super")
+    {}
+
+    superstring( const string& str ) :
+      s( str )
+    {}
+
+  superstring operator / (const string& str )
+    { return superstring( s + "/" + str ); }
+
+  superstring operator / (const char* str )
+    { return superstring( s + "/" + str ); }
+
+  private:
+    string s;
+};
+#endif
+
+void StringTest::te_tmp()
+{
+#if !defined (TE_TMP_TEST_IGNORED)
+  superstring s;
+  string more( "more" );
+  string less( "less" );
+
+  superstring r = s / (more + less);
+#endif
 }
 
 void StringTest::template_wexpression()
@@ -1014,8 +1074,8 @@ void StringTest::io()
 
 void StringTest::allocator_with_state()
 {
-#if !(defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO)) && \
-    !defined (__DMC__)
+#if !(defined (STLPORT) && defined (_STLP_NO_CUSTOM_IO)) 
+
   char buf1[1024];
   StackAllocator<char> stack1(buf1, buf1 + sizeof(buf1));
 
