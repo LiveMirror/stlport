@@ -1,3 +1,7 @@
+2006-07-26  Francois Dumont  <dums@stlport...>
+
+	* src/fstream.cpp: Fixed MMAP_CHUNK definition, an offset type is signed.
+
 2006-07-25  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/config/_system.h, _windows.h: Fixed MinGW config that also
