@@ -1,3 +1,7 @@
+2006-07-31  Francois Dumont  <dums@stlport...>
+
+	* Patch from Michael Fink to fix EVC emulator build.
+
 2006-07-26  Francois Dumont  <dums@stlport...>
 
 	* src/fstream.cpp: Fixed MMAP_CHUNK definition, an offset type is signed.
