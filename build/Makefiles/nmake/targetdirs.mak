@@ -7,6 +7,11 @@ TARGET_NAME=$(COMPILER_NAME)-$(TARGET_PROC)
 TARGET_NAME=$(COMPILER_NAME)
 !endif
 
+# special case for evc3/evc4 emulator compiles
+!if "$(TARGET_PROC)-$(TARGET_PROC_SUBTYPE)" == "x86-emulator"
+TARGET_NAME=$(COMPILER_NAME)-$(TARGET_PROC_SUBTYPE)
+!endif
+
 OUTPUT_DIR             = obj\$(TARGET_NAME)\shared$(EXTRA_DIRS)
 OUTPUT_DIR_DBG         = obj\$(TARGET_NAME)\shared-g$(EXTRA_DIRS)
 OUTPUT_DIR_STLDBG      = obj\$(TARGET_NAME)\shared-stlg$(EXTRA_DIRS)

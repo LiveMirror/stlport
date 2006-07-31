@@ -327,9 +327,9 @@ if "%TARGETCPU%" == "ARMV4I" goto pr_arm
 if "%TARGETCPU%" == "ARMV4T" goto pr_arm
 
 if "%TARGETCPU%" == "X86" goto pr_x86
-REM Type from evc3 and/or PocketPC 2002 SDK reported here 
+REM Type from evc3 and/or PocketPC 2002 SDK reported here
 REM to correctly check the platform:
-if "%TARGETCPU%" == "X86EMnset CFG=none" goto pr_x86
+if "%TARGETCPU%" == "X86EMnset CFG=none" goto pr_emul
 if "%TARGETCPU%" == "x86" goto pr_x86
 if "%TARGETCPU%" == "emulator" goto pr_emul
 
@@ -352,7 +352,7 @@ goto pr_end
 :pr_arm
 echo Target processor: ARM
 echo TARGET_PROC=arm >> ..\Makefiles\config.mak
-echo TARGET_PROC_SUBTYPE=%TARGETCPU% >> ..\Makefiles\config.mak
+REM echo TARGET_PROC_SUBTYPE=%TARGETCPU% >> ..\Makefiles\config.mak
 goto pr_end
 
 :pr_x86
