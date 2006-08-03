@@ -1,3 +1,8 @@
+2006-08-03  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/nmake/evc8.mak: Patch from Ulrich Echkardt to activate
+	whole program optimization.
+
 2006-07-31  Francois Dumont  <dums@stlport...>
 
 	* Patch from Michael Fink to fix EVC emulator build.
