@@ -203,7 +203,7 @@ protected:                      // The functional protected interface.
   }
 
   void _M_invoke_callbacks(event);
-  void _M_throw_failure() _STLP_NORETURN_FUNCTION;
+  void _M_throw_failure() _STLP_FUNCTION_THROWS;
 
   ios_base();                   // Default constructor.
 
