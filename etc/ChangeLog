@@ -1,3 +1,11 @@
+2006-08-04  Francois Dumont  <dums@stlport...>
+
+	* stlport: Create _STLP_FUNCTION_THROWS depending on _STLP_NORETURN_FUNCTION
+	and also taking into account exception handling configuration.
+
+	* test/unit/alg_test.cpp, istmit_test.cpp: Fixes to make test buildable with
+	native compiler Standard library.
+
 2006-08-03  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/nmake/evc8.mak: Patch from Ulrich Echkardt to activate
