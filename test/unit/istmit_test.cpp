@@ -37,7 +37,7 @@ protected:
 
 CPPUNIT_TEST_SUITE_REGISTRATION(IStreamIteratorTest);
 
-#if defined (STLPORT) && !defined (_STLP_LIMITED_DEFAULT_TEMPLATES)
+#if !defined (STLPORT) || !defined (_STLP_LIMITED_DEFAULT_TEMPLATES)
 typedef istream_iterator<char> istream_char_ite;
 typedef istream_iterator<int> istream_int_ite;
 typedef istream_iterator<string> istream_string_ite;

@@ -196,6 +196,7 @@ void AlgTest::search_n_test()
 
 void AlgTest::find_first_of_test()
 {
+#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS)
   slist<int> intsl;
   intsl.push_front(1);
   intsl.push_front(2);
@@ -221,6 +222,36 @@ void AlgTest::find_first_of_test()
 
     vector<int>::iterator first;
     first = find_first_of(intv.begin(), intv.end(), intsl.begin(), intsl.end());
+    CPPUNIT_ASSERT( first != intv.end() );
+    CPPUNIT_ASSERT( *first == 2 );
+  }
+#endif
+
+  list<int> intl;
+  intl.push_front(1);
+  intl.push_front(2);
+
+  {
+    vector<int> intv;
+    intv.push_back(0);
+    intv.push_back(1);
+    intv.push_back(2);
+    intv.push_back(3);
+
+    vector<int>::iterator first;
+    first = find_first_of(intv.begin(), intv.end(), intl.begin(), intl.end());
+    CPPUNIT_ASSERT( first != intv.end() );
+    CPPUNIT_ASSERT( *first == 1 );
+  }
+  {
+    vector<int> intv;
+    intv.push_back(3);
+    intv.push_back(2);
+    intv.push_back(1);
+    intv.push_back(0);
+
+    vector<int>::iterator first;
+    first = find_first_of(intv.begin(), intv.end(), intl.begin(), intl.end());
     CPPUNIT_ASSERT( first != intv.end() );
     CPPUNIT_ASSERT( *first == 2 );
   }
