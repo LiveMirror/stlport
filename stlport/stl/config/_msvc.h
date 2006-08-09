@@ -73,6 +73,8 @@
 
 #if defined (_STLP_MSVC)
 
+#define _STLP_NORETURN_FUNCTION __declspec(noreturn)
+
 /* Full compiler version comes from boost library intrinsics.hpp header. */
 #  if defined (_MSC_FULL_VER) && (_MSC_FULL_VER >= 140050215)
 #    define _STLP_HAS_TRIVIAL_CONSTRUCTOR(T) __has_trivial_constructor(T)
