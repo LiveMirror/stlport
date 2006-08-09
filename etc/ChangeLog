@@ -1,3 +1,15 @@
+2006-08-09  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/config/_msvc.h: Add _STLP_NORETURN_FUNCTION for MSVC
+	compilers.
+
+	* stlport: Move place of _STLP_FUNCTION_THROWS in function declaration to
+	make msvc compiler happier, gcc do not care about position of this
+	attribute.
+
+	* stlport/stl/_ioserr.h: Fixed specification of STLport configuration file
+	in #error statement.
+
 2006-08-04  Francois Dumont  <dums@stlport...>
 
 	* stlport: Create _STLP_FUNCTION_THROWS depending on _STLP_NORETURN_FUNCTION
