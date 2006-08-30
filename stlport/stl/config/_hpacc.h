@@ -34,6 +34,7 @@
 #  if defined(__HP_aCC)
 
 #   define _STLP_LONG_LONG long long
+#   define _STLP_NO_VENDOR_STDLIB_L
 
 #if (__HP_aCC <= 30000 && __HP_aCC >= 12100)
 
@@ -64,6 +65,8 @@ static void _STLP_dummy_literal_3() { const char *p = "123456700000000000000089"
 // latest version and up
 #   if (__HP_aCC >= 32500 )
 #     define _STLP_HP_ACC                   0325
+
+#     define _STLP_USE_NEW_C_HEADERS
 
 #     define _STLP_FORCE_ALLOCATORS(t,a) \
   typedef typename _Alloc_traits<t,a>::_Orig _STLP_dummy_type1;\

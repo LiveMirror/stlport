@@ -1,3 +1,12 @@
+2006-08-30  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_cmath.h, _cstdlib.h: Patch from Boris Gubenko, Hp aCC
+	native Standard	lib already define math functions in global namespace.
+	
+	* stlport/stl/_num_put.c: Patch from Boris Gubenko, Hp aCC before version
+	60000 do not consider 'const ptrdiff_t' as const enough to be used in a
+	static buffer declaration.
+	
 2006-08-10  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stdlib.h: include errno.h for aCC, in case of -mt option in force.
