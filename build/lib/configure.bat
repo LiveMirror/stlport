@@ -124,7 +124,7 @@ echo    to link statically with STLport but using the dynamic C runtime use
 echo    --rtl-dynamic; if you want to link dynamicaly with STLport but using the
 echo    static C runtime use --rtl-static. See README.options for details.
 echo    Don't forget to signal the link method when building your appli or dll, in
-echo    stlport/stl/config/hosts.h set the following macro depending on the configure
+echo    stlport/stl/config/host.h set the following macro depending on the configure
 echo    option:
 echo    "--rtl-dynamic -> _STLP_USE_STATIC_LIB"
 echo    "--rtl-static  -> _STLP_USE_DYNAMIC_LIB"
