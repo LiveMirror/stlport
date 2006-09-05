@@ -124,10 +124,11 @@ echo    to link statically with STLport but using the dynamic C runtime use
 echo    --rtl-dynamic; if you want to link dynamicaly with STLport but using the
 echo    static C runtime use --rtl-static. See README.options for details.
 echo    Don't forget to signal the link method when building your appli or dll, in
-echo    _site_config.h set the following macro depending on the configure option:
-echo    "--rtl-dynamic -> _STLP_USE_DYNAMIC_LIB"
-echo    "--rtl-static  -> _STLP_USE_STATIC_LIB"
-echo    This is a Microsoft-only option.
+echo    stlport/stl/config/hosts.h set the following macro depending on the configure
+echo    option:
+echo    "--rtl-dynamic -> _STLP_USE_STATIC_LIB"
+echo    "--rtl-static  -> _STLP_USE_DYNAMIC_LIB"
+echo    This is a Microsoft Visual Studio only option.
 echo.
 echo "--use-boost <boost install path>"
 echo    Request use of boost support (www.boost.org). For the moment only the boost
