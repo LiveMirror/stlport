@@ -91,7 +91,7 @@ static void _STLP_dummy_literal_3() { const char *p = "123456700000000000000089"
 #     define _STLP_NATIVE_INCLUDE_PATH       ../include
 #     define _STLP_VENDOR_GLOBAL_STD         1
 #     define _STLP_VENDOR_GLOBAL_CSTD        1
-// Add the following in _site_config.h if "-Wc,-koenig_lookup,on" not used
+// Add the following in hosts.h if "-Wc,-koenig_lookup,on" not used
 //#     define _STLP_NO_KOENIG_LOOKUP          1
 #     define _STLP_DONT_THROW_RANGE_ERRORS   1
 #    endif /* _NAMESPACE_STD */
