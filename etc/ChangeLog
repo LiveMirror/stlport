@@ -1,3 +1,23 @@
+2006-09-08  Francois Dumont  <dums@stlport...>
+
+	* src/c_locale_win32/c_locale_win32.c: Modification in __GetLCIDFromName
+	to support the Chinese_Taiwan locale. Add of a __GetLCID call when first
+	call to it using non NLS mapping fails.
+
+	* src/c_locale_win32/c_locale_win32.c: Change __ParseLocaleString
+	implementation to correctly handle locale with a name having '.' in
+	the language or country part like in 'Chinese_Hong Kong S.A.R..950'.
+
+2006-09-05  Francois Dumont  <dums@stlport...>
+
+	* build/lib/configure.bat: Fixed comment for --rtl-dynamic and
+	--rtl-static options, impact on macros to uncomment in hosts.h
+	config file was inversed. Thanks Igor Pavlov.
+
+	* build/lib/configure.bat, doc/FAQ, doc/README.msvc,
+	stlport/stl/config/user_config.h, _hpacc.h: Replaced references to
+	_site_config.h by hosts.h. Thanks Igor Pavlov.
+
 2006-08-30  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_cmath.h, _cstdlib.h: Patch from Boris Gubenko, Hp aCC
