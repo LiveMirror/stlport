@@ -1456,10 +1456,10 @@ void __FixGrouping(char *grouping) {
 }
 
 const char* __ConvertName(const char* lname, LOCALECONV* ConvTable, int TableSize) {
-  int     i;
-  int     cmp;
-  int     low = 0;
-  int    high=TableSize-1;
+  int i;
+  int cmp;
+  int low = 0;
+  int high = TableSize - 1;
 
   /*  typical binary search - do until no more to search or match */
   while (low <= high) {
@@ -1475,44 +1475,71 @@ const char* __ConvertName(const char* lname, LOCALECONV* ConvTable, int TableSiz
   return lname;
 }
 
-int __ParseLocaleString(const char* lname, char* lang, char* ctry,
-                        char* page) {
+int __ParseLocaleString(const char* lname,
+                        char* lang, char* ctry, char* page) {
   int param = 0;
   size_t len;
-  char ch = lname[0];
+  size_t tmpLen = 0;
 
-  if (ch == 0)
+  if (lname[0] == 0)
     return 0;
-  else if (ch == '.') { /* Only code page provided */
-    if (strlen(lname + 1) > MAX_CP_LEN) return -1; /* CP number too long */
-    _STLP_STRCPY2(page, MAX_CP_LEN + 1, lname + 1);
-    lang[0] = 0; ctry[0] = 0;  /* necessary? calling function does this too */
-    return 0;
+
+  /* We look for the first country separator '_' */
+  len = strcspn(lname, "_");
+  if (lname[len] == '_') {
+    if (len == 0 || len > MAX_LANG_LEN) return -1; /* empty lang is invalid*/
+    _STLP_STRNCPY(lang, MAX_LANG_LEN + 1, lname, len);
+    lname += len + 1;
+    ++param;
   }
 
-  while (ch != 0) { /* Parse string */
-    len = strcspn(lname, "_.,"); /* ',' for compability with POSIX */
-
-    ch = lname[len];
-    if ((param == 0) && (len < MAX_LANG_LEN)) {
-      if (ch!='.') /* hence '_', ',' or '/0' */
-        _STLP_STRNCPY(lang, MAX_LANG_LEN + 1, lname, len);
-      else { /* no ctry, read lang and skip ctry on next pass */
-        ctry[0]=0;
-        _STLP_STRNCPY(lang, MAX_LANG_LEN + 1, lname, len);
+  /* We look for the last code page separator '.' */
+  len = -1;
+  tmpLen = strcspn(lname, ".");
+  while (lname[tmpLen] == '.') {
+    len = tmpLen; ++tmpLen;
+    tmpLen += strcspn(lname + tmpLen, ".");
+  }
+  if (len != -1) { /* Means that we found a '.' */
+    if (param == 0) {
+      /* We have no lang yet so we have to fill it first, no country */
+      if (len > MAX_LANG_LEN) return -1;
+      if (len == 0) {
+        /* No language nor country, only code page */
         ++param;
       }
+      else
+      { _STLP_STRNCPY(lang, MAX_LANG_LEN + 1, lname, len); }
+      ++param;
     }
-    else if (param == 1 && len < MAX_CTRY_LEN && ch != '_')
+    else {
+      /* We already have a lang so we are now looking for the country: */
+      if (len == 0) return -1; /* We forbid locale name with the "_." motif in it */
+      if (len > MAX_CTRY_LEN) return -1;
       _STLP_STRNCPY(ctry, MAX_CTRY_LEN + 1, lname, len);
-    else if (param == 2 && len < MAX_CP_LEN && (ch == 0 || ch == ','))
-      _STLP_STRNCPY(page, MAX_CP_LEN + 1, lname, len);
-    else
-      return -1;
-    if (ch == ',') break; /* Modifier found. In NT not used. */
+    }
     ++param;
-    lname+=(len + 1);
+    lname += len + 1;
   }
+
+  /* We look for ',' for compatibility with POSIX */
+  len = strcspn(lname, ",");
+  switch (param) {
+    case 0:
+      if (len > MAX_LANG_LEN) return -1;
+      _STLP_STRNCPY(lang, MAX_LANG_LEN + 1, lname, len);
+      break;
+    case 1:
+      if (len > MAX_CTRY_LEN) return -1;
+      _STLP_STRNCPY(ctry, MAX_CTRY_LEN + 1, lname, len);
+      break;
+    default:
+      if (len > MAX_CP_LEN) return -1;
+      _STLP_STRNCPY(page, MAX_CP_LEN + 1, lname, len);
+      break;
+  }
+
+  /* ',' POSIX modifier is not used in NT */
   return 0;
 }
 
@@ -1609,10 +1636,18 @@ int __GetLCIDFromName(const char* lname, LCID* lcid, char* cp, _Locale_lcid_t *h
     else {
       if (ctry[0] == 0)
         result = __GetLCID(__ConvertName(lang, __rg_language, sizeof(__rg_language)/sizeof(LOCALECONV)), NULL, lcid);
-      else
+      else {
         result = __GetLCID(__ConvertName(lang, __rg_language, sizeof(__rg_language)/sizeof(LOCALECONV)),
                            __ConvertName(ctry, __rg_country, sizeof(__rg_country)/sizeof(LOCALECONV)),
                            lcid);
+        if (result != 0) {
+          /* Non NLS mapping might introduce problem with some locales when only one entry is mapped,
+          * the lang or the country (example: chinese locales like 'chinese_taiwan' gives 'CHS_taiwan'
+          * that do not exists in system). This is why we are giving this locale an other chance by
+          * calling __GetLCID without the mapping. */
+          result = __GetLCID(lang, ctry, lcid);
+        }
+      }
     }
   }
 
