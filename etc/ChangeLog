@@ -1,3 +1,10 @@
+2006-09-11  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* stlport/stl/_algo.c: search_n with predicate fail in case
+	when subsequence size is 1; thanks Timmie Smith.
+	
+	* test/unit/alg_test.cpp: test for problem.
+
 2006-09-08  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32/c_locale_win32.c: Modification in __GetLCIDFromName
@@ -26,6 +33,18 @@
 	* stlport/stl/_num_put.c: Patch from Boris Gubenko, Hp aCC before version
 	60000 do not consider 'const ptrdiff_t' as const enough to be used in a
 	static buffer declaration.
+
+2006-08-26  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* stlport/stl/_hashtable.c: allow smaller bucket counts for
+	hashtable. Thanks Herbert Duerr.
+
+	* stlport/stl/_hash_fun.h: use primary types for hasher, not
+	typedefs.
+
+	* stlport/stl/type_manips.h: workaround for __true_type/__false_type
+	for various versions gcc (oh, yes, gcc, it's real pain to detect
+	real version of libstdc++)
 	
 2006-08-10  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
