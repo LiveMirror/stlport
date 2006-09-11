@@ -382,13 +382,10 @@ _OutputIter _STLP_CALL
 __do_put_integer(_OutputIter __s, ios_base& __f, _CharT __fill, _Integer __x) {
   // buffer size = number of bytes * number of digit necessary in the smallest Standard base (base 8, 3 digits/byte)
   //               plus the longest base representation '0x'
-#if !defined (__HP_aCC) || (__HP_aCC >= 60000)
-  const ptrdiff_t __buf_size = sizeof(_Integer) * 3 + 2;
-  char __buf[__buf_size];
-#else
-  char __buf[8 * 3 + 2];
+  // Do not use __buf_size to define __buf static buffer, some compilers (aCC) not accept const variable as
+  // the specification of a static buffer size.
+  char __buf[sizeof(_Integer) * 3 + 2];
   const ptrdiff_t __buf_size = sizeof(__buf) / sizeof(char);
-#endif
   ios_base::fmtflags __flags = __f.flags();
   char* __ibeg = __write_integer_backward((char*)__buf+__buf_size, __flags, __x);
   return __put_integer(__ibeg, (char*)__buf+__buf_size, __s, __f, __flags, __fill);
