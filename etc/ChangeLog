@@ -1,3 +1,8 @@
+2006-09-11  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_num_put.c: Modification in __do_put_integer to avoid
+	a Hp aCC workaround.
+
 2006-09-11  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_algo.c: search_n with predicate fail in case
