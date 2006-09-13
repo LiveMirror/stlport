@@ -1,3 +1,9 @@
+2006-09-13  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_exception.h: Made a previously general Windows 64 bits
+	workaround specific to the cross compiler coming with PSDK. Thanks
+	Igor Pavlov.
+
 2006-09-11  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_num_put.c: Modification in __do_put_integer to avoid
