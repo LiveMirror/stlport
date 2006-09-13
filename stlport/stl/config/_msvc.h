@@ -24,10 +24,9 @@
 #endif
 
 #if defined (_STLP_USING_PLATFORM_SDK_COMPILER)
-/* This is 64 bits platform SDK specific settings. There is no clear way to
- * recognize the SDK coming with a compiler from the one freely available.
- * For the moment we hope that there is only one SDK for 64 bits windows so
- * we simply detect it using the _WIN64 macro.
+/* This is a specific section for compilers coming with platform SDKs. Native
+ * library coming with it is different from the one coming with commercial
+ * MSVC compilers so there is some specific settings.
  */
 #  define _STLP_NATIVE_INCLUDE_PATH ../crt
 #  define _STLP_VENDOR_GLOBAL_CSTD
