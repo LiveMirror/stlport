@@ -1,3 +1,20 @@
+2006-09-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* Repository: following records are merge from 5.1 branch
+	[see record 2006-07-04 by Francois Dumont in 5.1];
+
+	* stlport/stl/_rope.h, _rope.c: Patch from Peter Hercek to fix a
+	missing null termination in rope constructor from a character 
+	and a buffer overrun.
+
+	* stlport/stl/_rope.h: Removed special _S_rounded_up implementation
+	for other types than char and wchar_t. rope implementation is
+	expecting this method to always return a size > to the given size in
+	order to store the terminating null character.
+
+	* stlport/stl/_rope.c: Fix reference counter management to avoid memory
+	leak in _S_destr_concat_char_iter.
+
 2006-09-11  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_algo.c: search_n with predicate fail in case
