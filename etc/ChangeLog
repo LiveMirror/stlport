@@ -1,3 +1,19 @@
+2006-09-20  Francois Dumont  <dums@stlport...>
+
+	* test/unit/allocator_test.cpp: Add new test case for allocation of
+	empty buffer.
+
+	* test/unit/fstream_test.cpp: Use a variable to always point to the same
+	test file and adopt a 'Standard' file name 'test_file.txt'.
+
+	* stlport/stl/_hash_fun.h: Rollback 2006-08-26 Petr modification that
+	was introducing a regression with MSVC compilers.
+
+	* stlport/stl/_fstream.c: First attempt to fix seekoff basic_filebuf
+	implementation when dealing with a codecvt facet having variable
+	encoding. This fix is surely not complete, discussion with Uli is not
+	over.
+
 2006-09-13  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_exception.h: Made a previously general Windows 64 bits
