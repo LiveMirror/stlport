@@ -1,3 +1,23 @@
+2006-09-26  Francois Dumont  <dums@stlport...>
+
+	* src/c_locale_win32/c_locale_win32.c: Add check of code page when
+	specified in locale name.
+
+	* src/c_locale_win32/c_locale_win32.c: Add checks in __ConvertDate
+	and _Locale_t_fmt to avoid potential buffer overflow.
+
+	* src/c_locale_win32/c_locale_win32.c: Create __GetLocaleInfoUsingACP
+	function that merge a call to GetLocaleInfoA and a call to
+	__ConvertFromACP in one call, the latter function has been removed.
+
+	* src/c_locale.h: Restore _STLP_BEGIN_NAMESPACE when STLport use
+	its own mbstate_t definition which is only available in STLport
+	namespace. Fix Borland regression.
+
+	* stlport/stl/_mbstate_t.h: Replace stl/_cwchar.h include with
+	a cwchar one as this file is included from the outside world when
+	building STLport lib.
+
 2006-09-25  Francois Dumont  <dums@stlport...>
 
 	* test/unit/codecvt_test.cpp: New test case for the codecvt
