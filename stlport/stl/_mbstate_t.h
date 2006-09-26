@@ -18,7 +18,9 @@
 
 #if !defined (_STLP_NO_WCHAR_T)
 #  if defined (__cplusplus)
-#    include <stl/_cwchar.h>
+/* This header is included from the outside world when building the lib
+ * so we cannot directly include stl/_cwchar.h. */
+#    include <cwchar>
 #  else
 #    include <wchar.h>
 #  endif
