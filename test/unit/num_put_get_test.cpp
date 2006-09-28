@@ -298,6 +298,7 @@ void NumPutGetTest::num_put_integer()
     //Even with showbase, 0 value gives "0" output (see printf documentation)
     CHECK_COMPLETE(short, 0, hex, showbase, showpos, nouppercase, 0, right, "0")
     CHECK_COMPLETE(short, 0, hex, showbase, noshowpos, nouppercase, 6, right, "     0")
+    CHECK_COMPLETE(short, 0, hex, showbase, noshowpos, nouppercase, 6, internal, "     0")
 
     CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, right, "   0x1")
     CHECK_COMPLETE(short, 1, hex, showbase, noshowpos, nouppercase, 6, left, "0x1   ")
