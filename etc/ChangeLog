@@ -1,5 +1,18 @@
 2006-09-26  Francois Dumont  <dums@stlport...>
 
+	* src/allocators.cpp: Reorder code blocks to fix build when using
+	_STLP_LEAKS_PEDANTIC.
+
+	* stlport/stl/_num_put.c: Restore __len >= 2 check in
+	__copy_integer_and_fill function. It has been removed on the
+	2006-07-11, at this time STLport always add the base information
+	even for 0 value. This modification has been rollback but not this
+	check.
+
+	* test/unit/num_put_get_test.cpp: Add check for above fix.
+
+2006-09-26  Francois Dumont  <dums@stlport...>
+
 	* src/c_locale_win32/c_locale_win32.c: Add check of code page when
 	specified in locale name.
 
