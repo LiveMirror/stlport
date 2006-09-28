@@ -173,7 +173,7 @@ __copy_integer_and_fill(const _CharT* __buf, ptrdiff_t __len,
       __oi = __fill_n(__oi, __pad, __fill);
       return copy(__buf + 1, __buf + __len, __oi);
     }
-    else if (__dir == ios_base::internal &&
+    else if (__dir == ios_base::internal && __len >= 2  &&
              (__flg & ios_base::showbase) &&
              (__flg & ios_base::basefield) == ios_base::hex) {
       *__oi++ = __buf[0];
@@ -382,7 +382,7 @@ _OutputIter _STLP_CALL
 __do_put_integer(_OutputIter __s, ios_base& __f, _CharT __fill, _Integer __x) {
   // buffer size = number of bytes * number of digit necessary in the smallest Standard base (base 8, 3 digits/byte)
   //               plus the longest base representation '0x'
-  // Do not use __buf_size to define __buf static buffer, some compilers (aCC) not accept const variable as
+  // Do not use __buf_size to define __buf static buffer, some compilers (HP aCC) do not accept const variable as
   // the specification of a static buffer size.
   char __buf[sizeof(_Integer) * 3 + 2];
   const ptrdiff_t __buf_size = sizeof(__buf) / sizeof(char);
