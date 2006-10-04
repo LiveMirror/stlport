@@ -1,3 +1,22 @@
+2006-10-04  Francois Dumont  <dums@stlport...>
+
+	* src/c_locale.h: Add #error to signal issue when building c_locale.c
+	as a C source when STLport uses its own mbstate_t definition.
+
+	* src/num_put_float.cpp: Modification in Cygwin native lib headers
+	revealed that we were missing ieeefp.h include.
+
+	* src/dll_main.cpp, stlport/stl/_threads.h: Fix export of
+	_Atomic_swap_struct for compilers supporting export of templates.
+
+	* stlport/stl/config/_hpacc.h: Some cleanup (unknown _STLP_NO_KOENIG_LOOKUP
+	macro) and formating fixes.
+
+	* stlport/stl/_bvector.h: Use _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS
+	rather than reproducing the workaround hidden by this macro.
+
+	* test/unit/vector_test.cpp: Add test case to check iterators comparisons.
+
 2006-09-26  Francois Dumont  <dums@stlport...>
 
 	* src/allocators.cpp: Reorder code blocks to fix build when using
