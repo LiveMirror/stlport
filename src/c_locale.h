@@ -59,6 +59,12 @@
 _STLP_BEGIN_NAMESPACE
 #  endif
 extern "C" {
+#else
+#  if defined (_STLP_USE_OWN_MBSTATE_T)
+#    error Own STLport mbstate_t definition is in STLport namespace so this header _must_ be used as \
+           a C++ header. Please move c_locale.c in Makefile.inc to list it in the C++ sources (you might \
+           have to change file extension to .cpp too).
+#  endif
 #endif
 
 /*
