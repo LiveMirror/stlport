@@ -32,6 +32,7 @@ class VectorTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(pointer);
   CPPUNIT_TEST(auto_ref);
   CPPUNIT_TEST(allocator_with_state);
+  CPPUNIT_TEST(iterators);
 #if defined (STLPORT) && defined (_STLP_NO_MEMBER_TEMPLATES)
   CPPUNIT_IGNORE;
 #endif
@@ -51,6 +52,7 @@ protected:
   void pointer();
   void auto_ref();
   void allocator_with_state();
+  void iterators();
   void optimizations_check();
 };
 
@@ -413,4 +415,32 @@ void VectorTest::optimizations_check()
   CPPUNIT_ASSERT( v2.size() == 1 );
   CPPUNIT_ASSERT( v2[0].builtFromBase == true );
 #endif
+}
+
+void VectorTest::iterators()
+{
+  vector<int> vint(10, 0);
+  vector<int> const& crvint = vint;
+
+  CPPUNIT_ASSERT( vint.begin() == vint.begin() );
+  CPPUNIT_ASSERT( crvint.begin() == vint.begin() );
+  CPPUNIT_ASSERT( vint.begin() == crvint.begin() );
+  CPPUNIT_ASSERT( crvint.begin() == crvint.begin() );
+
+  CPPUNIT_ASSERT( vint.begin() != vint.end() );
+  CPPUNIT_ASSERT( crvint.begin() != vint.end() );
+  CPPUNIT_ASSERT( vint.begin() != crvint.end() );
+  CPPUNIT_ASSERT( crvint.begin() != crvint.end() );
+
+  CPPUNIT_ASSERT( vint.rbegin() == vint.rbegin() );
+  // Not Standard:
+  //CPPUNIT_ASSERT( vint.rbegin() == crvint.rbegin() );
+  //CPPUNIT_ASSERT( crvint.rbegin() == vint.rbegin() );
+  CPPUNIT_ASSERT( crvint.rbegin() == crvint.rbegin() );
+
+  CPPUNIT_ASSERT( vint.rbegin() != vint.rend() );
+  // Not Standard:
+  //CPPUNIT_ASSERT( vint.rbegin() != crvint.rend() );
+  //CPPUNIT_ASSERT( crvint.rbegin() != vint.rend() );
+  CPPUNIT_ASSERT( crvint.rbegin() != crvint.rend() );
 }
