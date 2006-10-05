@@ -1,3 +1,35 @@
+2006-10-05  Francois Dumont  <dums@stlport...>
+
+	* build/Makefiles/gmake/bcc.mak: Use -P compiler to force build of C
+	translation as C++ because of the mbstate_t problem.
+
+	* build/Makefiles/gmake/lib/bcc.mak, rules-a.mak: Fix Borland tlib call
+	syntax thanks mbkenny.
+
+	* stlport/stl/wchar.h: Add include of internal _mbstate_t.h file to
+	know STLport status regarding mbstate_t configuration.
+
+	* stlport/stl/c_locale.h: When building platform localisation support
+	as C++ struct declaration are done in STLport namespace.
+
+	* src/c_locale.h: Removed _mbstate_t.h include that is now included
+	from wchar.h or _cwchar.h depending on C or C++ build. Removed #error
+	done too early (see next comment).
+
+	* src/c_locale.c: Add #error statement when building STLport on a platform
+	having real localisation support but no native mbstate_t definition. In this
+	case c_locale.c must be built as a C++ translation unit.
+
+	* src/c_locale_win32/c_locale_win32.c: Add Borland workaround to avoid
+	compilation error now that it is build as a C++ translation unit.
+
+	* stlport/stl/_mbstate_t.h: Now that this file is not included from outside
+	world we can include internal _cwchar.h rather than cwchar. Removed
+	a wint_t workaround already existing in _cwchar.h. Removed Borland workaround
+	that was defining mbstate_t when using this file in a C context, it was
+	moreover different than the definition in C++ ! Ad a pure C declaration of
+	mbstate_t when in C.
+
 2006-10-04  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale.h: Add #error to signal issue when building c_locale.c
