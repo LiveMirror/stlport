@@ -33,7 +33,6 @@
 
 #include "stlport_prefix.h"
 #include <stl/c_locale.h>
-#include <stl/_mbstate_t.h>
 
 #ifdef _STLP_REAL_LOCALE_IMPLEMENTED
 #  if defined (_STLP_USE_GLIBC) && !defined (__CYGWIN__)
@@ -54,17 +53,11 @@
 
 #ifdef __cplusplus
 #  if defined (_STLP_USE_OWN_MBSTATE_T)
-/* Own STLport mbstate_t is in STLport namespace so we have to move to this namespace
- * to have access to it. */
+/* Own STLport mbstate_t is in STLport namespace so we have to be in this namespace
+ * to see it. */
 _STLP_BEGIN_NAMESPACE
 #  endif
 extern "C" {
-#else
-#  if defined (_STLP_USE_OWN_MBSTATE_T)
-#    error Own STLport mbstate_t definition is in STLport namespace so this header _must_ be used as \
-           a C++ header. Please move c_locale.c in Makefile.inc to list it in the C++ sources (you might \
-           have to change file extension to .cpp too).
-#  endif
 #endif
 
 /*
