@@ -275,15 +275,29 @@ void VectorTest::vec_test_7()
   */
 }
 
+struct TestStruct
+{
+  unsigned int a[3];
+};
+
 void VectorTest::capacity()
 {
-  vector<int> v;
+  {
+    vector<int> v;
 
-  CPPUNIT_ASSERT( v.capacity() == 0 );
-  v.push_back(42);
-  CPPUNIT_ASSERT( v.capacity() >= 1 );
-  v.reserve(5000);
-  CPPUNIT_ASSERT( v.capacity() >= 5000 );
+    CPPUNIT_ASSERT( v.capacity() == 0 );
+    v.push_back(42);
+    CPPUNIT_ASSERT( v.capacity() >= 1 );
+    v.reserve(5000);
+    CPPUNIT_ASSERT( v.capacity() >= 5000 );
+  }
+
+  {
+    //Test that used to generate an assertion when using __debug_alloc.
+    vector<TestStruct> va;
+    va.reserve(1);
+    va.reserve(2);
+  }
 }
 
 void VectorTest::at() {
