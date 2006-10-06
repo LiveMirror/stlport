@@ -16,6 +16,7 @@
 #ifndef _STLP_INTERNAL_MBSTATE_T
 #define _STLP_INTERNAL_MBSTATE_T
 
+/*
 #if !defined (_STLP_NO_WCHAR_T)
 #  if defined (__cplusplus)
 #    include <stl/_cwchar.h>
@@ -23,6 +24,7 @@
 #    include <wchar.h>
 #  endif
 #endif
+*/
 
 #if (defined (__OpenBSD__) || defined (__FreeBSD__)) && defined (__GNUC__) && !defined (_GLIBCPP_HAVE_MBSTATE_T)
 #  define __mbstate_t_defined /* mbstate_t defined in native <cwchar>, so not defined in C! */

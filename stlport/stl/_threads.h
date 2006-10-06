@@ -199,7 +199,7 @@ using _STLP_VENDOR_CSTD::time_t;
 #    endif
 #    include <synch.h>
 #    include <cstdio>
-#    include <stl/_mbstate_t.h>
+#    include <cwchar>
 
 #  elif defined (_STLP_BETHREADS)
 
