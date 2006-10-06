@@ -1,3 +1,17 @@
+2006-10-06  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_alloc.h, _alloc.c: Fixed __debug_alloc implementation
+	to avoid unjustified assertion about wrong size of buffer to
+	deallocate, thanks David Deakins and verntx on sourceforge.
+
+	* test/unit/vector_test.cpp: Add test for bug above.
+
+	* stlport/wchar.h, stl/_cwchar.h, _istream.h, _limits.h, _locale.h,
+	_threads.h, char_traits.h, type_traits.h, _mbstate_t.h: Fix regression
+	introduce by inclusion of mbstate_t.h in wchar.h. Now _mbstate_t.h is
+	only included at end of wchar.h and _cwchar.h. All places where _mbstate_t.h
+	was used are now including _cwchar.h.
+
 2006-10-05  Francois Dumont  <dums@stlport...>
 
 	* build/Makefiles/gmake/bcc.mak: Use -P compiler to force build of C
