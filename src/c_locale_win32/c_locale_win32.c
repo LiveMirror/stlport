@@ -52,9 +52,6 @@
 #endif
 
 #if defined (__cplusplus)
-#  if defined (_STLP_USE_OWN_MBSTATE_T)
-_STLP_BEGIN_NAMESPACE
-#  endif
 extern "C" {
 #endif
 
@@ -1913,8 +1910,5 @@ char* __ConvertToCP(int from_cp, int to_cp, const char *from, size_t size, size_
 
 #ifdef __cplusplus
 }
-#  if defined (_STLP_USE_OWN_MBSTATE_T)
-_STLP_END_NAMESPACE
-#  endif
 #endif
 
