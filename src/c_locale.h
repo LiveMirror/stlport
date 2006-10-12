@@ -52,11 +52,6 @@
 #define _Locale_MAX_COMPOSITE_NAME 6*(_Locale_MAX_SIMPLE_NAME+3)
 
 #ifdef __cplusplus
-#  if defined (_STLP_USE_OWN_MBSTATE_T)
-/* Own STLport mbstate_t is in STLport namespace so we have to be in this namespace
- * to see it. */
-_STLP_BEGIN_NAMESPACE
-#  endif
 extern "C" {
 #endif
 
@@ -447,9 +442,6 @@ const char * _Locale_catgets(struct _Locale_messages *, nl_catd_type,
 #ifdef __cplusplus
 // extern "C"
 }
-#  if defined (_STLP_USE_OWN_MBSTATE_T)
-_STLP_END_NAMESPACE
-#  endif
 #endif
 
 #endif /* _STLP_C_LOCALE_IMPL_H */
