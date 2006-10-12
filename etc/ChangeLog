@@ -1,3 +1,30 @@
+2006-10-12  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_numpunct.h, src/numpunct.cpp: numpunct facet _M_truename
+	_M_falsename and _M_grouping are not static anymore. This seems useless
+	and moreover was introducing static initialisation order and threading
+	issues.
+
+	* stlport/stl/c_locale.h, _mbstate_t.h, src/c_locale.h, c_locale.c:
+	New mbstate_t policy. When no mbstate_t in native library STLport defines
+	one for its own need in localisation support. This mbstate_t is simply
+	an int defined in global namespace and imported to STLport namespace.
+	Internal localisation framework is nt anymore in STLport namespace but
+	in the global one as it is normaly a C framework.
+
+	* stlport/stl/config/_bc.h: Defines _STLP_NO_NATIVE_MBSTATE_T rather
+	than internal _STLP_USE_OWN_MBSTATE_T macro.
+
+	* stlport/stl/config/_evc.h: Add comment for EVC3 users, this platform
+	should define _STLP_NO_NATIVE_MBSTATE_T, but I have not the platform
+	to check...
+
+	* build/Makefiles/gmake/bcc.mak: Do not force anymore built of C sources
+	as C++.
+
+	* test/unit/string_test.cpp, istmit_test.cpp: Fixed macro checks to make
+	tests buildable even when _STLP_NO_IOSTREAMS is defined.
+
 2006-10-09  Francois Dumont  <dums@stlport...>
 
 	* test/unit/codecvt_test.cpp: Fix use of mbstate_t to make it more
