@@ -75,24 +75,14 @@ typedef char mbstate_t;
 #    endif /* _MBSTATE_T */
 #  endif /* ROOT65 */
 #else /* __sgi */
-#  if defined (__cplusplus)
-#    include <cstddef>
-#    include <cwchar>
-#    include <cctype>
-#  else
-#    include <stddef.h>
-#    include <wchar.h>
-#    include <ctype.h>
-#  endif
+#  include <stddef.h>
+#  include <wchar.h>
+#  include <ctype.h>
 #endif /* __sgi */
 
 /*
  * GENERAL FRAMEWORK
  */
-
-#if defined (__cplusplus) && defined (_STLP_USE_OWN_MBSTATE_T)
-_STLP_BEGIN_NAMESPACE
-#endif
 
 /*
  * Opaque types, implementation (if there is one) depends
@@ -105,10 +95,6 @@ struct _Locale_collate;
 struct _Locale_monetary;
 struct _Locale_messages;
 struct _Locale_name_hint;
-
-#if defined (__cplusplus) && defined (_STLP_USE_OWN_MBSTATE_T)
-_STLP_END_NAMESPACE
-#endif
 
 /*
   Bitmask macros.
