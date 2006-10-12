@@ -16,68 +16,26 @@
 #ifndef _STLP_INTERNAL_MBSTATE_T
 #define _STLP_INTERNAL_MBSTATE_T
 
-/*
-#if !defined (_STLP_NO_WCHAR_T)
-#  if defined (__cplusplus)
-#    include <stl/_cwchar.h>
-#  else
-#    include <wchar.h>
-#  endif
-#endif
-*/
-
 #if (defined (__OpenBSD__) || defined (__FreeBSD__)) && defined (__GNUC__) && !defined (_GLIBCPP_HAVE_MBSTATE_T)
 #  define __mbstate_t_defined /* mbstate_t defined in native <cwchar>, so not defined in C! */
 #endif
 
-#if !defined (_STLP_USE_NO_IOSTREAMS) && defined (_STLP_NO_NATIVE_MBSTATE_T) && !defined (_STLP_NO_MBSTATE_T) && !defined (_MBSTATE_T) && !defined (__mbstate_t_defined)
-#  define _STLP_USE_OWN_MBSTATE_T
-#  define _MBSTATE_T
+#if defined (_STLP_NO_NATIVE_MBSTATE_T) && !defined (_STLP_NO_MBSTATE_T) && !defined (_MBSTATE_T) && !defined (__mbstate_t_defined)
+#  if !defined (_STLP_USE_NO_IOSTREAMS)
+#    define _STLP_NO_MBSTATE_T
+#  else
+#    define _STLP_USE_OWN_MBSTATE_T
+#    define _MBSTATE_T
+#  endif
 #endif
 
 #if defined (_STLP_USE_OWN_MBSTATE_T)
-/* to be compatible across different SUN platforms */
-#  ifdef __sun
-#    define __stl_mbstate_t __mbstate_t
-#  endif
+typedef int mbstate_t;
 
 #  if defined (__cplusplus)
-struct __stl_mbstate_t {
-  __stl_mbstate_t( long __st = 0 ) { _M_state[0] = __st ; }
-  __stl_mbstate_t& operator=(const long __st) {
-    _M_state[0] = __st;
-    return *this;
-  }
-  __stl_mbstate_t(const __stl_mbstate_t& __x) {_M_state[0]= __x._M_state[0]; }
-  __stl_mbstate_t& operator=(const __stl_mbstate_t& __x) {
-    _M_state[0]= __x._M_state[0];
-    return *this;
-  }
-#    if defined (__sun)
-#      ifdef _LP64
-  long _M_state[4];
-#      else
-  int _M_state[6];
-#      endif
-#    else
-  long _M_state[1];
-#    endif
-};
-
-inline bool operator==(const __stl_mbstate_t& __x, const __stl_mbstate_t& __y)
-{ return ( __x._M_state[0] == __y._M_state[0] ); }
-
-inline bool operator!=(const __stl_mbstate_t& __x, const __stl_mbstate_t& __y)
-{ return ( __x._M_state[0] == __y._M_state[0] ); }
-
 _STLP_BEGIN_NAMESPACE
-
-typedef __stl_mbstate_t mbstate_t;
-
+using ::mbstate_t;
 _STLP_END_NAMESPACE
-
-#  else
-typedef struct __stl_mbstate_t mbstate_t;
 #  endif
 
 #endif /* _STLP_USE_OWN_MBSTATE_T */
