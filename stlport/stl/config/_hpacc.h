@@ -32,6 +32,7 @@
 //
 #if defined (__HP_aCC)
 
+#  define _STLP_NO_FORCE_INSTANTIATE
 #  define _STLP_LONG_LONG long long
 #  define _STLP_NO_VENDOR_STDLIB_L
 
