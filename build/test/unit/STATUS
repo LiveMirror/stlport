@@ -831,3 +831,16 @@ Notes:                          tests hash_test and rope_test giving linker's un
 Status (stldbg-shared):         Could not build the tests because of some problem in makefile
 Notes:                          New test codecvt_test.cpp does not compile on HP-UX. It is believed
                                 to be a problem with the test. Test author was notified.
+
+-----------------------------------------------------------------------
+Compiler:                       HP aC++/ANSI C B3910B A.06.06 [Nov 7 2005]
+-----------------------------------------------------------------------
+Date:                           2006-10-13
+STLP Version:                   SVN branch STLPORT_5_1, revision 2664
+Reporter:                       bgubenko (Boris Gubenko)
+Status (release-shared):        All pass (379 tests)
+Notes:
+Status (dbg-shared):            All pass (379 tests)
+Notes:
+Status (stldbg-shared):         All pass (379 tests)
+Notes:
