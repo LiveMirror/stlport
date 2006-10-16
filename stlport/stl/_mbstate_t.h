@@ -40,36 +40,4 @@ _STLP_END_NAMESPACE
 
 #endif /* _STLP_USE_OWN_MBSTATE_T */
 
-#if !defined (_STLP_NO_WCHAR_T)
-#  ifndef WCHAR_MIN
-#    define WCHAR_MIN 0
-/* SUNpro has some bugs with casts. wchar_t is size of int there anyway. */
-#    if defined (__SUNPRO_CC) || defined (__DJGPP)
-#      define WCHAR_MAX (~0)
-#    else
-#      define WCHAR_MAX ((wchar_t)~0)
-#    endif
-#  endif
-#  if defined (__GNUC__) && defined (__alpha__)
-/* Definition of WCHAR_MIN and MAX are wrong for alpha platform
- * as gcc consider wchar_t as an unsigned type. Static assertion are
- * here to check that a future alpha SDK or a future gcc won't change the
- * situation making this workaround useless.
- */
-_STLP_STATIC_ASSERT(((wchar_t)-1 > 0) && (WCHAR_MIN < 0))
-#    undef WCHAR_MIN
-#    define WCHAR_MIN 0
-#    undef WCHAR_MAX
-#    define WCHAR_MAX ((wchar_t)~0)
-#  endif
-#endif
-
-/*
- * # if defined  (_STLP_IMPORT_VENDOR_CSTD) && ! defined (_STLP_VENDOR_GLOBAL_CSTD)
- * _STLP_BEGIN_NAMESPACE
- * using namespace _STLP_VENDOR_CSTD;
- * _STLP_END_NAMESPACE
- * #endif
- */ /* _STLP_IMPORT_VENDOR_CSTD */
-
 #endif /* _STLP_INTERNAL_MBSTATE_T */

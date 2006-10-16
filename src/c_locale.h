@@ -440,7 +440,6 @@ const char * _Locale_catgets(struct _Locale_messages *, nl_catd_type,
                              int, int,const char *);
 
 #ifdef __cplusplus
-// extern "C"
 }
 #endif
 

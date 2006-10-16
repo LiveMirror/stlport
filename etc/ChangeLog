@@ -1,3 +1,16 @@
+2006-10-16  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* stlport/stl/_mbstate_t.h: this header may be included from system
+	stddef.h, without wchar.h---defines of wchar limits isn't good place
+	here [WCHAR_MAX, etc.].
+
+	* test/unit/cwchar.cpp: correct test to hilight problem above.
+
+2006-10-14  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* test/unit/cwchar.cpp, build/test/unit/Makefile.inc: test a few macros
+	related to wchar. Inspired by problems in STLPORT_5_1 and boost::regex.
+
 2006-10-12  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_numpunct.h, src/numpunct.cpp: numpunct facet _M_truename
