@@ -215,8 +215,7 @@ struct generator_codecvt : codecvt<char, char, mbstate_t>
     // implemented for consistency with do_in overload
     virtual int do_length(const mbstate_t &mb,
                           const char *efrom, const char *eend, size_t m) const {
-
-      char *state = (char*)&mb;
+      const char *state = (const char*)&mb;
       int offset = 0;
       if (*state == 2)
         offset = 2;

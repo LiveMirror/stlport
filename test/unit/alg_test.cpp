@@ -57,9 +57,8 @@ void AlgTest::min_max()
 void AlgTest::count_test()
 {
   {
-    int n = 0;
     int i[] = { 1, 4, 2, 8, 2, 2 };
-    n = count(i, i + 6, 2);
+    int n = count(i, i + 6, 2);
     CPPUNIT_ASSERT(n==3);
 #if defined (STLPORT) && !defined (_STLP_NO_ANACHRONISMS)
     n = 0;
@@ -68,7 +67,6 @@ void AlgTest::count_test()
 #endif
   }
   {
-    int n=0;
     vector<int> i;
     i.push_back(1);
     i.push_back(4);
@@ -76,7 +74,7 @@ void AlgTest::count_test()
     i.push_back(8);
     i.push_back(2);
     i.push_back(2);
-    n = count(i.begin(), i.end(), 2);
+    int n = count(i.begin(), i.end(), 2);
     CPPUNIT_ASSERT(n==3);
 #if defined (STLPORT) && !defined (_STLP_NO_ANACHRONISMS)
     n = 0;
