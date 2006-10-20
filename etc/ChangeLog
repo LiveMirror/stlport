@@ -1,3 +1,14 @@
+2006-10-20  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/config: Removed some used macros
+	  _STLP_AUTOMATIC_TYPE_TRAITS
+	  _STLP_UNINITIALIZABLE_PRIVATE
+	  _STLP_STATIC_ARRAY_BUG
+	  _STLP_FULL_ADL_IMPLEMENTED
+
+	* test/unit/codecvt_test.cpp: Ignore test when
+	_STLP_NO_MEMBER_TEMPLATES defined.
+
 2006-10-20  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_cwchar.h: fix HP-UX problem with WCHAR_MIN, WCHAR_MAX
