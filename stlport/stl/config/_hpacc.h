@@ -126,8 +126,6 @@ typedef typename _STLP_dummy_type1:: _STLP_TEMPLATE rebind<t>::other _STLP_dummy
 // aCC bug ? need explicit args on constructors of partial specialized
 // classes
 #    define _STLP_PARTIAL_SPEC_NEEDS_TEMPLATE_ARGS 1
-// ?? fbp: really needed ?
-#    define _STLP_STATIC_ARRAY_BUG 1
 // ?? fbp : maybe present in some versions ?
 #    define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 #    define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1

@@ -99,11 +99,6 @@
 #    define _STLP_STATIC_CONST_INIT_BUG   1
 #  endif
 
-#  if (_STLP_MSVC >= 1310)
-#    define _STLP_FULL_ADL_IMPLEMENTED 1
-#  endif
-
-
 /** Note: the macro _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT is defined
 unconditionally and undef'ed here when applicable. */
 #  if defined(UNDER_CE)
