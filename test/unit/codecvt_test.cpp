@@ -16,6 +16,9 @@ using namespace std;
 class CodecvtTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(CodecvtTest);
+#if defined (STLPORT) && defined (_STLP_NO_MEMBER_TEMPLATES)
+  CPPUNIT_IGNORE;
+#endif
   CPPUNIT_TEST(variable_encoding);
   CPPUNIT_TEST_SUITE_END();
 
@@ -265,6 +268,7 @@ struct generator_codecvt : codecvt<char, char, mbstate_t>
 //
 void CodecvtTest::variable_encoding()
 {
+#if !defined (STLPORT) || !defined (_STLP_NO_MEMBER_TEMPLATES)
   //We first generate the file used for test:
   const char* fileName = "test_file.txt";
   {
@@ -307,7 +311,7 @@ void CodecvtTest::variable_encoding()
     CPPUNIT_ASSERT( istr.eof() );
   }
 
-#if 0
+#  if 0
   /* This test is broken, not sure if it is really possible to get a position in
    * a locale having a codecvt such as generator_codecvt. Maybe generator_codecvt
    * is not a valid theorical example of codecvt implementation. */
@@ -351,6 +355,7 @@ void CodecvtTest::variable_encoding()
 
     CPPUNIT_ASSERT( istr.eof() );
   }
+#  endif
 #endif
 }
 
