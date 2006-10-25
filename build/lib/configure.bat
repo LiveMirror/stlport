@@ -209,7 +209,7 @@ set SELECTED_COMPILER_VERSION=71
 goto oc_msvc
 
 :oc_msvc8
-echo Setting compiler: Microsoft Visual C++ .NET 2005
+echo Setting compiler: Microsoft Visual C++ 2005
 echo COMPILER_NAME=vc8 >> ..\Makefiles\config.mak
 set SELECTED_COMPILER_VERSION=80
 goto oc_msvc
