@@ -9,6 +9,9 @@
 	Complete clobber and distclean rules to really clean all generated
 	stuffs.
 
+	* build/Makefiles/nmake/top.mak: Patch from Gary Bartlett to make nmake
+	'all' rule the default rule.
+
 2006-10-25  Francois Dumont  <dums@stlport...>
 
 	* src/dll_main.cpp: Fix syntax error '>>' rather than '> >' in
