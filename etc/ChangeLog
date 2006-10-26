@@ -1,3 +1,14 @@
+2006-10-26  Francois Dumont  <dums@stlport...>
+
+	* test/unit/codecvt_test.cpp: Removed try/catch blocks not
+	supported by platform missing exception support and moreover
+	useless as we know the code called in the try and this code
+	do not throw (thanks Michael Fink report).
+
+	* build/Makefiles/nmake/targetdirs.mak, lib/clean.mak, app/clean.mak:
+	Complete clobber and distclean rules to really clean all generated
+	stuffs.
+
 2006-10-25  Francois Dumont  <dums@stlport...>
 
 	* src/dll_main.cpp: Fix syntax error '>>' rather than '> >' in
