@@ -103,16 +103,9 @@ struct eater_codecvt : codecvt<char, char, mbstate_t> {
                           const char *efrom, const char *eend, size_t m) const {
       char *ibegin = new char[m];
       const char *ecur = efrom;
-      try {
-        char *icur = ibegin;
-        mbstate_t tmp = state;
-        do_in(tmp, efrom, eend, ecur, ibegin, ibegin + m, icur);
-      }
-      catch (...) {
-        delete[] ibegin;
-        throw;
-      }
-
+      char *icur = ibegin;
+      mbstate_t tmp = state;
+      do_in(tmp, efrom, eend, ecur, ibegin, ibegin + m, icur);
       delete[] ibegin;
       return ecur - efrom;
     }
@@ -227,34 +220,27 @@ struct generator_codecvt : codecvt<char, char, mbstate_t>
 
       char *ibegin = new char[m + offset];
       const char *ecur = efrom;
-      try {
-        char *icur = ibegin;
-        mbstate_t tmpState = mb;
-        do_in(tmpState, efrom, eend, ecur, ibegin, ibegin + m + offset, icur);
-        /*
-        char *state = (char*)&tmpState;
-        if (*state != 0) {
-          if (*state == 1)
-            --ecur;
-          else if (*state == 2 || *state == 3) {
-            //Undefined position, we return -1:
-            ecur = efrom - 1;
-          }
+      char *icur = ibegin;
+      mbstate_t tmpState = mb;
+      do_in(tmpState, efrom, eend, ecur, ibegin, ibegin + m + offset, icur);
+      /*
+      char *state = (char*)&tmpState;
+      if (*state != 0) {
+        if (*state == 1)
+          --ecur;
+        else if (*state == 2 || *state == 3) {
+          //Undefined position, we return -1:
+          ecur = efrom - 1;
         }
-        else {
-          if (*((char*)&mb) != 0) {
-            //We take into account the character that hasn't been counted yet in
-            //the previous decoding step:
-            ecur++;
-          }
+      }
+      else {
+        if (*((char*)&mb) != 0) {
+          //We take into account the character that hasn't been counted yet in
+          //the previous decoding step:
+          ecur++;
         }
-        */
       }
-      catch (...) {
-        delete[] ibegin;
-        throw;
-      }
-
+      */
       delete[] ibegin;
       return (int)min((size_t)(ecur - efrom), m);
     }
