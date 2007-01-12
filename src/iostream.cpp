@@ -27,6 +27,7 @@
 #include "stdio_streambuf.h"
 #include "aligned_buffer.h"
 #include "_stdio_file.h"
+#include "c_locale.h"
 
 // boris : note this is repeated in <iostream>
 #ifndef _STLP_USE_NAMESPACES
@@ -150,13 +151,17 @@ long ios_base::Init::_S_count = 0;
 bool ios_base::_S_was_synced = true;
 
 ios_base::Init::Init() {
-  if (_S_count++ == 0)
+  if (_S_count++ == 0) {
+    _Locale_init();
     ios_base::_S_initialize();
+  }
 }
 
 ios_base::Init::~Init() {
-  if (--_S_count == 0)
+  if (--_S_count == 0) {
     ios_base::_S_uninitialize();
+    _Locale_final();
+  }
 }
 
 static filebuf*
