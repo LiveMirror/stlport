@@ -1,3 +1,19 @@
+2007-01-19  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_locale.h, src/locale.cpp: Add throw() specification
+	on locale default constructor. Add const qualifier on locale::combine
+	method. Fixed combine implementation to correctly combine
+	*this with other locale instance.
+
+	* src/locale_impl.h: Removed _get_Locale_impl and
+	_copy_Nameless_Locale_impl already defined in stlport/stl/_locale.h.
+
+	* src/locale_impl.cpp: In _Locale_impl::insert add check that we
+	are working on 2 different facet instances before substitution.
+
+	* test/unit/locale_test.cpp: Add test case for locale::combine
+	method.
+
 2007-01-12  Francois Dumont  <dums@stlport...>
 
 	* c_locale.h, c_locale_dummy.c, c_locale_glibc.c, c_locale_glibc2.c,
