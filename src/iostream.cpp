@@ -154,6 +154,7 @@ ios_base::Init::Init() {
   if (_S_count++ == 0) {
     _Locale_init();
     ios_base::_S_initialize();
+    _Filebuf_base::_S_initialize();
   }
 }
 

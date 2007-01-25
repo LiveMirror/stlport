@@ -375,44 +375,39 @@ static ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
 #  define LSEEK _lseek
 #endif
 
-
 size_t _Filebuf_base::_M_page_size = 4096;
 
 _Filebuf_base::_Filebuf_base()
   : _M_file_id(INVALID_STLP_FD),
+#if defined (_STLP_USE_WIN32_IO)
+    _M_view_id(0),
+#endif
     _M_openmode(0),
     _M_is_open(false),
-    _M_should_close(false) {
-  if (!_M_page_size)
-#if defined (_STLP_UNIX)  && !defined(__DJGPP) && !defined(_CRAY)
+    _M_should_close(false)
+{}
+
+void _Filebuf_base::_S_initialize() {
+#if defined (_STLP_UNIX)  && !defined (__DJGPP) && !defined (_CRAY)
 #  if defined (__APPLE__)
-   {
-   int mib[2];
-   size_t pagesize, len;
-   mib[0] = CTL_HW;
-   mib[1] = HW_PAGESIZE;
-   len = sizeof(pagesize);
-   sysctl(mib, 2, &pagesize, &len, NULL, 0);
-   _M_page_size = pagesize;
-   }
-#  elif defined(__DJGPP) && defined(_CRAY)
-   _M_page_size = BUFSIZ;
+  int mib[2];
+  size_t pagesize, len;
+  mib[0] = CTL_HW;
+  mib[1] = HW_PAGESIZE;
+  len = sizeof(pagesize);
+  sysctl(mib, 2, &pagesize, &len, NULL, 0);
+  _M_page_size = pagesize;
+#  elif defined (__DJGPP) && defined (_CRAY)
+  _M_page_size = BUFSIZ;
 #  else
   _M_page_size = sysconf(_SC_PAGESIZE);
 #  endif
 #elif defined (_STLP_USE_WIN32_IO)
-  {
   SYSTEM_INFO SystemInfo;
   GetSystemInfo(&SystemInfo);
   _M_page_size = SystemInfo.dwPageSize;
   // might be .dwAllocationGranularity
-  }
-  //  _M_CRLF_trans_buf = 0,
-  //  _M_trans_buf_end=0,
-  _M_view_id = 0;
 #endif
-  if (_M_page_size <= 0)
-    _M_page_size = 4096;
 }
 
 // Return the size of the file.  This is a wrapper for stat.
