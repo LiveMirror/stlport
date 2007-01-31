@@ -1737,6 +1737,7 @@ static BOOL CALLBACK EnumLocalesProcA(LPSTR locale) {
 }
 
 int __GetLCID(const char* lang, const char* ctry, LCID* lcid) {
+  int ret;
   EnterCriticalSection(&__criticalSection);
 
   __FindFlag = 0;
@@ -1745,9 +1746,10 @@ int __GetLCID(const char* lang, const char* ctry, LCID* lcid) {
   EnumSystemLocalesA(EnumLocalesProcA, LCID_INSTALLED);
 
   if (__FindFlag != 0) *lcid = __FndLCID;
+  ret = __FindFlag != 0 ? 0 : -1;
 
   LeaveCriticalSection(&__criticalSection);
-  return __FindFlag != 0 ? 0 : -1;
+  return ret;
 }
 
 int __GetLCIDFromName(const char* lname, LCID* lcid, char* cp, _Locale_lcid_t *hint) {
