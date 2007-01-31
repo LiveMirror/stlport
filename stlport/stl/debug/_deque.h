@@ -362,7 +362,7 @@ public:                         // Insert
     if (__pos._M_iterator == _M_non_dbg_impl.begin())
       _Invalidate_iterator(__pos);
     else {
-      _Base::iterator __tmp = --(_M_non_dbg_impl.end());
+      typename _Base::iterator __tmp = --(_M_non_dbg_impl.end());
       if (__pos._M_iterator == __tmp)
         _Invalidate_iterator(__pos);
       else
