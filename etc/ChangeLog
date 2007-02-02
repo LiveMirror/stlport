@@ -1,3 +1,32 @@
+2007-02-02  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* Repository: following records are merge from 5.1 branch
+	[see record 2006-06-29 by Francois Dumont in 5.1];
+	
+	* stlport/stl/_algo.h, _algo.c, _algobase.h, _algobase.c,
+	_hashtable.c: Patch from Andriy Syrovenko to fix implementation
+	of __equal_range, __lower_bound, __upper_bound when dealing with
+	a key whom type is different from the value_type of the iterator.
+
+	* test/unit/equal_test.cpp: Add some tests to show above bug.
+
+	* Repository:  following records are merge from 5.1 branch
+	[see record 2005-11-28 by Francois Dumont in 5.1];
+
+	* stlport/stl/_slist.h: Modification of the splice_after methods signature. Users
+	now have to pass the source slist instance, this is mandatory in order to compare
+	the 2 slists allocator instance before moving an element from a slist instance to
+	an other.
+
+	* stlport/stl/debug/_slist.h: ditto. Note [by ptr, 2007-02-02],
+	that not all checks (like same allocator checks) was backported
+	from 5.1 branch---too many changes in architecture; use 5.1.x or later
+	if you worry about this.
+
+	* Note [ptr, 2007-02-02]: this merges fix [hash_]multimap behaviour,
+	mainly because fix bug in slist, that used in memory management
+	of this container.
+
 2006-09-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* Repository: following records are merge from 5.1 branch

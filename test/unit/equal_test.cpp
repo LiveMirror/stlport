@@ -56,6 +56,21 @@ void EqualTest::eqlrnge1()
   CPPUNIT_ASSERT((range.second - v.begin())==9);
 
 }
+
+struct Test {
+  Test(int val) : value(val) {}
+  int value;
+
+  bool operator == (int i) const
+  { return value == i; }
+};
+
+bool operator < (const Test& v1, int v2)
+{ return v1.value < v2; }
+
+bool operator < (int v1, const Test& v2)
+{ return v1 < v2.value; }
+
 void EqualTest::eqlrnge2()
 {
   char chars[] = "aabbccddggghhklllmqqqqssyyzz";
@@ -64,6 +79,29 @@ void EqualTest::eqlrnge2()
   pair<char*, char*>range=equal_range((char*)chars, (char*)chars + count, 'q', less<char>());
   CPPUNIT_ASSERT((range.first - chars)==18);
   CPPUNIT_ASSERT((range.second - chars)==22);
+
+  vector<Test> tv;
+  vector<Test>::iterator it;
+  pair<std::vector<Test>::iterator, vector<Test>::iterator> p;
+
+  for (int i = 0; i < 10; ++i) {
+    tv.push_back(i);
+  }
+
+  it = upper_bound(tv.begin(), tv.end(), 5);
+  CPPUNIT_ASSERT( it != tv.end() );
+  CPPUNIT_ASSERT( *it == 6 );
+
+  it = lower_bound(tv.begin(), tv.end(), 5);
+  CPPUNIT_ASSERT( it != tv.end() );
+  CPPUNIT_ASSERT( *it == 5 );
+
+  p = equal_range(tv.begin(), tv.end(), 5);
+  CPPUNIT_ASSERT( p.first != p.second );
+  CPPUNIT_ASSERT( p.first != tv.end() );
+  CPPUNIT_ASSERT( p.second != tv.end() );
+  CPPUNIT_ASSERT( *p.first == 5 );
+  CPPUNIT_ASSERT( *p.second == 6 );
 }
 void EqualTest::equal0()
 {

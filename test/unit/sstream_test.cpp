@@ -32,6 +32,7 @@ class SstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(rdbuf);
   CPPUNIT_TEST(streambuf_output);
   CPPUNIT_TEST(seek);
+  CPPUNIT_TEST(pointer);
   CPPUNIT_TEST_SUITE_END();
 
   protected:
@@ -48,6 +49,7 @@ class SstreamTest : public CPPUNIT_NS::TestCase
     void rdbuf();
     void streambuf_output();
     void seek();
+    void pointer();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SstreamTest);
@@ -346,6 +348,43 @@ void SstreamTest::seek()
   CPPUNIT_ASSERT( is.tellg() == stringstream::pos_type(6) );
   is.seekg( -3, ios::cur );
   CPPUNIT_ASSERT( is.tellg() == stringstream::pos_type(3) );
+}
+
+void SstreamTest::pointer()
+{
+  // Problem with printing pointer to null
+  {
+    ostringstream s;
+    void *p = (void *)0xff00;
+    s << p;
+    CPPUNIT_ASSERT( s.good() );
+    if ( sizeof( p ) == 2 ) {
+      CPPUNIT_ASSERT( s.str() == "0xff00" );
+    } else if ( sizeof( p ) == 4 ) {
+      CPPUNIT_ASSERT( s.str() == "0x0000ff00" ); // this pass
+    } else if ( sizeof( p ) == 8 ) {
+      CPPUNIT_ASSERT( s.str() == "0x000000000000ff00" );
+    } else {
+      CPPUNIT_CHECK( sizeof( p ) == 2 || sizeof( p ) == 4 || sizeof( p ) == 8 );
+    }
+  }
+#if 0 // this fail, bad implementation; use STLport 5.1 or newer instead
+  {
+    ostringstream s;
+    void *p = 0;
+    s << p;
+    CPPUNIT_ASSERT( s.good() );
+    if ( sizeof( p ) == 2 ) {
+      CPPUNIT_ASSERT( s.str() == "0x0000" );
+    } else if ( sizeof( p ) == 4 ) {
+      CPPUNIT_ASSERT( s.str() == "0x00000000" ); // but this fail
+    } else if ( sizeof( p ) == 8 ) {
+      CPPUNIT_ASSERT( s.str() == "0x0000000000000000" );
+    } else {
+      CPPUNIT_CHECK( sizeof( p ) == 2 || sizeof( p ) == 4 || sizeof( p ) == 8 );
+    }
+  }
+#endif
 }
 
 #endif

@@ -1,15 +1,16 @@
-#include <slist>
 #include <algorithm>
-#if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
-#  include <sstream>
-#endif
-#include <iterator>
+#if defined (STLPORT) && !defined (_STLP_NO_EXTENSIONS)
+#  include <slist>
+#  if !defined (_STLP_USE_NO_IOSTREAMS)
+#    include <sstream>
+#  endif
+#  include <iterator>
 
-#include "cppunit/cppunit_proxy.h"
+#  include "cppunit/cppunit_proxy.h"
 
-#if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
+#  if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
 using namespace std;
-#endif
+#  endif
 
 //
 // TestCase class
@@ -17,21 +18,20 @@ using namespace std;
 class SlistTest : public CPPUNIT_NS::TestCase
 {
   CPPUNIT_TEST_SUITE(SlistTest);
-#if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
+#  if !defined (_STLP_USE_NO_IOSTREAMS)
   CPPUNIT_TEST(slist1);
-#endif
+#  endif
   CPPUNIT_TEST(erase);
   CPPUNIT_TEST(insert);
   CPPUNIT_TEST(splice);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
-#if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
   void slist1();
-#endif
   void erase();
   void insert();
   void splice();
+  void allocator_with_state();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SlistTest);
@@ -39,7 +39,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(SlistTest);
 //
 // tests implementation
 //
-#if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
+#  if !defined (_STLP_USE_NO_IOSTREAMS)
 void SlistTest::slist1()
 {
 /*
@@ -90,8 +90,8 @@ sorted: lst
   ostringstream os4;
   for(i = str.begin(); i != str.end(); i++)
     os4 << *i;
-  buff=os4.rdbuf();
-  result=buff->str();
+  buff = os4.rdbuf();
+  result = buff->str();
   CPPUNIT_ASSERT(!strcmp(result.c_str(),"lst"));
 
   //A small compilation time check to be activated from time to time:
@@ -103,7 +103,7 @@ sorted: lst
   }
 #  endif
 }
-#endif
+#  endif
 
 void SlistTest::erase()
 {
@@ -252,17 +252,17 @@ void SlistTest::splice()
     slist<int>::iterator slit;
 
     //a no op:
-    sl1.splice_after(sl1.begin(), sl1.begin());
+    sl1.splice_after(sl1.begin(), sl1, sl1.begin());
     CPPUNIT_ASSERT( sl1 == sl2 );
 
-    sl1.splice_after(sl1.before_begin(), sl1.begin());
+    sl1.splice_after(sl1.before_begin(), sl1, sl1.begin());
     slit = sl1.begin();
     CPPUNIT_ASSERT( *(slit++) == 1 );
     CPPUNIT_ASSERT( *(slit++) == 0 );
     CPPUNIT_ASSERT( *(slit++) == 2 );
     CPPUNIT_ASSERT( *(slit++) == 3 );
     CPPUNIT_ASSERT( *slit == 4 );
-    sl1.splice_after(sl1.before_begin(), sl1.begin());
+    sl1.splice_after(sl1.before_begin(), sl1, sl1.begin());
     CPPUNIT_ASSERT( sl1 == sl2 );
 
     sl1.splice_after(sl1.before_begin(), sl2);
@@ -275,10 +275,10 @@ void SlistTest::splice()
     slit = sl1.begin();
     advance(slit, 4);
     CPPUNIT_ASSERT( *slit == 4 );
-    sl2.splice_after(sl2.before_begin(), sl1.before_begin(), slit);
+    sl2.splice_after(sl2.before_begin(), sl1, sl1.before_begin(), slit);
     CPPUNIT_ASSERT( sl1 == sl2 );
 
-    sl1.splice_after(sl1.before_begin(), sl1.begin(), sl1.previous(sl1.end()));
+    sl1.splice_after(sl1.before_begin(), sl1, sl1.begin(), sl1.previous(sl1.end()));
     slit = sl1.begin();
     CPPUNIT_ASSERT( *(slit++) == 1 );
     CPPUNIT_ASSERT( *(slit++) == 2 );
@@ -287,7 +287,7 @@ void SlistTest::splice()
     CPPUNIT_ASSERT( *slit == 0 );
 
     // a no op
-    sl2.splice_after(sl2.before_begin(), sl2.before_begin(), sl2.previous(sl2.end()));
+    sl2.splice_after(sl2.before_begin(), sl2, sl2.before_begin(), sl2.previous(sl2.end()));
     for (i = 0, slit = sl2.begin(); slit != sl2.end(); ++slit, ++i) {
       CPPUNIT_ASSERT( i < 5 );
       CPPUNIT_ASSERT( *slit == array[i] );
@@ -295,7 +295,7 @@ void SlistTest::splice()
 
     slit = sl2.begin();
     advance(slit, 2);
-    sl2.splice_after(sl2.previous(sl2.end()), sl2.before_begin(), slit);
+    sl2.splice_after(sl2.previous(sl2.end()), sl2, sl2.before_begin(), slit);
     slit = sl2.begin();
     CPPUNIT_ASSERT( *(slit++) == 3 );
     CPPUNIT_ASSERT( *(slit++) == 4 );
@@ -305,3 +305,4 @@ void SlistTest::splice()
   }
 }
 
+#endif
