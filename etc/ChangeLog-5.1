@@ -52,6 +52,14 @@
 	support functions like _Locale_d_t_fmt _Locale_long_d_t_fmt...
 	Moreover time format cannot be truncated anymore.
 
+	* stlport/stl/config/_windows.h: Introduce _STLP_WIN32_VERSION
+	macro set to WINVER or _WIN32_WINDOWS value depending on what
+	macro is defined.
+
+	* stlport/stl/_threads.h, src/locale.cpp: Add _STLP_WIN32_VERSION
+	checks to detect Windows 95 platform having a special
+	_STLP_ATOMIC_INCREMENT and _STLP_ATOMIC_DECREMENT behavior.
+
 2007-01-08  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_deque.c: Patch from Kevin Lin to fix iterator
