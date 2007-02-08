@@ -4,6 +4,7 @@
 #  include <locale>
 #  include <stdexcept>
 #  include <memory>
+#  include <algorithm>
 //#  include <iostream>
 
 #  include "cppunit/cppunit_proxy.h"
@@ -100,7 +101,6 @@ private:
   void _money_put_get( const locale&, const ref_locale& );
   void _money_put_get2( const locale& loc, const locale& streamLoc, const ref_locale& );
   void _time_put_get( const locale&, const ref_locale& );
-  void _collate_facet( const locale&, const ref_locale& );
   void _ctype_facet( const locale&, const ref_locale& );
   void _locale_init_problem( const locale&, const ref_locale& );
   void _money_put_X_bug( const locale&, const ref_locale& );
@@ -601,18 +601,6 @@ void LocaleTest::_time_put_get( const locale& loc, const ref_locale&)
   CPPUNIT_ASSERT( yet_more.tm_year == xmas.tm_year );
 }
 
-void LocaleTest::_collate_facet( const locale& loc, const ref_locale&)
-{
-  CPPUNIT_ASSERT( has_facet<collate<char> >(loc) );
-  collate<char> const& col = use_facet<collate<char> >(loc);
-
-  char const str1[] = "françois";
-  char const str2[] = "francois";
-#if !(defined (__DMC__) && defined (_DLL))
-  CPPUNIT_ASSERT( col.compare(str1, str1 + sizeof(str1) / sizeof(str1[0]), str2, str2 + sizeof(str2) / sizeof(str2[0])) );
-#endif
-}
-
 void LocaleTest::_ctype_facet( const locale& loc, const ref_locale&)
 {
 #if !(defined (__DMC__) && defined (_DLL))
@@ -836,7 +824,55 @@ void LocaleTest::time_put_get()
 { test_supported_locale(*this, &LocaleTest::_time_put_get); }
 
 void LocaleTest::collate_facet()
-{ test_supported_locale(*this, &LocaleTest::_collate_facet); }
+{
+  {
+    CPPUNIT_ASSERT( has_facet<collate<char> >(locale::classic()) );
+    collate<char> const& col = use_facet<collate<char> >(locale::classic());
+
+    char const str1[] = "abcdef1";
+    char const str2[] = "abcdef2";
+    const size_t size1 = sizeof(str1) / sizeof(str1[0]) - 1;
+    const size_t size2 = sizeof(str2) / sizeof(str2[0]) - 1;
+
+    CPPUNIT_ASSERT( col.compare(str1, str1 + size1 - 1, str2, str2 + size2 - 1) == 0 );
+    CPPUNIT_ASSERT( col.compare(str1, str1 + size1, str2, str2 + size2) == -1 );
+
+    //Smallest string should be before largest one:
+    CPPUNIT_ASSERT( col.compare(str1, str1 + size1 - 2, str2, str2 + size2 - 1) == -1 );
+    CPPUNIT_ASSERT( col.compare(str1, str1 + size1 - 1, str2, str2 + size2 - 2) == 1 );
+  }
+
+#if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
+  try {
+    locale loc("fr_FR");
+    {
+      CPPUNIT_ASSERT( has_facet<collate<char> >(loc) );
+
+      string strs[] = {"abdd", "abçd", "abbd", "abcd"};
+      sort(strs, strs + 4, loc);
+      CPPUNIT_ASSERT( strs[0] == "abbd" );
+      CPPUNIT_ASSERT( strs[1] == "abcd" );
+      CPPUNIT_ASSERT( strs[2] == "abçd" );
+      CPPUNIT_ASSERT( strs[3] == "abdd" );
+    }
+#  if !defined (STLPORT) || !defined (_STLP_NO_WCHAR_T)
+    {
+      CPPUNIT_ASSERT( has_facet<collate<wchar_t> >(loc) );
+
+      wstring strs[] = {L"abdd", L"abçd", L"abbd", L"abcd"};
+      sort(strs, strs + 4, loc);
+      CPPUNIT_ASSERT( strs[0] == L"abbd" );
+      CPPUNIT_ASSERT( strs[1] == L"abcd" );
+      CPPUNIT_ASSERT( strs[2] == L"abçd" );
+      CPPUNIT_ASSERT( strs[3] == L"abdd" );
+    }
+#  endif
+  }
+  catch (runtime_error const&) {
+    CPPUNIT_MESSAGE("No french locale to check collate facet");
+  }
+#endif
+}
 
 void LocaleTest::ctype_facet()
 { test_supported_locale(*this, &LocaleTest::_ctype_facet); }
