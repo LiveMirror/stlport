@@ -1,3 +1,13 @@
+2007-02-09  Francois Dumont  <dums@stlport...>
+
+	* test/unit/locale_test.cpp: Enhance LocaleTest::collate_facet
+	test case to reveal a bug in glibc localization portage.
+
+	* src/c_locale_glibc/c_locale_glibc2.c: Fixed _Locale_strcmp
+	and _Locale_strcmp and _Locale_strwcmp implementation to take
+	into account buffer size, comparison used to always been done on the
+	whole input strings up to the termination character.
+
 2007-02-08  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_threads.h, src/locale.cpp: Add missing parenthesis
