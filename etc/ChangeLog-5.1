@@ -8,6 +8,11 @@
 	into account buffer size, comparison used to always been done on the
 	whole input strings up to the termination character.
 
+	* stlport/stl/type_manips.h, test/unit/mvctor_test.cpp,
+	type_traits_test.cpp: Remove relation between STLport __true_type and
+	__false_type and homonyms ones in libstd++. Add workaround in the 2
+	test suite requiring use of those types.
+
 2007-02-08  Francois Dumont  <dums@stlport...>
 
 	* stlport/stl/_threads.h, src/locale.cpp: Add missing parenthesis
