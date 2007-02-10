@@ -31,12 +31,12 @@ locale::facet::~facet() {}
 // members that fail to be templates
 bool locale::operator()(const string& __x,
                         const string& __y) const
-{ return __locale_do_operator_call(this, __x, __y); }
+{ return __locale_do_operator_call(*this, __x, __y); }
 
 #  if !defined (_STLP_NO_WCHAR_T)
 bool locale::operator()(const wstring& __x,
                         const wstring& __y) const
-{ return __locale_do_operator_call(this, __x, __y); }
+{ return __locale_do_operator_call(*this, __x, __y); }
 #  endif
 #endif
 
