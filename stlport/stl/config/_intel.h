@@ -32,10 +32,17 @@
 #endif
 
 #if (__ICL >= 900)
-//#  undef _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
+/* #  undef _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT */
 #  if !defined (_STLP_DONT_USE_EXCEPTIONS)
 #    define _STLP_NOTHROW throw()
 #  endif
+#endif
+
+#if (__ICL <= 810)
+/* If method specialization is activated, compiler do not export some
+ * symbols anymore.
+ */
+#  define _STLP_NO_METHOD_SPECIALIZATION 1
 #endif
 
 #if (__ICL >= 800)
