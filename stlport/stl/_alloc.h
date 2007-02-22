@@ -574,17 +574,35 @@ public:
     _MaybeReboundAlloc(_STLP_PRIV _AsMoveSource<_Base>(src.get())),
     _M_data(_STLP_PRIV _AsMoveSource<_Value>(src.get()._M_data)) {}
 
-  /* We need to define the following swap implementation for allocator with state
-   * as those allocators might have implement a special swap function to correctly
-   * move datas from an instance to the oher, _STLP_alloc_proxy should not break
-   * this mecanism.
-   */
-  void _M_swap_alloc(_Self& __x) {
+private:
+  /* Following are helper methods to detect stateless allocators and avoid
+   * swap in this case. For some compilers (VC6) it is a workaround for a
+   * compiler bug in the Empty Base class Optimizaztion, for others it is
+   * a small optimization or nothing if no EBO. */
+  void _M_swap_alloc(_Self& __x, const __true_type& /*_IsStateless*/)
+  {}
+
+  void _M_swap_alloc(_Self& __x, const __false_type& /*_IsStateless*/) {
     _MaybeReboundAlloc &__base_this = *this;
     _MaybeReboundAlloc &__base_x = __x;
     _STLP_STD::swap(__base_this, __base_x);
   }
 
+  struct _MaybeReboundAllocWithState : _MaybeReboundAlloc {
+    _MaybeReboundAllocWithState();
+    int _state;
+  };
+
+public:
+  void _M_swap_alloc(_Self& __x) {
+    typedef typename __bool2type<(sizeof(_MaybeReboundAllocWithState) == sizeof(int))>::_Ret _Stateless;
+    _M_swap_alloc(__x, _Stateless());
+  }
+
+  /* We need to define the following swap implementation for allocator with state
+   * as those allocators might have implement a special swap function to correctly
+   * move datas from an instance to the oher, _STLP_alloc_proxy should not break
+   * this mecanism. */
   void swap(_Self& __x) {
     _M_swap_alloc(__x);
     _STLP_STD::swap(_M_data, __x._M_data);

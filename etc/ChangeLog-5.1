@@ -1,3 +1,12 @@
+2007-02-22  Francois Dumont  <dums@stlport...>
+
+	* stlport/stl/_alloc.h: Add a workaround for compilers with buggy
+	empty base class optimization which is used in _STLP_alloc_proxy
+	class.
+
+	* test/unit/vector_test.cpp: New test case VectorTest::ebo to show
+	problem above.
+
 2007-02-21  Francois Dumont  <dums@stlport...>
 
 	* src/c_locale_win32/c_locale_win32.c: Fixed __ConvertDate and
