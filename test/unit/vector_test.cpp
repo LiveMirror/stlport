@@ -38,9 +38,6 @@ class VectorTest : public CPPUNIT_NS::TestCase
 #endif
   CPPUNIT_TEST(optimizations_check);
   CPPUNIT_STOP_IGNORE;
-#if defined (__BORLANDC__)
-  CPPUNIT_IGNORE;
-#endif
   CPPUNIT_TEST(ebo);
   CPPUNIT_TEST_SUITE_END();
 
