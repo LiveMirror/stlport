@@ -197,6 +197,7 @@ work, 7.0 is still unknown (we assume it works until negative report). */
 #  define _STLP_USING_NAMESPACE_BUG 1
 
 #  if (_STLP_MSVC < 1300) /* MSVC 6.0 and earlier */
+#    define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1
 /* defined for DEBUG and NDEBUG too, to allow user mix own debug build with STLP release library */
 #    define _STLP_USE_ABBREVS
 #  endif
@@ -209,7 +210,6 @@ typedef char __stl_char;
 
 #  if (_STLP_MSVC < 1200) /* before VC++ 6.0 */
 /* #  define _STLP_NO_MEMBER_TEMPLATES 1 */
-/* #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS 1 */
 #    define _STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS 1
 #    define _STLP_DONT_USE_PARTIAL_SPEC_WRKD 1
 #    define _STLP_QUALIFIED_SPECIALIZATION_BUG 1

@@ -1140,8 +1140,7 @@ void LocaleTest::facet_id()
 void LocaleTest::combine()
 {
 #  if (!defined (STLPORT) || \
-       (defined (_STLP_USE_EXCEPTIONS) && !defined (_STLP_NO_MEMBER_TEMPLATES) && !defined (_STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS))) && \
-      (!defined (_MSC_VER) || (_MSC_VER > 1200))
+       (defined (_STLP_USE_EXCEPTIONS) && !defined (_STLP_NO_MEMBER_TEMPLATES) && !defined (_STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS)))
   auto_ptr<locale> loc1, loc2;
   size_t loc1_index = 0;
   size_t n = sizeof(tested_locales) / sizeof(tested_locales[0]);
