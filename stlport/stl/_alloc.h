@@ -577,8 +577,8 @@ public:
 private:
   /* Following are helper methods to detect stateless allocators and avoid
    * swap in this case. For some compilers (VC6) it is a workaround for a
-   * compiler bug in the Empty Base class Optimizaztion, for others it is
-   * a small optimization or nothing if no EBO. */
+   * compiler bug in the Empty Base class Optimization feature, for others
+   * it is a small optimization or nothing if no EBO. */
   void _M_swap_alloc(_Self& __x, const __true_type& /*_IsStateless*/)
   {}
 
@@ -588,15 +588,14 @@ private:
     _STLP_STD::swap(__base_this, __base_x);
   }
 
-  struct _MaybeReboundAllocWithState : _MaybeReboundAlloc {
-    _MaybeReboundAllocWithState();
-    int _state;
-  };
-
 public:
   void _M_swap_alloc(_Self& __x) {
-    typedef typename __bool2type<(sizeof(_MaybeReboundAllocWithState) == sizeof(int))>::_Ret _Stateless;
-    _M_swap_alloc(__x, _Stateless());
+#if !defined (__BORLANDC__)
+    typedef typename _IsStateless<_MaybeReboundAlloc>::_Ret _StatelessAlloc;
+#else
+    typedef typename __bool2type<_IsStateless<_MaybeReboundAlloc>::_Is>::_Ret _StatelessAlloc;
+#endif
+    _M_swap_alloc(__x, _StatelessAlloc());
   }
 
   /* We need to define the following swap implementation for allocator with state
