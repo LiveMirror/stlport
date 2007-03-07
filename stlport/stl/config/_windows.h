@@ -25,13 +25,16 @@
 #  define _STLP_PLATFORM "Windows"
 #endif
 
-#if defined (WINVER) || defined (_WIN32_WINDOWS)
-#  if defined (WINVER) && defined (_WIN32_WINDOWS)
-#    error WINVER and _WIN32_WINDOWS are not defined in a coherent way.
-#  endif
+/* _STLP_WIN32_VERSION is used to detect targetted Windows platforms as
+ * old ones are not supporting some Win32 functions that STLport use.
+ * Limited OSs are going up to and including Windows 98 so they can be
+ * detected using WINVER or _WIN32_WINDOWS macros, we do not have to use
+ * _WINNT_WINDOWS macro for the moment.
+ */
+#if !defined (_STLP_WIN32_VERSION)
 #  if defined (WINVER)
 #    define _STLP_WIN32_VERSION WINVER
-#  else
+#  elif defined (_WIN32_WINDOWS)
 #    define _STLP_WIN32_VERSION _WIN32_WINDOWS
 #  endif
 #endif

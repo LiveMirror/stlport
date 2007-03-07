@@ -11,6 +11,10 @@
 	in _TpWithState class to make gcc happy when class is instanciated
 	with a class with no default constructor.
 
+	* stlport/stl/config/_windows.h: Change definition of
+	_STLP_WIN32_VERSION macro. We do not report definition inconsistency
+	between WINVER and _WIN32_VERSION anymore, WINVER is prefered.
+
 2007-03-01  Francois Dumont  <dums@stlport...>
 
 	* test/unit/bitset_test.cpp: Add test for the to_string member
