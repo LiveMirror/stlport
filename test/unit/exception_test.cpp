@@ -1,5 +1,6 @@
 #include <exception>
 #include <stdexcept>
+#include <string>
 
 #include "cppunit/cppunit_proxy.h"
 
@@ -24,18 +25,23 @@ class ExceptionTest : public CPPUNIT_NS::TestCase
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(unexpected_except);
-#if defined (STLPORT) && defined (_STLP_USE_EXCEPTION)
+#if defined (STLPORT) && defined (_STLP_USE_EXCEPTIONS)
   CPPUNIT_STOP_IGNORE;
 #endif
 #if defined (STLPORT) && defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
   CPPUNIT_IGNORE;
 #endif
   CPPUNIT_TEST(uncaught_except);
+#if defined (STLPORT) && defined (_STLP_USE_EXCEPTIONS)
+  CPPUNIT_STOP_IGNORE;
+#endif
+  CPPUNIT_TEST(exception_emission);
   CPPUNIT_TEST_SUITE_END();
 
 protected:
   void unexpected_except();
   void uncaught_except();
+  void exception_emission();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ExceptionTest);
@@ -110,5 +116,35 @@ void ExceptionTest::uncaught_except()
     }
   }
   CPPUNIT_ASSERT( uncaught_result == 1 );
+#endif
+}
+
+void ExceptionTest::exception_emission()
+{
+#if !defined (STLPORT) || defined (_STLP_USE_EXCEPTIONS)
+  std::string foo = "foo";
+  try {
+    throw std::runtime_error(foo);
+  }
+  catch (std::runtime_error const& e) {
+    CPPUNIT_ASSERT( foo == e.what() );
+  }
+  catch (...) {
+    CPPUNIT_ASSERT( false );
+  }
+
+  try {
+    std::string msg(512, 'a');
+    throw std::runtime_error(msg);
+  }
+  catch (std::runtime_error const& e) {
+    const char* c = e.what();
+    while (*c != 0) {
+      CPPUNIT_ASSERT( *c++ == 'a' );
+    }
+  }
+  catch (...) {
+    CPPUNIT_ASSERT( false );
+  }
 #endif
 }
