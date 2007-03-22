@@ -95,7 +95,7 @@
  * #  define _STLP_USE_TEMPLATE_EXPORT 1
  * # endif
  */
-#  if (_STLP_MSVC <= 1400)
+#  if (_STLP_MSVC <= 1401)
 #    define _STLP_STATIC_CONST_INIT_BUG   1
 #  endif
 
