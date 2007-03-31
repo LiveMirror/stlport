@@ -235,6 +235,23 @@ Status (stldbg-shared):         All pass (376 tests)
 Notes:
 
 =======================================================================
+Operational environment:   Linux 2.6.17/SMP glibc 2.4.4, IA32
+=======================================================================
+
+-----------------------------------------------------------------------
+Compiler:                       gcc 4.1.1
+-----------------------------------------------------------------------
+Date:                           2007-03-30
+STLP Version:                   SVN STLPORT_5_1 branch, revision 2982
+Reporter:                       dums (Francois Dumont)
+Status (release-shared):        All pass (385 tests)
+Notes:
+Status (dbg-shared):            All pass (385 tests)
+Notes:
+Status (stldbg-shared):         All pass (385 tests)
+Notes:
+
+=======================================================================
 Operational environment:        FreeBSD 5.3-RELEASE
 =======================================================================
 
