@@ -173,11 +173,12 @@ hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>
 
   if (__cur != __last) {
     for (; __cur != __last; ++__cur) {
-      if (_M_equals(_M_get_key(*__cur), _M_get_key(__obj)))
+      if (_M_equals(_M_get_key(*__cur), _M_get_key(__obj))) {
         //We check that equivalent keys have equals hash code as otherwise, on resize,
         //equivalent value might not be in the same bucket
         _STLP_ASSERT(_M_hash(_M_get_key(*__cur)) == _M_hash(_M_get_key(__obj)))
         return pair<iterator, bool>(iterator(__cur), false);
+      }
     }
     /* Here we do not rely on the _M_insert_noresize method as we know
      * that we cannot break element orders, elements are unique, and 
