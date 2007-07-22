@@ -361,7 +361,7 @@ static ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
 // If we're on a Unix system, define some macros to encapsulate those
 // differences.
 #ifdef _STLP_USE_UNIX_IO
-#  ifdef __sgi /* IRIX */
+#  if defined(__sgi) /* IRIX */ || (defined(__hpux) && defined(_LARGEFILE64_SOURCE))
 #    define LSEEK lseek64
 #    define MMAP  mmap64
 #  else
