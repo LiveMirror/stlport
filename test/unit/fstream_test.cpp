@@ -40,6 +40,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(tellg);
   CPPUNIT_TEST(buf);
   CPPUNIT_TEST(rdbuf);
+  CPPUNIT_TEST(offset);
 #if defined (__DMC__)
   CPPUNIT_IGNORE;
 #endif
@@ -67,6 +68,7 @@ class FstreamTest : public CPPUNIT_NS::TestCase
     void streambuf_output();
     void win32_file_format();
     void custom_facet();
+    void offset();
 #  if defined (CHECK_BIG_FILE)
     void big_file();
 #  endif
@@ -567,5 +569,14 @@ void FstreamTest::big_file()
   */
 }
 #  endif
+
+void FstreamTest::offset()
+{
+#if (defined(_LARGEFILE_SOURCE) || defined(_LARGEFILE64_SOURCE)) && !defined(_STLP_USE_DEFAULT_FILE_OFFSET)
+  CPPUNIT_CHECK( sizeof(streamoff) == 8 );
+#else
+  CPPUNIT_CHECK( sizeof(streamoff) == sizeof(off_t) );
+#endif
+}
 
 #endif

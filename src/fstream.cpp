@@ -163,6 +163,44 @@ const _STLP_fd INVALID_STLP_FD = -1;
 #endif
 
 _STLP_BEGIN_NAMESPACE
+// Compare with streamoff definition in stl/char_traits.h!
+
+#ifdef _STLP_USE_DEFAULT_FILE_OFFSET
+#  define FOPEN fopen
+#  define FSEEK fseek
+#  define FSTAT fstat
+#  define STAT  stat
+#  define FTELL ftell
+#  define LSEEK lseek
+#  define MMAP  mmap
+#  define OPEN  open
+#elif defined(_LARGEFILE_SOURCE) || defined(_LARGEFILE64_SOURCE) /* || defined(__USE_FILE_OFFSET64) */ \
+      /* || (defined(_FILE_OFFSET_BITS) && (_FILE_OFFSET_BITS == 64)) */ /* || defined(__sgi) */
+#  define FOPEN fopen64
+#  define FSEEK fseeko64
+#  define FSTAT fstat64
+#  define STAT  stat64
+#  define FTELL ftello64
+#  define LSEEK lseek64
+#  define MMAP  mmap64
+#  define OPEN  open64
+#else
+#  define OPEN  open
+#  define FSEEK fseek
+#  define FSTAT fstat
+#  define STAT  stat
+#  define FTELL ftell
+#  define LSEEK lseek
+#  define MMAP  mmap
+#  define OPEN  open
+#endif
+#ifdef _STLP_USE_UNIX_IO
+#  ifndef MAP_FAILED /* MMAP failure return code */
+#    define MAP_FAILED -1
+#  endif
+#elif defined (_STLP_USE_UNIX_EMULATION_IO)
+#  define LSEEK _lseek
+#endif
 
 #if !defined(__MSL__) && !defined(__MRC__) && !defined(__SC__) && !defined(_STLP_WCE)    //*TY 04/15/2000 - exclude mpw compilers also
 static ios_base::openmode flag_to_openmode(int mode) {
@@ -197,8 +235,8 @@ bool __is_regular_file(_STLP_fd fd) {
 
 #if defined (_STLP_UNIX)
 
-  struct stat buf;
-  return fstat(fd, &buf) == 0 && S_ISREG(buf.st_mode);
+  struct STAT buf;
+  return FSTAT(fd, &buf) == 0 && S_ISREG(buf.st_mode);
 
 #elif defined(__MRC__) || defined(__SC__)    //*TY 02/25/2000 - added support for MPW compilers
 
@@ -207,8 +245,8 @@ bool __is_regular_file(_STLP_fd fd) {
 
 #elif defined(_STLP_USE_UNIX_EMULATION_IO) || defined (_STLP_USE_STDIO_IO)
 
-  struct stat buf;
-  return fstat(fd, &buf) == 0 && (buf.st_mode & _S_IFREG) != 0 ;
+  struct STAT buf;
+  return FSTAT(fd, &buf) == 0 && (buf.st_mode & _S_IFREG) != 0 ;
 
 #elif defined (_STLP_USE_WIN32_IO) && !defined(_STLP_WCE)
 
@@ -226,8 +264,8 @@ streamoff __file_size(_STLP_fd fd) {
 
 #if defined (_STLP_UNIX)
 
-  struct stat buf;
-  if (fstat(fd, &buf) == 0 && S_ISREG(buf.st_mode))
+  struct STAT buf;
+  if (FSTAT(fd, &buf) == 0 && S_ISREG(buf.st_mode))
     ret = buf.st_size > 0 ? buf.st_size : 0;
 
 #elif defined(__MRC__) || defined(__SC__)    //*TY 02/25/2000 - added support for MPW compilers
@@ -236,8 +274,8 @@ streamoff __file_size(_STLP_fd fd) {
 
 #elif defined(_STLP_USE_UNIX_EMULATION_IO) || defined (_STLP_USE_STDIO_IO)
 
-  struct stat buf;
-  if (fstat(fd, &buf) == 0 && (buf.st_mode & _S_IFREG) != 0)
+  struct STAT buf;
+  if (FSTAT(fd, &buf) == 0 && (buf.st_mode & _S_IFREG) != 0)
     ret = buf.st_size > 0 ? buf.st_size : 0;
 
 #elif defined (_STLP_USE_WIN32_IO)
@@ -356,25 +394,6 @@ static ios_base::openmode _get_osfflags(int fd, HANDLE oshandle) {
 }
 #endif
 
-// All version of Unix have mmap and lseek system calls.  Some also have
-// longer versions of thos system calls to accommodate 64-bit offsets.
-// If we're on a Unix system, define some macros to encapsulate those
-// differences.
-#ifdef _STLP_USE_UNIX_IO
-#  if defined(__sgi) /* IRIX */ || (defined(__hpux) && defined(_LARGEFILE64_SOURCE))
-#    define LSEEK lseek64
-#    define MMAP  mmap64
-#  else
-#    define LSEEK lseek
-#    define MMAP  mmap
-#  endif
-#  ifndef MAP_FAILED /* MMAP failure return code */
-#    define MAP_FAILED -1
-#  endif
-#elif defined (_STLP_USE_UNIX_EMULATION_IO)
-#  define LSEEK _lseek
-#endif
-
 size_t _Filebuf_base::_M_page_size = 4096;
 
 _Filebuf_base::_Filebuf_base()
@@ -457,7 +476,7 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
 
   file_no = _open(name, flags, permission);
 #  else
-  file_no = open(name, flags, permission);
+  file_no = OPEN(name, flags, permission);
 #  endif /* _STLP_USE_UNIX_EMULATION_IO */
 
   if (file_no < 0)
@@ -523,7 +542,7 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
 
   // fbp : TODO : set permissions !
   (void)permission; // currently unused    //*TY 02/26/2000 - added to suppress warning message
-  _M_file = fopen(name, flags);
+  _M_file = FOPEN(name, flags);
 
   if (_M_file) {
     file_no = fileno(_M_file);
@@ -537,7 +556,7 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
   _M_is_open = true;
 
   if (openmode & ios_base::ate) {
-    if (fseek(_M_file, 0, SEEK_END) == -1)
+    if (FSEEK(_M_file, 0, SEEK_END) == -1)
       _M_is_open = false;
   }
 
@@ -692,8 +711,8 @@ bool _Filebuf_base::_M_open(int file_no, ios_base::openmode init_mode) {
 #elif defined (_STLP_USE_UNIX_EMULATION_IO) || defined (_STLP_USE_STDIO_IO)
   (void)init_mode;    // dwa 4/27/00 - suppress unused parameter warning
   int mode ;
-  struct stat buf;
-  if (fstat(file_no, &buf) != 0)
+  struct STAT buf;
+  if (FSTAT(file_no, &buf) != 0)
     return false;
   mode = buf.st_mode;
 
@@ -1019,7 +1038,7 @@ streamoff _Filebuf_base::_M_seek(streamoff offset, ios_base::seekdir dir) {
 
 #elif defined (_STLP_USE_STDIO_IO)
 
-  result = fseek(_M_file, offset, whence);
+  result = FSEEK(_M_file, offset, whence);
 
 #elif defined (_STLP_USE_WIN32_IO)
 
