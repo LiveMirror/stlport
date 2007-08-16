@@ -1,3 +1,8 @@
+2007-08-16  Francois Dumont  <dums@users.sourceforge.net>
+
+	* src/dll_main.cpp: Removed useless _Atomic_swap_struct explicit
+	instantiation, moreover, MSVC 2005 do not support it.
+
 2007-08-15  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* Repository: bump lib version to 5.1.4;
