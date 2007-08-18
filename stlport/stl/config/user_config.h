@@ -93,13 +93,12 @@
 
 /*
  * On systems with support of large files (_LARGEFILE_SOURCE,
- * _LARGEFILE64_SOURCE defined) we will use 64-bit file offset, even
- * if __USE_FILE_OFFSET64 not defined or _FILE_OFFSET_BITS not defined
- * or _FILE_OFFSET_BITS less then 64; in the last case sizeof(std::streamoff)
- * may be not equal to sizeof(off_t); if you want to force equal size
- * of off_t and streamoff, undefine macro below. But pay attention,
- * that this has influence on libstlport and in future usage it may
- * cause conflict with defined _FILE_OFFSET_BITS macro.
+ * _LARGEFILE64_SOURCE defined) we will use 64-bit file offset, even if
+ * __USE_FILE_OFFSET64 or _FILE_OFFSET_BITS not defined or _FILE_OFFSET_BITS
+ * less than 64. In the last case sizeof(std::streamoff) may not be equal to
+ * sizeof(off_t), if you want to force equal size of off_t and streamoff,
+ * uncomment macro below. But pay attention, this has influence on libstlport
+ * and in future usage it may cause conflict with defined _FILE_OFFSET_BITS macro.
  */
 
 /*
@@ -156,8 +155,7 @@
  * Uncomment and provide a definition for the byte with which raw memory
  * will be filled if _STLP_DEBUG_ALLOC or _STLP_DEBUG_UNINITIALIZED is defined.
  * Choose a value which is likely to cause a noticeable problem if dereferenced
- * or otherwise abused. A good value may already be defined for your platform; see
- * stl/_config.h
+ * or otherwise abused. A good value may already be defined for your platform.
  */
 /*
 #define _STLP_SHRED_BYTE 0xA3
@@ -194,7 +192,7 @@
 */
 
 /*
- * You should define this macro if compiling with MFC - STLport <stl/_config.h>
+ * You should define this macro if compiling with MFC - STLport <stl/config/_windows.h>
  * then include <afx.h> instead of <windows.h> to get synchronisation primitives
  */
 /*
