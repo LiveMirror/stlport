@@ -1,5 +1,10 @@
-2007-08-16  Francois Dumont  <dums@users.sourceforge.net>
+2007-08-18  Francois Dumont  <dums@users.sourceforge.net>
 
+        * stlport/stl/_iosfwd.h: Removed useless _STLP_CLASS_DECLSPEC attribute
+        on class declaration. Latest gcc versions are reporting a warning about
+        it.
+
+2007-08-16  Francois Dumont  <dums@users.sourceforge.net>
 	* src/dll_main.cpp: Removed useless _Atomic_swap_struct explicit
 	instantiation, moreover, MSVC 2005 do not support it.
 
