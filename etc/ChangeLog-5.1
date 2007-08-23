@@ -1,20 +1,26 @@
+2007-08-23  Francois Dumont  <dums@users.sourceforge.net>
+
+	* stlport/stl/_complex.h: As in _iosfwd.h, removed useless
+	_STLP_CLASS_DECLSPEC attribute on complex class declaration.
+
 2007-08-23  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/debug/_vector.h: only random access iterators
-	allow operations 'less-then' and distance; for bidirectional
-	iterators removed usage of 'less-then', and for others
-	[like forward and input iterators] removed as usage of 'less-then'
+	allow operations 'less-than' and distance; for bidirectional
+	iterators removed usage of 'less-than', and for others
+	[like forward and input iterators] removed as usage of 'less-than'
 	as distance; thanks Oleg Obolensky for bug report;
 
 	* test/unit/ioiter_test.cpp: test for problem above.
 
 2007-08-18  Francois Dumont  <dums@users.sourceforge.net>
 
-        * stlport/stl/_iosfwd.h: Removed useless _STLP_CLASS_DECLSPEC attribute
-        on class declaration. Latest gcc versions are reporting a warning about
-        it.
+	* stlport/stl/_iosfwd.h: Removed useless _STLP_CLASS_DECLSPEC attribute
+	on class declaration. Latest gcc versions are reporting a warning about
+	it.
 
 2007-08-16  Francois Dumont  <dums@users.sourceforge.net>
+
 	* src/dll_main.cpp: Removed useless _Atomic_swap_struct explicit
 	instantiation, moreover, MSVC 2005 do not support it.
 

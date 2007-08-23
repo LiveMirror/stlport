@@ -36,10 +36,10 @@ _STLP_BEGIN_NAMESPACE
 
 template <class _Tp> struct complex;
 
-_STLP_TEMPLATE_NULL struct _STLP_CLASS_DECLSPEC complex<float>;
-_STLP_TEMPLATE_NULL struct _STLP_CLASS_DECLSPEC complex<double>;
+_STLP_TEMPLATE_NULL struct complex<float>;
+_STLP_TEMPLATE_NULL struct complex<double>;
 #  if !defined (_STLP_NO_LONG_DOUBLE)
-_STLP_TEMPLATE_NULL struct _STLP_CLASS_DECLSPEC complex<long double>;
+_STLP_TEMPLATE_NULL struct complex<long double>;
 #  endif
 #endif /* _STLP_NO_COMPLEX_SPECIALIZATIONS */
 
