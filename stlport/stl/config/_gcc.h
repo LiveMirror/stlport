@@ -79,6 +79,7 @@
 
 #if defined (__MINGW32__)
 /* Mingw32, egcs compiler using the Microsoft C runtime */
+#  define _STLP_VENDOR_GLOBAL_CSTD
 #  undef  _STLP_NO_DRAND48
 #  define _STLP_NO_DRAND48
 #  define _STLP_CALL

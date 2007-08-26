@@ -1,3 +1,9 @@
+2007-08-26  Francois Dumont  <dums@users.sourceforge.net>
+
+	* stlport/stl/config/_gcc.h: Under MinGW we now use C symbols in
+	global namespace. Tests with 4.2.1 gcc version shows that C symbols
+	are not necessarily put in std namespace.
+
 2007-08-23  Francois Dumont  <dums@users.sourceforge.net>
 
 	* stlport/stl/_complex.h: As in _iosfwd.h, removed useless
