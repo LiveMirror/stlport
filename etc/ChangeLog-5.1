@@ -3,6 +3,12 @@
 	* stlport/stl/_cstdio.h, _ctime.h: Add missing macro definition
 	test before using _WIN32_WCE thanks bug report 1784174.
 
+	* stlport/stl/_bitset.h: Change macro tests in order to check
+	macro definition before using it thanks bug report 1785679.
+
+	* test/unit/bitset_test.cpp: Bitset::iostream new test to check
+	correct input/output of bitset class.
+
 2007-08-26  Francois Dumont  <dums@users.sourceforge.net>
 
 	* stlport/stl/config/user_config.h, host.h: Moved the administrative
