@@ -9,6 +9,10 @@
 	* test/unit/bitset_test.cpp: Bitset::iostream new test to check
 	correct input/output of bitset class.
 
+	* build/Makefiles/gmake/gcc.mak: Add -Wundef gcc option when building
+	with gcc under Cygwin MinGW, it is an interesting option to detect
+	macro check errors.
+
 2007-08-26  Francois Dumont  <dums@users.sourceforge.net>
 
 	* stlport/stl/config/user_config.h, host.h: Moved the administrative
