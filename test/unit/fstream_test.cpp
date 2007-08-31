@@ -40,10 +40,12 @@ class FstreamTest : public CPPUNIT_NS::TestCase
   CPPUNIT_TEST(tellg);
   CPPUNIT_TEST(buf);
   CPPUNIT_TEST(rdbuf);
+#if !defined (STLPORT) || !defined (_STLP_WIN32)
   CPPUNIT_TEST(offset);
-#if defined (__DMC__)
-  CPPUNIT_IGNORE;
 #endif
+#  if defined (__DMC__)
+  CPPUNIT_IGNORE;
+#  endif
   CPPUNIT_TEST(streambuf_output);
   CPPUNIT_STOP_IGNORE;
   CPPUNIT_TEST(win32_file_format);
@@ -68,7 +70,9 @@ class FstreamTest : public CPPUNIT_NS::TestCase
     void streambuf_output();
     void win32_file_format();
     void custom_facet();
+#  if !defined (STLPORT) || !defined (_STLP_WIN32)
     void offset();
+#  endif
 #  if defined (CHECK_BIG_FILE)
     void big_file();
 #  endif
@@ -570,13 +574,15 @@ void FstreamTest::big_file()
 }
 #  endif
 
+#  if !defined (STLPORT) || !defined (_STLP_WIN32)
 void FstreamTest::offset()
 {
-#if (defined(_LARGEFILE_SOURCE) || defined(_LARGEFILE64_SOURCE)) && !defined(_STLP_USE_DEFAULT_FILE_OFFSET)
+#    if (defined(_LARGEFILE_SOURCE) || defined(_LARGEFILE64_SOURCE)) && !defined(_STLP_USE_DEFAULT_FILE_OFFSET)
   CPPUNIT_CHECK( sizeof(streamoff) == 8 );
-#else
+#    else
   CPPUNIT_CHECK( sizeof(streamoff) == sizeof(off_t) );
-#endif
+#    endif
 }
+#  endif
 
 #endif
