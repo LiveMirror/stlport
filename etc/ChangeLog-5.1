@@ -4,8 +4,19 @@
 	bug #1788615 [bug during copy of rope's iterator] and fix;
 	suggested by John Maddock.
 
+	* stlport/stl/_algobase.c: symmetry not required for
+	comparator in case of two different sequences comparison or
+	searching; symmetrical comparator just may not exist;
+
+	* stlport/stl/debug/_hashtable.h: symmetry not required for
+	comparator in hashtable in case of containers extention;
+	symmetrical comparator just may not exist;
+
+	* test/unit/alg_test.cpp: test for problem above, thanks
+	Oleg Obolenskiy.
+
 	* unit tests: Linux 2.6.16.26 (athlon-4), gcc 4.1.1, glibc 2.3.6
-	"OK 391 tests" for release-shared and stldbg-shared targets.
+	"OK 392 tests" for release-shared and stldbg-shared targets.
 
 2007-09-06  Francois Dumont  <dums@users.sourceforge.net>
 
@@ -53,7 +64,7 @@
 	allow operations 'less-than' and distance; for bidirectional
 	iterators removed usage of 'less-than', and for others
 	[like forward and input iterators] removed as usage of 'less-than'
-	as distance; thanks Oleg Obolensky for bug report;
+	as distance; thanks Oleg Obolenskiy for bug report;
 
 	* test/unit/ioiter_test.cpp: test for problem above.
 
