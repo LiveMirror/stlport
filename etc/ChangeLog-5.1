@@ -1,3 +1,12 @@
+2007-09-09  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* test/unit/rope_test.cpp, stlport/stl/_rope.h: test for
+	bug #1788615 [bug during copy of rope's iterator] and fix;
+	suggested by John Maddock.
+
+	* unit tests: Linux 2.6.16.26 (athlon-4), gcc 4.1.1, glibc 2.3.6
+	"OK 391 tests" for release-shared and stldbg-shared targets.
+
 2007-09-06  Francois Dumont  <dums@users.sourceforge.net>
 
 	* test/unit/strstream_buffer_read_test.cpp: Remove useless
@@ -8,11 +17,6 @@
 	* src/allocators.cpp: Fix implementation of _S_chunk_dealloc when
 	lock free implementation is not in use. Thanks bug report 1787636
 	from Sergej Zagursky.
-
-2007-09-03  Petr Ovtchenkov  <complement@users.sourceforge.net>
-
-	* unit tests: Linux 2.6.16.26 (athlon-4), gcc 4.1.1
-	"OK 390 tests" for release-shared and stldbg-shared targets.
 
 2007-08-31  Francois Dumont  <dums@users.sourceforge.net>
 
