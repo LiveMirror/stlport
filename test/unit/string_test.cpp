@@ -300,7 +300,7 @@ void StringTest::short_string()
 void StringTest::erase()
 {
   char const* c_str = "Hello, World!";
-  std::string str(c_str);
+  string str(c_str);
   CPPUNIT_ASSERT( str == c_str );
 
   str.erase(str.begin() + 1, str.end() - 1); // Erase all but first and last.
@@ -733,8 +733,8 @@ void StringTest::assign()
   s.assign(s2);
   CPPUNIT_ASSERT( s == s2 );
 
-  static std::string str1;
-  static std::string str2;
+  static string str1;
+  static string str2;
 
   // short string optim:
   str1 = "123456";
@@ -760,12 +760,12 @@ void StringTest::short_string_optim_bug()
 {
    string teststr("shortest");
 
-   bool short_string_optim_bug_helper(std::string teststr);
+   bool short_string_optim_bug_helper(string teststr);
 
    CPPUNIT_ASSERT(true == short_string_optim_bug_helper(teststr));
 }
 
-bool short_string_optim_bug_helper(std::string teststr)
+bool short_string_optim_bug_helper(string teststr)
 {
    size_t ss = teststr.size();
    return (ss == 8);
