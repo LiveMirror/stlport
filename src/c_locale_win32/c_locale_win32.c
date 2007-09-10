@@ -1347,6 +1347,8 @@ void* _Locale_time_create(const char * name, _Locale_lcid_t* lc_hint) {
   size_t _Locale_strxfrm(_Locale_collate_t* lcol,
                          char* dst, size_t dst_size,
                          const char* src, size_t src_size) {
+    int result;
+
     /* The Windows API do not support transformation of very long strings (src_size > INT_MAX)
      * In this case the result will just be the input string:
      */
@@ -1362,23 +1364,24 @@ void* _Locale_time_create(const char * name, _Locale_lcid_t* lc_hint) {
     }
 
     if (__GetDefaultCP(lcol->lc.id) == atoi(lcol->cp))
-      return LCMapStringA(lcol->lc.id, LCMAP_SORTKEY, src, (int)src_size, dst, (int)dst_size);
+      result = LCMapStringA(lcol->lc.id, LCMAP_SORTKEY, src, (int)src_size, dst, (int)dst_size);
     else {
-      int result;
       char *buf;
       size_t size;
       buf = __ConvertToCP(atoi(lcol->cp), __GetDefaultCP(lcol->lc.id), src, src_size, &size);
 
       result = LCMapStringA(lcol->lc.id, LCMAP_SORTKEY, buf, (int)size, dst, (int)dst_size);
       free(buf);
-      return result;
     }
+    return result != 0 ? result - 1 : 0;
   }
 
 #if !defined (_STLP_NO_WCHAR_T)
   size_t _Locale_strwxfrm(_Locale_collate_t* lcol,
                           wchar_t* dst, size_t dst_size,
                           const wchar_t* src, size_t src_size) {
+    int result;
+
     /* see _Locale_strxfrm: */
     if (src_size > INT_MAX) {
       if (dst != 0) {
@@ -1389,7 +1392,8 @@ void* _Locale_time_create(const char * name, _Locale_lcid_t* lc_hint) {
     if (dst_size > INT_MAX) {
       dst_size = INT_MAX;
     }
-    return LCMapStringW(lcol->lc.id, LCMAP_SORTKEY, src, (int)src_size, dst, (int)dst_size);
+    result = LCMapStringW(lcol->lc.id, LCMAP_SORTKEY, src, (int)src_size, dst, (int)dst_size);
+    return result != 0 ? result - 1 : 0;
   }
 #endif
 

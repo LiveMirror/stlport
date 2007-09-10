@@ -469,11 +469,7 @@ size_t _Locale_strxfrm(struct _Locale_collate *__loc,
                        char *dest, size_t dest_n,
                        const char *src, size_t src_n )
 {
-  size_t n;
-
-  n = __strxfrm_l( dest, src, dest_n, (__c_locale)__loc );
-
-  return n > src_n ? (size_t)-1 : n; /* dest[n] = 0? */
+  return __strxfrm_l( dest, src, dest_n, (__c_locale)__loc );
 }
 
 # ifndef _STLP_NO_WCHAR_T
@@ -482,11 +478,7 @@ size_t _Locale_strwxfrm( struct _Locale_collate *__loc,
                           wchar_t *dest, size_t dest_n,
                           const wchar_t *src, size_t src_n )
 {
-  size_t n;
-
-  n = __wcsxfrm_l( dest, src, dest_n, (__c_locale)__loc );
-
-  return n > src_n ? (size_t)-1 : n; /* dest[n] = 0? */
+  return __wcsxfrm_l( dest, src, dest_n, (__c_locale)__loc );
 }
 
 # endif

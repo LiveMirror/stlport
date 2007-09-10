@@ -779,27 +779,11 @@ int _Locale_strwcmp(struct _Locale_collate*l,
     return ret;
 }
 
-
-
 size_t _Locale_strxfrm(struct _Locale_collate* lcollate,
            char* dest, size_t destN, const char* src, size_t srcN)
-{
-  size_t n;
-  n = strxfrm(dest, src, destN);
-  if (n > destN)
-    return (size_t)-1;
-  dest[n] = 0;
-  return n;
-}
+{ return strxfrm(dest, src, destN); }
 
 size_t _Locale_strwxfrm(struct _Locale_collate* lcollate,
       wchar_t* dest, size_t destN,
       const wchar_t* src, size_t srcN)
-{
-  size_t n;
-  n = wcsxfrm(dest, src, destN);
-  if (n > destN)
-    return (size_t)-1;
-  dest[n] = 0;
-  return n;
-}
+{ return wcsxfrm(dest, src, destN); }

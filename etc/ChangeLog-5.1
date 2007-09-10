@@ -1,3 +1,20 @@
+2007-09-10  Francois Dumont  <dums@users.sourceforge.net>
+
+	* src/facets_byname.cpp: John Maddock bug report 1788618 fix.
+	Moreover remove use of an intermediate buffer to get result
+	of _Locale_strxfrm.
+
+	* test/unit/locale_test.cpp: Add tests for collate::transform
+	facet method.
+
+	* src/c_locale_win32/c_locale_win32.c: Small modification,
+	_Locale_strxfrm is supposed to return the number of chars
+	required to store the generated sorted key without the trailing
+	zero.
+
+	* src/c_locale_glibc/c_locale_glibc.c, c_locale_glibc2.c: Fix
+	implementation of _Locale_strxfrm, it should never return -1.
+
 2007-09-10  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* stlport/stl/_string.c: fix bugs in string rfind, find_last_of,
