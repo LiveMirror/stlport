@@ -1,3 +1,12 @@
+2007-09-11  Francois Dumont  <dums@users.sourceforge.net>
+
+	* src/c_locale_glibc/c_locale_glibc.c, c_locale_glibc2.c: Fix
+	_Locale_strxfrm and _Locale_wcxfrm implementation to take
+	into account strings that are not zero terminated.
+
+	* test/unit/locale_test.cpp: Add check that collate.tranform
+	method build a key only for chars in the range pass to method.
+
 2007-09-10  Francois Dumont  <dums@users.sourceforge.net>
 
 	* src/facets_byname.cpp: John Maddock bug report 1788618 fix.

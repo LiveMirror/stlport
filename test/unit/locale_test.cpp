@@ -885,7 +885,11 @@ void LocaleTest::collate_facet()
       CPPUNIT_ASSERT( col.transform(strs[2].data(), strs[2].data() + strs[2].size()) == transformed[2] );
       CPPUNIT_ASSERT( col.transform(strs[3].data(), strs[3].data() + strs[3].size()) == transformed[3] );
 
+      // Check empty string result in empty key.
       CPPUNIT_ASSERT( col.transform(strs[0].data(), strs[0].data()).empty() );
+
+      // Check that only characters that matter are taken into accout to build the key.
+      CPPUNIT_ASSERT( col.transform(strs[0].data(), strs[0].data() + 2) == col.transform(strs[1].data(), strs[1].data() + 2) );
     }
 #    if !defined (STLPORT) || !defined (_STLP_NO_WCHAR_T)
     {
@@ -933,6 +937,8 @@ void LocaleTest::collate_facet()
       CPPUNIT_ASSERT( col.transform(strs[3].data(), strs[3].data() + strs[3].size()) == transformed[3] );
 
       CPPUNIT_ASSERT( col.transform(strs[0].data(), strs[0].data()).empty() );
+
+      CPPUNIT_ASSERT( col.transform(strs[0].data(), strs[0].data() + 2) == col.transform(strs[1].data(), strs[1].data() + 2) );
     }
 #    endif
   }
