@@ -187,15 +187,15 @@ _STLP_EXPORT_TEMPLATE_CLASS num_get<wchar_t, istreambuf_iterator<wchar_t, char_t
 
 _STLP_MOVE_TO_PRIV_NAMESPACE
 
-extern bool _STLP_CALL __valid_grouping(const char*, const char*, const char*, const char*);
+_STLP_DECLSPEC bool _STLP_CALL __valid_grouping(const char*, const char*, const char*, const char*);
 
 template <class _InputIter, class _Integer, class _CharT>
 bool _STLP_CALL
 __get_decimal_integer(_InputIter& __first, _InputIter& __last, _Integer& __val, _CharT*);
 
 #  if !defined (_STLP_NO_WCHAR_T)
-bool _STLP_CALL __get_fdigit(wchar_t&, const wchar_t*);
-bool _STLP_CALL __get_fdigit_or_sep(wchar_t&, wchar_t, const wchar_t*);
+bool _STLP_DECLSPEC _STLP_CALL __get_fdigit(wchar_t&, const wchar_t*);
+bool _STLP_DECLSPEC _STLP_CALL __get_fdigit_or_sep(wchar_t&, wchar_t, const wchar_t*);
 #  endif
 
 inline void  _STLP_CALL
@@ -210,13 +210,13 @@ _Initialize_get_float(const ctype<char>&,
 }
 
 #  if !defined (_STLP_NO_WCHAR_T)
-void _STLP_CALL _Initialize_get_float(const ctype<wchar_t>&,
-                                      wchar_t&, wchar_t&, wchar_t&, wchar_t&, wchar_t*);
+void _STLP_DECLSPEC _STLP_CALL _Initialize_get_float(const ctype<wchar_t>&,
+                                                     wchar_t&, wchar_t&, wchar_t&, wchar_t&, wchar_t*);
 #  endif
-void _STLP_CALL __string_to_float(const __iostring&, float&);
-void _STLP_CALL __string_to_float(const __iostring&, double&);
+void _STLP_DECLSPEC _STLP_CALL __string_to_float(const __iostring&, float&);
+void _STLP_DECLSPEC _STLP_CALL __string_to_float(const __iostring&, double&);
 #  if !defined (_STLP_NO_LONG_DOUBLE)
-void _STLP_CALL __string_to_float(const __iostring&, long double&);
+void _STLP_DECLSPEC _STLP_CALL __string_to_float(const __iostring&, long double&);
 #  endif
 
 _STLP_MOVE_TO_STD_NAMESPACE
