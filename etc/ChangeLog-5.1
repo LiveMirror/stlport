@@ -33,6 +33,17 @@
 	* src/c_locale_glibc/c_locale_glibc2.c: this is a C, so
 	decl allowd only on top of block;
 
+	* Platform tested: gcc 2.95.4 (debian), i686 GNU/Linux,
+	glibc 2.3.2;
+
+	* release-shared: build success, as library as unit tests,
+	but run unit tests fail---stalling on spinlock during library
+	load; looks like problem with correct initialization of
+	statics;
+
+	* stldbg-shared: fail build library, stlport/stl/debug/_hashtable.h:49:
+	declaration of `operator ==' as non-function 
+
 2007-09-27  Francois Dumont  <dums@users.sourceforge.net>
 
 	* src/facets_byname.cpp: In collate::do_transform, consider
