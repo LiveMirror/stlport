@@ -1,3 +1,11 @@
+2007-10-05  Francois Dumont  <dums@users.sourceforge.net>
+
+	* stlport/stl/debug/_iterator.h, _string.h, src/string.cpp:
+	Removed useless and even invalid workaround used when
+	_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND is defined. There is now
+	only one construct check class __construct_checker,
+	__msvc6_construct_checker has been removed.
+
 2007-09-28  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* Platform tested: gcc 4.1.2 20060928 (prerelease)

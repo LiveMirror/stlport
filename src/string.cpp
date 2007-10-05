@@ -46,7 +46,7 @@ template class _STLP_CLASS_DECLSPEC _String_base<char, allocator<char> >;
 #    endif
 
 template class _STLP_CLASS_DECLSPEC basic_string<char, char_traits<char>, allocator<char> >;
-template class _STLP_CLASS_DECLSPEC _STLP_CONSTRUCT_CHECKER<basic_string<char, char_traits<char>, allocator<char> > >;
+template class _STLP_CLASS_DECLSPEC __construct_checker<basic_string<char, char_traits<char>, allocator<char> > >;
 
 #    undef basic_string
 #  endif
@@ -79,7 +79,7 @@ template class _STLP_CLASS_DECLSPEC _String_base<wchar_t, allocator<wchar_t> >;
 #      endif
 
 template class _STLP_CLASS_DECLSPEC basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
-template class _STLP_CLASS_DECLSPEC _STLP_CONSTRUCT_CHECKER<basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> > >;
+template class _STLP_CLASS_DECLSPEC __construct_checker<basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> > >;
 
 #      undef basic_string
 #    endif
