@@ -1,4 +1,4 @@
-# -*- Makefile -*- Time-stamp: <05/12/15 01:46:30 ptr>
+# -*- Makefile -*- Time-stamp: <07/12/11 10:20:41 ptr>
 
 ifndef NOT_USE_NOSTDLIB
 
@@ -86,7 +86,7 @@ ifdef _USE_NOSTDLIB
 # ifeq ($(CXX_VERSION_MAJOR),3)
 
 # Check whether gcc builded with --disable-shared
-ifeq ($(shell ${CXX} -print-file-name=libgcc_eh.a),libgcc_eh.a)
+ifeq ($(shell ${CXX} ${CXXFLAGS} -print-file-name=libgcc_eh.a),libgcc_eh.a)
 # gcc builded with --disable-shared, (no library libgcc_eh.a); all exception support in libgcc.a
 _LGCC_EH :=
 _LGCC_S := -lgcc
@@ -104,30 +104,30 @@ endif
 endif
 
 ifeq ($(OSNAME),linux)
-START_OBJ := $(shell for o in crt{1,i,begin}.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crt{end,n}.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crt{1,i,begin}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crt{end,n}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS = ${STLPORT_LIB} ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),openbsd)
-START_OBJ := $(shell for o in crt{0,begin}.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crtend.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crt{0,begin}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtend.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS = ${STLPORT_LIB} ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),freebsd)
 # FreeBSD < 5.3 should use -lc_r, while FreeBSD >= 5.3 use -lpthread
 PTHR := $(shell if [ ${OSREL_MAJOR} -gt 5 ] ; then echo "pthread" ; else if [ ${OSREL_MAJOR} -lt 5 ] ; then echo "c_r" ; else if [ ${OSREL_MINOR} -lt 3 ] ; then echo "c_r" ; else echo "pthread"; fi ; fi ; fi)
-START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS = ${STLPORT_LIB} ${_LGCC_S} -l${PTHR} -lc -lm
 endif
 ifeq ($(OSNAME),netbsd)
-START_OBJ := $(shell for o in crt{1,i,begin}.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crt{end,n}.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crt{1,i,begin}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crt{end,n}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS = ${STLPORT_LIB} ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),sunos)
-START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crt1.o crti.o crtbegin.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS = ${STLPORT_LIB} ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),darwin)

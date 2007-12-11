@@ -1,4 +1,4 @@
-# -*- makefile -*- Time-stamp: <05/12/27 10:53:41 ptr>
+# -*- makefile -*- Time-stamp: <07/12/11 10:17:43 ptr>
 
 # Oh, the commented below work for gmake 3.78.1 and above,
 # but phrase without tag not work for it. Since gmake 3.79 
@@ -69,7 +69,7 @@ NOSTDLIB :=
 # ifeq ($(CXX_VERSION_MAJOR),3)
 
 # Check whether gcc builded with --disable-shared
-ifeq ($(shell ${CXX} -print-file-name=libgcc_eh.a),libgcc_eh.a)
+ifeq ($(shell ${CXX} ${CXXFLAGS} -print-file-name=libgcc_eh.a),libgcc_eh.a)
 # gcc builded with --disable-shared, (no library libgcc_eh.a); all exception support in libgcc.a
 _LGCC_EH :=
 _LGCC_S := -lgcc
@@ -89,31 +89,31 @@ endif
 # Include whole language support archive (libsupc++.a) into libstlport:
 # all C++ issues are in libstlport now.
 ifeq ($(OSNAME),linux)
-START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 #START_A_OBJ := $(shell for o in crt{i,beginT}.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS := -Wl,--whole-archive -lsupc++ ${_LGCC_EH} -Wl,--no-whole-archive ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),openbsd)
-START_OBJ := $(shell for o in crtbeginS.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crtendS.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crtbeginS.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtendS.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS := -Wl,--whole-archive -lsupc++ ${_LGCC_EH} -Wl,--no-whole-archive ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),freebsd)
 # FreeBSD < 5.3 should use -lc_r, while FreeBSD >= 5.3 use -lpthread
 PTHR := $(shell if [ ${OSREL_MAJOR} -gt 5 ] ; then echo "pthread" ; else if [ ${OSREL_MAJOR} -lt 5 ] ; then echo "c_r" ; else if [ ${OSREL_MINOR} -lt 3 ] ; then echo "c_r" ; else echo "pthread"; fi ; fi ; fi)
-START_OBJ := $(shell for o in crti.o crtbeginS.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crtendS.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crti.o crtbeginS.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtendS.o crtn.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS := -Wl,--whole-archive -lsupc++ ${_LGCC_EH} -Wl,--no-whole-archive ${_LGCC_S} -l${PTHR} -lc -lm
 endif
 ifeq ($(OSNAME),netbsd)
-START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crt{i,beginS}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crt{endS,n}.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS := -Wl,--whole-archive -lsupc++ ${_LGCC_EH} -Wl,--no-whole-archive ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),sunos)
-START_OBJ := $(shell for o in crti.o crtbegin.o; do ${CXX} -print-file-name=$$o; done)
-END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} -print-file-name=$$o; done)
+START_OBJ := $(shell for o in crti.o crtbegin.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
+END_OBJ := $(shell for o in crtend.o crtn.o; do ${CXX} ${CXXFLAGS} -print-file-name=$$o; done)
 STDLIBS := -Wl,-zallextract -lsupc++ ${_LGCC_EH} -Wl,-zdefaultextract ${_LGCC_S} -lpthread -lc -lm
 endif
 ifeq ($(OSNAME),darwin)
