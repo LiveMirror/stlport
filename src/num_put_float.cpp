@@ -150,7 +150,7 @@ extern "C" {
   extern double copysign(double, double);
   extern const float _SINFINITY;
   extern const float _SQNAN;
-#  if defined (_PA_RISC)
+//#  if defined (_PA_RISC)
 #    define _ISNAN(x)          (_IS32(x)?_Isnanf(x):(isnan)(x))
 #    define _ISINF(x)          (_IS32(x)?_Isinff(x):_Isinf(x))
 #    define _SIGNBIT(x)        (_IS32(x)?_Signbitf(x):_Signbit(x))
@@ -171,12 +171,12 @@ extern "C" {
   extern int _Isunorderedf(float, float);
   extern int _Fpclassify(double);
   extern int _Fpclassifyf(float);
-#  else
-#    include "math_ia64_internal.h"
-#    define _FPCLASSIFY(x)     (_IS32(x)?_Fpclassf(x):_Fpclass(x))
-  extern int _Fpclass(double);
-  extern int _Fpclassf(float);
-#  endif
+//#  else
+//#    include "math_ia64_internal.h"
+//#    define _FPCLASSIFY(x)     (_IS32(x)?_Fpclassf(x):_Fpclass(x))
+//  extern int _Fpclass(double);
+//  extern int _Fpclassf(float);
+//#  endif
 }
 
 #  if !defined (_INCLUDE_XOPEN_SOURCE_EXTENDED)

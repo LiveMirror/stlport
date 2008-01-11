@@ -58,8 +58,12 @@ using _STLP_VENDOR_CSTD::size_t;
 // these functions just don't exist on Windows CE
 using _STLP_VENDOR_CSTD::abort;
 using _STLP_VENDOR_CSTD::getenv;
+
+#ifndef __hpux
 using _STLP_VENDOR_CSTD::mblen;
 using _STLP_VENDOR_CSTD::mbtowc;
+#endif
+
 using _STLP_VENDOR_CSTD::system;
 using _STLP_VENDOR_CSTD::bsearch;
 #    endif
@@ -72,7 +76,11 @@ using _STLP_VENDOR_CSTD::realloc;
 using _STLP_VENDOR_CSTD::atof;
 using _STLP_VENDOR_CSTD::atoi;
 using _STLP_VENDOR_CSTD::atol;
+
+#ifndef __hpux
 using _STLP_VENDOR_CSTD::mbstowcs;
+#endif
+
 using _STLP_VENDOR_CSTD::strtod;
 using _STLP_VENDOR_CSTD::strtol;
 using _STLP_VENDOR_CSTD::strtoul;

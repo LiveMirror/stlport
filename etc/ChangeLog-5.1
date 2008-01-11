@@ -1,3 +1,9 @@
+2008-01-11  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* src/num_put_float.cpp, stlport/stl/_cstdlib.h, stlport/stl/config/_hpux.h:
+	On HPUX IA64 gcc have <wchar.h> and <cwchar> files, but they are conflict
+	with <stl/_mbstate_t.h>; suggested by KBac, patch #1868233.
+
 2008-01-02  Francois Dumont  <dums@users.sourceforge.net>
 
 	* src/_stdio_file.h: Apply Windows CE fix already present in trunk to
