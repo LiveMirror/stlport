@@ -1,3 +1,10 @@
+2008-01-13  Francois Dumont  <dums@users.sourceforge.net>
+
+	* src/fstream.cpp, stlport/stl/_fstream.c: Complete bug #1854345
+	fix as already done in SVN trunk. Moreover, an other SVN trunk bug
+	fix has been integrated. We now try to convert already read buffer
+	even if latest file read failed.
+
 2008-01-11  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* src/num_put_float.cpp, stlport/stl/_cstdlib.h, stlport/stl/config/_hpux.h:

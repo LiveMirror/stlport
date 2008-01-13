@@ -499,15 +499,16 @@ basic_filebuf<_CharT, _Traits>::_M_underflow_aux() {
   // to make progress.
   for (;;) {
     ptrdiff_t __n = _M_base._M_read(_M_ext_buf_end, _M_ext_buf_EOS - _M_ext_buf_end);
+    _M_ext_buf_end += __n;
 
-    // Don't enter error mode for a failed read.  Error mode is sticky,
-    // and we might succeed if we try again.
-    if (__n <= 0)
+    // If external buffer is empty there is nothing to do. 
+    if (_M_ext_buf == _M_ext_buf_end) {
+      this->setg(0, 0, 0);
       return traits_type::eof();
+    }
 
     // Convert the external buffer to internal characters.
-    _M_ext_buf_end += __n;
-    const char*   __enext;
+    const char* __enext;
     _CharT* __inext;
 
     typename _Codecvt::result __status
@@ -515,27 +516,34 @@ basic_filebuf<_CharT, _Traits>::_M_underflow_aux() {
                        _M_ext_buf, _M_ext_buf_end, __enext,
                        _M_int_buf, _M_int_buf_EOS, __inext);
 
-    // Error conditions: (1) Return value of error.  (2) Producing internal
-    // characters without consuming external characters.  (3) In fixed-width
-    // encodings, producing an internal sequence whose length is inconsistent
-    // with that of the internal sequence.  (4) Failure to produce any
-    // characters if we have enough characters in the external buffer, where
-    // "enough" means the largest possible width of a single character.
+    /* Error conditions:
+     * (1) Return value of error.
+     * (2) Producing internal characters without consuming external characters.
+     * (3) In fixed-width encodings, producing an internal sequence whose length
+     * is inconsistent with that of the internal sequence.
+     * (4) Failure to produce any characters if we have enough characters in
+     * the external buffer, where "enough" means the largest possible width
+     * of a single character. */
     if (__status == _Codecvt::noconv)
       return _Noconv_input<_Traits>::_M_doit(this);
     else if (__status == _Codecvt::error ||
-             (__inext != _M_int_buf && __enext == _M_ext_buf) ||
-             (_M_constant_width &&
-              //         __inext - _M_int_buf != _M_width * (__enext - _M_ext_buf)) ||
-              (__inext - _M_int_buf) *  _M_width != (__enext - _M_ext_buf)) ||
-             (__inext == _M_int_buf && __enext - _M_ext_buf >= _M_max_width))
+            (__inext != _M_int_buf && __enext == _M_ext_buf) ||
+            (_M_constant_width && (__inext - _M_int_buf) *  _M_width != (__enext - _M_ext_buf)) ||
+            (__inext == _M_int_buf && __enext - _M_ext_buf >= _M_max_width))
       return _M_input_error();
     else if (__inext != _M_int_buf) {
       _M_ext_buf_converted = _M_ext_buf + (__enext - _M_ext_buf);
       this->setg(_M_int_buf, _M_int_buf, __inext);
       return traits_type::to_int_type(*_M_int_buf);
     }
-    // We need to go around the loop again to get more external characters.
+    /* We need to go around the loop again to get more external characters.
+     * But if the previous read failed then don't try again for now.
+     * Don't enter error mode for a failed read. Error mode is sticky,
+     * and we might succeed if we try again. */
+    if (__n <= 0) {
+      this->setg(0, 0, 0);
+      return traits_type::eof();
+    }
   }
 }
 
