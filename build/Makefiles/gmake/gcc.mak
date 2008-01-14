@@ -113,11 +113,6 @@ CCFLAGS = $(PTHREAD) $(OPT)
 CFLAGS = $(PTHREAD) $(OPT)
 # CXXFLAGS = $(PTHREAD) -nostdinc++ -fexceptions -fident $(OPT)
 CXXFLAGS = $(PTHREAD) -fexceptions -fident $(OPT)
-# This is here due to bug in GNU make 3.79.1 from Solaris build:
-stldbg-static:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
-stldbg-shared:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
-stldbg-static-dep:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
-stldbg-shared-dep:	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
 endif
 
 ifeq ($(OSNAME),linux)
@@ -154,11 +149,6 @@ ifndef STLP_BUILD_NO_THREAD
 DEFS += -D_REENTRANT
 endif
 CXXFLAGS = -fexceptions $(OPT)
-# This is here due to bug in GNU make 3.79 from MacOS build:
-stldbg-static :	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
-stldbg-shared :	CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
-stldbg-static-dep : CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
-stldbg-shared-dep : CPPFLAGS = -D_STLP_DEBUG ${CPPFLAGS}
 endif
 
 ifeq ($(OSNAME),hp-ux)
