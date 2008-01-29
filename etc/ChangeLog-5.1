@@ -1,3 +1,21 @@
+2008-01-29  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* build/Makefiles/gmake/gcc.mak, build/test/unit/gcc.mak:
+	build on HP-UX PA-RISC and IA64, build on Solaris;
+
+	* build/test/eh/gcc.mak: ditto;
+
+	* build/Makefiles/gmake/hp-ux/targetsys.mak: cool, but HP-UX IA64
+	use shared lib extention so, not sl as on PA-RISC;
+
+	* src/cxa.c: fix cxa_atexit problem for HP-UX with gcc, like on
+	Solaris;
+
+	* stlport/wctype.h, stlport/stl/_cwctype.h: problem with wchars
+	on HP-UX;
+
+	* src/num_get_float.cpp: no stdint.h on HP-UX; suggested by KBac.
+
 2008-01-19  Francois Dumont  <dums@users.sourceforge.net>
 
 	* 5.1.5 released based on revision 3387.

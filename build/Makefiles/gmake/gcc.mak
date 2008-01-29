@@ -4,7 +4,11 @@
 INCLUDES :=
 
 CXX := c++
+ifeq ($(OSNAME), hp-ux)
+CC := gcc -std=gnu99
+else
 CC := gcc -ansi
+endif
 
 ifdef TARGET_OS
 CXX := ${TARGET_OS}-${CXX}
@@ -156,6 +160,10 @@ CCFLAGS = $(PTHREAD) $(OPT)
 CFLAGS = $(PTHREAD) $(OPT)
 # CXXFLAGS = $(PTHREAD) -nostdinc++ -fexceptions -fident $(OPT)
 CXXFLAGS = $(PTHREAD) -fexceptions -fident $(OPT)
+ifneq ($(M_ARCH),ia64)
+release-static : OPT += -fno-reorder-blocks
+release-shared : OPT += -fno-reorder-blocks
+endif
 endif
 
 #ifeq ($(CXX_VERSION_MAJOR),3)

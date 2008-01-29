@@ -23,9 +23,15 @@ INCLUDES += -I${STLP_BUILD_BOOST_PATH}
 endif
 
 ifndef TARGET_OS
+ifeq ($(OSNAME),hp-ux)
+release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,+b${STLPORT_LIB_DIR}
+dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,+b${STLPORT_LIB_DIR}
+stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,+b${STLPORT_LIB_DIR}
+else
 release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
 stldbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR} -Wl,-R${STLPORT_LIB_DIR}
+endif
 else
 release-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}
 dbg-shared:	LDSEARCH = -L${STLPORT_LIB_DIR}

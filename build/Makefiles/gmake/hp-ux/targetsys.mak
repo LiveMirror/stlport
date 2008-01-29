@@ -1,7 +1,10 @@
 # Time-stamp: <05/09/09 21:05:18 ptr>
-# $Id$
 
+ifeq ($(M_ARCH),ia64)
+SO := so
+else
 SO := sl
+endif
 
 ARCH := a
 AR := ar

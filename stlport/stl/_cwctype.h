@@ -44,7 +44,7 @@ using std::wctrans;
 #    include _STLP_NATIVE_C_HEADER(wctype.h)
 #  endif
 
-#  if defined (_STLP_IMPORT_VENDOR_CSTD)
+#  if defined (_STLP_IMPORT_VENDOR_CSTD) && !defined (__hpux)
 
 #    if defined (_STLP_USE_GLIBC) && !(defined (_GLIBCPP_USE_WCHAR_T) || defined (_GLIBCXX_USE_WCHAR_T)) || \
         defined (__sun) || defined (__FreeBSD__) || \

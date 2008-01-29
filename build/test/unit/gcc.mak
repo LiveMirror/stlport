@@ -37,6 +37,11 @@ release-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
 dbg-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
 stldbg-shared:	LDFLAGS += -Wl,-rpath=${STLPORT_LIB_DIR}
 endif
+ifeq ($(OSNAME), hp-ux)
+release-shared:	LDFLAGS += -Wl,+b${STLPORT_LIB_DIR}
+dbg-shared:	LDFLAGS += -Wl,+b${STLPORT_LIB_DIR}
+stldbg-shared:	LDFLAGS += -Wl,+b${STLPORT_LIB_DIR}
+endif
 endif
 
 

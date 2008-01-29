@@ -22,6 +22,10 @@
 
 /* evc3 doesn't have wctype.h */
 #if !defined(_STLP_WCE_EVC3) && !defined(N_PLAT_NLM)
+#  if defined (__hpux)
+#    include _STLP_NATIVE_C_HEADER(stdarg.h)
+#    include _STLP_NATIVE_C_HEADER(wchar.h)
+#  endif
 #  include _STLP_NATIVE_C_HEADER(wctype.h)
 #endif
 
