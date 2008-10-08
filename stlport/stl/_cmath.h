@@ -41,7 +41,10 @@
 #  ifndef _STLP_HAS_NO_NAMESPACES
 namespace std {
 #  endif
+#if !defined(__SunOS_5_11) && !defined(__SunOS_5_10)
 extern "C" double hypot(double x, double y);
+#endif
+
 #  ifndef _STLP_HAS_NO_NAMESPACES
 }
 #  endif
@@ -141,6 +144,9 @@ extern long double __sinhl(long double);
 extern long double __sqrtl(long double);
 extern long double __tanl(long double);
 extern long double __tanhl(long double);
+#if defined(__SunOS_5_11) || defined(__SunOS_5_10)
+#  include <math.h>
+#endif
 }
 #endif
 
@@ -409,8 +415,8 @@ inline double ldexp(double __x, int __y) { return __stlp_ldexp(__x, __y); }
  * in global namespace.
  * HP-UX native lib has math functions in the global namespace.
  */
-#if (!defined (_STLP_MSVC_LIB) || (_STLP_MSVC_LIB < 1310) || defined(UNDER_CE)) && \
-    (!defined (__HP_aCC) || (__HP_aCC < 30000))
+#if (!defined (_STLP_MSVC_LIB) || (_STLP_MSVC_LIB < 1310) || defined(UNDER_CE) ) && !defined(__SunOS_5_11) && \
+    !defined(__SunOS_5_10) && (!defined (__HP_aCC) || (__HP_aCC < 30000))
 inline double abs(double __x)
 { return ::fabs(__x); }
 #  if !defined (__MVS__)
@@ -484,8 +490,13 @@ inline long double pow(long double __x, int __y) { return (_Pow_int(__x, __y)); 
 #    pragma warning (push)
 #    pragma warning (disable : 4996) // hypot is deprecated.
 #  endif
+#if defined(__SunOS_5_11) || defined(__SunOS_5_10)
+inline float hypot(float x, float y) { return hypotf(x, y); }
+inline long double hypot(long double x, long double y) { return hypotl( x, y); }
+#else
 _STLP_MATH_INLINE2XX(float, hypot, hypot)
 inline long double hypot(long double x, long double y) { return sqrt(x * x + y * y); }
+#endif
 #  if defined (_STLP_MSVC) && (_STLP_MSVC >= 1400)
 #    pragma warning (pop)
 #  endif

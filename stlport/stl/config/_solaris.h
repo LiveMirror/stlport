@@ -7,22 +7,11 @@
 #include <sys/feature_tests.h>
 
 /* system-dependent defines */
+/* For SunOS greater than 5.7: */
 
-/*
- * Should be fixed:
- * 1. __SunOS_5_x not defined, and no way to derive this from headers only;
- *    define it with -D on compiler command line is a bad idea too.
- *
- * 2. Solaris may has, but may hasn't MATH_F and MATH_L functions (even with two
- *    underscores)---this depends upon system update level and seems legally present
- *    only in Solaris 10 (i.e. I saw Solaris 9 with and without __acosf in libm.so.1)
- *
- *              - ptr
- */
-
-#if defined (__SunOS_5_8) && ! defined (_STLP_HAS_NO_NEW_C_HEADERS) && ( __cplusplus >= 199711L)
+# if defined (__SunOS_GT_7) && ! defined (_STLP_HAS_NO_NEW_C_HEADERS) && ( __cplusplus >= 199711L) && !defined (__linux__)
 #  define _STLP_HAS_NATIVE_FLOAT_ABS
-#endif
+# endif
 
 #if defined(_XOPEN_SOURCE) && (_XOPEN_VERSION - 0 >= 4)
 # define _STLP_RAND48 1
@@ -51,6 +40,12 @@
 #  endif
 #endif
 
+#if defined (__sun ) && (defined(__SunOS_5_10) || defined(__SunOS_5_11)) 
+#define _STLP_AMD_SOLARIS_THREADS
+#undef _STLP_SPARC_SOLARIS_THREADS
+#    define _STLP_THREADS_DEFINED
+#endif
+
 /* gcc does not support ELF64 yet ; however; it supports ultrasparc + v8plus.
  * limits.h contains invalid values for this combination
  */
@@ -72,14 +67,16 @@
  * P.S. That's why I add two defines:
  */
 
-/* #ifdef __GNUC__ */
+#ifdef __GNUC__ 
 #define _STLP_NO_VENDOR_MATH_F
 #define _STLP_NO_VENDOR_MATH_L
-/* #endif */
+#endif 
 
 #ifdef __GNUC__
 #  define _STLP_WCHAR_BORLAND_EXCLUDE
 #  define _STLP_NO_NATIVE_WIDE_FUNCTIONS 1
 #endif
+
+#define _STLP_USE_MALLOC
 
 #endif /* __stl_config__solaris_h */

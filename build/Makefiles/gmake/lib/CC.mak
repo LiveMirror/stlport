@@ -1,6 +1,7 @@
 # -*- makefile -*- Time-stamp: <04/08/23 23:07:35 ptr>
 
-OPT += -xcode=pic32
+#OPT += -xcode=pic32
+OPT += -m64 -KPIC
 
 dbg-shared:	LDFLAGS += -G -Qoption ld -z,initfirst -h$(SO_NAME_DBGxx) ${LDSEARCH} ${NOSTDLIB}
 stldbg-shared:	LDFLAGS += -G -Qoption ld -z,initfirst -h$(SO_NAME_STLDBGxx) ${LDSEARCH} ${NOSTDLIB}

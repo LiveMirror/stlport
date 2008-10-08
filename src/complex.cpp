@@ -37,16 +37,26 @@ _STLP_BEGIN_NAMESPACE
 
 // Absolute value
 _STLP_TEMPLATE_NULL
+#if defined(__SunOS_5_11) || defined(__SunOS_5_10)
+_STLP_DECLSPEC float _STLP_CALL abs(const complex<float>& __z)
+{ return ::hypotf(__z._M_re, __z._M_im); }
+#else
 _STLP_DECLSPEC float _STLP_CALL abs(const complex<float>& __z)
 { return ::hypot(__z._M_re, __z._M_im); }
+#endif
 _STLP_TEMPLATE_NULL
 _STLP_DECLSPEC double _STLP_CALL abs(const complex<double>& __z)
 { return ::hypot(__z._M_re, __z._M_im); }
 
 #if !defined (_STLP_NO_LONG_DOUBLE)
 _STLP_TEMPLATE_NULL
+#if defined(__SunOS_5_11) || defined(__SunOS_5_10)
+_STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z)
+{ return ::hypotl(__z._M_re, __z._M_im); }
+#else
 _STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z)
 { return ::hypot(__z._M_re, __z._M_im); }
+#endif
 #endif
 
 // Phase

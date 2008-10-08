@@ -24,6 +24,10 @@
 // For sunpro, it chokes if time.h is included through stat.h
 #endif
 
+#if defined(SunOS_5_11) || defined(__SunOS_5_10)
+#include <stdlib.h>
+#endif
+
 #include <fstream>
 
 #ifdef __CYGWIN__

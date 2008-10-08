@@ -34,6 +34,10 @@
 #  include <stl/_vector.h>
 #endif
 
+#if defined(__SunOS_5_11) || defined(__SunOS_5_10)
+#  include <stl/_range_errors.h>
+#endif
+
 #define _STLP_WORD_BIT (int(CHAR_BIT*sizeof(unsigned int)))
 
 _STLP_BEGIN_NAMESPACE

@@ -52,7 +52,13 @@ _STLP_BEGIN_NAMESPACE
 template<int __32bits>
 _STLP_STATIC_MUTEX
 _Atomic_swap_struct<__32bits>::_S_swap_lock _STLP_MUTEX_INITIALIZER;
+#if (defined(__SunOS_5_11) || defined(__SunOS_5_10)) && defined(__amd64)
+template<int __64bits>
+_STLP_STATIC_MUTEX
+_Atomic_swap_struct<__64bits>::_S_swap_lock _STLP_MUTEX_INITIALIZER;
+#else
 #    undef _STLP_USE_ATOMIC_SWAP_MUTEX
+#endif
 #  endif
 
 #  if defined (_STLP_THREADS) && !defined (_STLP_USE_PTHREAD_SPINLOCK)

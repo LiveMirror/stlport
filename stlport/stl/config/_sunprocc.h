@@ -17,30 +17,61 @@
 #  define _STLP_NO_BOOL 1
 #endif
 
+/*
+# if ! defined(_TEMPLATE_NO_EXTDEF)
+#  define _STLP_LINK_TIME_INSTANTIATION 1
+# endif
+*/
+
+# if ! defined(_BOOL)
+#  define _STLP_NO_BOOL 1
+# endif
+
+#  if (__SUNPRO_CC >= 0x500 ) && (!defined (__SUNPRO_CC_COMPAT) || (__SUNPRO_CC_COMPAT == 5 )) \
+    && defined (_STLP_NO_OWN_IOSTREAMS) && ! defined (_STLP_HAS_NO_NEW_IOSTREAMS)
+#    error "The wrapper (_STLP_NO_OWN_IOSTREAMS) mode does not work well without _STLP_HAS_NO_NEW_IOSTREAMS. Please set this flag. You will also have to use -liostream option on link phase."
+/* #   define _STLP_HAS_NO_NEW_IOSTREAMS */
+#  endif
+
 // compatibility mode stuff
-#if (__SUNPRO_CC >= 0x510) && (!defined (__SUNPRO_CC_COMPAT) || (__SUNPRO_CC_COMPAT == 5 ))
+# if (__SUNPRO_CC >= 0x510) && (!defined (__SUNPRO_CC_COMPAT) || (__SUNPRO_CC_COMPAT == 5 ))
 #  define _STLP_NATIVE_INCLUDE_PATH ../CC/Cstd
 #  define _STLP_NATIVE_CPP_RUNTIME_INCLUDE_PATH ../CC
-#elif (__SUNPRO_CC >= 0x500) && (!defined (__SUNPRO_CC_COMPAT) || (__SUNPRO_CC_COMPAT == 5 ))
+# elif (__SUNPRO_CC >= 0x500) && (!defined (__SUNPRO_CC_COMPAT) || (__SUNPRO_CC_COMPAT == 5 ))
 #  define _STLP_NATIVE_INCLUDE_PATH ../CC
-#elif (defined (__SUNPRO_CC_COMPAT) && __SUNPRO_CC_COMPAT == 4)
+# elif (defined (__SUNPRO_CC_COMPAT) && __SUNPRO_CC_COMPAT == 4)
 #  define _STLP_NATIVE_INCLUDE_PATH ../CC4
-#else
+# else
 #  define _STLP_NATIVE_INCLUDE_PATH ../CC
-#endif
+# endif
 
-#define _STLP_STATIC_CONST_INIT_BUG 1
+/* #define _STLP_STATIC_CONST_INIT_BUG 1 */
+#  if (__SUNPRO_CC >= 0x500 ) && ( defined (_STLP_NO_NEW_IOSTREAMS) || defined (_STLP_HAS_NO_NEW_IOSTREAMS) )
+/* if the project is set up to use libiostream (_STLP_NO_NEW_IOSTREAMS should be defined then),
+   use classic iostreams */
+#   define _STLP_NATIVE_OLD_STREAMS_INCLUDE_PATH ../CCios
+#  endif
 
-#if (__SUNPRO_CC < 0x530)
+# if (__SUNPRO_CC < 0x530)
 // those are tested and proved not to work...
+#  define _STLP_STATIC_ARRAY_BUG 1
 #  define _STLP_NO_CLASS_PARTIAL_SPECIALIZATION 1
 #  define _STLP_NO_MEMBER_TEMPLATE_CLASSES 1
 #  define _STLP_USE_OLD_HP_ITERATOR_QUERIES
-#endif
+# endif 
 
 #ifdef _STLP_USE_NO_IOSTREAMS
 #  define _STLP_HAS_NO_NEW_C_HEADERS 1
 #endif
+
+# if defined (_STLP_OWN_IOSTREAMS)
+#  if ! defined (_STLP_NO_OWN_NAMESPACE)
+#   define _STLP_NO_OWN_NAMESPACE
+#  endif
+# else
+#  define _STLP_HAS_NO_NEW_C_HEADERS 1
+# endif
+
 
 // those do not depend on compatibility
 #if (__SUNPRO_CC < 0x510)
@@ -48,7 +79,7 @@
 #  define _STLP_NONTEMPL_BASE_MATCH_BUG 1
 #endif
 
-#if (__SUNPRO_CC < 0x510) || (defined (__SUNPRO_CC_COMPAT) && (__SUNPRO_CC_COMPAT < 5))
+# if (__SUNPRO_CC < 0x510) || (defined (__SUNPRO_CC_COMPAT) && (__SUNPRO_CC_COMPAT < 5))
 
 #  define _STLP_NO_QUALIFIED_FRIENDS 1
 
@@ -62,13 +93,13 @@
 #  define _STLP_NO_FUNCTION_TMPL_PARTIAL_ORDER 1
 #  define _STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS
 #  define _STLP_NO_MEMBER_TEMPLATE_KEYWORD 1
-#endif
+# endif
 
 // Features that depend on compatibility switch
-#if ( __SUNPRO_CC < 0x500 ) || (defined (__SUNPRO_CC_COMPAT) && (__SUNPRO_CC_COMPAT < 5))
+# if ( __SUNPRO_CC < 0x500 ) || (defined (__SUNPRO_CC_COMPAT) && (__SUNPRO_CC_COMPAT < 5))
 
-#  ifndef _STLP_USE_NO_IOSTREAMS
-#    define _STLP_USE_NO_IOSTREAMS 1
+#  ifndef _STLP_HAS_NO_NEW_IOSTREAMS
+#   define _STLP_HAS_NO_NEW_IOSTREAMS 1
 #  endif
 #  define _STLP_NO_NEW_NEW_HEADER 1
 // #  define _STLP_NO_RELOPS_NAMESPACE
@@ -77,28 +108,40 @@
 #  define _STLP_NO_BAD_ALLOC 1
 #  define _STLP_NO_EXCEPTION_HEADER 1
 #  define _STLP_NATIVE_C_INCLUDE_PATH ../include
-#elif (__SUNPRO_CC < 0x510)
+# elif (__SUNPRO_CC < 0x510)
 // #  define _STLP_NATIVE_C_HEADER(header) <../CC/##header##.SUNWCCh>
 #  define _STLP_NATIVE_CPP_C_HEADER(header) <../CC/##header##.SUNWCCh>
 #  define _STLP_NATIVE_C_INCLUDE_PATH /usr/include
-#elif defined( __SunOS_5_5_1 ) || defined( __SunOS_5_6 ) || defined( __SunOS_5_7 )
+# elif defined( __SunOS_5_5_1 ) || defined( __SunOS_5_6 ) || defined( __SunOS_5_7 )
 #  define _STLP_NATIVE_C_INCLUDE_PATH ../CC/std
 #  define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../CC/std
-#else
+# else
 #  define _STLP_NATIVE_C_INCLUDE_PATH /usr/include
 #  define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../CC/std
-#endif
+# endif
 
-#if ( __SUNPRO_CC < 0x500 )
 
-#  undef _STLP_NATIVE_C_HEADER
+#if defined(__linux__) /* SunSoft's compiler present for Linux too ... */
 #  undef _STLP_NATIVE_CPP_C_HEADER
+#  undef _STLP_NATIVE_CPP_C_INCLUDE_PATH
+#  define _XOPEN_SOURCE 500
+#  define _STLP_VENDOR_GLOBAL_CSTD
+#  define _STLP_NATIVE_C_INCLUDE_PATH_VENDOR ../cc
+#  define _STLP_NATIVE_CPP_C_INCLUDE_PATH ../CC/std
+/* #  define _STLP_NATIVE_CPP_C_HEADER(header) </usr/include/g++-3/header> */
+/* #  define _STLP_NATIVE_CPP_C_INCLUDE_PATH /usr/include/g++-3 */
+#endif /* __linux__ */
 
-#  define wint_t __wint_t
+#  if ( __SUNPRO_CC < 0x500 )
+
+# undef _STLP_NATIVE_C_HEADER
+# undef _STLP_NATIVE_CPP_C_HEADER
+
+#   define wint_t __wint_t 
 // famous CC 4.2 bug
-#  define _STLP_INLINE_STRING_LITERAL_BUG 1
+#   define _STLP_INLINE_STRING_LITERAL_BUG 1
 // /usr/include
-#  define _STLP_NATIVE_C_INCLUDE_PATH ../include
+#   define _STLP_NATIVE_C_INCLUDE_PATH ../include
 
 // 4.2 cannot handle iterator_traits<_Tp>::iterator_category as a return type ;(
 #  define _STLP_USE_OLD_HP_ITERATOR_QUERIES
@@ -110,8 +153,10 @@
 
 #  define _STLP_NEED_TYPENAME 1
 #  define _STLP_NEED_EXPLICIT 1
+#  define _STLP_UNINITIALIZABLE_PRIVATE 1
 #  define _STLP_NO_BAD_ALLOC 1
 #  define _STLP_NO_ARROW_OPERATOR 1
+#  define _STLP_DEFAULT_CONSTRUCTOR_BUG 1
 
 #  define _STLP_DEF_CONST_PLCT_NEW_BUG 1
 #  define _STLP_DEF_CONST_DEF_PARAM_BUG 1
@@ -120,24 +165,24 @@
 #  define _STLP_HAS_NO_NEW_C_HEADERS 1
 // #  define _STLP_DONT_SIMULATE_PARTIAL_SPEC_FOR_TYPE_TRAITS
 
-#  if ( __SUNPRO_CC < 0x420 )
+#   if ( __SUNPRO_CC < 0x420 )
 #    define _STLP_NO_PARTIAL_SPECIALIZATION_SYNTAX 1
 #    define _STLP_NO_NEW_STYLE_CASTS 1
 #    define _STLP_NO_METHOD_SPECIALIZATION 1
 #    if ( __SUNPRO_CC > 0x401 )
-#      if (__SUNPRO_CC==0x410)
-#        define _STLP_BASE_TYPEDEF_OUTSIDE_BUG  1
-#      endif
+#     if (__SUNPRO_CC==0x410)
+#      define _STLP_BASE_TYPEDEF_OUTSIDE_BUG  1
+#     endif
 #    else
    // SUNPro C++ 4.0.1
-#      define _STLP_BASE_MATCH_BUG          1
-#      define _STLP_BASE_TYPEDEF_BUG        1
-#      if (( __SUNPRO_CC < 0x401 ) && !defined(__SUNPRO_C))
-         __GIVE_UP_WITH_STL(SUNPRO_401)
+#     define _STLP_BASE_MATCH_BUG          1
+#     define _STLP_BASE_TYPEDEF_BUG        1
+#      if ( __SUNPRO_CC < 0x401 )
+        __GIVE_UP_WITH_STL(SUNPRO_401)
 #      endif
 #    endif /* 4.0.1 */
-#  endif /* 4.2 */
-#endif /* <  5.0 */
+#   endif /* 4.2 */
+#   endif /* 5.0 */
 
 #ifndef _MBSTATET_H
 #  define _MBSTATET_H

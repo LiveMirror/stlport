@@ -100,9 +100,16 @@ using _STLP_VENDOR_CSTD::llabs;
 using _STLP_VENDOR_CSTD::lldiv_t;
 using _STLP_VENDOR_CSTD::lldiv;
 #      else
+#         if !defined(__SunOS_5_11) && !defined(__SunOS_5_10)
+#include <stdlib.h>
 using ::llabs;
 using ::lldiv_t;
 using ::lldiv;
+          else
+using ::llabs;
+using ::lldiv_t;
+using ::lldiv;
+#        endif
 #      endif
 #    endif
 using _STLP_VENDOR_CSTD::rand;
@@ -129,12 +136,12 @@ inline _STLP_VENDOR_CSTD::div_t div(int __x, int __y) { return _STLP_VENDOR_CSTD
 #if !defined (__HP_aCC) || (__HP_aCC < 30000)
 
 //MSVC starting with .Net 2003 already define all math functions in global namespace:
-#  if !defined (_STLP_MSVC_LIB) || (_STLP_MSVC_LIB < 1310) || defined(UNDER_CE)
+#  if (!defined (_STLP_MSVC_LIB) || (_STLP_MSVC_LIB < 1310) || defined(UNDER_CE)) && !defined(__SunOS_5_11) && !defined(__SunOS_5_10)
 inline long abs(long __x) { return _STLP_VENDOR_CSTD::labs(__x); }
 #  endif
 
 /** VC since version 8 has this, the platform SDK and CE SDKs hanging behind. */
-#  if !defined (_STLP_MSVC_LIB) || (_STLP_MSVC_LIB < 1400) || defined (_STLP_USING_PLATFORM_SDK_COMPILER) || defined(UNDER_CE)
+#  if (!defined (_STLP_MSVC_LIB) || (_STLP_MSVC_LIB < 1400) || defined (_STLP_USING_PLATFORM_SDK_COMPILER) || defined(UNDER_CE)) && !defined(__SunOS_5_10)
 inline _STLP_VENDOR_CSTD::ldiv_t div(long __x, long __y) { return _STLP_VENDOR_CSTD::ldiv(__x, __y); }
 #  endif
 
@@ -152,8 +159,10 @@ inline _STLP_VENDOR_CSTD::ldiv_t div(long __x, long __y) { return _STLP_VENDOR_C
 inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return _STLP_VENDOR_CSTD::llabs(__x); }
 inline lldiv_t div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return _STLP_VENDOR_CSTD::lldiv(__x, __y); }
 #    else
+#if !defined(__SunOS_5_11) && !defined(__SunOS_5_10)
 inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return ::llabs(__x); }
 inline lldiv_t div(_STLP_LONG_LONG __x, _STLP_LONG_LONG __y) { return ::lldiv(__x, __y); }
+#endif
 #    endif
 #  else
 inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return __x < 0 ? -__x : __x; }
@@ -173,7 +182,9 @@ inline _STLP_LONG_LONG  abs(_STLP_LONG_LONG __x) { return __x < 0 ? -__x : __x; 
 #if defined (_STLP_IMPORT_VENDOR_CSTD) && !defined (_STLP_NO_CSTD_FUNCTION_IMPORTS)
 // ad hoc, don't replace with _STLP_VENDOR_CSTD::abs here! - ptr 2005-03-05
 _STLP_BEGIN_NAMESPACE
+#if !defined(__SunOS_5_11) && !defined(__SunOS_5_10)
 using ::abs;
+#endif
 #  if !defined (N_PLAT_NLM)
 using ::div;
 #  else

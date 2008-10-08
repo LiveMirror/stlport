@@ -23,8 +23,8 @@
 /* STLport version */
 #define _STLPORT_MAJOR 5
 #define _STLPORT_MINOR 1
-#define _STLPORT_PATCHLEVEL 6
+#define _STLPORT_PATCHLEVEL 7
 
-#define _STLPORT_VERSION 0x516
+#define _STLPORT_VERSION 0x517
 
 #endif /* _STLP_STLPORT_VERSION_H */

@@ -55,6 +55,16 @@ _STLP_MOVE_TO_PRIV_NAMESPACE
 #  define FPOS_T   fpos_t
 #elif defined(_LARGEFILE_SOURCE) || defined(_LARGEFILE64_SOURCE) /* || defined(__USE_FILE_OFFSET64) */ \
      /* || (defined(_FILE_OFFSET_BITS) && (_FILE_OFFSET_BITS == 64)) */ /* || defined(__sgi) */
+#if defined(__SunOS_5_11) || defined(__SunOS_5_10)
+#include <stdio.h>
+#  define FSEEK fseeko
+#  define FTELL ftello
+#  define FSTAT fstat
+#  define STAT  stat
+#  define FSETPOS  fsetpos
+#  define FGETPOS  fgetpos
+#  define FPOS_T   fpos_t
+#else
 #  define FSEEK fseeko64
 #  define FTELL ftello64
 #  define FSTAT fstat64
@@ -62,6 +72,7 @@ _STLP_MOVE_TO_PRIV_NAMESPACE
 #  define FSETPOS  fsetpos64
 #  define FGETPOS  fgetpos64
 #  define FPOS_T   fpos64_t
+#endif
 #else
 #  define FSEEK fseek
 #  define FTELL ftell

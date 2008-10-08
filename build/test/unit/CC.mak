@@ -2,6 +2,7 @@
 
 SRCROOT := ../..
 COMPILER_NAME := CC
+OPT= -m64 -xO2
 
 ALL_TAGS := release-shared stldbg-shared
 STLPORT_DIR := ../../..
@@ -27,7 +28,7 @@ release-shared:	LDFLAGS += -R${INSTALL_LIB_DIR}
 dbg-shared:	LDFLAGS += -R${INSTALL_LIB_DIR}
 stldbg-shared:	LDFLAGS += -R${INSTALL_LIB_DIR}
 
-release-shared : LDLIBS = -lstlport
-dbg-shared     : LDLIBS = -lstlportg
-stldbg-shared  : LDLIBS = -lstlportstlg
+release-shared : LDLIBS = -lstlport -lrt
+dbg-shared     : LDLIBS = -lstlportg -lrt
+stldbg-shared  : LDLIBS = -lstlportstlg -lrt
 

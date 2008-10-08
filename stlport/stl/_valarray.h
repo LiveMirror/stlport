@@ -19,6 +19,16 @@
 #ifndef _STLP_VALARRAY_H
 #define _STLP_VALARRAY_H
 
+#if defined(__SunOS_5_11) || defined(__SunOS_5_10)
+#ifndef _STLP_INTERNAL_CONSTRUCT_H
+#  include <stl/_construct.h>
+#endif
+#ifndef _STLP_INTERNAL_UNINITIALIZED_H
+#  include <stl/_uninitialized.h>
+#endif
+#endif
+
+
 #ifndef _STLP_INTERNAL_CMATH
 #  include <stl/_cmath.h>
 #endif
