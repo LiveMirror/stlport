@@ -2,7 +2,8 @@
 
 SRCROOT := ../..
 COMPILER_NAME := CC
-OPT= -m64 -xO2
+#OPT= -m64 -xO2
+OPT= -xO2
 
 ALL_TAGS := release-shared stldbg-shared
 STLPORT_DIR := ../../..

@@ -24,6 +24,11 @@
 
 #ifndef _STLP_STDIO_FILE_H
 #define _STLP_STDIO_FILE_H
+# if defined(__SunOS_5_10) || defined(__SunOS_5_11)
+#  if !defined(__amd64) && !defined(__sparcv9)
+#   include <stdio.h>
+#  endif
+# endif
 
 // This file provides a low-level interface between the internal
 // representation of struct FILE, from the C stdio library, and
@@ -119,7 +124,11 @@ typedef  char* _File_ptr_type;
 typedef  unsigned char* _File_ptr_type;
 #endif
 
+#if (defined(__SunOS_5_10) || defined(__SunOS_5_11)) && (!defined(__amd64) && !defined(__sparcv9))
+inline int   _FILE_fd(const FILE *__f) { return fileno((FILE *)__f); }
+#else
 inline int   _FILE_fd(const FILE *__f) { return __f->_file; }
+#endif
 inline char* _FILE_I_begin(const FILE *__f) { return (char*) __f->_base; }
 inline char* _FILE_I_next(const FILE *__f) { return (char*) __f->_ptr; }
 inline char* _FILE_I_end(const FILE *__f)

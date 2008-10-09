@@ -25,7 +25,9 @@
 #endif
 
 #if defined(SunOS_5_11) || defined(__SunOS_5_10)
-#include <stdlib.h>
+#  if defined(__amd64) || defined(__sparcv9)
+#    include <stdlib.h>
+#  endif
 #endif
 
 #include <fstream>

@@ -1,7 +1,8 @@
-2008-10-08  Petr Ovtchenkov  <complement@users.sourceforge.net>
+2008-10-09  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
-	* Repository: support 64-bit Solaris 10 and 11 with SunPro's
-	CC; derived from patch #2152319, thanks Rick Weisner.
+	* Repository: support 32-bit and 64-bit Solaris 10 and 11
+	with SunPro's CC (SunStudio 12); derived from patch #2152319,
+	thanks Rick Weisner.
 
 2008-10-07  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
