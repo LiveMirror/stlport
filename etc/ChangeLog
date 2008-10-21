@@ -1,12 +1,16 @@
+2008-10-21  Petr Ovtchenkov  <complement@users.sourceforge.net>
+
+	* Release: 5.1.7.
+
 2008-10-09  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
 	* Repository: support 32-bit and 64-bit Solaris 10 and 11
-	with SunPro's CC (SunStudio 12); derived from patch #2152319,
-	thanks Rick Weisner.
+	with SunPro's CC (SunStudio 12) for x86, AMD64, SPARC;
+	derived from patches #2152319, thanks Rick Weisner.
 
 2008-10-07  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
-	* 5.1.6 release.
+	* Release: 5.1.6.
 
 2008-03-18  Petr Ovtchenkov  <complement@users.sourceforge.net>
 
