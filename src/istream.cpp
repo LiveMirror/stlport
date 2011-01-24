@@ -22,7 +22,7 @@
 
 _STLP_BEGIN_NAMESPACE
 
-#if 1 // !defined(_STLP_NO_FORCE_INSTANTIATE)
+#if !defined(_STLP_NO_FORCE_INSTANTIATE)
 
 // instantiations
 #  if defined (_STLP_USE_TEMPLATE_EXPORT)

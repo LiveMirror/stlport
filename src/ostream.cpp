@@ -22,7 +22,7 @@
 
 _STLP_BEGIN_NAMESPACE
 
-#if 1 // !defined(_STLP_NO_FORCE_INSTANTIATE)
+#if !defined(_STLP_NO_FORCE_INSTANTIATE)
 // instantiations
 template class _STLP_CLASS_DECLSPEC basic_ostream<char, char_traits<char> >;
 
@@ -36,7 +36,7 @@ template  class _STLP_CLASS_DECLSPEC _Osentry<char, char_traits<char> >;
 
 #ifndef _STLP_NO_WCHAR_T
 
-# if 1 // defined (_STLP_USE_TEMPLATE_EXPORT)
+# if defined (_STLP_USE_TEMPLATE_EXPORT)
 template class _STLP_CLASS_DECLSPEC _Osentry<wchar_t, char_traits<wchar_t> >;
 # endif
 

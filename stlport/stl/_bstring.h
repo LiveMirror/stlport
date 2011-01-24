@@ -2,7 +2,7 @@
  * Copyright (c) 1997-1999
  * Silicon Graphics Computer Systems, Inc.
  *
- * Copyright (c) 1999
+ * Copyright (c) 1999-2011
  * Boris Fomitchev
  *
  * Copyright (c) 2003
@@ -142,13 +142,6 @@ public:
   template <class _Tr, class _Al>
   _String_const_iterator(const _String_iterator<_CharT, _Tr, _Al>&);
 
-#if 0
-  operator pointer() const 
-  {
-    return _M_ptr;
-  }
-#endif
-
   _Self& operator=(const  _Self& __rhs) {
     _M_container = __rhs._M_container;
     _M_ptr = __rhs._M_ptr;
@@ -240,12 +233,7 @@ public:
     _M_container(c), _M_ptr(p)
   {
   }
-#if 0
-  operator pointer() const 
-  {
-    return _M_ptr;
-  }
-#endif
+
   _Self& operator=(const  _Self& __rhs) {
     _M_container = __rhs._M_container;
     _M_ptr = __rhs._M_ptr;
