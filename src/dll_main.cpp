@@ -85,6 +85,15 @@ underflow_error::~underflow_error() _STLP_NOTHROW_INHERENTLY {}
 
 #endif
 
+#if defined (_STLP_MSVC_BINARY_COMPATIBILITY)
+// This function comes from msvcp (even though it should have come from msvcrt).
+// We can't really emulate it - Google says it did always return true in MSVC library anyway
+_STLP_DECLSPEC bool uncaught_exception() 
+{
+  return true;
+}
+#endif
+
 #if !defined(_STLP_WCE_EVC3)
 #  if defined (_STLP_NO_BAD_ALLOC)
 const nothrow_t nothrow /* = {} */;
@@ -194,7 +203,8 @@ template class _STLP_CLASS_DECLSPEC _List_global<bool>;
 template class _STLP_CLASS_DECLSPEC _Sl_global<bool>;
 template class _STLP_CLASS_DECLSPEC _Stl_prime<bool>;
 
-template class _STLP_CLASS_DECLSPEC _LimG<bool>;
+// boris: where is LimG ?
+// template class _STLP_CLASS_DECLSPEC _LimG<bool>;
 
 _STLP_MOVE_TO_STD_NAMESPACE
 

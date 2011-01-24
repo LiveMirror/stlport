@@ -47,6 +47,13 @@
 #  include <stl/_string_sum.h>
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+
+# include "_bstring.h"
+
+#else
+
+
 #if defined (__MWERKS__) && ! defined (_STLP_USE_OWN_NAMESPACE)
 
 // MSL implementation classes expect to see the definition of streampos
@@ -118,10 +125,10 @@ _STLP_MOVE_TO_PRIV_NAMESPACE
 #endif
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_string : _STLP_PRIVATE _STLP_PRIV _String_base<_CharT,_Alloc>
+class basic_string : _STLP_PRIVATE _String_base<_CharT,_Alloc>
 {
 _STLP_PRIVATE:                        // Private members inherited from base.
-  typedef _STLP_PRIV _String_base<_CharT,_Alloc> _Base;
+  typedef _String_base<_CharT,_Alloc> _Base;
   typedef basic_string<_CharT, _Traits, _Alloc> _Self;
 
 public:
@@ -136,10 +143,31 @@ public:
   typedef ptrdiff_t difference_type;
   typedef random_access_iterator_tag _Iterator_category;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  // Iterators.
+  typedef _String_const_iterator<_CharT, _Traits, _Alloc> const_iterator;
+  typedef _String_iterator<_CharT, _Traits, _Alloc>             iterator;
+  iterator begin() { return iterator(this->_M_Start()); }
+  const_iterator begin() const { return const_iterator(this->_M_Start()); }
+  iterator end() { return iterator(this->_M_Finish()); }
+  const_iterator end() const { return const_iterator(this->_M_Finish()); }
+  void _Tidy(bool, size_type) {}
+#else
   typedef const value_type* const_iterator;
   typedef value_type*       iterator;
+  iterator begin()             { return this->_M_Start(); }
+  iterator end()               { return this->_M_Finish(); }
+  const_iterator begin() const { return this->_M_Start(); }
+  const_iterator end()   const { return this->_M_Finish(); }
+#endif
 
-  _STLP_DECLARE_RANDOM_ACCESS_REVERSE_ITERATORS;
+  typedef _STLP_STD::reverse_iterator<iterator> reverse_iterator;
+  typedef _STLP_STD::reverse_iterator<const_iterator> const_reverse_iterator;
+
+  reverse_iterator rbegin()             { return reverse_iterator(end()); }
+  const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+  reverse_iterator rend()               { return reverse_iterator(begin()); }
+  const_reverse_iterator rend() const   { return const_reverse_iterator(begin()); }
 
 #include <stl/_string_npos.h>
 
@@ -151,44 +179,33 @@ public:                         // Constructor, destructor, assignment.
   allocator_type get_allocator() const
   { return (const allocator_type&)this->_M_start_of_storage; }
 
-#if !defined (_STLP_DONT_SUP_DFLT_PARAM)
-  explicit basic_string(const allocator_type& __a = allocator_type())
-#else
   basic_string()
-      : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type(), _Base::_DEFAULT_SIZE)
-  { _M_terminate_string(); }
-  explicit basic_string(const allocator_type& __a)
-#endif
-      : _STLP_PRIV _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE)
+      : _String_base<_CharT,_Alloc>(allocator_type(), _Base::_DEFAULT_SIZE)
   { _M_terminate_string(); }
 
-#if !defined (_STLP_DONT_SUP_DFLT_PARAM)
-  basic_string(_Reserve_t, size_t __n,
-               const allocator_type& __a = allocator_type())
-#else
-  basic_string(_Reserve_t, size_t __n)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type(), __n + 1)
+  explicit basic_string(const allocator_type& __a)
+      : _String_base<_CharT,_Alloc>(__a, _Base::_DEFAULT_SIZE)
   { _M_terminate_string(); }
+
+  basic_string(_Reserve_t, size_t __n)
+    : _String_base<_CharT,_Alloc>(allocator_type(), __n + 1)
+  { _M_terminate_string(); }
+
   basic_string(_Reserve_t, size_t __n, const allocator_type& __a)
-#endif
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(__a, __n + 1)
+    : _String_base<_CharT,_Alloc>(__a, __n + 1)
   { _M_terminate_string(); }
 
   basic_string(const _Self&);
 
-#if !defined (_STLP_DONT_SUP_DFLT_PARAM)
-  basic_string(const _Self& __s, size_type __pos, size_type __n = npos,
-               const allocator_type& __a = allocator_type())
-#else
   basic_string(const _Self& __s, size_type __pos)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type()) {
+    : _String_base<_CharT,_Alloc>(allocator_type()) {
     if (__pos > __s.size())
       this->_M_throw_out_of_range();
     else
       _M_range_initialize(__s._M_Start() + __pos, __s._M_Finish());
   }
   basic_string(const _Self& __s, size_type __pos, size_type __n)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type()) {
+    : _String_base<_CharT,_Alloc>(allocator_type()) {
     if (__pos > __s.size())
       this->_M_throw_out_of_range();
     else
@@ -197,8 +214,7 @@ public:                         // Constructor, destructor, assignment.
   }
   basic_string(const _Self& __s, size_type __pos, size_type __n,
                const allocator_type& __a)
-#endif
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(__a) {
+    : _String_base<_CharT,_Alloc>(__a) {
     if (__pos > __s.size())
       this->_M_throw_out_of_range();
     else
@@ -206,49 +222,34 @@ public:                         // Constructor, destructor, assignment.
                           __s._M_Start() + __pos + (min) (__n, __s.size() - __pos));
   }
 
-#if !defined (_STLP_DONT_SUP_DFLT_PARAM)
-  basic_string(const _CharT* __s, size_type __n,
-               const allocator_type& __a = allocator_type())
-#else
   basic_string(const _CharT* __s, size_type __n)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type()) {
+    : _String_base<_CharT,_Alloc>(allocator_type()) {
       _STLP_FIX_LITERAL_BUG(__s)
       _M_range_initialize(__s, __s + __n);
     }
   basic_string(const _CharT* __s, size_type __n, const allocator_type& __a)
-#endif
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(__a) {
+    : _String_base<_CharT,_Alloc>(__a) {
       _STLP_FIX_LITERAL_BUG(__s)
       _M_range_initialize(__s, __s + __n);
     }
 
-#if !defined (_STLP_DONT_SUP_DFLT_PARAM)
-  basic_string(const _CharT* __s,
-               const allocator_type& __a = allocator_type());
-#else
   basic_string(const _CharT* __s);
   basic_string(const _CharT* __s, const allocator_type& __a);
-#endif
 
-#if !defined (_STLP_DONT_SUP_DFLT_PARAM)
-  basic_string(size_type __n, _CharT __c,
-               const allocator_type& __a = allocator_type())
-#else
   basic_string(size_type __n, _CharT __c)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type(), __n + 1) {
+    : _String_base<_CharT,_Alloc>(allocator_type(), __n + 1) {
     this->_M_finish = _STLP_PRIV __uninitialized_fill_n(this->_M_Start(), __n, __c);
     _M_terminate_string();
   }
   basic_string(size_type __n, _CharT __c, const allocator_type& __a)
-#endif
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(__a, __n + 1) {
+    : _String_base<_CharT,_Alloc>(__a, __n + 1) {
     this->_M_finish = _STLP_PRIV __uninitialized_fill_n(this->_M_Start(), __n, __c);
     _M_terminate_string();
   }
 
 #if !defined (_STLP_NO_MOVE_SEMANTIC)
   basic_string(__move_source<_Self> src)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(__move_source<_Base>(src.get())) {}
+    : _String_base<_CharT,_Alloc>(__move_source<_Base>(src.get())) {}
 #endif
 
   // Check to see if _InputIterator is an integer type.  If so, then
@@ -257,14 +258,14 @@ public:                         // Constructor, destructor, assignment.
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l,
                const allocator_type & __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(__a) {
+    : _String_base<_CharT,_Alloc>(__a) {
     typedef typename is_integral<_InputIterator>::type _Integral;
     _M_initialize_dispatch(__f, __l, _Integral());
   }
 #  if defined (_STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS)
   template <class _InputIterator>
   basic_string(_InputIterator __f, _InputIterator __l)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type()) {
+    : _String_base<_CharT,_Alloc>(allocator_type()) {
     typedef typename is_integral<_InputIterator>::type _Integral;
     _M_initialize_dispatch(__f, __l, _Integral());
   }
@@ -273,13 +274,13 @@ public:                         // Constructor, destructor, assignment.
 #  if !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
   basic_string(const _CharT* __f, const _CharT* __l,
                const allocator_type& __a _STLP_ALLOCATOR_TYPE_DFL)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(__a) {
+    : _String_base<_CharT,_Alloc>(__a) {
     _STLP_FIX_LITERAL_BUG(__f)  _STLP_FIX_LITERAL_BUG(__l)
     _M_range_initialize(__f, __l);
   }
 #    if defined (_STLP_NEEDS_EXTRA_TEMPLATE_CONSTRUCTORS)
   basic_string(const _CharT* __f, const _CharT* __l)
-    : _STLP_PRIV _String_base<_CharT,_Alloc>(allocator_type()) {
+    : _String_base<_CharT,_Alloc>(allocator_type()) {
     _STLP_FIX_LITERAL_BUG(__f)  _STLP_FIX_LITERAL_BUG(__l)
     _M_range_initialize(__f, __l);
   }
@@ -296,6 +297,7 @@ protected:
 #endif
 
 _STLP_PRIVATE:
+
   size_type _M_compute_next_size(size_type __n) {
     const size_type __size = size();
     if (__n > max_size() - __size)
@@ -379,19 +381,6 @@ _STLP_PRIVATE:                     // Helper functions used by constructors
   }
 
 public:                         // Iterators.
-  iterator begin()             { return this->_M_Start(); }
-  iterator end()               { return this->_M_Finish(); }
-  const_iterator begin() const { return this->_M_Start(); }
-  const_iterator end()   const { return this->_M_Finish(); }
-
-  reverse_iterator rbegin()
-  { return reverse_iterator(this->_M_Finish()); }
-  reverse_iterator rend()
-  { return reverse_iterator(this->_M_Start()); }
-  const_reverse_iterator rbegin() const
-  { return const_reverse_iterator(this->_M_Finish()); }
-  const_reverse_iterator rend()   const
-  { return const_reverse_iterator(this->_M_Start()); }
 
 public:                         // Size, capacity, etc.
   size_type size() const     { return this->_M_Finish() - this->_M_Start(); }
@@ -651,9 +640,9 @@ public:                         // Insert
     return *this;
   }
 
-  iterator insert(iterator __p, _CharT __c) {
+  iterator insert(const_iterator __p, _CharT __c) {
     _STLP_FIX_LITERAL_BUG(__p)
-    if (__p == end()) {
+    if (&*__p == this->_M_Finish()) {
       push_back(__c);
       return this->_M_Finish() - 1;
     }
@@ -661,12 +650,12 @@ public:                         // Insert
       return _M_insert_aux(__p, __c);
   }
 
-  void insert(iterator __p, size_t __n, _CharT __c);
+  void insert(const_iterator __p, size_t __n, _CharT __c);
 
 _STLP_PRIVATE:  // Helper functions for insert.
-  void _M_insert(iterator __p, const _CharT* __first, const _CharT* __last, bool __self_ref);
+  void _M_insert(const_iterator __p, const _CharT* __first, const _CharT* __last, bool __self_ref);
 
-  pointer _M_insert_aux(pointer, _CharT);
+  pointer _M_insert_aux(const_iterator, _CharT);
 
   void _M_copy(const _CharT* __f, const _CharT* __l, _CharT* __res) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
@@ -733,12 +722,12 @@ _STLP_PRIVATE:  // Helper functions for insert.
   }
 
   template <class _Integer>
-  void _M_insert_dispatch(iterator __p, _Integer __n, _Integer __x,
+  void _M_insert_dispatch(const_iterator __p, _Integer __n, _Integer __x,
                           const true_type& /*Integral*/)
   { insert(__p, (size_type) __n, (_CharT) __x); }
 
   template <class _InputIter>
-  void _M_insert_dispatch(iterator __p, _InputIter __first, _InputIter __last,
+  void _M_insert_dispatch(const_iterator __p, _InputIter __first, _InputIter __last,
                           const false_type& /*Integral*/) {
     _STLP_FIX_LITERAL_BUG(__p)
     /* We are forced to do a temporary string to avoid the self referencing issue. */
@@ -764,7 +753,7 @@ public:
   // Check to see if _InputIterator is an integer type.  If so, then
   // it can't be an iterator.
   template <class _InputIter>
-  void insert(iterator __p, _InputIter __first, _InputIter __last) {
+  void insert(const_iterator __p, _InputIter __first, _InputIter __last) {
     typedef typename is_integral<_InputIter>::type _Integral;
     _M_insert_dispatch(__p, __first, __last, _Integral());
   }
@@ -772,10 +761,16 @@ public:
 
 #if !defined (_STLP_NO_METHOD_SPECIALIZATION)
 public:
-  void insert(iterator __p, const _CharT* __f, const _CharT* __l) {
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void insert(const_iterator __p, const_iterator __f, const_iterator __l) {
+    _M_insert(__p, &*__f, &*__l, _M_inside(&*__f));
+  }
+#endif
+  void insert(const_iterator __p, const_pointer __f, const_pointer __l) {
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
     _M_insert(__p, __f, __l, _M_inside(__f));
   }
+
 #endif
 
 public:                         // Erase.
@@ -786,20 +781,24 @@ public:                         // Erase.
     return *this;
   }
 
-  iterator erase(iterator __pos) {
+  iterator erase(const_iterator __pos) {
+    pointer __p(const_cast<_CharT*>(&*__pos));
     // The move includes the terminating _CharT().
-    _Traits::move(__pos, __pos + 1, this->_M_Finish() - __pos);
+    _Traits::move(__p, 
+		  &*__pos + 1, this->_M_Finish() - &*__pos);
     --this->_M_finish;
-    return __pos;
+    return __p;
   }
 
-  iterator erase(iterator __first, iterator __last) {
+  iterator erase(const_iterator __first, const_iterator __last) {
+    pointer __f(const_cast<_CharT*>(&*__first));
     if (__first != __last) {
       // The move includes the terminating _CharT().
-      traits_type::move(__first, __last, (this->_M_Finish() - __last) + 1);
+      traits_type::move(__f,
+			&*__last, (this->_M_Finish() - &*__last) + 1);
       this->_M_finish = this->_M_Finish() - (__last - __first);
     }
-    return __first;
+    return __f;
   }
 
 public:                         // Replace.  (Conceptually equivalent
@@ -858,7 +857,7 @@ public:                         // Replace.  (Conceptually equivalent
     return replace(begin() + __pos, begin() + __pos + __len, __n2, __c);
   }
 
-  _Self& replace(iterator __first, iterator __last, const _Self& __s) {
+  _Self& replace(const_iterator __first, const_iterator __last, const _Self& __s) {
     _STLP_FIX_LITERAL_BUG(__first)_STLP_FIX_LITERAL_BUG(__last)
     return _M_replace(__first, __last, __s._M_Start(), __s._M_Finish(), &__s == this);
   }
@@ -870,17 +869,17 @@ public:                         // Replace.  (Conceptually equivalent
     return _M_replace(__first, __last, __s, __s + __n, _M_inside(__s));
   }
 
-  _Self& replace(iterator __first, iterator __last,
+  _Self& replace(const_iterator __first, const_iterator __last,
                  const _CharT* __s) {
     _STLP_FIX_LITERAL_BUG(__first)_STLP_FIX_LITERAL_BUG(__last)
     _STLP_FIX_LITERAL_BUG(__s)
     return _M_replace(__first, __last, __s, __s + _Traits::length(__s), _M_inside(__s));
   }
 
-  _Self& replace(iterator __first, iterator __last, size_type __n, _CharT __c);
+  _Self& replace(const_iterator __first, const_iterator __last, size_type __n, _CharT __c);
 
 _STLP_PRIVATE:                        // Helper functions for replace.
-  _Self& _M_replace(iterator __first, iterator __last,
+  _Self& _M_replace(const_iterator __first, const_iterator __last,
                     const _CharT* __f, const _CharT* __l, bool __self_ref);
 
 #if !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
@@ -892,7 +891,7 @@ _STLP_PRIVATE:                        // Helper functions for replace.
   }
 
   template <class _InputIter>
-  _Self& _M_replace_dispatch(iterator __first, iterator __last,
+  _Self& _M_replace_dispatch(const_iterator __first, const_iterator __last,
                              _InputIter __f, _InputIter __l, const false_type& /*IsIntegral*/) {
     _STLP_FIX_LITERAL_BUG(__first) _STLP_FIX_LITERAL_BUG(__last)
     /* We are forced to do a temporary string to avoid the self referencing issue. */
@@ -904,7 +903,7 @@ public:
   // Check to see if _InputIter is an integer type.  If so, then
   // it can't be an iterator.
   template <class _InputIter>
-  _Self& replace(iterator __first, iterator __last,
+  _Self& replace(const_iterator __first, const_iterator __last,
                  _InputIter __f, _InputIter __l) {
     _STLP_FIX_LITERAL_BUG(__first)_STLP_FIX_LITERAL_BUG(__last)
     typedef typename is_integral<_InputIter>::type _Integral;
@@ -914,7 +913,13 @@ public:
 
 #if !defined (_STLP_NO_METHOD_SPECIALIZATION)
 public:
-  _Self& replace(iterator __first, iterator __last,
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  _Self& replace(const_iterator __first, const_iterator __last,
+                 const_iterator __f, const_iterator __l) {
+    return _M_replace(&*__first, &*__last, &*__f, &*__l, _M_inside(&*__f));
+  }
+#endif
+  _Self& replace(const_iterator __first, const_iterator __last,
                  const _CharT* __f, const _CharT* __l) {
     _STLP_FIX_LITERAL_BUG(__first)_STLP_FIX_LITERAL_BUG(__last)
     _STLP_FIX_LITERAL_BUG(__f) _STLP_FIX_LITERAL_BUG(__l)
@@ -933,7 +938,8 @@ public:                         // Other modifier member functions.
     return __len;
   }
 
-  void swap(_Self& __s) { this->_M_swap(__s); }
+  void swap(_Self& __s) { if (this!=&s) this->_M_swap(__s); }
+
 #if defined (_STLP_USE_PARTIAL_SPEC_WORKAROUND) && !defined (_STLP_FUNCTION_TMPL_PARTIAL_ORDER)
   void _M_swap_workaround(_Self& __x) { swap(__x); }
 #endif
@@ -1182,6 +1188,8 @@ _STLP_END_NAMESPACE
     (defined (_STLP_EXPOSE_STREAM_IMPLEMENTATION) && !defined (_STLP_LINK_TIME_INSTANTIATION))
 #  include <stl/_string.c>
 #endif
+
+#endif /* MS compatibility */
 
 #endif /* _STLP_INTERNAL_STRING_H */
 

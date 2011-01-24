@@ -354,8 +354,8 @@ _OutputIter __money_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
   if (__digits.empty())
     return __s;
 
-  typename string_type::const_iterator __digits_first = __digits.begin();
-  typename string_type::const_iterator __digits_last  = __digits.end();
+  typename string_type::const_iterator __digits_first = &*__digits.begin();
+  typename string_type::const_iterator __digits_last  = &*__digits.end();
 
   bool __is_negative = *__digits_first == __minus;
   if (__is_negative)
@@ -400,8 +400,8 @@ _OutputIter __money_do_put(_OutputIter __s, bool  __intl, ios_base&  __str,
                       __new_digits.size() - __frac_digits,
                       __grouping,
                       __sep, __plus, __minus, 0);
-    __digits_first = __new_digits.begin(); // <<--
-    __digits_last  = __new_digits.end();   // <<--
+    __digits_first = &*__new_digits.begin(); // <<--
+    __digits_last  = &*__new_digits.end();   // <<--
   }
 
   // Determine the amount of padding required, if any.

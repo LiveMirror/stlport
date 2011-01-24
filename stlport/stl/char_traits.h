@@ -48,6 +48,10 @@
 #  include <stl/_cwchar.h>
 #endif
 
+#ifndef _STLP_INTERNAL_ALGOBASE
+#  include <stl/_algobase.h>
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 template <class _Tp> class allocator;
@@ -78,10 +82,11 @@ typedef off_t streamoff;
 #endif /* __unix */
 
 #if defined (_STLP_WIN32)
-typedef streamoff streamsize;
+typedef int streamsize;
 #else
 typedef ptrdiff_t streamsize;
 #endif
+
 
 // Class fpos, which represents a position within a file.  (The C++
 // standard calls for it to be defined in <ios>.  This implementation
@@ -131,19 +136,22 @@ typedef fpos<mbstate_t> wstreampos;
 
 // Class __char_traits_base.
 template <class _CharT, class _IntT>
-class __char_traits_base {
-public:
+struct __char_traits_base {
   typedef _CharT char_type;
   typedef _IntT int_type;
   typedef streamoff off_type;
   typedef streampos pos_type;
   typedef mbstate_t state_type;
+};
 
-  static void _STLP_CALL assign(char_type& __c1, const char_type& __c2) { __c1 = __c2; }
-  static bool _STLP_CALL eq(const char_type& __c1, const char_type& __c2)
-  { return __c1 == __c2; }
-  static bool _STLP_CALL lt(const char_type& __c1, const char_type& __c2)
-  { return __c1 < __c2; }
+// Generic char_traits class.  Note that this class is provided only
+//  as a base for explicit specialization; it is unlikely to be useful
+//  as is for any particular user-defined type.  In particular, it
+//  *will not work* for a non-POD type.
+
+template <class _CharT>
+struct char_traits
+  : public __char_traits_base<_CharT, _CharT> {
 
   static int _STLP_CALL compare(const char_type* __s1, const char_type* __s2, size_t __n) {
     for (size_t __i = 0; __i < __n; ++__i)
@@ -173,15 +181,27 @@ public:
     return (__n == 0 ? __s1 :
       (char_type*)memcpy(__s1, __s2, __n * sizeof(char_type)));
   }
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  static char_type* _STLP_CALL _Move_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t _Sz)
+  {
+    return move(__s1, __s2, std::min(__Sdest, _Sz));
+  }
 
+  static char_type* _STLP_CALL _Copy_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t __n) {
+    return copy(__s1, __s2, std::min(__sDest, __n));
+  }
+#endif
+
+  static bool _STLP_CALL eq(const char_type& __c1, const char_type& __c2)
+  { return __c1 == __c2; }
+  static bool _STLP_CALL lt(const char_type& __c1, const char_type& __c2)
+  { return __c1 < __c2; }
+  static void _STLP_CALL assign(char_type& __c1, const char_type& __c2) { __c1 = __c2; }
   static char_type* _STLP_CALL assign(char_type* __s, size_t __n, char_type __c) {
     for (size_t __i = 0; __i < __n; ++__i)
       __s[__i] = __c;
     return __s;
   }
-
-  static int_type _STLP_CALL not_eof(const int_type& __c)
-  { return !eq_int_type(__c, eof()) ? __c : __STATIC_CAST(int_type, 0); }
 
   static char_type _STLP_CALL to_char_type(const int_type& __c)
   { return (char_type)__c; }
@@ -189,26 +209,22 @@ public:
   static int_type _STLP_CALL to_int_type(const char_type& __c)
   { return (int_type)__c; }
 
+
+  static int_type _STLP_CALL not_eof(const int_type& __c)
+  { return !eq_int_type(__c, eof()) ? __c : __STATIC_CAST(int_type, 0); }
+
   static bool _STLP_CALL eq_int_type(const int_type& __c1, const int_type& __c2)
   { return __c1 == __c2; }
 
   static int_type _STLP_CALL eof()
   { return (int_type)-1; }
+
 };
-
-// Generic char_traits class.  Note that this class is provided only
-//  as a base for explicit specialization; it is unlikely to be useful
-//  as is for any particular user-defined type.  In particular, it
-//  *will not work* for a non-POD type.
-
-template <class _CharT>
-class char_traits
-  : public __char_traits_base<_CharT, _CharT> {};
 
 // Specialization for char.
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC char_traits<char>
+struct _STLP_CLASS_DECLSPEC char_traits<char>
   : public __char_traits_base<char, int>
 {
 public:
@@ -224,50 +240,140 @@ public:
   static int _STLP_CALL to_int_type(const char& __c)
   { return (unsigned char)__c; }
 
+  static const char_type* _STLP_CALL find(const char_type* __s, size_t __n, const char_type& __c) {
+    return (const char*)memchr(__s, __c, __n);
+  }
+
   static int _STLP_CALL compare(const char* __s1, const char* __s2, size_t __n)
   { return memcmp(__s1, __s2, __n); }
 
   static size_t _STLP_CALL length(const char* __s)
   { return strlen(__s); }
 
-  static void _STLP_CALL assign(char& __c1, const char& __c2)
-  { __c1 = __c2; }
-
+  static void _STLP_CALL assign(char_type& __c1, const char_type& __c2) { __c1 = __c2; }
   static char* _STLP_CALL assign(char* __s, size_t __n, char __c) {
     memset(__s, __c, __n);
     return __s;
   }
+
+  static char_type* _STLP_CALL move(char_type* __s1, const char_type* __s2, size_t _Sz)
+  { return (_Sz == 0 ? __s1 : (char_type*)memmove(__s1, __s2, _Sz * sizeof(char_type))); }
+
+  static char_type* _STLP_CALL copy(char_type* __s1, const char_type* __s2, size_t __n) {
+    return (__n == 0 ? __s1 :
+      (char_type*)memcpy(__s1, __s2, __n * sizeof(char_type)));
+  }
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  static char_type* _STLP_CALL _Move_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t _Sz)
+  {
+    return move(__s1, __s2, std::min(__sDest, _Sz));
+  }
+
+  static char_type* _STLP_CALL _Copy_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t __n) {
+    return copy(__s1, __s2, std::min(__sDest, __n));
+  }
+#endif
+
+  static bool _STLP_CALL eq(const char_type& __c1, const char_type& __c2)
+  { return __c1 == __c2; }
+  static bool _STLP_CALL lt(const char_type& __c1, const char_type& __c2)
+  { return __c1 < __c2; }
+
+  static int_type _STLP_CALL not_eof(const int_type& __c)
+  { return !eq_int_type(__c, eof()) ? __c : __STATIC_CAST(int_type, 0); }
+
+  static bool _STLP_CALL eq_int_type(const int_type& __c1, const int_type& __c2)
+  { return __c1 == __c2; }
+
+  static int_type _STLP_CALL eof()
+  { return (int_type)-1; }
+
 };
 
 #if defined (_STLP_HAS_WCHAR_T)
 // Specialization for wchar_t.
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC char_traits<wchar_t>
+struct _STLP_CLASS_DECLSPEC char_traits<wchar_t>
   : public __char_traits_base<wchar_t, wint_t> {
 #  if !defined (_STLP_NO_NATIVE_WIDE_FUNCTIONS) && !defined (_STLP_WCHAR_HPACC_EXCLUDE)
-public:
-#    if !defined (__BORLANDC__)
-  static wchar_t* _STLP_CALL move(wchar_t* __dest, const wchar_t* __src, size_t __n)
-  { return wmemmove(__dest, __src, __n); }
-#    endif
-
-  static wchar_t* _STLP_CALL copy(wchar_t* __dest, const wchar_t* __src, size_t __n)
-  { return wmemcpy(__dest, __src, __n); }
-
-#    if !defined (__DMC__) && !defined (__BORLANDC__)
-  static int _STLP_CALL compare(const wchar_t* __s1, const wchar_t* __s2, size_t __n)
-  { return wmemcmp(__s1, __s2, __n); }
-#    endif
-
   static wchar_t* _STLP_CALL assign(wchar_t* __s, size_t __n, wchar_t __c)
   { return wmemset(__s, __c, __n); }
 
   static size_t _STLP_CALL length(const wchar_t* __s)
   { return wcslen(__s); }
+#  else
+  static size_t _STLP_CALL length(const char_type* __s) {
+    const char_type _NullChar = _STLP_DEFAULT_CONSTRUCTED(char_type);
+    size_t __i(0);
+    for (; !eq(__s[__i], _NullChar); ++__i) {}
+    return __i;
+  }
 
-  static void _STLP_CALL assign(wchar_t& __c1, const wchar_t& __c2)
-  { __c1 = __c2; }
+  static char* _STLP_CALL assign(char* __s, size_t __n, char __c) {
+    memset(__s, __c, __n);
+    return __s;
+  }
 #  endif
+
+  static int _STLP_CALL compare(const char_type* __s1, const char_type* __s2, size_t __n) {
+    for (size_t __i = 0; __i < __n; ++__i)
+      if (!eq(__s1[__i], __s2[__i]))
+        return __s1[__i] < __s2[__i] ? -1 : 1;
+    return 0;
+  }
+
+
+  static const char_type* _STLP_CALL find(const char_type* __s, size_t __n, const char_type& __c) {
+    for ( ; __n > 0 ; ++__s, --__n)
+      if (eq(*__s, __c))
+        return __s;
+    return 0;
+  }
+
+  static char_type* _STLP_CALL move(char_type* __s1, const char_type* __s2, size_t _Sz)
+  { return (_Sz == 0 ? __s1 : (char_type*)memmove(__s1, __s2, _Sz * sizeof(char_type))); }
+
+  static char_type* _STLP_CALL copy(char_type* __s1, const char_type* __s2, size_t __n) {
+    return (__n == 0 ? __s1 :
+      (char_type*)memcpy(__s1, __s2, __n * sizeof(char_type)));
+  }
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  static char_type* _STLP_CALL _Move_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t _Sz)
+  {
+    return move(__s1, __s2, std::min(__sDest, _Sz));
+  }
+
+  static char_type* _STLP_CALL _Copy_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t __n) {
+    return copy(__s1, __s2, std::min(__sDest, __n));
+  }
+#endif
+
+  static bool _STLP_CALL eq(const char_type& __c1, const char_type& __c2)
+  { return __c1 == __c2; }
+  static bool _STLP_CALL lt(const char_type& __c1, const char_type& __c2)
+  { return __c1 < __c2; }
+
+  static void _STLP_CALL assign(char_type& __c1, const char_type& __c2) { __c1 = __c2; }
+
+  static char_type _STLP_CALL to_char_type(const int_type& __c)
+  { return (char_type)__c; }
+
+  static int_type _STLP_CALL to_int_type(const char_type& __c)
+  { return (int_type)__c; }
+
+
+  static int_type _STLP_CALL not_eof(const int_type& __c)
+  { return !eq_int_type(__c, eof()) ? __c : __STATIC_CAST(int_type, 0); }
+
+  static bool _STLP_CALL eq_int_type(const int_type& __c1, const int_type& __c2)
+  { return __c1 == __c2; }
+
+  static int_type _STLP_CALL eof()
+  { return (int_type)-1; }
+
+
 };
 #endif
 

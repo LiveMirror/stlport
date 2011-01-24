@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 1999
  * Boris Fomitchev
@@ -87,9 +88,8 @@
  * your program without optimization. Option does not affect STLport library build; you
  * may use the same binary library with and without this option, on per-project basis.
  */
-/*
+
 #define _STLP_NO_CUSTOM_IO
-*/
 
 /*
  * _STLP_NO_RELOPS_NAMESPACE: if defined, don't put the relational

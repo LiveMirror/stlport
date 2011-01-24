@@ -23,6 +23,15 @@
 #  error Sorry but building a managed version of STLport is not supported.
 #endif
 
+#if defined (_STLP_MSVC_BINARY_COMPATIBILITY)
+# undef _STLP_USE_NEWALLOC
+# define _STLP_USE_NEWALLOC 1
+# undef _STLP_NO_OWN_NAMESPACE
+# define _STLP_NO_OWN_NAMESPACE  1
+// short string optimizations if compatible
+#define _STLP_USE_SHORT_STRING_OPTIM 1
+#endif
+
 #if defined (_STLP_USING_PLATFORM_SDK_COMPILER)
 /* This is a specific section for compilers coming with platform SDKs. Native
  * library coming with it is different from the one coming with commercial
@@ -94,6 +103,8 @@
 #  define _STLP_DLLEXPORT_NEEDS_PREDECLARATION 1
 #  define _STLP_HAS_SPECIFIC_PROLOG_EPILOG 1
 #  define _STLP_NO_STATIC_CONST_DEFINITION 1
+
+#  define _STLP_USE_TEMPLATE_EXPORT 1
 
 /* # ifndef __BUILDING_STLPORT
  * #  define _STLP_USE_TEMPLATE_EXPORT 1

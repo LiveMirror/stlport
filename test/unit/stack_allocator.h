@@ -1,21 +1,22 @@
 #ifndef STLPORT_UNIT_TEST_STACK_ALLOCATOR_H
 #define STLPORT_UNIT_TEST_STACK_ALLOCATOR_H
 
-#include <type_traits>
+// #include <type_traits>
 
 template <class _Tp>
 struct StackAllocator;
 
-_STLP_BEGIN_NAMESPACE
+namespace stlp_std {
 
-// namespace stlp_std {
 template <class _Tp>
 void swap(_Tp& __a, _Tp& __b);
 
 template <class _Tp>
 void swap( ::StackAllocator<_Tp>& __a, ::StackAllocator<_Tp>& __b );
-// }
-_STLP_END_NAMESPACE
+
+}
+
+
 
 #include <algorithm>
 

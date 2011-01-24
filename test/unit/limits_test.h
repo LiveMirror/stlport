@@ -28,6 +28,7 @@
 #include <limits>
 #include <type_traits>
 #ifndef __ANDROID__
+// boris : where is this
 #  include <ieee754.h>
 #endif
 

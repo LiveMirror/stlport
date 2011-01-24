@@ -8,7 +8,7 @@ RULESBASE = $(SRCROOT)/Makefiles
 !endif
 
 !ifndef ALL_TAGS
-ALL_TAGS = all-shared all-static
+ALL_TAGS = install-release-shared
 !endif
 
 #!if [echo $(ALL_TAGS)]

@@ -26,7 +26,7 @@ __stlp_string_fill(basic_ostream<_CharT, _Traits>& __os,
 
 
 template <class _CharT, class _Traits, class _Alloc>
-basic_ostream<_CharT, _Traits>& _STLP_CALL
+_STLP_DECLSPEC basic_ostream<_CharT, _Traits>& _STLP_CALL
 operator << (basic_ostream<_CharT, _Traits>& __os,
              const basic_string<_CharT,_Traits,_Alloc>& __s) {
   typedef basic_ostream<_CharT, _Traits> __ostream;
@@ -65,7 +65,7 @@ operator << (basic_ostream<_CharT, _Traits>& __os,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-basic_istream<_CharT, _Traits>& _STLP_CALL
+_STLP_DECLSPEC basic_istream<_CharT, _Traits>& _STLP_CALL
 operator >> (basic_istream<_CharT, _Traits>& __is,
              basic_string<_CharT,_Traits, _Alloc>& __s) {
   typedef basic_istream<_CharT, _Traits> __istream;
@@ -129,7 +129,7 @@ operator >> (basic_istream<_CharT, _Traits>& __is,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-basic_istream<_CharT, _Traits>& _STLP_CALL
+_STLP_DECLSPEC basic_istream<_CharT, _Traits>& _STLP_CALL
 getline(basic_istream<_CharT, _Traits>& __is,
         basic_string<_CharT,_Traits,_Alloc>& __s,
         _CharT __delim) {

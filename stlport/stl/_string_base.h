@@ -35,7 +35,16 @@
 
 _STLP_BEGIN_NAMESPACE
 
-_STLP_MOVE_TO_PRIV_NAMESPACE
+#if defined (_STLP_MSVC_BINARY_COMPATIBILITY) 
+class _STLP_DECLSPEC _String_base
+{
+public:
+ static void _STLP_CALL _Xran();
+ static void _STLP_CALL _Xlen();
+};
+
+# define _String_base _String_val
+#endif
 
 template <class _Tp, class _Alloc>
 class _String_base
@@ -48,17 +57,22 @@ class _String_base
     enum {_DEFAULT_SIZE = 4 * sizeof( void * )};
     //This is needed by the full move framework
     typedef _Alloc allocator_type;
-    typedef _STLP_alloc_proxy<_Tp*, _Tp, allocator_type> _AllocProxy;
+    typedef _STLP_PRIV _STLP_alloc_proxy<_Tp*, _Tp, allocator_type> _AllocProxy;
     typedef size_t size_type;
 
-  private:
+  protected:
+
 #if defined (_STLP_USE_SHORT_STRING_OPTIM)
   union _Buffers
   {
       _Tp*  _M_end_of_storage;
       _Tp   _M_static_buf[_DEFAULT_SIZE];
   } _M_buffers;
+  _Tp* _M_finish;
+  _AllocProxy _M_start_of_storage;
 #else
+    _AllocProxy _M_start_of_storage;
+    _Tp* _M_finish;
     _Tp* _M_end_of_storage;
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
 
@@ -93,9 +107,6 @@ class _String_base
       { return _M_end_of_storage - _M_finish; }
 #endif /* _STLP_USE_SHORT_STRING_OPTIM */
 
-    _Tp* _M_finish;
-    _AllocProxy _M_start_of_storage;
-
     _Tp const* _M_Finish() const
       {return _M_finish;}
     _Tp* _M_Finish()
@@ -123,7 +134,11 @@ class _String_base
         return (min)(__alloc_max_size, __string_max_size) - 1;
       }
 
+#if defined (_STLP_MSVC_BINARY_COMPATIBILITY) 
+    _String_base(allocator_type __a) :
+#else
     _String_base(const allocator_type& __a) :
+#endif
 #if defined (_STLP_USE_SHORT_STRING_OPTIM)
         _M_finish(_M_buffers._M_static_buf), _M_start_of_storage(__a, _M_buffers._M_static_buf)
 #else
@@ -219,6 +234,7 @@ class _String_base
 
     void _STLP_FUNCTION_THROWS _M_throw_length_error() const;
     void _STLP_FUNCTION_THROWS _M_throw_out_of_range() const;
+
 };
 
 #if defined (_STLP_USE_TEMPLATE_EXPORT)
@@ -228,7 +244,6 @@ _STLP_EXPORT_TEMPLATE_CLASS _String_base<wchar_t, allocator<wchar_t> >;
 #  endif
 #endif /* _STLP_USE_TEMPLATE_EXPORT */
 
-_STLP_MOVE_TO_STD_NAMESPACE
 
 _STLP_END_NAMESPACE
 

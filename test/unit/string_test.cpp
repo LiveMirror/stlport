@@ -18,6 +18,7 @@
  *
  */
 
+
 //Has to be first for StackAllocator swap overload to be taken
 //into account (at least using GCC 4.0.1)
 #include "stack_allocator.h"
@@ -33,6 +34,7 @@
 #include <deque>
 #include <string>
 #include <algorithm>
+
 #if !defined (STLPORT) || !defined (_STLP_USE_NO_IOSTREAMS)
 #  include <sstream>
 #endif

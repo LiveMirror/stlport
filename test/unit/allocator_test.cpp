@@ -1,3 +1,5 @@
+#define _STLP_USE_NO_IOSTREAMS
+
 #include "allocator_test.h"
 
 #include <memory>

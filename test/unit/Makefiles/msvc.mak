@@ -17,16 +17,16 @@
 !endif
 
 SRCROOT=../..
-STLPORT_DIR=../..
+STLPORT_DIR=../../..
 
 !include Makefile.inc
 
-!ifndef WITHOUT_STLPORT
-INCLUDES=$(INCLUDES) /I$(STLPORT_INCLUDE_DIR) /I$(STLPORT_DIR)/src /FI warning_disable.h
-!else
-INCLUDES=$(INCLUDES) /I$(STLPORT_DIR)/src /FI warning_disable.h
+# !ifndef WITHOUT_STLPORT
+# INCLUDES=$(INCLUDES) /I$(STLPORT_INCLUDE_DIR) /I$(SRCROOT)/src /I../include /FI warning_disable.h
+# !else
+INCLUDES=$(INCLUDES) /I$(STLPORT_DIR)/src /I$(SRCROOT)/src /I../include  /FI warning_disable.h
 DEFS=/DWITHOUT_STLPORT
-!endif
+# !endif
 
 !if ("$(COMPILER_NAME)" != "icl")
 # Important in a number of builds.
@@ -38,6 +38,10 @@ DEFS_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STATIC_DBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STATIC_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 
-LDSEARCH=$(LDSEARCH) /LIBPATH:$(STLPORT_LIB_DIR)
+#LDSEARCH=$(LDSEARCH) /LIBPATH:$(STLPORT_LIB_DIR) stlport.6.0.lib
 
 !include $(SRCROOT)/Makefiles/nmake/top.mak
+
+install:
+  copy obj\vc9\shared\stl_unit_test.exe ..\..\..\bin
+  copy obj\vc9\shared\stl_unit_test.pdb ..\..\..\bin

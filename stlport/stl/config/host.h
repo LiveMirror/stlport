@@ -87,9 +87,8 @@
  * If namespases available, STLport use own namespace (and masquerade
  * it as std). Disable own namespace may cause undefined behaviour.
  */
-/*
-#define _STLP_NO_OWN_NAMESPACE  1
-*/
+
+// #define _STLP_NO_OWN_NAMESPACE  1
 
 /*
  * Uncomment _STLP_LEAKS_PEDANTIC to force deallocation of ALL allocated
@@ -108,9 +107,7 @@
  * Uncomment _STLP_USE_NEWALLOC to force allocator<T> to use plain "new"
  * instead of STLport optimized node allocator engine.
  */
-/*
-#define _STLP_USE_NEWALLOC 1
-*/
+// #define _STLP_USE_NEWALLOC 1
 
 /*
  * Uncomment _STLP_USE_MALLOC to force allocator<T> to use plain "malloc"
@@ -225,6 +222,8 @@
 /*
 #define _STLP_NO_MSVC50_COMPATIBILITY 1
 */
+
+#define _STLP_MSVC_BINARY_COMPATIBILITY 1
 
 /*
  * Use obsolete overloaded template functions iterator_category(), value_type(), distance_type()

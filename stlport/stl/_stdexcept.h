@@ -102,6 +102,12 @@ public:
 #    endif
 };
 
+#if defined (_STLP_MSVC_BINARY_COMPATIBILITY)
+// This function comes from msvcp (even though it should have come from msvcrt).
+// We can't really emulate it - Google says it did always return true in MSVC library anyway
+_STLP_DECLSPEC bool uncaught_exception();
+#endif
+
 _STLP_END_NAMESPACE
 
 #  endif

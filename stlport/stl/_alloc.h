@@ -483,7 +483,14 @@ class allocator
     const_pointer address( const_reference __x ) const
       { return &__x; }
     // __n is permitted to be 0.  The C++ standard says nothing about what the return value is when __n == 0.
-    _Tp* allocate(size_type __n, const void* = 0)
+
+    _Tp* allocate(size_type __n, const void*) 
+      {
+	// hints have no effect
+	return allocate(__n);
+      }
+
+    _Tp* allocate(size_type __n)
       {
         if (__n > max_size()) {
           _STLP_THROW_BAD_ALLOC;
