@@ -30,6 +30,8 @@ using namespace std;
 int EXAM_IMPL(iostream_test::manipulators)
 {
   {
+    fprintf(stderr,  "Manipulators\n");
+
     istringstream istr;
     istr.str("bar");
 

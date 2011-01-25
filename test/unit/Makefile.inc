@@ -9,5 +9,6 @@ PRGNAME = stl_unit_test
 SRC_CC = suite.cc test_suite.cc logger_stdio.cc
 
 SRC_CPP = \
-	msstring_test.cpp
+	msstring_test.cpp \
+	stream_test.cpp
 

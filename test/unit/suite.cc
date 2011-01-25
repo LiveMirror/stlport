@@ -22,6 +22,8 @@
 #include <sstream>
 
 #include "string_test.h"
+#include "stream_test.h"
+
 // #include "exception_test.h"
 // #include "locale_test.h"
 
@@ -101,15 +103,16 @@ str_test.c_str(&t); // "c_str" );
 	  str_test.concat24(&t); // "concat24" );
 	  str_test.assign_from_char(&t); // "string assign from char buf" );
 
-#if 0
-  cstring_test cst_test;
+	  //  cstring_test cst_test;
 
-  t.add( &cstring_test::import_checks, cst_test, "import_checks" );
+	  //   t.add( &cstring_test::import_checks, cst_test, "import_checks" );
 
   iostream_test strm_test;
 
   t.add( &iostream_test::manipulators, strm_test, "manipulators" );
   t.add( &iostream_test::in_avail, strm_test, "in_avail in std streams" );
+
+#if 0
 
   sstream_test sstrm_test;
 
