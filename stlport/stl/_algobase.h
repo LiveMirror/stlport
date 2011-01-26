@@ -34,8 +34,8 @@
 #  include <stl/_cstddef.h>
 #endif
 
-#ifndef _STLP_INTERNAL_CSTRING
-#  include <stl/_cstring.h>
+#ifndef _STLP_CSTRING
+#  include <cstring>
 #endif
 
 #ifndef _STLP_CLIMITS
@@ -46,8 +46,8 @@
 #  include <stl/_cstdlib.h>
 #endif
 
-#ifndef _STLP_INTERNAL_UTILITY_H
-#  include <stl/_utility.h>
+#ifndef _STLP_UTILITY
+#  include <utility>
 #endif
 
 #ifndef _STLP_INTERNAL_ITERATOR_BASE_H
