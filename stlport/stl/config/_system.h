@@ -42,13 +42,6 @@
 #    include <stl/config/_gcc.h>
 #  elif defined (__SUNPRO_CC) || defined (__SUNPRO_C)
 #    include <stl/config/_sunprocc.h>
-/*
-#  ifdef __KCC
-#    include <stl/config/_kai.h>
-#  endif
-*/
-#  elif defined (__APOGEE__)  /* Apogee 4.x */
-#    include <stl/config/_apcc.h>
 #  elif defined (__FCC_VERSION) /* Fujitsu Compiler, v4.0 assumed */
 #    include <stl/config/_fujitsu.h>
 #  endif
@@ -69,11 +62,6 @@
 #  elif defined (__GNUC__)
 #    include <stl/config/_gcc.h>
 #  endif
-/*
-#  ifdef __KCC
-#    include <stl/config/_kai.h>
-#  endif
-*/
 #elif defined (__ANDROID__)
 #  include <stl/config/_android.h>
 #  if defined (__GNUC__)
@@ -88,13 +76,6 @@
 #  include <stl/config/_openbsd.h>
 #  if defined (__GNUC__)
 #    include <stl/config/_gcc.h>
-#  endif
-#elif defined (__sgi) /* IRIX? */
-#  define _STLP_PLATFORM "SGI Irix"
-#  if defined (__GNUC__)
-#    include <stl/config/_gcc.h>
-#  else
-#    include <stl/config/_sgi.h>
 #  endif
 #elif defined (__OS400__) /* AS/400 C++ */
 #  define _STLP_PLATFORM "OS 400"
@@ -112,18 +93,8 @@
 #elif defined (_CRAY) /* Cray C++ 3.4 or 3.5 */
 #  define _STLP_PLATFORM "Cray"
 #  include <config/_cray.h>
-#elif defined (__DECCXX) || defined (__DECC)
-#  define _STLP_PLATFORM "DECC"
-#  ifdef __vms
-#    include <stl/config/_dec_vms.h>
-#  else
-#    include <stl/config/_dec.h>
-#  endif
 #elif defined (macintosh) || defined (_MAC)
 #  include <stl/config/_mac.h>
-#  if defined (__MWERKS__)
-#    include <stl/config/_mwerks.h>
-#  endif
 #elif defined (__APPLE__)
 #  include <stl/config/_macosx.h>
 #  ifdef __GNUC__
@@ -146,14 +117,10 @@
 #    include <stl/config/_bc.h>
 #  elif defined (__WATCOM_CPLUSPLUS__) || defined (__WATCOMC__)  /* Watcom C++ */
 #    include <stl/config/_watcom.h>
-#  elif defined (__COMO__) || defined (__COMO_VERSION_)
-#    include <stl/config/_como.h>
 #  elif defined (__DMC__)   /* Digital Mars C++ */
 #    include <stl/config/_dm.h>
 #  elif defined (__ICL) /* Intel reference compiler for Win */
 #    include <stl/config/_intel.h>
-#  elif defined (__MWERKS__)
-#    include <stl/config/_mwerks.h>
 #  elif defined (_MSC_VER) && (_MSC_VER >= 1200) && defined (UNDER_CE)
      /* Microsoft eMbedded Visual C++ 3.0, 4.0 (.NET) */
 #    include <stl/config/_evc.h>

@@ -51,7 +51,6 @@
 #  include <stl/_bstring.h>
 #endif
 
-
 #endif /* _STLP_INTERNAL_STRING_H */
 
 /*

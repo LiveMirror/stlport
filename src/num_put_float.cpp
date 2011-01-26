@@ -22,11 +22,7 @@
 #include <ios>
 #include <locale>
 
-#if defined (__DECCXX)
-#  define NDIG 400
-#else
-#  define NDIG 82
-#endif
+#define NDIG 82
 
 #define todigit(x) ((x)+'0')
 
@@ -39,7 +35,7 @@
 #    include <floatingpoint.h>
 #  endif
 
-#  if defined (__sun) || defined (__digital__) || defined (__sgi) || defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
+#  if defined (__sun) || defined (__digital__) || defined (_STLP_SCO_OPENSERVER) || defined (__NCR_SVR)
 // DEC, SGI & Solaris need this
 #    include <values.h>
 #    include <nan.h>
@@ -95,7 +91,7 @@ _STLP_BEGIN_NAMESPACE
 
 _STLP_MOVE_TO_PRIV_NAMESPACE
 
-#if defined (__MWERKS__) || defined(__BEOS__)
+#if defined(__BEOS__)
 #  define USE_SPRINTF_INSTEAD
 #endif
 
@@ -252,19 +248,6 @@ static inline char* _Stl_ecvtR(long double x, int n, int* pt, int* sign, char* b
 static inline char* _Stl_fcvtR(long double x, int n, int* pt, int* sign, char* buf)
 { return qfconvert(&x, n, pt, sign, buf); }
 #    endif
-#  elif defined (__DECCXX)
-static inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign, char* buf, size_t bsize)
-{ return (ecvt_r(x, n, pt, sign, buf, bsize) == 0 ? buf : 0); }
-static inline char* _Stl_fcvtR(double x, int n, int* pt, int* sign, char* buf, size_t bsize)
-{ return (fcvt_r(x, n, pt, sign, buf, bsize) == 0 ? buf : 0); }
-#    ifndef _STLP_NO_LONG_DOUBLE
-// fbp : no "long double" conversions !
-static inline char* _Stl_ecvtR(long double x, int n, int* pt, int* sign, char* buf, size_t bsize)
-{ return (ecvt_r((double)x, n, pt, sign, buf, bsize) == 0 ? buf : 0) ; }
-static inline char* _Stl_fcvtR(long double x, int n, int* pt, int* sign, char* buf, size_t bsize)
-{ return (fcvt_r((double)x, n, pt, sign, buf, bsize) == 0 ? buf : 0); }
-#    endif
-#    define _STLP_NEED_CVT_BUFFER_SIZE
 #  elif defined (__hpux)
 static inline char* _Stl_ecvtR(double x, int n, int* pt, int* sign)
 { return ecvt(x, n, pt, sign); }

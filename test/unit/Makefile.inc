@@ -1,4 +1,4 @@
-# -*- makefile -*- Time-stamp: <09/01/27 12:00:36 ptr>
+# -*- makefile -*- Time-stamp: <2010-12-08 15:28:00 ptr>
 
 # this is the version number of needed STLport library for linking
 LIBMAJOR = 6

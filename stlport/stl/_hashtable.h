@@ -30,9 +30,7 @@
 #ifndef _STLP_INTERNAL_HASHTABLE_H
 #define _STLP_INTERNAL_HASHTABLE_H
 
-#ifndef _STLP_INTERNAL_VECTOR_H
-#  include <stl/_vector.h>
-#endif
+#  include <vector>
 
 #ifndef _STLP_INTERNAL_SLIST_H
 #  include <stl/_slist.h>
@@ -152,38 +150,6 @@ struct _Ht_iterator {
 };
 
 _STLP_MOVE_TO_STD_NAMESPACE
-
-#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
-_STLP_BEGIN_TR1_NAMESPACE
-
-template <class _BaseIte, class _Traits>
-struct has_trivial_default_constructor<_STLP_PRIV _Ht_iterator<_BaseIte, _Traits> > :
-    public false_type
-{ };
-
-template <class _BaseIte, class _Traits>
-struct has_trivial_copy_constructor<_STLP_PRIV _Ht_iterator<_BaseIte, _Traits> > :
-    public true_type
-{ };
-
-template <class _BaseIte, class _Traits>
-struct has_trivial_assign<_STLP_PRIV _Ht_iterator<_BaseIte, _Traits> > :
-    public true_type
-{ };
-
-template <class _BaseIte, class _Traits>
-struct has_trivial_destructor<_STLP_PRIV _Ht_iterator<_BaseIte, _Traits> > :
-    public true_type
-{ };
-
-template <class _BaseIte, class _Traits>
-struct is_pod<_STLP_PRIV _Ht_iterator<_BaseIte, _Traits> > :
-    public false_type
-{ };
-
-_STLP_END_NAMESPACE
-
-#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
 
 #if defined (_STLP_USE_OLD_HP_ITERATOR_QUERIES)
 template <class _BaseIte, class _Traits>
@@ -618,9 +584,7 @@ _STLP_MOVE_TO_STD_NAMESPACE
 
 _STLP_END_NAMESPACE
 
-#if !defined (_STLP_LINK_TIME_INSTANTIATION)
-#  include <stl/_hashtable.c>
-#endif
+#include <stl/_hashtable.c>
 
 #if defined (_STLP_DEBUG)
 #  include <stl/debug/_hashtable.h>

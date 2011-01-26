@@ -115,31 +115,6 @@ public:
       { return this->_M_node != __y._M_node; }
 };
 
-#if defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
-_STLP_MOVE_TO_STD_NAMESPACE
-
-_STLP_BEGIN_TR1_NAMESPACE
-
-template <class _Tp, class _Traits>
-struct has_trivial_copy_constructor<_STLP_PRIV _Slist_iterator<_Tp, _Traits> > :
-    public true_type
-{ };
-
-template <class _Tp, class _Traits>
-struct has_trivial_assign<_STLP_PRIV _Slist_iterator<_Tp, _Traits> > :
-    public true_type
-{ };
-
-template <class _Tp, class _Traits>
-struct has_trivial_destructor<_STLP_PRIV _Slist_iterator<_Tp, _Traits> > :
-    public true_type
-{ };
-
-_STLP_END_NAMESPACE
-
-_STLP_MOVE_TO_PRIV_NAMESPACE
-#endif /* _STLP_CLASS_PARTIAL_SPECIALIZATION */
-
 // Base class that encapsulates details of allocators and simplifies EH
 template <class _Tp, class _Alloc>
 class _Slist_base
@@ -761,9 +736,7 @@ _STLP_END_NAMESPACE
 
 _STLP_END_NAMESPACE
 
-#if !defined (_STLP_LINK_TIME_INSTANTIATION)
-#  include <stl/_slist.c>
-#endif
+#include <stl/_slist.c>
 
 #if defined (_STLP_USE_PTR_SPECIALIZATIONS)
 #  include <stl/pointers/_slist.h>

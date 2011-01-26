@@ -32,6 +32,10 @@
 #define _STLP_USE_SHORT_STRING_OPTIM 1
 #endif
 
+// For now, ignore gcc-style __attribute__
+#define __attribute__(x) 
+#define _STLP_NO_VARIADIC_TEMPLATES
+
 #if defined (_STLP_USING_PLATFORM_SDK_COMPILER)
 /* This is a specific section for compilers coming with platform SDKs. Native
  * library coming with it is different from the one coming with commercial

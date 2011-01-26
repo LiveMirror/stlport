@@ -1,7 +1,7 @@
-// -*- C++ -*- Time-stamp: <10/06/02 15:17:35 ptr>
+// -*- C++ -*- Time-stamp: <2010-12-02 12:12:36 ptr>
 
 /*
- * Copyright (c) 2004-2008
+ * Copyright (c) 2004-2010
  * Petr Ovtchenkov
  *
  * Copyright (c) 2004-2008
@@ -35,6 +35,10 @@ class deque_test
     int EXAM_DECL(auto_ref);
     int EXAM_DECL(allocator_with_state);
     int EXAM_DECL(optimizations_check);
+    int EXAM_DECL(fill_trivial);
+    int EXAM_DECL(fill_non_trivial);
+    int EXAM_DECL(init_integral);
+    int EXAM_DECL(init_range);
 };
 
 class queue_test

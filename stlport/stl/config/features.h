@@ -95,12 +95,35 @@
 
 /* ========================================================= */
 
+/* If, by any chance, C compiler gets there, try to help it to pass smoothly */
+
+#if ! defined (__cplusplus) && ! defined (_STLP_HAS_NO_NAMESPACES)
+#  define _STLP_HAS_NO_NAMESPACES
+#endif
+
 /* some fixes to configuration. This also includes modifications
  * of STLport switches depending on compiler flags,
  * or settings applicable to a group of compilers, such as
- * to all who use EDG front-end.
+ * to all who use EDG front-end. The last EDG front-end
+ * remains in HP aCC.
  */
-#include <stl/config/stl_confix.h>
+
+/* __EDG_VERSION__ is an official EDG macro, compilers based
+ * on EDG have to define it. */
+#if defined (__EDG_VERSION__)
+#  if (__EDG_VERSION__ >= 244) && !defined (_STLP_HAS_INCLUDE_NEXT)
+#    define _STLP_HAS_INCLUDE_NEXT
+#  endif
+#  if (__EDG_VERSION__ <= 240) && !defined (_STLP_DONT_RETURN_VOID)
+#    define _STLP_DONT_RETURN_VOID
+#  endif
+#  if !defined (__EXCEPTIONS) && !defined (_STLP_HAS_NO_EXCEPTIONS)
+#    define _STLP_HAS_NO_EXCEPTIONS
+#  endif
+#  if !defined (__NO_LONG_LONG) && !defined (_STLP_LONG_LONG)
+#    define _STLP_LONG_LONG long long
+#  endif
+#endif
 
 #if !defined (_STLP_NO_CLASS_PARTIAL_SPECIALIZATION) && !defined (_STLP_CLASS_PARTIAL_SPECIALIZATION)
 #  define _STLP_CLASS_PARTIAL_SPECIALIZATION 1
@@ -187,7 +210,7 @@
 #endif
 
 /* Operating system recognition (basic) */
-#if (defined(__unix) || defined(__linux__) || defined(__QNX__) || defined(_AIX)  || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__Lynx__) || defined(__hpux) || defined(__sgi)) && \
+#if (defined(__unix) || defined(__linux__) || defined(__QNX__) || defined(_AIX)  || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__Lynx__) || defined(__hpux)) && \
      !defined (_STLP_UNIX)
 #  define _STLP_UNIX 1
 #endif /* __unix */
@@ -238,7 +261,7 @@
 #    define _STLP_UITHREADS
 #  else
 #    define _STLP_PTHREADS
-#  endif /* __sgi */
+#  endif
 #  define _STLP_THREADS_DEFINED
 #endif
 
@@ -685,7 +708,7 @@ namespace _STL = _STLP_STD_NAME;
 #    define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
    typedef typename _STLP_STD :: reverse_iterator<const_iterator> const_reverse_iterator; \
    typedef typename _STLP_STD :: reverse_iterator<iterator> reverse_iterator
-#  elif (defined (__sgi) && ! defined (__GNUC__)) || defined (__SUNPRO_CC) || defined (__xlC__)
+#  elif defined (__SUNPRO_CC) || defined (__xlC__)
 #    define _STLP_DECLARE_REVERSE_ITERATORS(__reverse_iterator) \
    typedef _STLP_STD:: _STLP_TEMPLATE reverse_iterator<const_iterator> const_reverse_iterator; \
    typedef _STLP_STD:: _STLP_TEMPLATE reverse_iterator<iterator> reverse_iterator
@@ -966,10 +989,6 @@ typedef int bool;
 #endif
 
 #ifndef _STLP_USE_NO_IOSTREAMS
-
-#  if defined (__DECCXX) && ! defined (__USE_STD_IOSTREAM)
-#    define __USE_STD_IOSTREAM
-#  endif
 
 /* We only need to expose details of streams implementation
    if we use non-standard i/o or are building STLport*/

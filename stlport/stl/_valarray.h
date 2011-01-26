@@ -27,9 +27,7 @@
 #  include <stl/_new.h>
 #endif
 
-#ifndef _STLP_INTERNAL_ALGO_H
-#  include <stl/_algo.h>
-#endif
+#include <algorithm>
 
 #ifndef _STLP_INTERNAL_NUMERIC_H
 #  include <stl/_numeric.h>
@@ -117,19 +115,11 @@ public:
   // Destructor
   ~valarray() { _STLP_STD::_Destroy_Range(this->_M_first, this->_M_first + this->_M_size); }
 
-  // Extension: constructor that doesn't initialize valarray elements to a
-  // specific value.  This is faster for types such as int and double.
-private:
-  void _M_initialize(const true_type&) {}
-  void _M_initialize(const false_type&)
-    { uninitialized_fill_n(this->_M_first, this->_M_size, _STLP_DEFAULT_CONSTRUCTED(_Tp)); }
+    struct _NoInit {};
 
-public:
-  struct _NoInit {};
-  valarray(size_t __n, _NoInit) : _Valarray_base<_Tp>(__n) {
-    typedef typename has_trivial_default_constructor<_Tp>::type _Is_Trivial;
-    _M_initialize(_Is_Trivial());
-  }
+    valarray( size_t __n, _NoInit ) :
+        _Valarray_base<_Tp>(__n)
+      { uninitialized_fill_n(this->_M_first, this->_M_size, _Tp() ); }
 
 public:                         // Assignment
   // Basic assignment.  Note that 'x = y' is undefined if x.size() != y.size()
@@ -1217,10 +1207,10 @@ private:
 // valarray member functions dealing with slice and slice_array
 
 template <class _Tp>
-inline valarray<_Tp>::valarray(const slice_array<_Tp>& __x)
-  : _Valarray_base<_Tp>(__x._M_slice.size()) {
-  typedef typename has_trivial_default_constructor<_Tp>::type _Is_Trivial;
-  _M_initialize(_Is_Trivial());
+inline valarray<_Tp>::valarray(const slice_array<_Tp>& __x) :
+    _Valarray_base<_Tp>(__x._M_slice.size())
+{
+  uninitialized_fill_n(this->_M_first, this->_M_size, _Tp() );
   *this = __x;
 }
 
@@ -1415,10 +1405,10 @@ private:
 // from a degenerate gslice.
 
 template <class _Tp>
-inline valarray<_Tp>::valarray(const gslice_array<_Tp>& __x)
-  : _Valarray_base<_Tp>(__x._M_gslice._M_size()) {
-  typedef typename has_trivial_default_constructor<_Tp>::type _Is_Trivial;
-  _M_initialize(_Is_Trivial());
+inline valarray<_Tp>::valarray(const gslice_array<_Tp>& __x) :
+    _Valarray_base<_Tp>(__x._M_gslice._M_size())
+{
+  uninitialized_fill_n(this->_M_first, this->_M_size, _Tp() );
   *this = __x;
 }
 
@@ -1538,10 +1528,10 @@ private:
 // valarray member functions dealing with mask_array
 
 template <class _Tp>
-inline valarray<_Tp>::valarray(const mask_array<_Tp>& __x)
-  : _Valarray_base<_Tp>(__x._M_num_true()) {
-  typedef typename has_trivial_default_constructor<_Tp>::type _Is_Trivial;
-  _M_initialize(_Is_Trivial());
+inline valarray<_Tp>::valarray(const mask_array<_Tp>& __x) :
+    _Valarray_base<_Tp>(__x._M_num_true())
+{
+  uninitialized_fill_n(this->_M_first, this->_M_size, _Tp() );
   *this = __x;
 }
 
@@ -1653,10 +1643,10 @@ private:
 // valarray member functions dealing with indirect_array
 
 template <class _Tp>
-inline valarray<_Tp>::valarray(const indirect_array<_Tp>& __x)
-  : _Valarray_base<_Tp>(__x._M_addr.size()) {
-  typedef typename has_trivial_default_constructor<_Tp>::type _Is_Trivial;
-  _M_initialize(_Is_Trivial());
+inline valarray<_Tp>::valarray(const indirect_array<_Tp>& __x) :
+    _Valarray_base<_Tp>(__x._M_addr.size())
+{
+  uninitialized_fill_n(this->_M_first, this->_M_size, _Tp() );
   *this = __x;
 }
 
@@ -1668,9 +1658,7 @@ valarray<_Tp>::operator[](const _Valarray_size_t& __addr)
 
 _STLP_END_NAMESPACE
 
-# if !defined (_STLP_LINK_TIME_INSTANTIATION)
-#  include <stl/_valarray.c>
-# endif
+#include <stl/_valarray.c>
 
 #endif /* _STLP_VALARRAY */
 
