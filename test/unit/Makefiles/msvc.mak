@@ -28,11 +28,6 @@ INCLUDES=$(INCLUDES) /I$(STLPORT_DIR)/src /I$(SRCROOT)/src /I../include  /FI war
 DEFS=/DWITHOUT_STLPORT
 #!endif
 
-!if ("$(COMPILER_NAME)" != "icl")
-# Important in a number of builds.
-OPT = /Zm800
-!endif
-
 DEFS_DBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STATIC_DBG=/D_STLP_DEBUG_UNINITIALIZED
@@ -41,6 +36,11 @@ DEFS_STATIC_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 # LDSEARCH=$(LDSEARCH) /LIBPATH:$(STLPORT_LIB_DIR) stlport.6.0.lib
 
 !include $(SRCROOT)/Makefiles/nmake/top.mak
+
+!if ("$(COMPILER_NAME)" != "icl")
+# Important in a number of builds.
+OPT = /Zm800 /Od
+!endif
 
 install:
   copy obj\vc9\shared\stl_unit_test.exe ..\..\..\bin

@@ -45,7 +45,7 @@ string __WideToASCII(const wchar_t *wide) {
 _STLP_MOVE_TO_STD_NAMESPACE
 #endif
 
-#if 1 // !defined (_STLP_NO_FORCE_INSTANTIATE)
+#if !defined (_STLP_NO_FORCE_INSTANTIATE)
 
 template class _STLP_CLASS_DECLSPEC allocator<char>;
 template class _STLP_CLASS_DECLSPEC _String_base<char, allocator<char> >;
@@ -53,7 +53,47 @@ template class _STLP_CLASS_DECLSPEC basic_string<char, char_traits<char>, alloca
 
 // template class _STLP_CLASS_DECLSPEC _STLP_alloc_proxy<char*, char, allocator<char> >;
 
-template _STLP_DECLSPEC basic_string<char, char_traits<char>, allocator<char> > _STLP_CALL
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const basic_string<char, char_traits<char>, allocator<char> >& __x,
+	    const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const char*__x,
+	    const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( char __x,
+	    const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const basic_string<char, char_traits<char>, allocator<char> >& __y, 
+	    char __x);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const basic_string<char, char_traits<char>, allocator<char> >& __x,
+	    const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const char*__x,
+	    const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const basic_string<char, char_traits<char>, allocator<char> >& __y,
+	    const char*__x );
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const basic_string<char, char_traits<char>, allocator<char> >& __x,
+	   const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const char*__x,
+	   const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator>( const basic_string<char, char_traits<char>, allocator<char> >& __x,
+	   const basic_string<char, char_traits<char>, allocator<char> >& __y);
+
+template _STLP_DECLSPEC basic_string<char, char_traits<char>, allocator<char> >  _STLP_CALL
 operator+( const basic_string<char, char_traits<char>, allocator<char> >& __x,
           const basic_string<char, char_traits<char>, allocator<char> >& __y);
 
@@ -105,6 +145,53 @@ template _STLP_DECLSPEC bool _STLP_CALL
 operator!=(
           const basic_string<char, char_traits<char>, allocator<char> >& __y, char __s);
 
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __x,
+	    const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const wchar_t*__x,
+	    const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y,
+	    const wchar_t*__x );
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __x,
+	    const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const wchar_t*__x,
+	    const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y,
+	    const wchar_t*__x );
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __x,
+	   const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const wchar_t*__x,
+	   const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y,
+	   const wchar_t*__x );
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator>( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __x,
+	   const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator>( const wchar_t*__x,
+	   const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator>( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y,
+	   const wchar_t*__x );
 
 template _STLP_DECLSPEC basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> > _STLP_CALL
 operator+( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __x,

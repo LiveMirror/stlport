@@ -110,11 +110,6 @@
 
 #  define _STLP_USE_TEMPLATE_EXPORT 1
 
-/* # ifndef __BUILDING_STLPORT
- * #  define _STLP_USE_TEMPLATE_EXPORT 1
- * # endif
- */
-
 /** Note: the macro _STLP_NO_UNCAUGHT_EXCEPT_SUPPORT is defined
 unconditionally and undef'ed here when applicable. */
 #  if defined (UNDER_CE)

@@ -22,7 +22,7 @@
 #include <sstream>
 
 #include "string_test.h"
-#include "stream_test.h"
+// #include "stream_test.h"
 
 // #include "exception_test.h"
 // #include "locale_test.h"
@@ -108,11 +108,11 @@ int main( int argc, const char** argv )
   
   //   t.add( &cstring_test::import_checks, cst_test, "import_checks" );
   
-  iostream_test strm_test;
-  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
-  t.add( &iostream_test::in_avail, strm_test, "in_avail in std streams" );
-  strm_test.manipulators(&t);
-  strm_test.in_avail(&t);
+  //  iostream_test strm_test;
+  //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
+  //  t.add( &iostream_test::in_avail, strm_test, "in_avail in std streams" );
+  //  strm_test.manipulators(&t);
+  //  strm_test.in_avail(&t);
 
 #if 0
 
@@ -484,5 +484,5 @@ int main( int argc, const char** argv )
   }
 # endif
 
-  return t.girdle();
+  //  return t.girdle();
 }

@@ -884,6 +884,7 @@ int EXAM_IMPL(string_test::compare)
 
   str2 = "abcdef";
   EXAM_CHECK( str1.compare(str2) == 0 );
+  EXAM_CHECK( str1 == str2 );
   str2 = "abcde";
   EXAM_CHECK( str1.compare(str2) > 0 );
   str2 = "abcdefg";

@@ -1291,8 +1291,7 @@ public: // Helper functions for compare.
                                    const _CharT* __f2, const _CharT* __l2) {
     const ptrdiff_t __n1 = __l1 - __f1;
     const ptrdiff_t __n2 = __l2 - __f2;
-    const int cmp = _Traits::compare(__f1, __f2, (min) (__n1, __n2));
-    return cmp != 0 ? cmp : (__n1 < __n2 ? -1 : (__n1 > __n2 ? 1 : 0));
+    return (__n1 < __n2 ? -1 : (__n1 > __n2 ? 1 : _Traits::compare(__f1, __f2, (min) (__n1, __n2))));
   }
 
 #if defined (_STLP_USE_TEMPLATE_EXPRESSION) && !defined (_STLP_DEBUG) && !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)

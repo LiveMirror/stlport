@@ -932,9 +932,9 @@ typedef int bool;
 /* this setting turns on "extern template" extension use */
 #    define _STLP_USE_TEMPLATE_EXPORT
 #  endif
-#  if defined (_STLP_DESIGNATED_DLL) && ! defined (_STLP_NO_FORCE_INSTANTIATE)
-#    define _STLP_NO_FORCE_INSTANTIATE
-#  endif
+//#  if defined (_STLP_DESIGNATED_DLL) && ! defined (_STLP_NO_FORCE_INSTANTIATE)
+//#    define _STLP_NO_FORCE_INSTANTIATE
+//#  endif
 #endif
 
 #if defined (_STLP_DESIGNATED_DLL) /* This is a lib which will contain STLport exports */

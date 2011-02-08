@@ -36,6 +36,23 @@ template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
 operator>>(basic_istream<char, char_traits<char> >&,
            basic_string<char, char_traits<char>, allocator<char> >& __y);
 
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+operator>>(basic_istream<char, char_traits<char> >&,
+           char* __y);
+
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+operator>>(basic_istream<char, char_traits<char> >&,
+           char& __y);
+
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+getline(basic_istream<char, char_traits<char> >& __is,
+        basic_string<char, char_traits<char>, allocator<char> >& __s,
+        char __delim);
+
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+getline(basic_istream<char, char_traits<char> >& __is,
+        basic_string<char, char_traits<char>, allocator<char> >& __s);
+
 #  if !defined (_STLP_NO_WCHAR_T)
 #    if defined (_STLP_USE_TEMPLATE_EXPORT)
 template class _STLP_CLASS_DECLSPEC _Isentry<wchar_t, char_traits<wchar_t> >;
@@ -46,6 +63,23 @@ template class _STLP_CLASS_DECLSPEC basic_iostream<wchar_t, char_traits<wchar_t>
 template _STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
 operator>>(basic_istream<wchar_t, char_traits<wchar_t> >&,
            basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
+
+template _STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
+operator>>(basic_istream<wchar_t, char_traits<wchar_t> >&,
+           wchar_t* __y);
+
+template _STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
+operator>>(basic_istream<wchar_t, char_traits<wchar_t> >&,
+           wchar_t& __y);
+
+template _STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
+getline(basic_istream<wchar_t, char_traits<wchar_t> >& __is,
+        basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __s,
+        wchar_t __delim);
+
+template _STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
+getline(basic_istream<wchar_t, char_traits<wchar_t> >& __is,
+        basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __s);
 
 #  endif /* !_STLP_NO_WCHAR_T */
 

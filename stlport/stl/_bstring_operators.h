@@ -152,8 +152,8 @@ template <class _CharT, class _Traits, class _Alloc>
 _STLP_DECLSPEC bool _STLP_CALL
 operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
-  return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.begin(), __x.end(),
-                                                          __y.begin(), __y.end()) < 0;
+  return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.data(), __x.data()+__x.size(),
+                                                          __y.data(), __y.data()+__y.size()) < 0;
 }
 
 template <class _CharT, class _Traits, class _Alloc>
@@ -163,7 +163,7 @@ operator<(const _CharT* __s,
   _STLP_FIX_LITERAL_BUG(__s)
   size_t __n = _Traits::length(__s);
   return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__s, __s + __n,
-                                                          __y.begin(), __y.end()) < 0;
+                                                          __y.data(), __y.data()+__y.size()) < 0;
 }
 
 template <class _CharT, class _Traits, class _Alloc>
@@ -172,7 +172,7 @@ operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const _CharT* __s) {
   _STLP_FIX_LITERAL_BUG(__s)
   size_t __n = _Traits::length(__s);
-  return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.begin(), __x.end(),
+  return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.data(), __x.data()+__x.size(),
                                                           __s, __s + __n) < 0;
 }
 

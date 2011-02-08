@@ -17,6 +17,7 @@
  * modified is included with the above copyright notice.
  *
  */
+#if 0
 
 #include "stream_test.h"
 
@@ -728,3 +729,4 @@ int EXAM_IMPL(strstream_test::input)
   return EXAM_RESULT;
 }
 
+#endif
