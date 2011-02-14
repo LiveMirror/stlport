@@ -491,11 +491,11 @@ public:
     : _Base(__a) {
     _M_range_initialize(__s, __s + __n);
   }
-
-  basic_string(const _CharT* __s): _Base(allocator_type()) {
+ 
+ basic_string(_CharT const* __s): _Base(allocator_type()) {
     _M_range_initialize(__s, __s + traits_type::length(__s));
   }
-  
+ 
   basic_string(const _CharT* __s, const allocator_type& __a)  :  _Base(__a) {
     _M_range_initialize(__s, __s + traits_type::length(__s));
   }
@@ -806,6 +806,9 @@ public:                         // Assign
 
   _Self& assign(const _CharT* __s1, const _CharT* __s2)
   { return _M_assign(__s1, __s2); }
+
+  _Self& assign(const_iterator __s1, const_iterator __s2)
+  { return _M_assign(__s1._M_ptr, __s2._M_ptr); }
 
   _Self& assign(size_type __n, _CharT __c);
 

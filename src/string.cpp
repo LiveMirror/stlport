@@ -145,6 +145,28 @@ template _STLP_DECLSPEC bool _STLP_CALL
 operator!=(
           const basic_string<char, char_traits<char>, allocator<char> >& __y, char __s);
 
+_STLP_MOVE_TO_PRIV_NAMESPACE
+
+#  if defined (_STLP_DEBUG) && !defined (__SUNPRO_CC) && !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#    define basic_string _STLP_NON_DBG_NAME(str)
+
+template class _STLP_CLASS_DECLSPEC basic_string<char, char_traits<char>, allocator<char> >;
+template class _STLP_CLASS_DECLSPEC __construct_checker<basic_string<char, char_traits<char>, allocator<char> > >;
+#    undef basic_string
+#  endif
+
+_STLP_MOVE_TO_STD_NAMESPACE
+
+
+//
+//  wchar_t
+//
+//
+
+#  if !defined (_STLP_NO_WCHAR_T)
+
+template class _STLP_CLASS_DECLSPEC allocator<wchar_t>;
+
 template _STLP_DECLSPEC bool _STLP_CALL
 operator==( const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __x,
 	    const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y);
@@ -245,20 +267,16 @@ template _STLP_DECLSPEC bool _STLP_CALL
 operator!=(
           const basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __y, wchar_t __s);
 
-#  if defined (_STLP_DEBUG) && !defined (__SUNPRO_CC) && !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
-#    define basic_string _STLP_NON_DBG_NAME(str)
-
-template class _STLP_CLASS_DECLSPEC basic_string<char, char_traits<char>, allocator<char> >;
-template class _STLP_CLASS_DECLSPEC __construct_checker<basic_string<char, char_traits<char>, allocator<char> > >;
-#    undef basic_string
-#  endif
-
-#  if !defined (_STLP_NO_WCHAR_T)
-template class _STLP_CLASS_DECLSPEC allocator<wchar_t>;
-
-_STLP_MOVE_TO_PRIV_NAMESPACE
 
 template class _STLP_CLASS_DECLSPEC _String_base<wchar_t, allocator<wchar_t> >;
+template class _STLP_CLASS_DECLSPEC basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
+
+
+//
+// Unsigned short
+//
+
+_STLP_MOVE_TO_PRIV_NAMESPACE
 
 #    if defined (_STLP_DEBUG) && !defined (__SUNPRO_CC) && !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
 #      define basic_string _STLP_NON_DBG_NAME(str)
@@ -269,19 +287,130 @@ template class _STLP_CLASS_DECLSPEC __construct_checker<basic_string<wchar_t, ch
 #      undef basic_string
 #    endif
 
-#    if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
-#      define basic_string _STLP_NO_MEM_T_NAME(str)
-#    else
 _STLP_MOVE_TO_STD_NAMESPACE
-#    endif
 
-template class _STLP_CLASS_DECLSPEC basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >;
 
-#    if defined (basic_string)
-_STLP_MOVE_TO_STD_NAMESPACE
+template class _STLP_CLASS_DECLSPEC _String_base<unsigned short, allocator<unsigned short> >;
+
+template class _STLP_CLASS_DECLSPEC allocator<unsigned short>;
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __x,
+	    const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const unsigned short*__x,
+	    const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y,
+	    const unsigned short*__x );
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __x,
+	    const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const unsigned short*__x,
+	    const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y,
+	    const unsigned short*__x );
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __x,
+	   const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const unsigned short*__x,
+	   const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator<( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y,
+	   const unsigned short*__x );
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator>( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __x,
+	   const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator>( const unsigned short*__x,
+	   const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator>( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y,
+	   const unsigned short*__x );
+
+template _STLP_DECLSPEC basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> > _STLP_CALL
+operator+( const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __x,
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> > _STLP_CALL
+operator+(const unsigned short*  __s,
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> > _STLP_CALL
+operator+(
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y, const unsigned short*  __s);
+
+template _STLP_DECLSPEC basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> > _STLP_CALL
+operator+(unsigned short __s,
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> > _STLP_CALL
+operator+(
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y, unsigned short __s);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==(const unsigned short*  __s,
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==(
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y, const unsigned short*  __s);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==(unsigned short __s,
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator==(
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y, unsigned short __s);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=(const unsigned short*  __s,
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=(
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y, const unsigned short*  __s);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=(unsigned short __s,
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y);
+
+template _STLP_DECLSPEC bool _STLP_CALL
+operator!=(
+          const basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >& __y, unsigned short __s);
+
+template class _STLP_CLASS_DECLSPEC basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >;
+
+
+_STLP_MOVE_TO_PRIV_NAMESPACE
+
+#    if defined (_STLP_DEBUG) && !defined (__SUNPRO_CC) && !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
+#      define basic_string _STLP_NON_DBG_NAME(str)
+
+template class _STLP_CLASS_DECLSPEC basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> >;
+template class _STLP_CLASS_DECLSPEC __construct_checker<basic_string<unsigned short, char_traits<unsigned short>, allocator<unsigned short> > >;
+
 #      undef basic_string
 #    endif
-#  endif
+
+_STLP_MOVE_TO_STD_NAMESPACE
+
+#endif
 #endif
 
 _STLP_END_NAMESPACE
