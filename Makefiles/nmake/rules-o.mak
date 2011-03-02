@@ -6,9 +6,6 @@
 .cpp{$(OUTPUT_DIR)}.o:
 	$(COMPILE_cc_REL) $(OUTPUT_OPTION) $<
 
-{..}.cpp{$(OUTPUT_DIR)}.o:
-	$(COMPILE_cc_REL) $(OUTPUT_OPTION) $<
-
 .cc{$(OUTPUT_DIR)}.o:
 	$(COMPILE_cc_REL) $(OUTPUT_OPTION) $<
 

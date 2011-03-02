@@ -33,7 +33,8 @@ SRC_CPP = dll_main.cpp \
           complex_trig.cpp \
           string.cpp \
           bitset.cpp \
-          allocators.cpp
+          allocators.cpp \
+          uc_string.cpp
 
 SRC_C = c_locale.c \
         cxa.c

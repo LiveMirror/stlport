@@ -17,7 +17,6 @@
  * modified is included with the above copyright notice.
  *
  */
-#if 0
 
 #include "stream_test.h"
 
@@ -27,6 +26,8 @@
 #if !defined (STLPORT) || defined(_STLP_USE_NAMESPACES)
 using namespace std;
 #endif
+
+# if 0
 
 int EXAM_IMPL(iostream_test::manipulators)
 {
@@ -73,7 +74,17 @@ int EXAM_IMPL(iostream_test::manipulators)
   return EXAM_RESULT;
 }
 
+# endif
+
 #include <iostream>
+
+int EXAM_IMPL(iostream_test::cout_out)
+{
+  cout << "Test string 1" << endl;
+  return EXAM_RESULT;
+}
+
+#if 0
 
 int EXAM_IMPL(iostream_test::in_avail)
 {
@@ -91,6 +102,7 @@ int EXAM_IMPL(iostream_test::in_avail)
 
   return EXAM_RESULT;
 }
+
 
 //int EXAM_IMPL(iostream_test::wimbue)
 //{

@@ -28,8 +28,9 @@
 class iostream_test
 {
   public:
-    int EXAM_DECL(manipulators);
-    int EXAM_DECL(in_avail);
+  //    int EXAM_DECL(manipulators);
+  //    int EXAM_DECL(in_avail);
+    int EXAM_DECL(cout_out);
 };
 
 class sstream_test

@@ -99,6 +99,17 @@ public:                         // Members from 27.4.4.3.  These four functions
   }
   void setstate(iostate __state) { this->clear(rdstate() | __state); }
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void clear(iostate __state, bool __thr) {
+    _M_clear_nothrow(this->rdbuf() ? __state : iostate(__state|ios_base::badbit));
+    if (__thr)
+      _M_check_exception_mask();
+  }
+  void setstate(iostate __state, bool __thr) { this->clear(rdstate() | __state, __thr); }
+  void setstate(unsigned __state) { this->setstate((iostate)__state); }
+  void clear(unsigned __state) { this->clear((iostate)__state); }
+#endif
+
   iostate exceptions() const { return this->_M_get_exception_mask(); }
   void exceptions(iostate __mask) {
     this->_M_set_exception_mask(__mask);

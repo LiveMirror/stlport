@@ -159,6 +159,21 @@ public:                         // Buffer positioning and manipulation.
     return *this;
   }
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void osfx() {
+    _Osfx();
+  }
+  bool opfx() {
+    if (ios_base::good() && _Basic_ios::tie() != 0)
+      _Basic_ios::tie()->flush();
+    return (ios_base::good());
+  }
+  void _Osfx() {
+    if (ios_base::flags() & ios_base::unitbuf)
+      flush();
+  }
+#endif
+
 #if defined (_STLP_USE_TEMPLATE_EXPORT)
   // If we are using DLL specs, we have not to use inner classes
   // end class declaration here
@@ -370,6 +385,25 @@ ends(basic_ostream<_CharT, _Traits>& __os) {
 template <class _CharT, class _Traits>
 inline basic_ostream<_CharT, _Traits>& _STLP_CALL
 flush(basic_ostream<_CharT, _Traits>& __os) {
+  __os.flush();
+  return __os;
+}
+
+_STLP_DECLSPEC inline basic_ostream<char, char_traits<char> >& _STLP_CALL
+endl(basic_ostream<char, char_traits<char>>& __os) {
+  __os.put(__os.widen('\n'));
+  __os.flush();
+  return __os;
+}
+
+_STLP_DECLSPEC inline basic_ostream<char, char_traits<char> >& _STLP_CALL
+ends(basic_ostream<char, char_traits<char>>& __os) {
+  __os.put(_STLP_DEFAULT_CONSTRUCTED(char));
+  return __os;
+}
+
+_STLP_DECLSPEC inline basic_ostream<char, char_traits<char> >& _STLP_CALL
+flush(basic_ostream<char, char_traits<char> >& __os) {
   __os.flush();
   return __os;
 }

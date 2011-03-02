@@ -265,6 +265,21 @@ public:                         // Locale-related functions.
 #if !defined (_STLP_NO_ANACHRONISMS)
   void stossc() { this->sbumpc(); }
 #endif
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void _Lock()
+  {	// set the thread lock
+    _M_lock._M_acquire_lock();
+  }
+  
+  void _Unlock()
+  {	// clear the thread lock
+    _M_lock._M_release_lock();
+  }
+private:
+  _STLP_mutex _M_lock;
+#endif
+
 };
 
 #if defined (_STLP_USE_TEMPLATE_EXPORT)

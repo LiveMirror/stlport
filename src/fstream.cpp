@@ -96,17 +96,17 @@ _Underflow< char, char_traits<char> >::_M_doit(basic_filebuf<char, char_traits<c
 // Force instantiation of filebuf and fstream classes.
 #if !defined(_STLP_NO_FORCE_INSTANTIATE)
 
-template class basic_filebuf<char, char_traits<char> >;
-template class basic_ifstream<char, char_traits<char> >;
-template class basic_ofstream<char, char_traits<char> >;
-template class basic_fstream<char, char_traits<char> >;
+template class _STLP_CLASS_DECLSPEC basic_filebuf<char, char_traits<char> >;
+template class _STLP_CLASS_DECLSPEC basic_ifstream<char, char_traits<char> >;
+template class _STLP_CLASS_DECLSPEC basic_ofstream<char, char_traits<char> >;
+template class _STLP_CLASS_DECLSPEC basic_fstream<char, char_traits<char> >;
 
 #  if !defined (_STLP_NO_WCHAR_T)
-template class _Underflow<wchar_t, char_traits<wchar_t> >;
-template class basic_filebuf<wchar_t, char_traits<wchar_t> >;
-template class basic_ifstream<wchar_t, char_traits<wchar_t> >;
-template class basic_ofstream<wchar_t, char_traits<wchar_t> >;
-template class basic_fstream<wchar_t, char_traits<wchar_t> >;
+template class _STLP_CLASS_DECLSPEC _Underflow<wchar_t, char_traits<wchar_t> >;
+template class _STLP_CLASS_DECLSPEC basic_filebuf<wchar_t, char_traits<wchar_t> >;
+template class _STLP_CLASS_DECLSPEC basic_ifstream<wchar_t, char_traits<wchar_t> >;
+template class _STLP_CLASS_DECLSPEC basic_ofstream<wchar_t, char_traits<wchar_t> >;
+template class _STLP_CLASS_DECLSPEC basic_fstream<wchar_t, char_traits<wchar_t> >;
 #  endif /* _STLP_NO_WCHAR_T */
 
 #endif

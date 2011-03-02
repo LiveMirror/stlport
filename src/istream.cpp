@@ -45,6 +45,22 @@ operator>>(basic_istream<char, char_traits<char> >&,
            char& __y);
 
 template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+operator>>(basic_istream<char, char_traits<char> >&,
+           unsigned char* __y);
+
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+operator>>(basic_istream<char, char_traits<char> >&,
+           unsigned char& __y);
+
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+operator>>(basic_istream<char, char_traits<char> >&,
+           signed char* __y);
+
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+operator>>(basic_istream<char, char_traits<char> >&,
+           signed char& __y);
+
+template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
 getline(basic_istream<char, char_traits<char> >& __is,
         basic_string<char, char_traits<char>, allocator<char> >& __s,
         char __delim);
@@ -80,6 +96,7 @@ getline(basic_istream<wchar_t, char_traits<wchar_t> >& __is,
 template _STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
 getline(basic_istream<wchar_t, char_traits<wchar_t> >& __is,
         basic_string<wchar_t, char_traits<wchar_t>, allocator<wchar_t> >& __s);
+
 
 #  endif /* !_STLP_NO_WCHAR_T */
 
