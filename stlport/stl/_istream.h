@@ -289,6 +289,14 @@ ws(basic_istream<_CharT, _Traits>& __istr) {
   return __istr;
 }
 
+_STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+ws(basic_istream<char, char_traits<char> >&);
+
+#  if !defined (_STLP_NO_WCHAR_T)
+_STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
+ws(basic_istream<wchar_t, char_traits<wchar_t> >&);
+#endif
+
 // Helper functions for istream<>::sentry constructor.
 template <class _CharT, class _Traits>
 inline bool _M_init_skip(basic_istream<_CharT, _Traits>& __istr) {

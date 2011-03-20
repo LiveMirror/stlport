@@ -247,7 +247,7 @@ template <class _charT, _STLP_DFL_NON_TYPE_PARAM(bool , _International , false) 
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct_byname<char, true> : public moneypunct<char, true> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef money_base::pattern   pattern;
   typedef char                  char_type;
@@ -280,7 +280,7 @@ private:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct_byname<char, false> : public moneypunct<char, false> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef money_base::pattern   pattern;
   typedef char                  char_type;
@@ -314,7 +314,7 @@ private:
 #if !defined (_STLP_NO_WCHAR_T)
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct_byname<wchar_t, true> : public moneypunct<wchar_t, true> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef money_base::pattern   pattern;
   typedef wchar_t               char_type;
@@ -347,7 +347,7 @@ private:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC moneypunct_byname<wchar_t, false> : public moneypunct<wchar_t, false> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef money_base::pattern   pattern;
   typedef wchar_t               char_type;

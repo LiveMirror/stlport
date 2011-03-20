@@ -238,6 +238,7 @@ public:                         // Public members for reading characters.
   streamsize sgetn(char_type* __s, streamsize __n)
   { return this->xsgetn(__s, __n); }
 
+  
   int_type sputbackc(char_type __c) {
     return ((_M_gbegin < _M_gnext) && _Traits::eq(__c, *(_M_gnext - 1)))
       ? _Traits::to_int_type(*--_M_gnext)
@@ -249,6 +250,17 @@ public:                         // Public members for reading characters.
       ? _Traits::to_int_type(*--_M_gnext)
       : this->pbackfail();
   }
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+protected:
+  streamsize _Sgetn_s(char_type *__p, size_t __size, streamsize __n)
+  {
+    return _Xsgetn_s(__p, __size, __n);
+  }
+
+  virtual streamsize _Xsgetn_s(char_type *__p, size_t __size, streamsize __n);
+
+#endif
 
 protected:                      // Virtual locale functions.
 

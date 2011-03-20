@@ -403,7 +403,7 @@ codecvt_byname<wchar_t, char, mbstate_t>::do_always_noconv() const _STLP_NOTHROW
 { return false; }
 
 int
-codecvt_byname<wchar_t, char, mbstate_t>::do_length(state_type&         state,
+codecvt_byname<wchar_t, char, mbstate_t>::do_length(const  state_type&         state,
                                                     const  char* from,
                                                     const  char* end,
                                                     size_t              mx) const {
@@ -412,7 +412,7 @@ codecvt_byname<wchar_t, char, mbstate_t>::do_length(state_type&         state,
     intern_type __dummy;
     size_t chars_read = _WLocale_mbtowc(_M_codecvt,
                                         &__dummy, from, end - from,
-                                        &state);
+                                        const_cast<state_type*>(&state));
     if ((chars_read == (size_t) -1) || (chars_read == (size_t) -2)) // error or partial
       break;
     __count += chars_read;

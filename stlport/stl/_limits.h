@@ -188,44 +188,44 @@ class numeric_limits : public _STLP_PRIV _Numeric_limits_base<_Tp> {};
 
 #if !defined (_STLP_NO_BOOL)
 _STLP_TEMPLATE_NULL
-class numeric_limits<bool>
+class _STLP_DECLSPEC numeric_limits<bool>
   : public _STLP_PRIV _Integer_limits<bool, false, true, 1, false>
 {};
 #endif /* _STLP_NO_BOOL */
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<char>
+class _STLP_DECLSPEC numeric_limits<char>
   : public _STLP_PRIV _Integer_limits<char, CHAR_MIN, CHAR_MAX, -1, true>
 {};
 
 #if !defined (_STLP_NO_SIGNED_BUILTINS)
 _STLP_TEMPLATE_NULL
-class numeric_limits<signed char>
+class _STLP_DECLSPEC numeric_limits<signed char>
   : public _STLP_PRIV _Integer_limits<signed char, SCHAR_MIN, SCHAR_MAX, -1, true>
 {};
 #endif
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<unsigned char>
+class _STLP_DECLSPEC numeric_limits<unsigned char>
   : public _STLP_PRIV _Integer_limits<unsigned char, 0, UCHAR_MAX, -1, true>
 {};
 
 #if !(defined (_STLP_NO_WCHAR_T) || defined (_STLP_WCHAR_T_IS_USHORT))
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<wchar_t>
+class _STLP_DECLSPEC numeric_limits<wchar_t>
   : public _STLP_PRIV _Integer_limits<wchar_t, WCHAR_MIN, WCHAR_MAX, -1, true>
 {};
 
 #endif
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<short>
+class _STLP_DECLSPEC numeric_limits<short>
   : public _STLP_PRIV _Integer_limits<short, SHRT_MIN, SHRT_MAX, -1, true>
 {};
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<unsigned short>
+class _STLP_DECLSPEC numeric_limits<unsigned short>
   : public _STLP_PRIV _Integer_limits<unsigned short, 0, USHRT_MAX, -1, true>
 {};
 
@@ -235,22 +235,22 @@ class numeric_limits<unsigned short>
 #endif
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<int>
+class _STLP_DECLSPEC numeric_limits<int>
   : public _STLP_PRIV _Integer_limits<int, INT_MIN, INT_MAX, -1, true>
 {};
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<unsigned int>
+class _STLP_DECLSPEC numeric_limits<unsigned int>
   : public _STLP_PRIV _Integer_limits<unsigned int, 0, UINT_MAX, -1, true>
 {};
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<long>
+class _STLP_DECLSPEC numeric_limits<long>
   : public _STLP_PRIV _Integer_limits<long, LONG_MIN, LONG_MAX, -1, true>
 {};
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<unsigned long>
+class _STLP_DECLSPEC numeric_limits<unsigned long>
   : public _STLP_PRIV _Integer_limits<unsigned long, 0, ULONG_MAX, -1, true>
 {};
 
@@ -275,12 +275,12 @@ class numeric_limits<unsigned long>
 #  if !defined (__GNUC__) || (__GNUC__ == 2 && __GNUC_MINOR__ <= 96) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1) || (__GNUC__ > 3)
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<_STLP_LONG_LONG>
+class _STLP_DECLSPEC numeric_limits<_STLP_LONG_LONG>
   : public _STLP_PRIV _Integer_limits<_STLP_LONG_LONG, LONGLONG_MIN, LONGLONG_MAX, -1, true>
 {};
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<unsigned _STLP_LONG_LONG>
+class _STLP_DECLSPEC numeric_limits<unsigned _STLP_LONG_LONG>
   : public _STLP_PRIV _Integer_limits<unsigned _STLP_LONG_LONG, 0, ULONGLONG_MAX, -1, true>
 {};
 #  else /* gcc 2.97 (after 2000-11-01), 2.98, 3.0 */
@@ -293,7 +293,7 @@ class numeric_limits<unsigned _STLP_LONG_LONG>
    - ptr
  */
 _STLP_TEMPLATE_NULL
-class numeric_limits<_STLP_LONG_LONG>
+class _STLP_DECLSPEC numeric_limits<_STLP_LONG_LONG>
   : public _STLP_PRIV _Numeric_limits_base<_STLP_LONG_LONG> {
 public:
 
@@ -312,7 +312,7 @@ public:
 };
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<unsigned _STLP_LONG_LONG>
+class _STLP_DECLSPEC  numeric_limits<unsigned _STLP_LONG_LONG>
   : public _STLP_PRIV _Numeric_limits_base<unsigned _STLP_LONG_LONG> {
 public:
 
@@ -706,7 +706,7 @@ struct _Lim<F,128>
 _STLP_MOVE_TO_STD_NAMESPACE
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<float> :
+class _STLP_DECLSPEC numeric_limits<float> :
     public _STLP_PRIV _Floating_limits<float,
                                        FLT_MANT_DIG,   // Binary digits of precision
                                        FLT_DIG,        // Decimal digits of precision
@@ -746,7 +746,7 @@ class numeric_limits<float> :
 #undef _STLP_FLT_DNORM_STYLE
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<double> :
+class _STLP_DECLSPEC numeric_limits<double> :
     public _STLP_PRIV _Floating_limits<double,
                                        DBL_MANT_DIG,   // Binary digits of precision
                                        DBL_DIG,        // Decimal digits of precision
@@ -786,7 +786,7 @@ class numeric_limits<double> :
 #if !defined (_STLP_NO_LONG_DOUBLE)
 
 _STLP_TEMPLATE_NULL
-class numeric_limits<long double> :
+class _STLP_DECLSPEC numeric_limits<long double> :
     public _STLP_PRIV _Floating_limits<long double,
                                        LDBL_MANT_DIG,  // Binary digits of precision
                                        LDBL_DIG,       // Decimal digits of precision

@@ -27,7 +27,7 @@ _STLP_BEGIN_NAMESPACE
 
 codecvt<char, char, mbstate_t>::~codecvt() {}
 
-int codecvt<char, char, mbstate_t>::do_length(state_type&,
+int codecvt<char, char, mbstate_t>::do_length(const  state_type&,
                                               const  char* from,
                                               const  char* end,
                                               size_t mx) const
@@ -125,7 +125,7 @@ int codecvt<wchar_t, char, mbstate_t>::do_encoding() const _STLP_NOTHROW
 bool codecvt<wchar_t, char, mbstate_t>::do_always_noconv() const _STLP_NOTHROW
 { return true; }
 
-int codecvt<wchar_t, char, mbstate_t>::do_length(state_type&,
+int codecvt<wchar_t, char, mbstate_t>::do_length(const  state_type&,
                                                  const  char* from,
                                                  const  char* end,
                                                  size_t mx) const

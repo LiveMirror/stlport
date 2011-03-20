@@ -58,16 +58,10 @@ template <class _Tp> class allocator;
 
 #define _STLP_NULL_CHAR_INIT(_ChT) _STLP_DEFAULT_CONSTRUCTED(_ChT)
 
-#if defined(_STLP_WCE)
+#if defined (_STLP_WIN64)
+typedef __int64 streamoff;
+#elif defined(_STLP_WCE)
 typedef long streamoff;
-#elif defined (_STLP_WIN32)
-#  if defined (_STLP_LONG_LONG) && !defined (__CYGWIN__)
-//The Win32 file io API support 64 bits access so streamoff and streamsize
-//has to reflect that. Do not change the stringbuf behavior.
-typedef _STLP_LONG_LONG streamoff;
-#  else
-typedef ptrdiff_t streamoff;
-#  endif
 #else // __unix
 #  ifdef _STLP_USE_DEFAULT_FILE_OFFSET
 typedef off_t streamoff;
@@ -80,12 +74,13 @@ typedef off_t streamoff;
 #  endif
 #endif /* __unix */
 
-#if defined (_STLP_WIN32)
+#if defined (_STLP_WIN64)
+typedef __int64 streamsize;
+#elif defined (_STLP_WIN32)
 typedef int streamsize;
 #else
 typedef ptrdiff_t streamsize;
 #endif
-
 
 // Class fpos, which represents a position within a file.  (The C++
 // standard calls for it to be defined in <ios>.  This implementation

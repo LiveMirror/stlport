@@ -50,7 +50,7 @@ _STLP_BEGIN_NAMESPACE
 // because C++ language rules do not allow it to be declared twice.
 
 template <class _CharT, class _Traits>
-class basic_ios : public ios_base {
+class _STLP_CLASS_DECLSPEC basic_ios : public ios_base {
   friend class ios_base;
 public:                         // Synonyms for types.
   typedef _CharT                     char_type;
@@ -97,7 +97,6 @@ public:                         // Members from 27.4.4.3.  These four functions
     _M_clear_nothrow(this->rdbuf() ? __state : iostate(__state|ios_base::badbit));
     _M_check_exception_mask();
   }
-  void setstate(iostate __state) { this->clear(rdstate() | __state); }
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
   void clear(iostate __state, bool __thr) {
@@ -106,15 +105,9 @@ public:                         // Members from 27.4.4.3.  These four functions
       _M_check_exception_mask();
   }
   void setstate(iostate __state, bool __thr) { this->clear(rdstate() | __state, __thr); }
-  void setstate(unsigned __state) { this->setstate((iostate)__state); }
+  void setstate(unsigned __state) { this->setstate((iostate)__state, true); }
   void clear(unsigned __state) { this->clear((iostate)__state); }
 #endif
-
-  iostate exceptions() const { return this->_M_get_exception_mask(); }
-  void exceptions(iostate __mask) {
-    this->_M_set_exception_mask(__mask);
-    this->clear(this->rdstate());
-  }
 
 public:                         // Locale-related member functions.
   locale imbue(const locale&);
@@ -139,8 +132,8 @@ public:
 protected:
   basic_ios();
 
-  void init(basic_streambuf<_CharT, _Traits>* __streambuf);
-
+  void init(basic_streambuf<_CharT, _Traits>* __streambuf, bool __compat = false);
+  
 public:
 
   // Helper function used in istream and ostream.  It is called only from
@@ -152,7 +145,6 @@ private:                        // Data members
 
   basic_streambuf<_CharT, _Traits>* _M_streambuf;
   basic_ostream<_CharT, _Traits>*   _M_tied_ostream;
-
 };
 
 #ifdef __SUNPRO_CC

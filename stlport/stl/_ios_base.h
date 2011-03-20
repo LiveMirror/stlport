@@ -61,6 +61,8 @@ public:
 
 # ifndef _STLP_NO_ANACHRONISMS
   typedef fmtflags fmt_flags;
+  typedef int iostate;
+  typedef iostate  io_state;
 # endif
 
   // Formatting flags.
@@ -174,6 +176,23 @@ public:                         // The C++ standard requires only that these
   bool fail() const { return (_M_iostate & (failbit | badbit)) != 0; }
   bool bad() const { return (_M_iostate & badbit) != 0; }
 
+  void clear(iostate __state, bool __thr) {
+    _M_clear_nothrow(__state);
+    if (__thr)
+      _M_check_exception_mask();
+  }
+  iostate exceptions() const { return this->_M_get_exception_mask(); }
+  void exceptions(iostate __mask) {
+    this->_M_set_exception_mask(__mask);
+    _M_clear_nothrow(__mask);
+    _M_check_exception_mask();
+    this->clear(this->rdstate(), true);
+  }
+#if 0
+  void exceptions(io_state __mask) {
+    exceptions((iostate)__mask);
+  }
+#endif
 protected:                      // The functional protected interface.
 
   // Copies the state of __x to *this.  This member function makes it
@@ -181,7 +200,6 @@ protected:                      // The functional protected interface.
   // ios_base's private data members.  Does not copy _M_exception_mask
   // or _M_iostate.
   void _M_copy_state(const ios_base& __x);
-
   void _M_setstate_nothrow(iostate __state) { _M_iostate |= __state; }
   void _M_clear_nothrow(iostate __state) { _M_iostate = __state; }
   iostate _M_get_exception_mask() const { return _M_exception_mask; }

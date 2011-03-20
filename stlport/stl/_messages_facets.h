@@ -121,7 +121,7 @@ template <class _CharT> class messages_byname {};
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC messages_byname<char> : public messages<char> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef messages_base::catalog catalog;
   typedef string     string_type;
@@ -149,7 +149,7 @@ private:
 #if !defined (_STLP_NO_WCHAR_T)
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC messages_byname<wchar_t> : public messages<wchar_t> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef messages_base::catalog catalog;
   typedef wstring                string_type;

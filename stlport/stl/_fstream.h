@@ -482,7 +482,6 @@ public:                         // Constructors, destructor.
         this->setstate(ios_base::failbit);
   }
 
-#if !defined (_STLP_NO_EXTENSIONS)
   explicit basic_ifstream(int __id, ios_base::openmode __mod = ios_base::in) :
     basic_ios<_CharT, _Traits>(),  basic_istream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
@@ -490,7 +489,7 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
   basic_ifstream(const char* __s, ios_base::openmode __m,
-     long __protection) :
+     int __protection) :
     basic_ios<_CharT, _Traits>(),  basic_istream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
     if (!_M_buf.open(__s, __m | ios_base::in, __protection))
@@ -505,7 +504,6 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
 #  endif /* _STLP_USE_WIN32_IO */
-#endif
 
   ~basic_ifstream() {}
 
@@ -513,7 +511,7 @@ public:                         // File and buffer operations.
   basic_filebuf<_CharT, _Traits>* rdbuf() const
     { return __CONST_CAST(_Buf*,&_M_buf); }
 
-  bool is_open() {
+  bool is_open() const {
     return this->rdbuf()->is_open();
   }
 
@@ -561,7 +559,6 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
 
-#if !defined (_STLP_NO_EXTENSIONS)
   explicit basic_ofstream(int __id, ios_base::openmode __mod = ios_base::out)
     : basic_ios<_CharT, _Traits>(), basic_ostream<_CharT, _Traits>(0),
     _M_buf() {
@@ -569,7 +566,7 @@ public:                         // Constructors, destructor.
    if (!_M_buf.open(__id, __mod | ios_base::out))
      this->setstate(ios_base::failbit);
   }
-  basic_ofstream(const char* __s, ios_base::openmode __m, long __protection) :
+  basic_ofstream(const char* __s, ios_base::openmode __m, int __protection) :
     basic_ios<_CharT, _Traits>(),  basic_ostream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
     if (!_M_buf.open(__s, __m | ios_base::out, __protection))
@@ -584,7 +581,6 @@ public:                         // Constructors, destructor.
      this->setstate(ios_base::failbit);
   }
 #  endif /* _STLP_USE_WIN32_IO */
-#endif
 
   ~basic_ofstream() {}
 
@@ -592,7 +588,7 @@ public:                         // File and buffer operations.
   basic_filebuf<_CharT, _Traits>* rdbuf() const
     { return __CONST_CAST(_Buf*,&_M_buf); }
 
-  bool is_open() {
+  bool is_open() const {
     return this->rdbuf()->is_open();
   }
 
@@ -642,7 +638,6 @@ public:                         // Constructors, destructor.
         this->setstate(ios_base::failbit);
   }
 
-#if !defined (_STLP_NO_EXTENSIONS)
   explicit basic_fstream(int __id,
                          ios_base::openmode __mod = ios_base::in | ios_base::out) :
     basic_ios<_CharT, _Traits>(), basic_iostream<_CharT, _Traits>(0), _M_buf() {
@@ -650,7 +645,7 @@ public:                         // Constructors, destructor.
     if (!_M_buf.open(__id, __mod))
       this->setstate(ios_base::failbit);
   }
-  basic_fstream(const char* __s, ios_base::openmode __m, long __protection) :
+  basic_fstream(const char* __s, ios_base::openmode __m, int __protection) :
     basic_ios<_CharT, _Traits>(),  basic_iostream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
     if (!_M_buf.open(__s, __m, __protection))
@@ -665,7 +660,7 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
 #  endif /* _STLP_USE_WIN32_IO */
-#endif
+
   ~basic_fstream() {}
 
 public:                         // File and buffer operations.
@@ -673,7 +668,7 @@ public:                         // File and buffer operations.
   basic_filebuf<_CharT, _Traits>* rdbuf() const
     { return __CONST_CAST(_Buf*,&_M_buf); }
 
-  bool is_open() {
+  bool is_open() const {
     return this->rdbuf()->is_open();
   }
 

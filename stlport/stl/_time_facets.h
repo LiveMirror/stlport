@@ -195,7 +195,7 @@ template <class _Ch, class _InIt>
 template <class _Ch, class _InIt = istreambuf_iterator<_Ch, char_traits<_Ch> > >
 #endif
 class time_get_byname : public time_get<_Ch, _InIt> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef  time_base::dateorder dateorder;
   typedef _InIt                 iter_type;
@@ -282,7 +282,7 @@ template <class _Ch, class _OutIt>
 template <class _Ch, class _OutIt = ostreambuf_iterator<_Ch, char_traits<_Ch> > >
 #endif
 class time_put_byname : public time_put<_Ch, _OutIt> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef time_base::dateorder dateorder;
   typedef _OutIt iter_type;

@@ -22,6 +22,7 @@
 #include <ios>
 #include <locale>
 #include <ostream> // for __get_ostreambuf definition
+#include <iomanip>
 
 #include "aligned_buffer.h"
 
@@ -299,6 +300,60 @@ ios_base::~ios_base() {
   free(_M_callbacks);
   free(_M_iwords);
   free(_M_pwords);
+}
+
+_STLP_DECLSPEC int _STLP_CALL _Ios_setbase(ios_base& __ios, int __n)
+{  
+  ios_base::fmtflags __base = __n == 8  ? ios_base::oct :
+    __n == 10 ? ios_base::dec :
+    __n == 16 ? ios_base::hex :
+    ios_base::fmtflags(0);
+  __ios.unsetf(ios_base::basefield);
+  return  __ios.setf(__base );
+}
+
+_STLP_DECLSPEC int _STLP_CALL _Ios_setflags(ios_base& __ios, ios_base::fmtflags __f)
+{
+  return __ios.setf(__f);
+}
+
+_STLP_DECLSPEC int _STLP_CALL _Ios_unsetflags(ios_base& __ios, ios_base::fmtflags __f)
+{
+  __ios.unsetf(__f);
+  return __f;
+}
+
+_STLP_DECLSPEC int _STLP_CALL _Ios_precision(ios_base& __ios, int __prec)
+{
+  return __ios.precision(__prec);
+}
+
+_STLP_DECLSPEC int _STLP_CALL _Ios_width(ios_base& __ios, int __w)
+{
+  return __ios.width(__w);
+}
+
+_Ios_Setf_Manip _STLP_CALL resetiosflags(ios_base::fmtflags __mask)
+{ 
+  _Smanip<streamsize>::__f_ptr_type __f = &_Ios_unsetflags;
+  return  _Ios_Setf_Manip(__f, __mask); 
+}
+_Ios_Setf_Manip _STLP_CALL setiosflags(ios_base::fmtflags __mask)
+{ 
+  _Smanip<streamsize>::__f_ptr_type __f = &_Ios_setflags;
+  return  _Ios_Setf_Manip(__f, __mask); 
+}
+
+_STLP_DECLSPEC _Smanip<streamsize> _STLP_CALL
+setprecision(int __n) {
+   _Smanip<streamsize>::__f_ptr_type __f = _Ios_precision;
+  return  _Smanip<streamsize>(__f, __n);
+}
+
+_STLP_DECLSPEC _Smanip<streamsize>  _STLP_CALL
+setw(int __n) {
+   _Smanip<streamsize>::__f_ptr_type __f = _Ios_width;  
+  return  _Smanip<streamsize>(__f, __n);
 }
 
 //----------------------------------------------------------------------

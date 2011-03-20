@@ -100,7 +100,7 @@ void trivial_logger::tc( base_logger::tc_result r, const std::string& name )
       break;
   }
 
-  fprintf( f, "%s%s\n", rs, name.c_str() );
+  fprintf( f ? f : stdout, "%s%s\n", rs, name.c_str() );
 }
 
 void trivial_logger::tc( base_logger::tc_result r, const std::string& name, int indent )

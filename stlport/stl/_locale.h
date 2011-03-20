@@ -35,15 +35,25 @@
 #  include <stl/_threads.h>
 #endif
 
-#ifndef _STLP_STRING_FWD_H
-#  include <stl/_string_fwd.h>
+#include <vector>
+
+#ifndef _STLP_STRING_H
+#  include <stl/_string.h>
+#endif
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+#include <stl/_stdexcept.h>
+
+#include <xlocinfo>
 #endif
 
 #include <stl/_facets_fwd.h>
 
+struct _Locale_name_hint;
+
 _STLP_BEGIN_NAMESPACE
 
-class _Locale_impl;        // Forward declaration of opaque type.
+class _Locinfo;
 class locale;
 
 template <class _CharT, class _Traits, class _Alloc>
@@ -51,13 +61,11 @@ bool __locale_do_operator_call(const locale& __loc,
                                const basic_string<_CharT, _Traits, _Alloc>& __x,
                                const basic_string<_CharT, _Traits, _Alloc>& __y);
 
-_STLP_DECLSPEC _Locale_impl * _STLP_CALL _get_Locale_impl( _Locale_impl *locimpl );
-_STLP_DECLSPEC _Locale_impl * _STLP_CALL _copy_Nameless_Locale_impl( _Locale_impl *locimpl );
 
 _STLP_MOVE_TO_PRIV_NAMESPACE
 
 template <class _Facet>
-bool _HasFacet(const locale& __loc, const _Facet* __facet) _STLP_NOTHROW;
+bool _HasFacet(const locale& __loc, const _Facet* facet) _STLP_NOTHROW;
 
 template <class _Facet>
 _Facet* _UseFacet(const locale& __loc, const _Facet* __facet);
@@ -74,8 +82,12 @@ _STLP_MOVE_TO_STD_NAMESPACE
 
 class _STLP_CLASS_DECLSPEC locale {
 public:
+
+  class _Locimp; 
+  friend class _Locimp;
+
   // types:
-  class _STLP_CLASS_DECLSPEC facet : protected _Refcount_Base {
+  class _STLP_CLASS_DECLSPEC facet : public _Refcount_Base {
   protected:
     /* Here we filter __init_count user value to 0 or 1 because __init_count is a
      * size_t instance and _Refcount_Base use __stl_atomic_t instances that might
@@ -84,7 +96,7 @@ public:
     explicit facet(size_t __init_count = 0) : _Refcount_Base( __init_count == 0 ? 0 : 1 ) {}
     virtual ~facet();
     friend class locale;
-    friend class _Locale_impl;
+    friend class _Locimp;
     friend facet * _STLP_CALL _get_facet( facet * );
     friend void _STLP_CALL _release_facet( facet *& );
 
@@ -100,8 +112,11 @@ public:
 #endif
   _STLP_CLASS_DECLSPEC id {
   public:
+    id() {}
+    id(size_t __id) : _M_index(__id) {}
     size_t _M_index;
     static size_t _S_max;
+    operator size_t() { return _M_index; };
   };
 
   typedef int category;
@@ -117,33 +132,30 @@ public:
   // construct/copy/destroy:
   locale() _STLP_NOTHROW;
   locale(const locale&) _STLP_NOTHROW;
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  explicit locale(const char*,  category = all);
+  locale (_Uninitialized);
+#else
   explicit locale(const char *);
+#endif
   locale(const locale&, const char*, category);
 
 #if !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
   template <class _Facet>
-  locale(const locale& __loc, _Facet* __f) {
-    if ( __f != 0 ) {
-      this->_M_impl = _get_Locale_impl( _copy_Nameless_Locale_impl( __loc._M_impl ) );
-      _STLP_PRIV _InsertFacet(*this, __f);
-    } else {
-      this->_M_impl = _get_Locale_impl( __loc._M_impl );
-    }
-  }
+  locale(const locale& __loc, _Facet* __f);
 #endif
+
 
 protected:
   // those are for internal use
-  locale(_Locale_impl*);
+  locale(_Locimp*);
+  static const string _Nameless;
 
 public:
   locale(const locale&, const locale&, category);
-  const locale& operator=(const locale&) _STLP_NOTHROW;
+  locale& operator=(const locale&) _STLP_NOTHROW;
 
-#if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
-protected:
-#endif
-   ~locale() _STLP_NOTHROW;
+  ~locale() _STLP_NOTHROW;
 
 public:
 #if !defined (_STLP_NO_EXPLICIT_FUNCTION_TMPL_ARGS) && \
@@ -161,9 +173,14 @@ public:
   // locale operations:
   string name() const;
 
-  bool operator==(const locale&) const;
-  bool operator!=(const locale&) const;
-
+  bool operator==(const locale& __L) const  {
+    return this->_M_impl == __L._M_impl ||
+      (this->name() == __L.name() && this->name() != _Nameless);
+  }
+  bool operator!=(const locale& __L) const {
+    return !(*this == __L);
+  }
+  
 #if defined (_STLP_INLINE_MEMBER_TEMPLATES)
   bool operator()(const string& __x, const string& __y) const;
 #  ifndef _STLP_NO_WCHAR_T
@@ -180,7 +197,7 @@ public:
 #if !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
   static locale _STLP_CALL global(const locale&);
 #else
-  static _Locale_impl* _STLP_CALL global(const locale&);
+  static _Locimp* _STLP_CALL global(const locale&);
 #endif
   static const locale& _STLP_CALL classic();
 
@@ -196,88 +213,110 @@ public:
 //protected:                        // More helper functions.
   void _M_insert(facet* __f, id& __id);
 
-  // friends:
-  friend class _Locale_impl;
+  // Class _Locimp
+  class _STLP_CLASS_DECLSPEC _Locimp : public facet {
 
-protected:                        // Data members
-  _Locale_impl* _M_impl;
-  _Locale_impl* _M_get_impl() const { return _M_impl; }
-};
+  private:
+    _Locimp(const char* s);
+    _Locimp(const _Locimp&);
+    _Locimp(size_t n, const char* s);
+  protected:
+    virtual ~_Locimp();
+    
+  public:
+    size_t size() const { return facets_vec.size(); }
+    
+    basic_string<char, char_traits<char>, allocator<char> > name;
+    
+    static void _STLP_FUNCTION_THROWS _STLP_CALL _M_throw_bad_cast();
+    
+  private:
+    void operator=(const _Locimp&);
+    
+  public:
+    class _STLP_CLASS_DECLSPEC Init {
+      public:
+      Init();
+      ~Init();
+    private:
+      _Refcount_Base& _M_count() const;
+    };
+    
+    static void _STLP_CALL _S_initialize();
+    static void _STLP_CALL _S_uninitialize();
+    
+    static void make_classic_locale();
+    static void free_classic_locale();
+    
+    friend class Init;
 
+  public:
+    // void remove(size_t index);
+    void insert_from(locale::_Locimp* __from, size_t __n);
+    void insert(locale::facet* __f, locale::id __id);
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+    void _Addfac(locale::facet*, size_t, size_t);
+    static _Locimp*  _STLP_CALL  _Makeloc(const _Locinfo&, category, _Locimp*, const locale*);
+    static _Locimp*&  _STLP_CALL _Clocptr_func();
+    // #ifndef _STLP_NO_WCHAR_T
+    static void  _STLP_CALL _Makewloc(const _Locinfo&, category, _Locimp *, const locale*);
+    static void _STLP_CALL _Makeushloc(const _Locinfo&, category, _Locimp *, const locale *);
+    // #endif /* _NATIVE_WCHAR_T_DEFINED */
+    static void _Makexloc(const _Locinfo&, category, _Locimp *, const locale *);
+    _Locimp(bool);
+#endif
+    
+    // Helper functions for byname construction of locales.
+    _Locale_name_hint* insert_ctype_facets(const char* &name, char *buf, _Locale_name_hint* hint);
+    _Locale_name_hint* insert_numeric_facets(const char* &name, char *buf, _Locale_name_hint* hint);
+    _Locale_name_hint* insert_time_facets(const char* &name, char *buf, _Locale_name_hint* hint);
+    _Locale_name_hint* insert_collate_facets(const char* &name, char *buf, _Locale_name_hint* hint);
+    _Locale_name_hint* insert_monetary_facets(const char* &name, char *buf, _Locale_name_hint* hint);
+    _Locale_name_hint* insert_messages_facets(const char* &name, char *buf, _Locale_name_hint* hint);
+    
+    bool operator != (const locale& __loc) const { return __loc._M_impl != this; }
+    
+  private:
+    static _Locimp *_C_locale_ptr;
+    vector<locale::facet*> facets_vec;
+
+  private:
+    static void _STLP_CALL _Locimp_Addfac(locale::_Locimp* from, locale::facet*, size_t n);
+
+    void _Addfac(locale::facet*, size_t n);
+
+    friend _STLP_DECLSPEC locale::_Locimp * _STLP_CALL _copy_Nameless_Locimp( locale::_Locimp * );
+    friend _STLP_DECLSPEC void _STLP_CALL _release_Locimp( locale::_Locimp *& loc );
 #if defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND) || \
     defined (_STLP_SIGNAL_RUNTIME_COMPATIBILITY) || defined (_STLP_CHECK_RUNTIME_COMPATIBILITY)
-#  undef locale
-#  define _Locale _STLP_NO_MEM_T_NAME(loc)
-
-class locale : public _Locale {
-public:
-
-  // construct/copy/destroy:
-  locale() _STLP_NOTHROW {
-#if defined (_STLP_CHECK_RUNTIME_COMPATIBILITY)
-    _STLP_CHECK_RUNTIME_COMPATIBILITY();
+    friend class _STLP_NO_MEM_T_NAME(loc);
+#else
+    friend class locale;
 #endif
-  }
-  locale(const locale& __loc) _STLP_NOTHROW : _Locale(__loc) {}
-  explicit locale(const char *__str) : _Locale(__str) {}
-  locale(const locale& __loc, const char* __str, category __cat)
-    : _Locale(__loc, __str, __cat) {}
-
-  template <class _Facet>
-  locale(const locale& __loc, _Facet* __f) 
-    : _Locale(__f != 0 ? _copy_Nameless_Locale_impl(__loc._M_impl) : __loc._M_impl) {
-    if ( __f != 0 ) {
-      _STLP_PRIV _InsertFacet(*this, __f);
-    }
-  }
-
-private:
-  // those are for internal use
-  locale(_Locale_impl* __impl) : _Locale(__impl) {}
-  locale(const _Locale& __loc) : _Locale(__loc) {}
-
-public:
-
-  locale(const locale& __loc1, const locale& __loc2, category __cat)
-    : _Locale(__loc1, __loc2, __cat) {}
-
-  const locale& operator=(const locale& __loc) _STLP_NOTHROW {
-    _Locale::operator=(__loc);
-    return *this;
-  }
-
-  template <class _Facet>
-  locale combine(const locale& __loc) const {
-    _Facet *__facet = 0;
-    if (!_STLP_PRIV _HasFacet(__loc, __facet))
-      _M_throw_on_combine_error(__loc.name());
-
-    return locale(*this, _STLP_PRIV _UseFacet(__loc, __facet));
-  }
-
-  // locale operations:
-  bool operator==(const locale& __loc) const { return _Locale::operator==(__loc); }
-  bool operator!=(const locale& __loc) const { return _Locale::operator!=(__loc); }
-
-  template <class _CharT, class _Traits, class _Alloc>
-  bool operator()(const basic_string<_CharT, _Traits, _Alloc>& __x,
-                  const basic_string<_CharT, _Traits, _Alloc>& __y) const
-  { return __locale_do_operator_call(*this, __x, __y); }
-
-  // global locale objects:
-  static locale _STLP_CALL global(const locale& __loc) {
-    return _Locale::global(__loc);
-  }
-  static const locale& _STLP_CALL classic() {
-    return __STATIC_CAST(const locale&, _Locale::classic());
-  }
+  };
 
   // friends:
-  friend class _Locale_impl;
+  friend class _Locimp;
+
+
+protected:                        // Data members
+  _Locimp* _M_impl;
+  _Locimp* _M_get_impl() const { return _M_impl; }
 };
 
-#  undef _Locale
-#endif
+
+_STLP_DECLSPEC locale::_Locimp * _STLP_CALL _get_Locimp( locale::_Locimp *locimpl );
+_STLP_DECLSPEC locale::_Locimp * _STLP_CALL _copy_Nameless_Locimp( locale::_Locimp *locimpl );
+
+template <class _Facet>
+locale::locale(const locale& __loc, _Facet* __f) 
+  : _Locale(__f != 0 ? _copy_Nameless_Locimp(__loc._M_impl) : __loc._M_impl) {
+  if ( __f != 0 ) {
+    _STLP_PRIV _InsertFacet(*this, __f);
+  }
+}
+
 
 //----------------------------------------------------------------------
 // locale globals

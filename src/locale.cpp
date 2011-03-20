@@ -26,7 +26,7 @@
 
 _STLP_BEGIN_NAMESPACE
 
-static const string _Nameless("*");
+const string locale::_Nameless("*");
 
 static inline bool is_C_locale_name (const char* name)
 { return ((name[0] == 'C') && (name[1] == 0)); }
@@ -40,7 +40,7 @@ locale* _Stl_get_global_locale();
 #endif
 
 locale::facet::~facet() {}
-
+ 
 #if defined (_STLP_INLINE_MEMBER_TEMPLATES)
 // members that fail to be templates
 bool locale::operator()(const string& __x,
@@ -99,7 +99,7 @@ void _STLP_CALL locale::_M_throw_on_creation_failure(int __err_code,
 
 // Takes a reference to a locale::id, assign a numeric index if not already
 // affected and returns it. The returned index is always positive.
-static const locale::id& _Stl_loc_get_index(locale::id& id) {
+static locale::id& _Stl_loc_get_index(locale::id& id) {
   if (id._M_index == 0) {
 #if defined (_STLP_ATOMIC_INCREMENT) && !defined (_STLP_WIN95_LIKE)
     static _STLP_VOLATILE __stl_atomic_t _S_index = __STATIC_CAST(__stl_atomic_t, locale::id::_S_max);
@@ -116,37 +116,41 @@ static const locale::id& _Stl_loc_get_index(locale::id& id) {
 
 // Default constructor: create a copy of the global locale.
 locale::locale() _STLP_NOTHROW
-  : _M_impl(_get_Locale_impl(_Stl_get_global_locale()->_M_impl))
+  : _M_impl(_get_Locimp(_Stl_get_global_locale()->_M_impl))
 {}
 
 // Copy constructor
 locale::locale(const locale& L) _STLP_NOTHROW
-  : _M_impl( _get_Locale_impl( L._M_impl ) )
+  : _M_impl( _get_Locimp( L._M_impl ) )
 {}
 
 void locale::_M_insert(facet* f, locale::id& n) {
   if (f)
-    _M_impl->insert(f, _Stl_loc_get_index(n));
+    _Locimp::_Locimp_Addfac(_M_impl, f, _Stl_loc_get_index(n));
 }
 
-locale::locale( _Locale_impl* impl ) :
-  _M_impl( _get_Locale_impl( impl ) )
+locale::locale( locale::_Locimp* impl ) :
+  _M_impl( _get_Locimp( impl ) )
 {}
 
 // Create a locale from a name.
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+locale::locale(const char* name,  category)
+#else
 locale::locale(const char* name)
+#endif
   : _M_impl(0) {
   if (!name)
     _M_throw_on_null_name();
 
   if (is_C_locale_name(name)) {
-    _M_impl = _get_Locale_impl( locale::classic()._M_impl );
+    _M_impl = _get_Locimp( locale::classic()._M_impl );
     return;
   }
 
-  _Locale_impl* impl = 0;
+  locale::_Locimp* impl = 0;
   _STLP_TRY {
-    impl = new _Locale_impl(locale::id::_S_max, name);
+    impl = new locale::_Locimp(locale::id::_S_max, name);
 
     // Insert categories one at a time.
     _Locale_name_hint *hint = 0;
@@ -181,12 +185,12 @@ locale::locale(const char* name)
     // else we keep current name.
 
     // reassign impl
-    _M_impl = _get_Locale_impl( impl );
+    _M_impl = _get_Locimp( impl );
   }
   _STLP_UNWIND(delete impl);
 }
 
-static void _Stl_loc_combine_names_aux(_Locale_impl* L,
+static void _Stl_loc_combine_names_aux(locale::_Locimp* L,
                                        const char* name,
                                        const char* ctype_name, const char* time_name, const char* numeric_name,
                                        const char* collate_name, const char* monetary_name, const char* messages_name,
@@ -205,7 +209,7 @@ static void _Stl_loc_combine_names_aux(_Locale_impl* L,
 
 // Give L a name where all facets except those in category c
 // are taken from name1, and those in category c are taken from name2.
-static void _Stl_loc_combine_names(_Locale_impl* L,
+static void _Stl_loc_combine_names(locale::_Locimp* L,
                                    const char* name1, const char* name2,
                                    locale::category c) {
   if ((c & locale::all) == 0 || strcmp(name1, name1) == 0)
@@ -217,7 +221,7 @@ static void _Stl_loc_combine_names(_Locale_impl* L,
   }
 }
 
-static void _Stl_loc_combine_names(_Locale_impl* L,
+static void _Stl_loc_combine_names(locale::_Locimp* L,
                                    const char* name,
                                    const char* ctype_name, const char* time_name, const char* numeric_name,
                                    const char* collate_name, const char* monetary_name, const char* messages_name,
@@ -251,10 +255,10 @@ locale::locale(const locale& L, const char* name, locale::category c)
   if (_Nameless == name)
     _STLP_THROW(runtime_error((string("Invalid locale name '") + _Nameless + "'").c_str()));
 
-  _Locale_impl* impl = 0;
+  locale::_Locimp* impl = 0;
 
   _STLP_TRY {
-    impl = new _Locale_impl(*L._M_impl);
+    impl = new locale::_Locimp(*L._M_impl);
 
     _Locale_name_hint *hint = 0;
     const char* ctype_name = name;
@@ -285,7 +289,7 @@ locale::locale(const locale& L, const char* name, locale::category c)
     _Stl_loc_combine_names(impl, L._M_impl->name.c_str(),
                            ctype_name, time_name, numeric_name,
                            collate_name, monetary_name, messages_name, c);
-    _M_impl = _get_Locale_impl( impl );
+    _M_impl = _get_Locimp( impl );
   }
   _STLP_UNWIND(delete impl)
 }
@@ -294,9 +298,9 @@ locale::locale(const locale& L, const char* name, locale::category c)
 // come from L1, and all those that are in category c come from L2.
 locale::locale(const locale& L1, const locale& L2, category c)
   : _M_impl(0) {
-  _Locale_impl* impl = new _Locale_impl(*L1._M_impl);
+  locale::_Locimp* impl = new locale::_Locimp(*L1._M_impl);
 
-  _Locale_impl* i2 = L2._M_impl;
+  locale::_Locimp* i2 = L2._M_impl;
 
   if (L1.name() != _Nameless && L2.name() != _Nameless)
     _Stl_loc_combine_names(impl, L1._M_impl->name.c_str(), L2._M_impl->name.c_str(), c);
@@ -354,22 +358,22 @@ locale::locale(const locale& L1, const locale& L2, category c)
     impl->insert( i2, _STLP_STD::messages<wchar_t>::id);
 # endif
   }
-  _M_impl = _get_Locale_impl( impl );
+  _M_impl = _get_Locimp( impl );
 }
 
 // Destructor.
 locale::~locale() _STLP_NOTHROW {
   if (_M_impl)
-    _release_Locale_impl(_M_impl);
+    _release_Locimp(_M_impl);
 }
 
 // Assignment operator.  Much like the copy constructor: just a bit of
 // pointer twiddling.
-const locale& locale::operator=(const locale& L) _STLP_NOTHROW {
+locale& locale::operator=(const locale& L) _STLP_NOTHROW {
   if (this->_M_impl != L._M_impl) {
     if (this->_M_impl)
-      _release_Locale_impl(this->_M_impl);
-    this->_M_impl = _get_Locale_impl(L._M_impl);
+      _release_Locimp(this->_M_impl);
+    this->_M_impl = _get_Locimp(L._M_impl);
   }
   return *this;
 }
@@ -389,15 +393,6 @@ string locale::name() const {
   return _M_impl->name;
 }
 
-// Compare two locales for equality.
-bool locale::operator==(const locale& L) const {
-  return this->_M_impl == L._M_impl ||
-         (this->name() == L.name() && this->name() != _Nameless);
-}
-
-bool locale::operator!=(const locale& L) const {
-  return !(*this == L);
-}
 
 // static data members.
 
@@ -408,13 +403,13 @@ const locale& _STLP_CALL locale::classic() {
 #if !defined (_STLP_USE_MSVC6_MEM_T_BUG_WORKAROUND)
 locale _STLP_CALL locale::global(const locale& L) {
 #else
-_Locale_impl* _STLP_CALL locale::global(const locale& L) {
+locale::_Locimp* _STLP_CALL locale::global(const locale& L) {
 #endif
   locale old(_Stl_get_global_locale()->_M_impl);
   if (_Stl_get_global_locale()->_M_impl != L._M_impl) {
-    _release_Locale_impl(_Stl_get_global_locale()->_M_impl);
+    _release_Locimp(_Stl_get_global_locale()->_M_impl);
     // this assign should be atomic, should be fixed here:
-    _Stl_get_global_locale()->_M_impl = _get_Locale_impl(L._M_impl);
+    _Stl_get_global_locale()->_M_impl = _get_Locimp(L._M_impl);
 
     // Set the global C locale, if appropriate.
 #if !defined(_STLP_NO_LOCALE_SUPPORT)

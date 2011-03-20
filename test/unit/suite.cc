@@ -91,7 +91,11 @@ int main( int argc, const char** argv )
   str_test.find_last_of(&t); // "find_last_of" );
   str_test.find_last_not_of(&t); // "find_last_not_of" );
   str_test.copy(&t); // "copy" );
+
+#if 0
   str_test.mt(&t); // "mt" );
+#endif
+
   str_test.short_string_optim_bug(&t); // "short_string_optim_bug" );
   str_test.compare(&t); // "compare" );
   str_test.template_expression(&t); // "template_expression" );
@@ -116,8 +120,6 @@ int main( int argc, const char** argv )
   //  strm_test.manipulators(&t);
   //  strm_test.in_avail(&t);
 
-#if 0
-
   sstream_test sstrm_test;
 
   t.add( &sstream_test::output, sstrm_test, "sstream output" );
@@ -132,9 +134,9 @@ int main( int argc, const char** argv )
   t.add( &sstream_test::init_in_str, sstrm_test, "sstream str( \"foo\" )" );
   t.add( &sstream_test::buf, sstrm_test, "sstream buf" );
   t.add( &sstream_test::rdbuf, sstrm_test, "sstream rdbuf" );
-  t.add( &sstream_test::streambuf_output, sstrm_test, "sstream streambuf_output" );
+  //  t.add( &sstream_test::streambuf_output, sstrm_test, "sstream streambuf_output" );
   t.add( &sstream_test::fail_bit, sstrm_test, "sstream throw ios_base::failure exception for invalid seekg",
-    t.add( &sstream_test::seek, sstrm_test, "sstream seek" ) );
+  t.add( &sstream_test::seek, sstrm_test, "sstream seek" ) );
   t.add( &sstream_test::seekp, sstrm_test, "sstream seekp" );
   t.add( &sstream_test::seek_gp, sstrm_test, "sstream seek_gp" );
   t.add( &sstream_test::tellp, sstrm_test, "sstream tellp" );
@@ -145,7 +147,7 @@ int main( int argc, const char** argv )
   exam::test_suite::test_case_type fstream_tc[10];
 
   fstream_tc[0] = t.add( &fstream_test::err, fstrm_test, "fstream err",
-    t.add( &fstream_test::io, fstrm_test, "fstream io",
+			 t.add( &fstream_test::io, fstrm_test, "fstream io",
       t.add( &fstream_test::input_char, fstrm_test, "fstream input_char",
         t.add( &fstream_test::input, fstrm_test, "fstream input",
           t.add( &fstream_test::output, fstrm_test, "fstream output" ) ) ) ) );
@@ -159,17 +161,19 @@ int main( int argc, const char** argv )
       t.add( &fstream_test::seek_binary, fstrm_test, "fstream seek in binary", fstream_tc[0] ) ) );
   t.add( &fstream_test::buf, fstrm_test, "fstream buf", fstream_tc[0] );
 
-  t.add( &fstream_test::rdbuf, fstrm_test, "fstream rdbuf",
-    t.add( &fstream_test::streambuf_output, fstrm_test, "fstream streambuf_output", fstream_tc[0] ) );
+  t.add( &fstream_test::rdbuf, fstrm_test, "fstream rdbuf", fstream_tc[0]);
+  //   t.add( &fstream_test::streambuf_output, fstrm_test, "fstream streambuf_output", fstream_tc[0]);
+
   t.add( &fstream_test::win32_file_format, fstrm_test, "fstream win32_file_format", fstream_tc[0] );
   t.add( &fstream_test::null_stream, fstrm_test, "fstream null_stream", fstream_tc[0] );
   t.add( &fstream_test::null_buf, fstrm_test, "fstream null_buf", fstream_tc[0] );
   t.add( &fstream_test::offset, fstrm_test, "fstream offset", fstream_tc[0] );
-  t.add( &fstream_test::big_file, fstrm_test, "fstream big_file", fstream_tc[0] );
+  //  t.add( &fstream_test::big_file, fstrm_test, "fstream big_file", fstream_tc[0] );
   fstream_tc[2] = t.add( &fstream_test::custom_facet, fstrm_test, "fstream custom_facet", fstream_tc[0] );
 
   t.add( &fstream_test::rewind, fstrm_test, "fstream write after read fail", fstream_tc[1] );
- 
+
+#if 0 
   istream_iterator_test isit_test;
 
   t.add( &istream_iterator_test::istmit1, isit_test, "istmit1" );
@@ -486,5 +490,5 @@ int main( int argc, const char** argv )
   }
 # endif
 
-  //  return t.girdle();
+  return t.girdle();
 }

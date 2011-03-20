@@ -104,7 +104,7 @@ protected:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct_byname<char> : public numpunct<char> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef char                char_type;
   typedef string              string_type;
@@ -136,7 +136,7 @@ private:
 # ifndef _STLP_NO_WCHAR_T
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC numpunct_byname<wchar_t>: public numpunct<wchar_t> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   typedef wchar_t               char_type;
   typedef wstring               string_type;

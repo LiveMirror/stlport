@@ -15,11 +15,16 @@
  * modified is included with the above copyright notice.
  *
  */
-#include "stlport_prefix.h"
 
+#include "stlport_prefix.h"
+#include <typeinfo>
+
+#define _CRTIMP2_PURE _STLP_DECLSPEC
+
+#include <stdexcept>
 #include <locale>
 #include <algorithm>
-#include <typeinfo>
+
 
 #include "c_locale.h"
 #include "aligned_buffer.h"
@@ -52,44 +57,44 @@ size_t locale::id::_S_max = 27;
 
 static void _Stl_loc_assign_ids();
 
-static _Stl_aligned_buffer<_Locale_impl::Init> __Loc_init_buf;
+static _Stl_aligned_buffer<locale::_Locimp::Init> __Loc_init_buf;
 
-_Locale_impl::Init::Init() {
+locale::_Locimp::Init::Init() {
   if (_M_count()._M_incr() == 1) {
-    _Locale_impl::_S_initialize();
+    locale::_Locimp::_S_initialize();
   }
 }
 
-_Locale_impl::Init::~Init() {
+locale::_Locimp::Init::~Init() {
   if (_M_count()._M_decr() == 0) {
-    _Locale_impl::_S_uninitialize();
+    locale::_Locimp::_S_uninitialize();
   }
 }
 
-_Refcount_Base& _Locale_impl::Init::_M_count() const {
+_Refcount_Base& locale::_Locimp::Init::_M_count() const {
   static _Refcount_Base _S_count(0);
   return _S_count;
 }
 
-_Locale_impl::_Locale_impl(const char* s)
-  : _Refcount_Base(0), name(s), facets_vec() {
+locale::_Locimp::_Locimp(const char* s)
+  : locale::facet(0), name(s), facets_vec() {
   facets_vec.reserve( locale::id::_S_max );
   new (&__Loc_init_buf) Init();
 }
 
-_Locale_impl::_Locale_impl( _Locale_impl const& locimpl )
-  : _Refcount_Base(0), name(locimpl.name), facets_vec() {
+locale::_Locimp::_Locimp( _Locimp const& locimpl )
+  : locale::facet(0), name(locimpl.name), facets_vec() {
   for_each( locimpl.facets_vec.begin(), locimpl.facets_vec.end(), _get_facet);
   facets_vec = locimpl.facets_vec;
   new (&__Loc_init_buf) Init();
 }
 
-_Locale_impl::_Locale_impl( size_t n, const char* s)
-  : _Refcount_Base(0), name(s), facets_vec(n, 0) {
+locale::_Locimp::_Locimp( size_t n, const char* s)
+  : locale::facet(0), name(s), facets_vec(n, 0) {
   new (&__Loc_init_buf) Init();
 }
 
-_Locale_impl::~_Locale_impl() {
+locale::_Locimp::~_Locimp() {
   (&__Loc_init_buf)->~Init();
   for_each( facets_vec.begin(), facets_vec.end(), _release_facet);
 }
@@ -97,7 +102,7 @@ _Locale_impl::~_Locale_impl() {
 // Initialization of the locale system.  This must be called before
 // any locales are constructed.  (Meaning that it must be called when
 // the I/O library itself is initialized.)
-void _STLP_CALL _Locale_impl::_S_initialize() {
+void _STLP_CALL locale::_Locimp::_S_initialize() {
   _Stl_loc_assign_ids();
   make_classic_locale();
 }
@@ -105,39 +110,47 @@ void _STLP_CALL _Locale_impl::_S_initialize() {
 // Release of the classic locale ressources. Has to be called after the last
 // locale destruction and not only after the classic locale destruction as
 // the facets can be shared between different facets.
-void _STLP_CALL _Locale_impl::_S_uninitialize() {
+void _STLP_CALL locale::_Locimp::_S_uninitialize() {
   //Not necessary anymore as classic facets are now 'normal' dynamically allocated
   //facets with a reference counter telling to _release_facet when the facet can be
   //deleted.
   //free_classic_locale();
 }
 
-// _Locale_impl non-inline member functions.
-void _STLP_CALL _Locale_impl::_M_throw_bad_cast() {
+// _Locimp non-inline member functions.
+void _STLP_CALL locale::_Locimp::_M_throw_bad_cast() {
   _STLP_THROW(bad_cast());
 }
 
-void _Locale_impl::insert(_Locale_impl *from, const locale::id& n) {
-  if (n._M_index > 0 && n._M_index < from->size()) {
-    this->insert(from->facets_vec[n._M_index], n);
+void locale::_Locimp::insert_from(locale::_Locimp *from, size_t n) {
+  if (n > 0 && n < from->size()) {
+    _Locimp_Addfac(this, from->facets_vec[n], n);
   }
 }
 
-locale::facet* _Locale_impl::insert(locale::facet *f, const locale::id& n) {
-  if (f == 0 || n._M_index == 0)
-    return 0;
+void locale::_Locimp::insert(locale::facet *f, locale::id n) {
+  _Locimp_Addfac(this, f, n);
+}
 
-  if (n._M_index >= facets_vec.size()) {
-    facets_vec.resize(n._M_index + 1);
+
+void locale::_Locimp::_Addfac(locale::facet *f, size_t n) {
+  _Locimp_Addfac(this, f, n);
+}
+
+void _STLP_CALL locale::_Locimp::_Locimp_Addfac(locale::_Locimp* from, locale::facet* f, size_t n) {
+
+  if (f == 0 || n == 0)
+    return;
+
+  if (n >= from->facets_vec.size()) {
+    from->facets_vec.resize(n + 1);
   }
 
-  if (f != facets_vec[n._M_index])
+  if (f != from->facets_vec[n])
   {
-    _release_facet(facets_vec[n._M_index]);
-    facets_vec[n._M_index] = _get_facet(f);
+    _release_facet(from->facets_vec[n]);
+    from->facets_vec[n] = _get_facet(f);
   }
-
-  return f;
 }
 
 //
@@ -147,17 +160,17 @@ locale::facet* _Locale_impl::insert(locale::facet *f, const locale::id& n) {
 /* Six functions, one for each category.  Each of them takes a
  * a name, constructs that appropriate category facets by name,
  * and inserts them into the locale. */
-_Locale_name_hint* _Locale_impl::insert_ctype_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
+_Locale_name_hint* locale::_Locimp::insert_ctype_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
   if (name[0] == 0)
     name = _Locale_ctype_default(buf);
 
   if (name == 0 || name[0] == 0 || is_C_locale_name(name)) {
-    _Locale_impl* i2 = locale::classic()._M_impl;
-    this->insert(i2, ctype<char>::id);
-    this->insert(i2, codecvt<char, char, mbstate_t>::id);
+    locale::_Locimp* i2 = locale::classic()._M_impl;
+    this->insert(i2, std::ctype<char>::id);
+    this->insert(i2, std::codecvt<char, char, mbstate_t>::id);
 #ifndef _STLP_NO_WCHAR_T
-    this->insert(i2, ctype<wchar_t>::id);
-    this->insert(i2, codecvt<wchar_t, char, mbstate_t>::id);
+    this->insert(i2, std::ctype<wchar_t>::id);
+    this->insert(i2, std::codecvt<wchar_t, char, mbstate_t>::id);
 #endif
   } else {
     locale::facet*    ct  = 0;
@@ -209,21 +222,21 @@ _Locale_name_hint* _Locale_impl::insert_ctype_facets(const char* &name, char *bu
     _STLP_UNWIND(delete cvt; delete ct);
 #endif
 
-    this->insert(ct, ctype<char>::id);
-    this->insert(cvt, codecvt<char, char, mbstate_t>::id);
+    this->insert(ct, std::ctype<char>::id);
+    this->insert(cvt, std::codecvt<char, char, mbstate_t>::id);
 #ifndef _STLP_NO_WCHAR_T
-    this->insert(wct, ctype<wchar_t>::id);
-    if (wcvt) this->insert(wcvt, codecvt<wchar_t, char, mbstate_t>::id);
+    this->insert(wct, std::ctype<wchar_t>::id);
+    if (wcvt) this->insert(wcvt, std::codecvt<wchar_t, char, mbstate_t>::id);
 #endif
   }
   return hint;
 }
 
-_Locale_name_hint* _Locale_impl::insert_numeric_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
+_Locale_name_hint* locale::_Locimp::insert_numeric_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
   if (name[0] == 0)
     name = _Locale_numeric_default(buf);
 
-  _Locale_impl* i2 = locale::classic()._M_impl;
+  locale::_Locimp* i2 = locale::classic()._M_impl;
 
   // We first insert name independant facets taken from the classic locale instance:
   this->insert(i2,
@@ -285,12 +298,12 @@ _Locale_name_hint* _Locale_impl::insert_numeric_facets(const char* &name, char *
   return hint;
 }
 
-_Locale_name_hint* _Locale_impl::insert_time_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
+_Locale_name_hint* locale::_Locimp::insert_time_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
   if (name[0] == 0)
     name = _Locale_time_default(buf);
 
   if (name == 0 || name[0] == 0 || is_C_locale_name(name)) {
-    _Locale_impl* i2 = locale::classic()._M_impl;
+    locale::_Locimp* i2 = locale::classic()._M_impl;
     this->insert(i2,
                  time_get<char, istreambuf_iterator<char, char_traits<char> > >::id);
     this->insert(i2,
@@ -347,15 +360,15 @@ _Locale_name_hint* _Locale_impl::insert_time_facets(const char* &name, char *buf
   return hint;
 }
 
-_Locale_name_hint* _Locale_impl::insert_collate_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
+_Locale_name_hint* locale::_Locimp::insert_collate_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
   if (name[0] == 0)
     name = _Locale_collate_default(buf);
 
   if (name == 0 || name[0] == 0 || is_C_locale_name(name)) {
-    _Locale_impl* i2 = locale::classic()._M_impl;
-    this->insert(i2, collate<char>::id);
+    locale::_Locimp* i2 = locale::classic()._M_impl;
+    this->insert(i2, std::collate<char>::id);
 #ifndef _STLP_NO_WCHAR_T
-    this->insert(i2, collate<wchar_t>::id);
+    this->insert(i2, std::collate<wchar_t>::id);
 #endif
   }
   else {
@@ -395,19 +408,19 @@ _Locale_name_hint* _Locale_impl::insert_collate_facets(const char* &name, char *
     }
 #endif
 
-    this->insert(col, collate<char>::id);
+    this->insert(col, std::collate<char>::id);
 #ifndef _STLP_NO_WCHAR_T
-    if (wcol) this->insert(wcol, collate<wchar_t>::id);
+    if (wcol) this->insert(wcol, std::collate<wchar_t>::id);
 #endif
   }
   return hint;
 }
 
-_Locale_name_hint* _Locale_impl::insert_monetary_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
+_Locale_name_hint* locale::_Locimp::insert_monetary_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
   if (name[0] == 0)
     name = _Locale_monetary_default(buf);
 
-  _Locale_impl* i2 = locale::classic()._M_impl;
+  locale::_Locimp* i2 = locale::classic()._M_impl;
 
   // We first insert name independant facets taken from the classic locale instance:
   this->insert(i2, money_get<char, istreambuf_iterator<char, char_traits<char> > >::id);
@@ -508,15 +521,15 @@ _Locale_name_hint* _Locale_impl::insert_monetary_facets(const char* &name, char 
   return hint;
 }
 
-_Locale_name_hint* _Locale_impl::insert_messages_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
+_Locale_name_hint* locale::_Locimp::insert_messages_facets(const char* &name, char *buf, _Locale_name_hint* hint) {
   if (name[0] == 0)
     name = _Locale_messages_default(buf);
 
   if (name == 0 || name[0] == 0 || is_C_locale_name(name)) {
-    _Locale_impl* i2 = locale::classic()._M_impl;
-    this->insert(i2, messages<char>::id);
+    locale::_Locimp* i2 = locale::classic()._M_impl;
+    this->insert(i2, std::messages<char>::id);
 #ifndef _STLP_NO_WCHAR_T
-    this->insert(i2, messages<wchar_t>::id);
+    this->insert(i2, std::messages<wchar_t>::id);
 #endif
   }
   else {
@@ -558,9 +571,9 @@ _Locale_name_hint* _Locale_impl::insert_messages_facets(const char* &name, char 
     _STLP_UNWIND(delete msg);
 #endif
 
-    this->insert(msg, messages<char>::id);
+    this->insert(msg, std::messages<char>::id);
 #ifndef _STLP_NO_WCHAR_T
-    if (wmsg) this->insert(wmsg, messages<wchar_t>::id);
+    if (wmsg) this->insert(wmsg, std::messages<wchar_t>::id);
 #endif
   }
   return hint;
@@ -594,14 +607,15 @@ static void _Stl_loc_assign_ids() {
 // a correct initialization.
 static locale *_Stl_classic_locale = 0;
 static locale *_Stl_global_locale = 0;
+locale::_Locimp* locale::_Locimp::_C_locale_ptr = 0;
 
 locale* _Stl_get_classic_locale() {
-  static _Locale_impl::Init init;
+  static locale::_Locimp::Init init;
   return _Stl_classic_locale;
 }
 
 locale* _Stl_get_global_locale() {
-  static _Locale_impl::Init init;
+  static locale::_Locimp::Init init;
   return _Stl_global_locale;
 }
 
@@ -619,43 +633,45 @@ locale* _Stl_get_global_locale() {
 #endif
 
 static ios_base::Init _IosInit;
+// The classic locale contains every facet that belongs to a category.
+static _Stl_aligned_buffer<locale::_Locimp> _Locale_classic_impl_buf;
 
-void _Locale_impl::make_classic_locale() {
-  // This funcion will be called once: during build classic _Locale_impl
+void locale::_Locimp::make_classic_locale() {
+  // This funcion will be called once: during build classic locale::_Locimp
 
-  // The classic locale contains every facet that belongs to a category.
-  static _Stl_aligned_buffer<_Locale_impl> _Locale_classic_impl_buf;
-  _Locale_impl *classic = new(&_Locale_classic_impl_buf) _Locale_impl("C");
+  locale::_Locimp *classic = new(&_Locale_classic_impl_buf) locale::_Locimp("C");
+
+  _C_locale_ptr = classic;
 
   locale::facet* classic_facets[] = {
     0,
-    new collate<char>(1),
-    new ctype<char>(0, false, 1),
-    new codecvt<char, char, mbstate_t>(1),
-    new moneypunct<char, true>(1),
-    new moneypunct<char, false>(1),
-    new numpunct<char>(1),
-    new messages<char>(1),
-    new money_get<char, istreambuf_iterator<char, char_traits<char> > >(1),
-    new money_put<char, ostreambuf_iterator<char, char_traits<char> > >(1),
-    new num_get<char, istreambuf_iterator<char, char_traits<char> > >(1),
-    new num_put<char, ostreambuf_iterator<char, char_traits<char> > >(1),
-    new time_get<char, istreambuf_iterator<char, char_traits<char> > >(1),
-    new time_put<char, ostreambuf_iterator<char, char_traits<char> > >(1),
+    new std::collate<char>(1),
+    new std::ctype<char>(0, false, 1),
+    new std::codecvt<char, char, mbstate_t>(1),
+    new std::moneypunct<char, true>(1),
+    new std::moneypunct<char, false>(1),
+    new std::numpunct<char>(1),
+    new std::messages<char>(1),
+    new std::money_get<char, istreambuf_iterator<char, char_traits<char> > >(1),
+    new std::money_put<char, ostreambuf_iterator<char, char_traits<char> > >(1),
+    new std::num_get<char, istreambuf_iterator<char, char_traits<char> > >(1),
+    new std::num_put<char, ostreambuf_iterator<char, char_traits<char> > >(1),
+    new std::time_get<char, istreambuf_iterator<char, char_traits<char> > >(1),
+    new std::time_put<char, ostreambuf_iterator<char, char_traits<char> > >(1),
 #ifndef _STLP_NO_WCHAR_T
-    new collate<wchar_t>(1),
-    new ctype<wchar_t>(1),
-    new codecvt<wchar_t, char, mbstate_t>(1),
-    new moneypunct<wchar_t, true>(1),
-    new moneypunct<wchar_t, false>(1),
-    new numpunct<wchar_t>(1),
-    new messages<wchar_t>(1),
-    new money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
-    new money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
-    new num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
-    new num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
-    new time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
-    new time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
+    new std::collate<wchar_t>(1),
+    new std::ctype<wchar_t>(1),
+    new std::codecvt<wchar_t, char, mbstate_t>(1),
+    new std::moneypunct<wchar_t, true>(1),
+    new std::moneypunct<wchar_t, false>(1),
+    new std::numpunct<wchar_t>(1),
+    new std::messages<wchar_t>(1),
+    new std::money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
+    new std::money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
+    new std::num_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
+    new std::num_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
+    new std::time_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
+    new std::time_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >(1),
 #endif
     0
   };
@@ -674,47 +690,47 @@ void _Locale_impl::make_classic_locale() {
 // Declarations of (non-template) facets' static data members
 // size_t locale::id::_S_max = 27; // made before
 
-locale::id collate<char>::id = { 1 };
-locale::id ctype<char>::id = { 2 };
-locale::id codecvt<char, char, mbstate_t>::id = { 3 };
-locale::id moneypunct<char, true>::id = { 4 };
-locale::id moneypunct<char, false>::id = { 5 };
-locale::id numpunct<char>::id = { 6 } ;
-locale::id messages<char>::id = { 7 };
+locale::id collate<char>::id = locale::id(1);
+locale::id ctype<char>::id = locale::id(2);
+locale::id codecvt<char, char, mbstate_t>::id = locale::id(3);
+locale::id moneypunct<char, true>::id = locale::id(4);
+locale::id moneypunct<char, false>::id = locale::id(5);
+locale::id numpunct<char>::id = locale::id(6);
+locale::id messages<char>::id = locale::id(7);
 
 #ifndef _STLP_NO_WCHAR_T
-locale::id collate<wchar_t>::id = { 14 };
-locale::id ctype<wchar_t>::id = { 15 };
-locale::id codecvt<wchar_t, char, mbstate_t>::id = { 16 };
-locale::id moneypunct<wchar_t, true>::id = { 17 } ;
-locale::id moneypunct<wchar_t, false>::id = { 18 } ;
-locale::id numpunct<wchar_t>::id = { 19 };
-locale::id messages<wchar_t>::id = { 20 };
+locale::id collate<wchar_t>::id = locale::id( 14 );
+locale::id ctype<wchar_t>::id = locale::id( 15 );
+locale::id codecvt<wchar_t, char, mbstate_t>::id = locale::id( 16 );
+locale::id moneypunct<wchar_t, true>::id = locale::id( 17 ) ;
+locale::id moneypunct<wchar_t, false>::id = locale::id( 18 ) ;
+locale::id numpunct<wchar_t>::id = locale::id( 19 );
+locale::id messages<wchar_t>::id = locale::id( 20 );
 #endif
 
-_STLP_DECLSPEC _Locale_impl* _STLP_CALL _get_Locale_impl(_Locale_impl *loc)
+_STLP_DECLSPEC locale::_Locimp* _STLP_CALL _get_Locimp(locale::_Locimp *loc)
 {
   _STLP_ASSERT( loc != 0 );
   loc->_M_incr();
   return loc;
 }
 
-void _STLP_CALL _release_Locale_impl(_Locale_impl *& loc)
+void _STLP_CALL _release_Locimp(locale::_Locimp *& loc)
 {
   _STLP_ASSERT( loc != 0 );
   if (loc->_M_decr() == 0) {
     if (*loc != *_Stl_classic_locale)
       delete loc;
     else
-      loc->~_Locale_impl();
+      loc->~_Locimp();
     loc = 0;
   }
 }
 
-_STLP_DECLSPEC _Locale_impl* _STLP_CALL _copy_Nameless_Locale_impl(_Locale_impl *loc)
+_STLP_DECLSPEC locale::_Locimp* _STLP_CALL _copy_Nameless_Locimp(locale::_Locimp *loc)
 {
   _STLP_ASSERT( loc != 0 );
-  _Locale_impl *loc_new = new _Locale_impl(*loc);
+  locale::_Locimp *loc_new = new locale::_Locimp(*loc);
   loc_new->name = _Nameless;
   return loc_new;
 }
@@ -760,6 +776,43 @@ _STLP_DECLSPEC locale::id& _STLP_CALL _GetFacetId(const time_put<wchar_t, ostrea
 #endif
 
 _STLP_MOVE_TO_STD_NAMESPACE
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+
+///\todo : figure what the last parameter does
+void locale::_Locimp::_Addfac(locale::facet *f, size_t n, size_t) {
+  _Locimp_Addfac(this, f, n);
+}
+
+locale::_Locimp*  _STLP_CALL  locale::_Locimp::_Makeloc(const _Locinfo&, category, _Locimp* __l, const locale*)
+{
+  return __l;
+}
+
+void  _STLP_CALL locale::_Locimp::_Makewloc(const _Locinfo&, category, _Locimp *, const locale*)
+{
+}
+
+locale::_Locimp*&  _STLP_CALL locale::_Locimp::_Clocptr_func()
+{
+  return _C_locale_ptr;
+}
+
+#ifndef _STLP_NO_WCHAR_T
+void _STLP_CALL locale::_Locimp::_Makeushloc(const _Locinfo&, category, _Locimp *, const locale *)
+{}
+#endif /* _NATIVE_WCHAR_T_DEFINED */
+
+void locale::_Locimp::_Makexloc(const _Locinfo&, category, _Locimp *, const locale *)
+{
+}
+
+locale::_Locimp::_Locimp(bool)
+{
+}
+
+
+#endif
 
 _STLP_END_NAMESPACE
 

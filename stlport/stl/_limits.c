@@ -81,15 +81,15 @@ __declare_integer_limits_member(bool, is_modulo);
 _STLP_MOVE_TO_STD_NAMESPACE
 
 #    define __declare_numeric_limits_member(__integer) \
-  _STLP_TEMPLATE_NULL const int numeric_limits<__integer>::digits; \
-  _STLP_TEMPLATE_NULL const int numeric_limits<__integer>::digits10; \
-  _STLP_TEMPLATE_NULL const int numeric_limits<__integer>::radix; \
-  _STLP_TEMPLATE_NULL const bool numeric_limits<__integer>::is_specialized; \
-  _STLP_TEMPLATE_NULL const bool numeric_limits<__integer>::is_signed; \
-  _STLP_TEMPLATE_NULL const bool numeric_limits<__integer>::is_integer; \
-  _STLP_TEMPLATE_NULL const bool numeric_limits<__integer>::is_exact; \
-  _STLP_TEMPLATE_NULL const bool numeric_limits<__integer>::is_bounded; \
-  _STLP_TEMPLATE_NULL const bool numeric_limits<__integer>::is_modulo
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const int numeric_limits<__integer>::digits; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const int numeric_limits<__integer>::digits10; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const int numeric_limits<__integer>::radix; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const bool numeric_limits<__integer>::is_specialized; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const bool numeric_limits<__integer>::is_signed; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const bool numeric_limits<__integer>::is_integer; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const bool numeric_limits<__integer>::is_exact; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const bool numeric_limits<__integer>::is_bounded; \
+  _STLP_TEMPLATE_NULL _STLP_DECLSPEC const bool numeric_limits<__integer>::is_modulo
 
 __declare_numeric_limits_member(_STLP_LONG_LONG);
 __declare_numeric_limits_member(unsigned _STLP_LONG_LONG);
@@ -107,7 +107,7 @@ template <class __number,  \
          bool __IsIEC559, \
          float_denorm_style __DenormStyle, \
          float_round_style __RoundStyle> \
-const __type _Floating_limits< __number, __Digits, __Digits10,    \
+const __type _STLP_DECLSPEC _Floating_limits< __number, __Digits, __Digits10,    \
          __MinExp, __MaxExp, __MinExp10, __MaxExp10,  \
          __IsIEC559, __DenormStyle, __RoundStyle>::\
          __mem

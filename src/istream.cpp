@@ -32,6 +32,18 @@ template class _STLP_CLASS_DECLSPEC _Isentry<char, char_traits<char> >;
 template class _STLP_CLASS_DECLSPEC basic_iostream<char, char_traits<char> >;
 template class _STLP_CLASS_DECLSPEC basic_istream<char, char_traits<char> >;
 
+_STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
+ws(basic_istream<char, char_traits<char> >& __istr)
+{
+  if (!__istr.eof()) {
+    typedef basic_istream<char, char_traits<char> >::sentry      _Sentry;
+    _Sentry __sentry(__istr, _No_Skip_WS()); // Don't skip whitespace.
+    if (__sentry)
+      __istr._M_skip_whitespace(false);
+  }
+  return __istr;
+}
+
 template _STLP_DECLSPEC basic_istream<char, char_traits<char> >& _STLP_CALL
 operator>>(basic_istream<char, char_traits<char> >&,
            basic_string<char, char_traits<char>, allocator<char> >& __y);
@@ -75,6 +87,19 @@ template class _STLP_CLASS_DECLSPEC _Isentry<wchar_t, char_traits<wchar_t> >;
 #    endif
 template class _STLP_CLASS_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >;
 template class _STLP_CLASS_DECLSPEC basic_iostream<wchar_t, char_traits<wchar_t> >;
+
+_STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
+ws(basic_istream<wchar_t, char_traits<wchar_t> >& __istr)
+{
+  if (!__istr.eof()) {
+    typedef basic_istream<wchar_t, char_traits<wchar_t> >::sentry      _Sentry;
+    _Sentry __sentry(__istr, _No_Skip_WS()); // Don't skip whitespace.
+    if (__sentry)
+      __istr._M_skip_whitespace(false);
+  }
+  return __istr;
+}
+
 
 template _STLP_DECLSPEC basic_istream<wchar_t, char_traits<wchar_t> >& _STLP_CALL
 operator>>(basic_istream<wchar_t, char_traits<wchar_t> >&,

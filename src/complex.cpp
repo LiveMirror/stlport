@@ -36,45 +36,37 @@ _STLP_BEGIN_NAMESPACE
 // Complex division and square roots.
 
 // Absolute value
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC float _STLP_CALL abs(const complex<float>& __z)
 { return ::hypot(__z._M_re, __z._M_im); }
-_STLP_TEMPLATE_NULL
+
 _STLP_DECLSPEC double _STLP_CALL abs(const complex<double>& __z)
 { return ::hypot(__z._M_re, __z._M_im); }
 
 #if !defined (_STLP_NO_LONG_DOUBLE)
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC long double _STLP_CALL abs(const complex<long double>& __z)
 { return ::hypot(__z._M_re, __z._M_im); }
 #endif
 
 // Phase
-
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC float _STLP_CALL arg(const complex<float>& __z)
 { return ::atan2(__z._M_im, __z._M_re); }
 
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC double _STLP_CALL arg(const complex<double>& __z)
 { return ::atan2(__z._M_im, __z._M_re); }
 
 #if !defined (_STLP_NO_LONG_DOUBLE)
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC long double _STLP_CALL arg(const complex<long double>& __z)
 { return ::atan2(__z._M_im, __z._M_re); }
 #endif
 
 // Construct a complex number from polar representation
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC complex<float> _STLP_CALL polar(const float& __rho, const float& __phi)
 { return complex<float>(__rho * ::cos(__phi), __rho * ::sin(__phi)); }
-_STLP_TEMPLATE_NULL
+
 _STLP_DECLSPEC complex<double> _STLP_CALL polar(const double& __rho, const double& __phi)
 { return complex<double>(__rho * ::cos(__phi), __rho * ::sin(__phi)); }
 
 #if !defined (_STLP_NO_LONG_DOUBLE)
-_STLP_TEMPLATE_NULL
 _STLP_DECLSPEC complex<long double> _STLP_CALL polar(const long double& __rho, const long double& __phi)
 { return complex<long double>(__rho * ::cos(__phi), __rho * ::sin(__phi)); }
 #endif
@@ -184,14 +176,14 @@ static complex<_Tp> sqrtT(const complex<_Tp>& z) {
   return result;
 }
 
-complex<float> _STLP_CALL
+_STLP_DECLSPEC complex<float> _STLP_CALL
 sqrt(const complex<float>& z) { return sqrtT(z); }
 
-complex<double>  _STLP_CALL
+_STLP_DECLSPEC complex<double>  _STLP_CALL
 sqrt(const complex<double>& z) { return sqrtT(z); }
 
 #if !defined (_STLP_NO_LONG_DOUBLE)
-complex<long double> _STLP_CALL
+_STLP_DECLSPEC complex<long double> _STLP_CALL
 sqrt(const complex<long double>& z) { return sqrtT(z); }
 #endif
 

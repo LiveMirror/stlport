@@ -94,7 +94,7 @@ basic_ios<_CharT, _Traits>::basic_ios()
 
 template <class _CharT, class _Traits>
 void
-basic_ios<_CharT, _Traits>::init(basic_streambuf<_CharT, _Traits>* __sb)
+basic_ios<_CharT, _Traits>::init(basic_streambuf<_CharT, _Traits>* __sb , bool)
 {
   this->rdbuf(__sb);
   this->imbue(locale());

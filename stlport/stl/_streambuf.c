@@ -49,6 +49,17 @@ basic_streambuf<_CharT, _Traits>::pubimbue(const locale& __loc) {
   return __tmp;
 }
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+
+template <class _CharT, class _Traits>
+streamsize
+basic_streambuf<_CharT, _Traits>::_Xsgetn_s(_CharT* __s, size_t __size, streamsize __n) {
+  streamsize __minsize = std::min((streamsize)__size, __n);
+  return xsgetn(__s, __n);
+}
+
+#endif
+
 template <class _CharT, class _Traits>
 streamsize
 basic_streambuf<_CharT, _Traits>::xsgetn(_CharT* __s, streamsize __n) {

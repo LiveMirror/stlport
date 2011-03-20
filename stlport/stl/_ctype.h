@@ -145,7 +145,7 @@ private:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC ctype_byname<char>: public ctype<char> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   explicit ctype_byname(const char*, size_t = 0);
   ~ctype_byname();
@@ -238,7 +238,7 @@ protected:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC ctype_byname<wchar_t>: public ctype<wchar_t> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   explicit ctype_byname(const char* __name, size_t __refs = 0);
 

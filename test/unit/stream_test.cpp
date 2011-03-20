@@ -27,8 +27,6 @@
 using namespace std;
 #endif
 
-# if 0
-
 int EXAM_IMPL(iostream_test::manipulators)
 {
   {
@@ -74,7 +72,6 @@ int EXAM_IMPL(iostream_test::manipulators)
   return EXAM_RESULT;
 }
 
-# endif
 
 #include <iostream>
 
@@ -83,8 +80,6 @@ int EXAM_IMPL(iostream_test::cout_out)
   cout << "Test string 1" << endl;
   return EXAM_RESULT;
 }
-
-#if 0
 
 int EXAM_IMPL(iostream_test::in_avail)
 {
@@ -741,4 +736,3 @@ int EXAM_IMPL(strstream_test::input)
   return EXAM_RESULT;
 }
 
-#endif

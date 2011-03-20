@@ -29,6 +29,17 @@
 #include <limits>
 
 _STLP_BEGIN_NAMESPACE
+
+
+#if !defined(_STLP_NO_FORCE_INSTANTIATE)
+// instantiations
+template class _STLP_CLASS_DECLSPEC basic_streambuf<char, char_traits<char> >;
+#  if !defined (_STLP_NO_WCHAR_T)
+template class _STLP_CLASS_DECLSPEC basic_streambuf<wchar_t, char_traits<wchar_t> >;
+#  endif /* _STLP_NO_WCHAR_T */
+#endif
+
+
 _STLP_MOVE_TO_PRIV_NAMESPACE
 
 // Compare with streamoff definition in stl/char_traits.h!

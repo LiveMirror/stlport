@@ -113,7 +113,7 @@ private:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC collate_byname<char>: public collate<char> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   explicit collate_byname(const char* __name, size_t __refs = 0);
 
@@ -136,7 +136,7 @@ private:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC collate_byname<wchar_t>: public collate<wchar_t> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   explicit collate_byname(const char * __name, size_t __refs = 0);
 

@@ -37,27 +37,40 @@
 
 _STLP_BEGIN_NAMESPACE
 
-class _STLP_CLASS_DECLSPEC codecvt_base {
+class _STLP_CLASS_DECLSPEC _Locinfo;
+
+class _STLP_CLASS_DECLSPEC codecvt_base : public locale::facet {
 public:
-  enum result {ok, partial, error, noconv};
+  typedef int result;
+  enum {ok, partial, error, noconv};
+  explicit codecvt_base(size_t __refs = 0) : locale::facet(__refs) {}
+
+  int encoding() const _STLP_NOTHROW { return do_encoding(); }
+
+  bool always_noconv() const _STLP_NOTHROW { return do_always_noconv(); }
+
+  int max_length() const _STLP_NOTHROW { return do_max_length(); }
+
+protected:
+
+  virtual int do_encoding() const _STLP_NOTHROW { return 1; }
+
+  virtual bool do_always_noconv() const _STLP_NOTHROW { return true; }
+
+  virtual int do_max_length() const _STLP_NOTHROW { return 1; }
+
+  virtual ~codecvt_base() {}
+
 };
 
 template <class _InternT, class _ExternT, class _StateT>
-class codecvt : public locale::facet, public codecvt_base {
+class codecvt: public codecvt_base {
 public:
   typedef _InternT intern_type;
   typedef _ExternT extern_type;
   typedef _StateT state_type;
 
-#if defined (_STLP_MSVC) && (_STLP_MSVC < 1300)
-  /* For the moment VC6 do not support this facet default implementation
-   * because of the static locale::id instance. When VC6 see this definition
-   * it goes crasy with locale::id static instances and all the has_facet tests
-   * unit tests are failing.
-   */
-};
-#else
-  explicit codecvt(size_t __refs = 0) : locale::facet(__refs) {}
+  explicit codecvt(size_t __refs = 0) : codecvt_base(__refs) {}
 
   result out(state_type&          __state,
              const intern_type*   __from,
@@ -95,9 +108,6 @@ public:
                  __to,  __to_limit, __to_next);
   }
 
-  int encoding() const _STLP_NOTHROW { return do_encoding(); }
-
-  bool always_noconv() const _STLP_NOTHROW { return do_always_noconv(); }
 
   int length(state_type&  __state,
              const extern_type* __from,
@@ -107,9 +117,22 @@ public:
     return do_length(__state, __from, __from_end, __max);
   }
 
-  int max_length() const _STLP_NOTHROW { return do_max_length(); }
+  static _STLP_STATIC_DECLSPEC locale::id id;
 
-  static locale::id id;
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+
+  void _Init(const _Locinfo&) {}
+
+  explicit codecvt(const _Locinfo& __i, size_t __refs = 0) : codecvt_base(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new codecvt<_InternT, class _ExternT, class _StateT>(_Locinfo(__l->name()));
+    return (locale::ctype);
+  }
+#endif
 
 protected:
   ~codecvt() {}
@@ -144,7 +167,7 @@ protected:
   virtual bool do_always_noconv() const _STLP_NOTHROW
   { return true; }
 
-  virtual int do_length(state_type&,
+  virtual int do_length(const state_type&,
                         const extern_type* __from,
                         const extern_type* __end,
                         size_t __max) const
@@ -164,20 +187,20 @@ template <class _InternT, class _ExternT, class _StateT>
 locale::id codecvt<_InternT, _ExternT, _StateT>::id;
 #    endif
 #  endif
-#endif
+
 
 template <class _InternT, class _ExternT, class _StateT>
 class codecvt_byname : public codecvt<_InternT, _ExternT, _StateT> {};
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC codecvt<char, char, mbstate_t>
-  : public locale::facet, public codecvt_base {
+  : public codecvt_base {
 public:
   typedef char       intern_type;
   typedef char       extern_type;
   typedef mbstate_t  state_type;
 
-  explicit codecvt(size_t __refs = 0) : locale::facet(__refs) {}
+  explicit codecvt(size_t __refs = 0) : codecvt_base(__refs) {}
 
   result out(state_type&   __state,
              const char*  __from,
@@ -217,7 +240,7 @@ public:
 
   bool always_noconv() const _STLP_NOTHROW { return do_always_noconv(); }
 
-  int length(state_type& __state,
+  int length(const state_type& __state,
              const char* __from, const char* __from_end,
              size_t __max) const {
     _STLP_VERBOSE_ASSERT(__from <= __from_end, _StlMsg_INVALID_ARGUMENT)
@@ -227,6 +250,20 @@ public:
   int max_length() const _STLP_NOTHROW { return do_max_length(); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void _Init(const _Locinfo&) {}
+
+  explicit codecvt(const _Locinfo& __i, size_t __refs = 0) : codecvt_base(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale * = 0)
+  {
+    if (__f && !*__f)
+      *__f = new codecvt<intern_type, extern_type, state_type>();
+    return (locale::ctype);
+  }
+#endif
 
 protected:
   ~codecvt();
@@ -254,7 +291,7 @@ protected:
 
   virtual int do_encoding() const _STLP_NOTHROW;
   virtual bool do_always_noconv() const _STLP_NOTHROW;
-  virtual int do_length(state_type&  __state,
+  virtual int do_length(const state_type&  __state,
                         const  char* __from,
                         const  char* __end,
                         size_t __max) const;
@@ -268,13 +305,13 @@ private:
 
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC codecvt<wchar_t, char, mbstate_t>
-  : public locale::facet, public codecvt_base {
+  : public codecvt_base {
 public:
   typedef wchar_t    intern_type;
   typedef char       extern_type;
   typedef mbstate_t  state_type;
 
-  explicit codecvt(size_t __refs = 0) : locale::facet(__refs) {}
+  explicit codecvt(size_t __refs = 0) : codecvt_base(__refs) {}
 
   result out(state_type&      __state,
              const wchar_t*  __from,
@@ -314,7 +351,7 @@ public:
 
   bool always_noconv() const _STLP_NOTHROW { return do_always_noconv(); }
 
-  int length(state_type& __state,
+  int length(const state_type& __state,
              const char* __from, const char* __from_end,
              size_t __max) const {
     _STLP_VERBOSE_ASSERT(__from <= __from_end, _StlMsg_INVALID_ARGUMENT)
@@ -324,6 +361,21 @@ public:
   int max_length() const _STLP_NOTHROW { return do_max_length(); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+
+  void _Init(const _Locinfo&) {}
+
+  explicit codecvt(const _Locinfo& __i, size_t __refs = 0) : codecvt_base(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale * = 0)
+  {
+    if (__f && !*__f)
+      *__f = new codecvt<intern_type, extern_type, state_type>();
+    return (locale::ctype);
+  }
+#endif
 
 protected:
   ~codecvt();
@@ -353,7 +405,7 @@ protected:
 
   virtual bool do_always_noconv() const _STLP_NOTHROW;
 
-  virtual int do_length(state_type&  __state,
+  virtual int do_length(const state_type&  __state,
                         const  char* __from,
                         const  char* __end,
                         size_t __max) const;
@@ -382,7 +434,7 @@ private:
 _STLP_TEMPLATE_NULL
 class _STLP_CLASS_DECLSPEC codecvt_byname<wchar_t, char, mbstate_t>
   : public codecvt<wchar_t, char, mbstate_t> {
-  friend class _Locale_impl;
+  friend class locale::_Locimp;
 public:
   explicit codecvt_byname(const char * __name, size_t __refs = 0);
 
@@ -414,7 +466,7 @@ protected:
 
   virtual bool do_always_noconv() const _STLP_NOTHROW;
 
-  virtual int do_length(state_type&  __state,
+  virtual int do_length(const state_type&  __state,
                         const  char* __from,
                         const  char* __end,
                         size_t __max) const;
