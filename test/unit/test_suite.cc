@@ -210,6 +210,7 @@ trivial_logger __trivial_logger_inst( cerr );
 
 base_logger *test_suite::logger = &__trivial_logger_inst;
 stack<test_suite *> test_suite::_stack;
+
 #if 0
 mutex test_suite::_lock_stack;
 mutex test_suite::_lock_gl;

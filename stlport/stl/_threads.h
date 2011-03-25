@@ -141,6 +141,7 @@ typedef size_t __stl_atomic_t;
 #      endif
 #      define _STLP_ATOMIC_EXCHANGE_PTR(__x, __y)     STLPInterlockedExchangePointer(__x, __y)
 #    endif
+
 typedef long __stl_atomic_t;
 
 #  elif defined (_STLP_SPARC_SOLARIS_THREADS)
@@ -401,6 +402,7 @@ class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
   public:
     inline _STLP_mutex () { _M_initialize(); }
     inline ~_STLP_mutex () { _M_destroy(); }
+
   private:
     _STLP_mutex(const _STLP_mutex&);
     void operator=(const _STLP_mutex&);
@@ -423,6 +425,26 @@ private:
   void operator=(const _STLP_auto_lock&);
   _STLP_auto_lock(const _STLP_auto_lock&);
 };
+
+#if 0 // def _STLP_MSVC_BINARY_COMPATIBILITY 
+
+class _STLP_CLASS_DECLSPEC _Lockit {
+public:
+  _Lockit();
+  _Lockit(int);	// set the lock
+  ~_Lockit();	// clear the lock
+  
+  static void _STLP_CALL _Lockit_ctor(int);
+  static void _STLP_CALL _Lockit_dtor(int);
+private:
+  int _M_lock;
+  static  void _STLP_CALL _Lockit_ctor(_Lockit*);
+  static  void _STLP_CALL _Lockit_ctor(_Lockit*, int);
+  static  void _STLP_CALL _Lockit_dtor(_Lockit*);
+}
+
+#endif
+
 
 /*
  * Class _Refcount_Base provides a type, __stl_atomic_t, a data member,

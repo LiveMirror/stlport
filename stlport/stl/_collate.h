@@ -59,7 +59,21 @@ public:
   long hash(const char* __low, const char* __high) const
     { return do_hash(__low, __high); }
 
+
   static _STLP_STATIC_DECLSPEC locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void _Init(const _Locinfo&) {}
+  explicit collate(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {
+    if (__f != 0 && *__f == 0)
+      *__f = new collate<char>(_Locinfo(__l->name().c_str()));
+    return (locale::collate);
+  }
+#endif
 
 protected:
   ~collate();
@@ -96,6 +110,19 @@ public:
     { return do_hash(__low, __high); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void _Init(const _Locinfo&) {}
+  explicit collate(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {
+    if (__f != 0 && *__f == 0)
+      *__f = new collate<wchar_t>(_Locinfo(__l->name().c_str()));
+    return (locale::collate);
+  }
+#endif
 
 protected:
   ~collate();

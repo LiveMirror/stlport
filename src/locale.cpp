@@ -133,6 +133,9 @@ locale::locale( locale::_Locimp* impl ) :
   _M_impl( _get_Locimp( impl ) )
 {}
 
+
+
+
 // Create a locale from a name.
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
 locale::locale(const char* name,  category)

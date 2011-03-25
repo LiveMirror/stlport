@@ -103,6 +103,22 @@ public:
   private:                        // Invalidate assignment and copying.
     facet(const facet& ) /* : _Refcount_Base(1) {} */;
     void operator=(const facet&);
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  public:
+    void  _Incref() {
+      _M_incr();
+    }
+    facet * _Decref() {
+      return (_M_decr() ? this : 0);
+    }
+    void _Register() {
+      facet_Register(this);
+    }
+
+    static void facet_Register(facet *);
+    static size_t _STLP_CALL _Getcat(const facet **, const locale *);
+#endif
+
   };
 
 #if defined (__MVS__) || defined (__OS400__)
@@ -135,6 +151,11 @@ public:
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
   explicit locale(const char*,  category = all);
   locale (_Uninitialized);
+  const facet * _Getfacet(size_t __id) const
+  {
+    return _M_get_facet(__id);
+  }
+
 #else
   explicit locale(const char *);
 #endif
@@ -145,6 +166,12 @@ public:
   locale(const locale& __loc, _Facet* __f);
 #endif
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+private:
+  static _Locimp *__cdecl _Getgloballocale();
+  static _Locimp *__cdecl _Init();
+  static void __cdecl _Setgloballocale(void *);
+#endif
 
 protected:
   // those are for internal use
@@ -220,6 +247,7 @@ public:
     _Locimp(const char* s);
     _Locimp(const _Locimp&);
     _Locimp(size_t n, const char* s);
+
   protected:
     virtual ~_Locimp();
     
@@ -298,7 +326,6 @@ public:
 
   // friends:
   friend class _Locimp;
-
 
 protected:                        // Data members
   _Locimp* _M_impl;

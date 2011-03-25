@@ -23,9 +23,15 @@
 
 #include "string_test.h"
 #include "stream_test.h"
+#include "iter_test.h"
+#include "codecvt_test.h"
+#include "exception_test.h"
+#include "locale_test.h"
+#include "errno_test.h"
+#include "shared_ptr_test.h"
+// #include "reference_wrapper_test.h"
 
-// #include "exception_test.h"
-// #include "locale_test.h"
+#include "num_put_get_test.h"
 
 int main( int argc, const char** argv )
 {
@@ -65,6 +71,7 @@ int main( int argc, const char** argv )
   printf ("sizeof(cit): %d\n", sizeof(cit));
 
   exam::test_suite t( "STLport test" );
+  t.set_logger(new exam::trivial_logger(stderr));
 
   //   vector_test vec_test;
 
@@ -173,7 +180,6 @@ int main( int argc, const char** argv )
 
   t.add( &fstream_test::rewind, fstrm_test, "fstream write after read fail", fstream_tc[1] );
 
-#if 0 
   istream_iterator_test isit_test;
 
   t.add( &istream_iterator_test::istmit1, isit_test, "istmit1" );
@@ -188,6 +194,8 @@ int main( int argc, const char** argv )
   t.add( &ioiter_test::ioiterat_test, ioit_test, "ioiterat_test" );
   t.add( &ioiter_test::assign_test, ioit_test, "assign_test" );
   t.add( &ioiter_test::assign2_test, ioit_test, "assign2_test" );
+
+#if 0
 
   insert_iter_test ins_test;
 
@@ -376,6 +384,8 @@ int main( int argc, const char** argv )
   rawriter_test rw_test;
   t.add( &rawriter_test::rawiter1, rw_test, "rawiter1" );
 
+# endif
+
   strstream_buffer_test strb_test;
   t.add( &strstream_buffer_test::read_from_buffer, strb_test, "read_from_buffer" );
 
@@ -383,6 +393,7 @@ int main( int argc, const char** argv )
 //  strstream_test strs_test;
 //  t.add( &strstream_test::input, strs_test, "strstream_test::input" );
 
+#if 0
   ptrspec_test pts_test;
 
   t.add( &ptrspec_test::ptr_specialization_test, pts_test, "ptr_specialization_test" );
@@ -401,6 +412,8 @@ int main( int argc, const char** argv )
   t.add( &limits_test::sNaN<double>, lt_test, "numeric_limits<double>::signaling_NaN()" );
 #if !defined ( _STLP_NO_LONG_DOUBLE )
   t.add( &limits_test::sNaN<long double>, lt_test, "numeric_limits<long double>::signaling_NaN()" );
+#endif
+
 #endif
 
   exception_test exc_test;
@@ -436,10 +449,11 @@ int main( int argc, const char** argv )
   shared_ptr_test shp_test;
   t.add( &shared_ptr_test::shared_from_this, shp_test, "shared_from_this" );
 
-  ref_wrapper_test ref_test;
+  //  ref_wrapper_test ref_test;
+  //  t.add( &ref_wrapper_test::ref, ref_test, "ref" );
+  //  t.add( &ref_wrapper_test::cref, ref_test, "cref" );
 
-  t.add( &ref_wrapper_test::ref, ref_test, "ref" );
-  t.add( &ref_wrapper_test::cref, ref_test, "cref" );
+#if 0
 
   locale_test ltest;
 

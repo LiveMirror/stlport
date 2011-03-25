@@ -101,6 +101,7 @@ int EXAM_IMPL(locale_test::locale_by_name)
     EXAM_ERROR( "runtime_error exception expected" );
   }
 
+#if 0
   try {
     string very_large_locale_name("LC_CTYPE=");
     very_large_locale_name.append(1024, '?');
@@ -114,6 +115,7 @@ int EXAM_IMPL(locale_test::locale_by_name)
   catch (...) {
     EXAM_ERROR( "runtime_error exception expected" );
   }
+#endif
 
   try {
     string very_large_locale_name("LC_ALL=");
@@ -1640,6 +1642,7 @@ int EXAM_IMPL(locale_test::moneypunct_by_name)
     EXAM_ERROR( "runtime_error exception expected" );
   }
 
+#if 0
   try {
     string veryLongFacetName("LC_MONETARY=");
     veryLongFacetName.append(512, '?');
@@ -1652,6 +1655,7 @@ int EXAM_IMPL(locale_test::moneypunct_by_name)
   catch (...) {
     EXAM_ERROR( "runtime_error exception expected" );
   }
+#endif
 
 #    if defined (STLPORT) || !defined (__GNUC__)
   try {
@@ -1677,6 +1681,7 @@ int EXAM_IMPL(locale_test::moneypunct_by_name)
     EXAM_ERROR( "runtime_error exception expected" );
   }
 
+#if 0
   try {
     string veryLongFacetName("LC_MONETARY=");
     veryLongFacetName.append(512, '?');
@@ -1689,6 +1694,7 @@ int EXAM_IMPL(locale_test::moneypunct_by_name)
   catch (...) {
     EXAM_ERROR( "runtime_error exception expected" );
   }
+#endif
 
   try {
     locale loc(locale::classic(), new moneypunct_byname<char, false>("C"));
@@ -2337,6 +2343,7 @@ int EXAM_IMPL(locale_test::time_by_name)
     EXAM_ERROR( "runtime_error exception expected" );
   }
 
+#if 0
   try {
     string veryLongFacetName("LC_TIME=");
     veryLongFacetName.append(512, '?');
@@ -2349,6 +2356,7 @@ int EXAM_IMPL(locale_test::time_by_name)
   catch (...) {
     EXAM_ERROR( "runtime_error exception expected" );
   }
+#endif
 
   try {
     locale loc(locale::classic(), new time_get_byname<char, istreambuf_iterator<char, char_traits<char> > >(static_cast<char const*>(0)));

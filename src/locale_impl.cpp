@@ -16,10 +16,10 @@
  *
  */
 
-#include "stlport_prefix.h"
-#include <typeinfo>
 
-#define _CRTIMP2_PURE _STLP_DECLSPEC
+#include "stlport_prefix.h"
+
+#include <typeinfo>
 
 #include <stdexcept>
 #include <locale>
@@ -811,8 +811,85 @@ locale::_Locimp::_Locimp(bool)
 {
 }
 
+locale::_Locimp * locale::_Getgloballocale()
+{
+  return _Stl_global_locale->_M_get_impl();
+}
+
+locale::_Locimp * locale::_Init()
+{
+  locale::_Locimp::_S_initialize();
+  // lucky guess
+  return _Getgloballocale();
+}
+
+void __cdecl locale::_Setgloballocale(void * g)
+{
+  _Stl_global_locale = (locale*)g;
+}
+
+void locale::facet::facet_Register(facet *)
+{
+
+}
+
+size_t _STLP_CALL locale::facet::_Getcat(const facet **,
+					 const locale *)
+{
+  return ((size_t)(-1));
+}
+
+_Lockit::_Lockit(): _Locktype(0)
+{
+  _Lockit_ctor(this);
+}
+
+_Lockit::_Lockit(int __par)
+{
+  _Lockit_ctor(this, __par);
+}
+
+_Lockit::~_Lockit()
+{
+  _Lockit_dtor(this);
+}
+  
+void _STLP_CALL _Lockit::_Lockit_ctor(int)
+{
+  // TODO
+}
+
+void _STLP_CALL _Lockit::_Lockit_dtor(int)
+{
+  // TODO
+}
+
+void _STLP_CALL _Lockit::_Lockit_ctor(_Lockit* __that)
+{
+  _STLP_mutex_spin<0>::_M_do_lock((__stl_atomic_t*)&__that->_Locktype);
+}
+
+void _STLP_CALL _Lockit::_Lockit_ctor(_Lockit* __that, int __val)
+{
+  __that->_Locktype = __val;
+}
+
+void _STLP_CALL _Lockit::_Lockit_dtor(_Lockit* that)
+{
+  // asm(" stbar ");
+    that->_Locktype = 0;
+}
+
 
 #endif
 
 _STLP_END_NAMESPACE
 
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+#include <xlocinfo>
+namespace 
+{
+  std::_Locinfo dummy;
+}
+#endif
