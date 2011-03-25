@@ -1,4 +1,4 @@
-// -*- C++ -*- Time-stamp: <2010-12-24 16:08:39 ptr>
+// -*- C++ -*- Time-stamp: <2011-03-23 19:27:27 ptr>
 
 /*
  * Copyright (c) 2008-2010
@@ -21,57 +21,16 @@
 #include <string>
 #include <sstream>
 
-#include "string_test.h"
-#include "stream_test.h"
-#include "iter_test.h"
-#include "codecvt_test.h"
-#include "exception_test.h"
-#include "locale_test.h"
-#include "errno_test.h"
-#include "shared_ptr_test.h"
-// #include "reference_wrapper_test.h"
-
-#include "num_put_get_test.h"
-
-int main( int argc, const char** argv )
-{
-# if 0
-  Opts opts;
-
-  opts.description( "test suite for 'sockios' framework" );
-  opts.usage( "[options]" );
-
-  opts << option<void>( "print this help message", 'h', "help" )
-       << option<void>( "list all test cases", 'l', "list" )
-       << option<std::string>( "run tests by number", 'r', "run" )["0"]
-       << option<void>( "print status of tests within test suite", 'v', "verbose" )
-       << option<void>(  "trace checks", 't', "trace" );
-
-  try {
-    opts.parse( argc, argv );
-  }
-  catch (...) {
-    opts.help( std::cerr );
-    return 1;
-  }
-
-  if ( opts.is_set( 'h' ) ) {
-    opts.help( std::cerr );
-    return 0;
-  }
-#endif
-
-  std::string test_s("Size test");
-  std::string myar[2];
-  myar[0]=test_s;
-  myar[1]=test_s;
-  std::string::const_iterator cit;
-
   printf ("sizeof(test_s): %d, s1==s2:%d\n", sizeof(test_s), myar[0]==myar[1]);
   printf ("sizeof(cit): %d\n", sizeof(cit));
 
   exam::test_suite t( "STLport test" );
   t.set_logger(new exam::trivial_logger(stderr));
+  t.add( &type_traits_test::is_trivially_copyable, ttt, "is_trivially_copyable", tt_tc[0] );
+
+  ratio_test ratio_tst;
+
+  t.add( &ratio_test::ratio, ratio_tst, "ratio", tt_tc[0] );
 
   //   vector_test vec_test;
 
@@ -400,8 +359,13 @@ int main( int argc, const char** argv )
   t.add( &ptrspec_test::function_pointer, pts_test, "function_pointer" );
 
   limits_test lt_test;
+  exam::test_suite::test_case_type limits_tc[10];
 
-  t.add( &limits_test::limits, lt_test, "limits_test::limits" );
+  limits_tc[0] = t.add( &limits_test::limits, lt_test, "limits_test::limits" );
+
+  t.add( &limits_test::l_float, lt_test, "float limits", limits_tc[0] );
+  t.add( &limits_test::l_double, lt_test, "double limits", limits_tc[0] );
+  t.add( &limits_test::l_long_double, lt_test, "long double limits", limits_tc[0] );
 
   t.add( &limits_test::qNaN<float>, lt_test, "numeric_limits<float>::quiet_NaN()" );
   t.add( &limits_test::qNaN<double>, lt_test, "numeric_limits<double>::quiet_NaN()" );
@@ -439,12 +403,20 @@ int main( int argc, const char** argv )
   t.add( &num_put_get_test::custom_numpunct, nmg_test, "custom_numpunct" );
 
   codecvt_test cvt_test;
+  exam::test_suite::test_case_type cvt_tc[10];
 
   t.add( &codecvt_test::variable_encoding, cvt_test, "variable_encoding", fstream_tc[2] );
   t.add( &codecvt_test::in_out_test, cvt_test, "in_out_test" );
   t.add( &codecvt_test::length_test, cvt_test, "length_test" );
   t.add( &codecvt_test::imbue_while_reading, cvt_test, "imbue_while_reading" );
-  t.add( &codecvt_test::special_encodings, cvt_test, "special_encodings" );
+
+  t.add( &codecvt_test::_936_to_wchar, cvt_test, "convert CP936 to wchar",
+    cvt_tc[0] = t.add( &codecvt_test::eol, cvt_test, "convert \\0" ) );
+
+  t.add( &codecvt_test::bad_utf8, cvt_test, "convert bad UTF-8 to wchar",
+    cvt_tc[1] = t.add( &codecvt_test::utf8_to_wchar, cvt_test, "convert UTF-8 to wchar", cvt_tc[0] ) );
+  t.add( &codecvt_test::partial_conversion, cvt_test, "codecvt partial conversion", cvt_tc[1] );
+
 
   shared_ptr_test shp_test;
   t.add( &shared_ptr_test::shared_from_this, shp_test, "shared_from_this" );
