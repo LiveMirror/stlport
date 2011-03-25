@@ -46,6 +46,7 @@
 #include <deque>
 #include <hash_map>
 #include <limits>
+#include <iterator>
 #include <string>
 #include <stdexcept>
 #include <bitset>

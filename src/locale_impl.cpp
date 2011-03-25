@@ -886,10 +886,3 @@ void _STLP_CALL _Lockit::_Lockit_dtor(_Lockit* that)
 _STLP_END_NAMESPACE
 
 
-#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-#include <xlocinfo>
-namespace 
-{
-  std::_Locinfo dummy;
-}
-#endif

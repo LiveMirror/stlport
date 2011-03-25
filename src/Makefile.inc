@@ -34,6 +34,7 @@ SRC_CPP = dll_main.cpp \
           string.cpp \
           bitset.cpp \
           allocators.cpp \
+          locinfo.cpp \
           uc_string.cpp
 
 

@@ -20,7 +20,6 @@
 #define _CRTIMP2_PURE __declspec(dllexport)
 
 #include <string>
-
 #include <xlocinfo>
 
 _STLP_BEGIN_NAMESPACE
@@ -34,6 +33,32 @@ _Locinfo& _STLP_CALL _Locinfo::_Locinfo_Addcats(_Locinfo * cat, int n, const cha
 {
   return *cat;
 }
+
+_STLP_DECLSPEC _Cvtvec _STLP_CALL _Getcvt()
+{
+  return _Cvtvec();
+}
+_STLP_DECLSPEC _Collvec _STLP_CALL _Getcoll()
+{
+  return _Getcoll();
+}
+_STLP_DECLSPEC _Ctypevec _STLP_CALL _Getctype()
+{
+  return _Ctypevec();
+}
+
+_STLP_DECLSPEC int _STLP_CALL _Getdateorder()
+{
+  return 0;
+}
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+#include <xlocinfo>
+namespace 
+{
+  std::_Locinfo dummy;
+}
+#endif
 
 #if 0
 _Locinfo::_Locinfo(int __pos, const char *__name) {

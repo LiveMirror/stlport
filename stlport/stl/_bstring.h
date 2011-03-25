@@ -23,6 +23,7 @@
 #define _STLP_BSTRING_H
 
 #include <cstdio>
+#include <cstddef>
 
 #if defined (_MSC_VER) && (_MSC_VER < 1500)
 # define const_iterator_param iterator
@@ -118,13 +119,16 @@ class _String_iterator;
 template <class _CharT,
 	  class _Traits,
 	  class _Alloc>
-class _String_const_iterator: public random_access_iterator<_CharT, size_t>
+class _String_const_iterator
 {
 public:
+  typedef _CharT value_type;
   typedef const _CharT* pointer;
   typedef const _CharT& reference;
   typedef _String_const_iterator<_CharT, _Traits, _Alloc> _Self;
   typedef _String_iterator<_CharT, _Traits, _Alloc> _NonConstSelf;
+  typedef ptrdiff_t difference_type;
+  typedef random_access_iterator_tag iterator_category;
 
   _Cont_base_ptr _M_container; 
   pointer _M_ptr;
@@ -219,13 +223,16 @@ inline bool operator != (const _String_const_iterator<_CharT, _Traits, _Alloc>& 
 template <class _CharT,
 	  class _Traits,
 	  class _Alloc>
-class _String_iterator: public random_access_iterator<_CharT, size_t>
+class _String_iterator
 {
 public:
+  typedef _CharT value_type;
   typedef _CharT* pointer;
   typedef _CharT& reference;
   typedef _String_iterator _Self;
   typedef _String_const_iterator<_CharT, _Traits, _Alloc> _ConstSelf;
+  typedef ptrdiff_t difference_type;
+  typedef random_access_iterator_tag iterator_category;
 
   _Cont_base_ptr _M_container; 
   pointer _M_ptr;
