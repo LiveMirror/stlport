@@ -36,7 +36,7 @@
 
 _STLP_BEGIN_NAMESPACE
 
-class _STLP_CLASS_DECLSPEC ctype_base {
+class _STLP_CLASS_DECLSPEC ctype_base : public locale::facet {
 public:
   enum mask {
     space   = _Locale_SPACE,
@@ -51,6 +51,15 @@ public:
     alnum   = alpha | digit,
     graph   = alnum | punct
   };
+
+  ctype_base(size_t __refs) : locale::facet(__refs) {} 
+
+ protected:
+  static void _STLP_CALL _Xran()
+  {
+    __stl_throw_out_of_range("ctype<T>");
+  }
+  
 };
 
 // ctype<> template
@@ -61,7 +70,7 @@ template <class charT> class ctype_byname {};
 //ctype specializations
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC ctype<char> : public locale::facet, public ctype_base {
+class _STLP_CLASS_DECLSPEC ctype<char> : public ctype_base {
 #ifndef _STLP_NO_WCHAR_T
 #  ifdef _STLP_MSVC
     typedef ctype<wchar_t> _Wctype;
@@ -75,6 +84,7 @@ public:
   typedef char char_type;
 
   explicit ctype(const mask* __tab = 0, bool __del = false, size_t __refs = 0);
+
   bool is(mask __m, char __c) const
   { return ((*(_M_ctype_table+(unsigned char)__c)) & __m) != 0; }
 
@@ -113,6 +123,37 @@ public:
 
   static _STLP_STATIC_DECLSPEC locale::id id;
   _STLP_STATIC_CONSTANT(size_t, table_size = 256);
+
+  const _CharT * _Narrow_s(const _CharT* __f, const _CharT *__last,
+			   char __def, char *__dest, size_t __dst_size) const
+  {
+    return _Do_narrow_s(__f, __last,
+			__def, __dest, __dst_size);
+  }
+
+  virtual const _CharT* _Do_narrow_s(const _CharT* __f, const _CharT *__last,
+				     char __def, char *__dest, size_t __dst_size) const;
+
+  const _CharT * _Widen_s(const _CharT* __f, const _CharT *__last,
+			  _CharT *__dest, size_t __dst_size) const
+  {
+    return _Do_widen_s(__f, __last,
+		       __dest, __dst_size);
+  }
+
+  virtual const _CharT* _Do_narrow_s(const _CharT* __f, const _CharT *__last,
+				     char __def, char *__dest, size_t __dst_size) const;
+  
+  char __CLR_OR_THIS_CALL _Donarrow(_CharT __ch, char __dfl) const
+  {
+  }
+
+  _CharT __CLR_OR_THIS_CALL _Dowiden(char __src) const
+  {
+    // TODO implement
+  }
+
+  static locale::id& _STLP_CALL _Id_func();
 
 protected:
   const mask* table() const _STLP_NOTHROW { return _M_ctype_table; }
@@ -174,11 +215,11 @@ private:
 
 #  ifndef _STLP_NO_WCHAR_T
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC ctype<wchar_t> : public locale::facet, public ctype_base {
+class _STLP_CLASS_DECLSPEC ctype<wchar_t> : public ctype_base {
 public:
   typedef wchar_t char_type;
 
-  explicit ctype(size_t __refs = 0) : locale::facet(__refs) {}
+  explicit ctype(size_t __refs = 0) : ctype_base(__refs) {}
 
   bool is(mask __m, wchar_t __c) const
     { return do_is(__m, __c); }

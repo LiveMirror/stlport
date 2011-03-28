@@ -20,6 +20,11 @@
 #ifndef _STLP_INTERNAL_LOCINFO_H
 #define _STLP_INTERNAL_LOCINFO_H
 
+#include <stl/_locale.h>
+#include <xlocinfo.h>
+
+_STLP_BEGIN_NAMESPACE
+
 class _STLP_DECLSPEC _Timevec
 {
  public:
@@ -28,9 +33,9 @@ class _STLP_DECLSPEC _Timevec
       _M_p = __rhs._M_p;
     }
     ~_Timevec() {}
+
     _Timevec& operator=(const _Timevec& __rhs)
-      { _M_p = __rhs._M_p;
-      }
+      { _M_p = __rhs._M_p; return *this; }
     
     void* _Getptr() const { return _M_p; }
     
@@ -74,8 +79,9 @@ public:
 	//	_Lock
 	string _Days;
 	string _Months;
-	string _Oldlocname;	// old locale name to revert to on destruction
-	string _Newlocname;	// new locale name for this object
+	string _Oldlocname;
+	string _Newlocname;
 };
+_STLP_END_NAMESPACE
 
 #endif

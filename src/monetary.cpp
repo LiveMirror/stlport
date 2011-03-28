@@ -45,8 +45,9 @@ static const wstring _S_empty_wstring;
 // moneypunct<>
 //
 
-moneypunct<char, true>::moneypunct(size_t __refs) : locale::facet(__refs)
+moneypunct<char, true>::moneypunct(size_t __refs) : _Mpunct<char>(__refs, true)
 { _Init_monetary_formats(_M_pos_format, _M_neg_format); }
+
 moneypunct<char, true>::~moneypunct() {}
 
 char moneypunct<char, true>::do_decimal_point() const {return ' ';}
@@ -59,8 +60,9 @@ money_base::pattern moneypunct<char, true>::do_pos_format() const  {return _M_po
 money_base::pattern moneypunct<char, true>::do_neg_format() const {return _M_neg_format;}
 int moneypunct<char, true>::do_frac_digits() const {return 0;}
 
-moneypunct<char, false>::moneypunct(size_t __refs) : locale::facet(__refs)
+moneypunct<char, false>::moneypunct(size_t __refs) : _Mpunct<char>(__refs, false)
 { _Init_monetary_formats(_M_pos_format, _M_neg_format); }
+
 moneypunct<char, false>::~moneypunct() {}
 
 char moneypunct<char, false>::do_decimal_point() const {return ' ';}
@@ -75,7 +77,7 @@ money_base::pattern moneypunct<char, false>::do_neg_format() const {return _M_ne
 int moneypunct<char, false>::do_frac_digits() const {return 0;}
 
 #ifndef _STLP_NO_WCHAR_T
-moneypunct<wchar_t, true>::moneypunct(size_t __refs) : locale::facet(__refs)
+moneypunct<wchar_t, true>::moneypunct(size_t __refs) :  _Mpunct<wchar_t>(__refs, true)
 { _Init_monetary_formats(_M_pos_format, _M_neg_format); }
 moneypunct<wchar_t, true>::~moneypunct() {}
 
@@ -95,7 +97,7 @@ money_base::pattern moneypunct<wchar_t, true>::do_pos_format() const
 money_base::pattern moneypunct<wchar_t, true>::do_neg_format() const
 {return _M_neg_format;}
 
-moneypunct<wchar_t, false>::moneypunct(size_t __refs) : locale::facet(__refs)
+moneypunct<wchar_t, false>::moneypunct(size_t __refs) :  _Mpunct<wchar_t>(__refs, false)
 { _Init_monetary_formats(_M_pos_format, _M_neg_format); }
 moneypunct<wchar_t, false>::~moneypunct() {}
 

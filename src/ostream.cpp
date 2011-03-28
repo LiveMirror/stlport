@@ -22,6 +22,7 @@
 
 _STLP_BEGIN_NAMESPACE
 
+
 #if !defined(_STLP_NO_FORCE_INSTANTIATE)
 // instantiations
 template class _STLP_CLASS_DECLSPEC basic_ostream<char, char_traits<char> >;

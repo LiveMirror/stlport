@@ -37,12 +37,13 @@
 
 _STLP_BEGIN_NAMESPACE
 
-class money_base {
+class _STLP_CLASS_DECLSPEC money_base : public locale::facet {
 public:
-  enum part {none, space, symbol, sign, value};
+  enum part {none = 'x', space = ' ', symbol = '$', sign = '+', value = 'v'};
   struct pattern {
     char field[4];
   };
+  money_base(size_t __refs) : locale::facet(__refs) {}
 };
 
 // moneypunct facets: forward declaration
@@ -69,6 +70,21 @@ public:
 
   static locale::id id;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit money_get(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new money_get<char_type, iter_type>();
+    return (locale::monetary);
+  }
+
+#endif
+
 protected:
   ~money_get() {}
   virtual iter_type do_get(iter_type __s, iter_type  __end, bool  __intl,
@@ -80,14 +96,12 @@ protected:
 };
 
 
-// moneypunct facets: definition of specializations
-
-_STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC moneypunct<char, true> : public locale::facet, public money_base {
+template <class _CharT>
+class _Mpunct : public money_base
+{
 public:
-  typedef char                 char_type;
-  typedef string               string_type;
-  explicit moneypunct _STLP_PSPEC2(char, true) (size_t __refs = 0);
+  typedef _CharT                                      char_type;
+  typedef basic_string<_CharT, char_traits<_CharT> >  string_type;
 
   char        decimal_point() const { return do_decimal_point(); }
   char        thousands_sep() const { return do_thousands_sep(); }
@@ -99,12 +113,137 @@ public:
   pattern     pos_format()    const { return do_pos_format(); }
   pattern     neg_format()    const { return do_neg_format(); }
 
+  explicit  _Mpunct(size_t __refs, bool __intl, bool __b = false) : money_base(__refs)
+  { _M_init(__intl, __b); }
+
+  void _M_init(bool __intl, bool __b) {
+    // todo : hook up init 
+  }
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&, bool __b = false) {
+    // TODO: implement
+  }
+
+  explicit _Mpunct(const _Locinfo& __i, size_t __refs, bool __intl, bool __b) : 
+    money_base(__refs), _Intl(__intl) { _Init(__i, __b); }
+
+protected:
+  explicit _Mpunct(const char* __name, size_t __refs, bool __intl, bool __b = false) : 
+    money_base(__refs), _Intl(__intl) { _Init(_Locinfo(__name), __b); }
+
+#endif
+
+ protected:
+
+  virtual _CharT do_decimal_point() const
+  {
+    return (_M_decimal_point);
+  }
+  
+  virtual _CharT do_thousands_sep() const
+  {
+    return (_M_separator);
+  }
+  
+  virtual string  do_grouping() const
+  {
+    return (string(_M_grouping));
+  }
+  
+  virtual string_type  do_curr_symbol() const
+  {
+    return (string_type(_M_curr_symbol));
+  }
+  
+  virtual string_type  do_positive_sign() const
+  {
+    return (string_type(_M_plus_sign));
+  }
+  
+  virtual string_type  do_negative_sign() const
+  {
+    return (string_type(_M_minus_sign));
+  }
+  
+  virtual int  do_frac_digits() const
+  {
+    return (_M_frac_digits);
+  }
+  
+  virtual pattern  do_pos_format() const
+  {
+    return (_M_pos_format);
+  }
+  
+  virtual pattern  do_neg_format() const
+  {
+    return (_M_neg_format);
+  }
+  
+
+  virtual  ~_Mpunct()
+  {	// destroy the object
+    _Tidy();
+  }
+
+private:
+  void  _Makpat(pattern&, unsigned int,
+		unsigned int, unsigned int)
+  {
+    // TODO: fill
+  }
+  
+  void  _Tidy()
+  {
+    // TODO : fill
+  }
+ 
+protected:
+  const char *_M_grouping;
+  _CharT _M_decimal_point;
+  _CharT _M_separator;
+  const _CharT *_M_curr_symbol;
+  const _CharT *_M_plus_sign;
+  const _CharT *_M_minus_sign;
+  int _M_frac_digits;
+  pattern _M_pos_format;
+  pattern _M_neg_format;
+  bool _Intl;
+};
+
+
+// moneypunct facets: definition of specializations
+
+_STLP_TEMPLATE_NULL
+class _STLP_CLASS_DECLSPEC moneypunct<char, true> : public _Mpunct<char> {
+public:
+  typedef char                 char_type;
+  typedef string               string_type;
+  explicit moneypunct _STLP_PSPEC2(char, true) (size_t __refs = 0);
+
+
   static _STLP_STATIC_DECLSPEC locale::id id;
   _STLP_STATIC_CONSTANT(bool, intl = true);
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+
+  explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<char>(__refs, true) {}
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new moneypunct<char_type, true>();
+    return (locale::monetary);
+  }
+
+ protected:
+  explicit moneypunct(const char* __name, size_t __refs = 0) : _Mpunct<char>(__name, __refs, true) {}
+
+#endif
+
 protected:
-  pattern _M_pos_format;
-  pattern _M_neg_format;
 
   ~moneypunct _STLP_PSPEC2(char, true) ();
 
@@ -122,29 +261,34 @@ protected:
 };
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC moneypunct<char, false> : public locale::facet, public money_base {
+class _STLP_CLASS_DECLSPEC moneypunct<char, false> : public _Mpunct<char> {
 public:
   typedef char                 char_type;
   typedef string               string_type;
 
   explicit moneypunct _STLP_PSPEC2(char, false) (size_t __refs = 0);
 
-  char        decimal_point() const { return do_decimal_point(); }
-  char        thousands_sep() const { return do_thousands_sep(); }
-  string      grouping()      const { return do_grouping(); }
-  string_type curr_symbol()   const { return do_curr_symbol(); }
-  string_type positive_sign() const { return do_positive_sign(); }
-  string_type negative_sign() const { return do_negative_sign(); }
-  int         frac_digits()   const { return do_frac_digits(); }
-  pattern     pos_format()    const { return do_pos_format(); }
-  pattern     neg_format()    const { return do_neg_format(); }
-
   static _STLP_STATIC_DECLSPEC locale::id id;
   _STLP_STATIC_CONSTANT(bool, intl = false);
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<char>(__refs, false) {}
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new moneypunct<char_type, false>();
+    return (locale::monetary);
+  }
+ protected:
+  explicit moneypunct(const char* __name, size_t __refs = 0) : _Mpunct<char>(__name, __refs, false) {}
+
+#endif
+
 protected:
-  pattern _M_pos_format;
-  pattern _M_neg_format;
 
   ~moneypunct _STLP_PSPEC2(char, false) ();
 
@@ -165,27 +309,34 @@ protected:
 #ifndef _STLP_NO_WCHAR_T
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, true> : public locale::facet, public money_base {
+class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, true> : public _Mpunct<wchar_t> {
 public:
   typedef wchar_t                 char_type;
   typedef wstring                 string_type;
   explicit moneypunct _STLP_PSPEC2(wchar_t, true) (size_t __refs = 0);
-  wchar_t     decimal_point() const { return do_decimal_point(); }
-  wchar_t     thousands_sep() const { return do_thousands_sep(); }
-  string      grouping()      const { return do_grouping(); }
-  string_type curr_symbol()   const { return do_curr_symbol(); }
-  string_type positive_sign() const { return do_positive_sign(); }
-  string_type negative_sign() const { return do_negative_sign(); }
-  int         frac_digits()   const { return do_frac_digits(); }
-  pattern     pos_format()    const { return do_pos_format(); }
-  pattern     neg_format()    const { return do_neg_format(); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
   _STLP_STATIC_CONSTANT(bool, intl = true);
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<wchar_t>(__refs, true) {}
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new moneypunct<char_type, true>();
+    return (locale::monetary);
+  }
+
+ protected:
+  explicit moneypunct(const char* __name, size_t __refs = 0) : _Mpunct<wchar_t>(__name, __refs, true) {}
+
+#endif
+
 protected:
-  pattern _M_pos_format;
-  pattern _M_neg_format;
 
   ~moneypunct _STLP_PSPEC2(wchar_t, true) ();
 
@@ -204,27 +355,34 @@ protected:
 
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, false> : public locale::facet, public money_base {
+class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, false> : public _Mpunct<wchar_t> {
 public:
   typedef wchar_t                 char_type;
   typedef wstring                 string_type;
   explicit moneypunct _STLP_PSPEC2(wchar_t, false) (size_t __refs = 0);
-  wchar_t     decimal_point() const { return do_decimal_point(); }
-  wchar_t     thousands_sep() const { return do_thousands_sep(); }
-  string      grouping()      const { return do_grouping(); }
-  string_type curr_symbol()   const { return do_curr_symbol(); }
-  string_type positive_sign() const { return do_positive_sign(); }
-  string_type negative_sign() const { return do_negative_sign(); }
-  int         frac_digits()   const { return do_frac_digits(); }
-  pattern     pos_format()    const { return do_pos_format(); }
-  pattern     neg_format()    const { return do_neg_format(); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
   _STLP_STATIC_CONSTANT(bool, intl = false);
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<wchar_t>(__refs, false) {}
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new moneypunct<char_type, false>();
+    return (locale::monetary);
+  }
+
+ protected:
+  explicit moneypunct(const char* __name, size_t __refs = 0) : _Mpunct<wchar_t>(__name, __refs, false) { }
+
+#endif
+
 protected:
-  pattern _M_pos_format;
-  pattern _M_neg_format;
 
   ~moneypunct _STLP_PSPEC2(wchar_t, false) ();
 
@@ -402,6 +560,20 @@ public:
 
   static locale::id id;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit money_put(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new money_put<char_type,iter_type>();
+    return (locale::monetary);
+  }
+#endif
+
 protected:
   ~money_put() {}
   virtual iter_type do_put(iter_type __s, bool  __intl, ios_base&  __str,
@@ -412,9 +584,11 @@ protected:
 };
 
 #if defined (_STLP_USE_TEMPLATE_EXPORT)
+_STLP_EXPORT_TEMPLATE_CLASS _Mpunct<char>;
 _STLP_EXPORT_TEMPLATE_CLASS money_get<char, istreambuf_iterator<char, char_traits<char> > >;
 _STLP_EXPORT_TEMPLATE_CLASS money_put<char, ostreambuf_iterator<char, char_traits<char> > >;
 #  if ! defined (_STLP_NO_WCHAR_T)
+_STLP_EXPORT_TEMPLATE_CLASS _Mpunct<wchar_t>;
 _STLP_EXPORT_TEMPLATE_CLASS money_get<wchar_t, istreambuf_iterator<wchar_t, char_traits<wchar_t> > >;
 _STLP_EXPORT_TEMPLATE_CLASS money_put<wchar_t, ostreambuf_iterator<wchar_t, char_traits<wchar_t> > >;
 #  endif

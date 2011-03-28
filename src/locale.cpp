@@ -439,5 +439,6 @@ const locale::category locale::messages;
 const locale::category locale::all;
 #endif
 
+
 _STLP_END_NAMESPACE
 

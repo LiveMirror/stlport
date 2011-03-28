@@ -155,6 +155,20 @@ public:
 
   static locale::id id;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit time_get(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new time_get<char_type,iter_type>();
+    return (locale::time);
+  }
+#endif
+
 protected:
   time_get(const char* __name, size_t __refs)
     : locale::facet(__refs), _STLP_PRIV time_init<_Ch>(__name)
@@ -262,6 +276,20 @@ public:
   { return do_put(__s, __f,  __fill, __tmb, __format, __modifier); }
 
   static locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit time_put(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new time_put<char_type,iter_type>();
+    return (locale::time);
+  }
+#endif
 
 protected:
   time_put(const char* __name, size_t __refs)

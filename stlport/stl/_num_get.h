@@ -122,6 +122,20 @@ public:
 
   static locale::id id;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit num_get(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new num_get<char_type, iter_type>();
+    return (locale::numeric);
+  }
+#endif
+
 protected:
   ~num_get() {}
 

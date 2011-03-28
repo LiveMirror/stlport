@@ -63,7 +63,7 @@ class _STLP_CLASS_DECLSPEC _Filebuf_base
 public:                      // Opening and closing files.
   _Filebuf_base();
 
-  bool _M_open(const char*, ios_base::openmode, long __protection);
+  bool _M_open(const char*, ios_base::openmode, int __protection);
   bool _M_open(const char*, ios_base::openmode);
   bool _M_open(int __id, ios_base::openmode = ios_base::__default_mode);
 #if defined (_STLP_USE_WIN32_IO)
@@ -187,10 +187,9 @@ public:                         // Opening and closing files.
     return _M_base._M_open(__s, __m) ? this : 0;
   }
 
-#if !defined (_STLP_NO_EXTENSIONS)
   // These two version of open() and file descriptor getter are extensions.
   _Self* open(const char* __s, ios_base::openmode __m,
-              long __protection) {
+              int __protection) {
     return _M_base._M_open(__s, __m, __protection) ? this : 0;
   }
 
@@ -205,8 +204,6 @@ public:                         // Opening and closing files.
     return _M_base._M_open(__id, _Init_mode) ? this : 0;
   }
 #  endif /* _STLP_USE_WIN32_IO */
-
-#endif
 
   _Self* _M_open(int __id, ios_base::openmode _Init_mode = ios_base::__default_mode) {
     return _M_base._M_open(__id, _Init_mode) ? this : 0;
@@ -492,7 +489,6 @@ public:                         // Constructors, destructor.
         this->setstate(ios_base::failbit);
   }
 
-#if !defined (_STLP_NO_EXTENSIONS)
   explicit basic_ifstream(int __id, ios_base::openmode __mod = ios_base::in) :
     basic_ios<_CharT, _Traits>(),  basic_istream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
@@ -500,7 +496,7 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
   basic_ifstream(const char* __s, ios_base::openmode __m,
-     long __protection) :
+     int __protection) :
     basic_ios<_CharT, _Traits>(),  basic_istream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
     if (!_M_buf.open(__s, __m | ios_base::in, __protection))
@@ -515,6 +511,15 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
 #  endif /* _STLP_USE_WIN32_IO */
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  explicit basic_ifstream(FILE* __f):
+    basic_ios<_CharT, _Traits>(),  basic_istream<_CharT, _Traits>(0), _M_buf() {
+    this->init(&_M_buf);
+    // todo : set mode according to mode of __f
+    if (!_M_buf.open(__f->_file, ios_base::in))
+      this->setstate(ios_base::failbit);
+    }
 #endif
 
   ~basic_ifstream() {}
@@ -570,7 +575,6 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
 
-#if !defined (_STLP_NO_EXTENSIONS)
   explicit basic_ofstream(int __id, ios_base::openmode __mod = ios_base::out)
     : basic_ios<_CharT, _Traits>(), basic_ostream<_CharT, _Traits>(0),
     _M_buf() {
@@ -578,7 +582,7 @@ public:                         // Constructors, destructor.
    if (!_M_buf.open(__id, __mod | ios_base::out))
      this->setstate(ios_base::failbit);
   }
-  basic_ofstream(const char* __s, ios_base::openmode __m, long __protection) :
+  basic_ofstream(const char* __s, ios_base::openmode __m, int __protection) :
     basic_ios<_CharT, _Traits>(),  basic_ostream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
     if (!_M_buf.open(__s, __m | ios_base::out, __protection))
@@ -593,6 +597,15 @@ public:                         // Constructors, destructor.
      this->setstate(ios_base::failbit);
   }
 #  endif /* _STLP_USE_WIN32_IO */
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  explicit basic_ofstream(FILE* __f):
+    basic_ios<_CharT, _Traits>(),  basic_ostream<_CharT, _Traits>(0), _M_buf() {
+    this->init(&_M_buf);
+    // todo : set mode according to mode of __f
+    if (!_M_buf.open(__f->_file, ios_base::out))
+      this->setstate(ios_base::failbit);
+    }
 #endif
 
   ~basic_ofstream() {}
@@ -650,7 +663,6 @@ public:                         // Constructors, destructor.
         this->setstate(ios_base::failbit);
   }
 
-#if !defined (_STLP_NO_EXTENSIONS)
   explicit basic_fstream(int __id,
                          ios_base::openmode __mod = ios_base::in | ios_base::out) :
     basic_ios<_CharT, _Traits>(), basic_iostream<_CharT, _Traits>(0), _M_buf() {
@@ -658,12 +670,13 @@ public:                         // Constructors, destructor.
     if (!_M_buf.open(__id, __mod))
       this->setstate(ios_base::failbit);
   }
-  basic_fstream(const char* __s, ios_base::openmode __m, long __protection) :
+  basic_fstream(const char* __s, ios_base::openmode __m, int __protection) :
     basic_ios<_CharT, _Traits>(),  basic_iostream<_CharT, _Traits>(0), _M_buf() {
     this->init(&_M_buf);
     if (!_M_buf.open(__s, __m, __protection))
       this->setstate(ios_base::failbit);
   }
+
 #  if defined (_STLP_USE_WIN32_IO)
   explicit basic_fstream(_STLP_fd __id,
     ios_base::openmode __mod = ios_base::in | ios_base::out) :
@@ -673,7 +686,17 @@ public:                         // Constructors, destructor.
       this->setstate(ios_base::failbit);
   }
 #  endif /* _STLP_USE_WIN32_IO */
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  explicit basic_fstream(FILE* __f) :
+    basic_ios<_CharT, _Traits>(),  basic_iostream<_CharT, _Traits>(0), _M_buf() {
+    this->init(&_M_buf);
+    // todo : set mode according to mode of __f
+    if (!_M_buf.open(__f->_file, ios_base::in|ios_base::out ))
+      this->setstate(ios_base::failbit);
+  }
 #endif
+
   ~basic_fstream() {}
 
 public:                         // File and buffer operations.
@@ -720,10 +743,12 @@ _STLP_END_NAMESPACE
 _STLP_BEGIN_NAMESPACE
 
 #if defined (_STLP_USE_TEMPLATE_EXPORT)
+_STLP_EXPORT_TEMPLATE_CLASS basic_filebuf<char, char_traits<char> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_ifstream<char, char_traits<char> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_ofstream<char, char_traits<char> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_fstream<char, char_traits<char> >;
 #  if ! defined (_STLP_NO_WCHAR_T)
+_STLP_EXPORT_TEMPLATE_CLASS basic_filebuf<wchar_t, char_traits<wchar_t> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_ifstream<wchar_t, char_traits<wchar_t> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_ofstream<wchar_t, char_traits<wchar_t> >;
 _STLP_EXPORT_TEMPLATE_CLASS basic_fstream<wchar_t, char_traits<wchar_t> >;

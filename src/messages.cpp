@@ -192,7 +192,7 @@ messages_byname<char>::messages_byname(const char *name, size_t refs)
   : messages<char>(refs), _M_impl(new _STLP_PRIV _Messages(false, name)) {}
 
 messages_byname<char>::messages_byname(_Locale_messages* msg)
-  : messages<char>(0), _M_impl(new _STLP_PRIV _Messages(false, msg)) {}
+  : messages<char>(), _M_impl(new _STLP_PRIV _Messages(false, msg)) {}
 
 messages_byname<char>::~messages_byname()
 { delete _M_impl; }
@@ -221,7 +221,7 @@ messages_byname<wchar_t>::messages_byname(const char *name, size_t refs)
   : messages<wchar_t>(refs), _M_impl(new _STLP_PRIV _Messages(true, name)) {}
 
 messages_byname<wchar_t>::messages_byname(_Locale_messages* msg)
-  : messages<wchar_t>(0), _M_impl(new _STLP_PRIV _Messages(true, msg)) {}
+  : messages<wchar_t>(), _M_impl(new _STLP_PRIV _Messages(true, msg)) {}
 
 messages_byname<wchar_t>::~messages_byname()
 { delete _M_impl; }

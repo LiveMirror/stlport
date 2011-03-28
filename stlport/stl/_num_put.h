@@ -103,6 +103,36 @@ public:
 
   static locale::id id;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  void _Init(const _Locinfo&) {}
+
+  explicit num_put(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new num_put();
+    return (locale::numeric);
+  }
+
+# if 0
+private:
+  _OutputIter _STLP_CALL _Rep(_OutputIter, _CharT, size_t) const;
+  char *_STLP_CALL _Ffmt(char*,
+			 char, ios_base::fmtflags) const;
+  _OutputIter _STLP_CALL _Fput(_OutputIter,
+			       ios_base&, _CharT _Fill, const char*,
+			       size_t, size_t,
+			       size_t, size_t) const;
+  _OutputIter _STLP_CALL _Iput(_OutputIter, ios_base&, _CharT, char *, size_t) const;
+  _OutputIter _STLP_CALL _Put(_OutputIter, const _CharT*, size_t) const;
+  _OutputIter _STLP_CALL _Putc(_OutputIter, const char*, size_t) const;
+  char *_STLP_CALL _Ifmt(char*, const char*, ios_base::fmtflags) const;
+  _OutputIter _STLP_CALL _Putgrouped(_OutputIter, const char *, size_t, _CharT) const;
+# endif
+#endif
+
 protected:
   ~num_put() {}
 #if !defined (_STLP_NO_BOOL)

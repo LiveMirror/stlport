@@ -314,7 +314,7 @@ struct _Ctype_not_mask : public unary_function<char, bool> {
 };
 
 ctype<char>::ctype(const ctype_base::mask * __tab, bool __del, size_t __refs) :
-  locale::facet(__refs),
+  ctype_base(__refs),
   _M_ctype_table(__tab ? __tab : classic_table()),
   _M_delete(__tab && __del)
 {}

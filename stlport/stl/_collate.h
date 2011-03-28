@@ -70,9 +70,12 @@ public:
 					   const locale *__l = 0)
   {
     if (__f != 0 && *__f == 0)
-      *__f = new collate<char>(_Locinfo(__l->name().c_str()));
+      *__f = new collate<char>(__l->name().c_str());
     return (locale::collate);
   }
+ protected:
+  collate(const char* __locname, size_t __refs = 0)  : locale::facet(__refs) 
+    { _Init(_Locinfo(__locname));}
 #endif
 
 protected:
@@ -122,6 +125,10 @@ public:
       *__f = new collate<wchar_t>(_Locinfo(__l->name().c_str()));
     return (locale::collate);
   }
+
+ protected:
+  collate(const char* __locname, size_t __refs = 0)  : locale::facet(__refs) 
+    { _Init(_Locinfo(__locname));}
 #endif
 
 protected:

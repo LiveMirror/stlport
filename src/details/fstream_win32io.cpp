@@ -215,7 +215,7 @@ streamoff _Filebuf_base::_M_file_size() {
 }
 
 bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
-                            long permission) {
+                            int permission) {
   _STLP_fd file_no;
 
   if ( __is_open() ) {

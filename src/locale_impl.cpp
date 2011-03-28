@@ -16,7 +16,6 @@
  *
  */
 
-
 #include "stlport_prefix.h"
 
 #include <typeinfo>

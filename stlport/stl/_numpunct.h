@@ -61,6 +61,25 @@ public:
 
   static _STLP_STATIC_DECLSPEC locale::id id;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&, bool) {}
+
+  explicit numpunct(const _Locinfo& __i, size_t __refs = 0, bool __b=false) : 
+    locale::facet(__refs) { _Init(__i, __b); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new numpunct<char_type>();
+    return (locale::numeric);
+  }
+ protected:
+  explicit numpunct(const char* __name, size_t __refs = 0, bool __b=false) : 
+    locale::facet(__refs) { _Init(_Locinfo(__name), __b); }
+
+#endif
+
 protected:
   ~numpunct();
 
@@ -89,6 +108,25 @@ public:
   wstring falsename() const { return do_falsename(); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&, bool) {}
+
+  explicit numpunct(const _Locinfo& __i, size_t __refs=0, bool __b=false) : 
+    locale::facet(__refs) { _Init(__i, __b); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new numpunct<char_type>();
+    return (locale::numeric);
+  }
+ protected:
+  explicit numpunct(const char* __name, size_t __refs = 0, bool __b = false) : 
+    locale::facet(__refs) { _Init(_Locinfo(__name), __b); }
+
+#endif
 
 protected:
   ~numpunct();

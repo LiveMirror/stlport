@@ -511,6 +511,126 @@ num_put<_CharT, _OutputIter>::do_put(_OutputIter __s, ios_base& __f, _CharT /*__
   return result;
 }
 
+
+#if 0 // _STLP_MSVC_BINARY_COMPATIBILITY
+
+template <class _CharT, class _OutputIter>
+_OutputIter
+num_put<_CharT, _OutputIter>::char *_STLP_CALL 
+_Ffmt(  char *_Fmt, char _Spec, ios_base::fmtflags _Flags) const
+  {	// generate sprintf format for floating-point
+    char *_Ptr = _Fmt;
+    *_Ptr++ = '%';
+    
+    if (_Flags & ios_base::showpos)
+      *_Ptr++ = '+';
+    if (_Flags & ios_base::showpoint)
+      *_Ptr++ = '#';
+    *_Ptr++ = '.';
+    *_Ptr++ = '*';
+    if (_Spec != '\0')
+      *_Ptr++ = _Spec;
+    
+    ios_base::fmtflags _Ffl = _Flags & ios_base::floatfield;
+    *_Ptr++ = _Ffl == ios_base::fixed ? 'f'
+      : _Ffl == ios_base::hexfloat ? 'a'	// added with TR1
+      : _Ffl == ios_base::scientific ? 'e' : 'g';	// specifier
+    *_Ptr = '\0';
+    return (_Fmt);
+  }
+ 
+template <class _CharT, class _OutputIter>
+_OutputIter _STLP_CALL 
+num_put<_CharT, _OutputIter>::_Fput(_OutputIter __dest,
+				    ios_base& __iob, _CharT __fill, const char *__buf,
+				    size_t __before, size_t __after,
+				    size_t __trail, size_t __count) const
+{
+  // TODO : find proper way to call __put_float
+  return __dest;
+}
+
+template <class _CharT, class _OutputIter>
+char *_STLP_CALL num_put<_CharT, _OutputIter>::_Ifmt(  char *_Fmt,
+						       const char *_Spec, ios_base::fmtflags _Flags) const
+{
+  char *_Ptr = _Fmt;
+  *_Ptr++ = '%';
+  
+  if (_Flags & ios_base::showpos)
+    *_Ptr++ = '+';
+  if (_Flags & ios_base::showbase)
+			*_Ptr++ = '#';
+  if (_Spec[0] != 'L')
+    *_Ptr++ = _Spec[0];	// qualifier
+  else
+    {	/* change L to I64 */
+      *_Ptr++ = 'I';
+      *_Ptr++ = '6';
+      *_Ptr++ = '4';
+    }
+  
+  ios_base::fmtflags _Basefield = _Flags & ios_base::basefield;
+  *_Ptr++ = _Basefield == ios_base::oct ? 'o'
+    : _Basefield != ios_base::hex ? _Spec[1]	// 'd' or 'u'
+    : _Flags & ios_base::uppercase ? 'X' : 'x';
+  *_Ptr = '\0';
+  return (_Fmt);
+}
+
+template <class _CharT, class _OutputIter>
+_OutputIter _STLP_CALL 
+num_put<_CharT, _OutputIter>::_Iput(_OutputIter __dest,
+				    ios_base& __iob, _CharT __fill, _Inout_cap_(_Count) char *__buf, size_t __count) const
+{
+  return __put_integer(__buf, __buf + __count, __iob, __dest, __iob.flags(), __fill);
+}
+
+template <class _CharT, class _OutputIter>
+_OutputIter _STLP_CALL _Put(_OutputIter __dest,
+			    const _CharT *__src, size_t __count) const
+{
+  return std::copy(__src, __src + __count, __dest);
+}
+
+template <class _CharT, class _OutputIter>
+_OutputIter _STLP_CALL _Putc(_OutputIter __dest,
+			     const char *__p, size_t __count) const
+{
+  for (; 0 < __count; --__count, ++__dest, ++__p)
+    *__dest = _MAKLOCCHR(_CharT, *__p, _Cvt);
+  return (_Dest);
+}
+
+_OutputIter _STLP_CALL _Putgrouped(_OutputIter _Dest,
+				   const char *__p, size_t __count, _CharT _Kseparator) const
+{	// put char sequence [__p, __p + __count) to _Dest with commas
+  for (; ; ++__p, --__count)
+    {	// put field with thousands separators for NULs
+      const char *_Pend =
+	(const char *)::memchr(__p, '\0', __count);
+      size_t _Groupsize = _Pend != 0 ? _Pend - __p : __count;
+      
+      _Dest = _Putc(_Dest, __p, _Groupsize);
+			__p   += _Groupsize, __count -= _Groupsize;
+			if (__count == 0)
+			  break;
+			if (_Kseparator != (_CharT)0)
+			  _Dest = _Rep(_Dest, _Kseparator, 1);
+    }
+  return (_Dest);
+}
+
+_OutputIter _STLP_CALL _Rep(_OutputIter _Dest,
+			    _CharT _Ch, size_t __count) const
+{	// put __count * _Ch to _Dest
+  for (; 0 < __count; --__count, ++_Dest)
+    *_Dest = _Ch;
+  return (_Dest);
+}
+
+#endif
+
 _STLP_END_NAMESPACE
 
 #endif /* _STLP_NUM_PUT_C */

@@ -70,6 +70,25 @@ public:
 
   static _STLP_STATIC_DECLSPEC locale::id id;
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+
+  void _Init(const _Locinfo&) {}
+
+  explicit messages(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new messages<char>();
+    return (locale::messages);
+  }
+
+ protected:
+  explicit messages(const char* __name, size_t __refs = 0) : locale::facet(__refs) { _Init(_Locinfo(__name)); }
+
+#endif
+
 protected:
   ~messages() {}
 
@@ -102,6 +121,25 @@ public:
   { do_close(__c); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+
+  void _Init(const _Locinfo&) {}
+
+  explicit messages(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {	// return locale category mask and construct standard facet
+    if (__f != 0 && *__f == 0)
+      *__f = new messages<wchar_t>();
+    return (locale::messages);
+  }
+
+ protected:
+  explicit messages(const char* __name, size_t __refs = 0) : locale::facet(__refs) { _Init(_Locinfo(__name)); }
+
+#endif
 
 protected:
   ~messages() {}
@@ -155,7 +193,6 @@ public:
   typedef wstring                string_type;
 
   explicit messages_byname(const char* __name, size_t __refs = 0);
-
 protected:
   ~messages_byname();
 
