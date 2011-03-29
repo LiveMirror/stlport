@@ -26,6 +26,7 @@
 
 _STLP_BEGIN_NAMESPACE
 
+
 //----------------------------------------------------------------------
 // ctype<char>
 
@@ -372,8 +373,36 @@ ctype<char>::do_narrow(const char* __low, const char* __high,
   return __high;
 }
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+const char* ctype<char>::_Do_narrow_s(const char* __f, const char *__last,
+				      char __def, char *__dest, size_t __dst_size) const
+{
+  return __dest+1;
+}
+
+const char* ctype<char>::_Do_widen_s(const char* __f, const char *__last,
+				     char *__dest, size_t __dst_size) const
+{
+  return __dest+1;
+}
+
+#endif
 
 #if !defined (_STLP_NO_WCHAR_T)
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+const char* ctype<wchar_t>::_Do_widen_s(const char* __f, const char *__last,
+					wchar_t *__dest, size_t __dst_size) const
+{
+  return __last + 1;
+}
+
+const wchar_t* ctype<wchar_t>::_Do_narrow_s(const wchar_t* __f, const wchar_t *__last,
+					 char __def, char *__dest, size_t __dst_size) const
+{
+  return __last+1;
+}
+#endif
 
 struct _Ctype_w_is_mask : public unary_function<wchar_t, bool> {
   ctype_base::mask M;
@@ -477,7 +506,8 @@ const wchar_t* ctype<wchar_t>::do_narrow(const wchar_t* low,
   return high;
 }
 
-# endif
+#endif
+
 _STLP_END_NAMESPACE
 
 // Local Variables:

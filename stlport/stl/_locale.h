@@ -42,9 +42,7 @@
 #endif
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-#include <stl/_stdexcept.h>
-
-#include <xlocinfo>
+#include <stl/_locinfo.h>
 #endif
 
 #include <stl/_facets_fwd.h>
@@ -173,7 +171,7 @@ private:
   static void __cdecl _Setgloballocale(void *);
 #endif
 
-protected:
+private:
   // those are for internal use
   locale(_Locimp*);
   static const string _Nameless;
@@ -249,7 +247,7 @@ public:
     _Locimp(size_t n, const char* s);
 
   protected:
-    virtual ~_Locimp();
+    ~_Locimp();
     
   public:
     size_t size() const { return facets_vec.size(); }
@@ -259,11 +257,11 @@ public:
     static void _STLP_FUNCTION_THROWS _STLP_CALL _M_throw_bad_cast();
     
   private:
-    void operator=(const _Locimp&);
+    void _STLP_CALL operator=(const _Locimp&);
     
   public:
     class _STLP_CLASS_DECLSPEC Init {
-      public:
+    public:
       Init();
       ~Init();
     private:
@@ -284,6 +282,7 @@ public:
     void insert(locale::facet* __f, locale::id __id);
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  private:
     void _Addfac(locale::facet*, size_t, size_t);
     static _Locimp*  _STLP_CALL  _Makeloc(const _Locinfo&, category, _Locimp*, const locale*);
     static _Locimp*&  _STLP_CALL _Clocptr_func();
@@ -294,7 +293,7 @@ public:
     static void _Makexloc(const _Locinfo&, category, _Locimp *, const locale *);
     _Locimp(bool);
 #endif
-    
+  public:
     // Helper functions for byname construction of locales.
     _Locale_name_hint* insert_ctype_facets(const char* &name, char *buf, _Locale_name_hint* hint);
     _Locale_name_hint* insert_numeric_facets(const char* &name, char *buf, _Locale_name_hint* hint);
@@ -310,6 +309,8 @@ public:
     vector<locale::facet*> facets_vec;
 
   private:
+    static void _STLP_CALL _Locimp_dtor(_Locimp *);
+    static void _Locimp_ctor(_Locimp *,const _Locimp&);
     static void _STLP_CALL _Locimp_Addfac(locale::_Locimp* from, locale::facet*, size_t n);
 
     void _Addfac(locale::facet*, size_t n);

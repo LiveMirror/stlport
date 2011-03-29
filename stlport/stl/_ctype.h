@@ -38,7 +38,7 @@ _STLP_BEGIN_NAMESPACE
 
 class _STLP_CLASS_DECLSPEC ctype_base : public locale::facet {
 public:
-  enum mask {
+  enum {
     space   = _Locale_SPACE,
     print   = _Locale_PRINT,
     cntrl   = _Locale_CNTRL,
@@ -51,6 +51,8 @@ public:
     alnum   = alpha | digit,
     graph   = alnum | punct
   };
+
+  typedef short mask;
 
   ctype_base(size_t __refs) : locale::facet(__refs) {} 
 
@@ -124,36 +126,56 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
   _STLP_STATIC_CONSTANT(size_t, table_size = 256);
 
-  const _CharT * _Narrow_s(const _CharT* __f, const _CharT *__last,
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+
+  void _Init(const _Locinfo&) {}
+
+  explicit ctype(const _Locinfo& __i, size_t __refs = 0) : ctype_base(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {
+    if (__f != 0 && *__f == 0)
+      *__f = new ctype<char>(__l->name().c_str());
+    return (locale::ctype);
+  }
+
+ protected:
+  ctype(const char* __locname, size_t __refs = 0)  : ctype_base(__refs) 
+    { _Init(_Locinfo(__locname));}
+
+  const char * _Narrow_s(const char* __f, const char *__last,
 			   char __def, char *__dest, size_t __dst_size) const
   {
     return _Do_narrow_s(__f, __last,
 			__def, __dest, __dst_size);
   }
 
-  virtual const _CharT* _Do_narrow_s(const _CharT* __f, const _CharT *__last,
-				     char __def, char *__dest, size_t __dst_size) const;
+  virtual const char* _Do_narrow_s(const char* __f, const char *__last,
+				   char __def, char *__dest, size_t __dst_size) const;
 
-  const _CharT * _Widen_s(const _CharT* __f, const _CharT *__last,
-			  _CharT *__dest, size_t __dst_size) const
+  const char * _Widen_s(const char* __f, const char *__last,
+			  char *__dest, size_t __dst_size) const
   {
     return _Do_widen_s(__f, __last,
 		       __dest, __dst_size);
   }
 
-  virtual const _CharT* _Do_narrow_s(const _CharT* __f, const _CharT *__last,
-				     char __def, char *__dest, size_t __dst_size) const;
+  virtual const char* _Do_widen_s(const char* __f, const char *__last,
+				  char *__dest, size_t __dst_size) const;
   
-  char __CLR_OR_THIS_CALL _Donarrow(_CharT __ch, char __dfl) const
+  char __CLR_OR_THIS_CALL _Donarrow(char __ch) const
   {
+    return __ch;
   }
 
-  _CharT __CLR_OR_THIS_CALL _Dowiden(char __src) const
+  char __CLR_OR_THIS_CALL _Dowiden(char __src) const
   {
-    // TODO implement
+    return __src;
   }
 
   static locale::id& _STLP_CALL _Id_func();
+#endif
 
 protected:
   const mask* table() const _STLP_NOTHROW { return _M_ctype_table; }
@@ -256,6 +278,57 @@ public:
     { return do_narrow(__low, __high, __dfault, __to); }
 
   static _STLP_STATIC_DECLSPEC locale::id id;
+
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY
+  void _Init(const _Locinfo&) {}
+
+  explicit ctype(const _Locinfo& __i, size_t __refs = 0) : ctype_base(__refs) { _Init(__i); }
+
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
+					   const locale *__l = 0)
+  {
+    if (__f != 0 && *__f == 0)
+      *__f = new ctype<wchar_t>(__l->name().c_str());
+    return (locale::ctype);
+  }
+ protected:
+  ctype(const char* __locname, size_t __refs = 0)  : ctype_base(__refs) 
+    { _Init(_Locinfo(__locname));}
+  
+  const wchar_t * _Narrow_s(const wchar_t* __f, const wchar_t *__last,
+			    char __def, char *__dest, size_t __dst_size) const
+  {
+    return _Do_narrow_s(__f, __last,
+			__def, __dest, __dst_size);
+  }
+
+  virtual const wchar_t* _Do_narrow_s(const wchar_t* __f, const wchar_t *__last,
+				   char __def, char *__dest, size_t __dst_size) const;
+
+
+  const char* _Widen_s(const char* __f, const char *__last,
+		       wchar_t *__dest, size_t __dst_size) const
+  {
+    return _Do_widen_s(__f, __last,
+		       __dest, __dst_size);
+  }
+
+  virtual const char* _Do_widen_s(const char* __f, const char *__last,
+				  wchar_t *__dest, size_t __dst_size) const;
+  
+  char __CLR_OR_THIS_CALL _Donarrow(wchar_t __ch, char __dfl) const
+  {
+    return char(__ch);
+  }
+
+  wchar_t _Dowiden(char __src) const
+  {
+    // TODO implement
+    return wchar_t(__src);
+  }
+
+  static locale::id& _STLP_CALL _Id_func();
+#endif
 
 protected:
   ~ctype();

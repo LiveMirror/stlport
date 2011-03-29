@@ -81,11 +81,16 @@ locale::_Locimp::_Locimp(const char* s)
   new (&__Loc_init_buf) Init();
 }
 
+void locale::_Locimp::_Locimp_ctor(_Locimp * that,const _Locimp& locimpl)
+{
+  for_each( locimpl.facets_vec.begin(), locimpl.facets_vec.end(), _get_facet);
+  that->facets_vec = locimpl.facets_vec;
+  new (&__Loc_init_buf) Init();
+}
+
 locale::_Locimp::_Locimp( _Locimp const& locimpl )
   : locale::facet(0), name(locimpl.name), facets_vec() {
-  for_each( locimpl.facets_vec.begin(), locimpl.facets_vec.end(), _get_facet);
-  facets_vec = locimpl.facets_vec;
-  new (&__Loc_init_buf) Init();
+  _Locimp_ctor(this, locimpl);
 }
 
 locale::_Locimp::_Locimp( size_t n, const char* s)
@@ -94,10 +99,13 @@ locale::_Locimp::_Locimp( size_t n, const char* s)
 }
 
 locale::_Locimp::~_Locimp() {
-  (&__Loc_init_buf)->~Init();
-  for_each( facets_vec.begin(), facets_vec.end(), _release_facet);
+  _Locimp_dtor(this);
 }
 
+void locale::_Locimp::_Locimp_dtor(_Locimp * that) {
+  (&__Loc_init_buf)->~Init();
+  for_each( that->facets_vec.begin(), that->facets_vec.end(), _release_facet);
+}
 // Initialization of the locale system.  This must be called before
 // any locales are constructed.  (Meaning that it must be called when
 // the I/O library itself is initialized.)
@@ -809,6 +817,7 @@ void locale::_Locimp::_Makexloc(const _Locinfo&, category, _Locimp *, const loca
 locale::_Locimp::_Locimp(bool)
 {
 }
+
 
 locale::_Locimp * locale::_Getgloballocale()
 {
