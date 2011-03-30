@@ -6,4 +6,6 @@
 #  define _STLP_LITTLE_ENDIAN 1
 #endif
 
+#    define _STLP_VENDOR_GLOBAL_CSTD
+
 #define _STLP_USE_UNIX_IO
