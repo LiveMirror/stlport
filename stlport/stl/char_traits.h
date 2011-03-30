@@ -147,6 +147,12 @@ template <class _CharT>
 struct char_traits
   : public __char_traits_base<_CharT, _CharT> {
 
+  typedef _CharT char_type;
+  typedef _CharT int_type;
+  typedef streamoff off_type;
+  typedef streampos pos_type;
+  typedef mbstate_t state_type;
+
   static int _STLP_CALL compare(const char_type* __s1, const char_type* __s2, size_t __n) {
     for (size_t __i = 0; __i < __n; ++__i)
       if (!eq(__s1[__i], __s2[__i]))
@@ -175,14 +181,15 @@ struct char_traits
     return (__n == 0 ? __s1 :
       (char_type*)memcpy(__s1, __s2, __n * sizeof(char_type)));
   }
+
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
   static char_type* _STLP_CALL _Move_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t _Sz)
   {
-    return move(__s1, __s2, std::min(__Sdest, _Sz));
+    return move(__s1, __s2, min(__sDest, _Sz));
   }
 
   static char_type* _STLP_CALL _Copy_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t __n) {
-    return copy(__s1, __s2, std::min(__sDest, __n));
+    return copy(__s1, __s2, min(__sDest, __n));
   }
 #endif
 
@@ -261,11 +268,11 @@ public:
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
   static char_type* _STLP_CALL _Move_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t _Sz)
   {
-    return move(__s1, __s2, std::min(__sDest, _Sz));
+    return move(__s1, __s2, min(__sDest, _Sz));
   }
 
   static char_type* _STLP_CALL _Copy_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t __n) {
-    return copy(__s1, __s2, std::min(__sDest, __n));
+    return copy(__s1, __s2, min(__sDest, __n));
   }
 #endif
 
@@ -336,11 +343,11 @@ struct _STLP_CLASS_DECLSPEC char_traits<wchar_t>
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
   static char_type* _STLP_CALL _Move_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t _Sz)
   {
-    return move(__s1, __s2, std::min(__sDest, _Sz));
+    return move(__s1, __s2, _STLP_STD::min(__sDest, _Sz));
   }
 
   static char_type* _STLP_CALL _Copy_s(char_type* __s1, size_t __sDest, const char_type* __s2, size_t __n) {
-    return copy(__s1, __s2, std::min(__sDest, __n));
+    return copy(__s1, __s2, _STLP_STD::min(__sDest, __n));
   }
 #endif
 

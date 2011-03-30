@@ -402,8 +402,8 @@ protected:
   void _M_deallocate_block()
   {
     if (!_M_using_static_buf()) {
-      _M_alloc.deallocate(_M_buf._M_start, _M_cap);
-      _M_cap = _DEFAULT_SIZE-1;
+      this->_M_alloc.deallocate(_M_buf._M_start, _M_cap);
+      this->_M_cap = _DEFAULT_SIZE-1;
     }
   }
 
@@ -411,7 +411,7 @@ public:
   size_t max_size() const
   {
     const size_type __string_max_size = size_type(-1) / sizeof(_CharT);
-    typename allocator_type::size_type __alloc_max_size = _M_alloc.max_size();
+    typename allocator_type::size_type __alloc_max_size = this->_M_alloc.max_size();
     return (min)(__alloc_max_size, __string_max_size) - 1;
   }
 
@@ -429,11 +429,11 @@ public:
 
   void _M_swap( _Self& __s )
   {
-	 if (_M_alloc == __s._M_alloc)
+	 if (this->_M_alloc == __s._M_alloc)
 	 {	
-		 std::swap(_M_buf, __s._M_buf);
-		 std::swap(_M_size, __s._M_size);
-		 std::swap(_M_cap, __s._M_cap);
+       _STLP_STD::swap(_M_buf, __s._M_buf);
+       _STLP_STD::swap(_M_size, __s._M_size);
+	   _STLP_STD::swap(_M_cap, __s._M_cap);
 	 }
 	 else
 	 {
@@ -444,7 +444,7 @@ public:
  }
 
   allocator_type get_allocator() const
-  { return _M_alloc; }
+  { return this->_M_alloc; }
 
   basic_string():
     _Base(allocator_type())
@@ -611,7 +611,7 @@ protected:                     // Helper functions used by constructors
 	_CharT* __beg = _M_buf._M_start;
 	if (__new_size > 0 )
 	  _Traits::_Copy_s(_M_buf._M_static_buf, _DEFAULT_SIZE, __beg, __new_size);
-	_M_alloc.deallocate(__beg, _M_cap);
+	this->_M_alloc.deallocate(__beg, _M_cap);
       } 
     _M_cap = _DEFAULT_SIZE - 1;
     _Eos(__new_size);
@@ -642,7 +642,7 @@ protected:                     // Helper functions used by constructors
 
   void _Copy(size_type __new_size, size_type __old_size)
   {  
-    _CharT *__ptr = _M_alloc.allocate(__new_size+1);
+    _CharT *__ptr = tis->_M_alloc.allocate(__new_size+1);
     _Traits::_Copy_s(__ptr, __new_size + 1, _M_Start(), __old_size);
     _Tidy(true);
     _M_buf._M_start = __ptr;
@@ -1945,7 +1945,7 @@ template <class _CharT, class _Traits, class _Alloc>
 void basic_string<_CharT, _Traits, _Alloc>::_M_allocate_block(size_t __n) {
   if ((__n <= (max_size())) && (__n >= 0)) {
     if (__n >= _DEFAULT_SIZE) {
-      this->_M_buf._M_start = _M_alloc.allocate(__n+1);
+      this->_M_buf._M_start = this->_M_alloc.allocate(__n+1);
 	  this->_M_cap = __n;
     } else
 		this->_M_cap = _DEFAULT_SIZE-1;

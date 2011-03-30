@@ -21,7 +21,6 @@
 #define _STLP_INTERNAL_LOCINFO_H
 
 #include <stl/_locale.h>
-#include <xlocinfo.h>
 
 _STLP_BEGIN_NAMESPACE
 
@@ -45,7 +44,9 @@ class _STLP_DECLSPEC _Timevec
 
 class _STLP_DECLSPEC _Locinfo
 {
-public:
+ public:
+  
+#ifdef _STLP_MSVC  
 	typedef ::_Collvec _Collvec;
 	typedef ::_Ctypevec _Ctypevec;
 	typedef ::_Cvtvec _Cvtvec;
@@ -56,7 +57,7 @@ public:
 	static void _STLP_CALL _Locinfo_ctor(_Locinfo*, int, const char*);
 	static void _STLP_CALL _Locinfo_dtor(_Locinfo*);
 	static _Locinfo& _STLP_CALL _Locinfo_Addcats(_Locinfo *, int, const char *);
-
+#endif
 	
 	_Locinfo(int __pos, const char *__name);
 	_Locinfo(const char* __name = "C");

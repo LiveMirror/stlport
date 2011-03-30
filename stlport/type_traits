@@ -1262,9 +1262,9 @@ struct aligned_storage
 {
     union type
     {
-        unsigned char __data[L];
-        struct __attribute__((__aligned__((Align))))
-        { } __align;
+      unsigned char __data[L];
+      struct // __attribute__((__aligned__((Align))))
+      { } __align;
     };
 };
 
