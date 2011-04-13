@@ -17,23 +17,26 @@
 !endif
 
 SRCROOT=../..
-STLPORT_DIR=../../..
+STLPORT_DIR=../..
+STLPORT_LIB_DIR= $(STLPORT_DIR)/../lib
 
 !include Makefile.inc
 
-#!ifndef WITHOUT_STLPORT
-#INCLUDES=$(INCLUDES) /I$(STLPORT_INCLUDE_DIR) /I$(SRCROOT)/src /I../include /FI warning_disable.h
-#!else
+!ifndef WITHOUT_STLPORT
+INCLUDES=$(INCLUDES) /I$(STLPORT_INCLUDE_DIR) /I$(SRCROOT)/src /I../include /FI warning_disable.h
+!else
 INCLUDES=$(INCLUDES) /I$(STLPORT_DIR)/src /I$(SRCROOT)/src /I../include  /FI warning_disable.h
 DEFS=/DWITHOUT_STLPORT
-#!endif
+!endif
+
+LDSEARCH=$(LDSEARCH) /LIBPATH:$(STLPORT_LIB_DIR) stlport.6.0.lib
 
 DEFS_DBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STATIC_DBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STATIC_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 
-# LDSEARCH=$(LDSEARCH) /LIBPATH:$(STLPORT_LIB_DIR) stlport.6.0.lib
+
 
 !include $(SRCROOT)/Makefiles/nmake/top.mak
 

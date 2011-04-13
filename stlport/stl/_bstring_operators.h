@@ -19,7 +19,7 @@
 _STLP_BEGIN_NAMESPACE
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
+_STLP_DECLSPEC inline basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
 operator+(const basic_string<_CharT,_Traits,_Alloc>& __s,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   typedef basic_string<_CharT,_Traits,_Alloc> _Str;
@@ -36,7 +36,7 @@ operator+(const basic_string<_CharT,_Traits,_Alloc>& __s,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
+_STLP_DECLSPEC inline basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
 operator+(const _CharT* __s,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -54,7 +54,7 @@ operator+(const _CharT* __s,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
+_STLP_DECLSPEC inline basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
 operator+(_CharT __c,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   typedef basic_string<_CharT,_Traits,_Alloc> _Str;
@@ -70,7 +70,7 @@ operator+(_CharT __c,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
+_STLP_DECLSPEC inline basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
 operator+(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const _CharT* __s) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -88,7 +88,7 @@ operator+(const basic_string<_CharT,_Traits,_Alloc>& __x,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
+_STLP_DECLSPEC inline basic_string<_CharT,_Traits,_Alloc> _STLP_CALL
 operator+(const basic_string<_CharT,_Traits,_Alloc>& __x,
           _CharT __c) {
   typedef basic_string<_CharT,_Traits,_Alloc> _Str;
@@ -108,7 +108,7 @@ operator+(const basic_string<_CharT,_Traits,_Alloc>& __x,
 // Operator== and operator!=
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
  operator==(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const basic_string<_CharT,_Traits,_Alloc>& __y) {
   return __x.size() == __y.size() && _Traits::compare(__x.data(), __y.data(), __x.size()) == 0;
@@ -116,7 +116,7 @@ _STLP_DECLSPEC bool _STLP_CALL
 
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
  operator==(const _CharT* __s,
            const basic_string<_CharT,_Traits,_Alloc>& __y) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -125,7 +125,7 @@ _STLP_DECLSPEC bool _STLP_CALL
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator==(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const _CharT* __s) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -134,14 +134,14 @@ operator==(const basic_string<_CharT,_Traits,_Alloc>& __x,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
  operator==(_CharT __s,
            const basic_string<_CharT,_Traits,_Alloc>& __y) {
   return __y.size() == 1 && _Traits::compare(&__s, __y.data(), 1) == 0;
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
   operator==( const basic_string<_CharT,_Traits,_Alloc>& __y, _CharT __s) {
   return __y.size() == 1 && _Traits::compare(&__s, __y.data(), 1) == 0;
 }
@@ -149,7 +149,7 @@ _STLP_DECLSPEC bool _STLP_CALL
 // Operator< (and also >, <=, and >=).
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   return basic_string<_CharT,_Traits,_Alloc> ::_M_compare(__x.data(), __x.data()+__x.size(),
@@ -157,7 +157,7 @@ operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator<(const _CharT* __s,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -167,7 +167,7 @@ operator<(const _CharT* __s,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const _CharT* __s) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -181,57 +181,57 @@ operator<(const basic_string<_CharT,_Traits,_Alloc>& __x,
  * from rel_ops namespace.
  */
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator!=(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const basic_string<_CharT,_Traits,_Alloc>& __y)
 { return !(__x == __y); }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator>(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const basic_string<_CharT,_Traits,_Alloc>& __y)
 { return __y < __x; }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator<=(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const basic_string<_CharT,_Traits,_Alloc>& __y)
 { return !(__y < __x); }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator>=(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const basic_string<_CharT,_Traits,_Alloc>& __y)
 { return !(__x < __y); }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator!=(const _CharT* __s,
            const basic_string<_CharT,_Traits,_Alloc>& __y) {
   return !(__s == __y);
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator!=(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const _CharT* __s) {
   return !(__x == __s);
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
   operator!=(const basic_string<_CharT,_Traits,_Alloc>& __y, _CharT __s) {
   return !(__s == __y);
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
   operator!=(_CharT __s, const basic_string<_CharT,_Traits,_Alloc>& __y) {
   return !(__s == __y);
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator>(const _CharT* __s,
           const basic_string<_CharT,_Traits,_Alloc>& __y) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -239,7 +239,7 @@ operator>(const _CharT* __s,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator>(const basic_string<_CharT,_Traits,_Alloc>& __x,
           const _CharT* __s) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -247,7 +247,7 @@ operator>(const basic_string<_CharT,_Traits,_Alloc>& __x,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator<=(const _CharT* __s,
            const basic_string<_CharT,_Traits,_Alloc>& __y) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -255,7 +255,7 @@ operator<=(const _CharT* __s,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator<=(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const _CharT* __s) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -263,7 +263,7 @@ operator<=(const basic_string<_CharT,_Traits,_Alloc>& __x,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator>=(const _CharT* __s,
            const basic_string<_CharT,_Traits,_Alloc>& __y) {
   _STLP_FIX_LITERAL_BUG(__s)
@@ -271,7 +271,7 @@ operator>=(const _CharT* __s,
 }
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC bool _STLP_CALL
+_STLP_DECLSPEC inline bool _STLP_CALL
 operator>=(const basic_string<_CharT,_Traits,_Alloc>& __x,
            const _CharT* __s) {
   _STLP_FIX_LITERAL_BUG(__s)

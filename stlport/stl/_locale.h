@@ -91,7 +91,7 @@ public:
      * size_t instance and _Refcount_Base use __stl_atomic_t instances that might
      * have lower sizeof and generate roll issues. 1 is enough to keep the facet
      * alive when required. */
-    explicit facet(size_t __init_count = 0) : _Refcount_Base( __init_count == 0 ? 0 : 1 ) {}
+    explicit facet(size_t __init_count = 0);
     virtual ~facet();
     friend class locale;
     friend class _Locimp;
@@ -113,10 +113,10 @@ public:
       facet_Register(this);
     }
 
-    static void facet_Register(facet *);
     static size_t _STLP_CALL _Getcat(const facet **, const locale *);
+  private:
+    static void _STLP_CALL facet_Register(facet *);
 #endif
-
   };
 
 #if defined (__MVS__) || defined (__OS400__)
@@ -339,7 +339,7 @@ _STLP_DECLSPEC locale::_Locimp * _STLP_CALL _copy_Nameless_Locimp( locale::_Loci
 
 template <class _Facet>
 locale::locale(const locale& __loc, _Facet* __f) 
-  : _Locale(__f != 0 ? _copy_Nameless_Locimp(__loc._M_impl) : __loc._M_impl) {
+  : _M_impl(__f != 0 ? _copy_Nameless_Locimp(__loc._M_impl) : __loc._M_impl) {
   if ( __f != 0 ) {
     _STLP_PRIV _InsertFacet(*this, __f);
   }

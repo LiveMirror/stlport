@@ -39,6 +39,13 @@ locale* _Stl_get_global_locale();
 #  define locale _STLP_NO_MEM_T_NAME(loc)
 #endif
 
+locale::facet::facet(size_t __init_count) : 
+  _Refcount_Base( __init_count == 0 ? 0 : 1 ) 
+{
+  // make sure locale system is initialized
+  locale::_Locimp::_S_initialize();
+}
+
 locale::facet::~facet() {}
  
 #if defined (_STLP_INLINE_MEMBER_TEMPLATES)

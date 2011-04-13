@@ -205,7 +205,7 @@ int test_suite::flags( int f )
   return tmp;
 }
 
-trivial_logger __trivial_logger_inst( cerr );
+trivial_logger __trivial_logger_inst( stderr );
 
 base_logger *test_suite::logger = &__trivial_logger_inst;
 stack<test_suite *> test_suite::_stack;

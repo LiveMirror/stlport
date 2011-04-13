@@ -46,7 +46,7 @@ _STLP_BEGIN_NAMESPACE
 _STLP_MOVE_TO_PRIV_NAMESPACE
 
 // Base class for features common to stdio_istreambuf and stdio_ostreambuf
-class stdio_streambuf_base :
+class _STLP_CLASS_DECLSPEC stdio_streambuf_base :
   public basic_streambuf<char, char_traits<char> > /* FILE_basic_streambuf */ {
 public:                         // Constructor, destructor.
   // The argument may not be null.  It must be an open file pointer.
@@ -70,9 +70,9 @@ protected:
   FILE* _M_file;
 };
 
-class stdio_istreambuf : public stdio_streambuf_base {
+class _STLP_CLASS_DECLSPEC stdio_istreambuf : public stdio_streambuf_base {
 public:                         // Constructor, destructor.
-  stdio_istreambuf(FILE* __f) : stdio_streambuf_base(__f) {}
+  stdio_istreambuf(FILE* __f);
   ~stdio_istreambuf();
 
 protected:                      // Virtual functions from basic_streambuf.
@@ -82,9 +82,9 @@ protected:                      // Virtual functions from basic_streambuf.
   virtual int_type pbackfail(int_type c = traits_type::eof());
 };
 
-class stdio_ostreambuf : public stdio_streambuf_base {
+class _STLP_CLASS_DECLSPEC stdio_ostreambuf : public stdio_streambuf_base {
 public:                         // Constructor, destructor.
-  stdio_ostreambuf(FILE* __f) : stdio_streambuf_base(__f) {}
+  stdio_ostreambuf(FILE* __f);
   ~stdio_ostreambuf();
 
 protected:                      // Virtual functions from basic_streambuf.

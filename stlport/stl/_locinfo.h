@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2011
  * Boris Fomitchev
@@ -21,6 +22,8 @@
 #define _STLP_INTERNAL_LOCINFO_H
 
 #include <stl/_locale.h>
+#include <xlocinfo.h>
+
 
 _STLP_BEGIN_NAMESPACE
 

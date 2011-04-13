@@ -713,13 +713,13 @@ struct my_traits : public char_traits<char> {
 namespace std {
   template <>
   class codecvt<char, char, my_state>
-    : public locale::facet, public codecvt_base {
+    : public codecvt_base {
   public:
     typedef char intern_type;
     typedef char extern_type;
     typedef my_state state_type;
 
-    explicit codecvt(size_t __refs = 0) : locale::facet(__refs) {}
+    explicit codecvt(size_t __refs = 0) : codecvt_base(__refs) {}
     result out(state_type&,
                const intern_type*  __from,
                const intern_type*,

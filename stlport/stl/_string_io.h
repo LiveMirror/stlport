@@ -48,18 +48,18 @@ operator<<(basic_ostream<_CharT, _Traits>& __os,
 #endif /* _STLP_USE_TEMPLATE_EXPRESSION */
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_istream<_CharT, _Traits>&  _STLP_CALL
+_STLP_DECLSPEC inline basic_istream<_CharT, _Traits>&  _STLP_CALL
 operator>>(basic_istream<_CharT, _Traits>& __is,
            basic_string<_CharT,_Traits,_Alloc>& __s);
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_istream<_CharT, _Traits>& _STLP_CALL
+_STLP_DECLSPEC inline basic_istream<_CharT, _Traits>& _STLP_CALL
 getline(basic_istream<_CharT, _Traits>& __is,
         basic_string<_CharT,_Traits,_Alloc>& __s,
         _CharT __delim);
 
 template <class _CharT, class _Traits, class _Alloc>
-_STLP_DECLSPEC basic_istream<_CharT, _Traits>& _STLP_CALL
+_STLP_DECLSPEC inline basic_istream<_CharT, _Traits>& _STLP_CALL
 getline(basic_istream<_CharT, _Traits>& __is,
         basic_string<_CharT,_Traits,_Alloc>& __s) {
   return getline(__is, __s, __is.widen('\n'));

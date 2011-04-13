@@ -67,7 +67,9 @@ _STLP_MOVE_TO_PRIV_NAMESPACE
 stdio_streambuf_base::stdio_streambuf_base(FILE* file)
     : /* _STLP_STD::FILE_basic_streambuf(file, 0), */
     _M_file(file)
-{}
+{
+  ;
+}
 
 stdio_streambuf_base::~stdio_streambuf_base() {
   _STLP_VENDOR_CSTD::fflush(_M_file);
@@ -160,6 +162,12 @@ int stdio_streambuf_base::sync() {
 //----------------------------------------------------------------------
 // Class stdio_istreambuf
 
+stdio_istreambuf::stdio_istreambuf(FILE* __f) : 
+  stdio_streambuf_base(__f) 
+{
+  ;
+}
+
 stdio_istreambuf::~stdio_istreambuf() {}
 
 streamsize stdio_istreambuf::showmanyc()
@@ -206,6 +214,10 @@ stdio_istreambuf::int_type stdio_istreambuf::pbackfail(int_type c) {
 
 //----------------------------------------------------------------------
 // Class stdio_ostreambuf
+stdio_ostreambuf::stdio_ostreambuf(FILE* __f):
+  stdio_streambuf_base(__f) 
+{
+}
 
 stdio_ostreambuf::~stdio_ostreambuf() {}
 

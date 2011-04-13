@@ -188,37 +188,37 @@ void  _STLP_CALL ios_base::_S_initialize() {
   using _STLP_PRIV stdio_ostreambuf;
 #endif
 
-  auto_ptr<streambuf> cin_buf;
-  auto_ptr<streambuf> cout_buf;
-  auto_ptr<streambuf> cerr_buf;
-  auto_ptr<streambuf> clog_buf;
+  streambuf* cin_buf;
+  streambuf* cout_buf;
+  streambuf* cerr_buf;
+  streambuf* clog_buf;
 
   if (_S_is_synced)
-    cin_buf.reset(new stdio_istreambuf(stdin));
+    cin_buf = new stdio_istreambuf(stdin);
   else
-    cin_buf.reset(_Stl_create_filebuf(stdin, ios_base::in));
+    cin_buf = _Stl_create_filebuf(stdin, ios_base::in);
 
   if (_S_is_synced) {
 #ifdef _STLP_REDIRECT_STDSTREAMS
-    cout_buf.reset(_Stl_create_filebuf("/stdout.txt", ios::out));
-    cerr_buf.reset(_Stl_create_filebuf("/stderr.txt", ios::out));
-    clog_buf.reset(_Stl_create_filebuf("/stdlog.txt", ios::out));
+    cout_buf = _Stl_create_filebuf("/stdout.txt", ios::out);
+    cerr_buf = _Stl_create_filebuf("/stderr.txt", ios::out);
+    clog_buf = _Stl_create_filebuf("/stdlog.txt", ios::out);
 #else
-    cout_buf.reset(new stdio_ostreambuf(stdout));
-    cerr_buf.reset(new stdio_ostreambuf(stderr));
-    clog_buf.reset(new stdio_ostreambuf(stderr));
+    cout_buf = new stdio_ostreambuf(stdout);
+    cerr_buf = new stdio_ostreambuf(stderr);
+    clog_buf = new stdio_ostreambuf(stderr);
 #endif
   }
   else {
-    cout_buf.reset(_Stl_create_filebuf(stdout, ios_base::out));
-    cerr_buf.reset(_Stl_create_filebuf(stderr, ios_base::out));
-    clog_buf.reset(_Stl_create_filebuf(stderr, ios_base::out));
+    cout_buf = _Stl_create_filebuf(stdout, ios_base::out);
+    cerr_buf = _Stl_create_filebuf(stderr, ios_base::out);
+    clog_buf = _Stl_create_filebuf(stderr, ios_base::out);
   }
 
-  istream* ptr_cin  = new(&cin)  istream(cin_buf.get()); cin_buf.release();
-  ostream* ptr_cout = new(&cout) ostream(cout_buf.get()); cout_buf.release();
-  ostream* ptr_cerr = new(&cerr) ostream(cerr_buf.get()); cerr_buf.release();
-  /*ostream* ptr_clog = */ new(&clog) ostream(clog_buf.get()); clog_buf.release();
+  istream* ptr_cin  = new(&cin)  istream(cin_buf);
+  ostream* ptr_cout = new(&cout) ostream(cout_buf);
+  ostream* ptr_cerr = new(&cerr) ostream(cerr_buf);
+  ostream* ptr_clog = new(&clog) ostream(clog_buf);
   ptr_cin->tie(ptr_cout);
   ptr_cerr->setf(ios_base::unitbuf);
 

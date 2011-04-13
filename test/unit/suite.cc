@@ -21,16 +21,72 @@
 #include <string>
 #include <sstream>
 
-  printf ("sizeof(test_s): %d, s1==s2:%d\n", sizeof(test_s), myar[0]==myar[1]);
+#if 0
+#include "type_traits_test.h"
+#include "ratio_test.h"
+#include "vector_test.h"
+#include "deque_test.h"
+#include "list_test.h"
+#include "slist_test.h"
+#endif
+
+#include "string_test.h"
+#include "stream_test.h"
+#include "iter_test.h"
+#include "codecvt_test.h"
+#include "exception_test.h"
+#include "locale_test.h"
+#include "errno_test.h"
+#include "shared_ptr_test.h"
+// #include "reference_wrapper_test.h"
+
+int main( int argc, const char** argv )
+{
+# if 0
+  Opts opts;
+
+  opts.description( "test suite for 'sockios' framework" );
+  opts.usage( "[options]" );
+
+  opts << option<void>( "print this help message", 'h', "help" )
+       << option<void>( "list all test cases", 'l', "list" )
+       << option<std::string>( "run tests by number", 'r', "run" )["0"]
+       << option<void>( "print status of tests within test suite", 'v', "verbose" )
+       << option<void>(  "trace checks", 't', "trace" );
+
+  try {
+    opts.parse( argc, argv );
+  }
+  catch (...) {
+    opts.help( std::cerr );
+    return 1;
+  }
+
+  if ( opts.is_set( 'h' ) ) {
+    opts.help( std::cerr );
+    return 0;
+  }
+#endif
+
+  std::string test_s("Size test");
+  std::string myar0;
+  std::string myar1;
+  myar0=test_s;
+  std::string::const_iterator cit;
+
+  printf ("sizeof(_String_base): %d, sizeof(_String_val): %d\n", sizeof(std::_String_base), sizeof(std::_String_val<char, std::allocator<char> > ));
+  printf ("sizeof(test_s): %d, s1==s2:%d\n", sizeof(test_s), myar0==test_s);
   printf ("sizeof(cit): %d\n", sizeof(cit));
 
   exam::test_suite t( "STLport test" );
-  t.set_logger(new exam::trivial_logger(stderr));
+
+#if 0
   t.add( &type_traits_test::is_trivially_copyable, ttt, "is_trivially_copyable", tt_tc[0] );
 
   ratio_test ratio_tst;
 
   t.add( &ratio_test::ratio, ratio_tst, "ratio", tt_tc[0] );
+#endif
 
   //   vector_test vec_test;
 
@@ -78,14 +134,7 @@
   
   //   t.add( &cstring_test::import_checks, cst_test, "import_checks" );
   
-  iostream_test strm_test;
-  //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
-  strm_test.cout_out(&t);
-  //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
-  //  t.add( &iostream_test::in_avail, strm_test, "in_avail in std streams" );
-  //  strm_test.manipulators(&t);
-  //  strm_test.in_avail(&t);
-
+#if 0
   sstream_test sstrm_test;
 
   t.add( &sstream_test::output, sstrm_test, "sstream output" );
@@ -109,6 +158,20 @@
   t.add( &sstream_test::extra0_bug_id_2728232, sstrm_test, "extra 0; bug ID: 2728232" );
   t.add( &sstream_test::negative, sstrm_test, "sstream negative" );
 
+  iostream_test strm_test;
+  //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
+  //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
+  //  t.add( &iostream_test::in_avail, strm_test, "in_avail in std streams" );
+  t.add (&iostream_test::cout_out, strm_test, "hello world");
+  //  strm_test.manipulators(&t);
+  //  strm_test.in_avail(&t);
+
+# endif
+
+  fstream_test fstrm_test0;
+
+  t.add( &fstream_test::rdbuf, fstrm_test0, "fstream rdbuf0");
+
   fstream_test fstrm_test;
   exam::test_suite::test_case_type fstream_tc[10];
 
@@ -128,6 +191,7 @@
   t.add( &fstream_test::buf, fstrm_test, "fstream buf", fstream_tc[0] );
 
   t.add( &fstream_test::rdbuf, fstrm_test, "fstream rdbuf", fstream_tc[0]);
+
   //   t.add( &fstream_test::streambuf_output, fstrm_test, "fstream streambuf_output", fstream_tc[0]);
 
   t.add( &fstream_test::win32_file_format, fstrm_test, "fstream win32_file_format", fstream_tc[0] );
@@ -139,6 +203,7 @@
 
   t.add( &fstream_test::rewind, fstrm_test, "fstream write after read fail", fstream_tc[1] );
 
+#if 0
   istream_iterator_test isit_test;
 
   t.add( &istream_iterator_test::istmit1, isit_test, "istmit1" );
@@ -154,7 +219,7 @@
   t.add( &ioiter_test::assign_test, ioit_test, "assign_test" );
   t.add( &ioiter_test::assign2_test, ioit_test, "assign2_test" );
 
-#if 0
+
 
   insert_iter_test ins_test;
 
@@ -390,6 +455,7 @@
   errno_test err_test;
   t.add( &errno_test::check, err_test, "errno_test::check" );
 
+#if 0
   num_put_get_test nmg_test;
 
   // t.add( &num_put_get_test::scientific_precision, nmg_test, "scientific precision",
@@ -401,6 +467,7 @@
   t.add( &num_put_get_test::pointer, nmg_test, "pointer" );
   t.add( &num_put_get_test::fix_float_long, nmg_test, "fix_float_long" );
   t.add( &num_put_get_test::custom_numpunct, nmg_test, "custom_numpunct" );
+
 
   codecvt_test cvt_test;
   exam::test_suite::test_case_type cvt_tc[10];
@@ -417,6 +484,7 @@
     cvt_tc[1] = t.add( &codecvt_test::utf8_to_wchar, cvt_test, "convert UTF-8 to wchar", cvt_tc[0] ) );
   t.add( &codecvt_test::partial_conversion, cvt_test, "codecvt partial conversion", cvt_tc[1] );
 
+#endif
 
   shared_ptr_test shp_test;
   t.add( &shared_ptr_test::shared_from_this, shp_test, "shared_from_this" );
@@ -426,7 +494,6 @@
   //  t.add( &ref_wrapper_test::cref, ref_test, "cref" );
 
 #if 0
-
   locale_test ltest;
 
   t.add( &locale_test::locale_by_name, ltest, "locale_by_name" );

@@ -19,7 +19,7 @@
 #include <stack>
 
 #include <cstdio>
-// #include <iostream>
+#include <iostream>
 #include <algorithm>
 #include <functional>
 
@@ -157,7 +157,6 @@ test_suite::test_case_type test_suite::add( test_suite::func_type f, const strin
   _vertices.push_back( std::make_pair( v, 1 ) );
   _test[v].tc = detail::make_test_case( detail::call( f ) );
   _test[v].state = 0;
-  _test[v].name = name;
   // ++_stat.total;
 
   return v;
@@ -206,7 +205,7 @@ int test_suite::flags( int f )
   return tmp;
 }
 
-trivial_logger __trivial_logger_inst( cerr );
+trivial_logger __trivial_logger_inst( stderr );
 
 base_logger *test_suite::logger = &__trivial_logger_inst;
 stack<test_suite *> test_suite::_stack;

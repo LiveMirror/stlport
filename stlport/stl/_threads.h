@@ -473,6 +473,8 @@ public:
   ~_Refcount_Base(){};
 #endif
 
+  __stl_atomic_t _M_count() const { return _M_ref_count; }
+
   // _M_incr and _M_decr
 #if defined (_STLP_THREADS)
 #  if !defined (_STLP_USE_MUTEX)

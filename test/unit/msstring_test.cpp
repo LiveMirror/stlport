@@ -18,8 +18,6 @@
  *
  */
 
-#define _STLP_USE_NO_IOSTREAMS
-
 //Has to be first for StackAllocator swap overload to be taken
 //into account (at least using GCC 4.0.1)
 #include "stack_allocator.h"

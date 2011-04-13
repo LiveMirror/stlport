@@ -93,6 +93,7 @@ _STLP_DECLSPEC bool uncaught_exception()
 {
   return true;
 }
+
 #endif
 
 #if !defined(_STLP_WCE_EVC3)

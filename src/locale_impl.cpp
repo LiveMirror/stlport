@@ -33,6 +33,11 @@
 _STLP_BEGIN_NAMESPACE
 
 static const string _Nameless("*");
+static _Refcount_Base _S_count(0);
+
+static ios_base::Init _IosInit;
+// The classic locale contains every facet that belongs to a category.
+static _Stl_aligned_buffer<locale::_Locimp> _Locale_classic_impl_buf;
 
 static inline bool is_C_locale_name (const char* name)
 { return ((name[0] == 'C') && (name[1] == 0)); }
@@ -56,36 +61,27 @@ size_t locale::id::_S_max = 27;
 
 static void _Stl_loc_assign_ids();
 
-static _Stl_aligned_buffer<locale::_Locimp::Init> __Loc_init_buf;
-
 locale::_Locimp::Init::Init() {
-  if (_M_count()._M_incr() == 1) {
-    locale::_Locimp::_S_initialize();
-  }
+  locale::_Locimp::_S_initialize();
 }
 
 locale::_Locimp::Init::~Init() {
-  if (_M_count()._M_decr() == 0) {
-    locale::_Locimp::_S_uninitialize();
-  }
+  //  if (_M_count()._M_decr() == 0) {
+  //    locale::_Locimp::_S_uninitialize();
+  //  }
 }
 
-_Refcount_Base& locale::_Locimp::Init::_M_count() const {
-  static _Refcount_Base _S_count(0);
-  return _S_count;
-}
 
 locale::_Locimp::_Locimp(const char* s)
   : locale::facet(0), name(s), facets_vec() {
   facets_vec.reserve( locale::id::_S_max );
-  new (&__Loc_init_buf) Init();
 }
 
 void locale::_Locimp::_Locimp_ctor(_Locimp * that,const _Locimp& locimpl)
 {
+  that->name = locimpl.name;
   for_each( locimpl.facets_vec.begin(), locimpl.facets_vec.end(), _get_facet);
   that->facets_vec = locimpl.facets_vec;
-  new (&__Loc_init_buf) Init();
 }
 
 locale::_Locimp::_Locimp( _Locimp const& locimpl )
@@ -95,7 +91,6 @@ locale::_Locimp::_Locimp( _Locimp const& locimpl )
 
 locale::_Locimp::_Locimp( size_t n, const char* s)
   : locale::facet(0), name(s), facets_vec(n, 0) {
-  new (&__Loc_init_buf) Init();
 }
 
 locale::_Locimp::~_Locimp() {
@@ -103,15 +98,20 @@ locale::_Locimp::~_Locimp() {
 }
 
 void locale::_Locimp::_Locimp_dtor(_Locimp * that) {
-  (&__Loc_init_buf)->~Init();
   for_each( that->facets_vec.begin(), that->facets_vec.end(), _release_facet);
 }
 // Initialization of the locale system.  This must be called before
 // any locales are constructed.  (Meaning that it must be called when
 // the I/O library itself is initialized.)
 void _STLP_CALL locale::_Locimp::_S_initialize() {
-  _Stl_loc_assign_ids();
-  make_classic_locale();
+  if (_S_count._M_count() == 0)
+  { _S_count._M_incr();
+    if ( _S_count._M_count() == 1 ) 
+	{
+		_Stl_loc_assign_ids();
+		make_classic_locale();
+	}
+  }
 }
 
 // Release of the classic locale ressources. Has to be called after the last
@@ -617,12 +617,12 @@ static locale *_Stl_global_locale = 0;
 locale::_Locimp* locale::_Locimp::_C_locale_ptr = 0;
 
 locale* _Stl_get_classic_locale() {
-  static locale::_Locimp::Init init;
+  locale::_Locimp::Init init;
   return _Stl_classic_locale;
 }
 
 locale* _Stl_get_global_locale() {
-  static locale::_Locimp::Init init;
+  locale::_Locimp::Init init;
   return _Stl_global_locale;
 }
 
@@ -638,10 +638,6 @@ locale* _Stl_get_global_locale() {
 #  pragma warning (disable : 4073)
 #  pragma init_seg(lib)
 #endif
-
-static ios_base::Init _IosInit;
-// The classic locale contains every facet that belongs to a category.
-static _Stl_aligned_buffer<locale::_Locimp> _Locale_classic_impl_buf;
 
 void locale::_Locimp::make_classic_locale() {
   // This funcion will be called once: during build classic locale::_Locimp
@@ -831,14 +827,15 @@ locale::_Locimp * locale::_Init()
   return _Getgloballocale();
 }
 
-void __cdecl locale::_Setgloballocale(void * g)
+void _STLP_CALL locale::_Setgloballocale(void * g)
 {
   _Stl_global_locale = (locale*)g;
 }
 
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
 void locale::facet::facet_Register(facet *)
 {
-
+  // TODO: implement
 }
 
 size_t _STLP_CALL locale::facet::_Getcat(const facet **,
@@ -846,6 +843,7 @@ size_t _STLP_CALL locale::facet::_Getcat(const facet **,
 {
   return ((size_t)(-1));
 }
+#endif
 
 _Lockit::_Lockit(): _Locktype(0)
 {

@@ -132,7 +132,7 @@ public:
 
   _Cont_base_ptr _M_container; 
   pointer _M_ptr;
-  _String_const_iterator(const _CharT* p, _Cont_base_ptr c = _STLP_NO_CONT):
+  _String_const_iterator(const _CharT* p = 0, _Cont_base_ptr c = _STLP_NO_CONT):
     _M_container(c), _M_ptr(p)
   {
   }
@@ -236,7 +236,7 @@ public:
 
   _Cont_base_ptr _M_container; 
   pointer _M_ptr;
-  _String_iterator(_CharT* p, _Cont_base_ptr c = _STLP_NO_CONT):
+  _String_iterator(_CharT* p = 0, _Cont_base_ptr c = _STLP_NO_CONT):
     _M_container(c), _M_ptr(p)
   {
   }
@@ -290,7 +290,7 @@ public:
   }
   _Self operator-(difference_type __n) const {
     _Self __tmp(*this);
-    _M_ptr-=__n;
+    __tmp-=__n;
     return __tmp;
   }
   reference operator[](difference_type __n) const { return *(*this + __n); }
@@ -453,7 +453,6 @@ public:
   explicit basic_string(const allocator_type& __a)
     : _Base(__a)
   {  _M_allocate_block(); _M_terminate_string(); }
-
 
   basic_string(_Reserve_t, size_t __n)
     : _Base(allocator_type())
@@ -642,7 +641,7 @@ protected:                     // Helper functions used by constructors
 
   void _Copy(size_type __new_size, size_type __old_size)
   {  
-    _CharT *__ptr = tis->_M_alloc.allocate(__new_size+1);
+    _CharT *__ptr = this->_M_alloc.allocate(__new_size+1);
     _Traits::_Copy_s(__ptr, __new_size + 1, _M_Start(), __old_size);
     _Tidy(true);
     _M_buf._M_start = __ptr;
@@ -929,20 +928,16 @@ _STLP_PRIVATE:  // Helper functions for insert.
   }
 
   template <class _ForwardIter>
-  void _M_insert_overflow( iterator __pos, _ForwardIter __first, _ForwardIter __last, size_type __n )
+  void _M_insert_overflow( const_iterator __pos, _ForwardIter __first, _ForwardIter __last, size_type __n )
       {
+	// TODO : complete impl
         size_type __len = _M_compute_next_size(__n);
-        pointer __new_start = this->_M_start_of_storage.allocate(__len);
-        pointer __new_finish = uninitialized_copy(this->_M_Start(), __pos, __new_start);
-        __new_finish = uninitialized_copy(__first, __last, __new_finish);
-        __new_finish = uninitialized_copy(__pos, this->_M_Finish(), __new_finish);
-        _M_construct_null(__new_finish);
-        this->_M_deallocate_block();
-        this->_M_reset(__new_start, __new_finish, __new_start + __len);
+        this->_Grow(__len);
+        this->_Eos(__len);
       }
 
   template <class _InputIter>
-  void _M_insertT(iterator __p, _InputIter __first, _InputIter __last,
+  void _M_insertT(const_iterator __p, _InputIter __first, _InputIter __last,
                   const input_iterator_tag &) {
     for ( ; __first != __last; ++__first) {
       __p = insert(__p, *__first);
@@ -951,27 +946,27 @@ _STLP_PRIVATE:  // Helper functions for insert.
   }
 
   template <class _ForwardIter>
-  void _M_insertT(iterator __pos, _ForwardIter __first, _ForwardIter __last,
+  void _M_insertT(const_iterator __pos, _ForwardIter __first, _ForwardIter __last,
                   const forward_iterator_tag &) {
     if (__first != __last) {
       size_type __n = _STLP_STD::distance(__first, __last);
       if (__n < this->_M_rest()) {
-        const size_type __elems_after = this->_M_finish - __pos;
+        const size_type __elems_after = this->end() - __pos;
         if (__elems_after >= __n) {
           uninitialized_copy((this->_M_Finish() - __n) + 1, this->_M_Finish() + 1, this->_M_Finish() + 1);
-          this->_M_finish += __n;
-          _Traits::move(__pos + __n, __pos, (__elems_after - __n) + 1);
-          _M_copyT(__first, __last, __pos);
+          this->_M_size += __n;
+          _Traits::move((_CharT*)&*__pos + __n, &*__pos, (__elems_after - __n) + 1);
+          _M_copyT(&*__first, &*__last, (_CharT*)&*__pos);
         }
         else {
           pointer __old_finish = this->_M_Finish();
           _ForwardIter __mid = __first;
           _STLP_STD::advance(__mid, __elems_after + 1);
           _STLP_STD::uninitialized_copy(__mid, __last, this->_M_Finish() + 1);
-          this->_M_finish += __n - __elems_after;
-          uninitialized_copy(__pos, __old_finish + 1, this->_M_Finish());
-          this->_M_finish += __elems_after;
-          _M_copyT(__first, __mid, __pos);
+          this->_M_size += __n - __elems_after;
+          uninitialized_copy(&*__pos, __old_finish + 1, this->_M_Finish());
+          this->_M_size += __elems_after;
+          _M_copyT(&*__first, &*__mid, (_CharT*)&*__pos);
         }
       }
       else {
@@ -990,7 +985,7 @@ _STLP_PRIVATE:  // Helper functions for insert.
                           const false_type& /*Integral*/) {
     _STLP_FIX_LITERAL_BUG(__p)
     /* We are forced to do a temporary string to avoid the self referencing issue. */
-    const _Self __self(__first, __last, get_allocator());
+    _Self __self(__first, __last, get_allocator());
     _M_insertT(__p, __self.begin(), __self.end(), forward_iterator_tag());
   }
 
@@ -1965,6 +1960,8 @@ const size_t basic_string<_CharT, _Traits, _Alloc>::npos;
 
 
 _STLP_END_NAMESPACE
+
+#undef __size_type__
 
 #endif /* _STLP_BSTRING_H */
 
