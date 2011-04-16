@@ -55,7 +55,7 @@ template <class _CharT, class _Traits>
 streamsize
 basic_streambuf<_CharT, _Traits>::_Xsgetn_s(_CharT* __s, size_t __size, streamsize __n) {
   streamsize __minsize = std::min((streamsize)__size, __n);
-  return xsgetn(__s, __n);
+  return xsgetn(__s, __minsize);
 }
 
 #endif

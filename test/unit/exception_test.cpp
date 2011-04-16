@@ -4,7 +4,9 @@
 #include <stdexcept>
 #include <string>
 
-#if !defined (STLPORT) || !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT)
+#define _STLP_NO_UNEXPECTED_EXCEPT_SUPPORT
+
+#if !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT)
 bool g_unexpected_called = false;
 void unexpected_hdl() {
   g_unexpected_called = true;
@@ -38,7 +40,7 @@ int EXAM_IMPL(exception_test::what)
 
 int EXAM_IMPL(exception_test::unexpected_except)
 {
-#if !defined (STLPORT) || !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT)
+#if !defined (_STLP_NO_UNEXPECTED_EXCEPT_SUPPORT)
   std::unexpected_handler hdl = &unexpected_hdl;
   std::set_unexpected(hdl);
 
@@ -58,7 +60,7 @@ int EXAM_IMPL(exception_test::unexpected_except)
   return EXAM_RESULT;
 }
 
-#if !defined (STLPORT) || !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
+#if !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
 struct UncaughtClassTest
 {
   UncaughtClassTest(int &res) : _res(res)
@@ -74,7 +76,7 @@ struct UncaughtClassTest
 
 int EXAM_IMPL(exception_test::uncaught_except)
 {
-#if !defined (STLPORT) || !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
+#if !defined (_STLP_NO_UNCAUGHT_EXCEPT_SUPPORT)
   int uncaught_result = -1;
   {
     UncaughtClassTest test_inst(uncaught_result);

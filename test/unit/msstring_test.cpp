@@ -433,9 +433,11 @@ int EXAM_IMPL(string_test::insert)
   str.insert(str.begin(), str.begin() + str.size() / 2 - 1, str.end());
   EXAM_CHECK( str == "ng for string callsThis is test string for string calls" );
 
+#if 0
   vector<int> int_vect;
   //Just a compile time test:
   str.insert(str.end(), int_vect.begin(), int_vect.end());
+#endif
 
   string str0;
   str0.insert(str0.begin(), 5, '0');
