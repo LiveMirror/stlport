@@ -48,9 +48,15 @@ using namespace std;
 
 int EXAM_IMPL(fstream_test::output)
 {
+  printf ("sizeof(ofstream): %d, sizeof(basic_filebuf): %d\n", sizeof(std::ofstream), sizeof(std::basic_filebuf<char, char_traits<char> >));
+
   ofstream f( "test_file.txt" );
 
-  f << 1 << '\n' << 2.0 << '\n' << "abcd\n" << "ghk lm\n" << "abcd ef";
+  f << 1 ;
+  f << '\n' ;
+  f << 2.0 ;
+  f << "abcd\n";
+  f << "ghk lm\n" << "abcd ef";
   EXAM_CHECK (f.good());
   // EXAM_CHECK( s.str() == "1\n2\nabcd\nghk lm\nabcd ef" );
 
@@ -119,7 +125,7 @@ int EXAM_IMPL(fstream_test::io)
 
   f << 1 << '\n' << 2.0 << '\n' << "abcd\n" << "ghk lm\n" << "abcd ef";
 
-  // f.flush();
+  f.flush();
   f.seekg( 0, ios_base::beg );
 
   int i = 0;
@@ -166,7 +172,6 @@ int EXAM_IMPL(fstream_test::err)
   EXAM_CHECK( f.fail() );
   EXAM_CHECK( f.eof() );
   EXAM_CHECK( i == 9 );
-
   return EXAM_RESULT;
 }
 
@@ -409,7 +414,9 @@ int EXAM_IMPL(fstream_test::seek_binary)
   int chars_read = (int)s.rdbuf()->sgetn( b1, sizeof(b1) );
   EXAM_CHECK( chars_read == 11 );
   EXAM_CHECK( b1[9] == '0' );
-  EXAM_CHECK( s.rdbuf()->pubseekoff( 0, ios_base::cur ) == fstream::pos_type(chars_read) );
+  fstream::pos_type chars_read_pos(chars_read);
+  fstream::pos_type cur_pos(s.rdbuf()->pubseekoff( 0, ios_base::cur ));
+  EXAM_CHECK(chars_read_pos  ==  cur_pos);
   EXAM_CHECK( s.rdbuf()->pubseekoff( -chars_read, ios_base::cur ) == fstream::pos_type(0) );
 
   char b2[10] = { 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y' };

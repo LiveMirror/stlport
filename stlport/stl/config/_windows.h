@@ -276,6 +276,6 @@ void* _STLP_CALL STLPInterlockedExchangePointer(void* volatile* __a, void* __b) 
 #endif
 
 
-#  define _STLP_USE_WIN32_IO /* CreateFile/ReadFile/WriteFile */
+// #  define _STLP_USE_WIN32_IO /* CreateFile/ReadFile/WriteFile */
 
 #endif /* _STLP_INTERNAL_WINDOWS_H */

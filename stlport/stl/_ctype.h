@@ -127,20 +127,25 @@ public:
   _STLP_STATIC_CONSTANT(size_t, table_size = 256);
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-
-  void _Init(const _Locinfo&) {}
-
   explicit ctype(const _Locinfo& __i, size_t __refs = 0) : ctype_base(__refs) { _Init(__i); }
-
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *__l = 0
+#endif
+				   )
   {
     if (__f != 0 && *__f == 0)
-      *__f = new ctype<char>(__l->name().c_str());
+      *__f = new ctype<char>(
+#if (_MSC_VER >= 1500)
+			     __l->name().c_str()
+#endif
+			     );
     return (locale::ctype);
   }
 
  protected:
+  void _Init(const _Locinfo&) {}
+
   ctype(const char* __locname, size_t __refs = 0)  : ctype_base(__refs) 
     { _Init(_Locinfo(__locname));}
 
@@ -280,18 +285,24 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&) {}
-
   explicit ctype(const _Locinfo& __i, size_t __refs = 0) : ctype_base(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *__l = 0
+#endif
+				   )
   {
     if (__f != 0 && *__f == 0)
-      *__f = new ctype<wchar_t>(__l->name().c_str());
+      *__f = new ctype<wchar_t>(
+#if (_MSC_VER >= 1500)
+				__l->name().c_str()
+#endif
+				);
     return (locale::ctype);
   }
  protected:
+  void _Init(const _Locinfo&) {}
   ctype(const char* __locname, size_t __refs = 0)  : ctype_base(__refs) 
     { _Init(_Locinfo(__locname));}
   

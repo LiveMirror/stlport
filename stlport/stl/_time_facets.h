@@ -87,9 +87,11 @@ public:
 
 _STLP_MOVE_TO_STD_NAMESPACE
 
-class _STLP_CLASS_DECLSPEC time_base {
-public:
+struct _STLP_CLASS_DECLSPEC time_base : public locale::facet {
   enum dateorder {no_order, dmy, mdy, ymd, ydm};
+  time_base(size_t __refs = 0): locale::facet(__refs)
+    {}
+  ~time_base() {}
 };
 
 _STLP_MOVE_TO_PRIV_NAMESPACE
@@ -128,12 +130,12 @@ protected:
 _STLP_MOVE_TO_STD_NAMESPACE
 
 template <class _Ch, class _InIt>
-class time_get : public locale::facet, public time_base, public _STLP_PRIV time_init<_Ch> {
+class time_get : public time_base, public _STLP_PRIV time_init<_Ch> {
 public:
   typedef _Ch   char_type;
   typedef _InIt iter_type;
 
-  explicit time_get(size_t __refs = 0) : locale::facet(__refs)
+  explicit time_get(size_t __refs = 0) : time_base(__refs)
   {}
 
   dateorder date_order() const { return do_date_order(); }
@@ -158,10 +160,13 @@ public:
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
   void _Init(const _Locinfo&) {}
 
-  explicit time_get(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+  explicit time_get(const _Locinfo& __i, size_t __refs = 0) : time_base(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *__l = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new time_get<char_type,iter_type>();
@@ -171,7 +176,7 @@ public:
 
 protected:
   time_get(const char* __name, size_t __refs)
-    : locale::facet(__refs), _STLP_PRIV time_init<_Ch>(__name)
+    : time_base(__refs), _STLP_PRIV time_init<_Ch>(__name)
   {}
   time_get(_Locale_time *__time)
     : _STLP_PRIV time_init<_Ch>(__time)
@@ -259,12 +264,12 @@ __write_formatted_time(__iowstring&, const ctype<wchar_t>& __ct,
 _STLP_MOVE_TO_STD_NAMESPACE
 
 template <class _Ch, class _OutIt>
-class time_put : public locale::facet, public time_base, public _STLP_PRIV time_init<_Ch> {
+class time_put : public time_base, public _STLP_PRIV time_init<_Ch> {
 public:
   typedef _Ch      char_type;
   typedef _OutIt iter_type;
 
-  explicit time_put(size_t __refs = 0) : locale::facet(__refs)
+  explicit time_put(size_t __refs = 0) : time_base(__refs)
   {}
 
   _OutIt put(iter_type __s, ios_base& __f, _Ch __fill,
@@ -280,10 +285,13 @@ public:
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
   void _Init(const _Locinfo&) {}
 
-  explicit time_put(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
+  explicit time_put(const _Locinfo& __i, size_t __refs = 0) : time_base(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *__l = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new time_put<char_type,iter_type>();
@@ -293,7 +301,7 @@ public:
 
 protected:
   time_put(const char* __name, size_t __refs)
-    : locale::facet(__refs), _STLP_PRIV time_init<_Ch>(__name)
+    : time_base(__refs), _STLP_PRIV time_init<_Ch>(__name)
   {}
   time_put(_Locale_time *__time)
     : _STLP_PRIV time_init<_Ch>(__time)

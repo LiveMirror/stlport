@@ -83,9 +83,9 @@ public:
   typedef _Self& (_STLP_CALL *__istream_fn)(_Self&);
 
 public:                         // Constructor and destructor.
-  explicit basic_istream(basic_streambuf<_CharT, _Traits>* __buf) :
+  explicit basic_istream(basic_streambuf<_CharT, _Traits>* __buf, bool __is_std = false) :
     basic_ios<_CharT, _Traits>(), _M_gcount(0) {
-    this->init(__buf);
+    this->init(__buf, __is_std);
   }
   ~basic_istream() {};
 

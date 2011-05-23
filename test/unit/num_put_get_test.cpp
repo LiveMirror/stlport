@@ -847,7 +847,7 @@ int EXAM_IMPL(num_put_get_test::num_get_integer)
     EXAM_CHECK( istr.eof() );
     EXAM_CHECK( val == 12345 );
     istr.clear();
-
+#if 0
     if (sizeof(short) == 2) {
       istr.str("177777");
       istr >> oct >> val;
@@ -856,6 +856,8 @@ int EXAM_IMPL(num_put_get_test::num_get_integer)
       EXAM_CHECK( val == -1 );
       istr.clear();
     }
+#endif
+
   }
 
   //decimal input

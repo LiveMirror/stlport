@@ -127,8 +127,11 @@ public:
 
   explicit num_get(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *__l = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new num_get<char_type, iter_type>();

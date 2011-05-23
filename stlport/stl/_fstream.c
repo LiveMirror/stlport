@@ -33,6 +33,106 @@ _STLP_BEGIN_NAMESPACE
 # define __BF_off_type__ _STLP_TYPENAME_ON_RETURN_TYPE basic_filebuf<_CharT, _Traits>::off_type
 # endif
 
+//
+// This class had to be designed very carefully to work
+// with Visual C++.
+//
+template <class _Traits>
+class _Noconv_output {
+public:
+  typedef typename _Traits::char_type char_type;
+  static bool  _STLP_CALL _M_doit(basic_filebuf<char_type, _Traits >*,
+                                  char_type*, char_type*)
+  { return false; }
+};
+
+_STLP_TEMPLATE_NULL
+class _STLP_CLASS_DECLSPEC _Noconv_output< char_traits<char> > {
+public:
+  static bool  _STLP_CALL
+  _M_doit(basic_filebuf<char, char_traits<char> >* __buf,
+          char* __first, char* __last) {
+    ptrdiff_t __n = __last - __first;
+    return (__buf->_M_write(__first, __n));
+  }
+};
+
+//----------------------------------------------------------------------
+// basic_filebuf<> helper functions.
+
+
+//----------------------------------------
+// Helper functions for switching between modes.
+
+//
+// This class had to be designed very carefully to work
+// with Visual C++.
+//
+template <class _Traits>
+class _Noconv_input {
+public:
+  typedef typename _Traits::int_type int_type;
+  typedef typename _Traits::char_type char_type;
+
+  static inline int_type _STLP_CALL
+  _M_doit(basic_filebuf<char_type, _Traits>*)
+  { return _Traits::eof(); }
+};
+
+_STLP_TEMPLATE_NULL
+class _Noconv_input<char_traits<char> > {
+public:
+  static inline int _STLP_CALL
+  _M_doit(basic_filebuf<char, char_traits<char> >* __buf) {
+    return __buf->_M_do_noconv_input();
+  }
+};
+
+// underflow() may be called for one of two reasons.  (1) We've
+// been going through the special putback buffer, and we need to move back
+// to the regular internal buffer.  (2) We've exhausted the internal buffer,
+// and we need to replentish it.
+template <class _CharT, class _Traits>
+class _Underflow {
+public:
+  typedef typename _Traits::int_type int_type;
+  typedef _Traits                    traits_type;
+
+  // There is a specialized version of underflow, for basic_filebuf<char>,
+  // in fstream.cpp.
+  static int_type _STLP_CALL _M_doit(basic_filebuf<_CharT, _Traits>* __this) {
+    if ( (__this->int_flags_ & basic_filebuf<_CharT, _Traits>::_in_input_mode) == 0) {
+      if (!__this->_M_switch_to_input_mode()) {
+        return traits_type::eof();
+      }
+    } else if ( __this->int_flags_ & basic_filebuf<_CharT, _Traits>::_in_putback_mode ) {
+      __this->_M_exit_putback_mode();
+      if (__this->gptr() != __this->egptr()) {
+        int_type __c = traits_type::to_int_type(*__this->gptr());
+        return __c;
+      }
+    }
+
+    return __this->_M_underflow_aux();
+  }
+};
+
+// Specialization of underflow: if the character type is char, maybe
+// we can use mmap instead of read.
+_STLP_TEMPLATE_NULL
+class _STLP_CLASS_DECLSPEC _Underflow< char, char_traits<char> >
+{
+  public:
+    typedef char_traits<char>::int_type int_type;
+    typedef char_traits<char> traits_type;
+    static int_type _STLP_CALL _M_doit(basic_filebuf<char, traits_type >* __this);
+};
+
+
+#if defined (_STLP_USE_TEMPLATE_EXPORT) && !defined (_STLP_NO_WCHAR_T)
+_STLP_EXPORT_TEMPLATE_CLASS _Underflow<wchar_t, char_traits<wchar_t> >;
+#endif
+
 
 //----------------------------------------------------------------------
 // Public basic_filebuf<> member functions
@@ -68,6 +168,24 @@ basic_filebuf<_CharT, _Traits>::~basic_filebuf() {
   _M_deallocate_buffers();
 }
 
+
+template <class _CharT, class _Traits>
+_STLP_TYPENAME_ON_RETURN_TYPE basic_filebuf<_CharT, _Traits>::pos_type
+basic_filebuf<_CharT, _Traits>::_M_seek_return(off_type __off, _State_type __state)
+{
+  if (__off != -1) {
+    if ( int_flags_ & _in_input_mode ) {
+      _M_exit_input_mode();
+    }
+    int_flags_ &= ~(_in_input_mode | _in_output_mode | _in_putback_mode | _in_error_mode );
+    this->setg(0, 0, 0);
+    this->setp(0, 0);
+  }
+  
+  pos_type __result(__off);
+  __result.state(__state);
+  return __result;
+}
 
 template <class _CharT, class _Traits>
 _STLP_TYPENAME_ON_RETURN_TYPE basic_filebuf<_CharT, _Traits>::int_type
@@ -121,7 +239,6 @@ void basic_filebuf<_CharT, _Traits>::_M_exit_input_mode()
     _M_mmap_base = 0;
     _M_mmap_len = 0;
   }
-
   int_flags_ &= ~_in_input_mode;
 }
 
@@ -145,7 +262,6 @@ streamsize basic_filebuf<_CharT, _Traits>::showmanyc()
 
   return 0;
 }
-
 
 // Make a putback position available, if necessary, by switching to a
 // special internal buffer used only for putback.  The buffer is
@@ -694,6 +810,7 @@ bool basic_filebuf<_CharT, _Traits>::_M_allocate_buffers(_CharT* __buf, streamsi
 
   _M_int_buf_EOS = _M_int_buf + __STATIC_CAST(ptrdiff_t, __n);
   _M_ext_buf_EOS = _M_ext_buf + __STATIC_CAST(ptrdiff_t, __ebufsiz);
+
   return true;
 }
 
@@ -718,7 +835,6 @@ void basic_filebuf<_CharT, _Traits>::_M_deallocate_buffers() {
   _M_ext_buf     = 0;
   _M_ext_buf_EOS = 0;
 }
-
 
 //----------------------------------------
 // Helper functiosn for seek and imbue

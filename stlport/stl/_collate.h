@@ -63,17 +63,24 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-  void _Init(const _Locinfo&) {}
   explicit collate(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *__l = 0
+#endif
+				   )
   {
     if (__f != 0 && *__f == 0)
-      *__f = new collate<char>(__l->name().c_str());
+      *__f = new collate<char>(
+#if (_MSC_VER >= 1500)
+			       __l->name().c_str()
+#endif
+			       );
     return (locale::collate);
   }
  protected:
+  void _Init(const _Locinfo&) {}
   collate(const char* __locname, size_t __refs = 0)  : locale::facet(__refs) 
     { _Init(_Locinfo(__locname));}
 #endif
@@ -115,18 +122,24 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-  void _Init(const _Locinfo&) {}
   explicit collate(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
-
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+					   ,const locale *__l = 0
+#endif
+					   )
   {
     if (__f != 0 && *__f == 0)
-      *__f = new collate<wchar_t>(_Locinfo(__l->name().c_str()));
+      *__f = new collate<wchar_t>(
+#if (_MSC_VER >= 1500)
+				  _Locinfo(__l->name().c_str())
+#endif
+				  );
     return (locale::collate);
   }
 
  protected:
+  void _Init(const _Locinfo&) {}
   collate(const char* __locname, size_t __refs = 0)  : locale::facet(__refs) 
     { _Init(_Locinfo(__locname));}
 #endif

@@ -20,4 +20,6 @@ SRC_CPP = \
         shared_ptr_test.cpp \
         exception_test.cpp \
         errno_test.cpp \
-	fstream_test.cpp
+	fstream_test.cpp \
+        num_put_get_test.cpp
+

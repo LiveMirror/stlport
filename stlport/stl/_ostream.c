@@ -34,9 +34,9 @@ _STLP_BEGIN_NAMESPACE
 // Constructor, destructor
 
 template <class _CharT, class _Traits>
-basic_ostream<_CharT, _Traits>::basic_ostream(basic_streambuf<_CharT, _Traits>* __buf, bool __compat)
+basic_ostream<_CharT, _Traits>::basic_ostream(basic_streambuf<_CharT, _Traits>* __buf, bool __is_std)
     : basic_ios<_CharT, _Traits>() {
-  this->init(__buf, __compat);
+  this->init(__buf, __is_std);
 }
 
 template <class _CharT, class _Traits>

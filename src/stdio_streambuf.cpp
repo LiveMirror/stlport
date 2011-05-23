@@ -25,6 +25,8 @@
 #  include <sys/stat.h>
 #endif
 
+#ifndef _STLP_USE_STDIO_IO
+
 #include <fstream>
 #include <limits>
 
@@ -256,6 +258,7 @@ stdio_ostreambuf::int_type stdio_ostreambuf::overflow(int_type c) {
 
 _STLP_MOVE_TO_STD_NAMESPACE
 _STLP_END_NAMESPACE
+#endif
 
 // Local Variables:
 // mode:C++

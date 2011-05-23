@@ -132,24 +132,32 @@ long ios_base::Init::_S_count = 0;
 // by default, those are synced
 bool ios_base::_S_is_synced = true;
 
-ios_base::Init::Init() {
-  if (_S_count++ == 0) {
+_STLP_DECLSPEC void _STLP_CALL ios_base::_Init_ctor(ios_base::Init * that)
+{
+  if (Init::_S_count++ == 0) {
     _Locale_init();
     ios_base::_S_initialize();
     _Filebuf_base::_S_initialize();
   }
 }
 
-ios_base::Init::~Init() {
-  if (--_S_count == 0) {
+_STLP_DECLSPEC void _STLP_CALL ios_base::_Init_dtor(ios_base::Init * that)
+{
+  if (--Init::_S_count == 0) {
     ios_base::_S_uninitialize();
     _Locale_final();
   }
 }
 
+ios_base::Init::Init() {
+  _Init_ctor(this);
+}
+
+ios_base::Init::~Init() {
+  _Init_dtor(this);  
+}
+
 namespace {
-int _Stl_extract_open_param(FILE* f)
-{ return _FILE_fd(f); }
 
 #ifdef _STLP_REDIRECT_STDSTREAMS
 const char* _Stl_extract_open_param(const char* name)
@@ -161,7 +169,7 @@ template <class _Tp>
 static filebuf*
 _Stl_create_filebuf(_Tp x, ios_base::openmode mode ) {
   auto_ptr<filebuf> result(new basic_filebuf<char, char_traits<char> >());
-  result->open(_Stl_extract_open_param(x), mode);
+  result->open(x, mode);
 
   if (result->is_open())
     return result.release();
@@ -173,8 +181,11 @@ _Stl_create_filebuf(_Tp x, ios_base::openmode mode ) {
 static wfilebuf*
 _Stl_create_wfilebuf(FILE* f, ios_base::openmode mode) {
   auto_ptr<wfilebuf> result(new basic_filebuf<wchar_t, char_traits<wchar_t> >());
-  result->_M_open(_FILE_fd(f), mode);
-
+#ifdef _STLP_USE_STDIO_IO
+  result->open(f, mode);
+#else
+  result->open(_FILE_fd(f), mode);
+#endif
   if (result->is_open())
     return result.release();
 
@@ -187,7 +198,6 @@ void  _STLP_CALL ios_base::_S_initialize() {
   using _STLP_PRIV stdio_istreambuf;
   using _STLP_PRIV stdio_ostreambuf;
 #endif
-
   streambuf* cin_buf;
   streambuf* cout_buf;
   streambuf* cerr_buf;
@@ -215,10 +225,11 @@ void  _STLP_CALL ios_base::_S_initialize() {
     clog_buf = _Stl_create_filebuf(stderr, ios_base::out);
   }
 
-  istream* ptr_cin  = new(&cin)  istream(cin_buf);
-  ostream* ptr_cout = new(&cout) ostream(cout_buf);
-  ostream* ptr_cerr = new(&cerr) ostream(cerr_buf);
-  ostream* ptr_clog = new(&clog) ostream(clog_buf);
+  istream* ptr_cin  = new(&cin)  istream(cin_buf, true);
+  ostream* ptr_cout = new(&cout) ostream(cout_buf, true);
+  ostream* ptr_cerr = new(&cerr) ostream(cerr_buf, true);
+  ostream* ptr_clog = new(&clog) ostream(clog_buf, true);
+
   ptr_cin->tie(ptr_cout);
   ptr_cerr->setf(ios_base::unitbuf);
 
@@ -229,10 +240,10 @@ void  _STLP_CALL ios_base::_S_initialize() {
   auto_ptr<wfilebuf> wlog(_Stl_create_wfilebuf(stderr, ios_base::out));
 
   // Run constructors for the four wide stream objects.
-  wistream* ptr_wcin  = new(&wcin)  wistream(win.get()); win.release();
-  wostream* ptr_wcout = new(&wcout) wostream(wout.get()); wout.release();
-  wostream* ptr_wcerr = new(&wcerr) wostream(werr.get()); werr.release();
-  /*wostream* ptr_wclog = */ new(&wclog) wostream(wlog.get()); wlog.release();
+  wistream* ptr_wcin  = new(&wcin)  wistream(win.get(), true); win.release();
+  wostream* ptr_wcout = new(&wcout) wostream(wout.get(), true); wout.release();
+  wostream* ptr_wcerr = new(&wcerr) wostream(werr.get(), true); werr.release();
+  /*wostream* ptr_wclog = */ new(&wclog) wostream(wlog.get(), true); wlog.release();
 
   ptr_wcin->tie(ptr_wcout);
   ptr_wcerr->setf(ios_base::unitbuf);
@@ -293,6 +304,9 @@ bool _STLP_CALL ios_base::sync_with_stdio(bool sync) {
   using _STLP_PRIV stdio_ostreambuf;
 #  endif
 
+#ifdef _STLP_USE_STDIO_IO
+  return true;
+#else
   if (sync == _S_is_synced) return sync;
 
   // if by any chance we got there before std streams initialization,
@@ -337,6 +351,7 @@ bool _STLP_CALL ios_base::sync_with_stdio(bool sync) {
     delete (&clog)->rdbuf(clog_buf.release());
     _S_is_synced = sync;
   }
+#endif
 
   return _S_is_synced;
 }

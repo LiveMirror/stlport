@@ -38,7 +38,7 @@ _STLP_BEGIN_NAMESPACE
 template <class _CharT, class _Traits>
 basic_ios<_CharT, _Traits>
   ::basic_ios(basic_streambuf<_CharT, _Traits>* __streambuf)
-    : ios_base(), _M_cached_ctype(0),
+    : ios_base(),
       _M_fill(_STLP_NULL_CHAR_INIT(_CharT)), _M_streambuf(0), _M_tied_ostream(0) {
   basic_ios<_CharT, _Traits>::init(__streambuf);
 }
@@ -57,7 +57,6 @@ basic_ios<_CharT, _Traits>&
 basic_ios<_CharT, _Traits>::copyfmt(const basic_ios<_CharT, _Traits>& __x) {
   _M_invoke_callbacks(erase_event);
   _M_copy_state(__x);           // Inherited from ios_base.
-  _M_cached_ctype = __x._M_cached_ctype;
   _M_fill = __x._M_fill;
   _M_tied_ostream = __x._M_tied_ostream;
   _M_invoke_callbacks(copyfmt_event);
@@ -71,9 +70,6 @@ locale basic_ios<_CharT, _Traits>::imbue(const locale& __loc) {
   _STLP_TRY {
     if (_M_streambuf)
       _M_streambuf->pubimbue(__loc);
-
-    // no throwing here
-    _M_cached_ctype = &use_facet<ctype<char_type> >(__loc);
   }
   _STLP_CATCH_ALL {
     __tmp = ios_base::imbue(__tmp);
@@ -94,7 +90,7 @@ basic_ios<_CharT, _Traits>::basic_ios()
 
 template <class _CharT, class _Traits>
 void
-basic_ios<_CharT, _Traits>::init(basic_streambuf<_CharT, _Traits>* __sb , bool)
+basic_ios<_CharT, _Traits>::init(basic_streambuf<_CharT, _Traits>* __sb , bool is_std)
 {
   this->rdbuf(__sb);
   this->imbue(locale());
@@ -107,6 +103,10 @@ basic_ios<_CharT, _Traits>::init(basic_streambuf<_CharT, _Traits>* __sb , bool)
   this->fill(widen(' '));
   // We don't need to worry about any of the three arrays: they are
   // initialized correctly in ios_base's constructor.
+  if (is_std)
+    {
+      _Addstd(this);
+    }
 }
 
 // This is never called except from within a catch clause.

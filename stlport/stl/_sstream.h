@@ -56,58 +56,58 @@ template <class _CharT, class _Traits, class _Alloc> class basic_stringstream;
 // for read-write streambufs.
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_stringbuf :
-    public basic_streambuf<_CharT, _Traits>
+class basic_stringbuf : public basic_streambuf<_CharT, _Traits>
 {
-  public:                         // Typedefs.
-    typedef _CharT                     char_type;
-    typedef typename _Traits::int_type int_type;
-    typedef typename _Traits::pos_type pos_type;
-    typedef typename _Traits::off_type off_type;
-    typedef _Traits                    traits_type;
+public:                         // Typedefs.
+  typedef _CharT                     char_type;
+  typedef _Alloc                     allocator_type;
+  typedef typename _Traits::int_type int_type;
+  typedef typename _Traits::pos_type pos_type;
+  typedef typename _Traits::off_type off_type;
+  typedef _Traits                    traits_type;
+  
+private:
+  typedef basic_streambuf<_CharT, _Traits>          _Base;
+  typedef basic_stringbuf<_CharT, _Traits, _Alloc>  _Self;
+  typedef basic_string<_CharT, _Traits, _Alloc>     _String;
+  
+public:
+  explicit basic_stringbuf(ios_base::openmode __mode = ios_base::in | ios_base::out);
+  explicit basic_stringbuf(const _String& __s, ios_base::openmode __mode = ios_base::in | ios_base::out);
+  virtual ~basic_stringbuf();
+  
+  enum { _OwnStorage = 0x1, _ReadOnly = 0x2, _WriteOnly = 0x4,_AppendMode = 0x8, _AtendMode = 0x10 };
+  
+public:                         // Get or set the string.
+  _String str() const;
+  void str(const _String& __s);
+  
+protected:                      // Overridden virtual member functions.
+  virtual int_type underflow();
+  virtual int_type pbackfail(int_type __c);
+  virtual int_type overflow(int_type __c);
 
-  private:
-    typedef basic_streambuf<_CharT, _Traits>          _Base;
-    typedef basic_stringbuf<_CharT, _Traits, _Alloc>  _Self;
-    typedef basic_string<_CharT, _Traits, _Alloc>     _String;
+  int_type pbackfail() {return pbackfail(_Traits::eof());}
+  int_type overflow() {return overflow(_Traits::eof());}
+  
+  virtual pos_type seekoff(off_type __off, ios_base::seekdir __dir,
+                           ios_base::openmode __mode = ios_base::in | ios_base::out);
+  virtual pos_type seekpos(pos_type __pos, ios_base::openmode __mode = ios_base::in | ios_base::out);
+  
+private:                        // Helper functions.
+  void _Tidy();
+  int _Getstate(ios_base::openmode);
+  void _Init(const _CharT*, size_t, int);
 
-  public:
-    explicit basic_stringbuf(ios_base::openmode __mode = ios_base::in | ios_base::out);
-    explicit basic_stringbuf(const _String& __s, ios_base::openmode __mode = ios_base::in | ios_base::out);
-    virtual ~basic_stringbuf();
-
-  public:                         // Get or set the string.
-    _String str() const { return _M_str; }
-    void str(const _String& __s);
-
-  protected:                      // Overridden virtual member functions.
-    virtual int_type underflow();
-    virtual int_type uflow();
-    virtual int_type pbackfail(int_type __c);
-    virtual int_type overflow(int_type __c);
-    int_type pbackfail() {return pbackfail(_Traits::eof());}
-    int_type overflow() {return overflow(_Traits::eof());}
-
-    virtual streamsize xsputn(const char_type* __s, streamsize __n);
-    virtual streamsize _M_xsputnc(char_type __c, streamsize __n);
-
-    virtual _Base* setbuf(_CharT* __buf, streamsize __n);
-    virtual pos_type seekoff(off_type __off, ios_base::seekdir __dir,
-                             ios_base::openmode __mode = ios_base::in | ios_base::out);
-    virtual pos_type seekpos(pos_type __pos, ios_base::openmode __mode = ios_base::in | ios_base::out);
-
-  private:                        // Helper functions.
-    void _M_set_ptrs();
-    static _CharT* _S_start(const _String& __str) { return __CONST_CAST(_CharT*, __str.data()); }
-    static _CharT* _S_finish(const _String& __str) { return __CONST_CAST(_CharT*, __str.data()) + __str.size(); }
-
-  private:
-    ios_base::openmode _M_mode;
-    _String _M_str;
-
-    friend class basic_istringstream<_CharT,_Traits,_Alloc>;
-    friend class basic_ostringstream<_CharT,_Traits,_Alloc>;
-    friend class basic_stringstream<_CharT,_Traits,_Alloc>;
+private:
+  // minimalistic implementation that relies on streambuf base class data members
+  int             _M_mode;
+  _CharT*         _M_ptr;
+  _Alloc          _M_alloc;
+  
+  friend class basic_istringstream<_CharT,_Traits,_Alloc>;
+  friend class basic_ostringstream<_CharT,_Traits,_Alloc>;
+  friend class basic_stringstream<_CharT,_Traits,_Alloc>;
 };
 
 #if defined (_STLP_USE_TEMPLATE_EXPORT)
@@ -126,8 +126,7 @@ _STLP_EXPORT_TEMPLATE_CLASS basic_stringbuf<wchar_t, char_traits<wchar_t>, alloc
 // Class basic_istringstream, an input stream that uses a stringbuf.
 
 template <class _CharT, class _Traits, class _Alloc>
-class basic_istringstream :
-    public basic_istream<_CharT, _Traits>
+class basic_istringstream : public basic_istream<_CharT, _Traits>
 {
   public:                         // Typedefs
     typedef typename _Traits::char_type   char_type;
@@ -151,12 +150,10 @@ class basic_istringstream :
   public:                         // Member functions
 
     basic_stringbuf<_CharT, _Traits, _Alloc>* rdbuf() const
-      { return __CONST_CAST(_Buf*,&_M_buf); }
-
-    _String str() const
-      { return _M_buf._M_str; }
-    void str(const _String& __s)
-      { _M_buf.str(__s); }
+    { return __CONST_CAST(_Buf*,&_M_buf); }
+  
+    _String str() const { return _M_buf.str(); }
+    void str(const _String& __s) { _M_buf.str(__s); }
 
   private:
     basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
@@ -199,10 +196,8 @@ class basic_ostringstream :
     basic_stringbuf<_CharT, _Traits, _Alloc>* rdbuf() const
       { return __CONST_CAST(_Buf*,&_M_buf); }
 
-    _String str() const
-      { return _M_buf._M_str; }
-    void str(const _String& __s)
-      { _M_buf.str(__s); } // dwa 02/07/00 - BUG STOMPER DAVE
+    _String str() const  { return _M_buf.str(); }
+    void str(const _String& __s) { _M_buf.str(__s); } // dwa 02/07/00 - BUG STOMPER DAVE
 
   private:
     basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;
@@ -247,10 +242,8 @@ class basic_stringstream :
     basic_stringbuf<_CharT, _Traits, _Alloc>* rdbuf() const
       { return __CONST_CAST(_Buf*,&_M_buf); }
 
-    _String str() const
-      { return _M_buf._M_str; }
-    void str(const _String& __s)
-      { _M_buf.str(__s); }
+    _String str() const { return _M_buf.str(); }
+    void str(const _String& __s) { _M_buf.str(__s); }
 
   private:
     basic_stringbuf<_CharT, _Traits, _Alloc> _M_buf;

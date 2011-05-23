@@ -121,13 +121,11 @@ public:                         // Locale-related member functions.
     return _Traits::eq_int_type(__c, __eof);
   }
 
-protected:
-  // Cached copy of the curent locale's ctype facet.  Set by init() and imbue().
-  const ctype<char_type>* _M_cached_ctype;
-
 public:
-  // Equivalent to &use_facet< Facet >(getloc()), but faster.
-  const ctype<char_type>* _M_ctype_facet() const { return _M_cached_ctype; }
+  // Equivalent to &use_facet< Facet >(getloc())
+  const ctype<char_type>* _M_ctype_facet() const {
+    return &use_facet<ctype<char_type> >(getloc());
+  }
 
 protected:
   basic_ios();
@@ -141,10 +139,15 @@ public:
   void _M_handle_exception(ios_base::iostate __flag);
 
 private:                        // Data members
-  char_type _M_fill;            // The fill character, used for padding.
-
   basic_streambuf<_CharT, _Traits>* _M_streambuf;
   basic_ostream<_CharT, _Traits>*   _M_tied_ostream;
+  char_type _M_fill;            // The fill character, used for padding.
+
+#if 0
+protected:
+  // Cached copy of the curent locale's ctype facet.  Set by init() and imbue().
+  const ctype<char_type>* _M_cached_ctype;
+#endif
 };
 
 #ifdef __SUNPRO_CC

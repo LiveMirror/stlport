@@ -35,7 +35,7 @@ _STLP_BEGIN_NAMESPACE
 // for reporting errors.
 
 ios_base::failure::failure(const string& s)
-  : __Named_exception(s)
+  : runtime_error(s)
 {}
 
 ios_base::failure::~failure() _STLP_NOTHROW_INHERENTLY {}
@@ -82,54 +82,16 @@ const ios_base::seekdir ios_base::end;
 
 #endif
 
-// Internal functions used for managing exponentially-growing arrays of
-// POD types.
-
-// array is a pointer to N elements of type PODType.  Expands the array,
-// if necessary, so that array[index] is meaningful.  All new elements are
-// initialized to zero.  Returns a pointer to the new array, and the new
-// size.
-
-template <class PODType>
-static pair<PODType*, size_t>
-_Stl_expand_array(PODType* __array, size_t N, int index) {
-  if ((int)N < index + 1) {
-    size_t new_N = (max)(2 * N, size_t(index + 1));
-    PODType* new_array
-      = __STATIC_CAST(PODType*,realloc(__array, new_N * sizeof(PODType)));
-    if (new_array) {
-      fill(new_array + N, new_array + new_N, PODType());
-      return pair<PODType*, size_t>(new_array, new_N);
-    }
-    else
-      return pair<PODType*, size_t>(__STATIC_CAST(PODType*,0), 0);
-  }
-  else
-    return pair<PODType*, size_t>(__array, N);
-}
-
-// array is a pointer to N elements of type PODType.  Allocate a new
-// array of N elements, copying the values from the old array to the new.
-// Return a pointer to the new array.  It is assumed that array is non-null
-// and N is nonzero.
-template <class PODType>
-static PODType* _Stl_copy_array(const PODType* __array, size_t N) {
-  PODType* result = __STATIC_CAST(PODType*,malloc(N * sizeof(PODType)));
-  if (result)
-    copy(__array, __array + N, result);
-  return result;
-}
-
 locale ios_base::imbue(const locale& loc) {
-  if (loc != _M_locale) {
-    locale previous = _M_locale;
-    _M_locale = loc;
+  if (loc != *_M_locale) {
+    locale previous = *_M_locale;
+    *_M_locale = loc;
     _M_invoke_callbacks(imbue_event);
     return previous;
   }
   else {
     _M_invoke_callbacks(imbue_event);
-    return _M_locale;
+    return *_M_locale;
   }
 }
 
@@ -147,60 +109,27 @@ int _STLP_CALL ios_base::xalloc() {
 }
 
 long& ios_base::iword(int index) {
-  static long dummy = 0;
-
-  pair<long*, size_t> tmp = _Stl_expand_array(_M_iwords, _M_num_iwords, index);
-  if (tmp.first) {              // The allocation, if any, succeeded.
-    _M_iwords = tmp.first;
-    _M_num_iwords = tmp.second;
-    return _M_iwords[index];
-  }
-  else {
-    _M_setstate_nothrow(badbit);
-    _M_check_exception_mask();
-    return dummy;
-  }
+  static void* dummy = 0;
+  _AuxStorageNode& ref = _Findarr(index);
+  return ref._M_long;
 }
 
 
 void*& ios_base::pword(int index) {
   static void* dummy = 0;
-
-  pair<void**, size_t> tmp = _Stl_expand_array(_M_pwords, _M_num_pwords, index);
-  if (tmp.first) {              // The allocation, if any, succeeded.
-    _M_pwords = tmp.first;
-    _M_num_pwords = tmp.second;
-    return _M_pwords[index];
-  }
-  else {
-    _M_setstate_nothrow(badbit);
-    _M_check_exception_mask();
-    return dummy;
-  }
+  _AuxStorageNode& ref = _Findarr(index);
+  return ref._M_ptr;
 }
 
-void ios_base::register_callback(event_callback __fn, int index) {
-  pair<pair<event_callback, int>*, size_t> tmp
-    = _Stl_expand_array(_M_callbacks, _M_num_callbacks, (int)_M_callback_index /* fbp: index ??? */ );
-  if (tmp.first) {
-    _M_callbacks = tmp.first;
-    _M_num_callbacks = tmp.second;
-    _M_callbacks[_M_callback_index++] = make_pair(__fn, index);
-  }
-  else {
-    _M_setstate_nothrow(badbit);
-    _M_check_exception_mask();
-  }
+void ios_base::register_callback(event_callback __fn, int __idx) {
+  _M_callbacks = new _CallbackNode(__idx, __fn, _M_callbacks);
 }
 
 // Invokes all currently registered callbacks for a particular event.
 // Behaves correctly even if one of the callbacks adds a new callback.
 void ios_base::_M_invoke_callbacks(event E) {
-  for (size_t i = _M_callback_index; i > 0; --i) {
-    event_callback f = _M_callbacks[i-1].first;
-    int n = _M_callbacks[i-1].second;
-    f(E, *this, n);
-  }
+    for (_CallbackNode *p = _M_callbacks; p != 0; p = p->_M_next)
+      (p->_M_cb)(E, *this, p->_M_index);
 }
 
 // This function is called if the state, rdstate(), has a bit set
@@ -232,50 +161,34 @@ void ios_base::_M_throw_failure() {
 // or _M_iostate.
 void ios_base::_M_copy_state(const ios_base& x) {
   _M_fmtflags  = x._M_fmtflags; // Copy the flags, except for _M_iostate
-  _M_openmode  = x._M_openmode; // and _M_exception_mask.
-  _M_seekdir   = x._M_seekdir;
   _M_precision = x._M_precision;
   _M_width     = x._M_width;
-  _M_locale    = x._M_locale;
+  *_M_locale    = *x._M_locale;
 
   if (x._M_callbacks) {
-    pair<event_callback, int>* tmp = _Stl_copy_array(x._M_callbacks, x._M_callback_index);
-    if (tmp) {
-      free(_M_callbacks);
-      _M_callbacks = tmp;
-      _M_num_callbacks = _M_callback_index = x._M_callback_index;
+    for (_CallbackNode *cur = x._M_callbacks; cur; cur = cur->_M_next) {
+      register_callback(cur->_M_cb, cur->_M_index);
     }
-    else {
-      _M_setstate_nothrow(badbit);
-      _M_check_exception_mask();
-    }
+  }
+  else {
+    _M_setstate_nothrow(badbit);
+    _M_check_exception_mask();
+  }
+  
+  if (x._M_ipwords) {
+    for (_AuxStorageNode *cur = x._M_ipwords; cur; cur = cur->_M_next) {
+      if (cur->_M_long || cur->_M_ptr) {
+	_AuxStorageNode& mynode = _Findarr(cur->_M_index);
+	mynode._M_long = cur->_M_long;
+	mynode._M_ptr = cur->_M_ptr;
+      }
+    }    
+  }
+  else {
+    _M_setstate_nothrow(badbit);
+    _M_check_exception_mask();
   }
 
-  if (x._M_iwords) {
-    long* tmp = _Stl_copy_array(x._M_iwords, x._M_num_iwords);
-    if (tmp) {
-      free(_M_iwords);
-      _M_iwords = tmp;
-      _M_num_iwords = x._M_num_iwords;
-    }
-    else {
-      _M_setstate_nothrow(badbit);
-      _M_check_exception_mask();
-    }
-  }
-
-  if (x._M_pwords) {
-    void** tmp = _Stl_copy_array(x._M_pwords, x._M_num_pwords);
-    if (tmp) {
-      free(_M_pwords);
-      _M_pwords = tmp;
-      _M_num_pwords = x._M_num_pwords;
-    }
-    else {
-      _M_setstate_nothrow(badbit);
-      _M_check_exception_mask();
-    }
-  }
 }
 
 // ios's (protected) default constructor.  The standard says that all
@@ -284,22 +197,61 @@ void ios_base::_M_copy_state(const ios_base& x) {
 // are all initially null pointers, and the array element counts are all
 // initially zero.
 ios_base::ios_base()
-  : _M_fmtflags(0), _M_iostate(0), _M_openmode(0), _M_seekdir(0),
+  : _M_std_stream(0), _M_fmtflags(0), _M_iostate(0), 
     _M_exception_mask(0),
     _M_precision(0), _M_width(0),
-    _M_locale(),
-    _M_callbacks(0), _M_num_callbacks(0), _M_callback_index(0),
-    _M_iwords(0), _M_num_iwords(0),
-    _M_pwords(0),
-    _M_num_pwords(0)
+    _M_callbacks(0),
+    _M_ipwords(0),
+    _M_locale(new locale())
 {}
 
 // ios's destructor.
 ios_base::~ios_base() {
-  _M_invoke_callbacks(erase_event);
-  free(_M_callbacks);
-  free(_M_iwords);
-  free(_M_pwords);
+  _Tidy();
+}
+
+void _STLP_CALL 
+ios_base::_Addstd(ios_base * s)
+{
+  static int curr_stream= 0;
+  s->_M_std_stream = ++curr_stream;
+}
+
+ios_base::_AuxStorageNode& 
+ios_base::_Findarr(int idx)
+{
+   _AuxStorageNode *ret = 0;
+   
+   for (_AuxStorageNode *cur = _M_ipwords; cur; cur = cur->_M_next)
+     if (cur->_M_index == idx)
+       return (*cur);
+     else if (cur->_M_long == 0 && cur->_M_ptr == 0)
+       ret = cur;
+   
+   if (ret)  {
+     ret->_M_index = idx;
+   }
+   else
+     ret = _M_ipwords = new _AuxStorageNode(idx, _M_ipwords);
+   return *ret;
+}
+
+void ios_base::_Tidy()
+{
+  _M_invoke_callbacks(ios_base::erase_event);
+
+  for (_CallbackNode *cur = _M_callbacks; cur; ) {
+    _CallbackNode * next = cur->_M_next;
+    delete cur;
+    cur = next;
+  }
+
+  for (_AuxStorageNode *cur = _M_ipwords; cur; ) {
+    _AuxStorageNode *next = cur->_M_next;
+    delete cur;
+    cur = next;
+  }
+
 }
 
 _STLP_DECLSPEC int _STLP_CALL _Ios_setbase(ios_base& __ios, int __n)

@@ -35,6 +35,16 @@
 
 _STLP_BEGIN_NAMESPACE
 
+
+#if defined (_STLP_DEBUG) || defined (_STLP_USE_STDIO_IO)
+
+typedef string __iostring;
+#  if !defined (_STLP_NO_WCHAR_T)
+typedef wstring __iowstring;
+#  endif
+#  define _STLP_BASIC_IOSTRING(_CharT) basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >
+
+# else
 _STLP_MOVE_TO_PRIV_NAMESPACE
 
 template <class _CharT>
@@ -69,7 +79,6 @@ public:
   }
 };
 
-#if !defined (_STLP_DEBUG)
 template <class _CharT>
 struct __basic_iostring : public basic_string<_CharT, char_traits<_CharT>, __iostring_allocator<_CharT> > {
   /*
@@ -90,7 +99,6 @@ struct __basic_iostring : public basic_string<_CharT, char_traits<_CharT>, __ios
     return *this;
   }
 };
-
 typedef __basic_iostring<char> __iostring;
 
 #  if !defined (_STLP_NO_WCHAR_T)
@@ -98,19 +106,9 @@ typedef __basic_iostring<wchar_t> __iowstring;
 #  endif
 
 #  define _STLP_BASIC_IOSTRING(_CharT) _STLP_PRIV __basic_iostring<_CharT>
-
-#else
-
-typedef string __iostring;
-#  if !defined (_STLP_NO_WCHAR_T)
-typedef wstring __iowstring;
-#  endif
-
-#  define _STLP_BASIC_IOSTRING(_CharT) basic_string<_CharT, char_traits<_CharT>, allocator<_CharT> >
+_STLP_MOVE_TO_STD_NAMESPACE
 
 #endif
-
-_STLP_MOVE_TO_STD_NAMESPACE
 
 _STLP_END_NAMESPACE
 

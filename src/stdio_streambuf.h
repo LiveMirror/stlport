@@ -41,10 +41,16 @@
 
 #include <streambuf>
 #include <cstdio>              // For FILE.
+#include <fstream>
 
 _STLP_BEGIN_NAMESPACE
 _STLP_MOVE_TO_PRIV_NAMESPACE
 
+#ifdef _STLP_USE_STDIO_IO
+typedef basic_filebuf<char, char_traits<char> > stdio_streambuf;
+typedef basic_filebuf<char, char_traits<char> > stdio_ostreambuf;
+typedef basic_filebuf<char, char_traits<char> > stdio_istreambuf;
+#else
 // Base class for features common to stdio_istreambuf and stdio_ostreambuf
 class _STLP_CLASS_DECLSPEC stdio_streambuf_base :
   public basic_streambuf<char, char_traits<char> > /* FILE_basic_streambuf */ {
@@ -91,6 +97,7 @@ protected:                      // Virtual functions from basic_streambuf.
   streamsize showmanyc();
   int_type overflow(int_type c = traits_type::eof());
 };
+#endif
 
 _STLP_MOVE_TO_STD_NAMESPACE
 _STLP_END_NAMESPACE

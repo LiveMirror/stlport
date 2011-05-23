@@ -59,6 +59,31 @@
 
 #include <stl/_range_errors.c>
 
+#if defined (_STLP_MSVC_BINARY_COMPATIBILITY)
+extern "C"
+{
+_STLP_DECLSPEC float _FNan;
+_STLP_DECLSPEC float _FSnan;
+_STLP_DECLSPEC float _FInf;
+_STLP_DECLSPEC float _FDenorm;
+
+_STLP_DECLSPEC double  _Nan;
+_STLP_DECLSPEC double  _Snan;
+_STLP_DECLSPEC double  _Inf;
+_STLP_DECLSPEC double  _Denorm;
+_STLP_DECLSPEC double  _Hugeval;
+
+#ifndef _STLP_NO_LONG_DOUBLE
+_STLP_DECLSPEC long double  _LNan;
+_STLP_DECLSPEC long double  _LSnan;
+_STLP_DECLSPEC long double  _LInf;
+_STLP_DECLSPEC long double  _LDenorm;
+_STLP_DECLSPEC long double  _LHugeval;
+#endif
+}
+
+#endif
+
 _STLP_BEGIN_NAMESPACE
 
 #if defined (_STLP_NO_EXCEPTION_HEADER) || defined (_STLP_BROKEN_EXCEPTION_CLASS)

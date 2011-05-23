@@ -254,9 +254,9 @@
 /*
 #define _STLP_USE_UNIX_IO
 */
-/*
+
 #define _STLP_USE_STDIO_IO
-*/
+
 /*
 #define _STLP_USE_WIN32_IO
  */

@@ -25,6 +25,10 @@
 #  include <stl/_cstddef.h>
 #endif
 
+#ifndef _STLP_INTERNAL_CSTDIO
+#  include <stl/_cstdio.h>
+#endif
+
 #ifndef _STLP_CSTRING
 #  include <cstring>
 #endif
@@ -87,22 +91,24 @@ typedef ptrdiff_t streamsize;
 // moves it to <iosfwd>, which is included by <ios>.)
 template <class _StateT> class fpos {
 public:                         // From table 88 of the C++ standard.
-  fpos(streamoff __pos) : _M_pos(__pos), _M_st(_STLP_NULL_CHAR_INIT(_StateT)) {}
-  fpos() : _M_pos(0), _M_st(_STLP_NULL_CHAR_INIT(_StateT)) {}
+  fpos(streamoff __off) : _M_pos(0), _M_off(__off), _M_st(_STLP_NULL_CHAR_INIT(_StateT)) {}
+  fpos(_StateT __state, fpos_t __pos) : _M_pos(__pos), _M_off(0), _M_st(__state) {}
+  fpos() : _M_pos(0), _M_off(0), _M_st(_STLP_NULL_CHAR_INIT(_StateT)) {}
 
-  operator streamoff() const { return _M_pos; }
+  operator streamoff() const { return _M_off + (streamoff)_M_pos; }
+  fpos_t seekpos() const { return _M_pos; }
 
   bool operator==(const fpos& __y) const
-  { return _M_pos == __y._M_pos; }
+  { return (streamoff)*this == (streamoff)__y; }
   bool operator!=(const fpos& __y) const
-  { return _M_pos != __y._M_pos; }
+  { return (streamoff)*this != (streamoff)__y; }
 
   fpos& operator+=(streamoff __off) {
-    _M_pos += __off;
+    _M_off += __off;
     return *this;
   }
   fpos& operator-=(streamoff __off) {
-    _M_pos -= __off;
+    _M_off -= __off;
     return *this;
   }
 
@@ -121,8 +127,9 @@ public:                         // Manipulation of the state member.
   _StateT state() const { return _M_st; }
   void state(_StateT __st) { _M_st = __st; }
 private:
-  streamoff _M_pos;
-  _StateT _M_st;
+  streamoff _M_off;
+  fpos_t    _M_pos;
+  _StateT   _M_st;
 };
 
 typedef fpos<mbstate_t> streampos;

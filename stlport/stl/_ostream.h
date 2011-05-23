@@ -68,7 +68,7 @@ public:                         // Types
   typedef basic_ios<_CharT, _Traits> _Basic_ios;
 
 public:                         // Constructor and destructor.
-  explicit basic_ostream(basic_streambuf<_CharT, _Traits>* __buf, bool __compat = false);
+  explicit basic_ostream(basic_streambuf<_CharT, _Traits>* __buf, bool __is_std = false);
   ~basic_ostream();
 
 public:                         // Hooks for manipulators.

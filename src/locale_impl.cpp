@@ -838,8 +838,11 @@ void locale::facet::facet_Register(facet *)
   // TODO: implement
 }
 
-size_t _STLP_CALL locale::facet::_Getcat(const facet **,
-					 const locale *)
+size_t _STLP_CALL locale::facet::_Getcat(const facet **
+#if (_MSC_VER >= 1500)
+					 , const locale *
+#endif
+)
 {
   return ((size_t)(-1));
 }

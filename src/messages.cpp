@@ -186,7 +186,7 @@ _STLP_MOVE_TO_STD_NAMESPACE
 //----------------------------------------------------------------------
 // messages<char>
 messages<char>::messages(size_t refs)
-  : locale::facet(refs) {}
+  : messages_base(refs) {}
 
 messages_byname<char>::messages_byname(const char *name, size_t refs)
   : messages<char>(refs), _M_impl(new _STLP_PRIV _Messages(false, name)) {}
@@ -215,7 +215,7 @@ void messages_byname<char>::do_close(catalog cat) const
 // messages<wchar_t>
 
 messages<wchar_t>::messages(size_t refs)
-  : locale::facet(refs) {}
+  : messages_base(refs) {}
 
 messages_byname<wchar_t>::messages_byname(const char *name, size_t refs)
   : messages<wchar_t>(refs), _M_impl(new _STLP_PRIV _Messages(true, name)) {}

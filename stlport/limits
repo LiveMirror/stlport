@@ -1063,6 +1063,42 @@ __declare_float_limits_member(float_round_style, round_style);
 
 _STLP_MOVE_TO_STD_NAMESPACE
 
+extern _STLP_DECLSPEC float _FNan;
+extern _STLP_DECLSPEC float _FSnan;
+extern _STLP_DECLSPEC float _FInf;
+extern _STLP_DECLSPEC float _FDenorm;
+
+extern _STLP_DECLSPEC double  _Nan;
+extern _STLP_DECLSPEC double  _Snan;
+extern _STLP_DECLSPEC double  _Inf;
+extern _STLP_DECLSPEC double  _Denorm;
+extern _STLP_DECLSPEC double  _Hugeval;
+
+#ifdef _STLP_LONG_DOUBLE
+extern _STLP_DECLSPEC long double  _LNan;
+extern _STLP_DECLSPEC long double  _LSnan;
+extern _STLP_DECLSPEC long double  _LInf;
+extern _STLP_DECLSPEC long double  _LDenorm;
+extern _STLP_DECLSPEC long double  _Hugeval;
+#endif
+
+#if 0
+_STLP_DECLSPEC float _STLP_CALL _FSinh(float, float);
+_STLP_DECLSPEC float _STLP_CALL _FCosh(float, float);
+_STLP_DECLSPEC short _STLP_CALL _FDtest(float *);
+_STLP_DECLSPEC short _STLP_CALL _FExp(float *, float, short);
+
+_STLP_DECLSPEC double _STLP_CALL _Cosh(double, double);
+_STLP_DECLSPEC short _STLP_CALL _Dtest(double *);
+_STLP_DECLSPEC short _STLP_CALL _Exp(double *, double, short);
+_STLP_DECLSPEC double _STLP_CALL _Sinh(double, double);
+
+_STLP_DECLSPEC long double _STLP_CALL _LCosh(long double, long double);
+_STLP_DECLSPEC short _STLP_CALL _LDtest(long double *);
+_STLP_DECLSPEC short _STLP_CALL _LExp(long double *, long double, short);
+_STLP_DECLSPEC long double _STLP_CALL _LSinh(long double, long double);
+#endif
+
 _STLP_END_NAMESPACE
 
 #if (_STLP_OUTERMOST_HEADER_ID == 0x39)

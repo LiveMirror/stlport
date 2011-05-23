@@ -51,6 +51,12 @@ public:
 
   int max_length() const _STLP_NOTHROW { return do_max_length(); }
 
+#if defined (_MSC_VER) && (_MSC_VER >= 1500)
+ protected:
+#endif
+
+  virtual ~codecvt_base() {}
+
 protected:
 
   virtual int do_encoding() const _STLP_NOTHROW { return 1; }
@@ -58,8 +64,6 @@ protected:
   virtual bool do_always_noconv() const _STLP_NOTHROW { return true; }
 
   virtual int do_max_length() const _STLP_NOTHROW { return 1; }
-
-  virtual ~codecvt_base() {}
 
 };
 
@@ -121,17 +125,22 @@ public:
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
 
-  void _Init(const _Locinfo&) {}
-
   explicit codecvt(const _Locinfo& __i, size_t __refs = 0) : codecvt_base(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   , const locale *__l = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new codecvt<_InternT, class _ExternT, class _StateT>(_Locinfo(__l->name()));
     return (locale::ctype);
   }
+
+protected:
+  void _Init(const _Locinfo&) {}
+
 #endif
 
 protected:
@@ -252,17 +261,20 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-  void _Init(const _Locinfo&) {}
-
   explicit codecvt(const _Locinfo& __i, size_t __refs = 0) : codecvt_base(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale * = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale * = 0
+#endif
+				   )
   {
     if (__f && !*__f)
       *__f = new codecvt<intern_type, extern_type, state_type>();
     return (locale::ctype);
   }
+ protected:
+  void _Init(const _Locinfo&) {}
 #endif
 
 protected:
@@ -368,8 +380,11 @@ public:
 
   explicit codecvt(const _Locinfo& __i, size_t __refs = 0) : codecvt_base(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale * = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+					   ,const locale * = 0
+#endif
+					   )
   {
     if (__f && !*__f)
       *__f = new codecvt<intern_type, extern_type, state_type>();

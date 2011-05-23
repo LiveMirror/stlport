@@ -33,6 +33,8 @@ _STLP_BEGIN_NAMESPACE
 // fbp : let us map 1 MB maximum, just be sure not to trash VM
 #define MMAP_CHUNK 0x100000L
 
+
+#ifndef  _STLP_USE_STDIO_IO
 _Underflow< char, char_traits<char> >::int_type _STLP_CALL
 _Underflow< char, char_traits<char> >::_M_doit(basic_filebuf<char, char_traits<char> >* __this)
 {
@@ -50,6 +52,7 @@ _Underflow< char, char_traits<char> >::_M_doit(basic_filebuf<char, char_traits<c
       return __c;
     }
   }
+
 
   // If it's a disk file, and if the internal and external character
   // sequences are guaranteed to be identical, then try to use memory
@@ -88,9 +91,9 @@ _Underflow< char, char_traits<char> >::_M_doit(basic_filebuf<char, char_traits<c
       __this->_M_mmap_len = 0;
     }
   }
-
   return __this->_M_underflow_aux();
 }
+# endif
 
 //----------------------------------------------------------------------
 // Force instantiation of filebuf and fstream classes.
@@ -102,7 +105,9 @@ template class _STLP_CLASS_DECLSPEC basic_ofstream<char, char_traits<char> >;
 template class _STLP_CLASS_DECLSPEC basic_fstream<char, char_traits<char> >;
 
 #  if !defined (_STLP_NO_WCHAR_T)
+#  ifndef _STLP_USE_STDIO_IO
 template class _STLP_CLASS_DECLSPEC _Underflow<wchar_t, char_traits<wchar_t> >;
+#  endif
 template class _STLP_CLASS_DECLSPEC basic_filebuf<wchar_t, char_traits<wchar_t> >;
 template class _STLP_CLASS_DECLSPEC basic_ifstream<wchar_t, char_traits<wchar_t> >;
 template class _STLP_CLASS_DECLSPEC basic_ofstream<wchar_t, char_traits<wchar_t> >;

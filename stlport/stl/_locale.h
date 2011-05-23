@@ -92,12 +92,14 @@ public:
      * have lower sizeof and generate roll issues. 1 is enough to keep the facet
      * alive when required. */
     explicit facet(size_t __init_count = 0);
-    virtual ~facet();
     friend class locale;
     friend class _Locimp;
     friend facet * _STLP_CALL _get_facet( facet * );
     friend void _STLP_CALL _release_facet( facet *& );
-
+#if defined (_MSC_VER) && (_MSC_VER < 1500)
+ public:
+#endif
+    virtual ~facet();
   private:                        // Invalidate assignment and copying.
     facet(const facet& ) /* : _Refcount_Base(1) {} */;
     void operator=(const facet&);
@@ -113,7 +115,11 @@ public:
       facet_Register(this);
     }
 
-    static size_t _STLP_CALL _Getcat(const facet **, const locale *);
+    static size_t _STLP_CALL _Getcat(const facet **
+#if (_MSC_VER >= 1500)
+				     , const locale *
+#endif
+				     );
   private:
     static void _STLP_CALL facet_Register(facet *);
 #endif

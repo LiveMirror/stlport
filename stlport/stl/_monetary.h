@@ -71,17 +71,22 @@ public:
   static locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&) {}
 
   explicit money_get(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *__l = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new money_get<char_type, iter_type>();
     return (locale::monetary);
   }
+
+protected:
+  void _Init(const _Locinfo&) {}
 
 #endif
 
@@ -121,16 +126,16 @@ public:
   }
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&, bool __b = false) {
-    // TODO: implement
-  }
-
   explicit _Mpunct(const _Locinfo& __i, size_t __refs, bool __intl, bool __b) : 
     money_base(__refs), _Intl(__intl) { _Init(__i, __b); }
 
 protected:
   explicit _Mpunct(const char* __name, size_t __refs, bool __intl, bool __b = false) : 
     money_base(__refs), _Intl(__intl) { _Init(_Locinfo(__name), __b); }
+
+  void _Init(const _Locinfo&, bool __b = false) {
+    // TODO: implement
+  }
 
 #endif
 
@@ -230,8 +235,11 @@ public:
 
   explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<char>(__refs, true) {}
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   , const locale *__l = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new moneypunct<char_type, true>();
@@ -272,12 +280,12 @@ public:
   _STLP_STATIC_CONSTANT(bool, intl = false);
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&) {}
-
   explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<char>(__refs, false) {}
-
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+					   , const locale * = 0
+#endif
+					   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new moneypunct<char_type, false>();
@@ -285,7 +293,7 @@ public:
   }
  protected:
   explicit moneypunct(const char* __name, size_t __refs = 0) : _Mpunct<char>(__name, __refs, false) {}
-
+  void _Init(const _Locinfo&) {}
 #endif
 
 protected:
@@ -319,12 +327,14 @@ public:
   _STLP_STATIC_CONSTANT(bool, intl = true);
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&) {}
 
   explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<wchar_t>(__refs, true) {}
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale * = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new moneypunct<char_type, true>();
@@ -332,6 +342,7 @@ public:
   }
 
  protected:
+  void _Init(const _Locinfo&) {}
   explicit moneypunct(const char* __name, size_t __refs = 0) : _Mpunct<wchar_t>(__name, __refs, true) {}
 
 #endif
@@ -365,12 +376,13 @@ public:
   _STLP_STATIC_CONSTANT(bool, intl = false);
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&) {}
-
   explicit moneypunct(const _Locinfo& __i, size_t __refs = 0) : _Mpunct<wchar_t>(__refs, false) {}
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale *  = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new moneypunct<char_type, false>();
@@ -379,7 +391,7 @@ public:
 
  protected:
   explicit moneypunct(const char* __name, size_t __refs = 0) : _Mpunct<wchar_t>(__name, __refs, false) { }
-
+  void _Init(const _Locinfo&) {}
 #endif
 
 protected:
@@ -565,8 +577,11 @@ public:
 
   explicit money_put(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
 
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale * = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new money_put<char_type,iter_type>();

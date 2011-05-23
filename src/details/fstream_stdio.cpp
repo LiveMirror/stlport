@@ -49,6 +49,7 @@ extern "C" {
 
 #if defined (_STLP_MSVC) || defined (__MINGW32__)
 #  include <fcntl.h>
+
 #  define S_IREAD _S_IREAD
 #  define S_IWRITE _S_IWRITE
 #  define S_IFREG _S_IFREG
@@ -82,7 +83,7 @@ extern "C" {
 #  endif
 #endif
 
-const _STLP_fd INVALID_STLP_FD = -1;
+const int INVALID_STLP_FD = -1;
 
 
 #  ifdef __MSL__
@@ -121,59 +122,33 @@ _STLP_BEGIN_NAMESPACE
 #  define FTELL ftello64
 #endif
 
-_STLP_MOVE_TO_PRIV_NAMESPACE
-
-// Helper functions for _Filebuf_base.
-
-static bool __is_regular_file(_STLP_fd fd) {
+/*
+bool _Filebuf_base::__regular_file() {
   struct STAT buf;
-  return FSTAT(fd, &buf) == 0 && (buf.st_mode & S_IFREG) != 0 ;
+  return _M_should_close && (FSTAT(__get_fd(), &buf) == 0 && (buf.st_mode & S_IFREG) != 0);
 }
+*/
 
-// Number of characters in the file.
-static streamoff __file_size(_STLP_fd fd) {
-  streamoff ret = 0;
 
-  struct STAT buf;
-  if (FSTAT(fd, &buf) == 0 && (buf.st_mode & S_IFREG) != 0)
-    ret = buf.st_size > 0 ? buf.st_size : 0;
-
-  return ret;
-}
-
-_STLP_MOVE_TO_STD_NAMESPACE
-
-// All version of Unix have mmap and lseek system calls.  Some also have
-// longer versions of those system calls to accommodate 64-bit offsets.
-// If we're on a Unix system, define some macros to encapsulate those
-// differences.
-
-size_t _Filebuf_base::_M_page_size = 4096;
-
-_Filebuf_base::_Filebuf_base() :
-    _M_file_id(INVALID_STLP_FD),
-    _M_openmode(0),
-    int_flags_(0)
-{}
-
-void _Filebuf_base::_S_initialize()
-{
-
-}
 
 // Return the size of the file.  This is a wrapper for stat.
 // Returns zero if the size cannot be determined or is ill-defined.
 streamoff _Filebuf_base::_M_file_size()
 {
-  return _STLP_PRIV __file_size(_M_file_id);
+  streamoff ret = 0;
+
+  struct STAT buf;
+  if (FSTAT(_fileno(_M_file), &buf) == 0 && (buf.st_mode & S_IFREG) != 0)
+    ret = buf.st_size > 0 ? buf.st_size : 0;
+
+  return ret;
 }
 
 bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
-                            long permission)
+                            int permission)
 {
-  _STLP_fd file_no;
 
-  if ( __is_open() ) {
+  if ( _M_file ) {
     return false;
   }
 
@@ -229,34 +204,30 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode,
 
   // fbp : TODO : set permissions !
   (void)permission; // currently unused    //*TY 02/26/2000 - added to suppress warning message
-  _M_file = FOPEN(name, flags);
+  FILE* f = FOPEN(name, flags);
 
-  if (_M_file) {
-    file_no = fileno(_M_file);
-  } else {
+  return _M_open(f, openmode);
+}
+
+
+
+bool _Filebuf_base::_M_open(FILE* f, ios_base::openmode openmode)
+{
+  _M_file = f;
+
+  if (!_M_file) {
     return false;
   }
 
-  // unset buffering immediately
-  setbuf(_M_file, 0);
-
-  int_flags_ |= _is_open;
+  _M_should_close = true;
 
   if (openmode & ios_base::ate) {
     if (FSEEK(_M_file, 0, SEEK_END) != 0) {
-      int_flags_ &= ~_is_open;
+      _M_should_close = false;
     }
   }
 
-  _M_file_id = file_no;
-  int_flags_ |= (int_flags_ & _is_open) << 1; // _should_close == _is_open
-  _M_openmode = openmode;
-
-  if ( (int_flags_ & _is_open) && _STLP_PRIV __is_regular_file(_M_file_id) ) {
-    int_flags_ |= _regular;
-  }
-
-  return (int_flags_ & _is_open) != 0;
+  return _M_should_close;
 }
 
 
@@ -269,54 +240,17 @@ bool _Filebuf_base::_M_open(const char* name, ios_base::openmode openmode)
                                        S_IWGRP | S_IROTH | S_IWOTH);
 }
 
-// Associated the filebuf with a file descriptor pointing to an already-
-// open file.  Mode is set to be consistent with the way that the file
-// was opened.
-bool _Filebuf_base::_M_open( int file_no, ios_base::openmode )
-{
-  if ( (int_flags_ & _is_open) || (file_no < 0) ) {
-    return false;
-  }
-
-  struct STAT buf;
-  if (FSTAT(file_no, &buf) != 0)
-    return false;
-  int mode = buf.st_mode;
-
-  switch ( mode & (S_IWRITE | S_IREAD) ) {
-    case S_IREAD:
-      _M_openmode = ios_base::in;
-      break;
-    case S_IWRITE:
-      _M_openmode = ios_base::out;
-      break;
-    case (S_IWRITE | S_IREAD):
-      _M_openmode = ios_base::in | ios_base::out;
-      break;
-    default:
-      return false;
-  }
-  _M_file_id = file_no;
-  int_flags_ |= _is_open;
-  if ( _STLP_PRIV __is_regular_file(_M_file_id) ) {
-    int_flags_ |= _regular;
-  }
-
-  return true;
-}
-
 bool _Filebuf_base::_M_close()
 {
-  if ( (int_flags_ & _is_open) == 0 ) {
+  if (!_M_should_close) {
     return false;
   }
 
-  bool ok = (int_flags_ & _should_close) != 0 ? (fclose(_M_file) == 0) : true;
+  fclose(_M_file);
+  _M_file = 0;
+  _M_should_close = false;
 
-  int_flags_ = 0;
-  _M_openmode = 0;
-
-  return ok;
+  return true;
 }
 
 // Read up to n characters into a buffer.  Return value is number of
@@ -373,22 +307,6 @@ streamoff _Filebuf_base::_M_seek(streamoff offset, ios_base::seekdir dir)
   }
 
   return streamoff(-1);
-}
-
-
-// Attempts to memory-map len bytes of the current file, starting
-// at position offset.  Precondition: offset is a multiple of the
-// page size.  Postcondition: return value is a null pointer if the
-// memory mapping failed.  Otherwise the return value is a pointer to
-// the memory-mapped file and the file position is set to offset.
-void *_Filebuf_base::_M_mmap(streamoff, streamoff )
-{
-  return 0;
-}
-
-void _Filebuf_base::_M_unmap(void*, streamoff)
-{
-  // precondition : there is a valid mapping at the moment
 }
 
 _STLP_END_NAMESPACE

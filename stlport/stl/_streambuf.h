@@ -56,45 +56,61 @@ public:                         // Typedefs.
   typedef typename _Traits::off_type off_type;
   typedef _Traits                    traits_type;
 
-private:                        // Data members.
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+public:
+  void _Lock() { _M_lock._M_acquire_lock(); }
+  
+  void _Unlock() { _M_lock._M_release_lock(); }
+private:
+  _STLP_mutex _M_lock;
+#endif
 
-  char_type* _M_gbegin;         // Beginning of get area
+private:      // Data members.
+  char_type* _M_gbegin;            // Beginning of get area
+  char_type* _M_pbegin;            // Beginning of put area
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  char_type** _M_p_gbegin;         // Pointer to beginning of get area
+  char_type** _M_p_pbegin;         // Pointer to beginning of put area
+#endif
   char_type* _M_gnext;          // Current position within the get area
-  char_type* _M_gend;           // End of get area
-
-  char_type* _M_pbegin;         // Beginning of put area
   char_type* _M_pnext;          // Current position within the put area
-  char_type* _M_pend;           // End of put area
-
-  locale _M_locale;             // The streambuf's locale object
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  char_type** _M_p_gnext;         // Pointer to beginning of get area
+  char_type** _M_p_pnext;         // Pointer to beginning of put area
+#endif
+  int _M_gcount;           // End of get area
+  int _M_pcount;           // End of put area
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+  int* _M_p_gcount;           // End of get area
+  int* _M_p_pcount;           // End of put area
+#endif
+  locale* _M_locale;             // The streambuf's locale object
 
 public:                         // Destructor.
   virtual ~basic_streambuf();
 
 protected:                      // The default constructor.
-  basic_streambuf()
-#if defined (_STLP_MSVC) && (_STLP_MSVC < 1300) && defined (_STLP_USE_STATIC_LIB)
-    //We make it inline to avoid unresolved symbol.
-    : _M_gbegin(0), _M_gnext(0), _M_gend(0),
-      _M_pbegin(0), _M_pnext(0), _M_pend(0),
-      _M_locale()
-  {}
-#else
-  ;
-#endif
+  basic_streambuf();
 
 protected:                      // Protected interface to the get area.
-  char_type* eback() const { return _M_gbegin; } // Beginning
-  char_type* gptr()  const { return _M_gnext; }  // Current position
-  char_type* egptr() const { return _M_gend; }   // End
+  char_type* eback() const { return *_M_p_gbegin; } // Beginning
+  char_type* gptr()  const { return *_M_p_gnext; }  // Current position
+  char_type* egptr() const { return *_M_p_gnext + *_M_p_gcount; }   // End
 
-  void gbump(int __n) { _M_gnext += __n; }
+  void gbump(int __n) { *_M_p_gnext += __n; *_M_p_gcount -= __n; }
+
   void setg(char_type* __gbegin, char_type* __gnext, char_type* __gend) {
-    _M_gbegin = __gbegin;
-    _M_gnext  = __gnext;
-    _M_gend   = __gend;
+    *_M_p_gbegin = __gbegin;
+    *_M_p_gnext  = __gnext;
+    *_M_p_gcount   = (int)(__gend - __gbegin);
   }
-
+  streamsize _Pnavail() const { return *_M_p_pnext ? *_M_p_pcount : 0; }
+  streamsize _Gnavail() const { return *_M_p_gnext ? *_M_p_gcount : 0; }
+  char_type *_Gninc() { --*_M_p_gcount; return (*_M_p_gnext)++; }
+  char_type *_Gnpreinc() { --*_M_p_gcount; return ++(*_M_p_gnext); }
+  char_type *_Gndec()  { ++(*_M_p_gcount); return --(*_M_p_gnext); }
+  char_type *_Pninc() { --*_M_p_pcount; return (*_M_p_pnext)++; }
+  
 public:
   // An alternate public interface to the above functions
   // which allows us to avoid using templated friends which
@@ -103,20 +119,26 @@ public:
   char_type* _M_gptr()  const { return gptr(); }
   char_type* _M_egptr() const { return egptr(); }
   void _M_gbump(int __n)      { gbump(__n); }
-  void _M_setg(char_type* __gbegin, char_type* __gnext, char_type* __gend)
-  { this->setg(__gbegin, __gnext, __gend); }
+  void _M_setg(char_type* __gbegin, char_type* __gnext, char_type* __gend) { this->setg(__gbegin, __gnext, __gend); }
 
 protected:                      // Protected interface to the put area
 
-  char_type* pbase() const { return _M_pbegin; } // Beginning
-  char_type* pptr()  const { return _M_pnext; }  // Current position
-  char_type* epptr() const { return _M_pend; }   // End
+  char_type* pbase() const { return *_M_p_pbegin; } // Beginning
+  char_type* pptr()  const { return *_M_p_pnext; }  // Current position
+  char_type* epptr() const { return *_M_p_pnext + *_M_p_pcount; }   // End
 
-  void pbump(int __n) { _M_pnext += __n; }
+  void pbump(int __n) { *_M_p_pnext += __n; }
+
   void setp(char_type* __pbegin, char_type* __pend) {
     _M_pbegin = __pbegin;
-    _M_pnext  = __pbegin;
-    _M_pend   = __pend;
+    *_M_p_pnext  = __pbegin;
+    *_M_p_pcount   = (int)(__pend-__pbegin);
+  }
+
+  void setp(char_type* __pbegin, char_type* __pnext, char_type* __pend) {
+    _M_pbegin = __pbegin;
+    *_M_p_pnext  = __pnext;
+    *_M_p_pcount   = (int)(__pend-__pbegin);
   }
 
 protected:                      // Virtual buffer management functions.
@@ -139,15 +161,13 @@ protected:                      // Virtual buffer management functions.
 
 
 public:                         // Buffer management.
-  basic_streambuf<_CharT, _Traits>* pubsetbuf(char_type* __s, streamsize __n)
-  { return this->setbuf(__s, __n); }
+  basic_streambuf<_CharT, _Traits>* pubsetbuf(char_type* __s, streamsize __n)   { return this->setbuf(__s, __n); }
 
   pos_type pubseekoff(off_type __offset, ios_base::seekdir __way,
-                      ios_base::openmode __mod = ios_base::in | ios_base::out)
+		      ios_base::openmode __mod = ios_base::in | ios_base::out)
   { return this->seekoff(__offset, __way, __mod); }
 
-  pos_type pubseekpos(pos_type __sp,
-                      ios_base::openmode __mod = ios_base::in | ios_base::out)
+  pos_type pubseekpos(pos_type __sp, ios_base::openmode __mod = ios_base::in | ios_base::out) 
   { return this->seekpos(__sp, __mod); }
 
   int pubsync() { return this->sync(); }
@@ -196,70 +216,63 @@ protected:                      // Virtual put area functions, as defined in
 public:                         // Public members for writing characters.
   // Write a single character.
   int_type sputc(char_type __c) {
-    return ((_M_pnext < _M_pend) ? _Traits::to_int_type(*_M_pnext++ = __c)
-      : this->overflow(_Traits::to_int_type(__c)));
+    return ( _Pnavail() ?  _Traits::to_int_type(*_Pninc() = __c) : this->overflow(_Traits::to_int_type(__c)));
   }
 
   // Write __n characters.
-  streamsize sputn(const char_type* __s, streamsize __n)
-  { return this->xsputn(__s, __n); }
+  streamsize sputn(const char_type* __s, streamsize __n) { return this->xsputn(__s, __n); }
 
   // Extension: write __n copies of __c.
-  streamsize _M_sputnc(char_type __c, streamsize __n)
-  { return this->_M_xsputnc(__c, __n); }
+  streamsize _M_sputnc(char_type __c, streamsize __n) { return this->_M_xsputnc(__c, __n); }
 
 public:                         // Public members for reading characters.
   streamsize in_avail() {
-    return (_M_gnext < _M_gend) ? (_M_gend - _M_gnext) : this->showmanyc();
+    streamsize __ret(_Gnavail());
+    return __ret > 0 ? __ret: this->showmanyc();
   }
 
   // Advance to the next character and return it.
-    int_type snextc()
-      {
-        if ( (_M_gend - _M_gnext) > 1 ) {
-          return _Traits::to_int_type(*++_M_gnext);
-        }
-        _M_gnext = _M_gend;
-        return this->underflow();
-      }
-
+  int_type snextc() {
+    if ( _Gnavail() > 1 ) {
+      return _Traits::to_int_type(*_Gnpreinc());
+    } else {
+      return _Traits::eq_int_type(sbumpc(), _Traits::eof()) ? _Traits::eof() : sgetc();
+    }
+  }
+  
   // Return the current character and advance to the next.
   int_type sbumpc() {
-    return _M_gnext < _M_gend ? _Traits::to_int_type(*_M_gnext++)
-      : this->uflow();
+    return _Gnavail() ? _Traits::to_int_type(*_Gninc()) : this->uflow();
   }
-
+  
   // Return the current character without advancing to the next.
   int_type sgetc() {
-    return _M_gnext < _M_gend ? _Traits::to_int_type(*_M_gnext)
-      : this->underflow();
+    return _Gnavail() ? _Traits::to_int_type(**_M_p_gnext) : this->underflow();
   }
 
-  streamsize sgetn(char_type* __s, streamsize __n)
-  { return this->xsgetn(__s, __n); }
-
+  streamsize sgetn(char_type* __s, streamsize __n) { return this->xsgetn(__s, __n); }
+  
   
   int_type sputbackc(char_type __c) {
-    return ((_M_gbegin < _M_gnext) && _Traits::eq(__c, *(_M_gnext - 1)))
-      ? _Traits::to_int_type(*--_M_gnext)
-      : this->pbackfail(_Traits::to_int_type(__c));
+    return ((*_M_p_gbegin < *_M_p_gnext) && _Traits::eq(__c, *(*_M_p_gnext - 1))) ? _Traits::to_int_type(*_Gndec()) : this->pbackfail(_Traits::to_int_type(__c));
   }
 
   int_type sungetc() {
-    return (_M_gbegin < _M_gnext)
-      ? _Traits::to_int_type(*--_M_gnext)
-      : this->pbackfail();
+    return (gptr() != 0 && eback() < gptr()) ?  _Traits::to_int_type(*_Gndec()) : this->pbackfail();
   }
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
 protected:
-  streamsize _Sgetn_s(char_type *__p, size_t __size, streamsize __n)
-  {
+  streamsize _Sgetn_s(char_type *__p, size_t __size, streamsize __n) {
     return _Xsgetn_s(__p, __size, __n);
   }
-
   virtual streamsize _Xsgetn_s(char_type *__p, size_t __size, streamsize __n);
-
+  void _Init(char_type **__gbegin, char_type **__gnext, int *__gcount,
+	     char_type **__pbegin, char_type **__pnext, int *__pcount) {
+    _M_p_gbegin = __gbegin, _M_p_pbegin = __pbegin;
+    _M_p_gnext = __gnext, _M_p_pnext = __pnext;
+    _M_p_gcount = __gcount, _M_p_pcount = __pcount;
+  }
 #endif
 
 protected:                      // Virtual locale functions.
@@ -272,25 +285,12 @@ protected:                      // Virtual locale functions.
 
 public:                         // Locale-related functions.
   locale pubimbue(const locale&);
-  locale getloc() const { return _M_locale; }
+  locale getloc() const { return *_M_locale; }
 
 #if !defined (_STLP_NO_ANACHRONISMS)
   void stossc() { this->sbumpc(); }
 #endif
 
-#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-  void _Lock()
-  {	// set the thread lock
-    _M_lock._M_acquire_lock();
-  }
-  
-  void _Unlock()
-  {	// clear the thread lock
-    _M_lock._M_release_lock();
-  }
-private:
-  _STLP_mutex _M_lock;
-#endif
 
 };
 

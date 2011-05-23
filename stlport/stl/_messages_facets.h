@@ -40,9 +40,10 @@ _STLP_BEGIN_NAMESPACE
 
 // messages facets
 
-class messages_base {
-  public:
+struct _STLP_CLASS_DECLSPEC messages_base : public locale::facet {
     typedef int catalog;
+    messages_base(size_t __refs = 0): locale::facet(__refs) {}
+    ~messages_base() {}
 };
 
 template <class _CharT> class messages {};
@@ -52,7 +53,7 @@ class _Messages;
 _STLP_MOVE_TO_STD_NAMESPACE
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC messages<char> : public locale::facet, public messages_base {
+class _STLP_CLASS_DECLSPEC messages<char> : public messages_base {
 public:
   typedef messages_base::catalog catalog;
   typedef char                   char_type;
@@ -71,13 +72,13 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-
-  void _Init(const _Locinfo&) {}
-
-  explicit messages(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
-
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  explicit messages(const _Locinfo& __i, size_t __refs = 0) : messages_base(__refs) { _Init(__i); }
+  static size_t _STLP_CALL 
+    _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+	    , const locale * = 0
+#endif
+	    )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new messages<char>();
@@ -85,8 +86,8 @@ public:
   }
 
  protected:
-  explicit messages(const char* __name, size_t __refs = 0) : locale::facet(__refs) { _Init(_Locinfo(__name)); }
-
+  explicit messages(const char* __name, size_t __refs = 0) : messages_base(__refs) { _Init(_Locinfo(__name)); }
+  void _Init(const _Locinfo&) {}
 #endif
 
 protected:
@@ -104,7 +105,7 @@ protected:
 #if !defined (_STLP_NO_WCHAR_T)
 
 _STLP_TEMPLATE_NULL
-class _STLP_CLASS_DECLSPEC messages<wchar_t> : public locale::facet, public messages_base {
+class _STLP_CLASS_DECLSPEC messages<wchar_t>  : public messages_base {
 public:
   typedef messages_base::catalog catalog;
   typedef wchar_t                char_type;
@@ -123,22 +124,20 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-
-  void _Init(const _Locinfo&) {}
-
-  explicit messages(const _Locinfo& __i, size_t __refs = 0) : locale::facet(__refs) { _Init(__i); }
-
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  explicit messages(const _Locinfo& __i, size_t __refs = 0) : messages_base(__refs) { _Init(__i); }
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+#if (_MSC_VER >= 1500)
+				   ,const locale * = 0
+#endif
+				   )
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new messages<wchar_t>();
     return (locale::messages);
   }
-
  protected:
-  explicit messages(const char* __name, size_t __refs = 0) : locale::facet(__refs) { _Init(_Locinfo(__name)); }
-
+  explicit messages(const char* __name, size_t __refs = 0) : messages_base(__refs) { _Init(_Locinfo(__name)); }
+  void _Init(const _Locinfo&) {}
 #endif
 
 protected:

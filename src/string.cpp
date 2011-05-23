@@ -4,7 +4,6 @@
 #include <stl/_range_errors.h>
 
 _STLP_BEGIN_NAMESPACE
-
 #if defined (_STLP_MSVC_BINARY_COMPATIBILITY) 
 
 #undef _String_base

@@ -35,14 +35,11 @@ DEFS_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STATIC_DBG=/D_STLP_DEBUG_UNINITIALIZED
 DEFS_STATIC_STLDBG=/D_STLP_DEBUG_UNINITIALIZED
 
-
-
-!include $(SRCROOT)/Makefiles/nmake/top.mak
-
 !if ("$(COMPILER_NAME)" != "icl")
 # Important in a number of builds.
 OPT = /Zm800 /Od
 !endif
+!include $(SRCROOT)/Makefiles/nmake/top.mak
 
 install:
   copy obj\vc9\shared\stl_unit_test.exe ..\..\..\bin

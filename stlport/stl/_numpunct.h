@@ -62,14 +62,12 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&, bool) {}
+  void _Init(const _Locinfo&, bool = false) {}
 
+#if (_MSC_VER >= 1500)
   explicit numpunct(const _Locinfo& __i, size_t __refs = 0, bool __b=false) : 
     locale::facet(__refs) { _Init(__i, __b); }
-
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
-  {	// return locale category mask and construct standard facet
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0, const locale *__l = 0) {
     if (__f != 0 && *__f == 0)
       *__f = new numpunct<char_type>();
     return (locale::numeric);
@@ -77,7 +75,18 @@ public:
  protected:
   explicit numpunct(const char* __name, size_t __refs = 0, bool __b=false) : 
     locale::facet(__refs) { _Init(_Locinfo(__name), __b); }
-
+#else
+  explicit numpunct(const _Locinfo& __i, size_t __refs = 0) : 
+    locale::facet(__refs) { _Init(__i); }
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0) {
+    if (__f != 0 && *__f == 0)
+      *__f = new numpunct<char_type>();
+    return (locale::numeric);
+  }
+ protected:
+  explicit numpunct(const char* __name, size_t __refs = 0) : 
+    locale::facet(__refs) { _Init(_Locinfo(__name)); }
+# endif
 #endif
 
 protected:
@@ -110,13 +119,13 @@ public:
   static _STLP_STATIC_DECLSPEC locale::id id;
 
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY
-  void _Init(const _Locinfo&, bool) {}
+  void _Init(const _Locinfo&, bool = false) {}
 
-  explicit numpunct(const _Locinfo& __i, size_t __refs=0, bool __b=false) : 
+# if (_MSC_VER >= 1500)
+   explicit numpunct(const _Locinfo& __i, size_t __refs=0, bool __b=false) : 
     locale::facet(__refs) { _Init(__i, __b); }
-
-  static size_t __CLRCALL_OR_CDECL _Getcat(const locale::facet **__f = 0,
-					   const locale *__l = 0)
+  static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0
+				   ,const locale *__l = 0)
   {	// return locale category mask and construct standard facet
     if (__f != 0 && *__f == 0)
       *__f = new numpunct<char_type>();
@@ -125,7 +134,19 @@ public:
  protected:
   explicit numpunct(const char* __name, size_t __refs = 0, bool __b = false) : 
     locale::facet(__refs) { _Init(_Locinfo(__name), __b); }
-
+# else
+   explicit numpunct(const _Locinfo& __i, size_t __refs=0) : 
+    locale::facet(__refs) { _Init(__i); }
+   static size_t _STLP_CALL _Getcat(const locale::facet **__f = 0)
+   {	// return locale category mask and construct standard facet
+     if (__f != 0 && *__f == 0)
+       *__f = new numpunct<char_type>();
+     return (locale::numeric);
+   }
+ protected:
+   explicit numpunct(const char* __name, size_t __refs = 0) : 
+     locale::facet(__refs) { _Init(_Locinfo(__name), false); }
+# endif
 #endif
 
 protected:
