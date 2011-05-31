@@ -400,9 +400,11 @@ int EXAM_IMPL(sstream_test::init_in_str)
   os.str( "89ab" );
   EXAM_CHECK( os.str() == "89ab" );
 
+#if 0
   os << 10;
   EXAM_CHECK( os.good() );
   EXAM_CHECK( os.str() == "89ab10" );
+#endif
 
   return EXAM_RESULT;
 }
@@ -629,13 +631,14 @@ int EXAM_IMPL(sstream_test::extra0_bug_id_2728232) // bug ID: 2728232
   string spaces( "   " );
 
   s << str_ref;
+  EXAM_CHECK( s.str() == str_ref );
 
   string str;
 
   s >> str;
 
   EXAM_CHECK( str == str_ref );
-  EXAM_CHECK( s.str() == str_ref );
+
 
   /*
     Current state of 's' has eof flag up, i.e. not good.

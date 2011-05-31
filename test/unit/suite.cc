@@ -39,7 +39,7 @@
 #include "errno_test.h"
 #include "shared_ptr_test.h"
 // #include "reference_wrapper_test.h"
-/// #include "num_put_get_test.h"
+#include "num_put_get_test.h"
 
 int main( int argc, const char** argv )
 {
@@ -135,13 +135,15 @@ int main( int argc, const char** argv )
   
   //   t.add( &cstring_test::import_checks, cst_test, "import_checks" );
 
+#if 0
   iostream_test strm_test;
   //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
   //  t.add( &iostream_test::in_avail, strm_test, "in_avail in std streams" );
   t.add (&iostream_test::cout_out, strm_test, "hello world");
   //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
+#endif
 
-
+#if 0
   fstream_test fstrm_test;
   exam::test_suite::test_case_type fstream_tc[10];
 
@@ -173,22 +175,27 @@ int main( int argc, const char** argv )
   //  t.add( &fstream_test::big_file, fstrm_test, "fstream big_file" );
   fstream_tc[2] = t.add( &fstream_test::custom_facet, fstrm_test, "fstream custom_facet");
 
-
-
-#if 0
+#endif
 
   sstream_test sstrm_test;
-
-  t.add( &sstream_test::output, sstrm_test, "sstream output" );
-  t.add( &sstream_test::input, sstrm_test, "sstream input" );
-  t.add( &sstream_test::input_char, sstrm_test, "sstream input_char" );
-  t.add( &sstream_test::io, sstrm_test, "sstream io" );
-  t.add( &sstream_test::err, sstrm_test, "sstream err" );
-  t.add( &sstream_test::err_long, sstrm_test, "sstream err_long" );
-  t.add( &sstream_test::maxint, sstrm_test, "sstream maxint" );
   t.add( &sstream_test::init_in, sstrm_test, "sstream init_in" );
   t.add( &sstream_test::init_out, sstrm_test, "sstream init_out" );
   t.add( &sstream_test::init_in_str, sstrm_test, "sstream str( \"foo\" )" );
+
+#if 0
+  t.add( &sstream_test::output, sstrm_test, "sstream output" );
+  t.add( &sstream_test::input, sstrm_test, "sstream input" );
+#endif
+
+  t.add( &sstream_test::io, sstrm_test, "sstream io" );
+
+#if 0
+  t.add( &sstream_test::input_char, sstrm_test, "sstream input_char" );
+
+
+  t.add( &sstream_test::err, sstrm_test, "sstream err" );
+  t.add( &sstream_test::err_long, sstrm_test, "sstream err_long" );
+  t.add( &sstream_test::maxint, sstrm_test, "sstream maxint" );
   t.add( &sstream_test::buf, sstrm_test, "sstream buf" );
   t.add( &sstream_test::rdbuf, sstrm_test, "sstream rdbuf" );
   //  t.add( &sstream_test::streambuf_output, sstrm_test, "sstream streambuf_output" );
@@ -199,6 +206,8 @@ int main( int argc, const char** argv )
   t.add( &sstream_test::tellp, sstrm_test, "sstream tellp" );
   t.add( &sstream_test::extra0_bug_id_2728232, sstrm_test, "extra 0; bug ID: 2728232" );
   t.add( &sstream_test::negative, sstrm_test, "sstream negative" );
+
+
 
   istream_iterator_test isit_test;
 
@@ -450,12 +459,11 @@ int main( int argc, const char** argv )
   t.add( &exception_test::unexpected_except, exc_test, "exception_test::unexpected_except" );
   t.add( &exception_test::uncaught_except, exc_test, "exception_test::uncaught_except" );
   t.add( &exception_test::exception_emission, exc_test, "exception_test::exception_emission" );
-#endif
 
   errno_test err_test;
   t.add( &errno_test::check, err_test, "errno_test::check" );
 
-#if 0
+
   num_put_get_test nmg_test;
   t.add( &num_put_get_test::num_put_integer, nmg_test, "num_put_integer" );
   t.add( &num_put_get_test::num_get_integer, nmg_test, "num_get_integer" );
@@ -516,6 +524,7 @@ int main( int argc, const char** argv )
 
   t.add( &locale_test::default_locale, ltest, "default_locale" );
   t.add( &locale_test::combine, ltest, "combine" );
+
 #endif
 
 #if 0

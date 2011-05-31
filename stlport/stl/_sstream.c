@@ -128,47 +128,53 @@ basic_stringbuf<_CharT, _Traits, _Alloc>::pbackfail(int_type __c) {
 template <class _CharT, class _Traits, class _Alloc>
 __BSB_int_type__ basic_stringbuf<_CharT, _Traits, _Alloc>::overflow(int_type __c)
 {
-  if ( (_M_mode & _AppendMode) && this->pptr() && this->pptr() < _M_ptr)
+  
+  if (_M_mode & _ReadOnly)
+    return traits_type::eof();
+  
+  if ( this->pptr() && this->pptr() < _M_ptr && (_M_mode & _AppendMode) )
     this->setp(this->pbase(), _M_ptr, this->epptr());
   
   if (traits_type::eq_int_type(traits_type::eof(), __c))
     return (traits_type::not_eof(__c));
-  else if (this->pptr() && this->pptr() < this->epptr()) {
+
+  if (this->pptr() && this->pptr() < this->epptr()) {
+    // there is room left in the buffer
     *this->_Pninc() = traits_type::to_char_type(__c);
     return __c;
-  } else if (_M_mode & _ReadOnly)
-    return traits_type::eof();
-  else  {
-    size_t __cursize = this->pptr() ? this->epptr() - this->eback() : 0;
-    _CharT *__ptr = 0;
-    size_t __newsize = __cursize * 2; // double, for amortized constant time
-    __ptr = _M_alloc.allocate(__newsize); 
-    if (__cursize)
-      traits_type::copy(__ptr, this->eback(), min(__newsize, __cursize));
-    if (_M_mode & _OwnStorage)
-      _M_alloc.deallocate(this->eback(), __cursize);
-    _M_mode |= _OwnStorage;
-    
-    if (__cursize) {
-      _M_ptr = _M_ptr - this->eback() + __ptr;
-      this->setp(this->pbase() - this->eback() + __ptr, this->pptr() - this->eback() + __ptr, __ptr + __newsize);
-      if (_M_mode & _WriteOnly)
-        this->setg(__ptr, 0, __ptr);
-      else
-        this->setg(__ptr, this->gptr() - this->eback() + __ptr, this->pptr() + 1);
-        }
-    else {
-      _M_ptr = __ptr;
-      this->setp(__ptr, __ptr + __newsize);
-      if (_M_mode & _WriteOnly)
-	this->setg(__ptr, 0, __ptr);
-      else
-	this->setg(__ptr, __ptr, __ptr + 1); 
-    }
-      
-    *this->_Pninc() = traits_type::to_char_type(__c);
-    return __c;
+  } 
+  
+  size_t __cursize = this->pptr() ? this->epptr() - this->eback() : 0;
+  off_t  __nextoffset =0;
+  _CharT *__ptr = 0;
+  size_t __newsize = max((size_t)16, __cursize * 2); // double, for amortized constant time
+ 
+  // reallocate storage and copy old contents over
+  __ptr = _M_alloc.allocate(__newsize); 
+  if (__cursize)
+    traits_type::copy(__ptr, this->eback(), min(__newsize, __cursize));
+  if (_M_mode & _OwnStorage)
+    _M_alloc.deallocate(this->eback(), __cursize);
+  _M_mode |= _OwnStorage;
+  
+  if (__cursize!=0) {
+    // existing data in buffer
+    _M_ptr = __ptr + (_M_ptr - this->eback());
+    this->setp(__ptr + (this->pbase() - this->eback()), __ptr + (this->pptr() - this->eback()) , __ptr + __newsize);
+    __nextoffset = this->gptr() - this->eback();
   }
+  else {
+    _M_ptr = __ptr;
+    this->setp(__ptr, __ptr + __newsize);
+  }
+
+  if (_M_mode & _WriteOnly)
+    this->setg(__ptr, 0, __ptr);
+  else
+    this->setg(__ptr, __ptr + __nextoffset, this->pptr() + 1);
+  
+  *this->_Pninc() = traits_type::to_char_type(__c);
+  return __c;
 }
 
 

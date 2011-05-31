@@ -115,11 +115,10 @@ public:
   // An alternate public interface to the above functions
   // which allows us to avoid using templated friends which
   // are not supported on some compilers.
-  char_type* _M_eback() const { return eback(); }
   char_type* _M_gptr()  const { return gptr(); }
   char_type* _M_egptr() const { return egptr(); }
   void _M_gbump(int __n)      { gbump(__n); }
-  void _M_setg(char_type* __gbegin, char_type* __gnext, char_type* __gend) { this->setg(__gbegin, __gnext, __gend); }
+
 
 protected:                      // Protected interface to the put area
 
@@ -130,13 +129,13 @@ protected:                      // Protected interface to the put area
   void pbump(int __n) { *_M_p_pnext += __n; }
 
   void setp(char_type* __pbegin, char_type* __pend) {
-    _M_pbegin = __pbegin;
+    *_M_p_pbegin = __pbegin;
     *_M_p_pnext  = __pbegin;
     *_M_p_pcount   = (int)(__pend-__pbegin);
   }
 
   void setp(char_type* __pbegin, char_type* __pnext, char_type* __pend) {
-    _M_pbegin = __pbegin;
+    *_M_p_pbegin = __pbegin;
     *_M_p_pnext  = __pnext;
     *_M_p_pcount   = (int)(__pend-__pbegin);
   }

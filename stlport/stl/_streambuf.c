@@ -31,13 +31,16 @@ template <class _CharT, class _Traits>
 basic_streambuf<_CharT, _Traits>::basic_streambuf()
   : _M_gbegin(0), _M_pbegin(0),
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
-    _M_p_gbegin(&_M_gbegin), _M_p_pbegin(&_M_gbegin),
+    _M_p_gbegin(&_M_gbegin), _M_p_pbegin(&_M_pbegin),
 #endif
     _M_gnext(0), _M_pnext(0),
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
     _M_p_gnext(&_M_gnext), _M_p_pnext(&_M_pnext),
 #endif
     _M_gcount(0), _M_pcount(0),
+#ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
+    _M_p_gcount(&_M_gcount), _M_p_pcount(&_M_pcount),
+#endif
     _M_locale(new locale()) {
 #ifdef _STLP_MSVC_BINARY_COMPATIBILITY 
     _M_lock._M_initialize();
