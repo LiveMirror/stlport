@@ -66,44 +66,44 @@ public:
 # endif
 
   // Formatting flags.
-  _STLP_STATIC_CONSTANT(int, left = 0x0001);
-  _STLP_STATIC_CONSTANT(int, right = 0x0002);
-  _STLP_STATIC_CONSTANT(int, internal   = 0x0004);
-  _STLP_STATIC_CONSTANT(int, dec        = 0x0008);
-  _STLP_STATIC_CONSTANT(int, hex        = 0x0010);
-  _STLP_STATIC_CONSTANT(int, oct        = 0x0020);
-  _STLP_STATIC_CONSTANT(int, fixed      = 0x0040);
-  _STLP_STATIC_CONSTANT(int, scientific = 0x0080);
-  _STLP_STATIC_CONSTANT(int, boolalpha  = 0x0100);
-  _STLP_STATIC_CONSTANT(int, showbase   = 0x0200);
-  _STLP_STATIC_CONSTANT(int, showpoint  = 0x0400);
-  _STLP_STATIC_CONSTANT(int, showpos    = 0x0800);
-  _STLP_STATIC_CONSTANT(int, skipws     = 0x1000);
-  _STLP_STATIC_CONSTANT(int, unitbuf    = 0x2000);
-  _STLP_STATIC_CONSTANT(int, uppercase  = 0x4000);
+  _STLP_STATIC_CONSTANT(int, left = 0x40);
+  _STLP_STATIC_CONSTANT(int, right = 0x80);
+  _STLP_STATIC_CONSTANT(int, showpoint  = 0x10);
+  _STLP_STATIC_CONSTANT(int, showpos    = 0x20);
+  _STLP_STATIC_CONSTANT(int, internal   = 0x0100);
+  _STLP_STATIC_CONSTANT(int, dec        = 0x0200);
+  _STLP_STATIC_CONSTANT(int, hex        = 0x0800);
+  _STLP_STATIC_CONSTANT(int, oct        = 0x0400);
+  _STLP_STATIC_CONSTANT(int, fixed      = 0x2000);
+  _STLP_STATIC_CONSTANT(int, scientific = 0x1000);
+  _STLP_STATIC_CONSTANT(int, boolalpha  = 0x4000);
+  _STLP_STATIC_CONSTANT(int, skipws     = 0x1);
+  _STLP_STATIC_CONSTANT(int, unitbuf    = 0x2);
+  _STLP_STATIC_CONSTANT(int, uppercase  = 0x4);
+  _STLP_STATIC_CONSTANT(int, showbase   = 0x8);
   _STLP_STATIC_CONSTANT(int, adjustfield = left | right | internal);
   _STLP_STATIC_CONSTANT(int, basefield   = dec | hex | oct);
   _STLP_STATIC_CONSTANT(int, floatfield  = scientific | fixed);
 
   // State flags.
   _STLP_STATIC_CONSTANT(int, goodbit = 0x00);
-  _STLP_STATIC_CONSTANT(int, badbit  = 0x01);
-  _STLP_STATIC_CONSTANT(int, eofbit  = 0x02);
-  _STLP_STATIC_CONSTANT(int, failbit = 0x04);
+  _STLP_STATIC_CONSTANT(int, badbit  = 0x04);
+  _STLP_STATIC_CONSTANT(int, eofbit  = 0x01);
+  _STLP_STATIC_CONSTANT(int, failbit = 0x02);
 
   // Openmode flags.
   _STLP_STATIC_CONSTANT(int, __default_mode = 0x0); /* implementation detail */
-  _STLP_STATIC_CONSTANT(int, app    = 0x01);
-  _STLP_STATIC_CONSTANT(int, ate    = 0x02);
-  _STLP_STATIC_CONSTANT(int, binary = 0x04);
-  _STLP_STATIC_CONSTANT(int, in     = 0x08);
-  _STLP_STATIC_CONSTANT(int, out    = 0x10);
-  _STLP_STATIC_CONSTANT(int, trunc  = 0x20);
+  _STLP_STATIC_CONSTANT(int, in     = 0x1);
+  _STLP_STATIC_CONSTANT(int, out    = 0x2);
+  _STLP_STATIC_CONSTANT(int, ate    = 0x04);
+  _STLP_STATIC_CONSTANT(int, app    = 0x08);
+  _STLP_STATIC_CONSTANT(int, trunc  = 0x10);
+  _STLP_STATIC_CONSTANT(int, binary = 0x20);
 
   // Seekdir flags
-  _STLP_STATIC_CONSTANT(int, beg = 0x01);
-  _STLP_STATIC_CONSTANT(int, cur = 0x02);
-  _STLP_STATIC_CONSTANT(int, end = 0x04);
+  _STLP_STATIC_CONSTANT(int, beg = 0x00);
+  _STLP_STATIC_CONSTANT(int, cur = 0x01);
+  _STLP_STATIC_CONSTANT(int, end = 0x02);
 
 public:                         // Flag-manipulation functions.
   fmtflags flags() const { return _M_fmtflags; }

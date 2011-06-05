@@ -143,7 +143,7 @@ int main( int argc, const char** argv )
   //  t.add( &iostream_test::manipulators, strm_test, "manipulators" );
 #endif
 
-#if 0
+
   fstream_test fstrm_test;
   exam::test_suite::test_case_type fstream_tc[10];
 
@@ -175,21 +175,19 @@ int main( int argc, const char** argv )
   //  t.add( &fstream_test::big_file, fstrm_test, "fstream big_file" );
   fstream_tc[2] = t.add( &fstream_test::custom_facet, fstrm_test, "fstream custom_facet");
 
-#endif
-
   sstream_test sstrm_test;
   t.add( &sstream_test::init_in, sstrm_test, "sstream init_in" );
   t.add( &sstream_test::init_out, sstrm_test, "sstream init_out" );
   t.add( &sstream_test::init_in_str, sstrm_test, "sstream str( \"foo\" )" );
 
-#if 0
+
   t.add( &sstream_test::output, sstrm_test, "sstream output" );
   t.add( &sstream_test::input, sstrm_test, "sstream input" );
-#endif
+
 
   t.add( &sstream_test::io, sstrm_test, "sstream io" );
 
-#if 0
+
   t.add( &sstream_test::input_char, sstrm_test, "sstream input_char" );
 
 
@@ -207,8 +205,6 @@ int main( int argc, const char** argv )
   t.add( &sstream_test::extra0_bug_id_2728232, sstrm_test, "extra 0; bug ID: 2728232" );
   t.add( &sstream_test::negative, sstrm_test, "sstream negative" );
 
-
-
   istream_iterator_test isit_test;
 
   t.add( &istream_iterator_test::istmit1, isit_test, "istmit1" );
@@ -223,7 +219,6 @@ int main( int argc, const char** argv )
   t.add( &ioiter_test::ioiterat_test, ioit_test, "ioiterat_test" );
   t.add( &ioiter_test::assign_test, ioit_test, "assign_test" );
   t.add( &ioiter_test::assign2_test, ioit_test, "assign2_test" );
-#endif
 
 #if 0
 
