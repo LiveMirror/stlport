@@ -180,7 +180,7 @@ int main( int argc, const char** argv )
   t.add( &sstream_test::init_out, sstrm_test, "sstream init_out" );
   t.add( &sstream_test::init_in_str, sstrm_test, "sstream str( \"foo\" )" );
 
-
+#if 0
   t.add( &sstream_test::output, sstrm_test, "sstream output" );
   t.add( &sstream_test::input, sstrm_test, "sstream input" );
 
@@ -220,7 +220,7 @@ int main( int argc, const char** argv )
   t.add( &ioiter_test::assign_test, ioit_test, "assign_test" );
   t.add( &ioiter_test::assign2_test, ioit_test, "assign2_test" );
 
-#if 0
+
 
   insert_iter_test ins_test;
 
