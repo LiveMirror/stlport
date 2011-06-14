@@ -639,6 +639,8 @@ __read_buffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT, 
                  bool __extract_delim, bool __append_null,
                  bool __is_getline) {
   streamsize __n = 0;
+
+#if 0
   ios_base::iostate __status = 0;
   bool __done    = false;
 
@@ -710,6 +712,7 @@ __read_buffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT, 
   // we have not reached eof.  What that means is that the streambuf has
   // decided to switch from buffered to unbuffered input.  We switch to
   // to __read_unbuffered.
+# endif
 
   return __n + __read_unbuffered(__that,  __buf, _Num - __n, __s, __is_delim,
                                  __extract_delim,__append_null,__is_getline);
@@ -727,7 +730,7 @@ basic_istream<_CharT, _Traits>::get(_CharT* __s, streamsize __n,
   if (__sentry) {
     if (__n > 0) {
       basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
-
+      
       if (__buf->egptr() != __buf->gptr())
         this->_M_gcount =
           _STLP_PRIV __read_buffered(this,  __buf, __n - 1, __s,

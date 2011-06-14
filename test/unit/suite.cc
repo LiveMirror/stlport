@@ -176,24 +176,15 @@ int main( int argc, const char** argv )
   fstream_tc[2] = t.add( &fstream_test::custom_facet, fstrm_test, "fstream custom_facet");
 
   sstream_test sstrm_test;
+  t.add( &sstream_test::output, sstrm_test, "sstream output" );
+
   t.add( &sstream_test::init_in, sstrm_test, "sstream init_in" );
   t.add( &sstream_test::init_out, sstrm_test, "sstream init_out" );
   t.add( &sstream_test::init_in_str, sstrm_test, "sstream str( \"foo\" )" );
 
-#if 0
-  t.add( &sstream_test::output, sstrm_test, "sstream output" );
-  t.add( &sstream_test::input, sstrm_test, "sstream input" );
-
-
-  t.add( &sstream_test::io, sstrm_test, "sstream io" );
-
-
-  t.add( &sstream_test::input_char, sstrm_test, "sstream input_char" );
-
-
   t.add( &sstream_test::err, sstrm_test, "sstream err" );
   t.add( &sstream_test::err_long, sstrm_test, "sstream err_long" );
-  t.add( &sstream_test::maxint, sstrm_test, "sstream maxint" );
+
   t.add( &sstream_test::buf, sstrm_test, "sstream buf" );
   t.add( &sstream_test::rdbuf, sstrm_test, "sstream rdbuf" );
   //  t.add( &sstream_test::streambuf_output, sstrm_test, "sstream streambuf_output" );
@@ -202,8 +193,17 @@ int main( int argc, const char** argv )
   t.add( &sstream_test::seekp, sstrm_test, "sstream seekp" );
   t.add( &sstream_test::seek_gp, sstrm_test, "sstream seek_gp" );
   t.add( &sstream_test::tellp, sstrm_test, "sstream tellp" );
+
   t.add( &sstream_test::extra0_bug_id_2728232, sstrm_test, "extra 0; bug ID: 2728232" );
   t.add( &sstream_test::negative, sstrm_test, "sstream negative" );
+
+  t.add( &sstream_test::maxint, sstrm_test, "sstream maxint" );
+
+  t.add( &sstream_test::input, sstrm_test, "sstream input" );
+  t.add( &sstream_test::io, sstrm_test, "sstream io" );
+  t.add( &sstream_test::input_char, sstrm_test, "sstream input_char" );
+
+#if 0
 
   istream_iterator_test isit_test;
 

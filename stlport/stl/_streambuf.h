@@ -97,7 +97,10 @@ protected:                      // Protected interface to the get area.
   char_type* gptr()  const { return *_M_p_gnext; }  // Current position
   char_type* egptr() const { return *_M_p_gnext + *_M_p_gcount; }   // End
 
-  void gbump(int __n) { *_M_p_gnext += __n; *_M_p_gcount -= __n; }
+  void gbump(int __n) { 
+    *_M_p_gnext += __n; 
+    *_M_p_gcount -= __n;
+  }
 
   void setg(char_type* __gbegin, char_type* __gnext, char_type* __gend) {
     *_M_p_gbegin = __gbegin;
@@ -126,7 +129,10 @@ protected:                      // Protected interface to the put area
   char_type* pptr()  const { return *_M_p_pnext; }  // Current position
   char_type* epptr() const { return *_M_p_pnext + *_M_p_pcount; }   // End
 
-  void pbump(int __n) { *_M_p_pnext += __n; }
+  void pbump(int __n) {  
+    *_M_p_pnext += __n; 
+    *_M_p_pcount -= __n;
+  }
 
   void setp(char_type* __pbegin, char_type* __pend) {
     *_M_p_pbegin = __pbegin;

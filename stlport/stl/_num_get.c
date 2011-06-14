@@ -226,9 +226,9 @@ __get_integer(_InputIter& __first, _InputIter& __last,
 
   // overflow is being treated as failure
   return ((__got > 0) && !__ovflow) &&
-          (__is_group == 0 ||
-           __valid_grouping(__group_sizes, __group_sizes_end,
-                            __grouping.data(), __grouping.data()+ __grouping.size()));
+    ((__is_group == 0) ||
+     __valid_grouping(__group_sizes, __group_sizes_end,
+		      __grouping.data(), __grouping.data()+ __grouping.size()));
 }
 
 

@@ -147,7 +147,8 @@ __BSB_int_type__ basic_stringbuf<_CharT, _Traits, _Alloc>::overflow(int_type __c
   size_t __cursize = this->pptr() ? this->epptr() - this->eback() : 0;
   off_t  __nextoffset =0;
   _CharT *__ptr = 0;
-  size_t __newsize = max((size_t)16, __cursize * 2); // double, for amortized constant time
+  _CharT *__nextptr = 0;
+  size_t __newsize = max((size_t)64, __cursize * 2); // double, for amortized constant time
  
   // reallocate storage and copy old contents over
   __ptr = _M_alloc.allocate(__newsize); 
@@ -162,16 +163,18 @@ __BSB_int_type__ basic_stringbuf<_CharT, _Traits, _Alloc>::overflow(int_type __c
     _M_ptr = __ptr + (_M_ptr - this->eback());
     this->setp(__ptr + (this->pbase() - this->eback()), __ptr + (this->pptr() - this->eback()) , __ptr + __newsize);
     __nextoffset = this->gptr() - this->eback();
+    __nextptr = this->pptr() + 1;
   }
   else {
     _M_ptr = __ptr;
     this->setp(__ptr, __ptr + __newsize);
+    __nextptr = __ptr + 1;
   }
 
   if (_M_mode & _WriteOnly)
     this->setg(__ptr, 0, __ptr);
   else
-    this->setg(__ptr, __ptr + __nextoffset, this->pptr() + 1);
+    this->setg(__ptr, __ptr + __nextoffset, __nextptr);
   
   *this->_Pninc() = traits_type::to_char_type(__c);
   return __c;

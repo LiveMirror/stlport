@@ -205,7 +205,7 @@ DEFS_STATIC_REL = $(DEFS_STATIC_REL) /DNDEBUG
 
 # optimization and debug compiler flags
 # OPT_REL = $(OPT_REL) /Zi /O2
-OPT_REL = $(OPT_REL) /Zi /O2
+OPT_REL = $(OPT_REL) /Zi /Od
 OPT_DBG = $(OPT_DBG) /Zi
 OPT_STLDBG = $(OPT_STLDBG) /Zi
 OPT_STATIC_REL = $(OPT_STATIC_REL) /Zi /O2
