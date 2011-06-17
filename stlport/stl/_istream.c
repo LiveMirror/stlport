@@ -573,8 +573,6 @@ void basic_istream<_CharT, _Traits>::_M_formatted_get(_CharT& __c) {
 // delimiter if it is extracted.  Note that the number of characaters
 // extracted isn't necessarily the same as the number stored.
 
-_STLP_MOVE_TO_PRIV_NAMESPACE
-
 template < class _CharT, class _Traits, class _Is_Delim>
 streamsize _STLP_CALL
 __read_unbuffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT, _Traits>* __buf,
@@ -583,142 +581,43 @@ __read_unbuffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT
                   bool __extract_delim, bool __append_null,
                   bool __is_getline)
 {
+  typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
+  
   streamsize __n = 0;
   ios_base::iostate __status = 0;
-
+  
   typedef typename basic_istream<_CharT, _Traits>::int_type int_type;
   // The operations that can potentially throw are sbumpc, snextc, and sgetc.
   _STLP_TRY {
-    for (;;) {
-      if (__n == _Num) {
-        if (__is_getline) // didn't find delimiter as one of the _Num chars
-          __status |= ios_base::failbit;
-        break;
+    
+    for (int_type __c = __buf->sgetc(); 
+	 _Num-- > 0; 
+	 __c = __buf->snextc())
+      if (_Traits::eq_int_type(__c, _Traits::eof())) {
+	__status |= ios_base::eofbit;
+	break;
       }
-      int_type __c = __buf->sbumpc(); // sschwarz
-
-      if (__that->_S_eof(__c)) {
-        if (__n < _Num || __is_getline)
-          __status |= ios_base::eofbit;
-        break;
-      } else if (__is_delim(_Traits::to_char_type(__c))) {
-        if (__extract_delim) { // Extract and discard current character.
-          ++__n;
-        } else if ( !__pushback(__buf, _Traits::to_char_type(__c)) ) { // leave delimiter
-          __status |= ios_base::failbit;
-        }
-        break;
+      else if (__is_delim(_Traits::to_char_type(__c)))
+	break;
+      else {
+	// regular character
+	*__s++ = _Traits::to_char_type(__c);
+	++__n;
       }
-      // regular character
-      *__s++ = _Traits::to_char_type(__c);
-      ++__n;
-    }
   }
+
   _STLP_CATCH_ALL {
     __that->_M_handle_exception(ios_base::badbit);
     *__s = _STLP_DEFAULT_CONSTRUCTED(_CharT);
     return __n;
   }
-
+  
   if (__append_null)
     *__s =  _STLP_DEFAULT_CONSTRUCTED(_CharT);
   if (__status)
     __that->setstate(__status);    // This might throw.
   return __n;
 }
-
-// Much like __read_unbuffered, but with one additional function object:
-// __scan_delim(first, last) returns the first pointer p in [first, last)
-// such that __is_delim(p) is true.
-
-template < class _CharT, class _Traits, class _Is_Delim, class _Scan_Delim>
-streamsize _STLP_CALL
-__read_buffered(basic_istream<_CharT, _Traits>* __that, basic_streambuf<_CharT, _Traits>* __buf,
-                 streamsize _Num, _CharT* __s,
-                 _Is_Delim __is_delim, _Scan_Delim __scan_delim,
-                 bool __extract_delim, bool __append_null,
-                 bool __is_getline) {
-  streamsize __n = 0;
-
-#if 0
-  ios_base::iostate __status = 0;
-  bool __done    = false;
-
-  _STLP_TRY {
-    while (__buf->_M_egptr() != __buf->_M_gptr() && !__done) {
-      const _CharT* __first = __buf->_M_gptr();
-      const _CharT* __last  = __buf->_M_egptr();
-      //casting numeric_limits<ptrdiff_t>::max to streamsize only works is ptrdiff_t is signed or streamsize representation
-      //is larger than ptrdiff_t one.
-      _STLP_STATIC_ASSERT((sizeof(streamsize) > sizeof(ptrdiff_t)) ||
-                          ((sizeof(streamsize) == sizeof(ptrdiff_t)) && numeric_limits<ptrdiff_t>::is_signed))
-      ptrdiff_t __request = __STATIC_CAST(ptrdiff_t, (min) (__STATIC_CAST(streamsize, (numeric_limits<ptrdiff_t>::max)()), _Num - __n));
-
-      const _CharT* __p  = __scan_delim(__first, __last);
-      ptrdiff_t __chunk = (min) (ptrdiff_t(__p - __first), __request);
-      _Traits::copy(__s, __first, __chunk);
-      __s += __chunk;
-      __n += __chunk;
-      __buf->_M_gbump((int)__chunk);
-
-      // We terminated by finding delim.
-      if (__p != __last && __p - __first <= __request) {
-        if (__extract_delim) {
-          __n += 1;
-          __buf->_M_gbump(1);
-        }
-        __done = true;
-      }
-
-      // We terminated by reading all the characters we were asked for.
-      else if (__n == _Num) {
-
-        // Find out if we have reached eof.  This matters for getline.
-        if (__is_getline) {
-          if (__chunk == __last - __first) {
-            if (__that->_S_eof(__buf->sgetc()))
-              __status |= ios_base::eofbit;
-          }
-          else
-            __status |= ios_base::failbit;
-        }
-        __done   = true;
-      }
-
-      // The buffer contained fewer than _Num - __n characters.  Either we're
-      // at eof, or we should refill the buffer and try again.
-      else {
-        if (__that->_S_eof(__buf->sgetc())) {
-          __status |= ios_base::eofbit;
-          __done = true;
-        }
-      }
-    } // Close the while loop.
-  }
-  _STLP_CATCH_ALL {
-    __that->_M_handle_exception(ios_base::badbit);
-    __done = true;
-  }
-
-  if (__done) {
-    if (__append_null)
-        *__s =  _STLP_DEFAULT_CONSTRUCTED(_CharT);
-    if (__status != 0)
-      __that->setstate(__status);   // This might throw.
-    return __n;
-  }
-
-  // If execution has reached this point, then we have an empty buffer but
-  // we have not reached eof.  What that means is that the streambuf has
-  // decided to switch from buffered to unbuffered input.  We switch to
-  // to __read_unbuffered.
-# endif
-
-  return __n + __read_unbuffered(__that,  __buf, _Num - __n, __s, __is_delim,
-                                 __extract_delim,__append_null,__is_getline);
-}
-
-_STLP_MOVE_TO_STD_NAMESPACE
 
 template <class _CharT, class _Traits>
 basic_istream<_CharT, _Traits>&
@@ -730,24 +629,16 @@ basic_istream<_CharT, _Traits>::get(_CharT* __s, streamsize __n,
   if (__sentry) {
     if (__n > 0) {
       basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
+      this->_M_gcount = __read_unbuffered(this,  __buf, __n - 1, __s,
+					  _STLP_PRIV _Eq_char_bound<_Traits>(__delim),
+					  false, true, false);
       
-      if (__buf->egptr() != __buf->gptr())
-        this->_M_gcount =
-          _STLP_PRIV __read_buffered(this,  __buf, __n - 1, __s,
-                                     _STLP_PRIV _Eq_char_bound<_Traits>(__delim),
-                                     _STLP_PRIV _Scan_for_char_val<_Traits>(__delim),
-                                     false, true, false);
-      else
-        this->_M_gcount =
-          _STLP_PRIV __read_unbuffered(this,  __buf, __n - 1, __s,
-                                       _STLP_PRIV _Eq_char_bound<_Traits>(__delim),
-                                       false, true, false);
     }
   }
-
+  
   if (this->_M_gcount == 0)
     this->setstate(ios_base::failbit);
-
+  
   return *this;
 }
 
@@ -763,14 +654,9 @@ basic_istream<_CharT, _Traits>::getline(_CharT* __s, streamsize __n,
   if (__sentry) {
     if (__n > 0) {
       basic_streambuf<_CharT, _Traits>* __buf = this->rdbuf();
-      this->_M_gcount = __buf->egptr() != __buf->gptr()
-        ? _STLP_PRIV __read_buffered(this,  __buf, __n - 1, __s,
-                                     _STLP_PRIV _Eq_char_bound<_Traits>(__delim),
-                                     _STLP_PRIV _Scan_for_char_val<_Traits>(__delim),
-                                     true, true, true)
-        : _STLP_PRIV __read_unbuffered(this,  __buf, __n - 1, __s,
-                                       _STLP_PRIV _Eq_char_bound<_Traits>(__delim),
-                                       true, true, true);
+      this->_M_gcount = __read_unbuffered(this,  __buf, __n - 1, __s,
+					  _STLP_PRIV _Eq_char_bound<_Traits>(__delim),
+					  true, true, true);
     }
   }
 
@@ -790,17 +676,9 @@ basic_istream<_CharT, _Traits>::read(char_type* __s, streamsize __n) {
 
   if (__sentry && !this->eof()) {
     basic_streambuf<_CharT, _Traits>*__buf = this->rdbuf();
-    if (__buf->gptr() != __buf->egptr())
-      _M_gcount
-        = _STLP_PRIV __read_buffered(this,  __buf, __n, __s,
-                                     _STLP_PRIV _Constant_unary_fun<bool, int_type>(false),
-                                     _STLP_PRIV _Project2nd<const _CharT*, const _CharT*>(),
-                                     false, false, false);
-    else
-      _M_gcount
-        = _STLP_PRIV __read_unbuffered(this,  __buf, __n, __s,
-                                       _STLP_PRIV _Constant_unary_fun<bool, int_type>(false),
-                                       false, false, false);
+    _M_gcount  = __read_unbuffered(this,  __buf, __n, __s,
+				   _STLP_PRIV _Constant_unary_fun<bool, int_type>(false),
+				   false, false, false);
   }
   else
     this->setstate(ios_base::failbit);
@@ -830,18 +708,9 @@ basic_istream<_CharT, _Traits>::readsome(char_type* __s, streamsize __nmax) {
       this->_M_setstate_nothrow(ios_base::eofbit);
 
     else if (__avail != 0) {
-
-      if (__buf->gptr() != __buf->egptr())
-        _M_gcount
-          = _STLP_PRIV __read_buffered(this,  __buf, (min) (__avail, __nmax), __s,
-                                       _STLP_PRIV _Constant_unary_fun<bool, int_type>(false),
-                                       _STLP_PRIV _Project2nd<const _CharT*, const _CharT*>(),
-                                       false, false, false);
-      else
-        _M_gcount
-          = _STLP_PRIV __read_unbuffered(this,  __buf, (min) (__avail, __nmax), __s,
-                                         _STLP_PRIV _Constant_unary_fun<bool, int_type>(false),
-                                         false, false, false);
+      _M_gcount   = __read_unbuffered(this,  __buf, (min) (__avail, __nmax), __s,
+				      _STLP_PRIV _Constant_unary_fun<bool, int_type>(false),
+				      false, false, false);
     }
   }
   else {
@@ -868,14 +737,9 @@ void basic_istream<_CharT, _Traits>::_M_formatted_get(_CharT* __s) {
       ? this->width() - 1
       : ((numeric_limits<streamsize>::max)() / sizeof(_CharT)) - 1;
 
-    streamsize __n = __buf->gptr() != __buf->egptr()
-      ? _STLP_PRIV __read_buffered(this,  __buf, __nmax, __s,
-                                   _STLP_PRIV _Is_wspace_null<_Traits>(this->_M_ctype_facet()),
-                                   _STLP_PRIV _Scan_wspace_null<_Traits>(this->_M_ctype_facet()),
-                                   false, true, false)
-      : _STLP_PRIV __read_unbuffered(this,  __buf, __nmax, __s,
-                                     _STLP_PRIV _Is_wspace_null<_Traits>(this->_M_ctype_facet()),
-                                     false, true, false);
+    streamsize __n =  __read_unbuffered(this,  __buf, __nmax, __s,
+					_STLP_PRIV _Is_wspace_null<_Traits>(this->_M_ctype_facet()),
+					false, true, false);
     if (__n == 0)
       this->setstate(ios_base::failbit);
   }
