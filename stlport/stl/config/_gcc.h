@@ -4,6 +4,8 @@
 
 #define _STLP_COMPILER "gcc"
 
+#define _STLP_HAS_INCLUDE_NEXT 1
+
 /* Systems having GLIBC installed have different traits */
 #if defined (__linux__)
 #  ifndef _STLP_USE_GLIBC
