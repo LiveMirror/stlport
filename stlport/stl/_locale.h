@@ -312,7 +312,7 @@ bool _HasFacet(const locale& __loc, const _Facet* __facet) _STLP_NOTHROW
 { return (__loc._M_get_facet(_Facet::id) != 0); }
 
 template <class _Facet>
-_Facet* _UseFacet(const locale& __loc, const _Facet* __facet)
+_Facet* _UseFacet(const locale& __loc, const _Facet* )
 { return __STATIC_CAST(_Facet*, __loc._M_use_facet(_Facet::id)); }
 
 _STLP_END_NAMESPACE
